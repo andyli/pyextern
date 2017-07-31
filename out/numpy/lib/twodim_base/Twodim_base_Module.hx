@@ -14,6 +14,57 @@ package numpy.lib.twodim_base;
 		get small int that fits the range 
 	**/
 	static public function _min_int(low:Dynamic, high:Dynamic):Dynamic;
+	/**
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Calculate the absolute value element-wise.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		absolute : ndarray
+		    An ndarray containing the absolute value of
+		    each element in `x`.  For complex input, ``a + ib``, the
+		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		
+		Examples
+		--------
+		>>> x = np.array([-1.2, 1.2])
+		>>> np.absolute(x)
+		array([ 1.2,  1.2])
+		>>> np.absolute(1.2 + 1j)
+		1.5620499351813308
+		
+		Plot the function over ``[-10, 10]``:
+		
+		>>> import matplotlib.pyplot as plt
+		
+		>>> x = np.linspace(start=-10, stop=10, num=101)
+		>>> plt.plot(x, np.absolute(x))
+		>>> plt.show()
+		
+		Plot the function over the complex plane:
+		
+		>>> xx = x + 1j * x[:, np.newaxis]
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
+		>>> plt.show()
+	**/
+	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
@@ -143,8 +194,8 @@ package numpy.lib.twodim_base;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -494,7 +545,7 @@ package numpy.lib.twodim_base;
 		
 		Notes
 		-----
-		Equivalent to A[:,::-1]. Requires the array to be at least 2-D.
+		Equivalent to m[:,::-1]. Requires the array to be at least 2-D.
 		
 		Examples
 		--------
@@ -509,7 +560,7 @@ package numpy.lib.twodim_base;
 		       [ 3.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.fliplr(A)==A[:,::-1,...])
+		>>> np.all(np.fliplr(A) == A[:,::-1,...])
 		True
 	**/
 	static public function fliplr(m:Dynamic):numpy.Ndarray;
@@ -537,7 +588,7 @@ package numpy.lib.twodim_base;
 		
 		Notes
 		-----
-		Equivalent to ``A[::-1,...]``.
+		Equivalent to ``m[::-1,...]``.
 		Does not require the array to be two-dimensional.
 		
 		Examples
@@ -553,7 +604,7 @@ package numpy.lib.twodim_base;
 		       [ 1.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.flipud(A)==A[::-1,...])
+		>>> np.all(np.flipud(A) == A[::-1,...])
 		True
 		
 		>>> np.flipud([1,2])
@@ -561,7 +612,7 @@ package numpy.lib.twodim_base;
 	**/
 	static public function flipud(m:Dynamic):python.NativeIterable<Dynamic>;
 	/**
-		greater_equal(x1, x2[, out])
+		greater_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 >= x2) element-wise.
 		
@@ -571,6 +622,17 @@ package numpy.lib.twodim_base;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -631,9 +693,9 @@ package numpy.lib.twodim_base;
 		    The bi-dimensional histogram of samples `x` and `y`. Values in `x`
 		    are histogrammed along the first dimension and values in `y` are
 		    histogrammed along the second dimension.
-		xedges : ndarray, shape(nx,)
+		xedges : ndarray, shape(nx+1,)
 		    The bin edges along the first dimension.
-		yedges : ndarray, shape(ny,)
+		yedges : ndarray, shape(ny+1,)
 		    The bin edges along the second dimension.
 		
 		See Also
@@ -658,55 +720,43 @@ package numpy.lib.twodim_base;
 		>>> import matplotlib as mpl
 		>>> import matplotlib.pyplot as plt
 		
-		Construct a 2D-histogram with variable bin width. First define the bin
+		Construct a 2-D histogram with variable bin width. First define the bin
 		edges:
 		
-		>>> xedges = [0, 1, 1.5, 3, 5]
+		>>> xedges = [0, 1, 3, 5]
 		>>> yedges = [0, 2, 3, 4, 6]
 		
 		Next we create a histogram H with random bin content:
 		
-		>>> x = np.random.normal(3, 1, 100)
+		>>> x = np.random.normal(2, 1, 100)
 		>>> y = np.random.normal(1, 1, 100)
-		>>> H, xedges, yedges = np.histogram2d(y, x, bins=(xedges, yedges))
+		>>> H, xedges, yedges = np.histogram2d(x, y, bins=(xedges, yedges))
+		>>> H = H.T  # Let each row list bins with common y range.
 		
-		Or we fill the histogram H with a determined bin content:
-		
-		>>> H = np.ones((4, 4)).cumsum().reshape(4, 4)
-		>>> print(H[::-1])  # This shows the bin content in the order as plotted
-		[[ 13.  14.  15.  16.]
-		 [  9.  10.  11.  12.]
-		 [  5.   6.   7.   8.]
-		 [  1.   2.   3.   4.]]
-		
-		Imshow can only do an equidistant representation of bins:
+		:func:`imshow <matplotlib.pyplot.imshow>` can only display square bins:
 		
 		>>> fig = plt.figure(figsize=(7, 3))
-		>>> ax = fig.add_subplot(131)
-		>>> ax.set_title('imshow: equidistant')
-		>>> im = plt.imshow(H, interpolation='nearest', origin='low',
-		                extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
+		>>> ax = fig.add_subplot(131, title='imshow: square bins')
+		>>> plt.imshow(H, interpolation='nearest', origin='low',
+		...         extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
 		
-		pcolormesh can display exact bin edges:
+		:func:`pcolormesh <matplotlib.pyplot.pcolormesh>` can display actual edges:
 		
-		>>> ax = fig.add_subplot(132)
-		>>> ax.set_title('pcolormesh: exact bin edges')
+		>>> ax = fig.add_subplot(132, title='pcolormesh: actual edges',
+		...         aspect='equal')
 		>>> X, Y = np.meshgrid(xedges, yedges)
 		>>> ax.pcolormesh(X, Y, H)
-		>>> ax.set_aspect('equal')
 		
-		NonUniformImage displays exact bin edges with interpolation:
+		:class:`NonUniformImage <matplotlib.image.NonUniformImage>` can be used to
+		display actual bin edges with interpolation:
 		
-		>>> ax = fig.add_subplot(133)
-		>>> ax.set_title('NonUniformImage: interpolated')
+		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
+		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
 		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
-		>>> xcenters = xedges[:-1] + 0.5 * (xedges[1:] - xedges[:-1])
-		>>> ycenters = yedges[:-1] + 0.5 * (yedges[1:] - yedges[:-1])
+		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
+		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
 		>>> ax.images.append(im)
-		>>> ax.set_xlim(xedges[0], xedges[-1])
-		>>> ax.set_ylim(yedges[0], yedges[-1])
-		>>> ax.set_aspect('equal')
 		>>> plt.show()
 	**/
 	static public function histogram2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):Dynamic;
@@ -778,7 +828,7 @@ package numpy.lib.twodim_base;
 	**/
 	static public function mask_indices(n:Dynamic, mask_func:Dynamic, ?k:Dynamic):Dynamic;
 	/**
-		multiply(x1, x2[, out])
+		multiply(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Multiply arguments element-wise.
 		
@@ -786,6 +836,17 @@ package numpy.lib.twodim_base;
 		----------
 		x1, x2 : array_like
 		    Input arrays to be multiplied.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -903,42 +964,50 @@ package numpy.lib.twodim_base;
 	**/
 	static public function promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Rotate an array by 90 degrees in the counter-clockwise direction.
-		
-		The first two dimensions are rotated; therefore, the array must be at
-		least 2-D.
+		Permute the dimensions of an array.
 		
 		Parameters
 		----------
-		m : array_like
-		    Array of two or more dimensions.
-		k : integer
-		    Number of times the array is rotated by 90 degrees.
+		a : array_like
+		    Input array.
+		axes : list of ints, optional
+		    By default, reverse the dimensions, otherwise permute the axes
+		    according to the values given.
 		
 		Returns
 		-------
-		y : ndarray
-		    Rotated array.
+		p : ndarray
+		    `a` with its axes permuted.  A view is returned whenever
+		    possible.
 		
 		See Also
 		--------
-		fliplr : Flip an array horizontally.
-		flipud : Flip an array vertically.
+		moveaxis
+		argsort
+		
+		Notes
+		-----
+		Use `transpose(a, argsort(axes))` to invert the transposition of tensors
+		when using the `axes` keyword argument.
+		
+		Transposing a 1-D array returns an unchanged view of the original array.
 		
 		Examples
 		--------
-		>>> m = np.array([[1,2],[3,4]], int)
-		>>> m
-		array([[1, 2],
-		       [3, 4]])
-		>>> np.rot90(m)
-		array([[2, 4],
+		>>> x = np.arange(4).reshape((2,2))
+		>>> x
+		array([[0, 1],
+		       [2, 3]])
+		
+		>>> np.transpose(x)
+		array([[0, 2],
 		       [1, 3]])
-		>>> np.rot90(m, 2)
-		array([[4, 3],
-		       [2, 1]])
+		
+		>>> x = np.ones((1, 2, 3))
+		>>> np.transpose(x, (1, 0, 2)).shape
+		(2, 1, 3)
 	**/
-	static public function rot90(m:Dynamic, ?k:Dynamic):numpy.Ndarray;
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		An array with ones at and below the given diagonal and zeros elsewhere.
 		
@@ -1312,8 +1381,8 @@ package numpy.lib.twodim_base;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -1360,7 +1429,7 @@ package numpy.lib.twodim_base;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],

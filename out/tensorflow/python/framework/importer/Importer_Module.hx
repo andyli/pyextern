@@ -46,14 +46,15 @@ package tensorflow.python.framework.importer;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Imports the TensorFlow graph in `graph_def` into the Python `Graph`.
+		Imports the graph from `graph_def` into the current default `Graph`.
 		
 		This function provides a way to import a serialized TensorFlow
 		[`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
 		protocol buffer, and extract individual objects in the `GraphDef` as
-		[`Tensor`](#Tensor) and [`Operation`](#Operation) objects. See
-		[`Graph.as_graph_def()`](#Graph.as_graph_def) for a way to create a
-		`GraphDef` proto.
+		@{tf.Tensor} and @{tf.Operation} objects. Once extracted,
+		these objects are placed into the current default `Graph`. See
+		@{tf.Graph.as_graph_def} for a way to create a `GraphDef`
+		proto.
 		
 		Args:
 		  graph_def: A `GraphDef` proto containing operations to be imported into
@@ -65,7 +66,8 @@ package tensorflow.python.framework.importer;
 		    `graph_def` that will be returned as `Operation` objects; and/or
 		    tensor names in `graph_def` that will be returned as `Tensor` objects.
 		  name: (Optional.) A prefix that will be prepended to the names in
-		    `graph_def`. Defaults to `"import"`.
+		    `graph_def`. Note that this does not apply to imported function names.
+		    Defaults to `"import"`.
 		  op_dict: (Optional.) A dictionary mapping op type names to `OpDef` protos.
 		    Must contain an `OpDef` proto for each op type named in `graph_def`.
 		    If omitted, uses the `OpDef` protos registered in the global registry.

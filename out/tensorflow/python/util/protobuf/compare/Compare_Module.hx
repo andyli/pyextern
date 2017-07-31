@@ -14,10 +14,10 @@ package tensorflow.python.util.protobuf.compare;
 		Modifies pb in place. Recurses into nested objects.
 		
 		Args:
-		  pb: proto2 message
+		  pb: proto2 message.
 		
 		Returns:
-		  the given pb, modified in place
+		  the given pb, modified in place.
 	**/
 	static public function NormalizeNumberFields(pb:Dynamic):Dynamic;
 	/**
@@ -27,7 +27,8 @@ package tensorflow.python.util.protobuf.compare;
 		repeated fields, ie duplicates and order matter.
 		
 		Args:
-		  a, b: proto2 messages or primitives
+		  a: A proto2 message or a primitive.
+		  b: A proto2 message or a primitive.
 		
 		Returns:
 		  `True` if the messages are equal.
@@ -52,13 +53,13 @@ package tensorflow.python.util.protobuf.compare;
 		
 		Args:
 		  self: googletest.TestCase
-		  a: proto2 PB instance, or text string representing one
-		  b: proto2 PB instance -- message.Message or subclass thereof
+		  a: proto2 PB instance, or text string representing one.
+		  b: proto2 PB instance -- message.Message or subclass thereof.
 		  check_initialized: boolean, whether to fail if either a or b isn't
-		    initialized
+		    initialized.
 		  normalize_numbers: boolean, whether to normalize types and precision of
 		    numbers before comparison.
-		  msg: if specified, is used as the error message on failure
+		  msg: if specified, is used as the error message on failure.
 	**/
 	static public function assertProtoEqual(self:Dynamic, a:Dynamic, b:Dynamic, ?check_initialized:Dynamic, ?normalize_numbers:Dynamic, ?msg:Dynamic):Dynamic;
 	static public var division : Dynamic;

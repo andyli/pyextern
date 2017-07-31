@@ -176,11 +176,105 @@ package pandas.core.window;
 	**/
 	static public function expanding(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a float dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a float dtype.
+		
+		Examples
+		--------
+		>>> is_float_dtype(str)
+		False
+		>>> is_float_dtype(int)
+		False
+		>>> is_float_dtype(float)
+		True
+		>>> is_float_dtype(np.array(['a', 'b']))
+		False
+		>>> is_float_dtype(pd.Series([1, 2]))
+		False
+		>>> is_float_dtype(pd.Index([1, 2.]))
+		True
+	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
-	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
@@ -192,8 +286,67 @@ package pandas.core.window;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
-	static public function isscalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+	**/
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the array or dtype should be converted to int64.
+		
+		An array-like or dtype "needs" such a conversion if the array-like
+		or dtype is of a datetime-like dtype
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype should be converted to int64.
+		
+		Examples
+		--------
+		>>> needs_i8_conversion(str)
+		False
+		>>> needs_i8_conversion(np.int64)
+		False
+		>>> needs_i8_conversion(np.datetime64)
+		True
+		>>> needs_i8_conversion(np.array(['a', 'b']))
+		False
+		>>> needs_i8_conversion(pd.Series([1, 2]))
+		False
+		>>> needs_i8_conversion(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>> needs_i8_conversion(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Provides rolling window calculcations.
@@ -224,8 +377,14 @@ package pandas.core.window;
 		on : string, optional
 		    For a DataFrame, column on which to calculate
 		    the rolling window, rather than the index
+		closed : string, default None
+		    Make the interval closed on the 'right', 'left', 'both' or
+		    'neither' endpoints.
+		    For offset-based windows, it defaults to 'right'.
+		    For fixed windows, defaults to 'both'. Remaining cases not implemented
+		    for fixed windows.
 		
-		    .. versionadded:: 0.19.0
+		    .. versionadded:: 0.20.0
 		
 		axis : int or string, default 0
 		

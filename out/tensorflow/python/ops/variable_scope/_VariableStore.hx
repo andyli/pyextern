@@ -47,6 +47,13 @@ package tensorflow.python.ops.variable_scope;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -102,6 +109,21 @@ package tensorflow.python.ops.variable_scope;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Provide a default initializer and a corresponding value.
+		
+		Args:
+		  name: see get_variable.
+		  shape: see get_variable.
+		  dtype: see get_variable.
+		
+		Returns:
+		  initializer and initializing_from_value. See get_variable above.
+		
+		Raises:
+		  ValueError: When giving unsupported dtype.
+	**/
+	public function _get_default_initializer(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
 		Gets or creates a sharded variable list with these parameters.
 		
 		The `partitioner` must be a callable that accepts a fully defined
@@ -121,7 +143,7 @@ package tensorflow.python.ops.variable_scope;
 		
 		If initializer is `None` (the default), the default initializer passed in
 		the constructor is used. If that one is `None` too, we use a new
-		`uniform_unit_scaling_initializer`. If initializer is a Tensor, we use
+		`glorot_uniform_initializer`. If initializer is a Tensor, we use
 		it as a value and derive the shape from the initializer.
 		
 		If the initializer is a callable, then it will be called for each
@@ -145,9 +167,9 @@ package tensorflow.python.ops.variable_scope;
 		    GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
 		  reuse: a Boolean or `None`. Controls reuse or creation of variables.
 		  trainable: If `True` also add the variable to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
 		  collections: List of graph collections keys to add the Variable to.
-		    Defaults to `[GraphKeys.VARIABLES]` (see tf.Variable).
+		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]` (see `tf.Variable`).
 		  caching_device: Optional device string or function describing where the
 		    Variable should be cached for reading.  Defaults to the Variable's
 		    device.  If not `None`, caches on another device.  Typical use is to
@@ -156,11 +178,12 @@ package tensorflow.python.ops.variable_scope;
 		  validate_shape: If False, allows the variable to be initialized with a
 		    value of unknown shape. If True, the default, the shape of initial_value
 		    must be known.
+		  use_resource: If False, creates a regular Variable. If True, creates an
+		    experimental ResourceVariable which has well-defined semantics. Defaults
+		    to False (will later change to True).
 		
 		Returns:
-		  A tuple `(shards, partitions)` where `shards` is the list of `Variable`
-		  shards and `partitions` is the output of the partitioner on the input
-		  shape.
+		  A `PartitionedVariable` object.
 		
 		Raises:
 		  ValueError: when creating a new variable and shape is not declared,
@@ -168,7 +191,7 @@ package tensorflow.python.ops.variable_scope;
 		    when violating reuse during variable creation, or if an existing
 		    sharded variable exists for the given name but with different sharding.
 	**/
-	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic):Dynamic;
+	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
 	/**
 		Get or create a single Variable (e.g. a shard or entire variable).
 		
@@ -181,11 +204,13 @@ package tensorflow.python.ops.variable_scope;
 		  dtype: see get_variable.
 		  initializer: see get_variable.
 		  regularizer: see get_variable.
+		  partition_info: _PartitionInfo object.
 		  reuse: see get_variable.
 		  trainable: see get_variable.
 		  collections: see get_variable.
 		  caching_device: see get_variable.
 		  validate_shape: see get_variable.
+		  use_resource: see get_variable.
 		
 		Returns:
 		  A Variable.  See documentation of get_variable above.
@@ -193,7 +218,7 @@ package tensorflow.python.ops.variable_scope;
 		Raises:
 		  ValueError: See documentation of get_variable above.
 	**/
-	public function _get_single_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic):Dynamic;
+	public function _get_single_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?partition_info:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
 	public function close_variable_subscopes(scope_name:Dynamic):Dynamic;
 	/**
 		Gets an existing variable with these parameters or create a new one.
@@ -208,12 +233,12 @@ package tensorflow.python.ops.variable_scope;
 		
 		If initializer is `None` (the default), the default initializer passed in
 		the constructor is used. If that one is `None` too, we use a new
-		`uniform_unit_scaling_initializer`. If initializer is a Tensor, we use
+		`glorot_uniform_initializer`. If initializer is a Tensor, we use
 		it as a value and derive the shape from the initializer.
 		
-		If a partitioner is provided, first a sharded `Variable` is created
-		via `_get_partitioned_variable`, and the return value is a
-		`Tensor` composed of the shards concatenated along the partition axis.
+		If a partitioner is provided, a `PartitionedVariable` is returned.
+		Accessing this object as a `Tensor` returns the shards concatenated along
+		the partition axis.
 		
 		Some useful partitioners are available.  See, e.g.,
 		`variable_axis_size_partitioner` and `min_max_variable_partitioner`.
@@ -228,13 +253,13 @@ package tensorflow.python.ops.variable_scope;
 		    GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
 		  reuse: a Boolean or `None`. Controls reuse or creation of variables.
 		  trainable: If `True` also add the variable to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  collections: List of graph collections keys to add the Variable to.
-		    Defaults to `[GraphKeys.VARIABLES]` (see tf.Variable).
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  collections: List of graph collections keys to add the `Variable` to.
+		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]` (see `tf.Variable`).
 		  caching_device: Optional device string or function describing where the
 		    Variable should be cached for reading.  Defaults to the Variable's
 		    device.  If not `None`, caches on another device.  Typical use is to
-		    cache on the device where the Ops using the Variable reside, to
+		    cache on the device where the Ops using the `Variable` reside, to
 		    deduplicate copying through `Switch` and other conditional statements.
 		  partitioner: Optional callable that accepts a fully defined `TensorShape`
 		    and dtype of the `Variable` to be created, and returns a list of
@@ -242,6 +267,9 @@ package tensorflow.python.ops.variable_scope;
 		  validate_shape: If False, allows the variable to be initialized with a
 		    value of unknown shape. If True, the default, the shape of initial_value
 		    must be known.
+		  use_resource: If False, creates a regular Variable. If True, creates
+		    instead an experimental ResourceVariable which has well-defined
+		    semantics. Defaults to False (will later change to True).
 		  custom_getter: Callable that takes as a first argument the true getter,
 		    and allows overwriting the internal get_variable method.
 		    The signature of `custom_getter` should match that of this method,
@@ -256,14 +284,15 @@ package tensorflow.python.ops.variable_scope;
 		    ```
 		
 		Returns:
-		  The created or existing variable.
+		  The created or existing `Variable` (or `PartitionedVariable`, if a
+		  partitioner was used).
 		
 		Raises:
 		  ValueError: when creating a new variable and shape is not declared,
 		    when reusing a variable and specifying a conflicting shape,
 		    or when violating reuse during variable creation.
 	**/
-	public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
 	public function open_variable_scope(scope_name:Dynamic):Dynamic;
 	public function variable_scope_count(scope_name:Dynamic):Dynamic;
 }

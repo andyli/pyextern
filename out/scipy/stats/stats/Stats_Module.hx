@@ -91,7 +91,7 @@ package scipy.stats.stats;
 		allows.
 	**/
 	static public function _iqr_percentile(x:Dynamic, q:Dynamic, ?axis:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic, ?contains_nan:Dynamic):Dynamic;
-	static public function _kendall_condis(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _kendall_dis(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
 		This one only evaluates f(arr1[cond], arr2[cond], ...).
@@ -177,43 +177,53 @@ package scipy.stats.stats;
 		`_sum_of_squares`).
 	**/
 	static public function _sum_of_squares(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _toint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Common code between all 3 t-test functions.
 	**/
 	static public function _ttest_finish(df:Dynamic, t:Dynamic):Dynamic;
 	static public function _ttest_ind_from_stats(mean1:Dynamic, mean2:Dynamic, denom:Dynamic, df:Dynamic):Dynamic;
 	static public function _unequal_var_ttest_denom(v1:Dynamic, n1:Dynamic, v2:Dynamic, n2:Dynamic):Dynamic;
+	static public function _weightedrankedtau(x:Dynamic, y:Dynamic, rank:Dynamic, weigher:Dynamic, additive:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -229,7 +239,13 @@ package scipy.stats.stats;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -294,8 +310,8 @@ package scipy.stats.stats;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -1287,8 +1303,9 @@ package scipy.stats.stats;
 		
 		Kendall's tau is a measure of the correspondence between two rankings.
 		Values close to 1 indicate strong agreement, values close to -1 indicate
-		strong disagreement.  This is the tau-b version of Kendall's tau which
-		accounts for ties.
+		strong disagreement.  This is the 1945 "tau-b" version of Kendall's
+		tau [2]_, which can account for ties and which reduces to the 1938 "tau-a"
+		version [1]_ in absence of ties.
 		
 		Parameters
 		----------
@@ -1296,15 +1313,13 @@ package scipy.stats.stats;
 		    Arrays of rankings, of the same shape. If arrays are not 1-D, they will
 		    be flattened to 1-D.
 		initial_lexsort : bool, optional
-		    Whether to use lexsort or quicksort as the sorting method for the
-		    initial sort of the inputs. Default is lexsort (True), for which
-		    `kendalltau` is of complexity O(n log(n)). If False, the complexity is
-		    O(n^2), but with a smaller pre-factor (so quicksort may be faster for
-		    small arrays).
+		    Unused (deprecated).
 		nan_policy : {'propagate', 'raise', 'omit'}, optional
 		    Defines how to handle when input contains nan. 'propagate' returns nan,
 		    'raise' throws an error, 'omit' performs the calculations ignoring nan
-		    values. Default is 'propagate'.
+		    values. Default is 'propagate'. Note that if the input contains nan
+		    'omit' delegates to mstats_basic.kendalltau(), which has a different
+		    implementation.
 		
 		Returns
 		-------
@@ -1318,10 +1333,11 @@ package scipy.stats.stats;
 		--------
 		spearmanr : Calculates a Spearman rank-order correlation coefficient.
 		theilslopes : Computes the Theil-Sen estimator for a set of points (x, y).
+		weightedtau : Computes a weighted version of Kendall's tau.
 		
 		Notes
 		-----
-		The definition of Kendall's tau that is used is::
+		The definition of Kendall's tau that is used is [2]_::
 		
 		  tau = (P - Q) / sqrt((P + Q + T) * (P + Q + U))
 		
@@ -1332,9 +1348,15 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		W.R. Knight, "A Computer Method for Calculating Kendall's Tau with
-		Ungrouped Data", Journal of the American Statistical Association, Vol. 61,
-		No. 314, Part 1, pp. 436-439, 1966.
+		.. [1] Maurice G. Kendall, "A New Measure of Rank Correlation", Biometrika
+		       Vol. 30, No. 1/2, pp. 81-93, 1938.
+		.. [2] Maurice G. Kendall, "The treatment of ties in ranking problems",
+		       Biometrika Vol. 33, No. 3, pp. 239-251. 1945.
+		.. [3] Gottfried E. Noether, "Elements of Nonparametric Statistics", John
+		       Wiley & Sons, 1967.
+		.. [4] Peter M. Fenwick, "A new data structure for cumulative frequency
+		       tables", Software: Practice and Experience, Vol. 24, No. 3,
+		       pp. 327-336, 1994.
 		
 		Examples
 		--------
@@ -1345,7 +1367,7 @@ package scipy.stats.stats;
 		>>> tau
 		-0.47140452079103173
 		>>> p_value
-		0.24821309157521476
+		0.2827454599327748
 	**/
 	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
@@ -1682,21 +1704,31 @@ package scipy.stats.stats;
 		
 		See also
 		--------
-		optimize.curve_fit : Use non-linear least squares to fit a function to data.
-		optimize.leastsq : Minimize the sum of squares of a set of equations.
+		:func:`scipy.optimize.curve_fit` : Use non-linear
+		 least squares to fit a function to data.
+		:func:`scipy.optimize.leastsq` : Minimize the sum of
+		 squares of a set of equations.
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
-		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
 		
-		# To get coefficient of determination (r_squared)
+		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
 		('r-squared:', 0.080402268539028335)
+		
+		Plot the data along with the fitted line
+		
+		>>> plt.plot(x, y, 'o', label='original data')
+		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
@@ -1740,7 +1772,7 @@ package scipy.stats.stats;
 	/**
 		Returns an array of the modal (most common) value in the passed array.
 		
-		If there is more than one such value, only the first is returned.
+		If there is more than one such value, only the smallest is returned.
 		The bin-count for the modal bins is also returned.
 		
 		Parameters
@@ -1850,7 +1882,7 @@ package scipy.stats.stats;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Tests whether a sample differs from a normal distribution.
 		
@@ -2690,6 +2722,12 @@ package scipy.stats.stats;
 		Notes
 		-----
 		The sample size must be at least 8.
+		
+		References
+		----------
+		.. [1] R. B. D'Agostino, A. J. Belanger and R. B. D'Agostino Jr.,
+		        "A suggestion for using powerful and informative tests of 
+		        normality", American Statistician 44, pp. 316-321, 1990.
 	**/
 	static public function skewtest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
@@ -3614,6 +3652,137 @@ package scipy.stats.stats;
 		   York. 2000.
 	**/
 	static public function variation(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
+	/**
+		Computes a weighted version of Kendall's :math:`\tau`.
+		
+		The weighted :math:`\tau` is a weighted version of Kendall's
+		:math:`\tau` in which exchanges of high weight are more influential than
+		exchanges of low weight. The default parameters compute the additive
+		hyperbolic version of the index, :math:`\tau_\mathrm h`, which has
+		been shown to provide the best balance between important and
+		unimportant elements [1]_.
+		
+		The weighting is defined by means of a rank array, which assigns a
+		nonnegative rank to each element, and a weigher function, which
+		assigns a weight based from the rank to each element. The weight of an
+		exchange is then the sum or the product of the weights of the ranks of
+		the exchanged elements. The default parameters compute
+		:math:`\tau_\mathrm h`: an exchange between elements with rank
+		:math:`r` and :math:`s` (starting from zero) has weight
+		:math:`1/(r+1) + 1/(s+1)`.
+		
+		Specifying a rank array is meaningful only if you have in mind an
+		external criterion of importance. If, as it usually happens, you do
+		not have in mind a specific rank, the weighted :math:`\tau` is
+		defined by averaging the values obtained using the decreasing
+		lexicographical rank by (`x`, `y`) and by (`y`, `x`). This is the
+		behavior with default parameters.
+		
+		Note that if you are computing the weighted :math:`\tau` on arrays of
+		ranks, rather than of scores (i.e., a larger value implies a lower
+		rank) you must negate the ranks, so that elements of higher rank are
+		associated with a larger value.
+		
+		Parameters
+		----------
+		x, y : array_like
+		    Arrays of scores, of the same shape. If arrays are not 1-D, they will
+		    be flattened to 1-D.
+		rank: array_like of ints or bool, optional
+		    A nonnegative rank assigned to each element. If it is None, the
+		    decreasing lexicographical rank by (`x`, `y`) will be used: elements of
+		    higher rank will be those with larger `x`-values, using `y`-values to
+		    break ties (in particular, swapping `x` and `y` will give a different
+		    result). If it is False, the element indices will be used
+		    directly as ranks. The default is True, in which case this
+		    function returns the average of the values obtained using the
+		    decreasing lexicographical rank by (`x`, `y`) and by (`y`, `x`).
+		weigher : callable, optional
+		    The weigher function. Must map nonnegative integers (zero
+		    representing the most important element) to a nonnegative weight.
+		    The default, None, provides hyperbolic weighing, that is,
+		    rank :math:`r` is mapped to weight :math:`1/(r+1)`.
+		additive : bool, optional
+		    If True, the weight of an exchange is computed by adding the
+		    weights of the ranks of the exchanged elements; otherwise, the weights
+		    are multiplied. The default is True.
+		
+		Returns
+		-------
+		correlation : float
+		   The weighted :math:`\tau` correlation index.
+		pvalue : float
+		   Presently ``np.nan``, as the null statistics is unknown (even in the
+		   additive hyperbolic case).
+		
+		See also
+		--------
+		kendalltau : Calculates Kendall's tau.
+		spearmanr : Calculates a Spearman rank-order correlation coefficient.
+		theilslopes : Computes the Theil-Sen estimator for a set of points (x, y).
+		
+		Notes
+		-----
+		This function uses an :math:`O(n \log n)`, mergesort-based algorithm
+		[1]_ that is a weighted extension of Knight's algorithm for Kendall's
+		:math:`\tau` [2]_. It can compute Shieh's weighted :math:`\tau` [3]_
+		between rankings without ties (i.e., permutations) by setting
+		`additive` and `rank` to False, as the definition given in [1]_ is a
+		generalization of Shieh's.
+		
+		NaNs are considered the smallest possible score.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] Sebastiano Vigna, "A weighted correlation index for rankings with
+		       ties", Proceedings of the 24th international conference on World
+		       Wide Web, pp. 1166-1176, ACM, 2015.
+		.. [2] W.R. Knight, "A Computer Method for Calculating Kendall's Tau with
+		       Ungrouped Data", Journal of the American Statistical Association,
+		       Vol. 61, No. 314, Part 1, pp. 436-439, 1966.
+		.. [3] Grace S. Shieh. "A weighted Kendall's tau statistic", Statistics &
+		       Probability Letters, Vol. 39, No. 1, pp. 17-24, 1998.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> tau, p_value = stats.weightedtau(x, y)
+		>>> tau
+		-0.56694968153682723
+		>>> p_value
+		nan
+		>>> tau, p_value = stats.weightedtau(x, y, additive=False)
+		>>> tau
+		-0.62205716951801038
+		
+		NaNs are considered the smallest possible score:
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, np.nan]
+		>>> tau, _ = stats.weightedtau(x, y)
+		>>> tau
+		-0.56694968153682723
+		
+		This is exactly Kendall's tau:
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> tau, _ = stats.weightedtau(x, y, weigher=lambda x: 1)
+		>>> tau
+		-0.47140452079103173
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> stats.weightedtau(x, y, rank=None)
+		WeightedTauResult(correlation=-0.4157652301037516, pvalue=nan)
+		>>> stats.weightedtau(y, x, rank=None)
+		WeightedTauResult(correlation=-0.71813413296990281, pvalue=nan)
+	**/
+	static public function weightedtau(x:Dynamic, y:Dynamic, ?rank:Dynamic, ?weigher:Dynamic, ?additive:Dynamic):Float;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

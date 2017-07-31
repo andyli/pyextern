@@ -39,18 +39,7 @@ package tensorflow.contrib.layers.python.layers.summaries;
 	**/
 	static public function _add_scalar_summary(tensor:Dynamic, ?tag:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	static public function assert_summary_tag_unique(tag:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		Checks if a summary tag is unique.
-		
-		Args:
-		  tag: The tag to use
-		
-		Returns:
-		  True if the summary tag is unique.
-	**/
-	static public function is_summary_tag_unique(tag:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Summarize an activation.

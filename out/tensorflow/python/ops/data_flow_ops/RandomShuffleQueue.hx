@@ -74,7 +74,7 @@ package tensorflow.python.ops.data_flow_ops;
 		    with the same length as `dtypes`, or `None`.  If specified the dequeue
 		    methods return a dictionary with the names as keys.
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  shared_name: (Optional.) If non-empty, this queue will be shared under
 		    the given name across multiple sessions.
@@ -119,13 +119,20 @@ package tensorflow.python.ops.data_flow_ops;
 		    with the same length as `dtypes`, or `None`.  If specified the dequeue
 		    methods return a dictionary with the names as keys.
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  shared_name: (Optional.) If non-empty, this queue will be shared under
 		    the given name across multiple sessions.
 		  name: Optional name for the queue operation.
 	**/
 	public function new(capacity:Dynamic, min_after_dequeue:Dynamic, dtypes:Dynamic, ?shapes:Dynamic, ?names:Dynamic, ?seed:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -188,7 +195,7 @@ package tensorflow.python.ops.data_flow_ops;
 		dictionary with tensor values.
 		
 		If it is a dictionary, the queue must have been constructed with a
-		`names` attribute and the dictionary keys must math the queue names.
+		`names` attribute and the dictionary keys must match the queue names.
 		If the queue was constructed with a `names` attribute, `vals` must
 		be a dictionary.
 		
@@ -218,7 +225,7 @@ package tensorflow.python.ops.data_flow_ops;
 	**/
 	public function _dequeue_return_value(tensors:Dynamic):Dynamic;
 	/**
-		Return a list of values to pass to `op_scope()`.
+		Return a list of values to pass to `name_scope()`.
 		
 		Args:
 		  vals: A tensor, a list or tuple of tensors, or a dictionary.
@@ -256,11 +263,11 @@ package tensorflow.python.ops.data_flow_ops;
 		until there is an element to dequeue.
 		
 		At runtime, this operation may raise an error if the queue is
-		[closed](#QueueBase.close) before or during its execution. If the
+		@{tf.QueueBase.close} before or during its execution. If the
 		queue is closed, the queue is empty, and there are no pending
-		enqueue operations that can fulfil this request,
+		enqueue operations that can fulfill this request,
 		`tf.errors.OutOfRangeError` will be raised. If the session is
-		[closed](../../api_docs/python/client.md#Session.close),
+		@{tf.Session.close},
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -281,11 +288,11 @@ package tensorflow.python.ops.data_flow_ops;
 		`OutOfRange` exception is raised.
 		
 		At runtime, this operation may raise an error if the queue is
-		[closed](#QueueBase.close) before or during its execution. If the
+		@{tf.QueueBase.close} before or during its execution. If the
 		queue is closed, the queue contains fewer than `n` elements, and
-		there are no pending enqueue operations that can fulfil this
+		there are no pending enqueue operations that can fulfill this
 		request, `tf.errors.OutOfRangeError` will be raised. If the
-		session is [closed](../../api_docs/python/client.md#Session.close),
+		session is @{tf.Session.close},
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -309,7 +316,7 @@ package tensorflow.python.ops.data_flow_ops;
 		
 		If the queue is closed and there are more than `0` but fewer than
 		`n` elements remaining, then instead of raising a
-		`tf.errors.OutOfRangeError` like [`dequeue_many`](#QueueBase.dequeue_many),
+		`tf.errors.OutOfRangeError` like @{tf.QueueBase.dequeue_many},
 		less than `n` elements are returned immediately.  If the queue is
 		closed and there are `0` elements left in the queue, then a
 		`tf.errors.OutOfRangeError` is raised just like in `dequeue_many`.
@@ -334,12 +341,12 @@ package tensorflow.python.ops.data_flow_ops;
 		until the element has been enqueued.
 		
 		At runtime, this operation may raise an error if the queue is
-		[closed](#QueueBase.close) before or during its execution. If the
+		@{tf.QueueBase.close} before or during its execution. If the
 		queue is closed before this operation runs,
-		`tf.errors.AbortedError` will be raised. If this operation is
+		`tf.errors.CancelledError` will be raised. If this operation is
 		blocked, and either (i) the queue is closed by a close operation
 		with `cancel_pending_enqueues=True`, or (ii) the session is
-		[closed](../../api_docs/python/client.md#Session.close),
+		@{tf.Session.close},
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -362,12 +369,12 @@ package tensorflow.python.ops.data_flow_ops;
 		until all of the elements have been enqueued.
 		
 		At runtime, this operation may raise an error if the queue is
-		[closed](#QueueBase.close) before or during its execution. If the
+		@{tf.QueueBase.close} before or during its execution. If the
 		queue is closed before this operation runs,
-		`tf.errors.AbortedError` will be raised. If this operation is
+		`tf.errors.CancelledError` will be raised. If this operation is
 		blocked, and either (i) the queue is closed by a close operation
 		with `cancel_pending_enqueues=True`, or (ii) the session is
-		[closed](../../api_docs/python/client.md#Session.close),
+		@{tf.Session.close},
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -407,6 +414,10 @@ package tensorflow.python.ops.data_flow_ops;
 		The underlying queue reference.
 	**/
 	public var queue_ref : Dynamic;
+	/**
+		The list of shapes for each component of a queue element.
+	**/
+	public var shapes : Dynamic;
 	/**
 		Compute the number of elements in this queue.
 		

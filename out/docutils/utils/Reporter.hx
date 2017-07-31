@@ -76,6 +76,13 @@ package docutils.utils;
 	**/
 	public function new(source:Dynamic, report_level:Dynamic, halt_level:Dynamic, ?stream:Dynamic, ?debug:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

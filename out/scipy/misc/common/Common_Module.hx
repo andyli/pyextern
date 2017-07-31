@@ -10,123 +10,7 @@ package scipy.misc.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Helper function for scipy argument validation.
-		
-		Many scipy linear algebra functions do support arbitrary array-like
-		input arguments.  Examples of commonly unsupported inputs include
-		matrices containing inf/nan, sparse matrix representations, and
-		matrices with complicated elements.
-		
-		Parameters
-		----------
-		a : array_like
-		    The array-like input.
-		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		    Default: True
-		sparse_ok : bool, optional
-		    True if scipy sparse matrices are allowed.
-		objects_ok : bool, optional
-		    True if arrays with dype('O') are allowed.
-		mask_ok : bool, optional
-		    True if masked arrays are allowed.
-		as_inexact : bool, optional
-		    True to convert the input array to a np.inexact dtype.
-		
-		Returns
-		-------
-		ret : ndarray
-		    The converted validated array.
-	**/
-	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Return the maximum of an array or maximum along an axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which to operate.  By default, flattened input is
-		    used.
-		
-		    .. versionadded: 1.7.0
-		
-		    If this is a tuple of ints, the maximum is selected over multiple axes,
-		    instead of a single axis or all the axes as before.
-		out : ndarray, optional
-		    Alternative output array in which to place the result.  Must
-		    be of the same shape and buffer length as the expected output.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
-		
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		    If the default value is passed, then `keepdims` will not be
-		    passed through to the `amax` method of sub-classes of
-		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
-		    exceptions will be raised.
-		
-		Returns
-		-------
-		amax : ndarray or scalar
-		    Maximum of `a`. If `axis` is None, the result is a scalar value.
-		    If `axis` is given, the result is an array of dimension
-		    ``a.ndim - 1``.
-		
-		See Also
-		--------
-		amin :
-		    The minimum value of an array along a given axis, propagating any NaNs.
-		nanmax :
-		    The maximum value of an array along a given axis, ignoring any NaNs.
-		maximum :
-		    Element-wise maximum of two arrays, propagating any NaNs.
-		fmax :
-		    Element-wise maximum of two arrays, ignoring any NaNs.
-		argmax :
-		    Return the indices of the maximum values.
-		
-		nanmin, minimum, fmin
-		
-		Notes
-		-----
-		NaN values are propagated, that is if at least one item is NaN, the
-		corresponding max value will be NaN as well. To ignore NaN values
-		(MATLAB behavior), please use nanmax.
-		
-		Don't use `amax` for element-wise comparison of 2 arrays; when
-		``a.shape[0]`` is 2, ``maximum(a[0], a[1])`` is faster than
-		``amax(a, axis=0)``.
-		
-		Examples
-		--------
-		>>> a = np.arange(4).reshape((2,2))
-		>>> a
-		array([[0, 1],
-		       [2, 3]])
-		>>> np.amax(a)           # Maximum of the flattened array
-		3
-		>>> np.amax(a, axis=0)   # Maxima along the first axis
-		array([2, 3])
-		>>> np.amax(a, axis=1)   # Maxima along the second axis
-		array([1, 3])
-		
-		>>> b = np.arange(5, dtype=np.float)
-		>>> b[2] = np.NaN
-		>>> np.amax(b)
-		nan
-		>>> np.nanmax(b)
-		4.0
-	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -187,35 +71,43 @@ package scipy.misc.common;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -231,7 +123,13 @@ package scipy.misc.common;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -277,74 +175,6 @@ package scipy.misc.common;
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
 		Get an 8-bit grayscale bit-depth, 512 x 512 derived image for easy use in demos
 		
 		The image is derived from accent-to-the-top.jpg at
@@ -374,48 +204,6 @@ package scipy.misc.common;
 		>>> plt.show()
 	**/
 	static public function ascent():Dynamic;
-	/**
-		Broadcast any number of arrays against each other.
-		
-		Parameters
-		----------
-		`*args` : array_likes
-		    The arrays to broadcast.
-		
-		subok : bool, optional
-		    If True, then sub-classes will be passed-through, otherwise
-		    the returned arrays will be forced to be a base-class array (default).
-		
-		Returns
-		-------
-		broadcasted : list of arrays
-		    These arrays are views on the original arrays.  They are typically
-		    not contiguous.  Furthermore, more than one element of a
-		    broadcasted array may refer to a single memory location.  If you
-		    need to write to the arrays, make copies first.
-		
-		Examples
-		--------
-		>>> x = np.array([[1,2,3]])
-		>>> y = np.array([[1],[2],[3]])
-		>>> np.broadcast_arrays(x, y)
-		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
-		
-		Here is a useful idiom for getting contiguous copies instead of
-		non-contiguous views.
-		
-		>>> [np.array(a) for a in np.broadcast_arrays(x, y)]
-		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
-	**/
-	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return weights for an Np-point central derivative.
 		
@@ -471,107 +259,6 @@ package scipy.misc.common;
 	**/
 	static public function derivative(func:Dynamic, x0:Dynamic, ?dx:Dynamic, ?n:Dynamic, ?args:Dynamic, ?order:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		exp(x[, out])
-		
-		Calculate the exponential of all elements in the input array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.
-		
-		Returns
-		-------
-		out : ndarray
-		    Output array, element-wise exponential of `x`.
-		
-		See Also
-		--------
-		expm1 : Calculate ``exp(x) - 1`` for all elements in the array.
-		exp2  : Calculate ``2**x`` for all elements in the array.
-		
-		Notes
-		-----
-		The irrational number ``e`` is also known as Euler's number.  It is
-		approximately 2.718281, and is the base of the natural logarithm,
-		``ln`` (this means that, if :math:`x = \ln y = \log_e y`,
-		then :math:`e^x = y`. For real input, ``exp(x)`` is always positive.
-		
-		For complex arguments, ``x = a + ib``, we can write
-		:math:`e^x = e^a e^{ib}`.  The first term, :math:`e^a`, is already
-		known (it is the real argument, described above).  The second term,
-		:math:`e^{ib}`, is :math:`\cos b + i \sin b`, a function with
-		magnitude 1 and a periodic phase.
-		
-		References
-		----------
-		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
-		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
-		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
-		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
-		
-		Examples
-		--------
-		Plot the magnitude and phase of ``exp(x)`` in the complex plane:
-		
-		>>> import matplotlib.pyplot as plt
-		
-		>>> x = np.linspace(-2*np.pi, 2*np.pi, 100)
-		>>> xx = x + 1j * x[:, np.newaxis] # a + ib over complex plane
-		>>> out = np.exp(xx)
-		
-		>>> plt.subplot(121)
-		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
-		>>> plt.title('Magnitude of exp(x)')
-		
-		>>> plt.subplot(122)
-		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
-		>>> plt.title('Phase (angle) of exp(x)')
-		>>> plt.show()
-	**/
-	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return a 2-D array with ones on the diagonal and zeros elsewhere.
-		
-		Parameters
-		----------
-		N : int
-		  Number of rows in the output.
-		M : int, optional
-		  Number of columns in the output. If None, defaults to `N`.
-		k : int, optional
-		  Index of the diagonal: 0 (the default) refers to the main diagonal,
-		  a positive value refers to an upper diagonal, and a negative value
-		  to a lower diagonal.
-		dtype : data-type, optional
-		  Data-type of the returned array.
-		
-		Returns
-		-------
-		I : ndarray of shape (N,M)
-		  An array where all elements are equal to zero, except for the `k`-th
-		  diagonal, whose values are equal to one.
-		
-		See Also
-		--------
-		identity : (almost) equivalent function
-		diag : diagonal 2-D array from a 1-D array specified by the user.
-		
-		Examples
-		--------
-		>>> np.eye(2, dtype=int)
-		array([[1, 0],
-		       [0, 1]])
-		>>> np.eye(3, k=1)
-		array([[ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.],
-		       [ 0.,  0.,  0.]])
-	**/
-	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Get a 1024 x 768, color image of a raccoon face.
 		
@@ -660,6 +347,10 @@ package scipy.misc.common;
 		Take a sequence of arrays and stack them horizontally to make
 		a single array. Rebuild arrays divided by `hsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -677,10 +368,12 @@ package scipy.misc.common;
 		dstack : Stack arrays in sequence depth wise (along third axis).
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=1)``
+		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -696,73 +389,6 @@ package scipy.misc.common;
 		       [3, 4]])
 	**/
 	static public function hstack(tup:Dynamic):Dynamic;
-	/**
-		isfinite(x[, out])
-		
-		Test element-wise for finiteness (not infinity or not Not a Number).
-		
-		The result is returned as a boolean array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
-		
-		Returns
-		-------
-		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
-		
-		See Also
-		--------
-		isinf, isneginf, isposinf, isnan
-		
-		Notes
-		-----
-		Not a Number, positive infinity and negative infinity are considered
-		to be non-finite.
-		
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
-		(IEEE 754). This means that Not a Number is not equivalent to infinity.
-		Also that positive infinity is not equivalent to negative infinity. But
-		infinity is equivalent to positive infinity.  Errors result if the
-		second argument is also supplied when `x` is a scalar input, or if
-		first and second arguments have different shapes.
-		
-		Examples
-		--------
-		>>> np.isfinite(1)
-		True
-		>>> np.isfinite(0)
-		True
-		>>> np.isfinite(np.nan)
-		False
-		>>> np.isfinite(np.inf)
-		False
-		>>> np.isfinite(np.NINF)
-		False
-		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
-		
-		>>> x = np.array([-np.inf, 0., np.inf])
-		>>> y = np.array([2, 2, 2])
-		>>> np.isfinite(x, y)
-		array([0, 1, 0])
-		>>> y
-		array([0, 1, 0])
-	**/
-	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Function that previously returned an example image
 		
@@ -791,176 +417,7 @@ package scipy.misc.common;
 		face, ascent
 	**/
 	static public function lena():Dynamic;
-	/**
-		log(x[, out])
-		
-		Natural logarithm, element-wise.
-		
-		The natural logarithm `log` is the inverse of the exponential function,
-		so that `log(exp(x)) = x`. The natural logarithm is logarithm in base
-		`e`.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input value.
-		
-		Returns
-		-------
-		y : ndarray
-		    The natural logarithm of `x`, element-wise.
-		
-		See Also
-		--------
-		log10, log2, log1p, emath.log
-		
-		Notes
-		-----
-		Logarithm is a multivalued function: for each `x` there is an infinite
-		number of `z` such that `exp(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi, pi]`.
-		
-		For real-valued input data types, `log` always returns real output. For
-		each value that cannot be expressed as a real number or infinity, it
-		yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `log` is a complex analytical function that
-		has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
-		handles the floating-point negative zero as an infinitesimal negative
-		number, conforming to the C99 standard.
-		
-		References
-		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
-		
-		Examples
-		--------
-		>>> np.log([1, np.e, np.e**2, 0])
-		array([  0.,   1.,   2., -Inf])
-	**/
-	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Compute the log of the sum of exponentials of input elements.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes over which the sum is taken. By default `axis` is None,
-		    and all elements are summed. Tuple of ints is not accepted if NumPy
-		    version is lower than 1.7.0.
-		
-		    .. versionadded:: 0.11.0
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original array.
-		
-		    .. versionadded:: 0.15.0
-		b : array-like, optional
-		    Scaling factor for exp(`a`) must be of the same shape as `a` or
-		    broadcastable to `a`. These values may be negative in order to
-		    implement subtraction.
-		
-		    .. versionadded:: 0.12.0
-		return_sign : bool, optional
-		    If this is set to True, the result will be a pair containing sign
-		    information; if False, results that are negative will be returned
-		    as NaN. Default is False (no sign information).
-		
-		    .. versionadded:: 0.16.0
-		Returns
-		-------
-		res : ndarray
-		    The result, ``np.log(np.sum(np.exp(a)))`` calculated in a numerically
-		    more stable way. If `b` is given then ``np.log(np.sum(b*np.exp(a)))``
-		    is returned.
-		sgn : ndarray
-		    If return_sign is True, this will be an array of floating-point
-		    numbers matching res and +1, 0, or -1 depending on the sign
-		    of the result. If False, only one result is returned.
-		
-		See Also
-		--------
-		numpy.logaddexp, numpy.logaddexp2
-		
-		Notes
-		-----
-		Numpy has a logaddexp function which is very similar to `logsumexp`, but
-		only handles two arguments. `logaddexp.reduce` is similar to this
-		function, but may be less stable.
-		
-		Examples
-		--------
-		>>> from scipy.misc import logsumexp
-		>>> a = np.arange(10)
-		>>> np.log(np.sum(np.exp(a)))
-		9.4586297444267107
-		>>> logsumexp(a)
-		9.4586297444267107
-		
-		With weights
-		
-		>>> a = np.arange(10)
-		>>> b = np.arange(10, 0, -1)
-		>>> logsumexp(a, b=b)
-		9.9170178533034665
-		>>> np.log(np.sum(b*np.exp(a)))
-		9.9170178533034647
-		
-		Returning a sign flag
-		
-		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
-		(1.5413248546129181, -1.0)
-		
-		Notice that `logsumexp` does not directly support masked arrays. To use it
-		on a masked array, convert the mask into zero weights:
-		
-		>>> a = np.ma.array([np.log(2), 2, np.log(3)],
-		...                  mask=[False, True, False])
-		>>> b = (~a.mask).astype(int)
-		>>> logsumexp(a.data, b=b), np.log(5)
-		1.6094379124341005, 1.6094379124341005
-	**/
-	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
-	/**
-		Return Pade approximation to a polynomial as the ratio of two polynomials.
-		
-		Parameters
-		----------
-		an : (N,) array_like
-		    Taylor series coefficients.
-		m : int
-		    The order of the returned approximating polynomials.
-		
-		Returns
-		-------
-		p, q : Polynomial class
-		    The pade approximation of the polynomial defined by `an` is
-		    `p(x)/q(x)`.
-		
-		Examples
-		--------
-		>>> from scipy import misc
-		>>> e_exp = [1.0, 1.0, 1.0/2.0, 1.0/6.0, 1.0/24.0, 1.0/120.0]
-		>>> p, q = misc.pade(e_exp, 2)
-		
-		>>> e_exp.reverse()
-		>>> e_poly = np.poly1d(e_exp)
-		
-		Compare ``e_poly(x)`` and the pade approximation ``p(x)/q(x)``
-		
-		>>> e_poly(1)
-		2.7166666666666668
-		
-		>>> p(1)/q(1)
-		2.7179487179487181
-	**/
-	static public function pade(an:Dynamic, m:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return the product of array elements over a given axis.
@@ -970,220 +427,4 @@ package scipy.misc.common;
 		prod : equivalent function; see for details.
 	**/
 	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public var r_ : Dynamic;
-	/**
-		Gives a new shape to an array without changing its data.
-		
-		Parameters
-		----------
-		a : array_like
-		    Array to be reshaped.
-		newshape : int or tuple of ints
-		    The new shape should be compatible with the original shape. If
-		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
-		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
-		
-		Returns
-		-------
-		reshaped_array : ndarray
-		    This will be a new view object if possible; otherwise, it will
-		    be a copy.  Note there is no guarantee of the *memory layout* (C- or
-		    Fortran- contiguous) of the returned array.
-		
-		See Also
-		--------
-		ndarray.reshape : Equivalent method.
-		
-		Notes
-		-----
-		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
-		you should assign the new shape to the shape attribute of the array::
-		
-		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
-		 >>> b = a.T
-		 # Taking a view makes it possible to modify the shape without modifying
-		 # the initial object.
-		 >>> c = b.view()
-		 >>> c.shape = (20)
-		 AttributeError: incompatible shape for a non-contiguous array
-		
-		The `order` keyword gives the index ordering both for *fetching* the values
-		from `a`, and then *placing* the values into the output array.
-		For example, let's say you have an array:
-		
-		>>> a = np.arange(6).reshape((3, 2))
-		>>> a
-		array([[0, 1],
-		       [2, 3],
-		       [4, 5]])
-		
-		You can think of reshaping as first raveling the array (using the given
-		index order), then inserting the elements from the raveled array into the
-		new array using the same kind of index ordering as was used for the
-		raveling.
-		
-		>>> np.reshape(a, (2, 3)) # C-like index ordering
-		array([[0, 1, 2],
-		       [3, 4, 5]])
-		>>> np.reshape(np.ravel(a), (2, 3)) # equivalent to C ravel then C reshape
-		array([[0, 1, 2],
-		       [3, 4, 5]])
-		>>> np.reshape(a, (2, 3), order='F') # Fortran-like index ordering
-		array([[0, 4, 3],
-		       [2, 1, 5]])
-		>>> np.reshape(np.ravel(a, order='F'), (2, 3), order='F')
-		array([[0, 4, 3],
-		       [2, 1, 5]])
-		
-		Examples
-		--------
-		>>> a = np.array([[1,2,3], [4,5,6]])
-		>>> np.reshape(a, 6)
-		array([1, 2, 3, 4, 5, 6])
-		>>> np.reshape(a, 6, order='F')
-		array([1, 4, 2, 5, 3, 6])
-		
-		>>> np.reshape(a, (3,-1))       # the unspecified value is inferred to be 2
-		array([[1, 2],
-		       [3, 4],
-		       [5, 6]])
-	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		sign(x[, out])
-		
-		Returns an element-wise indication of the sign of a number.
-		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
-		is returned for nan inputs.
-		
-		For complex inputs, the `sign` function returns
-		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
-		
-		complex(nan, 0) is returned for complex nan inputs.
-		
-		Parameters
-		----------
-		x : array_like
-		  Input values.
-		
-		Returns
-		-------
-		y : ndarray
-		  The sign of `x`.
-		
-		Notes
-		-----
-		There is more than one definition of sign in common use for complex
-		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
-		which is different from a common alternative, :math:`x/|x|`.
-		
-		Examples
-		--------
-		>>> np.sign([-5., 4.5])
-		array([-1.,  1.])
-		>>> np.sign(0)
-		0
-		>>> np.sign(5-2j)
-		(1+0j)
-	**/
-	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Remove single-dimensional entries from the shape of an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data.
-		axis : None or int or tuple of ints, optional
-		    .. versionadded:: 1.7.0
-		
-		    Selects a subset of the single-dimensional entries in the
-		    shape. If an axis is selected with shape entry greater than
-		    one, an error is raised.
-		
-		Returns
-		-------
-		squeezed : ndarray
-		    The input array, but with all or a subset of the
-		    dimensions of length 1 removed. This is always `a` itself
-		    or a view into `a`.
-		
-		Examples
-		--------
-		>>> x = np.array([[[0], [1], [2]]])
-		>>> x.shape
-		(1, 3, 1)
-		>>> np.squeeze(x).shape
-		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
-		(1, 3)
-	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		zeros(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, filled with zeros.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of zeros with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
-		
-		Examples
-		--------
-		>>> np.zeros(5)
-		array([ 0.,  0.,  0.,  0.,  0.])
-		
-		>>> np.zeros((5,), dtype=np.int)
-		array([0, 0, 0, 0, 0])
-		
-		>>> np.zeros((2, 1))
-		array([[ 0.],
-		       [ 0.]])
-		
-		>>> s = (2,2)
-		>>> np.zeros(s)
-		array([[ 0.,  0.],
-		       [ 0.,  0.]])
-		
-		>>> np.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype
-		array([(0, 0), (0, 0)],
-		      dtype=[('x', '<i4'), ('y', '<i4')])
-	**/
-	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

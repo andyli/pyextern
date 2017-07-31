@@ -52,6 +52,13 @@ package scipy.sparse.dia;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(arg1:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
@@ -202,6 +209,16 @@ package scipy.sparse.dia;
 		Upcast matrix to a floating point format (if necessary)
 	**/
 	public function asfptype():Dynamic;
+	/**
+		Cast the matrix elements to a specified type.
+		
+		The data will be copied.
+		
+		Parameters
+		----------
+		t : string or numpy dtype
+		    Typecode or data-type to which to cast the data.
+	**/
 	public function astype(t:Dynamic):Dynamic;
 	/**
 		Element-wise ceil.
@@ -209,7 +226,19 @@ package scipy.sparse.dia;
 		See numpy.ceil for more information.
 	**/
 	public function ceil():Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conj():Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conjugate():Dynamic;
 	/**
 		Returns a copy of this matrix.
@@ -266,14 +295,30 @@ package scipy.sparse.dia;
 	**/
 	public function floor():Dynamic;
 	static public var format : Dynamic;
+	/**
+		Return the Hermitian transpose of this matrix.
+		
+		See Also
+		--------
+		np.matrix.getH : NumPy's implementation of `getH` for matrices
+	**/
 	public function getH():Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public function get_shape():Dynamic;
 	/**
 		Returns a copy of column j of the matrix, as an (m x 1) sparse
 		matrix (column vector).
 	**/
 	public function getcol(j:Dynamic):Dynamic;
+	/**
+		Format of a matrix representation as a string.
+	**/
 	public function getformat():Dynamic;
+	/**
+		Maximum number of elements to display when printed.
+	**/
 	public function getmaxprint():Dynamic;
 	/**
 		Number of stored values, including explicit zeros.
@@ -300,6 +345,9 @@ package scipy.sparse.dia;
 		See numpy.log1p for more information.
 	**/
 	public function log1p():Dynamic;
+	/**
+		Element-wise maximum between this and another matrix.
+	**/
 	public function maximum(other:Dynamic):Dynamic;
 	/**
 		Compute the arithmetic mean along the specified axis.
@@ -337,6 +385,9 @@ package scipy.sparse.dia;
 		np.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
 	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Element-wise minimum between this and another matrix.
+	**/
 	public function minimum(other:Dynamic):Dynamic;
 	/**
 		Point-wise multiplication by another matrix
@@ -409,6 +460,9 @@ package scipy.sparse.dia;
 		See numpy.rint for more information.
 	**/
 	public function rint():Dynamic;
+	/**
+		See `reshape`.
+	**/
 	public function set_shape(shape:Dynamic):Dynamic;
 	/**
 		Set diagonal or off-diagonal elements of the array.
@@ -429,6 +483,9 @@ package scipy.sparse.dia;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public var shape : Dynamic;
 	/**
 		Element-wise sign.

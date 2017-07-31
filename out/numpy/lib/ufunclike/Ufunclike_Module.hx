@@ -10,6 +10,12 @@ package numpy.lib.ufunclike;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Allow the out argument to be passed as the name `y` (deprecated)
+		
+		In future, this decorator should be removed.
+	**/
+	static public function _deprecate_out_named_y(f:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -44,7 +50,7 @@ package numpy.lib.ufunclike;
 		>>> np.fix([2.1, 2.9, -2.1, -2.9])
 		array([ 2.,  2., -2., -2.])
 	**/
-	static public function fix(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function fix(x:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Test element-wise for negative infinity, return result as bool array.
 		
@@ -52,13 +58,13 @@ package numpy.lib.ufunclike;
 		----------
 		x : array_like
 		    The input array.
-		y : array_like, optional
+		out : array_like, optional
 		    A boolean array with the same shape and type as `x` to store the
 		    result.
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a numpy boolean array is
 		    returned with values True where the corresponding element of the
@@ -68,7 +74,7 @@ package numpy.lib.ufunclike;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as
 		    zeros and ones, if the type is boolean then as False and True. The
-		    return value `y` is then a reference to that array.
+		    return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -76,7 +82,7 @@ package numpy.lib.ufunclike;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
@@ -100,7 +106,7 @@ package numpy.lib.ufunclike;
 		>>> y
 		array([1, 0, 0])
 	**/
-	static public function isneginf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
+	static public function isneginf(x:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Test element-wise for positive infinity, return result as bool array.
 		
@@ -113,7 +119,7 @@ package numpy.lib.ufunclike;
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a boolean array is returned
 		    with values True where the corresponding element of the input is
@@ -123,7 +129,7 @@ package numpy.lib.ufunclike;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as zeros
 		    and ones, if the type is boolean then as False and True.
-		    The return value `y` is then a reference to that array.
+		    The return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -131,7 +137,7 @@ package numpy.lib.ufunclike;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when `x` is a
@@ -155,6 +161,6 @@ package numpy.lib.ufunclike;
 		>>> y
 		array([0, 0, 1])
 	**/
-	static public function isposinf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
+	static public function isposinf(x:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

@@ -5,6 +5,7 @@ package inspect;
 	static public var CORO_CREATED : Dynamic;
 	static public var CORO_RUNNING : Dynamic;
 	static public var CORO_SUSPENDED : Dynamic;
+	static public var CO_ASYNC_GENERATOR : Dynamic;
 	static public var CO_COROUTINE : Dynamic;
 	static public var CO_GENERATOR : Dynamic;
 	static public var CO_ITERABLE_COROUTINE : Dynamic;
@@ -175,8 +176,7 @@ package inspect;
 	static public function formatannotation(annotation:Dynamic, ?base_module:Dynamic):Dynamic;
 	static public function formatannotationrelativeto(object:Dynamic):Dynamic;
 	/**
-		Format an argument spec from the values returned by getargspec
-		or getfullargspec.
+		Format an argument spec from the values returned by getfullargspec.
 		
 		The first seven arguments are (args, varargs, varkw, defaults,
 		kwonlyargs, kwonlydefaults, annotations).  The other five arguments
@@ -211,16 +211,22 @@ package inspect;
 	**/
 	static public function getargs(co:Dynamic):Dynamic;
 	/**
-		Get the names and default values of a function's arguments.
+		Get the names and default values of a function's parameters.
 		
 		A tuple of four things is returned: (args, varargs, keywords, defaults).
 		'args' is a list of the argument names, including keyword-only argument names.
-		'varargs' and 'keywords' are the names of the * and ** arguments or None.
-		'defaults' is an n-tuple of the default values of the last n arguments.
+		'varargs' and 'keywords' are the names of the * and ** parameters or None.
+		'defaults' is an n-tuple of the default values of the last n parameters.
 		
-		Use the getfullargspec() API for Python 3 code, as annotations
-		and keyword arguments are supported. getargspec() will raise ValueError
-		if the func has either annotations or keyword arguments.
+		This function is deprecated, as it does not support annotations or
+		keyword-only parameters and will raise ValueError if either is present
+		on the supplied callable.
+		
+		For a more structured introspection API, use inspect.signature() instead.
+		
+		Alternatively, use getfullargspec() for an API with a similar namedtuple
+		based interface, but full support for annotations and keyword-only
+		parameters.
 	**/
 	static public function getargspec(func:Dynamic):Dynamic;
 	/**
@@ -321,20 +327,20 @@ package inspect;
 	**/
 	static public function getframeinfo(frame:Dynamic, ?context:Dynamic):Dynamic;
 	/**
-		Get the names and default values of a callable object's arguments.
+		Get the names and default values of a callable object's parameters.
 		
 		A tuple of seven things is returned:
-		(args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults annotations).
-		'args' is a list of the argument names.
-		'varargs' and 'varkw' are the names of the * and ** arguments or None.
-		'defaults' is an n-tuple of the default values of the last n arguments.
-		'kwonlyargs' is a list of keyword-only argument names.
+		(args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations).
+		'args' is a list of the parameter names.
+		'varargs' and 'varkw' are the names of the * and ** parameters or None.
+		'defaults' is an n-tuple of the default values of the last n parameters.
+		'kwonlyargs' is a list of keyword-only parameter names.
 		'kwonlydefaults' is a dictionary mapping names from kwonlyargs to defaults.
-		'annotations' is a dictionary mapping argument names to annotations.
+		'annotations' is a dictionary mapping parameter names to annotations.
 		
-		The first four items in the tuple correspond to getargspec().
-		
-		This function is deprecated, use inspect.signature() instead.
+		Notable differences from inspect.signature():
+		  - the "self" parameter is always reported, even for bound methods
+		  - wrapper chains defined by __wrapped__ *not* unwrapped automatically
 	**/
 	static public function getfullargspec(func:Dynamic):Dynamic;
 	/**
@@ -374,10 +380,6 @@ package inspect;
 		Return the module an object was defined in, or None if not found.
 	**/
 	static public function getmodule(object:Dynamic, ?_filename:Dynamic):Dynamic;
-	/**
-		Get the module name, suffix, mode, and module type for a given file.
-	**/
-	static public function getmoduleinfo(path:Dynamic):Dynamic;
 	/**
 		Return the module name for a given file, or None.
 	**/
@@ -425,7 +427,18 @@ package inspect;
 	**/
 	static public function isabstract(object:Dynamic):Dynamic;
 	/**
-		Return true is object can be passed to an ``await`` expression.
+		Return true if the object is an asynchronous generator.
+	**/
+	static public function isasyncgen(object:Dynamic):Dynamic;
+	/**
+		Return true if the object is an asynchronous generator function.
+		
+		Asynchronous generator functions are defined with "async def"
+		syntax and have "yield" expressions in their body.
+	**/
+	static public function isasyncgenfunction(object:Dynamic):Dynamic;
+	/**
+		Return true if object can be passed to an ``await`` expression.
 	**/
 	static public function isawaitable(object:Dynamic):Dynamic;
 	/**
@@ -449,18 +462,24 @@ package inspect;
 		Return true if the object is a code object.
 		
 		Code objects provide these attributes:
-		    co_argcount     number of arguments (not including * or ** args)
-		    co_code         string of raw compiled bytecode
-		    co_consts       tuple of constants used in the bytecode
-		    co_filename     name of file in which this code object was created
-		    co_firstlineno  number of first line in Python source code
-		    co_flags        bitmap: 1=optimized | 2=newlocals | 4=*arg | 8=**arg
-		    co_lnotab       encoded mapping of line numbers to bytecode indices
-		    co_name         name with which this code object was defined
-		    co_names        tuple of names of local variables
-		    co_nlocals      number of local variables
-		    co_stacksize    virtual machine stack space required
-		    co_varnames     tuple of names of arguments and local variables
+		    co_argcount         number of arguments (not including *, ** args
+		                        or keyword only arguments)
+		    co_code             string of raw compiled bytecode
+		    co_cellvars         tuple of names of cell variables
+		    co_consts           tuple of constants used in the bytecode
+		    co_filename         name of file in which this code object was created
+		    co_firstlineno      number of first line in Python source code
+		    co_flags            bitmap: 1=optimized | 2=newlocals | 4=*arg | 8=**arg
+		                        | 16=nested | 32=generator | 64=nofree | 128=coroutine
+		                        | 256=iterable_coroutine | 512=async_generator
+		    co_freevars         tuple of names of free variables
+		    co_kwonlyargcount   number of keyword only arguments (not including ** arg)
+		    co_lnotab           encoded mapping of line numbers to bytecode indices
+		    co_name             name with which this code object was defined
+		    co_names            tuple of names of local variables
+		    co_nlocals          number of local variables
+		    co_stacksize        virtual machine stack space required
+		    co_varnames         tuple of names of arguments and local variables
 	**/
 	static public function iscode(object:Dynamic):Dynamic;
 	/**
@@ -470,8 +489,7 @@ package inspect;
 	/**
 		Return true if the object is a coroutine function.
 		
-		Coroutine functions are defined with "async def" syntax,
-		or generators decorated with "types.coroutine".
+		Coroutine functions are defined with "async def" syntax.
 	**/
 	static public function iscoroutinefunction(object:Dynamic):Dynamic;
 	/**
@@ -531,9 +549,8 @@ package inspect;
 	/**
 		Return true if the object is a user-defined generator function.
 		
-		Generator function objects provides same attributes as functions.
-		
-		See help(isfunction) for attributes listing.
+		Generator function objects provide the same attributes as functions.
+		See help(isfunction) for a list of attributes.
 	**/
 	static public function isgeneratorfunction(object:Dynamic):Dynamic;
 	/**
@@ -624,7 +641,7 @@ package inspect;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Get a signature object for the passed callable.
 	**/

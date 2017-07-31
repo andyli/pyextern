@@ -47,6 +47,13 @@ package scipy.spatial.qhull;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -62,9 +69,6 @@ package scipy.spatial.qhull;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		helper for pickle
-	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
@@ -78,6 +82,7 @@ package scipy.spatial.qhull;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -110,6 +115,30 @@ package scipy.spatial.qhull;
 		See qhull/io.c:qh_printextremes_2d
 	**/
 	public function get_extremes_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns the facets contained in the current Qhull.
+		This function does not assume that the hull is simplicial,
+		meaning that facets will have different number of vertices.
+		It is thus less efficient but more general than get_simplex_facet_array.
+		
+		Returns
+		-------
+		facets: list of lists of ints
+		    The indices of the vertices forming each facet.
+	**/
+	public function get_hull_facets(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns all points currently contained in Qhull.
+		It is equivalent to retrieving the input in most cases, except in
+		halfspace mode, where the points are in fact the points of the dual
+		hull.
+		
+		Returns
+		-------
+		points: array of double, shape (nrpoints, ndim)
+		    The array of points contained in Qhull.
+	**/
+	public function get_hull_points(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_paraboloid_shift_scale(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_points(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

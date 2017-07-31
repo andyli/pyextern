@@ -12,8 +12,145 @@ package numpy.core.function_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _index_deprecate(i:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Convert the input to an ndarray, but pass ndarray subclasses through.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input data, in any form that can be converted to an array.  This
+		    includes scalars, lists, lists of tuples, tuples, tuples of tuples,
+		    tuples of lists, and ndarrays.
+		dtype : data-type, optional
+		    By default, the data-type is inferred from the input data.
+		order : {'C', 'F'}, optional
+		    Whether to use row-major (C-style) or column-major
+		    (Fortran-style) memory representation.  Defaults to 'C'.
+		
+		Returns
+		-------
+		out : ndarray or an ndarray subclass
+		    Array interpretation of `a`.  If `a` is an ndarray or a subclass
+		    of ndarray, it is returned as-is and no copy is performed.
+		
+		See Also
+		--------
+		asarray : Similar function which always returns ndarrays.
+		ascontiguousarray : Convert input to a contiguous array.
+		asfarray : Convert input to a floating point ndarray.
+		asfortranarray : Convert input to an ndarray with column-major
+		                 memory order.
+		asarray_chkfinite : Similar function which checks input for NaNs and
+		                    Infs.
+		fromiter : Create an array from an iterator.
+		fromfunction : Construct an array by executing a function on grid
+		               positions.
+		
+		Examples
+		--------
+		Convert a list into an array:
+		
+		>>> a = [1, 2]
+		>>> np.asanyarray(a)
+		array([1, 2])
+		
+		Instances of `ndarray` subclasses are passed through as-is:
+		
+		>>> a = np.matrix([1, 2])
+		>>> np.asanyarray(a) is a
+		True
+	**/
+	static public function asanyarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Return numbers spaced evenly on a log scale (a geometric progression).
+		
+		This is similar to `logspace`, but with endpoints specified directly.
+		Each output sample is a constant multiple of the previous.
+		
+		Parameters
+		----------
+		start : scalar
+		    The starting value of the sequence.
+		stop : scalar
+		    The final value of the sequence, unless `endpoint` is False.
+		    In that case, ``num + 1`` values are spaced over the
+		    interval in log-space, of which all but the last (a sequence of
+		    length `num`) are returned.
+		num : integer, optional
+		    Number of samples to generate.  Default is 50.
+		endpoint : boolean, optional
+		    If true, `stop` is the last sample. Otherwise, it is not included.
+		    Default is True.
+		dtype : dtype
+		    The type of the output array.  If `dtype` is not given, infer the data
+		    type from the other input arguments.
+		
+		Returns
+		-------
+		samples : ndarray
+		    `num` samples, equally spaced on a log scale.
+		
+		See Also
+		--------
+		logspace : Similar to geomspace, but with endpoints specified using log
+		           and base.
+		linspace : Similar to geomspace, but with arithmetic instead of geometric
+		           progression.
+		arange : Similar to linspace, with the step size specified instead of the
+		         number of samples.
+		
+		Notes
+		-----
+		If the inputs or dtype are complex, the output will follow a logarithmic
+		spiral in the complex plane.  (There are an infinite number of spirals
+		passing through two points; the output will follow the shortest such path.)
+		
+		Examples
+		--------
+		>>> np.geomspace(1, 1000, num=4)
+		array([    1.,    10.,   100.,  1000.])
+		>>> np.geomspace(1, 1000, num=3, endpoint=False)
+		array([   1.,   10.,  100.])
+		>>> np.geomspace(1, 1000, num=4, endpoint=False)
+		array([   1.        ,    5.62341325,   31.6227766 ,  177.827941  ])
+		>>> np.geomspace(1, 256, num=9)
+		array([   1.,    2.,    4.,    8.,   16.,   32.,   64.,  128.,  256.])
+		
+		Note that the above may not produce exact integers:
+		
+		>>> np.geomspace(1, 256, num=9, dtype=int)
+		array([  1,   2,   4,   7,  16,  32,  63, 127, 256])
+		>>> np.around(np.geomspace(1, 256, num=9)).astype(int)
+		array([  1,   2,   4,   8,  16,  32,  64, 128, 256])
+		
+		Negative, decreasing, and complex inputs are allowed:
+		
+		>>> np.geomspace(1000, 1, num=4)
+		array([ 1000.,   100.,    10.,     1.])
+		>>> np.geomspace(-1000, -1, num=4)
+		array([-1000.,  -100.,   -10.,    -1.])
+		>>> np.geomspace(1j, 1000j, num=4)  # Straight line
+		array([ 0.   +1.j,  0.  +10.j,  0. +100.j,  0.+1000.j])
+		>>> np.geomspace(-1+0j, 1+0j, num=5)  # Circle
+		array([-1.00000000+0.j        , -0.70710678+0.70710678j,
+		        0.00000000+1.j        ,  0.70710678+0.70710678j,
+		        1.00000000+0.j        ])
+		
+		Graphical illustration of ``endpoint`` parameter:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> N = 10
+		>>> y = np.zeros(N)
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=True), y + 1, 'o')
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=False), y + 2, 'o')
+		>>> plt.axis([0.5, 2000, 0, 3])
+		>>> plt.grid(True, color='0.7', linestyle='-', which='both', axis='both')
+		>>> plt.show()
+	**/
+	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Return evenly spaced numbers over a specified interval.
 		
@@ -51,7 +188,7 @@ package numpy.core.function_base;
 		    There are `num` equally spaced samples in the closed interval
 		    ``[start, stop]`` or the half-open interval ``[start, stop)``
 		    (depending on whether `endpoint` is True or False).
-		step : float
+		step : float, optional
 		    Only returned if `retstep` is True
 		
 		    Size of spacing between samples.
@@ -66,11 +203,11 @@ package numpy.core.function_base;
 		Examples
 		--------
 		>>> np.linspace(2.0, 3.0, num=5)
-		    array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
 		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
-		    array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
 		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
-		    (array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
 		
 		Graphical illustration:
 		
@@ -103,7 +240,7 @@ package numpy.core.function_base;
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
-		    length ``num``) are returned.
+		    length `num`) are returned.
 		num : integer, optional
 		    Number of samples to generate.  Default is 50.
 		endpoint : boolean, optional
@@ -129,6 +266,7 @@ package numpy.core.function_base;
 		         endpoint may or may not be included.
 		linspace : Similar to logspace, but with the samples uniformly distributed
 		           in linear space, instead of log space.
+		geomspace : Similar to logspace, but with endpoints specified directly.
 		
 		Notes
 		-----
@@ -142,11 +280,11 @@ package numpy.core.function_base;
 		Examples
 		--------
 		>>> np.logspace(2.0, 3.0, num=4)
-		    array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
+		array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
 		>>> np.logspace(2.0, 3.0, num=4, endpoint=False)
-		    array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
+		array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
 		>>> np.logspace(2.0, 3.0, num=4, base=2.0)
-		    array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
+		array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
 		
 		Graphical illustration:
 		

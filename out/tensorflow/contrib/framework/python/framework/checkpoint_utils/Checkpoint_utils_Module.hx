@@ -10,6 +10,7 @@ package tensorflow.contrib.framework.python.framework.checkpoint_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _collect_partitioned_variable(name:Dynamic, var_scope:Dynamic):Dynamic;
 	/**
 		Returns checkpoint filename given directory or specific filepattern.
 	**/
@@ -29,29 +30,31 @@ package tensorflow.contrib.framework.python.framework.checkpoint_utils;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Using assingment map initializes current variables with loaded tensors.
+		Using assignment map initializes current variables with loaded tensors.
 		
 		Note: This overrides default initialization ops of specified variables and
 		redefines dtype.
 		
 		Assignment map supports following syntax:
-		  `'checkpoint_scope_name/': 'scope_name/'` - will load all variables in
-		    current `scope_name` from `checkpoint_scope_name` with matching variable
-		    names.
-		  `'checkpoint_scope_name/some_other_variable': 'scope_name/variable_name'` -
-		    will initalize `scope_name/variable_name` variable
-		    from `checkpoint_scope_name/some_other_variable`.
-		  `'scope_variable_name': variable` - will initialize given `tf.Variable`
-		    object with variable from the checkpoint.
-		  `'scope_variable_name': list(variable)` - will initialize list of
-		    partitioned variables with variable from the checkpoint.
-		  `'scope_name/': '/'` - will load all variables in current `scope_name` from
-		    checkpoint's root (e.g. no scope).
+		
+		* `'checkpoint_scope_name/': 'scope_name/'` - will load all variables in
+		  current `scope_name` from `checkpoint_scope_name` with matching variable
+		  names.
+		* `'checkpoint_scope_name/some_other_variable': 'scope_name/variable_name'` -
+		  will initialize `scope_name/variable_name` variable
+		  from `checkpoint_scope_name/some_other_variable`.
+		* `'scope_variable_name': variable` - will initialize given `tf.Variable`
+		  object with variable from the checkpoint.
+		* `'scope_variable_name': list(variable)` - will initialize list of
+		  partitioned variables with variable from the checkpoint.
+		* `'/': 'scope_name/'` - will load all variables in current `scope_name` from
+		  checkpoint's root (e.g. no scope).
 		
 		Supports loading into partitioned variables, which are represented as
-		'<variable>/part_<part #>'.
+		`'<variable>/part_<part #>'`.
 		
 		Example:
+		
 		```python
 		  # Create variables.
 		  with tf.variable_scope('test'):

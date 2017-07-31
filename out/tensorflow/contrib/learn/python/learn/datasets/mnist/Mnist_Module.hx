@@ -19,13 +19,33 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	static public var division : Dynamic;
 	/**
 		Extract the images into a 4D uint8 numpy array [index, y, x, depth].
+		
+		Args:
+		  f: A file object that can be passed into a gzip reader.
+		
+		Returns:
+		  data: A 4D uint8 numpy array [index, y, x, depth].
+		
+		Raises:
+		  ValueError: If the bytestream does not start with 2051.
 	**/
-	static public function extract_images(filename:Dynamic):Dynamic;
+	static public function extract_images(f:Dynamic):Dynamic;
 	/**
 		Extract the labels into a 1D uint8 numpy array [index].
+		
+		Args:
+		  f: A file object that can be passed into a gzip reader.
+		  one_hot: Does one hot encoding for the result.
+		  num_classes: Number of classes for the one hot encoding.
+		
+		Returns:
+		  labels: a 1D uint8 numpy array.
+		
+		Raises:
+		  ValueError: If the bystream doesn't start with 2049.
 	**/
-	static public function extract_labels(filename:Dynamic, ?one_hot:Dynamic, ?num_classes:Dynamic):Dynamic;
+	static public function extract_labels(f:Dynamic, ?one_hot:Dynamic, ?num_classes:Dynamic):Dynamic;
 	static public function load_mnist(?train_dir:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public function read_data_sets(train_dir:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic):Dynamic;
+	static public function read_data_sets(train_dir:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic, ?validation_size:Dynamic, ?seed:Dynamic):Dynamic;
 }

@@ -47,6 +47,13 @@ package pandas.io.packers;
 	**/
 	public function new(?file_like:Dynamic, ?read_size:Dynamic, ?use_list:Dynamic, ?object_hook:Dynamic, ?object_pairs_hook:Dynamic, ?list_hook:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?max_buffer_size:Dynamic, ?ext_hook:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

@@ -63,6 +63,13 @@ package tensorflow.contrib.learn.python.learn.estimators.tensor_signature;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

@@ -9,6 +9,7 @@ package scipy.sparse.sparsetools;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	/**
 		`scipy.sparse.sparsetools` is deprecated!
 		scipy.sparse.sparsetools is a private module for scipy.sparse, and should not be used.

@@ -46,11 +46,18 @@ package matplotlib.ticker;
 		place ticks on the location= base**i*subs[j]
 	**/
 	@:native("__init__")
-	public function ___init__(transform:Dynamic, ?subs:Dynamic):Dynamic;
+	public function ___init__(?transform:Dynamic, ?subs:Dynamic, ?linthresh:Dynamic, ?base:Dynamic):Dynamic;
 	/**
 		place ticks on the location= base**i*subs[j]
 	**/
-	public function new(transform:Dynamic, ?subs:Dynamic):Void;
+	public function new(?transform:Dynamic, ?subs:Dynamic, ?linthresh:Dynamic, ?base:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

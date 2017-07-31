@@ -47,6 +47,13 @@ package docutils.writers.html4css1;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -109,8 +116,8 @@ package docutils.writers.html4css1;
 	static public var component_type : Dynamic;
 	static public var config_section : Dynamic;
 	static public var config_section_dependencies : Dynamic;
-	static public var default_stylesheet : Dynamic;
 	static public var default_stylesheet_dirs : Dynamic;
+	static public var default_stylesheets : Dynamic;
 	static public var default_template : Dynamic;
 	static public var default_template_path : Dynamic;
 	static public var default_transforms : Dynamic;

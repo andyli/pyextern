@@ -6,6 +6,7 @@ package scipy.linalg._solve_toeplitz;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -28,8 +29,8 @@ package scipy.linalg._solve_toeplitz;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------

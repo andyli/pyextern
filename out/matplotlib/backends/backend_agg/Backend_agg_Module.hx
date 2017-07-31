@@ -24,6 +24,34 @@ package matplotlib.backends.backend_agg;
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		FT2Font(ttffile)
+		
+		Create a new FT2Font object
+		The following global font attributes are defined:
+		  num_faces              number of faces in file
+		  face_flags             face flags  (int type); see the ft2font constants
+		  style_flags            style flags  (int type); see the ft2font constants
+		  num_glyphs             number of glyphs in the face
+		  family_name            face family name
+		  style_name             face syle name
+		  num_fixed_sizes        number of bitmap in the face
+		  scalable               face is scalable
+		
+		The following are available, if scalable is true:
+		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
+		  units_per_EM           number of font units covered by the EM
+		  ascender               ascender in 26.6 units
+		  descender              descender in 26.6 units
+		  height                 height in 26.6 units; used to compute a default
+		                         line spacing (baseline-to-baseline distance)
+		  max_advance_width      maximum horizontal cursor advance for all glyphs
+		  max_advance_height     same for vertical layout
+		  underline_position     vertical position of the underline bar
+		  underline_thickness    vertical thickness of the underline
+		  postscript_name        PostScript name of the font
+	**/
+	static public function get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_hinting_flag():Dynamic;
 	/**
 		Return True if *obj* looks like a string

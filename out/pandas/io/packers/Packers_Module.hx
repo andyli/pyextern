@@ -29,6 +29,37 @@ package pandas.io.packers;
 	**/
 	static public function _check_zlib():Dynamic;
 	/**
+		Moves a bytes object that is about to be destroyed into a mutable buffer
+		without copying the data.
+		
+		Parameters
+		----------
+		bytes_rvalue : bytes with 1 refcount.
+		    The bytes object that you want to move into a mutable buffer. This
+		    cannot be a named object. It must only have a single reference.
+		
+		Returns
+		-------
+		buf : stolenbuf
+		    An object that supports the buffer protocol which can give a mutable
+		    view of the data that was previously owned by ``bytes_rvalue``.
+		
+		Raises
+		------
+		BadMove
+		    Raised when a move is attempted on an object with more than one
+		    reference.
+		
+		Notes
+		-----
+		If you want to use this function you are probably wrong.
+		
+		Warning: Do not call this function through *unpacking. This can
+		potentially trick the reference checks which may allow you to get a
+		mutable reference to a shared string!
+	**/
+	static public function _move_into_mutable_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		If possible, reshape `arr` to have shape `new_shape`,
 		with a couple of exceptions (see gh-13012):
 		
@@ -81,8 +112,8 @@ package pandas.io.packers;
 	**/
 	static public function encode(obj:Dynamic):Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------
@@ -95,9 +126,92 @@ package pandas.io.packers;
 		a filepath_or_buffer, the encoding, the compression
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
+	/**
+		Check whether the array or dtype should be converted to int64.
+		
+		An array-like or dtype "needs" such a conversion if the array-like
+		or dtype is of a datetime-like dtype
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype should be converted to int64.
+		
+		Examples
+		--------
+		>>> needs_i8_conversion(str)
+		False
+		>>> needs_i8_conversion(np.int64)
+		False
+		>>> needs_i8_conversion(np.datetime64)
+		True
+		>>> needs_i8_conversion(np.array(['a', 'b']))
+		False
+		>>> needs_i8_conversion(pd.Series([1, 2]))
+		False
+		>>> needs_i8_conversion(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>> needs_i8_conversion(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Pack an object and return the packed bytes.
@@ -191,7 +305,7 @@ package pandas.io.packers;
 		
 		        >>> from dateutil.parser import parse
 		        >>> parse("Today is January 1, 2047 at 8:21:00AM", fuzzy_with_tokens=True)
-		        (datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))
+		        (datetime.datetime(2047, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))
 		
 		:return:
 		    Returns a :class:`datetime.datetime` object or, if the

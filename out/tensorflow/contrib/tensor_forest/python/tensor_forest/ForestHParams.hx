@@ -41,11 +41,18 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -99,6 +99,13 @@ package tensorflow.python.training.server_lib;
 	**/
 	public function new(server_or_cluster_def:Dynamic, ?job_name:Dynamic, ?task_index:Dynamic, ?protocol:Dynamic, ?config:Dynamic, ?start:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -185,7 +192,7 @@ package tensorflow.python.training.server_lib;
 		Returns the `tf.train.ServerDef` for this server.
 		
 		Returns:
-		  A `tf.train.ServerDef` prototocol buffer that describes the configuration
+		  A `tf.train.ServerDef` protocol buffer that describes the configuration
 		  of this server.
 	**/
 	public var server_def : Dynamic;
@@ -201,7 +208,7 @@ package tensorflow.python.training.server_lib;
 		Returns the target for a `tf.Session` to connect to this server.
 		
 		To create a
-		[`tf.Session`](../../api_docs/python/client.md#Session) that
+		@{tf.Session} that
 		connects to this server, use the following snippet:
 		
 		```python

@@ -10,7 +10,6 @@ package tensorflow.contrib.factorization.python.ops.gen_clustering_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _kmeans_plus_plus_initialization_outputs : Dynamic;
 	static public var _nearest_neighbors_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
@@ -60,6 +59,7 @@ package tensorflow.contrib.factorization.python.ops.gen_clustering_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (nearest_center_indices, nearest_center_distances).
+		
 		  nearest_center_indices: A `Tensor` of type `int64`. Matrix of shape (n, min(m, k)). Each row contains the
 		    indices of the centers closest to the corresponding point, ordered by
 		    increasing distance.

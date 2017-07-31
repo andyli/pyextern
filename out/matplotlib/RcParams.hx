@@ -56,6 +56,13 @@ package matplotlib;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -157,6 +164,8 @@ package matplotlib;
 	public function keys():Dynamic;
 	static public var msg_depr : Dynamic;
 	static public var msg_depr_ignore : Dynamic;
+	static public var msg_depr_set : Dynamic;
+	static public var msg_obsolete : Dynamic;
 	/**
 		D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
 		If key is not found, d is returned if given, otherwise KeyError is raised

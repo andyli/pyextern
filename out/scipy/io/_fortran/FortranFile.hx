@@ -49,6 +49,13 @@ package scipy.io._fortran;
 	**/
 	public function new(filename:Dynamic, ?mode:Dynamic, ?header_dtype:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -112,7 +119,7 @@ package scipy.io._fortran;
 	public function close():Dynamic;
 	/**
 		Reads a record of a given type from the file, defaulting to an integer
-		type (INTEGER*4 in Fortran)
+		type (``INTEGER*4`` in Fortran).
 		
 		Parameters
 		----------
@@ -132,7 +139,7 @@ package scipy.io._fortran;
 	public function read_ints(?dtype:Dynamic):Dynamic;
 	/**
 		Reads a record of a given type from the file, defaulting to a floating
-		point number (real*8 in Fortran)
+		point number (``real*8`` in Fortran).
 		
 		Parameters
 		----------

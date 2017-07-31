@@ -97,6 +97,13 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	public function new(color:Dynamic, ?parent:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -192,7 +199,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function addStrut(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		addWidget(self, QWidget, stretch: int = 0, alignment: Qt.Alignment = 0)
+		addWidget(self, QWidget, stretch: int = 0, alignment: Union[Qt.Alignment, Qt.AlignmentFlag] = 0)
 	**/
 	static public function addWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -220,13 +227,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function closestAcceptableSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		connect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
-		connect(QObject, QT_SIGNAL, Callable[..., None], Qt.ConnectionType = Qt.AutoConnection) -> object
-		connect(self, QObject, QT_SIGNAL, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
-	**/
-	static public function connect(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		connectNotify(self, QT_SIGNAL)
+		connectNotify(self, QMetaMethod)
 	**/
 	static public function connectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -255,7 +256,6 @@ package matplotlib.backends.qt_editor.formlayout;
 	static public function deleteLater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		destroyed(self, QObject = None) [signal]
-		destroyed(self) [signal]
 	**/
 	public function destroyed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -263,12 +263,11 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function direction(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		disconnect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL) -> object
-		disconnect(QObject, QT_SIGNAL, Callable[..., None]) -> object
+		disconnect(self)
 	**/
 	static public function disconnect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		disconnectNotify(self, QT_SIGNAL)
+		disconnectNotify(self, QMetaMethod)
 	**/
 	static public function disconnectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -284,10 +283,6 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function dynamicPropertyNames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		emit(self, QT_SIGNAL, *)
-	**/
-	static public function emit(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		event(self, QEvent) -> bool
 	**/
 	static public function event(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -300,15 +295,17 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function expandingDirections(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		findChild(self, type, name: object = '') -> object
-		findChild(self, Tuple, name: object = '') -> object
+		findChild(self, type, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> QObject
+		findChild(self, Tuple, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> QObject
 	**/
 	static public function findChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		findChildren(self, type, name: object = '') -> List
-		findChildren(self, Tuple, name: object = '') -> List
-		findChildren(self, type, QRegExp) -> List
-		findChildren(self, Tuple, QRegExp) -> List
+		findChildren(self, type, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
 	**/
 	static public function findChildren(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -356,7 +353,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function insertStretch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		insertWidget(self, int, QWidget, stretch: int = 0, alignment: Qt.Alignment = 0)
+		insertWidget(self, int, QWidget, stretch: int = 0, alignment: Union[Qt.Alignment, Qt.AlignmentFlag] = 0)
 	**/
 	static public function insertWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -376,9 +373,17 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function isEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		isSignalConnected(self, QMetaMethod) -> bool
+	**/
+	static public function isSignalConnected(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		isWidgetType(self) -> bool
 	**/
 	static public function isWidgetType(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		isWindowType(self) -> bool
+	**/
+	static public function isWindowType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		itemAt(self, int) -> QLayoutItem
 	**/
@@ -391,10 +396,6 @@ package matplotlib.backends.qt_editor.formlayout;
 		layout(self) -> QLayout
 	**/
 	static public function layout(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		margin(self) -> int
-	**/
-	static public function margin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		maximumSize(self) -> QSize
 	**/
@@ -420,9 +421,13 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function moveToThread(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		objectName(self) -> object
+		objectName(self) -> str
 	**/
 	static public function objectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		objectNameChanged(self, str) [signal]
+	**/
+	public function objectNameChanged(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		parent(self) -> QObject
 	**/
@@ -432,7 +437,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function parentWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		property(self, str) -> object
+		property(self, str) -> Any
 	**/
 	static public function property(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -446,7 +451,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function pyqtConfigure(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		receivers(self, QT_SIGNAL) -> int
+		receivers(self, PYQT_SIGNAL) -> int
 	**/
 	static public function receivers(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -462,6 +467,10 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function removeWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		replaceWidget(self, QWidget, QWidget, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> QLayoutItem
+	**/
+	static public function replaceWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		sender(self) -> QObject
 	**/
 	static public function sender(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -470,9 +479,9 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function senderSignalIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setAlignment(self, QWidget, Qt.Alignment) -> bool
-		setAlignment(self, QLayout, Qt.Alignment) -> bool
-		setAlignment(self, Qt.Alignment)
+		setAlignment(self, QWidget, Union[Qt.Alignment, Qt.AlignmentFlag]) -> bool
+		setAlignment(self, QLayout, Union[Qt.Alignment, Qt.AlignmentFlag]) -> bool
+		setAlignment(self, Union[Qt.Alignment, Qt.AlignmentFlag])
 	**/
 	static public function setAlignment(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -493,15 +502,11 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function setGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setMargin(self, int)
-	**/
-	static public function setMargin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		setMenuBar(self, QWidget)
 	**/
 	static public function setMenuBar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setObjectName(self, object)
+		setObjectName(self, str)
 	**/
 	static public function setObjectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -509,7 +514,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function setParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setProperty(self, str, object) -> bool
+		setProperty(self, str, Any) -> bool
 	**/
 	static public function setProperty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -550,7 +555,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function spacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		startTimer(self, int) -> int
+		startTimer(self, int, timerType: Qt.TimerType = Qt.CoarseTimer) -> int
 	**/
 	static public function startTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var staticMetaObject : Dynamic;
@@ -588,13 +593,9 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function totalSizeHint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tr(self, object, disambiguation: str = None, n: int = -1) -> object
+		tr(self, str, disambiguation: str = None, n: int = -1) -> str
 	**/
 	static public function tr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		trUtf8(self, object, disambiguation: str = None, n: int = -1) -> object
-	**/
-	static public function trUtf8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		update(self)
 	**/

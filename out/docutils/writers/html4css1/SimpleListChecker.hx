@@ -47,6 +47,13 @@ package docutils.writers.html4css1;
 	**/
 	public function new(document:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -219,11 +226,9 @@ package docutils.writers.html4css1;
 		self.unknown_visit.
 	**/
 	public function dispatch_visit(node:Dynamic):Dynamic;
-	/**
-		Invisible nodes should be ignored.
-	**/
-	public function invisible_visit(node:Dynamic):Dynamic;
+	public function ignore_node(node:Dynamic):Dynamic;
 	static public var optional : Dynamic;
+	public function pass_node(node:Dynamic):Dynamic;
 	/**
 		Called before exiting unknown `Node` types.
 		
@@ -253,9 +258,6 @@ package docutils.writers.html4css1;
 	public function visit_citation_reference(node:Dynamic):Dynamic;
 	public function visit_classifier(node:Dynamic):Dynamic;
 	public function visit_colspec(node:Dynamic):Dynamic;
-	/**
-		Invisible nodes should be ignored.
-	**/
 	public function visit_comment(node:Dynamic):Dynamic;
 	public function visit_compound(node:Dynamic):Dynamic;
 	public function visit_contact(node:Dynamic):Dynamic;
@@ -307,9 +309,6 @@ package docutils.writers.html4css1;
 	public function visit_option_string(node:Dynamic):Dynamic;
 	public function visit_organization(node:Dynamic):Dynamic;
 	public function visit_paragraph(node:Dynamic):Dynamic;
-	/**
-		Invisible nodes should be ignored.
-	**/
 	public function visit_pending(node:Dynamic):Dynamic;
 	public function visit_problematic(node:Dynamic):Dynamic;
 	public function visit_raw(node:Dynamic):Dynamic;
@@ -322,18 +321,12 @@ package docutils.writers.html4css1;
 	public function visit_status(node:Dynamic):Dynamic;
 	public function visit_strong(node:Dynamic):Dynamic;
 	public function visit_subscript(node:Dynamic):Dynamic;
-	/**
-		Invisible nodes should be ignored.
-	**/
 	public function visit_substitution_definition(node:Dynamic):Dynamic;
 	public function visit_substitution_reference(node:Dynamic):Dynamic;
 	public function visit_subtitle(node:Dynamic):Dynamic;
 	public function visit_superscript(node:Dynamic):Dynamic;
 	public function visit_system_message(node:Dynamic):Dynamic;
 	public function visit_table(node:Dynamic):Dynamic;
-	/**
-		Invisible nodes should be ignored.
-	**/
 	public function visit_target(node:Dynamic):Dynamic;
 	public function visit_tbody(node:Dynamic):Dynamic;
 	public function visit_term(node:Dynamic):Dynamic;

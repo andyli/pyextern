@@ -38,7 +38,13 @@ package tensorflow.python.training.summary_io;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Creates a `SummaryWriter` and an event file.
+		Creates a `SummaryWriter` and an event file. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.FileWriter. The interface and behavior is the same; this is just a rename.
+		
+		This class is deprecated, and should be replaced with tf.summary.FileWriter.
 		
 		On construction the summary writer creates a new event file in `logdir`.
 		This event file will contain `Event` protocol buffers constructed when you
@@ -57,7 +63,7 @@ package tensorflow.python.training.summary_io;
 		# Launch the graph in a session.
 		sess = tf.Session()
 		# Create a summary writer, add the 'graph' to the event file.
-		writer = tf.train.SummaryWriter(<some-directory>, sess.graph)
+		writer = tf.summary.FileWriter(<some-directory>, sess.graph)
 		```
 		
 		The other arguments to the constructor control the asynchronous writes to
@@ -79,7 +85,13 @@ package tensorflow.python.training.summary_io;
 	@:native("__init__")
 	public function ___init__(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic):Dynamic;
 	/**
-		Creates a `SummaryWriter` and an event file.
+		Creates a `SummaryWriter` and an event file. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.FileWriter. The interface and behavior is the same; this is just a rename.
+		
+		This class is deprecated, and should be replaced with tf.summary.FileWriter.
 		
 		On construction the summary writer creates a new event file in `logdir`.
 		This event file will contain `Event` protocol buffers constructed when you
@@ -98,7 +110,7 @@ package tensorflow.python.training.summary_io;
 		# Launch the graph in a session.
 		sess = tf.Session()
 		# Create a summary writer, add the 'graph' to the event file.
-		writer = tf.train.SummaryWriter(<some-directory>, sess.graph)
+		writer = tf.summary.FileWriter(<some-directory>, sess.graph)
 		```
 		
 		The other arguments to the constructor control the asynchronous writes to
@@ -118,6 +130,13 @@ package tensorflow.python.training.summary_io;
 		  graph_def: DEPRECATED: Use the `graph` argument instead.
 	**/
 	public function new(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -173,7 +192,9 @@ package tensorflow.python.training.summary_io;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _add_event(event:Dynamic, step:Dynamic):Dynamic;
 	public function _add_graph_def(graph_def:Dynamic, ?global_step:Dynamic):Dynamic;
+	public function _write_plugin_assets(graph:Dynamic):Dynamic;
 	/**
 		Adds an event to the event file.
 		
@@ -198,6 +219,22 @@ package tensorflow.python.training.summary_io;
 	**/
 	public function add_graph(graph:Dynamic, ?global_step:Dynamic, ?graph_def:Dynamic):Dynamic;
 	/**
+		Adds a `MetaGraphDef` to the event file.
+		
+		The `MetaGraphDef` allows running the given graph via
+		`saver.import_meta_graph()`.
+		
+		Args:
+		  meta_graph_def: A `MetaGraphDef` object, often as returned by
+		    `saver.export_meta_graph()`.
+		  global_step: Number. Optional global step counter to record with the
+		    graph.
+		
+		Raises:
+		  TypeError: If both `meta_graph_def` is not an instance of `MetaGraphDef`.
+	**/
+	public function add_meta_graph(meta_graph_def:Dynamic, ?global_step:Dynamic):Dynamic;
+	/**
 		Adds a metadata information for a single session.run() call.
 		
 		Args:
@@ -213,7 +250,7 @@ package tensorflow.python.training.summary_io;
 	/**
 		Adds a `SessionLog` protocol buffer to the event file.
 		
-		This method wraps the provided session in an `Event` procotol buffer
+		This method wraps the provided session in an `Event` protocol buffer
 		and adds it to the event file.
 		
 		Args:
@@ -229,8 +266,8 @@ package tensorflow.python.training.summary_io;
 		and adds it to the event file.
 		
 		You can pass the result of evaluating any summary op, using
-		[`Session.run()`](client.md#Session.run) or
-		[`Tensor.eval()`](framework.md#Tensor.eval), to this
+		@{tf.Session.run} or
+		@{tf.Tensor.eval}, to this
 		function. Alternatively, you can pass a `tf.Summary` protocol
 		buffer that you populate with your own data. The latter is
 		commonly done to report evaluation results in event files.
@@ -255,12 +292,16 @@ package tensorflow.python.training.summary_io;
 	**/
 	public function flush():Dynamic;
 	/**
-		Reopens the summary writer.
+		Returns the directory where event file will be written.
+	**/
+	public function get_logdir():Dynamic;
+	/**
+		Reopens the EventFileWriter.
 		
 		Can be called after `close()` to add more events in the same directory.
 		The events will go into a new events file.
 		
-		Does nothing if the summary writer was not closed.
+		Does nothing if the EventFileWriter was not closed.
 	**/
 	public function reopen():Dynamic;
 }

@@ -2,7 +2,7 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "ScalarFormatter") extern class ScalarFormatter {
 	/**
-		Return the format for tick val *x* at position *pos*
+		Return the format for tick value `x` at position `pos`.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -50,6 +50,13 @@ package matplotlib.ticker;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?useOffset:Dynamic, ?useMathText:Dynamic, ?useLocale:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,26 +112,26 @@ package matplotlib.ticker;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _compute_offset():Dynamic;
 	public function _formatSciNotation(s:Dynamic):Dynamic;
 	public function _set_format(vmin:Dynamic, vmax:Dynamic):Dynamic;
-	public function _set_offset(range:Dynamic):Dynamic;
 	public function _set_orderOfMagnitude(range:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		use a unicode minus rather than hyphen
+		Replace hyphens with a unicode minus.
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
 	/**
-		return a formatted string representation of a number
+		Return a formatted string representation of a number.
 	**/
 	public function format_data(value:Dynamic):Dynamic;
 	/**
-		return a short formatted string representation of a number
+		Return a short formatted string representation of a number.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	/**
-		Return scientific notation, plus offset
+		Return scientific notation, plus offset.
 	**/
 	public function get_offset():Dynamic;
 	public function get_useLocale():Dynamic;
@@ -135,21 +142,28 @@ package matplotlib.ticker;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		set the locations of the ticks
+		Set the locations of the ticks.
 	**/
 	public function set_locs(locs:Dynamic):Dynamic;
 	/**
 		Sets size thresholds for scientific notation.
 		
-		e.g., ``formatter.set_powerlimits((-3, 4))`` sets the pre-2007 default
-		in which scientific notation is used for numbers less than 1e-3 or
-		greater than 1e4.
-		See also :meth:`set_scientific`.
+		``lims`` is a two-element sequence containing the powers of 10
+		that determine the switchover threshold. Numbers below
+		``10**lims[0]`` and above ``10**lims[1]`` will be displayed in
+		scientific notation.
+		
+		For example, ``formatter.set_powerlimits((-3, 4))`` sets the
+		pre-2007 default in which scientific notation is used for
+		numbers less than 1e-3 or greater than 1e4.
+		
+		.. seealso:: Method :meth:`set_scientific`
 	**/
 	public function set_powerlimits(lims:Dynamic):Dynamic;
 	/**
-		True or False to turn scientific notation on or off
-		see also :meth:`set_powerlimits`
+		Turn scientific notation on or off.
+		
+		.. seealso:: Method :meth:`set_powerlimits`
 	**/
 	public function set_scientific(b:Dynamic):Dynamic;
 	public function set_useLocale(val:Dynamic):Dynamic;

@@ -65,7 +65,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if
@@ -85,7 +85,7 @@ package scipy.ndimage.interpolation;
 	static public function affine_transform(input:Dynamic, matrix:Dynamic, ?offset:Dynamic, ?output_shape:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Apply an arbritrary geometric transform.
+		Apply an arbitrary geometric transform.
 		
 		The given mapping function is used to find, for each point in the
 		output, the corresponding coordinates in the input. The value of the
@@ -96,7 +96,7 @@ package scipy.ndimage.interpolation;
 		----------
 		input : array_like
 		    The input array.
-		mapping : callable
+		mapping : {callable, scipy.LowLevelCallable}
 		    A callable object that accepts a tuple of length equal to the output
 		    array rank, and returns the corresponding input coordinates as a tuple
 		    of length equal to the input array rank.
@@ -110,7 +110,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if
@@ -134,6 +134,38 @@ package scipy.ndimage.interpolation;
 		See Also
 		--------
 		map_coordinates, affine_transform, spline_filter1d
+		
+		
+		Notes
+		-----
+		This function also accepts low-level callback functions with one
+		the following signatures and wrapped in `scipy.LowLevelCallable`:
+		
+		.. code:: c
+		
+		   int mapping(npy_intp *output_coordinates, double *input_coordinates, 
+		               int output_rank, int input_rank, void *user_data)
+		   int mapping(intptr_t *output_coordinates, double *input_coordinates, 
+		               int output_rank, int input_rank, void *user_data)
+		
+		The calling function iterates over the elements of the output array,
+		calling the callback function at each element. The coordinates of the
+		current output element are passed through ``output_coordinates``. The
+		callback function must return the coordinates at which the input must
+		be interpolated in ``input_coordinates``. The rank of the input and
+		output arrays are given by ``input_rank`` and ``output_rank``
+		respectively.  ``user_data`` is the data pointer provided 
+		to `scipy.LowLevelCallable` as-is. 
+		
+		The callback function must return an integer error status that is zero 
+		if something went wrong and one otherwise. If an error occurs, you should
+		normally set the python error status with an informative message
+		before returning, otherwise a default error message is set by the
+		calling function.
+		
+		In addition, some other low-level function pointer specifications 
+		are accepted, but these are for backward compatibility only and should
+		not be used in new code.
 		
 		Examples
 		--------
@@ -176,7 +208,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if
@@ -248,7 +280,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if
@@ -288,7 +320,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if
@@ -370,7 +402,7 @@ package scipy.ndimage.interpolation;
 		    The order has to be in the range 0-5.
 		mode : str, optional
 		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect' or 'wrap').
+		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
 		    Default is 'constant'.
 		cval : scalar, optional
 		    Value used for points outside the boundaries of the input if

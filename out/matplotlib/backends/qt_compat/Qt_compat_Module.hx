@@ -18,13 +18,15 @@ package matplotlib.backends.qt_compat;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
+	static public var _fallback_to_qt4 : Dynamic;
 	/**
-		getSaveFileNameAndFilter(parent: QWidget = None, caption: object = '', directory: object = '', filter: object = '', initialFilter: object = '', options: QFileDialog.Options = 0) -> Tuple
+		getSaveFileName(parent: QWidget = None, caption: str = '', directory: str = '', filter: str = '', initialFilter: str = '', options: Union[QFileDialog.Options, QFileDialog.Option] = 0) -> Tuple[str, str]
 	**/
 	static public function _getSaveFileName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _sip_imported : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public function is_pyqt5():Dynamic;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	static public var unicode_literals : Dynamic;

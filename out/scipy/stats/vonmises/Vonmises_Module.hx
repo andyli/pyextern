@@ -12,7 +12,7 @@ package scipy.stats.vonmises;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		i0(x[, out])
+		i0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i0(x)
 		

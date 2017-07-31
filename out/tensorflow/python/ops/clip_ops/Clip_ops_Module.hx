@@ -124,12 +124,18 @@ package tensorflow.python.ops.clip_ops;
 		
 		Args:
 		  t: A `Tensor`.
-		  clip_value_min: A 0-D (scalar) `Tensor`. The minimum value to clip by.
-		  clip_value_max: A 0-D (scalar) `Tensor`. The maximum value to clip by.
+		  clip_value_min: A 0-D (scalar) `Tensor`, or a `Tensor` with the same shape
+		    as `t`. The minimum value to clip by.
+		  clip_value_max: A 0-D (scalar) `Tensor`, or a `Tensor` with the same shape
+		    as `t`. The maximum value to clip by.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A clipped `Tensor`.
+		
+		Raises:
+		  ValueError: if the clip tensors would trigger array broadcasting
+		    that would make the returned tensor larger than the input.
 	**/
 	static public function clip_by_value(t:Dynamic, clip_value_min:Dynamic, clip_value_max:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;

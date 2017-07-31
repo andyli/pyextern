@@ -47,6 +47,13 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function new(figure:Dynamic, ?master:Dynamic, ?resize_callback:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -119,6 +126,16 @@ package matplotlib.backends.backend_tkagg;
 		blit the canvas in bbox (default entire canvas)
 	**/
 	public function blit(?bbox:Dynamic):Dynamic;
+	/**
+		Get the image as an RGBA byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function buffer_rgba():Dynamic;
 	public function button_dblclick_event(event:Dynamic):Dynamic;
 	/**
@@ -392,10 +409,10 @@ package matplotlib.backends.backend_tkagg;
 		    the dots per inch to save the figure in; if None, use savefig.dpi
 		
 		*facecolor*
-		    the facecolor of the figure
+		    the facecolor of the figure; if None, defaults to savefig.facecolor
 		
 		*edgecolor*
-		    the edgecolor of the figure
+		    the edgecolor of the figure; if None, defaults to savefig.edgecolor
 		
 		*orientation*
 		    landscape' | 'portrait' (not supported on all backends)
@@ -472,10 +489,6 @@ package matplotlib.backends.backend_tkagg;
 		functions for each of the GUI backends can be written.  As
 		such, it throws a deprecated warning.
 		
-		Call signature::
-		
-		    start_event_loop_default(self,timeout=0)
-		
 		This call blocks until a callback function triggers
 		stop_event_loop() or *timeout* is reached.  If *timeout* is
 		<=0, never timeout.
@@ -493,10 +506,6 @@ package matplotlib.backends.backend_tkagg;
 		functions for each of the GUI backends can be written.  As
 		such, it throws a deprecated warning.
 		
-		Call signature::
-		
-		    start_event_loop_default(self,timeout=0)
-		
 		This call blocks until a callback function triggers
 		stop_event_loop() or *timeout* is reached.  If *timeout* is
 		<=0, never timeout.
@@ -506,20 +515,12 @@ package matplotlib.backends.backend_tkagg;
 		Stop an event loop.  This is used to stop a blocking event
 		loop so that interactive functions, such as ginput and
 		waitforbuttonpress, can wait for events.
-		
-		Call signature::
-		
-		  stop_event_loop_default(self)
 	**/
 	public function stop_event_loop():Dynamic;
 	/**
 		Stop an event loop.  This is used to stop a blocking event
 		loop so that interactive functions, such as ginput and
 		waitforbuttonpress, can wait for events.
-		
-		Call signature::
-		
-		  stop_event_loop_default(self)
 	**/
 	public function stop_event_loop_default():Dynamic;
 	static public var supports_blit : Dynamic;
@@ -532,6 +533,26 @@ package matplotlib.backends.backend_tkagg;
 		figure size or line props), will be reflected in the other
 	**/
 	public function switch_backends(FigureCanvasClass:Dynamic):Dynamic;
+	/**
+		Get the image as an ARGB byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function tostring_argb():Dynamic;
+	/**
+		Get the image as an RGB byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function tostring_rgb():Dynamic;
 }

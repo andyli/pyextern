@@ -2,15 +2,6 @@
 package tensorflow.contrib.graph_editor.transform;
 @:pythonImport("tensorflow.contrib.graph_editor.transform", "Transformer") extern class Transformer {
 	/**
-		Transformer temporary data.
-		
-		An instance of this class hold all the information relevant to a call
-		to a transformer instance (that is, a call to __call__). An instance
-		is created for the life-time of the __call__ function and is passed as
-		argument to the handlers.
-	**/
-	static public function _Info(transformer:Dynamic, sgv:Dynamic, dst_graph:Dynamic, dst_scope:Dynamic, src_scope:Dynamic):Dynamic;
-	/**
 		Execute the transformation.
 		
 		Args:
@@ -21,13 +12,19 @@ package tensorflow.contrib.graph_editor.transform;
 		    relative path of the transformed nodes are computed. For instance, if
 		    src_scope is a/ and dst_scoped is b/, then the node a/x/y will have a
 		    relative path of x/y and will be transformed into b/x/y.
+		  reuse_dst_scope: if True the dst_scope is re-used if it already exists.
+		    Otherwise, the scope is given a unique name based on the one given
+		    by appending an underscore followed by a digit (default).
 		Returns:
-		  The transformed subgraph view.
+		  A tuple `(sgv, info)` where:
+		    `sgv` is the transformed subgraph view;
+		    `info` is an instance of TransformerInfo containing
+		    information about the transform, including mapping between
+		    original and transformed tensors and operations.
 		Raises:
-		  ValueError: if the argumens are invalid. For instance, if the source and
-		    destination are the same.
+		  ValueError: if the arguments are invalid.
 	**/
-	public function __call__(sgv:Dynamic, dst_graph:Dynamic, dst_scope:Dynamic, ?src_scope:Dynamic):Dynamic;
+	public function __call__(sgv:Dynamic, dst_graph:Dynamic, dst_scope:Dynamic, ?src_scope:Dynamic, ?reuse_dst_scope:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -68,19 +65,20 @@ package tensorflow.contrib.graph_editor.transform;
 		Transformer constructor.
 		
 		The following members can be modified:
-		transform_op_handler: handle the transformation of a tf.Operation.
+		transform_op_handler: handle the transformation of a `tf.Operation`.
 		  This handler defaults to a simple copy.
 		assign_collections_handler: handle the assignment of collections.
 		  This handler defaults to assigning new collections created under the
 		  given name-scope.
-		transform_input_handler: handle the transform of the inputs to the given
-		  subgraph. This handler defaults to creating placeholders instead of the
-		  ops just before the input tensors of the subgraph.
-		transform_hidden_input_handler: handle the transform of the hidden inputs of
-		  the subgraph, that is, the inputs which are not listed in sgv.inputs.
-		  This handler defaults to a transform which keep the same input if the
-		  source and destination graphs are the same, otherwise use placeholders.
-		transform_original_op_hanlder: handle the transform of original_op. This
+		transform_external_input_handler: handle the transform of the inputs to
+		  the given subgraph. This handler defaults to creating placeholders
+		  instead of the ops just before the input tensors of the subgraph.
+		transform_external_hidden_input_handler: handle the transform of the
+		  hidden inputs of the subgraph, that is, the inputs which are not listed
+		  in sgv.inputs. This handler defaults to a transform which keep the same
+		  input if the source and destination graphs are the same, otherwise
+		  use placeholders.
+		transform_original_op_handler: handle the transform of original_op. This
 		  handler defaults to transforming original_op only if they are in the
 		  subgraph, otherwise they are ignored.
 	**/
@@ -90,23 +88,31 @@ package tensorflow.contrib.graph_editor.transform;
 		Transformer constructor.
 		
 		The following members can be modified:
-		transform_op_handler: handle the transformation of a tf.Operation.
+		transform_op_handler: handle the transformation of a `tf.Operation`.
 		  This handler defaults to a simple copy.
 		assign_collections_handler: handle the assignment of collections.
 		  This handler defaults to assigning new collections created under the
 		  given name-scope.
-		transform_input_handler: handle the transform of the inputs to the given
-		  subgraph. This handler defaults to creating placeholders instead of the
-		  ops just before the input tensors of the subgraph.
-		transform_hidden_input_handler: handle the transform of the hidden inputs of
-		  the subgraph, that is, the inputs which are not listed in sgv.inputs.
-		  This handler defaults to a transform which keep the same input if the
-		  source and destination graphs are the same, otherwise use placeholders.
-		transform_original_op_hanlder: handle the transform of original_op. This
+		transform_external_input_handler: handle the transform of the inputs to
+		  the given subgraph. This handler defaults to creating placeholders
+		  instead of the ops just before the input tensors of the subgraph.
+		transform_external_hidden_input_handler: handle the transform of the
+		  hidden inputs of the subgraph, that is, the inputs which are not listed
+		  in sgv.inputs. This handler defaults to a transform which keep the same
+		  input if the source and destination graphs are the same, otherwise
+		  use placeholders.
+		transform_original_op_handler: handle the transform of original_op. This
 		  handler defaults to transforming original_op only if they are in the
 		  subgraph, otherwise they are ignored.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -163,14 +169,13 @@ package tensorflow.contrib.graph_editor.transform;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Transform a tf.Operation.
-		
-		Args:
-		  op: the operation to be transformed.
-		Returns:
-		  The transformed operation.
+		Connect the previously copied ops.
 	**/
-	public function _transform_op(op:Dynamic):Dynamic;
+	public function _connect_ops(info:Dynamic):Dynamic;
+	/**
+		Copy ops without connecting them.
+	**/
+	public function _copy_ops(info:Dynamic):Dynamic;
 	/**
 		Transform a subgraph view.
 		
@@ -178,30 +183,14 @@ package tensorflow.contrib.graph_editor.transform;
 		transformed graph.
 		
 		Args:
+		  info: Temporary information for this transorfm call.
 		  sgv: the subgraph to be transformed.
 		Returns:
 		  The transformed subgraph.
 	**/
-	public function _transform_sgv(sgv:Dynamic):Dynamic;
+	public function _transform_sgv(info:Dynamic, sgv:Dynamic):Dynamic;
 	/**
-		Transform a tf.Tensor.
-		
-		Args:
-		  t: the tensor to be transformed.
-		Returns:
-		  The transformed tensor.
+		Return tre transformed tensor of `t`.
 	**/
-	public function _transform_t(t:Dynamic):Dynamic;
-	/**
-		Compute a destination name from a source name.
-		
-		Args:
-		  name: the name to be "transformed".
-		Returns:
-		  the transformed name.
-		Raises:
-		  ValueError: if the source scope is used (that is, not an empty string)
-		    and the source name does not belong to the source scope.
-	**/
-	public function new_name(name:Dynamic):Dynamic;
+	public function _transformed_t(info:Dynamic, t:Dynamic):Dynamic;
 }

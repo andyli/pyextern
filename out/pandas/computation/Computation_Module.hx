@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.computation;
 @:pythonImport("pandas.computation") extern class Computation_Module {
-	static public var _NUMEXPR_INSTALLED : Dynamic;
-	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

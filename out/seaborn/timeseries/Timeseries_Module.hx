@@ -45,7 +45,7 @@ package seaborn.timeseries;
 	/**
 		Return a list of colors defining a color palette.
 		
-		Availible seaborn palette names:
+		Available seaborn palette names:
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
@@ -54,7 +54,7 @@ package seaborn.timeseries;
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
-		Matplotlib paletes can be specified as reversed palettes by appending
+		Matplotlib palettes can be specified as reversed palettes by appending
 		"_r" to the name or as dark palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
@@ -180,10 +180,11 @@ package seaborn.timeseries;
 		    Names of ways to plot uncertainty across units from set of
 		    {ci_band, ci_bars, boot_traces, boot_kde, unit_traces, unit_points}.
 		    Can use one or more than one method.
-		ci : float or list of floats in [0, 100]
-		    Confidence interval size(s). If a list, it will stack the error
-		    plots for each confidence interval. Only relevant for error styles
-		    with "ci" in the name.
+		ci : float or list of floats in [0, 100] or "sd" or None
+		    Confidence interval size(s). If a list, it will stack the error plots
+		    for each confidence interval. If ``"sd"``, show standard deviation of
+		    the observations instead of boostrapped confidence intervals. Only
+		    relevant for error styles with "ci" in the name.
 		interpolate : boolean
 		    Whether to do a linear interpolation between each timepoint when
 		    plotting. The value of this parameter also determines the marker
@@ -261,6 +262,13 @@ package seaborn.timeseries;
 		    :context: close-figs
 		
 		    >>> ax = sns.tsplot(data=data, ci=[68, 95], color="m")
+		
+		Show the standard deviation of the observations:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.tsplot(data=data, ci="sd")
 		
 		Use a different estimator:
 		

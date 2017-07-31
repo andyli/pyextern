@@ -10,7 +10,6 @@ package pkgutil;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		Return the finder-specific module spec.
 	**/
@@ -51,7 +50,7 @@ package pkgutil;
 	**/
 	static public function extend_path(path:Dynamic, name:Dynamic):Dynamic;
 	/**
-		Find a PEP 302 "loader" object for fullname
+		Find a "loader" object for fullname
 		
 		This is a backwards compatibility wrapper around
 		importlib.util.find_spec that converts most failures to ImportError
@@ -81,9 +80,9 @@ package pkgutil;
 	**/
 	static public function get_data(_package:Dynamic, resource:Dynamic):Dynamic;
 	/**
-		Retrieve a PEP 302 importer for the given path item
+		Retrieve a finder for the given path item
 		
-		The returned importer is cached in sys.path_importer_cache
+		The returned finder is cached in sys.path_importer_cache
 		if it was newly created by a path hook.
 		
 		The cache (or part of it) can be cleared manually if a
@@ -91,7 +90,7 @@ package pkgutil;
 	**/
 	static public function get_importer(path_item:Dynamic):Dynamic;
 	/**
-		Get a PEP 302 "loader" object for module_or_name
+		Get a "loader" object for module_or_name
 		
 		Returns None if the module cannot be found or imported.
 		If the named module is not already imported, its containing package
@@ -100,20 +99,20 @@ package pkgutil;
 	static public function get_loader(module_or_name:Dynamic):Dynamic;
 	static public function iter_importer_modules(importer:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
-		Yield PEP 302 importers for the given module name
+		Yield finders for the given module name
 		
-		If fullname contains a '.', the importers will be for the package
+		If fullname contains a '.', the finders will be for the package
 		containing fullname, otherwise they will be all registered top level
-		importers (i.e. those on both sys.meta_path and sys.path_hooks).
+		finders (i.e. those on both sys.meta_path and sys.path_hooks).
 		
 		If the named module is in a package, that package is imported as a side
 		effect of invoking this function.
 		
-		If no module name is specified, all top level importers are produced.
+		If no module name is specified, all top level finders are produced.
 	**/
 	static public function iter_importers(?fullname:Dynamic):Dynamic;
 	/**
-		Yields (module_loader, name, ispkg) for all submodules on path,
+		Yields ModuleInfo for all submodules on path,
 		or, if path is None, all top-level modules on sys.path.
 		
 		'path' should be either None or a list of paths to look for
@@ -124,6 +123,29 @@ package pkgutil;
 	**/
 	static public function iter_modules(?path:Dynamic, ?prefix:Dynamic):Dynamic;
 	static public function iter_zipimport_modules(importer:Dynamic, ?prefix:Dynamic):Dynamic;
+	/**
+		Returns a new subclass of tuple with named fields.
+		
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessible by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
+	**/
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public function read_code(stream:Dynamic):Dynamic;
 	/**
 		Single-dispatch generic function decorator.
@@ -136,7 +158,7 @@ package pkgutil;
 	**/
 	static public function simplegeneric(func:Dynamic):Dynamic;
 	/**
-		Yields (module_loader, name, ispkg) for all modules recursively
+		Yields ModuleInfo for all modules recursively
 		on path, or, if path is None, all accessible modules.
 		
 		'path' should be either None or a list of paths to look for

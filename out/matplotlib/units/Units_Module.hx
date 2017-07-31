@@ -21,5 +21,6 @@ package matplotlib.units;
 	static public function iterable(obj:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var registry : Dynamic;
+	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

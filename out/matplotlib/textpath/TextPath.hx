@@ -18,7 +18,7 @@ package matplotlib.textpath;
 		Returns a deepcopy of the `Path`.  The `Path` will not be
 		readonly, even if the source `Path` is.
 	**/
-	public function __deepcopy__():Dynamic;
+	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -79,6 +79,13 @@ package matplotlib.textpath;
 		prop : font property
 	**/
 	public function new(xy:Dynamic, s:Dynamic, ?size:Dynamic, ?prop:Dynamic, ?_interpolation_steps:Dynamic, ?usetex:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -246,31 +253,29 @@ package matplotlib.textpath;
 	**/
 	public var codes : Dynamic;
 	/**
-		Returns *True* if this path completely contains the given path.
+		Returns whether this (closed) path completely contains the given path.
 		
-		If *transform* is not *None*, the path will be transformed
-		before performing the test.
+		If *transform* is not ``None``, the path will be transformed before
+		performing the test.
 	**/
 	public function contains_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
-		Returns *True* if the path contains the given point.
+		Returns whether the (closed) path contains the given point.
 		
-		If *transform* is not *None*, the path will be transformed
-		before performing the test.
+		If *transform* is not ``None``, the path will be transformed before
+		performing the test.
 		
-		*radius* allows the path to be made slightly larger or
-		smaller.
+		*radius* allows the path to be made slightly larger or smaller.
 	**/
 	public function contains_point(point:Dynamic, ?transform:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
-		Returns a bool array which is *True* if the path contains the
-		corresponding point.
+		Returns a bool array which is ``True`` if the (closed) path contains
+		the corresponding point.
 		
-		If *transform* is not *None*, the path will be transformed
-		before performing the test.
+		If *transform* is not ``None``, the path will be transformed before
+		performing the test.
 		
-		*radius* allows the path to be made slightly larger or
-		smaller.
+		*radius* allows the path to be made slightly larger or smaller.
 	**/
 	public function contains_points(points:Dynamic, ?transform:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
@@ -282,7 +287,7 @@ package matplotlib.textpath;
 		Returns a deepcopy of the `Path`.  The `Path` will not be
 		readonly, even if the source `Path` is.
 	**/
-	public function deepcopy():Dynamic;
+	public function deepcopy(?memo:Dynamic):Dynamic;
 	/**
 		Returns the extents (*xmin*, *ymin*, *xmax*, *ymax*) of the
 		path.
@@ -411,17 +416,25 @@ package matplotlib.textpath;
 	**/
 	public function text_get_vertices_codes(prop:Dynamic, s:Dynamic, usetex:Dynamic):Dynamic;
 	/**
-		Convert this path to a list of polygons.  Each polygon is an
-		Nx2 array of vertices.  In other words, each polygon has no
-		``MOVETO`` instructions or curves.  This is useful for
-		displaying in backends that do not support compound paths or
-		Bezier curves, such as GDK.
+		Convert this path to a list of polygons or polylines.  Each
+		polygon/polyline is an Nx2 array of vertices.  In other words,
+		each polygon has no ``MOVETO`` instructions or curves.  This
+		is useful for displaying in backends that do not support
+		compound paths or Bezier curves, such as GDK.
 		
 		If *width* and *height* are both non-zero then the lines will
 		be simplified so that vertices outside of (0, 0), (width,
 		height) will be clipped.
+		
+		If *closed_only* is `True` (default), only closed polygons,
+		with the last point being the same as the first point, will be
+		returned.  Any unclosed polylines in the path will be
+		explicitly closed.  If *closed_only* is `False`, any unclosed
+		polygons in the path will be returned as unclosed polygons,
+		and the closed polygons will be returned explicitly closed by
+		setting the last point to the same as the first point.
 	**/
-	public function to_polygons(?transform:Dynamic, ?width:Dynamic, ?height:Dynamic):Dynamic;
+	public function to_polygons(?transform:Dynamic, ?width:Dynamic, ?height:Dynamic, ?closed_only:Dynamic):Dynamic;
 	/**
 		Return a transformed copy of the path.
 		

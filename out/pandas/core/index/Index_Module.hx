@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.index;
 @:pythonImport("pandas.core.index") extern class Index_Module {
+	static public var NaT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

@@ -1,22 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.parsing_ops;
 @:pythonImport("tensorflow.python.ops.parsing_ops") extern class Parsing_ops_Module {
-	/**
-		Shape function for the DecodeCSV op.
-	**/
-	static public function _DecodeCSVShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the DecodeRaw op.
-	**/
-	static public function _DecodeRawShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the ParseExample op.
-	**/
-	static public function _ParseExampleShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the ParseExample op.
-	**/
-	static public function _ParseSingleSequenceExampleShape(op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -26,12 +10,34 @@ package tensorflow.python.ops.parsing_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Merges SparseTensors of indices and values of SparseFeatures.
+		
+		Constructs new dict based on `tensor_dict`. For `SparseFeatures` in the values
+		of `features` expects their `index_key`s and `index_value`s to be present in
+		`tensor_dict` mapping to `SparseTensor`s. Constructs a single `SparseTensor`
+		from them, and adds it to the result with the key from `features`.
+		Copies other keys and values from `tensor_dict` with keys present in
+		`features`.
+		
+		Args:
+		  features: A `dict` mapping feature keys to `SparseFeature` values.
+		    Values of other types will be ignored.
+		  tensor_dict: A `dict` mapping feature keys to `Tensor` and `SparseTensor`
+		    values. Expected to contain keys of the `SparseFeature`s' `index_key`s and
+		    `value_key`s and mapping them to `SparseTensor`s.
+		Returns:
+		  A `dict` mapping feature keys to `Tensor` and `SparseTensor` values. Similar
+		  to `tensor_dict` except each `SparseFeature`s in `features` results in a
+		  single `SparseTensor`.
+	**/
+	static public function _construct_sparse_tensors_for_sparse_features(features:Dynamic, tensor_dict:Dynamic):Dynamic;
+	/**
 		Split feature tuples into raw params used by `gen_parsing_ops`.
 		
 		Args:
 		  features: A `dict` mapping feature keys to objects of a type in `types`.
 		  types: Type of features to allow, among `FixedLenFeature`, `VarLenFeature`,
-		    and `FixedLenSequenceFeature`.
+		    `SparseFeature`, and `FixedLenSequenceFeature`.
 		
 		Returns:
 		  Tuple of `sparse_keys`, `sparse_types`, `dense_keys`, `dense_types`,
@@ -64,8 +70,13 @@ package tensorflow.python.ops.parsing_ops;
 		    The keys of the dict must match the dense_keys of the feature.
 		  dense_shapes: A list of tuples with the same length as `dense_keys`.
 		    The shape of the data for each dense feature referenced by `dense_keys`.
-		    Required for any input tensors identified by `dense_keys` whose shapes are
-		    anything other than `[]` or `[1]`.
+		    Required for any input tensors identified by `dense_keys`.  Must be
+		    either fully defined, or may contain an unknown first dimension.
+		    An unknown first dimension means the feature is treated as having
+		    a variable number of blocks, and the output shape along this dimension
+		    is considered unknown at graph build time.  Padding is applied for
+		    minibatch elements smaller than the maximum number of blocks for the
+		    given feature along this dimension.
 		  name: A name for this operation (optional).
 		
 		Returns:
@@ -156,6 +167,7 @@ package tensorflow.python.ops.parsing_ops;
 		  TypeError: if feature_list_dense_defaults is not either None or a dict.
 	**/
 	static public function _parse_single_sequence_example_raw(serialized:Dynamic, ?context_sparse_keys:Dynamic, ?context_sparse_types:Dynamic, ?context_dense_keys:Dynamic, ?context_dense_types:Dynamic, ?context_dense_defaults:Dynamic, ?context_dense_shapes:Dynamic, ?feature_list_sparse_keys:Dynamic, ?feature_list_sparse_types:Dynamic, ?feature_list_dense_keys:Dynamic, ?feature_list_dense_types:Dynamic, ?feature_list_dense_shapes:Dynamic, ?feature_list_dense_defaults:Dynamic, ?debug_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _prepend_none_dimension(features:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert CSV records to tensors. Each column maps to one tensor.
@@ -208,7 +220,7 @@ package tensorflow.python.ops.parsing_ops;
 		Args:
 		  bytes: A `Tensor` of type `string`.
 		    All the elements must have the same length.
-		  out_type: A `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
+		  out_type: A `tf.DType` from: `tf.half, tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
 		  little_endian: An optional `bool`. Defaults to `True`.
 		    Whether the input `bytes` are in little-endian order.
 		    Ignored for `out_type` values that are stored in a single byte like
@@ -226,23 +238,37 @@ package tensorflow.python.ops.parsing_ops;
 	/**
 		Parses `Example` protos into a `dict` of tensors.
 		
-		Parses a number of serialized [`Example`]
-		(https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
-		protos given in `serialized`.
+		Parses a number of serialized [`Example`](https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
+		protos given in `serialized`. We refer to `serialized` as a batch with
+		`batch_size` many entries of individual `Example` protos.
 		
 		`example_names` may contain descriptive names for the corresponding serialized
 		protos. These may be useful for debugging purposes, but they have no effect on
-		the output. If not `None`, `example_names` must be the same length as `serialized`.
+		the output. If not `None`, `example_names` must be the same length as
+		`serialized`.
 		
 		This op parses serialized examples into a dictionary mapping keys to `Tensor`
-		and `SparseTensor` objects. `features` is a dict from keys to `VarLenFeature`
-		and `FixedLenFeature` objects. Each `VarLenFeature` is mapped to a
-		`SparseTensor`, and each `FixedLenFeature` is mapped to a `Tensor`.
+		and `SparseTensor` objects. `features` is a dict from keys to `VarLenFeature`,
+		`SparseFeature`, and `FixedLenFeature` objects. Each `VarLenFeature`
+		and `SparseFeature` is mapped to a `SparseTensor`, and each
+		`FixedLenFeature` is mapped to a `Tensor`.
 		
 		Each `VarLenFeature` maps to a `SparseTensor` of the specified type
 		representing a ragged matrix. Its indices are `[batch, index]` where `batch`
-		is the batch entry the value is from in `serialized`, and `index` is the
-		value's index in the list of values associated with that feature and example.
+		identifies the example in `serialized`, and `index` is the value's index in
+		the list of values associated with that feature and example.
+		
+		Each `SparseFeature` maps to a `SparseTensor` of the specified type
+		representing a Tensor of `dense_shape` `[batch_size] + SparseFeature.size`.
+		Its `values` come from the feature in the examples with key `value_key`.
+		A `values[i]` comes from a position `k` in the feature of an example at batch
+		entry `batch`. This positional information is recorded in `indices[i]` as
+		`[batch, index_0, index_1, ...]` where `index_j` is the `k-th` value of
+		the feature in the example at with key `SparseFeature.index_key[j].
+		In other words, we split the indices (except the first index indicating the
+		batch entry) of a `SparseTensor` by dimension into different features of the
+		`Example`. Due to its complexity a `VarLenFeature` should be preferred over a
+		`SparseFeature` whenever possible.
 		
 		Each `FixedLenFeature` `df` maps to a `Tensor` of the specified type (or
 		`tf.float32` if not specified) and shape `(serialized.size(),) + df.shape`.
@@ -251,9 +277,15 @@ package tensorflow.python.ops.parsing_ops;
 		value, we will fail if that `Feature` is missing from any example in
 		`serialized`.
 		
+		Each `FixedLenSequenceFeature` `df` maps to a `Tensor` of the specified type
+		(or `tf.float32` if not specified) and shape
+		`(serialized.size(), None) + df.shape`.
+		All examples in `serialized` will be padded with `default_value` along the
+		second dimension.
+		
 		Examples:
 		
-		For example, if one expects a `tf.float32` sparse feature `ft` and three
+		For example, if one expects a `tf.float32` `VarLenFeature` `ft` and three
 		serialized `Example`s are provided:
 		
 		```
@@ -272,7 +304,14 @@ package tensorflow.python.ops.parsing_ops;
 		```
 		{"ft": SparseTensor(indices=[[0, 0], [0, 1], [2, 0]],
 		                    values=[1.0, 2.0, 3.0],
-		                    shape=(3, 2)) }
+		                    dense_shape=(3, 2)) }
+		```
+		
+		If instead a `FixedLenSequenceFeature` with `default_value = -1.0` and
+		`shape=[]` is used then the output will look like:
+		
+		```
+		{"ft": [[1.0, 2.0], [3.0, -1.0]]}
 		```
 		
 		Given two `Example` input protos in `serialized`:
@@ -309,15 +348,15 @@ package tensorflow.python.ops.parsing_ops;
 		  "kw": SparseTensor(
 		      indices=[[0, 0], [0, 1], [1, 0]],
 		      values=["knit", "big", "emmy"]
-		      shape=[2, 2]),
+		      dense_shape=[2, 2]),
 		  "dank": SparseTensor(
 		      indices=[[1, 0]],
 		      values=[42],
-		      shape=[2, 1]),
+		      dense_shape=[2, 1]),
 		  "gps": SparseTensor(
 		      indices=[],
 		      values=[],
-		      shape=[2, 0]),
+		      dense_shape=[2, 0]),
 		}
 		```
 		
@@ -355,11 +394,49 @@ package tensorflow.python.ops.parsing_ops;
 		}
 		```
 		
+		An alternative to `VarLenFeature` to obtain a `SparseTensor` is
+		`SparseFeature`. For example, given two `Example` input protos in
+		`serialized`:
+		
+		```
+		[
+		  features {
+		    feature { key: "val" value { float_list { value: [ 0.5, -1.0 ] } } }
+		    feature { key: "ix" value { int64_list { value: [ 3, 20 ] } } }
+		  },
+		  features {
+		    feature { key: "val" value { float_list { value: [ 0.0 ] } } }
+		    feature { key: "ix" value { int64_list { value: [ 42 ] } } }
+		  }
+		]
+		```
+		
+		And arguments
+		
+		```
+		example_names: ["input0", "input1"],
+		features: {
+		    "sparse": SparseFeature(
+		        index_key="ix", value_key="val", dtype=tf.float32, size=100),
+		}
+		```
+		
+		Then the output is a dictionary:
+		
+		```python
+		{
+		  "sparse": SparseTensor(
+		      indices=[[0, 3], [0, 20], [1, 42]],
+		      values=[0.5, -1.0, 0.0]
+		      dense_shape=[2, 100]),
+		}
+		```
+		
 		Args:
 		  serialized: A vector (1-D Tensor) of strings, a batch of binary
 		    serialized `Example` protos.
-		  features: A `dict` mapping feature keys to `FixedLenFeature` or
-		    `VarLenFeature` values.
+		  features: A `dict` mapping feature keys to `FixedLenFeature`,
+		    `VarLenFeature`, and `SparseFeature` values.
 		  name: A name for this operation (optional).
 		  example_names: A vector (1-D Tensor) of strings (optional), the names of
 		    the serialized protos in the batch.
@@ -385,6 +462,9 @@ package tensorflow.python.ops.parsing_ops;
 		the first (`batch_size`) entry of the shape vector is removed (it is now a
 		single element vector).
 		
+		One might see performance advantages by batching `Example` protos with
+		`parse_example` instead of using this function directly.
+		
 		Args:
 		  serialized: A scalar string Tensor, a single serialized Example.
 		    See `_parse_single_example_raw` documentation for more details.
@@ -404,11 +484,10 @@ package tensorflow.python.ops.parsing_ops;
 	/**
 		Parses a single `SequenceExample` proto.
 		
-		Parses a single serialized [`SequenceExample`]
-		(https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
+		Parses a single serialized [`SequenceExample`](https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
 		proto given in `serialized`.
 		
-		This op parses a serialize sequence example into a tuple of dictionaries
+		This op parses a serialized sequence example into a tuple of dictionaries
 		mapping keys to `Tensor` and `SparseTensor` objects respectively.
 		The first dictionary contains mappings for keys appearing in
 		`context_features`, and the second dictionary contains mappings for keys
@@ -432,7 +511,7 @@ package tensorflow.python.ops.parsing_ops;
 		`sequence_features` contains `VarLenFeature` and `FixedLenSequenceFeature`
 		objects. Each `VarLenFeature` is mapped to a `SparseTensor`, and each
 		`FixedLenSequenceFeature` is mapped to a `Tensor`, each of the specified type.
-		The shape will be `(T,) + df.shape` for `FixedLenSequenceFeature` `df`, where
+		The shape will be `(T,) + df.dense_shape` for `FixedLenSequenceFeature` `df`, where
 		`T` is the length of the associated `FeatureList` in the `SequenceExample`.
 		For instance, `FixedLenSequenceFeature([])` yields a scalar 1-D `Tensor` of
 		static shape `[None]` and dynamic shape `[T]`, while
@@ -475,6 +554,21 @@ package tensorflow.python.ops.parsing_ops;
 		  ValueError: if any feature is invalid.
 	**/
 	static public function parse_single_sequence_example(serialized:Dynamic, ?context_features:Dynamic, ?sequence_features:Dynamic, ?example_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Transforms a serialized tensorflow.TensorProto proto into a Tensor.
+		
+		Args:
+		  serialized: A `Tensor` of type `string`.
+		    A scalar string containing a serialized TensorProto proto.
+		  out_type: A `tf.DType`.
+		    The type of the serialized tensor.  The provided type must match the
+		    type of the serialized tensor and no implicit conversion will take place.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `out_type`. A Tensor of type `out_type`.
+	**/
+	static public function parse_tensor(serialized:Dynamic, out_type:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Converts each string in the input Tensor to the specified numeric type.
@@ -484,8 +578,8 @@ package tensorflow.python.ops.parsing_ops;
 		
 		Args:
 		  string_tensor: A `Tensor` of type `string`.
-		  out_type: An optional `tf.DType` from: `tf.float32, tf.int32`. Defaults to `tf.float32`.
-		    The numeric type to interpret each string in string_tensor as.
+		  out_type: An optional `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.int64`. Defaults to `tf.float32`.
+		    The numeric type to interpret each string in `string_tensor` as.
 		  name: A name for the operation (optional).
 		
 		Returns:

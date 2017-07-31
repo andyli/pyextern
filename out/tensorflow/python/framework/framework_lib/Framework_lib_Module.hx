@@ -2,15 +2,24 @@
 package tensorflow.python.framework.framework_lib;
 @:pythonImport("tensorflow.python.framework.framework_lib") extern class Framework_lib_Module {
 	/**
-		Specifies that ops of type `op_type` do not have a defined gradient.
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
 		
 		This function is only used when defining a new op type. It may be
 		used for ops such as `tf.size()` that are not differentiable.  For
 		example:
 		
 		```python
-		tf.NoGradient("Size")
+		tf.NotDifferentiable("Size")
 		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
 		
 		Args:
 		  op_type: The string type of an operation. This corresponds to the
@@ -20,6 +29,34 @@ package tensorflow.python.framework.framework_lib;
 		  TypeError: If `op_type` is not a string.
 	**/
 	static public function NoGradient(op_type:Dynamic):Dynamic;
+	/**
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
+		
+		This function is only used when defining a new op type. It may be
+		used for ops such as `tf.size()` that are not differentiable.  For
+		example:
+		
+		```python
+		tf.NotDifferentiable("Size")
+		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
+		
+		Args:
+		  op_type: The string type of an operation. This corresponds to the
+		    `OpDef.name` field for the proto that defines the operation.
+		
+		Raises:
+		  TypeError: If `op_type` is not a string.
+	**/
+	static public function NotDifferentiable(op_type:Dynamic):Dynamic;
 	static public var QUANTIZED_DTYPES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -33,7 +70,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.add_to_collection()` using the default graph.
 		
-		See [`Graph.add_to_collection()`](../../api_docs/python/framework.md#Graph.add_to_collection)
+		See @{tf.Graph.add_to_collection}
 		for more details.
 		
 		Args:
@@ -80,7 +117,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.control_dependencies()` using the default graph.
 		
-		See [`Graph.control_dependencies()`](../../api_docs/python/framework.md#Graph.control_dependencies)
+		See @{tf.Graph.control_dependencies}
 		for more details.
 		
 		Args:
@@ -125,17 +162,20 @@ package tensorflow.python.framework.framework_lib;
 		  dtype: Optional element type for the returned tensor. If missing, the
 		    type is inferred from the type of `value`.
 		  name: Optional name to use if a new `Tensor` is created.
-		  as_ref: True if we want the result as a ref tensor. Only used if a new
-		    `Tensor` is created.
+		  preferred_dtype: Optional element type for the returned tensor,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
 		
 		Returns:
-		  A `Tensor` based on `value`.
+		  An `Output` based on `value`.
 		
 		Raises:
 		  TypeError: If no conversion function is registered for `value`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
 	**/
-	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
 	/**
 		Converts the given object to a `Tensor` or an `IndexedSlices`.
 		
@@ -149,7 +189,6 @@ package tensorflow.python.framework.framework_lib;
 		  dtype: (Optional.) The required `DType` of the returned `Tensor` or
 		    `IndexedSlices`.
 		  name: (Optional.) A name to use if a new `Tensor` is created.
-		  as_ref: True if the caller wants the results as ref tensors.
 		
 		Returns:
 		  An `Tensor`, `IndexedSlices`, or `SparseTensor` based on `value`.
@@ -157,12 +196,29 @@ package tensorflow.python.framework.framework_lib;
 		Raises:
 		  ValueError: If `dtype` does not match the element type of `value`.
 	**/
-	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Converts value to a `SparseTensor` or `Tensor`.
+		
+		Args:
+		  value: A `SparseTensor`, `SparseTensorValue`, or an object whose type has a
+		    registered `Tensor` conversion function.
+		  dtype: Optional element type for the returned tensor. If missing, the
+		    type is inferred from the type of `value`.
+		  name: Optional name to use if a new `Tensor` is created.
+		
+		Returns:
+		  A `SparseTensor` or `Tensor` based on `value`.
+		
+		Raises:
+		  RuntimeError: If result type is incompatible with `dtype`.
+	**/
+	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Wrapper for `Graph.device()` using the default graph.
 		
 		See
-		[`Graph.device()`](../../api_docs/python/framework.md#Graph.device)
+		@{tf.Graph.device}
 		for more details.
 		
 		Args:
@@ -177,6 +233,7 @@ package tensorflow.python.framework.framework_lib;
 	static public var division : Dynamic;
 	static public var double : Dynamic;
 	static public var double_ref : Dynamic;
+	static public var dtype_range : Dynamic;
 	static public var float16 : Dynamic;
 	static public var float16_ref : Dynamic;
 	static public var float32 : Dynamic;
@@ -186,7 +243,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.get_collection()` using the default graph.
 		
-		See [`Graph.get_collection()`](../../api_docs/python/framework.md#Graph.get_collection)
+		See @{tf.Graph.get_collection}
 		for more details.
 		
 		Args:
@@ -208,7 +265,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.get_collection_ref()` using the default graph.
 		
-		See [`Graph.get_collection_ref()`](../../api_docs/python/framework.md#Graph.get_collection_ref)
+		See @{tf.Graph.get_collection_ref}
 		for more details.
 		
 		Args:
@@ -247,7 +304,7 @@ package tensorflow.python.framework.framework_lib;
 		graph, or for only specific operations.
 		
 		For details on how the graph-level seed interacts with op seeds, see
-		[`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed).
+		@{tf.set_random_seed}.
 		
 		Args:
 		  op_seed: integer.
@@ -260,14 +317,15 @@ package tensorflow.python.framework.framework_lib;
 	static public var half : Dynamic;
 	static public var half_ref : Dynamic;
 	/**
-		Imports the TensorFlow graph in `graph_def` into the Python `Graph`.
+		Imports the graph from `graph_def` into the current default `Graph`.
 		
 		This function provides a way to import a serialized TensorFlow
 		[`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
 		protocol buffer, and extract individual objects in the `GraphDef` as
-		[`Tensor`](#Tensor) and [`Operation`](#Operation) objects. See
-		[`Graph.as_graph_def()`](#Graph.as_graph_def) for a way to create a
-		`GraphDef` proto.
+		@{tf.Tensor} and @{tf.Operation} objects. Once extracted,
+		these objects are placed into the current default `Graph`. See
+		@{tf.Graph.as_graph_def} for a way to create a `GraphDef`
+		proto.
 		
 		Args:
 		  graph_def: A `GraphDef` proto containing operations to be imported into
@@ -279,7 +337,8 @@ package tensorflow.python.framework.framework_lib;
 		    `graph_def` that will be returned as `Operation` objects; and/or
 		    tensor names in `graph_def` that will be returned as `Tensor` objects.
 		  name: (Optional.) A prefix that will be prepended to the names in
-		    `graph_def`. Defaults to `"import"`.
+		    `graph_def`. Note that this does not apply to imported function names.
+		    Defaults to `"import"`.
 		  op_dict: (Optional.) A dictionary mapping op type names to `OpDef` protos.
 		    Must contain an `OpDef` proto for each op type named in `graph_def`.
 		    If omitted, uses the `OpDef` protos registered in the global registry.
@@ -336,7 +395,7 @@ package tensorflow.python.framework.framework_lib;
 		loading a library. The rules for determining the exact location of the
 		library are platform-specific and are not documented here. When the
 		library is loaded, ops and kernels registered in the library via the
-		REGISTER_* macros are made available in the TensorFlow process. Note
+		`REGISTER_*` macros are made available in the TensorFlow process. Note
 		that ops with the same name as an existing op are rejected and not
 		registered with the process.
 		
@@ -353,32 +412,75 @@ package tensorflow.python.framework.framework_lib;
 	**/
 	static public function load_op_library(library_filename:Dynamic):Dynamic;
 	/**
-		Wrapper for `Graph.name_scope()` using the default graph.
+		Create a numpy ndarray from a tensor.
 		
-		See
-		[`Graph.name_scope()`](../../api_docs/python/framework.md#Graph.name_scope)
-		for more details.
+		Create a numpy ndarray with the same shape and data as the tensor.
 		
 		Args:
-		  name: A name for the scope.
+		  tensor: A TensorProto.
 		
 		Returns:
-		  A context manager that installs `name` as a new name scope in the
-		  default graph.
+		  A numpy array with the tensor contents.
+		
+		Raises:
+		  TypeError: if tensor has unsupported type.
 	**/
-	static public function name_scope(name:Dynamic):Dynamic;
+	static public function make_ndarray(tensor:Dynamic):Dynamic;
+	/**
+		Create a TensorProto.
+		
+		Args:
+		  values:         Values to put in the TensorProto.
+		  dtype:          Optional tensor_pb2 DataType value.
+		  shape:          List of integers representing the dimensions of tensor.
+		  verify_shape:   Boolean that enables verification of a shape of values.
+		
+		Returns:
+		  A TensorProto. Depending on the type, it may contain data in the
+		  "tensor_content" attribute, which is not directly useful to Python programs.
+		  To access the values you should convert the proto back to a numpy ndarray
+		  with tensor_util.MakeNdarray(proto).
+		
+		Raises:
+		  TypeError:  if unsupported types are provided.
+		  ValueError: if arguments have inappropriate values or if verify_shape is
+		   True and shape of values is not equals to a shape from the argument.
+		
+		make_tensor_proto accepts "values" of a python scalar, a python list, a
+		numpy ndarray, or a numpy scalar.
+		
+		If "values" is a python scalar or a python list, make_tensor_proto
+		first convert it to numpy ndarray. If dtype is None, the
+		conversion tries its best to infer the right numpy data
+		type. Otherwise, the resulting numpy array has a compatible data
+		type with the given dtype.
+		
+		In either case above, the numpy ndarray (either the caller provided
+		or the auto converted) must have the compatible type with dtype.
+		
+		make_tensor_proto then converts the numpy array to a tensor proto.
+		
+		If "shape" is None, the resulting tensor proto represents the numpy
+		array precisely.
+		
+		Otherwise, "shape" specifies the tensor's shape and the numpy array
+		can not have more elements than what "shape" specifies.
+	**/
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	/**
 		Returns a context manager for use when defining a Python op.
 		
 		This context manager validates that the given `values` are from the
-		same graph, ensures that graph is the default graph, and pushes a
-		name scope.
+		same graph, makes that graph the default graph, and pushes a
+		name scope in that graph (see
+		@{tf.Graph.name_scope}
+		for more details on that).
 		
 		For example, to define a new Python op called `my_op`:
 		
 		```python
 		def my_op(a, b, c, name=None):
-		  with tf.op_scope([a, b, c], name, "MyOp") as scope:
+		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
 		    a = tf.convert_to_tensor(a, name="a")
 		    b = tf.convert_to_tensor(b, name="b")
 		    c = tf.convert_to_tensor(c, name="c")
@@ -387,15 +489,21 @@ package tensorflow.python.framework.framework_lib;
 		```
 		
 		Args:
-		  values: The list of `Tensor` arguments that are passed to the op function.
 		  name: The name argument that is passed to the op function.
 		  default_name: The default name to use if the `name` argument is `None`.
+		  values: The list of `Tensor` arguments that are passed to the op function.
 		
 		Returns:
 		  A context manager for use in defining Python ops. Yields the name scope.
 		
 		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided.
+		  ValueError: if neither `name` nor `default_name` is provided
+		    but `values` are.
+	**/
+	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	static public var np_resource : Dynamic;
+	/**
+		DEPRECATED. Same as name_scope above, just different argument order.
 	**/
 	static public function op_scope(values:Dynamic, name:Dynamic, ?default_name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -414,8 +522,10 @@ package tensorflow.python.framework.framework_lib;
 		
 		The conversion function must have the following signature:
 		
+		```python
 		    def conversion_func(value, dtype=None, name=None, as_ref=False):
 		      # ...
+		```
 		
 		It must return a `Tensor` with the given `dtype` if specified. If the
 		conversion function creates a new `Tensor`, it should use the given
@@ -457,6 +567,8 @@ package tensorflow.python.framework.framework_lib;
 		after calling this function will result in undefined behavior.
 	**/
 	static public function reset_default_graph():Dynamic;
+	static public var resource : Dynamic;
+	static public var resource_ref : Dynamic;
 	/**
 		Sets the graph-level random seed.
 		
@@ -532,7 +644,7 @@ package tensorflow.python.framework.framework_lib;
 		a = tf.random_uniform([1])
 		b = tf.random_normal([1])
 		
-		# Repeatedly running this block with the same graph will generate different
+		# Repeatedly running this block with the same graph will generate the same
 		# sequences of 'a' and 'b'.
 		print("Session 1")
 		with tf.Session() as sess1:
@@ -555,6 +667,42 @@ package tensorflow.python.framework.framework_lib;
 	static public function set_random_seed(seed:Dynamic):Dynamic;
 	static public var string : Dynamic;
 	static public var string_ref : Dynamic;
+	/**
+		Subscribe to a tensor.
+		
+		This method will attach side effect graphs to a given set
+		of tensors. Set of tensors follows from session.run and supports
+		single `Tensor`, `list`, nested `list`, `tuple`, `namedtuple`, or `dict`. It
+		returns the tensors in the same passed in structure, but as clones with
+		side effects applied. The supplied side effect graphs are specified
+		as a constructor function which takes the target tensor and
+		constructs a side effect graph and returns a list of ops that should
+		be control dependencies on fetching the tensor. It will append
+		'subscription' to the name scope of the tensor for every node in
+		the side effect graph. These control dependencies are what trigger
+		the side effects. Subscribe will construct the additions to your
+		graph and return the created identity tensor downstream of the control
+		dependencies. Use these tensors as you would normally in the rest of
+		your tensorflow code. If a given tensor has already been subscribed or a
+		tensor returned by a call to subscribe is passed, the previously created
+		identity tensor will be reused and the side effect graphs will be added to
+		the existing ones.
+		
+		Args:
+		  tensors: `Tensor` or set of tensors to subscribe to. Set of tensors format
+		    follows from `Session.run` and supports single `Tensor`, `list`, nested
+		    `list`, `tuple`, `namedtuple`, or `dict`.
+		  side_effects: Function(s) that takes a `Tensor`, construct a subgraph, and
+		    return a nonempty list of control dependencies. This can be a single
+		    function or list of functions.
+		Returns:
+		  Subscribed tensors, which are identity copies of the passed in tensors
+		    in the same passed in structure, but the graph has been modified
+		    such that these are downstream of the control dependencies for
+		    the side effect graphs. Use these functionally equivalent tensors
+		    instead of the passed in tensors for further construction or running.
+	**/
+	static public function subscribe(tensors:Dynamic, side_effects:Dynamic):Dynamic;
 	static public var uint16 : Dynamic;
 	static public var uint16_ref : Dynamic;
 	static public var uint8 : Dynamic;

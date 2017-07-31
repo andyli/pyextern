@@ -43,14 +43,49 @@ package matplotlib.ticker;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		place ticks on the location= base**i*subs[j]
+		Place ticks on the locations : subs[j] * base**i
+		
+		Parameters
+		----------
+		subs : None, string, or sequence of float, optional, default (1.0,)
+		    Gives the multiples of integer powers of the base at which
+		    to place ticks.  The default places ticks only at
+		    integer powers of the base.
+		    The permitted string values are ``'auto'`` and ``'all'``,
+		    both of which use an algorithm based on the axis view
+		    limits to determine whether and how to put ticks between
+		    integer powers of the base.  With ``'auto'``, ticks are
+		    placed only between integer powers; with ``'all'``, the
+		    integer powers are included.  A value of None is
+		    equivalent to ``'auto'``.
 	**/
 	@:native("__init__")
 	public function ___init__(?base:Dynamic, ?subs:Dynamic, ?numdecs:Dynamic, ?numticks:Dynamic):Dynamic;
 	/**
-		place ticks on the location= base**i*subs[j]
+		Place ticks on the locations : subs[j] * base**i
+		
+		Parameters
+		----------
+		subs : None, string, or sequence of float, optional, default (1.0,)
+		    Gives the multiples of integer powers of the base at which
+		    to place ticks.  The default places ticks only at
+		    integer powers of the base.
+		    The permitted string values are ``'auto'`` and ``'all'``,
+		    both of which use an algorithm based on the axis view
+		    limits to determine whether and how to put ticks between
+		    integer powers of the base.  With ``'auto'``, ticks are
+		    placed only between integer powers; with ``'all'``, the
+		    integer powers are included.  A value of None is
+		    equivalent to ``'auto'``.
 	**/
 	public function new(?base:Dynamic, ?subs:Dynamic, ?numdecs:Dynamic, ?numticks:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -116,6 +151,7 @@ package matplotlib.ticker;
 	**/
 	public function base(base:Dynamic):Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function nonsingular(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		Pan numticks (can be positive or negative)
 	**/
@@ -138,7 +174,7 @@ package matplotlib.ticker;
 	public function set_params(?base:Dynamic, ?subs:Dynamic, ?numdecs:Dynamic, ?numticks:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		set the minor ticks the log scaling every base**i*subs[j]
+		set the minor ticks for the log scaling every base**i*subs[j]
 	**/
 	public function subs(subs:Dynamic):Dynamic;
 	/**

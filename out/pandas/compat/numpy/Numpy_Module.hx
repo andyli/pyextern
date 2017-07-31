@@ -16,6 +16,8 @@ package pandas.compat.numpy;
 	static public var _np_version_under1p10 : Dynamic;
 	static public var _np_version_under1p11 : Dynamic;
 	static public var _np_version_under1p12 : Dynamic;
+	static public var _np_version_under1p13 : Dynamic;
+	static public var _np_version_under1p14 : Dynamic;
 	static public var _np_version_under1p8 : Dynamic;
 	static public var _np_version_under1p9 : Dynamic;
 	static public var _tz_regex : Dynamic;

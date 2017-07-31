@@ -41,13 +41,13 @@ package tensorflow.contrib.graph_editor.util;
 		Create a dictionary of control-output dependencies.
 		
 		Args:
-		  graph: a tf.Graph.
+		  graph: a `tf.Graph`.
 		Returns:
-		  A dictionary where a key is a tf.Operation instance and the corresponding
-		  value is a list of all the ops which have the key as one of their
-		  control-input dependencies.
+		  A dictionary where a key is a `tf.Operation` instance and the
+		     corresponding value is a list of all the ops which have the key
+		     as one of their control-input dependencies.
 		Raises:
-		  TypeError: graph is not a tf.Graph.
+		  TypeError: graph is not a `tf.Graph`.
 	**/
 	@:native("__init__")
 	public function ___init__(graph:Dynamic):Dynamic;
@@ -55,15 +55,22 @@ package tensorflow.contrib.graph_editor.util;
 		Create a dictionary of control-output dependencies.
 		
 		Args:
-		  graph: a tf.Graph.
+		  graph: a `tf.Graph`.
 		Returns:
-		  A dictionary where a key is a tf.Operation instance and the corresponding
-		  value is a list of all the ops which have the key as one of their
-		  control-input dependencies.
+		  A dictionary where a key is a `tf.Operation` instance and the
+		     corresponding value is a list of all the ops which have the key
+		     as one of their control-input dependencies.
 		Raises:
-		  TypeError: graph is not a tf.Graph.
+		  TypeError: graph is not a `tf.Graph`.
 	**/
 	public function new(graph:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

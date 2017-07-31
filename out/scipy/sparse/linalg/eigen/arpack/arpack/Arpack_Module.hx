@@ -88,7 +88,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		    the operation ``A * x``, where A is a real or complex square matrix.
 		k : int, optional
 		    The number of eigenvalues and eigenvectors desired.
-		    `k` must be smaller than N. It is not possible to compute all
+		    `k` must be smaller than N-1. It is not possible to compute all
 		    eigenvectors of a matrix.
 		M : ndarray, sparse matrix or LinearOperator, optional
 		    An array, sparse matrix, or LinearOperator representing
@@ -432,7 +432,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 	static public function get_OPinv_matvec(A:Dynamic, M:Dynamic, sigma:Dynamic, ?symmetric:Dynamic, ?tol:Dynamic):Dynamic;
 	static public function get_inv_matvec(M:Dynamic, ?symmetric:Dynamic, ?tol:Dynamic):Dynamic;
 	/**
-		Use Generalized Minimal RESidual iteration to solve A x = b.
+		Use Generalized Minimal RESidual iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------

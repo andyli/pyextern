@@ -40,7 +40,7 @@ package tensorflow.python.ops.partitioned_variables;
 		  trainable: If True also add all the variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES`.
 		  collections: List of graph collections keys to add the variables to.
-		    Defaults to `[GraphKeys.VARIABLES]`.
+		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]`.
 		  name: Optional name for the full variable.  Defaults to
 		    `"PartitionedVariable"` and gets uniquified automatically.
 		  reuse: Boolean or `None`; if `True` and name is set, it would reuse
@@ -55,6 +55,18 @@ package tensorflow.python.ops.partitioned_variables;
 	**/
 	static public function create_partitioned_variables(shape:Dynamic, slicing:Dynamic, initializer:Dynamic, ?dtype:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Partitioner to specify a fixed number of shards along given axis.
+		
+		Args:
+		  num_shards: `int`, number of shards to partition variable.
+		  axis: `int`, axis to partition on.
+		
+		Returns:
+		  A partition function usable as the `partitioner` argument to
+		  `variable_scope`, `get_variable`, and `get_partitioned_variable_list`.
+	**/
+	static public function fixed_size_partitioner(num_shards:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Partitioner to allocate minimum size per slice.
 		

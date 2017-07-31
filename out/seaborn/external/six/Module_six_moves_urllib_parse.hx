@@ -2,6 +2,7 @@
 package seaborn.external.six;
 @:pythonImport("seaborn.external.six", "Module_six_moves_urllib_parse") extern class Module_six_moves_urllib_parse {
 	static public var ParseResult : Dynamic;
+	static public var SplitResult : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -47,6 +48,13 @@ package seaborn.external.six;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,6 +111,9 @@ package seaborn.external.six;
 	static public var parse_qsl : Dynamic;
 	static public var quote : Dynamic;
 	static public var quote_plus : Dynamic;
+	static public var splitquery : Dynamic;
+	static public var splittag : Dynamic;
+	static public var splituser : Dynamic;
 	static public var unquote : Dynamic;
 	static public var unquote_plus : Dynamic;
 	static public var urldefrag : Dynamic;
@@ -112,4 +123,9 @@ package seaborn.external.six;
 	static public var urlsplit : Dynamic;
 	static public var urlunparse : Dynamic;
 	static public var urlunsplit : Dynamic;
+	static public var uses_fragment : Dynamic;
+	static public var uses_netloc : Dynamic;
+	static public var uses_params : Dynamic;
+	static public var uses_query : Dynamic;
+	static public var uses_relative : Dynamic;
 }

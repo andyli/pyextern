@@ -11,17 +11,18 @@ package scipy.optimize._differentialevolution;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _status_message : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Turn seed into a np.random.RandomState instance
 		
-		If seed is None, return the RandomState singleton used by np.random.
+		If seed is None (or np.random), return the RandomState singleton used
+		by np.random.
 		If seed is an int, return a new RandomState instance seeded with seed.
 		If seed is already a RandomState instance, return it.
 		Otherwise raise ValueError.
 	**/
-	static public function _make_random_gen(seed:Dynamic):Dynamic;
-	static public var _status_message : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public function check_random_state(seed:Dynamic):Dynamic;
 	/**
 		Finds the global minimum of a multivariate function.
 		Differential Evolution is stochastic in nature (does not use gradient
@@ -69,10 +70,10 @@ package scipy.optimize._differentialevolution;
 		    A multiplier for setting the total population size.  The population has
 		    ``popsize * len(x)`` individuals.
 		tol : float, optional
-		    When the mean of the population energies, multiplied by tol,
-		    divided by the standard deviation of the population energies
-		    is greater than 1 the solving process terminates:
-		    ``convergence = mean(pop) * tol / stdev(pop) > 1``
+		    Relative tolerance for convergence, the solving stops when
+		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
+		    where and `atol` and `tol` are the absolute and relative tolerance
+		    respectively.
 		mutation : float or tuple(float, float), optional
 		    The mutation constant. In the literature this is also known as
 		    differential weight, being denoted by F.
@@ -119,6 +120,11 @@ package scipy.optimize._differentialevolution;
 		    maximize coverage of the available parameter space. 'random' initializes
 		    the population randomly - this has the drawback that clustering can
 		    occur, preventing the whole of parameter space being covered.
+		atol : float, optional
+		    Absolute tolerance for convergence, the solving stops when
+		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
+		    where and `atol` and `tol` are the absolute and relative tolerance
+		    respectively.
 		
 		Returns
 		-------
@@ -198,7 +204,7 @@ package scipy.optimize._differentialevolution;
 		.. [2] http://www1.icsi.berkeley.edu/~storn/code.html
 		.. [3] http://en.wikipedia.org/wiki/Differential_evolution
 	**/
-	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic):Dynamic;
+	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Minimization of scalar function of one or more variables.

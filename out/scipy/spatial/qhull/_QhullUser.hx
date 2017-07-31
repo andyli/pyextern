@@ -42,6 +42,13 @@ package scipy.spatial.qhull;
 	public function ___init__(qhull:Dynamic, ?incremental:Dynamic):Dynamic;
 	public function new(qhull:Dynamic, ?incremental:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -96,8 +103,6 @@ package scipy.spatial.qhull;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _qhull : Dynamic;
-	public function _update(qhull:Dynamic):Dynamic;
 	/**
 		add_points(points, restart=False)
 		
@@ -128,7 +133,9 @@ package scipy.spatial.qhull;
 		object to be able to add points incrementally. Incremental addition
 		of points is also not possible after `close` has been called.
 	**/
-	public function add_points(points:Dynamic, ?restart:Dynamic):Dynamic;
+	public function _add_points(points:Dynamic, ?restart:Dynamic, ?interior_point:Dynamic):Dynamic;
+	static public var _qhull : Dynamic;
+	public function _update(qhull:Dynamic):Dynamic;
 	/**
 		close()
 		

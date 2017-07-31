@@ -10,8 +10,8 @@ package pandas.io.sas.sas7bdat;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------

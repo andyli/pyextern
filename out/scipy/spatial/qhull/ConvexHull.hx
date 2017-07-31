@@ -42,6 +42,13 @@ package scipy.spatial.qhull;
 	public function ___init__(points:Dynamic, ?incremental:Dynamic, ?qhull_options:Dynamic):Dynamic;
 	public function new(points:Dynamic, ?incremental:Dynamic, ?qhull_options:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -96,6 +103,37 @@ package scipy.spatial.qhull;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		add_points(points, restart=False)
+		
+		Process a set of additional new points.
+		
+		Parameters
+		----------
+		points : ndarray
+		    New points to add. The dimensionality should match that of the
+		    initial points.
+		restart : bool, optional
+		    Whether to restart processing from scratch, rather than
+		    adding points incrementally.
+		
+		Raises
+		------
+		QhullError
+		    Raised when Qhull encounters an error condition, such as
+		    geometrical degeneracy when options to resolve are not enabled.
+		
+		See Also
+		--------
+		close
+		
+		Notes
+		-----
+		You need to specify ``incremental=True`` when constructing the
+		object to be able to add points incrementally. Incremental addition
+		of points is also not possible after `close` has been called.
+	**/
+	public function _add_points(points:Dynamic, ?restart:Dynamic, ?interior_point:Dynamic):Dynamic;
 	static public var _qhull : Dynamic;
 	public function _update(qhull:Dynamic):Dynamic;
 	/**
@@ -139,5 +177,6 @@ package scipy.spatial.qhull;
 		longer possible.
 	**/
 	public function close():Dynamic;
+	public var points : Dynamic;
 	public var vertices : Dynamic;
 }

@@ -46,6 +46,13 @@ package numpy;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -140,7 +147,8 @@ package numpy;
 	**/
 	public var iters : Dynamic;
 	/**
-		Number of dimensions of broadcasted result.
+		Number of dimensions of broadcasted result. For code intended for NumPy
+		1.12.0 and later the more consistent `ndim` is preferred.
 		
 		Examples
 		--------
@@ -151,6 +159,20 @@ package numpy;
 		2
 	**/
 	public var nd : Dynamic;
+	/**
+		Number of dimensions of broadcasted result. Alias for `nd`.
+		
+		.. versionadded:: 1.12.0
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 3])
+		>>> y = np.array([[4], [5], [6]])
+		>>> b = np.broadcast(x, y)
+		>>> b.ndim
+		2
+	**/
+	public var ndim : Dynamic;
 	/**
 		Number of iterators possessed by the broadcasted result.
 		

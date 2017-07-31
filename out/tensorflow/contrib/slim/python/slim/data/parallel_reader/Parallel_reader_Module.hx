@@ -16,7 +16,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		
 		Args:
 		  data_sources: a list/tuple of files or the location of the data, i.e.
-		    /cns/../train@128, /cns/.../train* or /tmp/.../train*
+		    /path/to/train@128, /path/to/train* or /tmp/.../train*
 		
 		Returns:
 		  a list of data_files.
@@ -40,7 +40,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		
 		Args:
 		  data_sources: a list/tuple of files or the location of the data, i.e.
-		    /cns/../train@128, /cns/.../train* or /tmp/.../train*
+		    /path/to/train@128, /path/to/train* or /tmp/.../train*
 		  reader_class: one of the io_ops.ReaderBase subclasses ex: TFRecordReader
 		  num_epochs: The number of times each data source is read. If left as None,
 		      the data will be cycled through indefinitely.
@@ -54,23 +54,26 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		  capacity: integer, capacity of the common_queue.
 		  min_after_dequeue: integer, minimum number of records in the common_queue
 		    after dequeue. Needed for a good shuffle.
+		  seed: A seed for RandomShuffleQueue.
+		  scope: Optional name scope for the ops.
 		
 		Returns:
 		  key, value: a tuple of keys and values from the data_source.
 	**/
-	static public function parallel_read(data_sources:Dynamic, reader_class:Dynamic, ?num_epochs:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic, ?shuffle:Dynamic, ?dtypes:Dynamic, ?capacity:Dynamic, ?min_after_dequeue:Dynamic):Dynamic;
+	static public function parallel_read(data_sources:Dynamic, reader_class:Dynamic, ?num_epochs:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic, ?shuffle:Dynamic, ?dtypes:Dynamic, ?capacity:Dynamic, ?min_after_dequeue:Dynamic, ?seed:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Reads sequentially the data_sources using the reader, doing a single pass.
 		
 		Args:
 		  data_sources: a list/tuple of files or the location of the data, i.e.
-		    /cns/../train@128, /cns/.../train* or /tmp/.../train*
+		    /path/to/train@128, /path/to/train* or /tmp/.../train*
 		  reader_class: one of the io_ops.ReaderBase subclasses ex: TFRecordReader.
 		  reader_kwargs: an optional dict, of kwargs for the reader.
+		  scope: Optional name scope for the ops.
 		
 		Returns:
 		  key, value: a tuple of keys and values from the data_source.
 	**/
-	static public function single_pass_read(data_sources:Dynamic, reader_class:Dynamic, ?reader_kwargs:Dynamic):Dynamic;
+	static public function single_pass_read(data_sources:Dynamic, reader_class:Dynamic, ?reader_kwargs:Dynamic, ?scope:Dynamic):Dynamic;
 }

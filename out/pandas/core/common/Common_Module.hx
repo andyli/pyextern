@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package pandas.core.common;
 @:pythonImport("pandas.core.common") extern class Common_Module {
+	static public function CategoricalDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function DatetimeTZDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function IntervalDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function PeriodDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _NS_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -40,7 +44,28 @@ package pandas.core.common;
 	**/
 	static public function _get_info_slice(obj:Dynamic, indexer:Dynamic):Dynamic;
 	static public function _index_labels_to_array(labels:Dynamic):Dynamic;
-	static public function _iterable_not_string(x:Dynamic):Dynamic;
+	/**
+		Check if the object is an iterable but not a string.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_iter_not_string : bool
+		    Whether `obj` is a non-string iterable.
+		
+		Examples
+		--------
+		>>> _iterable_not_string([1, 2, 3])
+		True
+		>>> _iterable_not_string("foo")
+		False
+		>>> _iterable_not_string(1)
+		False
+	**/
+	static public function _iterable_not_string(obj:Dynamic):Bool;
 	static public function _long_prod(vals:Dynamic):Dynamic;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
@@ -71,6 +96,7 @@ package pandas.core.common;
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _where_compat(mask:Dynamic, arr1:Dynamic, arr2:Dynamic):Dynamic;
+	static public function array_equivalent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function difference(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		Flatten an arbitrarily nested sequence.
@@ -96,9 +122,13 @@ package pandas.core.common;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -131,6 +161,18 @@ package pandas.core.common;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -176,6 +218,12 @@ package pandas.core.common;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -185,13 +233,31 @@ package pandas.core.common;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -386,6 +452,7 @@ package pandas.core.common;
 		DEPRECATED: This is no longer needed, or working, in IPython 3 and above.
 	**/
 	static public function in_qtconsole():Dynamic;
+	static public function infer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function intersection(?seqs:python.VarArgs<Dynamic>):Dynamic;
 	static public function is_any_int_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -408,6 +475,7 @@ package pandas.core.common;
 	static public function is_dict_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_dtype_equal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_extension_type(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_file_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_float(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_float_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_floating_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -420,6 +488,8 @@ package pandas.core.common;
 	static public function is_int_or_datetime_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_integer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_interval(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_interval_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_iterator(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_list_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_named_tuple(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -437,12 +507,14 @@ package pandas.core.common;
 	static public function is_re_compilable(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_scalar(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_sequence(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_signed_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_sparse(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_string_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_string_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_string_like_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_timedelta64_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_timedelta64_ns_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_unsigned_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -495,4 +567,5 @@ package pandas.core.common;
 	static public function split_ranges(mask:Dynamic):Dynamic;
 	static public var t : Dynamic;
 	static public function union(?seqs:python.VarArgs<Dynamic>):Dynamic;
+	static public function union_categoricals(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

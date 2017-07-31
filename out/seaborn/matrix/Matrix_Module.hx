@@ -45,11 +45,11 @@ package seaborn.matrix;
 	**/
 	static public function axis_ticklabels_overlap(labels:Dynamic):Dynamic;
 	/**
-		Plot a hierarchically clustered heatmap of a pandas DataFrame
+		Plot a matrix dataset as a hierarchically-clustered heatmap.
 		
 		Parameters
 		----------
-		data: pandas.DataFrame
+		data: 2D array-like
 		    Rectangular data for clustering. Cannot contain NAs.
 		pivot_kws : dict, optional
 		    If `data` is a tidy dataframe, can provide keyword arguments for
@@ -121,169 +121,70 @@ package seaborn.matrix;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> import seaborn as sns; sns.set()
-		    >>> flights = sns.load_dataset("flights")
-		    >>> flights = flights.pivot("month", "year", "passengers")
-		    >>> g = sns.clustermap(flights)
+		    >>> import seaborn as sns; sns.set(color_codes=True)
+		    >>> iris = sns.load_dataset("iris")
+		    >>> species = iris.pop("species")
+		    >>> g = sns.clustermap(iris)
 		
-		Don't cluster one of the axes:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, col_cluster=False)
-		
-		Use a different colormap and add lines to separate the cells:
+		Use a different similarity metric:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> cmap = sns.cubehelix_palette(as_cmap=True, rot=-.3, light=1)
-		    >>> g = sns.clustermap(flights, cmap=cmap, linewidths=.5)
-		
-		Use a different figure size:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, cmap=cmap, figsize=(7, 5))
-		
-		Standardize the data across the columns:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, standard_scale=1)
-		
-		Normalize the data across the rows:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, z_score=0)
+		    >>> g = sns.clustermap(iris, metric="correlation")
 		
 		Use a different clustering method:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.clustermap(flights, method="single", metric="cosine")
+		    >>> g = sns.clustermap(iris, method="single")
 		
-		Add colored labels on one of the axes:
+		Use a different colormap and ignore outliers in colormap limits:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> season_colors = (sns.color_palette("BuPu", 3) +
-		    ...                  sns.color_palette("RdPu", 3) +
-		    ...                  sns.color_palette("YlGn", 3) +
-		    ...                  sns.color_palette("OrRd", 3))
-		    >>> g = sns.clustermap(flights, row_colors=season_colors)
+		    >>> g = sns.clustermap(iris, cmap="mako", robust=True)
+		
+		Change the size of the figure:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, figsize=(6, 7))
+		
+		Plot one of the axes in its original organization:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, col_cluster=False)
+		
+		Add colored labels:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> lut = dict(zip(species.unique(), "rbg"))
+		    >>> row_colors = species.map(lut)
+		    >>> g = sns.clustermap(iris, row_colors=row_colors)
+		
+		Standardize the data within the columns:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, standard_scale=1)
+		
+		Normalize the data within the rows:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, z_score=0)
 	**/
 	static public function clustermap(data:Dynamic, ?pivot_kws:Dynamic, ?method:Dynamic, ?metric:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?cbar_kws:Dynamic, ?row_cluster:Dynamic, ?col_cluster:Dynamic, ?row_linkage:Dynamic, ?col_linkage:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Make a sequential palette from the cubehelix system.
-		
-		This produces a colormap with linearly-decreasing (or increasing)
-		brightness. That means that information will be preserved if printed to
-		black and white or viewed by someone who is colorblind.  "cubehelix" is
-		also availible as a matplotlib-based palette, but this function gives the
-		user more control over the look of the palette and has a different set of
-		defaults.
-		
-		Parameters
-		----------
-		n_colors : int
-		    Number of colors in the palette.
-		start : float, 0 <= start <= 3
-		    The hue at the start of the helix.
-		rot : float
-		    Rotations around the hue wheel over the range of the palette.
-		gamma : float 0 <= gamma
-		    Gamma factor to emphasize darker (gamma < 1) or lighter (gamma > 1)
-		    colors.
-		hue : float, 0 <= hue <= 1
-		    Saturation of the colors.
-		dark : float 0 <= dark <= 1
-		    Intensity of the darkest color in the palette.
-		light : float 0 <= light <= 1
-		    Intensity of the lightest color in the palette.
-		reverse : bool
-		    If True, the palette will go from dark to light.
-		as_cmap : bool
-		    If True, return a matplotlib colormap instead of a list of colors.
-		
-		Returns
-		-------
-		palette or cmap : seaborn color palette or matplotlib colormap
-		    List-like object of colors as RGB tuples, or colormap object that
-		    can map continuous values to colors, depending on the value of the
-		    ``as_cmap`` parameter.
-		
-		See Also
-		--------
-		choose_cubehelix_palette : Launch an interactive widget to select cubehelix
-		                           palette parameters.
-		dark_palette : Create a sequential palette with dark low values.
-		light_palette : Create a sequential palette with bright low values.
-		
-		References
-		----------
-		Green, D. A. (2011). "A colour scheme for the display of astronomical
-		intensity images". Bulletin of the Astromical Society of India, Vol. 39,
-		p. 289-295.
-		
-		Examples
-		--------
-		
-		Generate the default palette:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> import seaborn as sns; sns.set()
-		    >>> sns.palplot(sns.cubehelix_palette())
-		
-		Rotate backwards from the same starting location:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.cubehelix_palette(rot=-.4))
-		
-		Use a different starting point and shorter rotation:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.cubehelix_palette(start=2.8, rot=.1))
-		
-		Reverse the direction of the lightness ramp:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.cubehelix_palette(reverse=True))
-		
-		Generate a colormap object:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> from numpy import arange
-		    >>> x = arange(25).reshape(5, 5)
-		    >>> cmap = sns.cubehelix_palette(as_cmap=True)
-		    >>> ax = sns.heatmap(x, cmap=cmap)
-		
-		Use the full lightness range:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> cmap = sns.cubehelix_palette(dark=0, light=1, as_cmap=True)
-		    >>> ax = sns.heatmap(x, cmap=cmap)
-	**/
-	static public function cubehelix_palette(?n_colors:Dynamic, ?start:Dynamic, ?rot:Dynamic, ?gamma:Dynamic, ?hue:Dynamic, ?light:Dynamic, ?dark:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	/**
 		Draw a tree diagram of relationships within a matrix
 		
@@ -328,11 +229,13 @@ package seaborn.matrix;
 		    Specific axes object to despine.
 		top, right, left, bottom : boolean, optional
 		    If True, remove that spine.
-		offset : int or None  (default), optional
+		offset : int or dict, optional
 		    Absolute distance, in points, spines should be moved away
-		    from the axes (negative values move spines inward).
+		    from the axes (negative values move spines inward). A single value
+		    applies to all spines; a dict can be used to set offset values per
+		    side.
 		trim : bool, optional
-		    If true, limit spines to the smallest and largest major tick
+		    If True, limit spines to the smallest and largest major tick
 		    on each non-despined axis.
 		
 		Returns
@@ -340,12 +243,9 @@ package seaborn.matrix;
 		None
 	**/
 	static public function despine(?fig:Dynamic, ?ax:Dynamic, ?top:Dynamic, ?right:Dynamic, ?left:Dynamic, ?bottom:Dynamic, ?offset:Dynamic, ?trim:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Plot rectangular data as a color-encoded matrix.
-		
-		This function tries to infer a good colormap to use from the data, but
-		this is not guaranteed to work, so take care to make sure the kind of
-		colormap (sequential or diverging) and its limits are appropriate.
 		
 		This is an Axes-level function and will draw the heatmap into the
 		currently-active Axes if none is provided to the ``ax`` argument.  Part of
@@ -360,15 +260,14 @@ package seaborn.matrix;
 		    columns and rows.
 		vmin, vmax : floats, optional
 		    Values to anchor the colormap, otherwise they are inferred from the
-		    data and other keyword arguments. When a diverging dataset is inferred,
-		    one of these values may be ignored.
-		cmap : matplotlib colormap name or object, optional
-		    The mapping from data values to color space. If not provided, this
-		    will be either a cubehelix map (if the function infers a sequential
-		    dataset) or ``RdBu_r`` (if the function infers a diverging dataset).
+		    data and other keyword arguments.
+		cmap : matplotlib colormap name or object, or list of colors, optional
+		    The mapping from data values to color space. If not provided, the
+		    default will depend on whether ``center`` is set.
 		center : float, optional
-		    The value at which to center the colormap. Passing this value implies
-		    use of a diverging colormap.
+		    The value at which to center the colormap when plotting divergant data.
+		    Using this parameter will change the default ``cmap`` if none is
+		    specified.
 		robust : bool, optional
 		    If True and ``vmin`` or ``vmax`` are absent, the colormap range is
 		    computed with robust quantiles instead of the extreme values.
@@ -394,22 +293,17 @@ package seaborn.matrix;
 		square : boolean, optional
 		    If True, set the Axes aspect to "equal" so each cell will be
 		    square-shaped.
-		ax : matplotlib Axes, optional
-		    Axes in which to draw the plot, otherwise use the currently-active
-		    Axes.
-		xticklabels : list-like, int, or bool, optional
+		xticklabels, yticklabels : "auto", bool, list-like, or int, optional
 		    If True, plot the column names of the dataframe. If False, don't plot
 		    the column names. If list-like, plot these alternate labels as the
 		    xticklabels. If an integer, use the column names but plot only every
-		    n label.
-		yticklabels : list-like, int, or bool, optional
-		    If True, plot the row names of the dataframe. If False, don't plot
-		    the row names. If list-like, plot these alternate labels as the
-		    yticklabels. If an integer, use the index names but plot only every
-		    n label.
+		    n label. If "auto", try to densely plot non-overlapping labels.
 		mask : boolean array or DataFrame, optional
 		    If passed, data will not be shown in cells where ``mask`` is True.
 		    Cells with missing values are automatically masked.
+		ax : matplotlib Axes, optional
+		    Axes in which to draw the plot, otherwise use the currently-active
+		    Axes.
 		kwargs : other keyword arguments
 		    All other keyword arguments are passed to ``ax.pcolormesh``.
 		
@@ -417,6 +311,11 @@ package seaborn.matrix;
 		-------
 		ax : matplotlib Axes
 		    Axes object with the heatmap.
+		
+		See also
+		--------
+		clustermap : Plot a matrix using hierachical clustering to arrange the
+		             rows and columns.
 		
 		Examples
 		--------
@@ -438,13 +337,13 @@ package seaborn.matrix;
 		
 		    >>> ax = sns.heatmap(uniform_data, vmin=0, vmax=1)
 		
-		Plot a heatmap for data centered on 0:
+		Plot a heatmap for data centered on 0 with a diverging colormap:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> normal_data = np.random.randn(10, 12)
-		    >>> ax = sns.heatmap(normal_data)
+		    >>> ax = sns.heatmap(normal_data, center=0)
 		
 		Plot a dataframe with meaningful row and column labels:
 		
@@ -520,7 +419,7 @@ package seaborn.matrix;
 		    >>> with sns.axes_style("white"):
 		    ...     ax = sns.heatmap(corr, mask=mask, vmax=.3, square=True)
 	**/
-	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?ax:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate the relative luminance of a color according to W3C standards
 		
@@ -534,4 +433,28 @@ package seaborn.matrix;
 		luminance : float(s) between 0 and 1
 	**/
 	static public function relative_luminance(color:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
+	/**
+		Return a Unicode string representing a Python object.
+		
+		Unicode strings (i.e. type ``unicode`` in Python 2.7 and type ``str`` in
+		Python 3.x) are returned unchanged.
+		
+		Byte strings (i.e. type ``str`` in Python 2.7 and type ``bytes`` in
+		Python 3.x) are returned as UTF-8-encoded strings.
+		
+		For other objects, the method ``__str__()`` is called, and the result is
+		returned as a UTF-8-encoded string.
+		
+		Parameters
+		----------
+		obj : object
+		    Any Python object
+		
+		Returns
+		-------
+		s : unicode (Python 2.7) / str (Python 3.x)
+		    UTF-8-encoded string representation of ``obj``
+	**/
+	static public function to_utf8(obj:Dynamic):Dynamic;
 }

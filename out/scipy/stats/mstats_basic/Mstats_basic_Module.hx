@@ -438,21 +438,31 @@ package scipy.stats.mstats_basic;
 		
 		See also
 		--------
-		optimize.curve_fit : Use non-linear least squares to fit a function to data.
-		optimize.leastsq : Minimize the sum of squares of a set of equations.
+		:func:`scipy.optimize.curve_fit` : Use non-linear
+		 least squares to fit a function to data.
+		:func:`scipy.optimize.leastsq` : Minimize the sum of
+		 squares of a set of equations.
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
-		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
 		
-		# To get coefficient of determination (r_squared)
+		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
 		('r-squared:', 0.080402268539028335)
+		
+		Plot the data along with the fitted line
+		
+		>>> plt.plot(x, y, 'o', label='original data')
+		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
+		>>> plt.legend()
+		>>> plt.show()
 		
 		
 		
@@ -697,7 +707,7 @@ package scipy.stats.mstats_basic;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public var nomask : Dynamic;
 	/**
 		Tests whether a sample differs from a normal distribution.
@@ -1041,21 +1051,31 @@ package scipy.stats.mstats_basic;
 		
 		See also
 		--------
-		optimize.curve_fit : Use non-linear least squares to fit a function to data.
-		optimize.leastsq : Minimize the sum of squares of a set of equations.
+		:func:`scipy.optimize.curve_fit` : Use non-linear
+		 least squares to fit a function to data.
+		:func:`scipy.optimize.leastsq` : Minimize the sum of
+		 squares of a set of equations.
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
-		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
 		
-		# To get coefficient of determination (r_squared)
+		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
 		('r-squared:', 0.080402268539028335)
+		
+		Plot the data along with the fitted line
+		
+		>>> plt.plot(x, y, 'o', label='original data')
+		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
 	static public function stats_linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**

@@ -13,7 +13,7 @@ package numpy.lib.polynomial;
 	static public var _poly_mat : Dynamic;
 	static public function _raise_power(astr:Dynamic, ?wrap:Dynamic):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -21,6 +21,17 @@ package numpy.lib.polynomial;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -48,41 +59,49 @@ package numpy.lib.polynomial;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -98,7 +117,13 @@ package numpy.lib.polynomial;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -157,7 +182,7 @@ package numpy.lib.polynomial;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -380,6 +405,10 @@ package numpy.lib.polynomial;
 		Take a sequence of arrays and stack them horizontally to make
 		a single array. Rebuild arrays divided by `hsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -397,10 +426,12 @@ package numpy.lib.polynomial;
 		dstack : Stack arrays in sequence depth wise (along third axis).
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=1)``
+		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -417,7 +448,7 @@ package numpy.lib.polynomial;
 	**/
 	static public function hstack(tup:Dynamic):numpy.Ndarray;
 	/**
-		Return the imaginary part of the elements of the array.
+		Return the imaginary part of the complex argument.
 		
 		Parameters
 		----------
@@ -426,9 +457,10 @@ package numpy.lib.polynomial;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The imaginary component of the complex argument. If `val` is real,
+		    the type of `val` is used for the output.  If `val` has complex
+		    elements, the returned type is float.
 		
 		See Also
 		--------
@@ -442,8 +474,10 @@ package numpy.lib.polynomial;
 		>>> a.imag = np.array([8, 10, 12])
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
+		>>> np.imag(1 + 1j)
+		1.0
 	**/
-	static public function imag(val:Dynamic):numpy.Ndarray;
+	static public function imag(val:Dynamic):Dynamic;
 	/**
 		Compute the (multiplicative) inverse of a matrix.
 		
@@ -572,8 +606,9 @@ package numpy.lib.polynomial;
 		    of `b`.
 		rcond : float, optional
 		    Cut-off ratio for small singular values of `a`.
-		    Singular values are set to zero if they are smaller than `rcond`
-		    times the largest singular value of `a`.
+		    For the purposes of rank determination, singular values are treated
+		    as zero if they are smaller than `rcond` times the largest singular
+		    value of `a`.
 		
 		Returns
 		-------
@@ -980,11 +1015,11 @@ package numpy.lib.polynomial;
 		
 		Returns
 		-------
-		p : ndarray, shape (M,) or (M, K)
+		p : ndarray, shape (deg + 1,) or (deg + 1, K)
 		    Polynomial coefficients, highest power first.  If `y` was 2-D, the
 		    coefficients for `k`-th data set are in ``p[:,k]``.
 		
-		residuals, rank, singular_values, rcond :
+		residuals, rank, singular_values, rcond
 		    Present only if `full` = True.  Residuals of the least-squares fit,
 		    the effective rank of the scaled Vandermonde coefficient matrix,
 		    its singular values, and the specified value of `rcond`. For more
@@ -1294,7 +1329,7 @@ package numpy.lib.polynomial;
 	static public function polyval(p:Dynamic, x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -1303,9 +1338,10 @@ package numpy.lib.polynomial;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -1322,8 +1358,10 @@ package numpy.lib.polynomial;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
-	static public function real(val:Dynamic):numpy.Ndarray;
+	static public function real(val:Dynamic):Dynamic;
 	/**
 		Return the roots of a polynomial with coefficients given in p.
 		
@@ -1340,7 +1378,7 @@ package numpy.lib.polynomial;
 		Returns
 		-------
 		out : ndarray
-		    An array containing the complex roots of the polynomial.
+		    An array containing the roots of the polynomial.
 		
 		Raises
 		------
@@ -1372,28 +1410,6 @@ package numpy.lib.polynomial;
 		array([-0.3125+0.46351241j, -0.3125-0.46351241j])
 	**/
 	static public function roots(p:Dynamic):numpy.Ndarray;
-	/**
-		Sort a complex array using the real part first, then the imaginary part.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array
-		
-		Returns
-		-------
-		out : complex ndarray
-		    Always returns a sorted complex array.
-		
-		Examples
-		--------
-		>>> np.sort_complex([5, 3, 6, 2, 1])
-		array([ 1.+0.j,  2.+0.j,  3.+0.j,  5.+0.j,  6.+0.j])
-		
-		>>> np.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])
-		array([ 1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])
-	**/
-	static public function sort_complex(a:Dynamic):Dynamic;
 	/**
 		Trim the leading and/or trailing zeros from a 1-D array or sequence.
 		

@@ -10,49 +10,49 @@ package scipy.special._spherical_bessel;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		_spherical_in(x1, x2[, out])
+		_spherical_in(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_in` instead.
 	**/
 	static public function _spherical_in(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_in_d(x1, x2[, out])
+		_spherical_in_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_in` instead.
 	**/
 	static public function _spherical_in_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_jn(x1, x2[, out])
+		_spherical_jn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_jn` instead.
 	**/
 	static public function _spherical_jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_jn_d(x1, x2[, out])
+		_spherical_jn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_jn` instead.
 	**/
 	static public function _spherical_jn_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_kn(x1, x2[, out])
+		_spherical_kn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_kn` instead.
 	**/
 	static public function _spherical_kn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_kn_d(x1, x2[, out])
+		_spherical_kn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_kn` instead.
 	**/
 	static public function _spherical_kn_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_yn(x1, x2[, out])
+		_spherical_yn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_yn` instead.
 	**/
 	static public function _spherical_yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_yn_d(x1, x2[, out])
+		_spherical_yn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_yn` instead.
 	**/

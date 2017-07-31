@@ -47,6 +47,13 @@ package matplotlib.ticker;
 	**/
 	public function new(?minpos:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -103,6 +110,7 @@ package matplotlib.ticker;
 	public var __weakref__ : Dynamic;
 	public function get_data_interval():Dynamic;
 	public function get_minpos():Dynamic;
+	public function get_tick_space():Dynamic;
 	public function get_view_interval():Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;

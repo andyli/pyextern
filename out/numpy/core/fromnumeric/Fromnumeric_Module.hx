@@ -59,6 +59,7 @@ package numpy.core.fromnumeric;
 		reject non-numeric types.
 	**/
 	static public function _sum_(iterable:Dynamic, ?start:Dynamic):Dynamic;
+	static public function _wrapfunc(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function _wrapit(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -114,7 +115,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
@@ -178,7 +179,7 @@ package numpy.core.fromnumeric;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -190,7 +191,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -262,7 +263,7 @@ package numpy.core.fromnumeric;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -274,7 +275,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -364,7 +365,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
@@ -519,10 +520,10 @@ package numpy.core.fromnumeric;
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Perform an indirect partition along the given axis using the algorithm
-		specified by the `kind` keyword. It returns an array of indices of the
-		same shape as `a` that index data along the given axis in partitioned
-		order.
+		Perform an indirect partition along the given axis using the
+		algorithm specified by the `kind` keyword. It returns an array of
+		indices of the same shape as `a` that index data along the given
+		axis in partitioned order.
 		
 		.. versionadded:: 1.8.0
 		
@@ -531,29 +532,29 @@ package numpy.core.fromnumeric;
 		a : array_like
 		    Array to sort.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth element will be in its final
-		    sorted position and all smaller elements will be moved before it and
-		    all larger elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all of them into
-		    their sorted position at once.
+		    Element index to partition by. The k-th element will be in its
+		    final sorted position and all smaller elements will be moved
+		    before it and all larger elements behind it. The order all
+		    elements in the partitions is undefined. If provided with a
+		    sequence of k-th it will partition all of them into their sorted
+		    position at once.
 		axis : int or None, optional
-		    Axis along which to sort.  The default is -1 (the last axis). If None,
-		    the flattened array is used.
+		    Axis along which to sort. The default is -1 (the last axis). If
+		    None, the flattened array is used.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
-		    but unspecified fields will still be used, in the order in which
-		    they come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc. A single
+		    field can be specified as a string, and not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
 		index_array : ndarray, int
 		    Array of indices that partition `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    In other words, ``a[index_array]`` yields a partitioned `a`.
 		
 		See Also
 		--------
@@ -696,7 +697,7 @@ package numpy.core.fromnumeric;
 		
 		Notes
 		-----
-		For values exactly halfway between rounded decimal values, Numpy
+		For values exactly halfway between rounded decimal values, NumPy
 		rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
 		-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
 		to the inexact representation of decimal fractions in the IEEE
@@ -726,35 +727,43 @@ package numpy.core.fromnumeric;
 	**/
 	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -770,7 +779,13 @@ package numpy.core.fromnumeric;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -884,8 +899,8 @@ package numpy.core.fromnumeric;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -1062,11 +1077,15 @@ package numpy.core.fromnumeric;
 		----------
 		a : array_like
 		    Array containing elements to clip.
-		a_min : scalar or array_like
-		    Minimum value.
-		a_max : scalar or array_like
-		    Maximum value.  If `a_min` or `a_max` are array_like, then they will
-		    be broadcasted to the shape of `a`.
+		a_min : scalar or array_like or `None`
+		    Minimum value. If `None`, clipping is not performed on lower
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`.
+		a_max : scalar or array_like or `None`
+		    Maximum value. If `None`, clipping is not performed on upper
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`. If `a_min` or `a_max` are array_like, then the three
+		    arrays will be broadcasted to match their shapes.
 		out : ndarray, optional
 		    The results will be placed in this array. It may be the input
 		    array for in-place clipping.  `out` must be of the right shape
@@ -1095,7 +1114,7 @@ package numpy.core.fromnumeric;
 		>>> a = np.arange(10)
 		>>> a
 		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-		>>> np.clip(a, [3,4,1,1,1,4,4,4,4,4], 8)
+		>>> np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
 	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):numpy.Ndarray;
@@ -1484,7 +1503,7 @@ package numpy.core.fromnumeric;
 		    Axis or axes along which the means are computed. The default is to
 		    compute the mean of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a mean is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -1501,7 +1520,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
@@ -1531,6 +1550,9 @@ package numpy.core.fromnumeric;
 		example below).  Specifying a higher-precision accumulator using the
 		`dtype` keyword can alleviate this issue.
 		
+		By default, `float16` results are computed using `float32` intermediates
+		for extra precision.
+		
 		Examples
 		--------
 		>>> a = np.array([[1, 2], [3, 4]])
@@ -1547,7 +1569,7 @@ package numpy.core.fromnumeric;
 		>>> a[0, :] = 1.0
 		>>> a[1, :] = 0.1
 		>>> np.mean(a)
-		0.546875
+		0.54999924
 		
 		Computing the mean in float64 is more accurate:
 		
@@ -1625,13 +1647,13 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
-		>>> x = np.eye(3)
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
 		>>> x
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2]), array([0, 1, 2]))
+		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
 		
 		>>> x[np.nonzero(x)]
 		array([ 1.,  1.,  1.])
@@ -1662,11 +1684,12 @@ package numpy.core.fromnumeric;
 	/**
 		Return a partitioned copy of an array.
 		
-		Creates a copy of the array with its elements rearranged in such a way that
-		the value of the element in kth position is in the position it would be in
-		a sorted array. All elements smaller than the kth element are moved before
-		this element and all equal or greater are moved behind it. The ordering of
-		the elements in the two partitions is undefined.
+		Creates a copy of the array with its elements rearranged in such a
+		way that the value of the element in k-th position is in the
+		position it would be in a sorted array. All elements smaller than
+		the k-th element are moved before this element and all equal or
+		greater are moved behind it. The ordering of the elements in the two
+		partitions is undefined.
 		
 		.. versionadded:: 1.8.0
 		
@@ -1675,23 +1698,23 @@ package numpy.core.fromnumeric;
 		a : array_like
 		    Array to be sorted.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth value of the element will be in
-		    its final sorted position and all smaller elements will be moved before
-		    it and all equal or greater elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all elements
-		    indexed by kth  of them into their sorted position at once.
+		    Element index to partition by. The k-th value of the element
+		    will be in its final sorted position and all smaller elements
+		    will be moved before it and all equal or greater elements behind
+		    it. The order all elements in the partitions is undefined. If
+		    provided with a sequence of k-th it will partition all elements
+		    indexed by k-th  of them into their sorted position at once.
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'.
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string.  Not all fields need be specified, but
-		    unspecified fields will still be used, in the order in which they
-		    come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc.  A single
+		    field can be specified as a string.  Not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
@@ -1706,10 +1729,11 @@ package numpy.core.fromnumeric;
 		
 		Notes
 		-----
-		The various selection algorithms are characterized by their average speed,
-		worst case performance, work space size, and whether they are stable. A
-		stable sort keeps items with the same key in the same relative order. The
-		available algorithms have the following properties:
+		The various selection algorithms are characterized by their average
+		speed, worst case performance, work space size, and whether they are
+		stable. A stable sort keeps items with the same key in the same
+		relative order. The available algorithms have the following
+		properties:
 		
 		================= ======= ============= ============ =======
 		   kind            speed   worst case    work space  stable
@@ -1718,14 +1742,14 @@ package numpy.core.fromnumeric;
 		================= ======= ============= ============ =======
 		
 		All the partition algorithms make temporary copies of the data when
-		partitioning along any but the last axis.  Consequently, partitioning
-		along the last axis is faster and uses less space than partitioning
-		along any other axis.
+		partitioning along any but the last axis.  Consequently,
+		partitioning along the last axis is faster and uses less space than
+		partitioning along any other axis.
 		
-		The sort order for complex numbers is lexicographic. If both the real
-		and imaginary parts are non-nan then the order is determined by the
-		real parts except when they are equal, in which case the order is
-		determined by the imaginary parts.
+		The sort order for complex numbers is lexicographic. If both the
+		real and imaginary parts are non-nan then the order is determined by
+		the real parts except when they are equal, in which case the order
+		is determined by the imaginary parts.
 		
 		Examples
 		--------
@@ -1959,7 +1983,7 @@ package numpy.core.fromnumeric;
 		Notes
 		-----
 		In the old Numeric package, `rank` was the term used for the number of
-		dimensions, but in Numpy `ndim` is used instead.
+		dimensions, but in NumPy `ndim` is used instead.
 		
 		Examples
 		--------
@@ -2098,6 +2122,8 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
+		>>> np.repeat(3, 4)
+		array([3, 3, 3, 3])
 		>>> x = np.array([[1,2],[3,4]])
 		>>> np.repeat(x, 2)
 		array([1, 1, 2, 2, 3, 3, 4, 4])
@@ -2120,20 +2146,21 @@ package numpy.core.fromnumeric;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -2292,7 +2319,7 @@ package numpy.core.fromnumeric;
 		-----
 		Binary search is used to find the required insertion points.
 		
-		As of Numpy 1.4.0 `searchsorted` works with real/complex arrays containing
+		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
 		
 		Examples
@@ -2454,6 +2481,12 @@ package numpy.core.fromnumeric;
 		placements are sorted according to the non-nan part if it exists.
 		Non-nan values are sorted as before.
 		
+		.. versionadded:: 1.12.0
+		
+		quicksort has been changed to an introsort which will switch
+		heapsort when it does not make enough progress. This makes its
+		worst case O(n*log(n)).
+		
 		Examples
 		--------
 		>>> a = np.array([[1,4],[3,1]])
@@ -2507,6 +2540,16 @@ package numpy.core.fromnumeric;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -2514,7 +2557,13 @@ package numpy.core.fromnumeric;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
@@ -2533,7 +2582,7 @@ package numpy.core.fromnumeric;
 		    Axis or axes along which the standard deviation is computed. The
 		    default is to compute the standard deviation of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a standard deviation is performed over
 		    multiple axes, instead of a single axis or all the axes as before.
@@ -2552,7 +2601,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `std` method of sub-classes of
@@ -2650,7 +2699,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
@@ -2720,8 +2769,8 @@ package numpy.core.fromnumeric;
 		Returns
 		-------
 		a_swapped : ndarray
-		    For Numpy >= 1.10, if `a` is an ndarray, then a view of `a` is
-		    returned; otherwise a new array is created. For earlier Numpy
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
 		    versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
@@ -2927,7 +2976,7 @@ package numpy.core.fromnumeric;
 		    Axis or axes along which the variance is computed.  The default is to
 		    compute the variance of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a variance is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -2946,7 +2995,7 @@ package numpy.core.fromnumeric;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of

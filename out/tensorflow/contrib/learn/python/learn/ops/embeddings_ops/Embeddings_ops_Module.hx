@@ -11,7 +11,11 @@ package tensorflow.contrib.learn.python.learn.ops.embeddings_ops;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates an embedding for categorical variable with given number of classes.
+		Creates an embedding for categorical variable with given number of classes. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Instructions for updating:
+		Use `tf.contrib.layers.embed_sequence` instead.
 		
 		Args:
 		  tensor_in: Input tensor with class identifier (can be batch or
@@ -27,9 +31,44 @@ package tensorflow.contrib.learn.python.learn.ops.embeddings_ops;
 		  tensor, where each row is representation of the class.
 	**/
 	static public function categorical_variable(tensor_in:Dynamic, n_classes:Dynamic, embedding_size:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Provides a N dimensional version of tf.embedding_lookup.
+		Provides a N dimensional version of tf.embedding_lookup. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Instructions for updating:
+		Use `tf.embedding_lookup` instead.
 		
 		Ids are flattened to a 1d tensor before being passed to embedding_lookup
 		then, they are unflattend to match the original ids shape plus an extra

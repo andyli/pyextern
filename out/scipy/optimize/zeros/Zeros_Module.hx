@@ -222,7 +222,7 @@ package scipy.optimize.zeros;
 		n-dimensional root-finding
 		  `fsolve`
 		one-dimensional root-finding
-		  `brentq`, `brenth`, `ridder`, `bisect`, `newton`
+		  `brenth`, `ridder`, `bisect`, `newton`
 		scalar fixed-point finder
 		  `fixed_point`
 		
@@ -375,7 +375,7 @@ package scipy.optimize.zeros;
 	**/
 	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
-		sign(x[, out])
+		sign(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns an element-wise indication of the sign of a number.
 		
@@ -391,6 +391,17 @@ package scipy.optimize.zeros;
 		----------
 		x : array_like
 		  Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -414,7 +425,7 @@ package scipy.optimize.zeros;
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -422,9 +433,17 @@ package scipy.optimize.zeros;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------

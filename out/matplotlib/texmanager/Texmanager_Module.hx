@@ -31,6 +31,15 @@ package matplotlib.texmanager;
 	static public var rcParams : Dynamic;
 	/**
 		read_png(file)
+		
+		Read in a PNG file, converting values to floating-point doubles
+		in the range (0, 1)
+		
+		Alias for read_png_float()
+		
+		Parameters
+		----------
+		file : str path or file-like object
 	**/
 	static public function read_png(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;

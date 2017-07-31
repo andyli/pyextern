@@ -52,6 +52,13 @@ package matplotlib.axes._base;
 	**/
 	public function new(axes:Dynamic, ?command:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -131,6 +138,11 @@ package matplotlib.axes._base;
 	**/
 	public function _setdefaults(defaults:Dynamic, ?kwargs:python.VarArgs<Dynamic>):Dynamic;
 	public function _xy_from_xy(x:Dynamic, y:Dynamic):Dynamic;
+	/**
+		Return the next color in the cycle.
+	**/
+	public function get_next_color():Dynamic;
+	public function set_lineprops(line:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_patchprops(fill_poly:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_prop_cycle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

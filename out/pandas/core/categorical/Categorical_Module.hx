@@ -12,10 +12,6 @@ package pandas.core.categorical;
 	static public function _cat_compare_op(op:Dynamic):Dynamic;
 	static public var _categories_doc : Dynamic;
 	static public var _codes_doc : Dynamic;
-	/**
-		coerce the indexer input array to the smallest dtype possible 
-	**/
-	static public function _coerce_indexer_dtype(indexer:Dynamic, categories:Dynamic):Dynamic;
 	static public function _convert_to_list_like(list_like:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -49,8 +45,8 @@ package pandas.core.categorical;
 		
 		Returns
 		-------
-		codes_tuple : tuple of ndarrays
-		categories_tuple : tuple of Indexes
+		codes_list : list of ndarrays
+		categories_list : list of Indexes
 		
 		Notes
 		-----
@@ -61,25 +57,11 @@ package pandas.core.categorical;
 		utility routine to turn values into codes given the specified categories
 	**/
 	static public function _get_codes_for_values(values:Dynamic, categories:Dynamic):Dynamic;
-	/**
-		we might have a array (or single object) that is datetime like,
-		and no dtype is passed don't change the value unless we find a
-		datetime/timedelta set
-		
-		this is pretty strict in that a datetime/timedelta is REQUIRED
-		in addition to possible nulls/string likes
-		
-		ONLY strings are NOT datetimelike
-		
-		Parameters
-		----------
-		value : np.array / Series / Index / list-like
-		convert_dates : boolean, default False
-		   if True try really hard to convert dates (such as datetime.date), other
-		   leave inferred dtype 'date' alone
-	**/
-	static public function _possibly_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
+	/**
+		coerce the indexer input array to the smallest dtype possible 
+	**/
+	static public function coerce_indexer_dtype(indexer:Dynamic, categories:Dynamic):Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -88,7 +70,7 @@ package pandas.core.categorical;
 		old_arg_name : str
 		    Name of argument in function to deprecate
 		new_arg_name : str
-		    Name of prefered argument in function
+		    Name of preferred argument in function
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -151,9 +133,13 @@ package pandas.core.categorical;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -186,6 +172,18 @@ package pandas.core.categorical;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -231,6 +229,12 @@ package pandas.core.categorical;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -240,13 +244,31 @@ package pandas.core.categorical;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -432,17 +454,194 @@ package pandas.core.categorical;
 	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		return if we are a categorical possibility 
+		Check whether an array-like is a Categorical instance.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is of a Categorical instance.
+		
+		Examples
+		--------
+		>>> is_categorical([1, 2, 3])
+		False
+		
+		Categoricals, Series Categoricals, and CategoricalIndex will return True.
+		
+		>>> cat = pd.Categorical([1, 2, 3])
+		>>> is_categorical(cat)
+		True
+		>>> is_categorical(pd.Series(cat))
+		True
+		>>> is_categorical(pd.CategoricalIndex([1, 2, 3]))
+		True
 	**/
-	static public function is_categorical(array:Dynamic):Dynamic;
+	static public function is_categorical(arr:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a datetime-like array-like.
+		
+		Acceptable datetime-like objects are (but not limited to) datetime
+		indices, periodic indices, and timedelta indices.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a datetime-like array-like.
+		
+		Examples
+		--------
+		>>> is_datetimelike([1, 2, 3])
+		False
+		>>> is_datetimelike(pd.Index([1, 2, 3]))
+		False
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3]))
+		True
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		>>> is_datetimelike(pd.PeriodIndex([], freq="A"))
+		True
+		>>> is_datetimelike(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetimelike(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>>
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetimelike(s)
+		True
+	**/
 	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
-		return a boolean if the dtypes are equal 
+		Check if two dtypes are equal.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		Examples
+		--------
+		>>> is_dtype_equal(int, float)
+		False
+		>>> is_dtype_equal("int", int)
+		True
+		>>> is_dtype_equal(object, "category")
+		False
+		>>> is_dtype_equal(CategoricalDtype(), "category")
+		True
+		>>> is_dtype_equal(DatetimeTZDtype(), "datetime64")
+		False
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
 	/**
 		we have a null slice 
 	**/
@@ -458,9 +657,33 @@ package pandas.core.categorical;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_sequence(x:Dynamic):Dynamic;
+	/**
+		Check if the object is a sequence of objects.
+		String types are not included as sequences here.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_sequence : bool
+		    Whether `obj` is a sequence of objects.
+		
+		Examples
+		--------
+		>>> l = [1, 2, 3]
+		>>>
+		>>> is_sequence(l)
+		True
+		>>> is_sequence(iter(l))
+		False
+	**/
+	static public function is_sequence(obj:Dynamic):Bool;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -481,6 +704,22 @@ package pandas.core.categorical;
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		we might have a array (or single object) that is datetime like,
+		and no dtype is passed don't change the value unless we find a
+		datetime/timedelta set
+		
+		this is pretty strict in that a datetime/timedelta is REQUIRED
+		in addition to possible nulls/string likes
+		
+		Parameters
+		----------
+		value : np.array / Series / Index / list-like
+		convert_dates : boolean, default False
+		   if True try really hard to convert dates (such as datetime.date), other
+		   leave inferred dtype 'date' alone
+	**/
+	static public function maybe_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
 	/**
 		coerce to a categorical if a series is given 
 	**/
@@ -534,6 +773,83 @@ package pandas.core.categorical;
 	**/
 	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
+	/**
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
+		
+		Parameters
+		----------
+		values : 1d array-like
+		
+		Returns
+		-------
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(Series([pd.Timestamp('20160101'),
+		...                   pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'),
+		...                                 ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+	**/
+	static public function unique1d(values:Dynamic):Dynamic;
+	/**
+		Ensures that argument passed in arg_name is of type bool. 
+	**/
+	static public function validate_bool_kwarg(value:Dynamic, arg_name:Dynamic):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

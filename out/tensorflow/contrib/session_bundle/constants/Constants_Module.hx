@@ -11,6 +11,8 @@ package tensorflow.contrib.session_bundle.constants;
 	static public var SIGNATURES_KEY : Dynamic;
 	static public var VARIABLES_FILENAME : Dynamic;
 	static public var VARIABLES_FILENAME_PATTERN : Dynamic;
+	static public var VARIABLES_FILENAME_PATTERN_V2 : Dynamic;
+	static public var VARIABLES_INDEX_FILENAME_V2 : Dynamic;
 	static public var VERSION_FORMAT_SPECIFIER : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

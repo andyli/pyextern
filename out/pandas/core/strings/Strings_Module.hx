@@ -44,11 +44,141 @@ package pandas.core.strings;
 		Copy a docstring from another source function (if present)
 	**/
 	static public function copy(source:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a boolean dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Examples
+		--------
+		>>> is_bool_dtype(str)
+		False
+		>>> is_bool_dtype(int)
+		False
+		>>> is_bool_dtype(bool)
+		True
+		>>> is_bool_dtype(np.bool)
+		True
+		>>> is_bool_dtype(np.array(['a', 'b']))
+		False
+		>>> is_bool_dtype(pd.Series([1, 2]))
+		False
+		>>> is_bool_dtype(np.array([True, False]))
+		True
+	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is a regex pattern instance.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_regex : bool
+		    Whether `obj` is a regex pattern.
+		
+		Examples
+		--------
+		>>> is_re(re.compile(".*"))
+		True
+		>>> is_re("foo")
+		False
+	**/
+	static public function is_re(obj:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
@@ -60,9 +190,30 @@ package pandas.core.strings;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_string_like(obj:Dynamic):Dynamic;
+	/**
+		Check if the object is a string.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Examples
+		--------
+		>>> is_string_like("foo")
+		True
+		>>> is_string_like(1)
+		False
+		
+		Returns
+		-------
+		is_str_like : bool
+		    Whether `obj` is a string or not.
+	**/
+	static public function is_string_like(obj:Dynamic):Bool;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -484,9 +635,7 @@ package pandas.core.strings;
 	**/
 	static public function str_join(arr:Dynamic, sep:Dynamic):Dynamic;
 	/**
-		Deprecated: Find groups in each string in the Series/Index
-		using passed regular expression.
-		If as_indexer=True, determine if each string matches a regular expression.
+		Determine if each string matches a regular expression.
 		
 		Parameters
 		----------
@@ -497,26 +646,17 @@ package pandas.core.strings;
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
 		na : default NaN, fill value for missing values.
-		as_indexer : False, by default, gives deprecated behavior better achieved
-		    using str_extract. True return boolean indexer.
+		as_indexer : DEPRECATED
 		
 		Returns
 		-------
 		Series/array of boolean values
-		    if as_indexer=True
-		Series/Index of tuples
-		    if as_indexer=False, default but deprecated
 		
 		See Also
 		--------
 		contains : analogous, but less strict, relying on re.search instead of
 		    re.match
-		extract : now preferred to the deprecated usage of match (as_indexer=False)
-		
-		Notes
-		-----
-		To extract matched groups, which is the deprecated behavior of match, use
-		str.extract.
+		extract : extract matched groups
 	**/
 	static public function str_match(arr:Dynamic, pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?as_indexer:Dynamic):Dynamic;
 	/**
@@ -558,20 +698,89 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		pat : string
-		    Character sequence or regular expression
-		repl : string
-		    Replacement sequence
+		pat : string or compiled regex
+		    String can be a character sequence or regular expression.
+		
+		    .. versionadded:: 0.20.0
+		        `pat` also accepts a compiled regex.
+		
+		repl : string or callable
+		    Replacement string or a callable. The callable is passed the regex
+		    match object and must return a replacement string to be used.
+		    See :func:`re.sub`.
+		
+		    .. versionadded:: 0.20.0
+		        `repl` also accepts a callable.
+		
 		n : int, default -1 (all)
 		    Number of replacements to make from start
-		case : boolean, default True
-		    If True, case sensitive
+		case : boolean, default None
+		    - If True, case sensitive (the default if `pat` is a string)
+		    - Set to False for case insensitive
+		    - Cannot be set if `pat` is a compiled regex
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		    - re module flags, e.g. re.IGNORECASE
+		    - Cannot be set if `pat` is a compiled regex
 		
 		Returns
 		-------
 		replaced : Series/Index of objects
+		
+		Notes
+		-----
+		When `pat` is a compiled regex, all flags should be included in the
+		compiled regex. Use of `case` or `flags` with a compiled regex will
+		raise an error.
+		
+		Examples
+		--------
+		When `repl` is a string, every `pat` is replaced as with
+		:meth:`str.replace`. NaN value(s) in the Series are left as is.
+		
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f', 'b')
+		0    boo
+		1    buz
+		2    NaN
+		dtype: object
+		
+		When `repl` is a callable, it is called on every `pat` using
+		:func:`re.sub`. The callable should expect one positional argument
+		(a regex object) and return a string.
+		
+		To get the idea:
+		
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f', repr)
+		0    <_sre.SRE_Match object; span=(0, 1), match='f'>oo
+		1    <_sre.SRE_Match object; span=(0, 1), match='f'>uz
+		2                                                  NaN
+		dtype: object
+		
+		Reverse every lowercase alphabetic word:
+		
+		>>> repl = lambda m: m.group(0)[::-1]
+		>>> pd.Series(['foo 123', 'bar baz', np.nan]).str.replace(r'[a-z]+', repl)
+		0    oof 123
+		1    rab zab
+		2        NaN
+		dtype: object
+		
+		Using regex groups (extract second group and swap case):
+		
+		>>> pat = r"(?P<one>\w+) (?P<two>\w+) (?P<three>\w+)"
+		>>> repl = lambda m: m.group('two').swapcase()
+		>>> pd.Series(['One Two Three', 'Foo Bar Baz']).str.replace(pat, repl)
+		0    tWO
+		1    bAR
+		dtype: object
+		
+		Using a compiled regex with flags
+		
+		>>> regex_pat = re.compile(r'FUZ', flags=re.IGNORECASE)
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace(regex_pat, 'bar')
+		0    foo
+		1    bar
+		2    NaN
+		dtype: object
 	**/
 	static public function str_replace(arr:Dynamic, pat:Dynamic, repl:Dynamic, ?n:Dynamic, ?_case:Dynamic, ?flags:Dynamic):Dynamic;
 	/**

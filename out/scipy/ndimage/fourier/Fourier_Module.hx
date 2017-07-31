@@ -49,6 +49,21 @@ package scipy.ndimage.fourier;
 		Notes
 		-----
 		This function is implemented for arrays of rank 1, 2, or 3.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import numpy.fft
+		>>> import matplotlib.pyplot as plt
+		>>> fig, (ax1, ax2) = plt.subplots(1, 2)
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ascent = misc.ascent()
+		>>> input_ = numpy.fft.fft2(ascent)
+		>>> result = ndimage.fourier_ellipsoid(input_, size=20)
+		>>> result = numpy.fft.ifft2(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result.real)  # the imaginary part is an artifact
+		>>> plt.show()
 	**/
 	static public function fourier_ellipsoid(input:Dynamic, size:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
 	/**
@@ -82,6 +97,21 @@ package scipy.ndimage.fourier;
 		fourier_gaussian : ndarray or None
 		    The filtered input. If `output` is given as a parameter, None is
 		    returned.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import numpy.fft
+		>>> import matplotlib.pyplot as plt
+		>>> fig, (ax1, ax2) = plt.subplots(1, 2)
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ascent = misc.ascent()
+		>>> input_ = numpy.fft.fft2(ascent)
+		>>> result = ndimage.fourier_gaussian(input_, sigma=4)
+		>>> result = numpy.fft.ifft2(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result.real)  # the imaginary part is an artifact
+		>>> plt.show()
 	**/
 	static public function fourier_gaussian(input:Dynamic, sigma:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
 	/**
@@ -114,6 +144,21 @@ package scipy.ndimage.fourier;
 		fourier_shift : ndarray or None
 		    The shifted input. If `output` is given as a parameter, None is
 		    returned.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> import numpy.fft
+		>>> fig, (ax1, ax2) = plt.subplots(1, 2)
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ascent = misc.ascent()
+		>>> input_ = numpy.fft.fft2(ascent)
+		>>> result = ndimage.fourier_shift(input_, shift=200)
+		>>> result = numpy.fft.ifft2(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result.real)  # the imaginary part is an artifact
+		>>> plt.show()
 	**/
 	static public function fourier_shift(input:Dynamic, shift:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
 	/**
@@ -147,6 +192,21 @@ package scipy.ndimage.fourier;
 		fourier_uniform : ndarray or None
 		    The filtered input. If `output` is given as a parameter, None is
 		    returned.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import numpy.fft
+		>>> import matplotlib.pyplot as plt
+		>>> fig, (ax1, ax2) = plt.subplots(1, 2)
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ascent = misc.ascent()
+		>>> input_ = numpy.fft.fft2(ascent)
+		>>> result = ndimage.fourier_uniform(input_, size=20)
+		>>> result = numpy.fft.ifft2(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result.real)  # the imaginary part is an artifact
+		>>> plt.show()
 	**/
 	static public function fourier_uniform(input:Dynamic, size:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

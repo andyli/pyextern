@@ -4,7 +4,7 @@ package tensorflow.python.framework._function;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(f:Dynamic):Dynamic;
+	public function __call__(func:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -45,49 +45,72 @@ package tensorflow.python.framework._function;
 		Create a `Defun` decorator.
 		
 		Args:
-		  *input_type_list: A list of `tf.DType`
-		  **input_types: Dict mapping string with `tf.DType`
-		    One key for each argument of the function to decorate.
+		  *input_types: A list of `tf.DType`
+		  **kwargs: Optional keyword arguments, including
+		     func_name - (optional).  A python string, the name to use to
+		       declare this `Function` in the graph.
 		
-		   Note that these optional keyword arguments are also accepted:
-		     func_name - (optional).  A python string, the name to use to declare
-		       this `Function` in the graph.
+		     grad_func - (optional).  A function implementing the gradient
+		       of the function-to-register.  This is either a
+		       `_DefinedFunction` or a `Declare` object. The gradient
+		       function must satisify the criterion defined in
+		       function.proto:GradientDef.
 		
-		     grad_func - (optional).  A function implementing the gradient of the
-		       function-to-register.  This is usually a previously
-		       `Defun`-registered Python callable.
+		     python_grad_func - (optional).  A function implementing the
+		       gradient of the function python-side. This function must
+		       take the current op and the gradients w.r.t. its outputs,
+		       and return the gradients w.r.t. the inputs. That is it must
+		       implement the interface expected by `tf.RegisterGradient`).
+		       This will be called by tf.gradients to add the gradient ops
+		       to the graph. At most one of grad_func and python_grad_func
+		       can be specified.
 		
-		     python_grad_func - (optional).  A function implementing the gradient of
-		       the function python-side. This function must take the current op and
-		       the gradients w.r.t. its outputs, and return the gradients w.r.t. the
-		       inputs (identical to the interface expected by
-		       `tf.RegisterGradient`).
+		     out_names = (optional). A list of strings, one per output
+		       tensor.
+		
+		     shape_func - (optional). A function taking the op and returning a list
+		       of static shapes to set for the function's outputs.
 	**/
 	@:native("__init__")
-	public function ___init__(?input_type_list:python.VarArgs<Dynamic>, ?input_types:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?input_types:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a `Defun` decorator.
 		
 		Args:
-		  *input_type_list: A list of `tf.DType`
-		  **input_types: Dict mapping string with `tf.DType`
-		    One key for each argument of the function to decorate.
+		  *input_types: A list of `tf.DType`
+		  **kwargs: Optional keyword arguments, including
+		     func_name - (optional).  A python string, the name to use to
+		       declare this `Function` in the graph.
 		
-		   Note that these optional keyword arguments are also accepted:
-		     func_name - (optional).  A python string, the name to use to declare
-		       this `Function` in the graph.
+		     grad_func - (optional).  A function implementing the gradient
+		       of the function-to-register.  This is either a
+		       `_DefinedFunction` or a `Declare` object. The gradient
+		       function must satisify the criterion defined in
+		       function.proto:GradientDef.
 		
-		     grad_func - (optional).  A function implementing the gradient of the
-		       function-to-register.  This is usually a previously
-		       `Defun`-registered Python callable.
+		     python_grad_func - (optional).  A function implementing the
+		       gradient of the function python-side. This function must
+		       take the current op and the gradients w.r.t. its outputs,
+		       and return the gradients w.r.t. the inputs. That is it must
+		       implement the interface expected by `tf.RegisterGradient`).
+		       This will be called by tf.gradients to add the gradient ops
+		       to the graph. At most one of grad_func and python_grad_func
+		       can be specified.
 		
-		     python_grad_func - (optional).  A function implementing the gradient of
-		       the function python-side. This function must take the current op and
-		       the gradients w.r.t. its outputs, and return the gradients w.r.t. the
-		       inputs (identical to the interface expected by
-		       `tf.RegisterGradient`).
+		     out_names = (optional). A list of strings, one per output
+		       tensor.
+		
+		     shape_func - (optional). A function taking the op and returning a list
+		       of static shapes to set for the function's outputs.
 	**/
-	public function new(?input_type_list:python.VarArgs<Dynamic>, ?input_types:python.KwArgs<Dynamic>):Void;
+	public function new(?input_types:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

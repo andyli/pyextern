@@ -123,6 +123,7 @@ package scipy.stats.morestats;
 	**/
 	static public function _calc_uniform_order_statistic_medians(n:Dynamic):Dynamic;
 	static public function _circfuncs_common(samples:Dynamic, high:Dynamic, low:Dynamic):Dynamic;
+	static public function _contains_nan(a:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	static public function _hermnorm(N:Dynamic):Dynamic;
 	/**
 		Parse `dist` keyword.
@@ -152,7 +153,7 @@ package scipy.stats.morestats;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -164,7 +165,7 @@ package scipy.stats.morestats;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -236,7 +237,7 @@ package scipy.stats.morestats;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -248,7 +249,7 @@ package scipy.stats.morestats;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -324,9 +325,10 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    array of sample data
-		dist : {'norm','expon','logistic','gumbel','extreme1'}, optional
+		dist : {'norm','expon','logistic','gumbel','gumbel_l', gumbel_r',
+		    'extreme1'}, optional
 		    the type of distribution to test against.  The default is 'norm'
-		    and 'extreme1' is a synonym for 'gumbel'
+		    and 'extreme1', 'gumbel_l' and 'gumbel' are synonyms.
 		
 		Returns
 		-------
@@ -529,7 +531,7 @@ package scipy.stats.morestats;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
@@ -639,7 +641,7 @@ package scipy.stats.morestats;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan2(x1, x2[, out])
+		arctan2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.
 		
@@ -662,6 +664,17 @@ package scipy.stats.morestats;
 		x2 : array_like, real-valued
 		    `x`-coordinates. `x2` must be broadcastable to match the shape of
 		    `x1` or vice versa.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -751,7 +764,7 @@ package scipy.stats.morestats;
 		
 		Notes
 		-----
-		For values exactly halfway between rounded decimal values, Numpy
+		For values exactly halfway between rounded decimal values, NumPy
 		rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
 		-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
 		to the inexact representation of decimal fractions in the IEEE
@@ -781,35 +794,43 @@ package scipy.stats.morestats;
 	**/
 	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -825,7 +846,13 @@ package scipy.stats.morestats;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -890,8 +917,8 @@ package scipy.stats.morestats;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -952,7 +979,7 @@ package scipy.stats.morestats;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -1439,7 +1466,7 @@ package scipy.stats.morestats;
 	**/
 	static public function boxcox_normplot(x:Dynamic, la:Dynamic, lb:Dynamic, ?plot:Dynamic, ?N:Dynamic):Dynamic;
 	/**
-		ceil(x[, out])
+		ceil(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the ceiling of the input, element-wise.
 		
@@ -1450,6 +1477,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1733,7 +1771,7 @@ package scipy.stats.morestats;
 	**/
 	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		cos(x[, out])
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -1741,18 +1779,22 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -1782,19 +1824,35 @@ package scipy.stats.morestats;
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		count_nonzero(a)
-		
 		Counts the number of non-zero values in the array ``a``.
+		
+		The word "non-zero" is in reference to the Python 2.x
+		built-in method ``__nonzero__()`` (renamed ``__bool__()``
+		in Python 3.x) of Python objects that tests an object's
+		"truthfulness". For example, any number is considered
+		truthful if it is nonzero, whereas any string is considered
+		truthful if it is not the empty string. Thus, this function
+		(recursively) counts how many elements in ``a`` (and in
+		sub-arrays thereof) have their ``__nonzero__()`` or ``__bool__()``
+		method evaluated to ``True``.
 		
 		Parameters
 		----------
 		a : array_like
 		    The array for which to count non-zeros.
+		axis : int or tuple, optional
+		    Axis or tuple of axes along which to count non-zeros.
+		    Default is None, meaning that non-zeros will be counted
+		    along a flattened version of ``a``.
+		
+		    .. versionadded:: 1.12.0
 		
 		Returns
 		-------
 		count : int or array of int
-		    Number of non-zero values in the array.
+		    Number of non-zero values in the array along a given axis.
+		    Otherwise, the total number of non-zero values in the array
+		    is returned.
 		
 		See Also
 		--------
@@ -1806,11 +1864,15 @@ package scipy.stats.morestats;
 		4
 		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
 		5
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=0)
+		array([1, 1, 1, 1, 1])
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=1)
+		array([2, 3])
 	**/
-	static public function count_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function count_nonzero(a:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -1818,6 +1880,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1862,12 +1935,12 @@ package scipy.stats.morestats;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
@@ -1965,7 +2038,7 @@ package scipy.stats.morestats;
 	**/
 	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
-		floor(x[, out])
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -1976,6 +2049,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2000,7 +2084,7 @@ package scipy.stats.morestats;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hypot(x1, x2[, out])
+		hypot(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Given the "legs" of a right triangle, return its hypotenuse.
 		
@@ -2013,9 +2097,17 @@ package scipy.stats.morestats;
 		----------
 		x1, x2 : array_like
 		    Leg of the triangle(s).
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2094,8 +2186,8 @@ package scipy.stats.morestats;
 		    k_{3} = \frac{ n^{2} } {(n-1) (n-2)} m_{3}
 		    k_{4} = \frac{ n^{2} [(n + 1)m_{4} - 3(n - 1) m^2_{2}]} {(n-1) (n-2) (n-3)}
 		
-		where ``:math:\mu`` is the sample mean, ``:math:m_2`` is the sample
-		variance, and ``:math:m_i`` is the i-th sample central moment.
+		where :math:`\mu` is the sample mean, :math:`m_2` is the sample
+		variance, and :math:`m_i` is the i-th sample central moment.
 		
 		References
 		----------
@@ -2211,7 +2303,7 @@ package scipy.stats.morestats;
 	**/
 	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -2223,6 +2315,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2300,6 +2403,10 @@ package scipy.stats.morestats;
 		    Cressie-Read power divergence family to be used instead.  See
 		    `power_divergence` for details.
 		    Default is 1 (Pearson's chi-squared statistic).
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2317,7 +2424,8 @@ package scipy.stats.morestats;
 		    of the values below the grand median.  The table allows further
 		    analysis with, for example, `scipy.stats.chi2_contingency`, or with
 		    `scipy.stats.fisher_exact` if there are two samples, without having
-		    to recompute the table.
+		    to recompute the table.  If ``nan_policy`` is "propagate" and there
+		    are nans in the input, the return value for ``table`` is ``None``.
 		
 		See Also
 		--------
@@ -2535,7 +2643,7 @@ package scipy.stats.morestats;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		`pdf_fromgamma` is deprecated!
 		scipy.stats.pdf_fromgamma is deprecated in scipy 0.16.0 in favour of statsmodels.distributions.ExpandedNormal.
@@ -2993,7 +3101,7 @@ package scipy.stats.morestats;
 	**/
 	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -3001,6 +3109,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3117,6 +3236,12 @@ package scipy.stats.morestats;
 		placements are sorted according to the non-nan part if it exists.
 		Non-nan values are sorted as before.
 		
+		.. versionadded:: 1.12.0
+		
+		quicksort has been changed to an introsort which will switch
+		heapsort when it does not make enough progress. This makes its
+		worst case O(n*log(n)).
+		
 		Examples
 		--------
 		>>> a = np.array([[1,4],[3,1]])
@@ -3150,7 +3275,7 @@ package scipy.stats.morestats;
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -3158,9 +3283,17 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3209,18 +3342,27 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		ar : array_like
-		    Input array. This will be flattened if it is not already 1-D.
+		    Input array. Unless `axis` is specified, this will be flattened if it
+		    is not already 1-D.
 		return_index : bool, optional
-		    If True, also return the indices of `ar` that result in the unique
-		    array.
+		    If True, also return the indices of `ar` (along the specified axis,
+		    if provided, or in the flattened array) that result in the unique array.
 		return_inverse : bool, optional
-		    If True, also return the indices of the unique array that can be used
-		    to reconstruct `ar`.
+		    If True, also return the indices of the unique array (for the specified
+		    axis, if provided) that can be used to reconstruct `ar`.
 		return_counts : bool, optional
-		    If True, also return the number of times each unique value comes up
+		    If True, also return the number of times each unique item appears
 		    in `ar`.
-		
 		    .. versionadded:: 1.9.0
+		axis : int or None, optional
+		    The axis to operate on. If None, `ar` will be flattened beforehand.
+		    Otherwise, duplicate items will be removed along the provided axis,
+		    with all the other axes belonging to the each of the unique elements.
+		    Object arrays or structured arrays that contain objects are not
+		    supported if the `axis` kwarg is used.
+		    .. versionadded:: 1.13.0
+		
+		
 		
 		Returns
 		-------
@@ -3228,14 +3370,13 @@ package scipy.stats.morestats;
 		    The sorted unique values.
 		unique_indices : ndarray, optional
 		    The indices of the first occurrences of the unique values in the
-		    (flattened) original array. Only provided if `return_index` is True.
+		    original array. Only provided if `return_index` is True.
 		unique_inverse : ndarray, optional
-		    The indices to reconstruct the (flattened) original array from the
+		    The indices to reconstruct the original array from the
 		    unique array. Only provided if `return_inverse` is True.
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
-		
 		    .. versionadded:: 1.9.0
 		
 		See Also
@@ -3250,6 +3391,12 @@ package scipy.stats.morestats;
 		>>> a = np.array([[1, 1], [2, 3]])
 		>>> np.unique(a)
 		array([1, 2, 3])
+		
+		Return the unique rows of a 2D array
+		
+		>>> a = np.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])
+		>>> np.unique(a, axis=0)
+		array([[1, 0, 0], [2, 3, 4]])
 		
 		Return the indices of the original array that give the unique values:
 		
@@ -3275,7 +3422,7 @@ package scipy.stats.morestats;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Calculate the Wilcoxon signed-rank test.
 		

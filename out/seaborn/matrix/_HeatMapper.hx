@@ -47,6 +47,13 @@ package seaborn.matrix;
 	**/
 	public function new(data:Dynamic, vmin:Dynamic, vmax:Dynamic, cmap:Dynamic, center:Dynamic, robust:Dynamic, annot:Dynamic, fmt:Dynamic, annot_kws:Dynamic, cbar:Dynamic, cbar_kws:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -106,9 +113,17 @@ package seaborn.matrix;
 	**/
 	public function _annotate_heatmap(ax:Dynamic, mesh:Dynamic):Dynamic;
 	/**
+		Determine ticks and ticklabels that minimize overlap.
+	**/
+	public function _auto_ticks(ax:Dynamic, labels:Dynamic, axis:Dynamic):Dynamic;
+	/**
 		Use some heuristics to set good defaults for colorbar and range.
 	**/
 	public function _determine_cmap_params(plot_data:Dynamic, vmin:Dynamic, vmax:Dynamic, cmap:Dynamic, center:Dynamic, robust:Dynamic):Dynamic;
+	/**
+		Return ticks and labels at evenly spaced intervals.
+	**/
+	public function _skip_ticks(labels:Dynamic, tickevery:Dynamic):Dynamic;
 	/**
 		Draw the heatmap on the provided Axes.
 	**/

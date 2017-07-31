@@ -44,6 +44,25 @@ package numpy.lib.recfunctions;
 		collapsing any nested structure.
 	**/
 	static public function _izip_fields_flat(iterable:Dynamic):Dynamic;
+	/**
+		Return a new array keeping only the fields in `keep_names`,
+		and preserving the order of those fields.
+		
+		Parameters
+		----------
+		base : array
+		    Input array
+		keep_names : string or sequence
+		    String or sequence of strings corresponding to the names of the
+		    fields to keep. Order of the names will be preserved.
+		usemask : {False, True}, optional
+		    Whether to return a masked array or not.
+		asrecarray : string or sequence, optional
+		    Whether to return a recarray or a mrecarray (`asrecarray=True`) or
+		    a plain ndarray or masked array with flexible dtype. The default
+		    is False.
+	**/
+	static public function _keep_fields(base:Dynamic, keep_names:Dynamic, ?usemask:Dynamic, ?asrecarray:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Add new fields to an existing array.

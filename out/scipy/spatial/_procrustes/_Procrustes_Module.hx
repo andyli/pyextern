@@ -111,6 +111,8 @@ package scipy.spatial._procrustes;
 		See Also
 		--------
 		scipy.linalg.orthogonal_procrustes
+		scipy.spatial.distance.directed_hausdorff : Another similarity test
+		  for two data sets
 		
 		Notes
 		-----

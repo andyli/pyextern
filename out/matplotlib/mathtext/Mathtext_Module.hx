@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
 @:pythonImport("matplotlib.mathtext") extern class Mathtext_Module {
-	static public var DELTA : Dynamic;
-	static public var DELTAINTEGRAL : Dynamic;
-	static public var DELTASLANTED : Dynamic;
 	/**
 		Helper class to raise parser errors.
 	**/
@@ -13,12 +10,7 @@ package matplotlib.mathtext;
 	static public var LOAD_FORCE_AUTOHINT : Dynamic;
 	static public var LOAD_NO_HINTING : Dynamic;
 	static public var NUM_SIZE_LEVELS : Dynamic;
-	static public var SCRIPT_SPACE : Dynamic;
 	static public var SHRINK_FACTOR : Dynamic;
-	static public var SUB1 : Dynamic;
-	static public var SUB2 : Dynamic;
-	static public var SUBDROP : Dynamic;
-	static public var SUP1 : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -27,6 +19,8 @@ package matplotlib.mathtext;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _font_constant_mapping : Dynamic;
+	static public function _get_font_constant_set(state:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		ceil(x)
@@ -38,22 +32,51 @@ package matplotlib.mathtext;
 	static public var division : Dynamic;
 	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_data_path(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		FT2Font(ttffile)
+		
+		Create a new FT2Font object
+		The following global font attributes are defined:
+		  num_faces              number of faces in file
+		  face_flags             face flags  (int type); see the ft2font constants
+		  style_flags            style flags  (int type); see the ft2font constants
+		  num_glyphs             number of glyphs in the face
+		  family_name            face family name
+		  style_name             face syle name
+		  num_fixed_sizes        number of bitmap in the face
+		  scalable               face is scalable
+		
+		The following are available, if scalable is true:
+		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
+		  units_per_EM           number of font units covered by the EM
+		  ascender               ascender in 26.6 units
+		  descender              descender in 26.6 units
+		  height                 height in 26.6 units; used to compute a default
+		                         line spacing (baseline-to-baseline distance)
+		  max_advance_width      maximum horizontal cursor advance for all glyphs
+		  max_advance_height     same for vertical layout
+		  underline_position     vertical position of the underline bar
+		  underline_thickness    vertical thickness of the underline
+		  postscript_name        PostScript name of the font
+	**/
+	static public function get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
-		get_unicode_index(symbol) -> integer
+		get_unicode_index(symbol, [bool]) -> integer
 		
 		Return the integer index (from the Unicode table) of symbol.  *symbol*
 		can be a single unicode character, a TeX command (i.e. r'\pi'), or a
 		Type1 symbol name (i.e. 'phi').
+		If math is False, the current symbol should be treated as a non-math symbol.
 	**/
-	static public function get_unicode_index(symbol:Dynamic):Dynamic;
+	static public function get_unicode_index(symbol:Dynamic, ?math:Dynamic):Dynamic;
 	static public var inf : Dynamic;
 	/**
 		Return True if *obj* looks like a string
 	**/
 	static public function is_string_like(obj:Dynamic):Dynamic;
 	/**
-		isinf(x[, out])
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -64,8 +87,17 @@ package matplotlib.mathtext;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -89,7 +121,7 @@ package matplotlib.mathtext;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first

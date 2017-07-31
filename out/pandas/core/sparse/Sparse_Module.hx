@@ -8,5 +8,6 @@ package pandas.core.sparse;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 }

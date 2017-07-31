@@ -579,6 +579,13 @@ package seaborn.axisgrid;
 	**/
 	public function new(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

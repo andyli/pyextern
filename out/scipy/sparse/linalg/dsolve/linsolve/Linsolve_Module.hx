@@ -35,8 +35,8 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -129,7 +129,7 @@ package scipy.sparse.linalg.dsolve.linsolve;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a fuction for solving a sparse linear system, with A pre-factorized.
+		Return a function for solving a sparse linear system, with A pre-factorized.
 		
 		Parameters
 		----------
@@ -198,13 +198,13 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		
 		Examples
 		--------
-		>>> x = np.eye(3)
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
 		>>> x
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2]), array([0, 1, 2]))
+		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
 		
 		>>> x[np.nonzero(x)]
 		array([ 1.,  1.,  1.])
@@ -465,6 +465,43 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		matrix and using scipy.linalg.solve or its variants.
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
+	/**
+		Solve the equation `A x = b` for `x`, assuming A is a triangular matrix.
+		
+		Parameters
+		----------
+		A : (M, M) sparse matrix
+		    A sparse square triangular matrix. Should be in CSR format.
+		b : (M,) or (M, N) array_like
+		    Right-hand side matrix in `A x = b`
+		lower : bool, optional
+		    Whether `A` is a lower or upper triangular matrix.
+		    Default is lower triangular matrix.
+		overwrite_A : bool, optional
+		    Allow changing `A`. The indices of `A` are going to be sorted and zero
+		    entries are going to be removed.
+		    Enabling gives a performance gain. Default is False.
+		overwrite_b : bool, optional
+		    Allow overwriting data in `b`.
+		    Enabling gives a performance gain. Default is False.
+		
+		Returns
+		-------
+		x : (M,) or (M, N) ndarray
+		    Solution to the system `A x = b`.  Shape of return matches shape of `b`.
+		
+		Raises
+		------
+		LinAlgError
+		    If `A` is singular or not triangular.
+		ValueError
+		    If shape of `A` or shape of `b` do not match the requirements.
+		
+		Notes
+		-----
+		.. versionadded:: 0.19.0
+	**/
+	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
 	static public var useUmfpack : Dynamic;
 	/**
 		Select default sparse direct solver to be used.

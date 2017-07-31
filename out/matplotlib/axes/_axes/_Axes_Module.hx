@@ -20,6 +20,7 @@ package matplotlib.axes._axes;
 		* 'ko': black circles
 		* '.b': blue dots
 		* 'r--': red dashed lines
+		* 'C2--': the third color in the color cycle, dashed lines
 		
 		.. seealso::
 		

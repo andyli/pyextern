@@ -48,10 +48,40 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	static public var division : Dynamic;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors.
+		
+		Given a distributed dask.DataFrame or dask.Series containing columns or names
+		for one or more predictors, this operation returns a single dask.DataFrame or
+		dask.Series that can be iterated over.
+		
+		Args:
+		  data: A distributed dask.DataFrame or dask.Series.
+		
+		Returns:
+		  A dask.DataFrame or dask.Series that can be iterated over.
+		  If the supplied argument is neither a dask.DataFrame nor a dask.Series this
+		  operation returns it without modification.
 	**/
 	static public function extract_dask_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from dask.Series for labels.
+		Extract data from dask.Series or dask.DataFrame for labels.
+		
+		Given a distributed dask.DataFrame or dask.Series containing exactly one
+		column or name, this operation returns a single dask.DataFrame or dask.Series
+		that can be iterated over.
+		
+		Args:
+		  labels: A distributed dask.DataFrame or dask.Series with exactly one
+		          column or name.
+		
+		Returns:
+		  A dask.DataFrame or dask.Series that can be iterated over.
+		  If the supplied argument is neither a dask.DataFrame nor a dask.Series this
+		  operation returns it without modification.
+		
+		Raises:
+		  ValueError: If the supplied dask.DataFrame contains more than one
+		              column or the supplied dask.Series contains more than
+		              one name.
 	**/
 	static public function extract_dask_labels(labels:Dynamic):Dynamic;
 	/**
@@ -100,12 +130,13 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		Returns an iterable for feeding into predict step.
 		
 		Args:
-		  x: numpy, pandas, Dask array or iterable.
-		  batch_size: Size of batches to split data into.
-		    If `None`, returns one batch of full size.
+		  x: numpy, pandas, Dask array or dictionary of aforementioned. Also supports
+		    iterable.
+		  batch_size: Size of batches to split data into. If `None`, returns one
+		    batch of full size.
 		
 		Returns:
-		  List or iterator of parts of data to predict on.
+		  List or iterator (or dictionary thereof) of parts of data to predict on.
 		
 		Raises:
 		  ValueError: if `batch_size` <= 0.
@@ -127,9 +158,15 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		If `x` and `y` are iterators, use `StreamingDataFeeder`.
 		
 		Args:
-		  x: numpy, pandas or Dask matrix or iterable.
-		  y: numpy, pandas or Dask array or iterable.
-		  n_classes: number of classes.
+		  x: numpy, pandas or Dask matrix or dictionary of aforementioned. Also
+		    supports iterables.
+		  y: numpy, pandas or Dask array or dictionary of aforementioned. Also
+		    supports
+		    iterables.
+		  n_classes: number of classes. Must be None or same type as y. In case, `y`
+		    is `dict`
+		    (or iterable which returns dict) such that `n_classes[key] = n_classes for
+		      y[key]`
 		  batch_size: size to split data into parts. Must be >= 1.
 		  shuffle: Whether to shuffle the inputs.
 		  epochs: Number of epochs to run.

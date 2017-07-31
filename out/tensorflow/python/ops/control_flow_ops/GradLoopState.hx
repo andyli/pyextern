@@ -110,6 +110,13 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function new(forward_ctxt:Dynamic, outer_grad_state:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -165,6 +172,10 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		The list of "deferred" exits.
+	**/
+	public var deferred_exits : Dynamic;
+	/**
 		The while loop context for forward.
 	**/
 	public var forward_context : Dynamic;
@@ -172,6 +183,10 @@ package tensorflow.python.ops.control_flow_ops;
 		The loop index of forward loop.
 	**/
 	public var forward_index : Dynamic;
+	/**
+		The list of exits of the forward loop.
+	**/
+	public var forward_loop_exits : Dynamic;
 	/**
 		A control trigger node for synchronization in the forward loop.
 		
@@ -203,7 +218,15 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public var outer_grad_state : Dynamic;
 	/**
-		The map that records all the Switch ops for the While loop.
+		The number of exits we expect to see but haven't.
+	**/
+	public var pending_exits_count : Dynamic;
+	/**
+		The map that records all the Switch ops for the while loop.
 	**/
 	public var switch_map : Dynamic;
+	/**
+		The list of "unused" exits.
+	**/
+	public var unused_exits : Dynamic;
 }

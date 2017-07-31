@@ -47,6 +47,13 @@ package docutils.writers.s5_html;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -260,8 +267,10 @@ package docutils.writers.s5_html;
 	public function is_compactable(node:Dynamic):Dynamic;
 	static public var lang_attribute : Dynamic;
 	static public var layout_template : Dynamic;
+	static public var math_tags : Dynamic;
 	static public var mathjax_script : Dynamic;
 	static public var mathjax_url : Dynamic;
+	static public var object_image_types : Dynamic;
 	static public var optional : Dynamic;
 	static public var required_theme_files : Dynamic;
 	static public var s5_stylesheet_template : Dynamic;
@@ -277,6 +286,7 @@ package docutils.writers.s5_html;
 	**/
 	public function should_be_compact_paragraph(node:Dynamic):Dynamic;
 	static public var sollbruchstelle : Dynamic;
+	static public var special_characters : Dynamic;
 	/**
 		Construct and return a start tag given a node (id & class attributes
 		are extracted), tag name, and optional attributes.
@@ -337,8 +347,7 @@ package docutils.writers.s5_html;
 	public function visit_entry(node:Dynamic):Dynamic;
 	/**
 		The 'start' attribute does not conform to HTML 4.01's strict.dtd, but
-		CSS1 doesn't help. CSS2 isn't widely enough supported yet to be
-		usable.
+		cannot be emulated in CSS1 (HTML 5 reincludes it).
 	**/
 	public function visit_enumerated_list(node:Dynamic):Dynamic;
 	public function visit_field(node:Dynamic):Dynamic;

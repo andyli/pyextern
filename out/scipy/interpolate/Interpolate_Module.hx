@@ -96,60 +96,6 @@ package scipy.interpolate;
 	**/
 	static public function barycentric_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
 		Evaluate a bivariate B-spline and its derivatives.
 		
 		Return a rank-2 array of spline function values (or spline derivative
@@ -293,7 +239,7 @@ package scipy.interpolate;
 		    shape (n, D), or a tuple of `ndim` arrays.
 		values : ndarray of float or complex, shape (n,)
 		    Data values.
-		xi : ndarray of float, shape (M, D)
+		xi : 2-D ndarray of float or tuple of 1-D array, shape (M, D)
 		    Points at which to interpolate data.
 		method : {'linear', 'nearest', 'cubic'}, optional
 		    Method of interpolation. One of
@@ -393,10 +339,10 @@ package scipy.interpolate;
 		x (u) : array_like
 		    A 1-D point at which to insert a new knot(s).  If `tck` was returned
 		    from ``splprep``, then the parameter values, u should be given.
-		tck : tuple
-		    A tuple (t,c,k) returned by ``splrep`` or ``splprep`` containing
-		    the vector of knots, the B-spline coefficients,
-		    and the degree of the spline.
+		tck : a `BSpline` instance or a tuple
+		    If tuple, then it is expected to be a tuple (t,c,k) containing
+		    the vector of knots, the B-spline coefficients, and the degree of
+		    the spline.
 		m : int, optional
 		    The number of times to insert the given knot (its multiplicity).
 		    Default is 1.
@@ -405,17 +351,21 @@ package scipy.interpolate;
 		
 		Returns
 		-------
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
-		    coefficients, and the degree of the new spline.
+		BSpline instance or a tuple
+		    A new B-spline with knots t, coefficients c, and degree k.
 		    ``t(k+1) <= x <= t(n-k)``, where k is the degree of the spline.
 		    In case of a periodic spline (``per != 0``) there must be
 		    either at least k interior knots t(j) satisfying ``t(k+1)<t(j)<=x``
 		    or at least k interior knots t(j) satisfying ``x<=t(j)<t(n-k)``.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		Notes
 		-----
 		Based on algorithms from [1]_ and [2]_.
+		
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
 		
 		References
 		----------
@@ -424,7 +374,7 @@ package scipy.interpolate;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines, Monographs on
 		    Numerical Analysis", Oxford University Press, 1993.
 	**/
-	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):python.Tuple<Dynamic>;
+	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):Dynamic;
 	/**
 		Multidimensional interpolation on regular grids.
 		
@@ -543,6 +493,249 @@ package scipy.interpolate;
 	**/
 	static public function lagrange(x:Dynamic, w:Dynamic):Dynamic;
 	/**
+		Compute the (coefficients of) interpolating B-spline.
+		
+		Parameters
+		----------
+		x : array_like, shape (n,)
+		    Abscissas.
+		y : array_like, shape (n, ...)
+		    Ordinates.
+		k : int, optional
+		    B-spline degree. Default is cubic, k=3.
+		t : array_like, shape (nt + k + 1,), optional.
+		    Knots.
+		    The number of knots needs to agree with the number of datapoints and
+		    the number of derivatives at the edges. Specifically, ``nt - n`` must
+		    equal ``len(deriv_l) + len(deriv_r)``.
+		bc_type : 2-tuple or None
+		    Boundary conditions.
+		    Default is None, which means choosing the boundary conditions
+		    automatically. Otherwise, it must be a length-two tuple where the first
+		    element sets the boundary conditions at ``x[0]`` and the second
+		    element sets the boundary conditions at ``x[-1]``. Each of these must
+		    be an iterable of pairs ``(order, value)`` which gives the values of
+		    derivatives of specified orders at the given edge of the interpolation
+		    interval.
+		axis : int, optional
+		    Interpolation axis. Default is 0.
+		check_finite : bool, optional
+		    Whether to check that the input arrays contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default is True.
+		
+		Returns
+		-------
+		b : a BSpline object of the degree ``k`` and with knots ``t``.
+		
+		Examples
+		--------
+		
+		Use cubic interpolation on Chebyshev nodes:
+		
+		>>> def cheb_nodes(N):
+		...     jj = 2.*np.arange(N) + 1
+		...     x = np.cos(np.pi * jj / 2 / N)[::-1]
+		...     return x
+		
+		>>> x = cheb_nodes(20)
+		>>> y = np.sqrt(1 - x**2)
+		
+		>>> from scipy.interpolate import BSpline, make_interp_spline
+		>>> b = make_interp_spline(x, y)
+		>>> np.allclose(b(x), y)
+		True
+		
+		Note that the default is a cubic spline with a not-a-knot boundary condition
+		
+		>>> b.k
+		3
+		
+		Here we use a 'natural' spline, with zero 2nd derivatives at edges:
+		
+		>>> l, r = [(2, 0)], [(2, 0)]
+		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))
+		>>> np.allclose(b_n(x), y)
+		True
+		>>> x0, x1 = x[0], x[-1]
+		>>> np.allclose([b_n(x0, 2), b_n(x1, 2)], [0, 0])
+		True
+		
+		Interpolation of parametric curves is also supported. As an example, we
+		compute a discretization of a snail curve in polar coordinates
+		
+		>>> phi = np.linspace(0, 2.*np.pi, 40)
+		>>> r = 0.3 + np.cos(phi)
+		>>> x, y = r*np.cos(phi), r*np.sin(phi)  # convert to Cartesian coordinates
+		
+		Build an interpolating curve, parameterizing it by the angle
+		
+		>>> from scipy.interpolate import make_interp_spline
+		>>> spl = make_interp_spline(phi, np.c_[x, y])
+		
+		Evaluate the interpolant on a finer grid (note that we transpose the result
+		to unpack it into a pair of x- and y-arrays)
+		
+		>>> phi_new = np.linspace(0, 2.*np.pi, 100)
+		>>> x_new, y_new = spl(phi_new).T
+		
+		Plot the result
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'o')
+		>>> plt.plot(x_new, y_new, '-')
+		>>> plt.show()
+		
+		See Also
+		--------
+		BSpline : base class representing the B-spline objects
+		CubicSpline : a cubic spline in the polynomial basis
+		make_lsq_spline : a similar factory function for spline fitting
+		UnivariateSpline : a wrapper over FITPACK spline fitting routines
+		splrep : a wrapper over FITPACK spline fitting routines
+	**/
+	static public function make_interp_spline(x:Dynamic, y:Dynamic, ?k:Dynamic, ?t:Dynamic, ?bc_type:Dynamic, ?axis:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Compute the (coefficients of) an LSQ B-spline.
+		
+		The result is a linear combination
+		
+		.. math::
+		
+		        S(x) = \sum_j c_j B_j(x; t)
+		
+		of the B-spline basis elements, :math:`B_j(x; t)`, which minimizes
+		
+		.. math::
+		
+		    \sum_{j} \left( w_j \times (S(x_j) - y_j) \right)^2
+		
+		Parameters
+		----------
+		x : array_like, shape (m,)
+		    Abscissas.
+		y : array_like, shape (m, ...)
+		    Ordinates.
+		t : array_like, shape (n + k + 1,).
+		    Knots.
+		    Knots and data points must satisfy Schoenberg-Whitney conditions.
+		k : int, optional
+		    B-spline degree. Default is cubic, k=3.
+		w : array_like, shape (n,), optional
+		    Weights for spline fitting. Must be positive. If ``None``,
+		    then weights are all equal.
+		    Default is ``None``.
+		axis : int, optional
+		    Interpolation axis. Default is zero.
+		check_finite : bool, optional
+		    Whether to check that the input arrays contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default is True.
+		
+		Returns
+		-------
+		b : a BSpline object of the degree `k` with knots `t`.
+		
+		Notes
+		-----
+		
+		The number of data points must be larger than the spline degree `k`.
+		
+		Knots `t` must satisfy the Schoenberg-Whitney conditions,
+		i.e., there must be a subset of data points ``x[j]`` such that
+		``t[j] < x[j] < t[j+k+1]``, for ``j=0, 1,...,n-k-2``.
+		
+		Examples
+		--------
+		Generate some noisy data:
+		
+		>>> x = np.linspace(-3, 3, 50)
+		>>> y = np.exp(-x**2) + 0.1 * np.random.randn(50)
+		
+		Now fit a smoothing cubic spline with a pre-defined internal knots.
+		Here we make the knot vector (k+1)-regular by adding boundary knots:
+		
+		>>> from scipy.interpolate import make_lsq_spline, BSpline
+		>>> t = [-1, 0, 1]
+		>>> k = 3
+		>>> t = np.r_[(x[0],)*(k+1),
+		...           t,
+		...           (x[-1],)*(k+1)]
+		>>> spl = make_lsq_spline(x, y, t, k)
+		
+		For comparison, we also construct an interpolating spline for the same
+		set of data:
+		
+		>>> from scipy.interpolate import make_interp_spline
+		>>> spl_i = make_interp_spline(x, y)
+		
+		Plot both:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> xs = np.linspace(-3, 3, 100)
+		>>> plt.plot(x, y, 'ro', ms=5)
+		>>> plt.plot(xs, spl(xs), 'g-', lw=3, label='LSQ spline')
+		>>> plt.plot(xs, spl_i(xs), 'b-', lw=3, alpha=0.7, label='interp spline')
+		>>> plt.legend(loc='best')
+		>>> plt.show()
+		
+		**NaN handling**: If the input arrays contain ``nan`` values, the result is
+		not useful since the underlying spline fitting routines cannot deal with
+		``nan``. A workaround is to use zero weights for not-a-number data points:
+		
+		>>> y[8] = np.nan
+		>>> w = np.isnan(y)
+		>>> y[w] = 0.
+		>>> tck = make_lsq_spline(x, y, t, w=~w)
+		
+		Notice the need to replace a ``nan`` by a numerical value (precise value
+		does not matter as long as the corresponding weight is zero.)
+		
+		See Also
+		--------
+		BSpline : base class representing the B-spline objects
+		make_interp_spline : a similar factory function for interpolating splines
+		LSQUnivariateSpline : a FITPACK-based spline fitting routine
+		splrep : a FITPACK-based fitting routine
+	**/
+	static public function make_lsq_spline(x:Dynamic, y:Dynamic, t:Dynamic, ?k:Dynamic, ?w:Dynamic, ?axis:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Return Pade approximation to a polynomial as the ratio of two polynomials.
+		
+		Parameters
+		----------
+		an : (N,) array_like
+		    Taylor series coefficients.
+		m : int
+		    The order of the returned approximating polynomials.
+		
+		Returns
+		-------
+		p, q : Polynomial class
+		    The Pade approximation of the polynomial defined by `an` is
+		    ``p(x)/q(x)``.
+		
+		Examples
+		--------
+		>>> from scipy.interpolate import pade
+		>>> e_exp = [1.0, 1.0, 1.0/2.0, 1.0/6.0, 1.0/24.0, 1.0/120.0]
+		>>> p, q = pade(e_exp, 2)
+		
+		>>> e_exp.reverse()
+		>>> e_poly = np.poly1d(e_exp)
+		
+		Compare ``e_poly(x)`` and the Pade approximation ``p(x)/q(x)``
+		
+		>>> e_poly(1)
+		2.7166666666666668
+		
+		>>> p(1)/q(1)
+		2.7179487179487181
+	**/
+	static public function pade(an:Dynamic, m:Dynamic):Dynamic;
+	/**
 		Convenience function for pchip interpolation.
 		xi and yi are arrays of values used to approximate some function f,
 		with ``yi = f(xi)``.  The interpolant uses monotonic cubic splines
@@ -589,8 +782,8 @@ package scipy.interpolate;
 		    A point or a set of points at which to evaluate the derivatives.
 		    Note that ``t(k) <= x <= t(n-k+1)`` must hold for each `x`.
 		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots,
-		    the B-spline coefficients, and the degree of the spline.
+		    A tuple ``(t, c, k)``, containing the vector of knots, the B-spline
+		    coefficients, and the degree of the spline (see `splev`).
 		
 		Returns
 		-------
@@ -601,15 +794,15 @@ package scipy.interpolate;
 		See Also
 		--------
 		splprep, splrep, splint, sproot, splev, bisplrep, bisplev,
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		References
 		----------
-		.. [1] de Boor C : On calculating with b-splines, J. Approximation Theory
+		.. [1] C. de Boor: On calculating with b-splines, J. Approximation Theory
 		   6 (1972) 50-62.
-		.. [2] Cox M.G. : The numerical evaluation of b-splines, J. Inst. Maths
+		.. [2] M. G. Cox : The numerical evaluation of b-splines, J. Inst. Maths
 		   applics 10 (1972) 134-149.
-		.. [3] Dierckx P. : Curve and surface fitting with splines, Monographs on
+		.. [3] P. Dierckx : Curve and surface fitting with splines, Monographs on
 		   Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function spalde(x:Dynamic, tck:Dynamic):Dynamic;
@@ -618,20 +811,23 @@ package scipy.interpolate;
 		
 		Parameters
 		----------
-		tck : tuple of (t, c, k)
+		tck : BSpline instance or a tuple of (t, c, k)
 		    Spline whose antiderivative to compute
 		n : int, optional
 		    Order of antiderivative to evaluate. Default: 1
 		
 		Returns
 		-------
-		tck_ader : tuple of (t2, c2, k2)
+		BSpline instance or a tuple of (t2, c2, k2)
 		    Spline of order k2=k+n representing the antiderivative of the input
 		    spline.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		See Also
 		--------
 		splder, splev, spalde
+		BSpline
 		
 		Notes
 		-----
@@ -673,16 +869,18 @@ package scipy.interpolate;
 		
 		Parameters
 		----------
-		tck : tuple of (t, c, k)
+		tck : BSpline instance or a tuple of (t, c, k)
 		    Spline whose derivative to compute
 		n : int, optional
 		    Order of derivative to evaluate. Default: 1
 		
 		Returns
 		-------
-		tck_der : tuple of (t2, c2, k2)
+		`BSpline` instance or tuple
 		    Spline of order k2=k-n representing the derivative
 		    of the input spline.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		Notes
 		-----
@@ -692,6 +890,7 @@ package scipy.interpolate;
 		See Also
 		--------
 		splantider, splev, spalde
+		BSpline
 		
 		Examples
 		--------
@@ -727,9 +926,10 @@ package scipy.interpolate;
 		    An array of points at which to return the value of the smoothed
 		    spline or its derivatives.  If `tck` was returned from `splprep`,
 		    then the parameter values, u should be given.
-		tck : tuple
-		    A sequence of length 3 returned by `splrep` or `splprep` containing
-		    the knots, coefficients, and degree of the spline.
+		tck : 3-tuple or a BSpline object
+		    If a tuple, then it should be a sequence of length 3 returned by
+		    `splrep` or `splprep` containing the knots, coefficients, and degree
+		    of the spline. (Also see Notes.)
 		der : int, optional
 		    The order of derivative of the spline to compute (must be less than
 		    or equal to k).
@@ -748,94 +948,110 @@ package scipy.interpolate;
 		-------
 		y : ndarray or list of ndarrays
 		    An array of values representing the spline function evaluated at
-		    the points in ``x``.  If `tck` was returned from `splprep`, then this
+		    the points in `x`.  If `tck` was returned from `splprep`, then this
 		    is a list of arrays representing the curve in N-dimensional space.
+		
+		Notes
+		-----
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using `BSpline` objects.
 		
 		See Also
 		--------
 		splprep, splrep, sproot, spalde, splint
 		bisplrep, bisplev
+		BSpline
 		
 		References
 		----------
 		.. [1] C. de Boor, "On calculating with b-splines", J. Approximation
 		    Theory, 6, p.50-62, 1972.
-		.. [2] M.G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
+		.. [2] M. G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
 		    Applics, 10, p.134-149, 1972.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function splev(x:Dynamic, tck:Dynamic, ?der:Dynamic, ?ext:Dynamic):Dynamic;
 	/**
-		Evaluate a fixed spline represented by the given tuple at the new x-values
+		`spleval` is deprecated!
+		spleval is deprecated in scipy 0.19.0, use BSpline instead.
 		
-		The `xj` values are the interior knot points.  The approximation
-		region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
-		should have length N+k where `k` is the order of the spline.
 		
-		Parameters
-		----------
-		(xj, cvals, k) : tuple
-		    Parameters that define the fixed spline
-		xj : array_like
-		    Interior knot points
-		cvals : array_like
-		    Curvature
-		k : int
-		    Order of the spline
-		xnew : array_like
-		    Locations to calculate spline
-		deriv : int
-		    Deriv
+		    Evaluate a fixed spline represented by the given tuple at the new x-values
 		
-		Returns
-		-------
-		spleval : ndarray
-		    If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
-		    `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
-		    providing the interpolation of multiple curves.
+		    The `xj` values are the interior knot points.  The approximation
+		    region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
+		    should have length N+k where `k` is the order of the spline.
 		
-		Notes
-		-----
-		Internally, an additional `k`-1 knot points are added on either side of
-		the spline.
+		    Parameters
+		    ----------
+		    (xj, cvals, k) : tuple
+		        Parameters that define the fixed spline
+		    xj : array_like
+		        Interior knot points
+		    cvals : array_like
+		        Curvature
+		    k : int
+		        Order of the spline
+		    xnew : array_like
+		        Locations to calculate spline
+		    deriv : int
+		        Deriv
+		
+		    Returns
+		    -------
+		    spleval : ndarray
+		        If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
+		        `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
+		        providing the interpolation of multiple curves.
+		
+		    Notes
+		    -----
+		    Internally, an additional `k`-1 knot points are added on either side of
+		    the spline.
+		
+		    
 	**/
-	static public function spleval(xck:Dynamic, xnew:Dynamic, ?deriv:Dynamic):Dynamic;
+	static public function spleval(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Interpolate a curve at new points using a spline fit
+		`spline` is deprecated!
+		spline is deprecated in scipy 0.19.0, use Bspline class instead.
 		
-		Parameters
-		----------
-		xk, yk : array_like
-		    The x and y values that define the curve.
-		xnew : array_like
-		    The x values where spline should estimate the y values.
-		order : int
-		    Default is 3.
-		kind : string
-		    One of {'smoothest'}
-		conds : Don't know
-		    Don't know
 		
-		Returns
-		-------
-		spline : ndarray
-		    An array of y values; the spline evaluated at the positions `xnew`.
+		    Interpolate a curve at new points using a spline fit
+		
+		    Parameters
+		    ----------
+		    xk, yk : array_like
+		        The x and y values that define the curve.
+		    xnew : array_like
+		        The x values where spline should estimate the y values.
+		    order : int
+		        Default is 3.
+		    kind : string
+		        One of {'smoothest'}
+		    conds : Don't know
+		        Don't know
+		
+		    Returns
+		    -------
+		    spline : ndarray
+		        An array of y values; the spline evaluated at the positions `xnew`.
+		
+		    
 	**/
-	static public function spline(xk:Dynamic, yk:Dynamic, xnew:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):Dynamic;
+	static public function spline(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Evaluate the definite integral of a B-spline.
-		
-		Given the knots and coefficients of a B-spline, evaluate the definite
-		integral of the smoothing polynomial between two given points.
+		Evaluate the definite integral of a B-spline between two given points.
 		
 		Parameters
 		----------
 		a, b : float
 		    The end-points of the integration interval.
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
-		    coefficients, and the degree of the spline (see `splev`).
+		tck : tuple or a BSpline instance
+		    If a tuple, then it should be a sequence of length 3, containing the
+		    vector of knots, the B-spline coefficients, and the degree of the
+		    spline (see `splev`).
 		full_output : int, optional
 		    Non-zero to return optional output.
 		
@@ -846,17 +1062,21 @@ package scipy.interpolate;
 		wrk : ndarray
 		    An array containing the integrals of the normalized B-splines
 		    defined on the set of knots.
+		    (Only returned if `full_output` is non-zero)
 		
 		Notes
 		-----
-		splint silently assumes that the spline function is zero outside the data
-		interval (a, b).
+		`splint` silently assumes that the spline function is zero outside the data
+		interval (`a`, `b`).
+		
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
 		
 		See Also
 		--------
 		splprep, splrep, sproot, spalde, splev
 		bisplrep, bisplev
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		References
 		----------
@@ -867,32 +1087,38 @@ package scipy.interpolate;
 	**/
 	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Float;
 	/**
-		Return a representation of a spline given data-points at internal knots
+		`splmake` is deprecated!
+		splmake is deprecated in scipy 0.19.0, use make_interp_spline instead.
 		
-		Parameters
-		----------
-		xk : array_like
-		    The input array of x values of rank 1
-		yk : array_like
-		    The input array of y values of rank N. `yk` can be an N-d array to
-		    represent more than one curve, through the same `xk` points. The first
-		    dimension is assumed to be the interpolating dimension and is the same
-		    length of `xk`.
-		order : int, optional
-		    Order of the spline
-		kind : str, optional
-		    Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
-		    'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
-		conds : optional
-		    Conds
 		
-		Returns
-		-------
-		splmake : tuple
-		    Return a (`xk`, `cvals`, `k`) representation of a spline given
-		    data-points where the (internal) knots are at the data-points.
+		    Return a representation of a spline given data-points at internal knots
+		
+		    Parameters
+		    ----------
+		    xk : array_like
+		        The input array of x values of rank 1
+		    yk : array_like
+		        The input array of y values of rank N. `yk` can be an N-d array to
+		        represent more than one curve, through the same `xk` points. The first
+		        dimension is assumed to be the interpolating dimension and is the same
+		        length of `xk`.
+		    order : int, optional
+		        Order of the spline
+		    kind : str, optional
+		        Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
+		        'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
+		    conds : optional
+		        Conds
+		
+		    Returns
+		    -------
+		    splmake : tuple
+		        Return a (`xk`, `cvals`, `k`) representation of a spline given
+		        data-points where the (internal) knots are at the data-points.
+		
+		    
 	**/
-	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):python.Tuple<Dynamic>;
+	static public function splmake(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the B-spline representation of an N-dimensional curve.
 		
@@ -964,7 +1190,7 @@ package scipy.interpolate;
 		Returns
 		-------
 		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
+		    (t,c,k) a tuple containing the vector of knots, the B-spline
 		    coefficients, and the degree of the spline.
 		u : array
 		    An array of the values of the parameter.
@@ -982,6 +1208,8 @@ package scipy.interpolate;
 		splrep, splev, sproot, spalde, splint,
 		bisplrep, bisplev
 		UnivariateSpline, BivariateSpline
+		BSpline
+		make_interp_spline
 		
 		Notes
 		-----
@@ -998,6 +1226,30 @@ package scipy.interpolate;
 		    K.U.Leuven, 1981.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs on
 		    Numerical Analysis, Oxford University Press, 1993.
+		
+		Examples
+		--------
+		Generate a discretization of a limacon curve in the polar coordinates:
+		
+		>>> phi = np.linspace(0, 2.*np.pi, 40)
+		>>> r = 0.5 + np.cos(phi)         # polar coords
+		>>> x, y = r * np.cos(phi), r * np.sin(phi)    # convert to cartesian
+		
+		And interpolate:
+		
+		>>> from scipy.interpolate import splprep, splev
+		>>> tck, u = splprep([x, y], s=0)
+		>>> new_points = splev(u, tck)
+		
+		Notice that (i) we force interpolation by using `s=0`,
+		(ii) the parameterization, ``u``, is generated automatically.
+		Now plot the result:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots()
+		>>> ax.plot(x, y, 'ro')
+		>>> ax.plot(new_points[0], new_points[1], 'r-')
+		>>> plt.show()
 	**/
 	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
@@ -1061,7 +1313,7 @@ package scipy.interpolate;
 		Returns
 		-------
 		tck : tuple
-		    (t,c,k) a tuple containing the vector of knots, the B-spline
+		    A tuple (t,c,k) containing the vector of knots, the B-spline
 		    coefficients, and the degree of the spline.
 		fp : array, optional
 		    The weighted sum of squared residuals of the spline approximation.
@@ -1072,23 +1324,21 @@ package scipy.interpolate;
 		msg : str, optional
 		    A message corresponding to the integer flag, ier.
 		
-		Notes
-		-----
-		See splev for evaluation of the spline and its derivatives.
-		
-		The user is responsible for assuring that the values of *x* are unique.
-		Otherwise, *splrep* will not return sensible results.
-		
 		See Also
 		--------
 		UnivariateSpline, BivariateSpline
 		splprep, splev, sproot, spalde, splint
 		bisplrep, bisplev
+		BSpline
+		make_interp_spline
 		
 		Notes
 		-----
-		See splev for evaluation of the spline and its derivatives. Uses the
-		FORTRAN routine curfit from FITPACK.
+		See `splev` for evaluation of the spline and its derivatives. Uses the
+		FORTRAN routine ``curfit`` from FITPACK.
+		
+		The user is responsible for assuring that the values of `x` are unique.
+		Otherwise, `splrep` will not return sensible results.
 		
 		If provided, knots `t` must satisfy the Schoenberg-Whitney conditions,
 		i.e., there must be a subset of data points ``x[j]`` such that
@@ -1116,18 +1366,20 @@ package scipy.interpolate;
 		>>> from scipy.interpolate import splev, splrep
 		>>> x = np.linspace(0, 10, 10)
 		>>> y = np.sin(x)
-		>>> tck = splrep(x, y)
+		>>> spl = splrep(x, y)
 		>>> x2 = np.linspace(0, 10, 200)
-		>>> y2 = splev(x2, tck)
+		>>> y2 = splev(x2, spl)
 		>>> plt.plot(x, y, 'o', x2, y2)
 		>>> plt.show()
 	**/
 	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
+		`spltopp` is deprecated!
+		spltopp is deprecated in scipy 0.19.0, use PPoly.from_spline instead.
+		
 		Return a piece-wise polynomial object from a fixed-spline tuple.
-		    
 	**/
-	static public function spltopp(xk:Dynamic, cvals:Dynamic, k:Dynamic):Dynamic;
+	static public function spltopp(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the roots of a cubic B-spline.
 		
@@ -1136,9 +1388,10 @@ package scipy.interpolate;
 		
 		Parameters
 		----------
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots,
-		    the B-spline coefficients, and the degree of the spline.
+		tck : tuple or a BSpline object
+		    If a tuple, then it should be a sequence of length 3, containing the
+		    vector of knots, the B-spline coefficients, and the degree of the
+		    spline.
 		    The number of knots must be >= 8, and the degree must be 3.
 		    The knots must be a montonically increasing sequence.
 		mest : int, optional
@@ -1149,18 +1402,23 @@ package scipy.interpolate;
 		zeros : ndarray
 		    An array giving the roots of the spline.
 		
+		Notes
+		-----
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
+		
 		See also
 		--------
 		splprep, splrep, splint, spalde, splev
 		bisplrep, bisplev
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		
 		References
 		----------
 		.. [1] C. de Boor, "On calculating with b-splines", J. Approximation
 		    Theory, 6, p.50-62, 1972.
-		.. [2] M.G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
+		.. [2] M. G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
 		    Applics, 10, p.134-149, 1972.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
@@ -1191,12 +1449,14 @@ package scipy.interpolate;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

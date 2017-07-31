@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package pandas.lib;
-typedef Timestamp = pandas.tslib.Timestamp;
+typedef Timestamp = pandas._libs.tslib.Timestamp;

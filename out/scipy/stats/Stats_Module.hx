@@ -135,9 +135,10 @@ package scipy.stats;
 		----------
 		x : array_like
 		    array of sample data
-		dist : {'norm','expon','logistic','gumbel','extreme1'}, optional
+		dist : {'norm','expon','logistic','gumbel','gumbel_l', gumbel_r',
+		    'extreme1'}, optional
 		    the type of distribution to test against.  The default is 'norm'
-		    and 'extreme1' is a synonym for 'gumbel'
+		    and 'extreme1', 'gumbel_l' and 'gumbel' are synonyms.
 		
 		Returns
 		-------
@@ -524,6 +525,124 @@ package scipy.stats;
 	**/
 	static public function arcsine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Argus distribution
+		
+		As an instance of the `rv_continuous` class, `argus` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(chi, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, chi, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, chi, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, chi, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, chi, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, chi, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, chi, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, chi, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, chi, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, chi, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(chi, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(chi, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, chi, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(chi,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(chi, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(chi, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(chi, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(chi, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, chi, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `argus` is::
+		
+		    argus.pdf(x, chi) = chi**3 / (sqrt(2*pi) * Psi(chi)) * x * sqrt(1-x**2) * exp(- 0.5 * chi**2 * (1 - x**2))
+		
+		    where:
+		             Psi(chi) = Phi(chi) - chi * phi(chi) - 1/2
+		             with Phi and phi being the CDF and PDF of a standard normal distribution, respectively.
+		
+		`argus` takes ``chi`` as shape a parameter.
+		
+		References
+		----------
+		
+		.. [1] "ARGUS distribution",
+		       https://en.wikipedia.org/wiki/ARGUS_distribution
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``argus.pdf(x, chi, loc, scale)`` is identically
+		equivalent to ``argus.pdf(y, chi) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.stats import argus
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> chi = 1
+		>>> mean, var, skew, kurt = argus.stats(chi, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(argus.ppf(0.01, chi),
+		...                 argus.ppf(0.99, chi), 100)
+		>>> ax.plot(x, argus.pdf(x, chi),
+		...        'r-', lw=5, alpha=0.6, label='argus pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = argus(chi)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = argus.ppf([0.001, 0.5, 0.999], chi)
+		>>> np.allclose([0.001, 0.5, 0.999], argus.cdf(vals, chi))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = argus.rvs(chi, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function argus(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Perform Bartlett's test for equal variances
 		
 		Bartlett's test tests the null hypothesis that all input samples
@@ -669,17 +788,17 @@ package scipy.stats;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1040,6 +1159,10 @@ package scipy.stats;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -1185,6 +1308,10 @@ package scipy.stats;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -1320,6 +1447,10 @@ package scipy.stats;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -1397,17 +1528,17 @@ package scipy.stats;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1529,17 +1660,17 @@ package scipy.stats;
 		-------
 		``rvs(lambda_, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, N, loc=0)``
+		``pmf(k, lambda_, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, N, loc=0)``
+		``logpmf(k, lambda_, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, N, loc=0)``
+		``cdf(k, lambda_, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, N, loc=0)``
+		``logcdf(k, lambda_, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, N, loc=0)``
+		``sf(k, lambda_, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, N, loc=0)``
+		``logsf(k, lambda_, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -3350,7 +3481,7 @@ package scipy.stats;
 		``var(alpha)``
 		    The variance of the Dirichlet distribution
 		``entropy(alpha)``
-		    Compute the differential entropy of the multivariate normal.
+		    Compute the differential entropy of the Dirichlet distribution.
 		
 		Parameters
 		----------
@@ -3415,17 +3546,17 @@ package scipy.stats;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -3862,7 +3993,8 @@ package scipy.stats;
 		-----
 		The probability density function for `exponnorm` is::
 		
-		    exponnorm.pdf(x, K) = 1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc(-(x - 1/K) / sqrt(2))
+		    exponnorm.pdf(x, K) =
+		        1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc-(x - 1/K) / sqrt(2))
 		
 		where the shape parameter ``K > 0``.
 		
@@ -5566,8 +5698,8 @@ package scipy.stats;
 		H.K. Ryu, "An Extension of Marshall and Olkin's Bivariate Exponential
 		Distribution", Journal of the American Statistical Association, 1993.
 		
-		 N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
-		 Applications", Asit P. Basu.
+		N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
+		Applications", Asit P. Basu.
 		
 		Examples
 		--------
@@ -5889,7 +6021,8 @@ package scipy.stats;
 		-----
 		The probability density function for `genhalflogistic` is::
 		
-		    genhalflogistic.pdf(x, c) = 2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
+		    genhalflogistic.pdf(x, c) =
+		        2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
 		
 		for ``0 <= x <= 1/c``, and ``c > 0``.
 		
@@ -6298,17 +6431,17 @@ package scipy.stats;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -7383,8 +7516,8 @@ package scipy.stats;
 		A hypergeometric discrete random variable.
 		
 		The hypergeometric distribution models drawing objects from a bin.
-		M is the total number of objects, n is total number of Type I objects.
-		The random variate represents the number of Type I objects in N drawn
+		`M` is the total number of objects, `n` is total number of Type I objects.
+		The random variate represents the number of Type I objects in `N` drawn
 		without replacement from the total population.
 		
 		As an instance of the `rv_discrete` class, `hypergeom` object inherits from it
@@ -7395,17 +7528,17 @@ package scipy.stats;
 		-------
 		``rvs(M, n, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, M, n, N, loc=0)``
+		``pmf(k, M, n, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, M, n, N, loc=0)``
+		``logpmf(k, M, n, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, M, n, N, loc=0)``
+		``cdf(k, M, n, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, M, n, N, loc=0)``
+		``logcdf(k, M, n, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, M, n, N, loc=0)``
+		``sf(k, M, n, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, M, n, N, loc=0)``
+		``logsf(k, M, n, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, M, n, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -7430,10 +7563,18 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability mass function is defined as::
+		The symbols used to denote the shape parameters (`M`, `n`, and `N`) are not
+		universally accepted.  See the Examples for a clarification of the
+		definitions used here.
 		
-		    pmf(k, M, n, N) = choose(n, k) * choose(M - n, N - k) / choose(M, N),
-		                                   for max(0, N - (M-n)) <= k <= min(n, N)
+		The probability mass function is defined as,
+		
+		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}{\binom{M}{N}}
+		
+		for :math:`k \in [\max(0, N - M + n), \min(n, N)]`, where the binomial
+		coefficients are defined as,
+		
+		.. math:: \binom{n}{k} \equiv \frac{n!}{k! (n - k)!}.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -8736,8 +8877,9 @@ package scipy.stats;
 		
 		Kendall's tau is a measure of the correspondence between two rankings.
 		Values close to 1 indicate strong agreement, values close to -1 indicate
-		strong disagreement.  This is the tau-b version of Kendall's tau which
-		accounts for ties.
+		strong disagreement.  This is the 1945 "tau-b" version of Kendall's
+		tau [2]_, which can account for ties and which reduces to the 1938 "tau-a"
+		version [1]_ in absence of ties.
 		
 		Parameters
 		----------
@@ -8745,15 +8887,13 @@ package scipy.stats;
 		    Arrays of rankings, of the same shape. If arrays are not 1-D, they will
 		    be flattened to 1-D.
 		initial_lexsort : bool, optional
-		    Whether to use lexsort or quicksort as the sorting method for the
-		    initial sort of the inputs. Default is lexsort (True), for which
-		    `kendalltau` is of complexity O(n log(n)). If False, the complexity is
-		    O(n^2), but with a smaller pre-factor (so quicksort may be faster for
-		    small arrays).
+		    Unused (deprecated).
 		nan_policy : {'propagate', 'raise', 'omit'}, optional
 		    Defines how to handle when input contains nan. 'propagate' returns nan,
 		    'raise' throws an error, 'omit' performs the calculations ignoring nan
-		    values. Default is 'propagate'.
+		    values. Default is 'propagate'. Note that if the input contains nan
+		    'omit' delegates to mstats_basic.kendalltau(), which has a different
+		    implementation.
 		
 		Returns
 		-------
@@ -8767,10 +8907,11 @@ package scipy.stats;
 		--------
 		spearmanr : Calculates a Spearman rank-order correlation coefficient.
 		theilslopes : Computes the Theil-Sen estimator for a set of points (x, y).
+		weightedtau : Computes a weighted version of Kendall's tau.
 		
 		Notes
 		-----
-		The definition of Kendall's tau that is used is::
+		The definition of Kendall's tau that is used is [2]_::
 		
 		  tau = (P - Q) / sqrt((P + Q + T) * (P + Q + U))
 		
@@ -8781,9 +8922,15 @@ package scipy.stats;
 		
 		References
 		----------
-		W.R. Knight, "A Computer Method for Calculating Kendall's Tau with
-		Ungrouped Data", Journal of the American Statistical Association, Vol. 61,
-		No. 314, Part 1, pp. 436-439, 1966.
+		.. [1] Maurice G. Kendall, "A New Measure of Rank Correlation", Biometrika
+		       Vol. 30, No. 1/2, pp. 81-93, 1938.
+		.. [2] Maurice G. Kendall, "The treatment of ties in ranking problems",
+		       Biometrika Vol. 33, No. 3, pp. 239-251. 1945.
+		.. [3] Gottfried E. Noether, "Elements of Nonparametric Statistics", John
+		       Wiley & Sons, 1967.
+		.. [4] Peter M. Fenwick, "A new data structure for cumulative frequency
+		       tables", Software: Practice and Experience, Vol. 24, No. 3,
+		       pp. 327-336, 1994.
 		
 		Examples
 		--------
@@ -8794,7 +8941,7 @@ package scipy.stats;
 		>>> tau
 		-0.47140452079103173
 		>>> p_value
-		0.24821309157521476
+		0.2827454599327748
 	**/
 	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
@@ -9047,8 +9194,8 @@ package scipy.stats;
 		    k_{3} = \frac{ n^{2} } {(n-1) (n-2)} m_{3}
 		    k_{4} = \frac{ n^{2} [(n + 1)m_{4} - 3(n - 1) m^2_{2}]} {(n-1) (n-2) (n-3)}
 		
-		where ``:math:\mu`` is the sample mean, ``:math:m_2`` is the sample
-		variance, and ``:math:m_i`` is the i-th sample central moment.
+		where :math:`\mu` is the sample mean, :math:`m_2` is the sample
+		variance, and :math:`m_i` is the i-th sample central moment.
 		
 		References
 		----------
@@ -9900,21 +10047,31 @@ package scipy.stats;
 		
 		See also
 		--------
-		optimize.curve_fit : Use non-linear least squares to fit a function to data.
-		optimize.leastsq : Minimize the sum of squares of a set of equations.
+		:func:`scipy.optimize.curve_fit` : Use non-linear
+		 least squares to fit a function to data.
+		:func:`scipy.optimize.leastsq` : Minimize the sum of
+		 squares of a set of equations.
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
-		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
 		
-		# To get coefficient of determination (r_squared)
+		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
 		('r-squared:', 0.080402268539028335)
+		
+		Plot the data along with the fitted line
+		
+		>>> plt.plot(x, y, 'o', label='original data')
+		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
@@ -10370,17 +10527,17 @@ package scipy.stats;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -10878,6 +11035,10 @@ package scipy.stats;
 		    Cressie-Read power divergence family to be used instead.  See
 		    `power_divergence` for details.
 		    Default is 1 (Pearson's chi-squared statistic).
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -10895,7 +11056,8 @@ package scipy.stats;
 		    of the values below the grand median.  The table allows further
 		    analysis with, for example, `scipy.stats.chi2_contingency`, or with
 		    `scipy.stats.fisher_exact` if there are two samples, without having
-		    to recompute the table.
+		    to recompute the table.  If ``nan_policy`` is "propagate" and there
+		    are nans in the input, the return value for ``table`` is ``None``.
 		
 		See Also
 		--------
@@ -11082,7 +11244,7 @@ package scipy.stats;
 	/**
 		Returns an array of the modal (most common) value in the passed array.
 		
-		If there is more than one such value, only the first is returned.
+		If there is more than one such value, only the smallest is returned.
 		The bin-count for the modal bins is also returned.
 		
 		Parameters
@@ -11236,6 +11398,116 @@ package scipy.stats;
 		(array([-5.7178125 , -5.25342163]), array([  1.07904114e-08,   1.49299218e-07]))
 	**/
 	static public function mood(x:Dynamic, y:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		A multinomial random variable.
+		
+		Methods
+		-------
+		``pmf(x, n, p)``
+		    Probability mass function.
+		``logpmf(x, n, p)``
+		    Log of the probability mass function.
+		``rvs(n, p, size=1, random_state=None)``
+		    Draw random samples from a multinomial distribution.
+		``entropy(n, p)``
+		    Compute the entropy of the multinomial distribution.
+		``cov(n, p)``
+		    Compute the covariance matrix of the multinomial distribution.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		n : int
+		    Number of trials
+		p : array_like
+		    Probability of a trial falling into each category; should sum to 1
+		random_state : None or int or np.random.RandomState instance, optional
+		    If int or RandomState, use it for drawing the random variates.
+		    If None (or np.random), the global np.random state is used.
+		    Default is None.
+		
+		Notes
+		-----
+		`n` should be a positive integer. Each element of `p` should be in the
+		interval :math:`[0,1]` and the elements should sum to 1. If they do not sum to
+		1, the last element of the `p` array is not used and is replaced with the
+		remaining probability left over from the earlier elements.
+		
+		Alternatively, the object may be called (as a function) to fix the `n` and
+		`p` parameters, returning a "frozen" multinomial random variable:
+		
+		The probability mass function for `multinomial` is
+		
+		.. math::
+		
+		    f(x) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k},
+		
+		supported on :math:`x=(x_1, \ldots, x_k)` where each :math:`x_i` is a
+		nonnegative integer and their sum is :math:`n`.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		
+		>>> from scipy.stats import multinomial
+		>>> rv = multinomial(8, [0.3, 0.2, 0.5])
+		>>> rv.pmf([1, 3, 4])
+		0.042000000000000072
+		
+		The multinomial distribution for :math:`k=2` is identical to the
+		corresponding binomial distribution (tiny numerical differences
+		notwithstanding):
+		
+		>>> from scipy.stats import binom
+		>>> multinomial.pmf([3, 4], n=7, p=[0.4, 0.6])
+		0.29030399999999973
+		>>> binom.pmf(3, 7, 0.4)
+		0.29030400000000012
+		
+		The functions ``pmf``, ``logpmf``, ``entropy``, and ``cov`` support
+		broadcasting, under the convention that the vector parameters (``x`` and
+		``p``) are interpreted as if each row along the last axis is a single
+		object. For instance:
+		
+		>>> multinomial.pmf([[3, 4], [3, 5]], n=[7, 8], p=[.3, .7])
+		array([0.2268945,  0.25412184])
+		
+		Here, ``x.shape == (2, 2)``, ``n.shape == (2,)``, and ``p.shape == (2,)``,
+		but following the rules mentioned above they behave as if the rows
+		``[3, 4]`` and ``[3, 5]`` in ``x`` and ``[.3, .7]`` in ``p`` were a single
+		object, and as if we had ``x.shape = (2,)``, ``n.shape = (2,)``, and
+		``p.shape = ()``. To obtain the individual elements without broadcasting,
+		we would do this:
+		
+		>>> multinomial.pmf([3, 4], n=7, p=[.3, .7])
+		0.2268945
+		>>> multinomial.pmf([3, 5], 8, p=[.3, .7])
+		0.25412184
+		
+		This broadcasting also works for ``cov``, where the output objects are
+		square matrices of size ``p.shape[-1]``. For example:
+		
+		>>> multinomial.cov([4, 5], [[.3, .7], [.4, .6]])
+		array([[[ 0.84, -0.84],
+		        [-0.84,  0.84]],
+		       [[ 1.2 , -1.2 ],
+		        [-1.2 ,  1.2 ]]])
+		
+		In this example, ``n.shape == (2,)`` and ``p.shape == (2, 2)``, and
+		following the rules above, these broadcast as if ``p.shape == (2,)``.
+		Thus the result should also be of shape ``(2,)``, but since each output is
+		a :math:`2 \times 2` matrix, the result in fact has shape ``(2, 2, 2)``,
+		where ``result[0]`` is equal to ``multinomial.cov(n=4, p=[.3, .7])`` and
+		``result[1]`` is equal to ``multinomial.cov(n=5, p=[.4, .6])``.
+		
+		See also
+		--------
+		scipy.stats.binom : The binomial distribution.
+		numpy.random.multinomial : Sampling from the multinomial distribution.
+	**/
+	static public function multinomial(n:Dynamic, p:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		A multivariate normal random variable.
 		
@@ -11502,17 +11774,17 @@ package scipy.stats;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -11537,13 +11809,17 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability mass function for `nbinom` is::
+		Negative binomial distribution describes a sequence of i.i.d. Bernoulli 
+		trials, repeated until a predefined, non-random number of successes occurs.
 		
-		     nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
+		The probability mass function of the number of failures for `nbinom` is::
+		
+		   nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
 		
 		for ``k >= 0``.
 		
-		`nbinom` takes ``n`` and ``p`` as shape parameters.
+		`nbinom` takes ``n`` and ``p`` as shape parameters where n is the number of
+		successes, whereas p is the probability of a single success.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -12480,17 +12756,17 @@ package scipy.stats;
 		-------
 		``rvs(lambda_, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, loc=0)``
+		``pmf(k, lambda_, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, loc=0)``
+		``logpmf(k, lambda_, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, loc=0)``
+		``cdf(k, lambda_, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, loc=0)``
+		``logcdf(k, lambda_, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, loc=0)``
+		``sf(k, lambda_, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, loc=0)``
+		``logsf(k, lambda_, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -12660,17 +12936,17 @@ package scipy.stats;
 		-------
 		``rvs(mu, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu, loc=0)``
+		``pmf(k, mu, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu, loc=0)``
+		``logpmf(k, mu, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu, loc=0)``
+		``cdf(k, mu, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu, loc=0)``
+		``logcdf(k, mu, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu, loc=0)``
+		``sf(k, mu, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu, loc=0)``
+		``logsf(k, mu, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -13502,17 +13778,17 @@ package scipy.stats;
 		-------
 		``rvs(low, high, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, low, high, loc=0)``
+		``pmf(k, low, high, loc=0)``
 		    Probability mass function.
-		``logpmf(x, low, high, loc=0)``
+		``logpmf(k, low, high, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, low, high, loc=0)``
+		``cdf(k, low, high, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, low, high, loc=0)``
+		``logcdf(k, low, high, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, low, high, loc=0)``
+		``sf(k, low, high, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, low, high, loc=0)``
+		``logsf(k, low, high, loc=0)``
 		    Log of the survival function.
 		``ppf(q, low, high, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -14660,17 +14936,17 @@ package scipy.stats;
 		-------
 		``rvs(mu1, mu2, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu1, mu2, loc=0)``
+		``pmf(k, mu1, mu2, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu1, mu2, loc=0)``
+		``logpmf(k, mu1, mu2, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu1, mu2, loc=0)``
+		``cdf(k, mu1, mu2, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu1, mu2, loc=0)``
+		``logcdf(k, mu1, mu2, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu1, mu2, loc=0)``
+		``sf(k, mu1, mu2, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu1, mu2, loc=0)``
+		``logsf(k, mu1, mu2, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu1, mu2, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -14940,6 +15216,12 @@ package scipy.stats;
 		Notes
 		-----
 		The sample size must be at least 8.
+		
+		References
+		----------
+		.. [1] R. B. D'Agostino, A. J. Belanger and R. B. D'Agostino Jr.,
+		        "A suggestion for using powerful and informative tests of 
+		        normality", American Statistician 44, pp. 316-321, 1990.
 	**/
 	static public function skewtest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
@@ -15186,12 +15468,14 @@ package scipy.stats;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -17243,6 +17527,137 @@ package scipy.stats;
 	**/
 	static public function weibull_min(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Computes a weighted version of Kendall's :math:`\tau`.
+		
+		The weighted :math:`\tau` is a weighted version of Kendall's
+		:math:`\tau` in which exchanges of high weight are more influential than
+		exchanges of low weight. The default parameters compute the additive
+		hyperbolic version of the index, :math:`\tau_\mathrm h`, which has
+		been shown to provide the best balance between important and
+		unimportant elements [1]_.
+		
+		The weighting is defined by means of a rank array, which assigns a
+		nonnegative rank to each element, and a weigher function, which
+		assigns a weight based from the rank to each element. The weight of an
+		exchange is then the sum or the product of the weights of the ranks of
+		the exchanged elements. The default parameters compute
+		:math:`\tau_\mathrm h`: an exchange between elements with rank
+		:math:`r` and :math:`s` (starting from zero) has weight
+		:math:`1/(r+1) + 1/(s+1)`.
+		
+		Specifying a rank array is meaningful only if you have in mind an
+		external criterion of importance. If, as it usually happens, you do
+		not have in mind a specific rank, the weighted :math:`\tau` is
+		defined by averaging the values obtained using the decreasing
+		lexicographical rank by (`x`, `y`) and by (`y`, `x`). This is the
+		behavior with default parameters.
+		
+		Note that if you are computing the weighted :math:`\tau` on arrays of
+		ranks, rather than of scores (i.e., a larger value implies a lower
+		rank) you must negate the ranks, so that elements of higher rank are
+		associated with a larger value.
+		
+		Parameters
+		----------
+		x, y : array_like
+		    Arrays of scores, of the same shape. If arrays are not 1-D, they will
+		    be flattened to 1-D.
+		rank: array_like of ints or bool, optional
+		    A nonnegative rank assigned to each element. If it is None, the
+		    decreasing lexicographical rank by (`x`, `y`) will be used: elements of
+		    higher rank will be those with larger `x`-values, using `y`-values to
+		    break ties (in particular, swapping `x` and `y` will give a different
+		    result). If it is False, the element indices will be used
+		    directly as ranks. The default is True, in which case this
+		    function returns the average of the values obtained using the
+		    decreasing lexicographical rank by (`x`, `y`) and by (`y`, `x`).
+		weigher : callable, optional
+		    The weigher function. Must map nonnegative integers (zero
+		    representing the most important element) to a nonnegative weight.
+		    The default, None, provides hyperbolic weighing, that is,
+		    rank :math:`r` is mapped to weight :math:`1/(r+1)`.
+		additive : bool, optional
+		    If True, the weight of an exchange is computed by adding the
+		    weights of the ranks of the exchanged elements; otherwise, the weights
+		    are multiplied. The default is True.
+		
+		Returns
+		-------
+		correlation : float
+		   The weighted :math:`\tau` correlation index.
+		pvalue : float
+		   Presently ``np.nan``, as the null statistics is unknown (even in the
+		   additive hyperbolic case).
+		
+		See also
+		--------
+		kendalltau : Calculates Kendall's tau.
+		spearmanr : Calculates a Spearman rank-order correlation coefficient.
+		theilslopes : Computes the Theil-Sen estimator for a set of points (x, y).
+		
+		Notes
+		-----
+		This function uses an :math:`O(n \log n)`, mergesort-based algorithm
+		[1]_ that is a weighted extension of Knight's algorithm for Kendall's
+		:math:`\tau` [2]_. It can compute Shieh's weighted :math:`\tau` [3]_
+		between rankings without ties (i.e., permutations) by setting
+		`additive` and `rank` to False, as the definition given in [1]_ is a
+		generalization of Shieh's.
+		
+		NaNs are considered the smallest possible score.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] Sebastiano Vigna, "A weighted correlation index for rankings with
+		       ties", Proceedings of the 24th international conference on World
+		       Wide Web, pp. 1166-1176, ACM, 2015.
+		.. [2] W.R. Knight, "A Computer Method for Calculating Kendall's Tau with
+		       Ungrouped Data", Journal of the American Statistical Association,
+		       Vol. 61, No. 314, Part 1, pp. 436-439, 1966.
+		.. [3] Grace S. Shieh. "A weighted Kendall's tau statistic", Statistics &
+		       Probability Letters, Vol. 39, No. 1, pp. 17-24, 1998.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> tau, p_value = stats.weightedtau(x, y)
+		>>> tau
+		-0.56694968153682723
+		>>> p_value
+		nan
+		>>> tau, p_value = stats.weightedtau(x, y, additive=False)
+		>>> tau
+		-0.62205716951801038
+		
+		NaNs are considered the smallest possible score:
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, np.nan]
+		>>> tau, _ = stats.weightedtau(x, y)
+		>>> tau
+		-0.56694968153682723
+		
+		This is exactly Kendall's tau:
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> tau, _ = stats.weightedtau(x, y, weigher=lambda x: 1)
+		>>> tau
+		-0.47140452079103173
+		
+		>>> x = [12, 2, 1, 12, 2]
+		>>> y = [1, 4, 7, 1, 0]
+		>>> stats.weightedtau(x, y, rank=None)
+		WeightedTauResult(correlation=-0.4157652301037516, pvalue=nan)
+		>>> stats.weightedtau(y, x, rank=None)
+		WeightedTauResult(correlation=-0.71813413296990281, pvalue=nan)
+	**/
+	static public function weightedtau(x:Dynamic, y:Dynamic, ?rank:Dynamic, ?weigher:Dynamic, ?additive:Dynamic):Float;
+	/**
 		Calculate the Wilcoxon signed-rank test.
 		
 		The Wilcoxon signed-rank test tests the null hypothesis that two
@@ -17514,17 +17929,17 @@ package scipy.stats;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).

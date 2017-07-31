@@ -45,11 +45,14 @@ package tensorflow.python.training.device_setter;
 		  ps_device: String.  Name of the `ps` job.
 		  worker_device: String.  Name of the `worker` job.
 		  merge_devices: Boolean. Set to True to allow merging of device specs.
-		  ps_ops: List of `Operations` that must be placed on `ps` jobs.
-		    If None, set it to ["Variable"].
+		  ps_ops: List of strings representing `Operation` types that need to be
+		    placed on `ps` devices.
+		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
+		    `ps_ops`), that takes the `Operation` and returns the ps task index to
+		    use.
 	**/
 	@:native("__init__")
-	public function ___init__(ps_tasks:Dynamic, ps_device:Dynamic, worker_device:Dynamic, merge_devices:Dynamic, ps_ops:Dynamic):Dynamic;
+	public function ___init__(ps_tasks:Dynamic, ps_device:Dynamic, worker_device:Dynamic, merge_devices:Dynamic, ps_ops:Dynamic, ps_strategy:Dynamic):Dynamic;
 	/**
 		Create a new `_ReplicaDeviceChooser`.
 		
@@ -58,10 +61,20 @@ package tensorflow.python.training.device_setter;
 		  ps_device: String.  Name of the `ps` job.
 		  worker_device: String.  Name of the `worker` job.
 		  merge_devices: Boolean. Set to True to allow merging of device specs.
-		  ps_ops: List of `Operations` that must be placed on `ps` jobs.
-		    If None, set it to ["Variable"].
+		  ps_ops: List of strings representing `Operation` types that need to be
+		    placed on `ps` devices.
+		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
+		    `ps_ops`), that takes the `Operation` and returns the ps task index to
+		    use.
 	**/
-	public function new(ps_tasks:Dynamic, ps_device:Dynamic, worker_device:Dynamic, merge_devices:Dynamic, ps_ops:Dynamic):Void;
+	public function new(ps_tasks:Dynamic, ps_device:Dynamic, worker_device:Dynamic, merge_devices:Dynamic, ps_ops:Dynamic, ps_strategy:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -118,14 +131,7 @@ package tensorflow.python.training.device_setter;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Returns the next task to use.
-		
-		Returns:
-		  A number.
-	**/
-	public function _next_task():Dynamic;
-	/**
-		Chose a device for `op`.
+		Choose a device for `op`.
 		
 		Args:
 		  op: an `Operation`.

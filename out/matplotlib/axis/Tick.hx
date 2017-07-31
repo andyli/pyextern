@@ -52,6 +52,13 @@ package matplotlib.axis;
 	**/
 	public function new(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -115,10 +122,12 @@ package matplotlib.axis;
 		Get the default Text 1 instance
 	**/
 	public function _get_text1():Dynamic;
+	public function _get_text1_transform():Dynamic;
 	/**
 		Get the default Text 2 instance
 	**/
 	public function _get_text2():Dynamic;
+	public function _get_text2_transform():Dynamic;
 	/**
 		Get the default line2D instance for tick1
 	**/
@@ -127,6 +136,7 @@ package matplotlib.axis;
 		Get the default line2D instance for tick2
 	**/
 	public function _get_tick2line():Dynamic;
+	static public var _prop_order : Dynamic;
 	public function _set_artist_props(a:Dynamic):Dynamic;
 	/**
 		Set the clip properly for the gc
@@ -302,6 +312,11 @@ package matplotlib.axis;
 	**/
 	public function get_snap():Dynamic;
 	/**
+		Get the length of the tick outside of the axes.
+	**/
+	public function get_tick_padding():Dynamic;
+	public function get_tickdir():Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
 	**/
@@ -368,9 +383,7 @@ package matplotlib.axis;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -409,9 +422,7 @@ package matplotlib.axis;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -638,6 +649,25 @@ package matplotlib.axis;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.
 	**/
@@ -646,5 +676,9 @@ package matplotlib.axis;
 		Copy properties from *other* to *self*.
 	**/
 	public function update_from(other:Dynamic):Dynamic;
+	/**
+		Set the location of tick in data coords with scalar *loc*
+	**/
+	public function update_position(loc:Dynamic):Dynamic;
 	static public var zorder : Dynamic;
 }

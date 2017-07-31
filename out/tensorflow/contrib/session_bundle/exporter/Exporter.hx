@@ -47,6 +47,13 @@ package tensorflow.contrib.session_bundle.exporter;
 	**/
 	public function new(saver:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -106,7 +113,11 @@ package tensorflow.contrib.session_bundle.exporter;
 	**/
 	public function _file_path_value(path_tensor:Dynamic):Dynamic;
 	/**
-		Exports the model.
+		Exports the model. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  export_dir_base: A string path to the base export dir.
@@ -126,7 +137,11 @@ package tensorflow.contrib.session_bundle.exporter;
 	**/
 	public function export(export_dir_base:Dynamic, global_step_tensor:Dynamic, ?sess:Dynamic, ?exports_to_keep:Dynamic):Dynamic;
 	/**
-		Initialization.
+		Initialization. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  graph_def: A GraphDef message of the graph to be used in inference.

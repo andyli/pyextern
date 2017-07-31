@@ -23,7 +23,7 @@ package tensorflow.python.training.basic_loops;
 		typically runs one training step in the session.
 		
 		Args:
-		  supervisor: `tf.Supervisor` to run the training services.
+		  supervisor: `tf.train.Supervisor` to run the training services.
 		  train_step_fn: Callable to execute one training step.  Called
 		    repeatedly as `train_step_fn(session, *args **kwargs)`.
 		  args: Optional positional arguments passed to `train_step_fn`.

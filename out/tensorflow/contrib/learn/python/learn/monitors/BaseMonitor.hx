@@ -38,14 +38,29 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
+		Instructions for updating:
+		Monitors are deprecated. Please use tf.train.SessionRunHook.
 	**/
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
+		Instructions for updating:
+		Monitors are deprecated. Please use tf.train.SessionRunHook.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -157,6 +172,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	public var run_on_all_workers : Dynamic;
 	/**
 		A setter called automatically by the target estimator.
+		
+		If the estimator is locked, this method does nothing.
 		
 		Args:
 		  estimator: the estimator that this monitor monitors.

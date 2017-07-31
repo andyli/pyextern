@@ -18,35 +18,43 @@ package numpy.fft.fftpack;
 	static public function _unitary(norm:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -62,7 +70,13 @@ package numpy.fft.fftpack;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -127,8 +141,8 @@ package numpy.fft.fftpack;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -176,7 +190,7 @@ package numpy.fft.fftpack;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -187,6 +201,17 @@ package numpy.fft.fftpack;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -226,6 +251,7 @@ package numpy.fft.fftpack;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -276,6 +302,10 @@ package numpy.fft.fftpack;
 		         1.14383329e-17 +1.22460635e-16j,
 		         -1.64863782e-15 +1.77635684e-15j])
 		
+		In this example, real input has an FFT which is Hermitian, i.e., symmetric
+		in the real part and anti-symmetric in the imaginary part, as described in
+		the `numpy.fft` documentation:
+		
 		>>> import matplotlib.pyplot as plt
 		>>> t = np.arange(256)
 		>>> sp = np.fft.fft(np.sin(t))
@@ -283,10 +313,6 @@ package numpy.fft.fftpack;
 		>>> plt.plot(freq, sp.real, freq, sp.imag)
 		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
 		>>> plt.show()
-		
-		In this example, real input has an FFT which is Hermitian, i.e., symmetric
-		in the real part and anti-symmetric in the imaginary part, as described in
-		the `numpy.fft` documentation.
 	**/
 	static public function fft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
@@ -303,8 +329,8 @@ package numpy.fft.fftpack;
 		    Input array, can be complex
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along each axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -316,6 +342,7 @@ package numpy.fft.fftpack;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -386,8 +413,8 @@ package numpy.fft.fftpack;
 		    Input array, can be complex.
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along any axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -399,6 +426,7 @@ package numpy.fft.fftpack;
 		    performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -465,24 +493,26 @@ package numpy.fft.fftpack;
 	**/
 	static public function fftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Compute the FFT of a signal which has Hermitian symmetry (real spectrum).
+		Compute the FFT of a signal that has Hermitian symmetry, i.e., a real
+		spectrum.
 		
 		Parameters
 		----------
 		a : array_like
 		    The input array.
 		n : int, optional
-		    Length of the transformed axis of the output.
-		    For `n` output points, ``n//2+1`` input points are necessary.  If the
-		    input is longer than this, it is cropped.  If it is shorter than this,
-		    it is padded with zeros.  If `n` is not given, it is determined from
-		    the length of the input along the axis specified by `axis`.
+		    Length of the transformed axis of the output. For `n` output
+		    points, ``n//2 + 1`` input points are necessary.  If the input is
+		    longer than this, it is cropped.  If it is shorter than this, it is
+		    padded with zeros.  If `n` is not given, it is determined from the
+		    length of the input along the axis specified by `axis`.
 		axis : int, optional
 		    Axis over which to compute the FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
@@ -490,8 +520,9 @@ package numpy.fft.fftpack;
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
 		    The length of the transformed axis is `n`, or, if `n` is not given,
-		    ``2*(m-1)`` where ``m`` is the length of the transformed axis of the
-		    input. To get an odd number of output points, `n` must be specified.
+		    ``2*m - 2`` where ``m`` is the length of the transformed axis of
+		    the input. To get an odd number of output points, `n` must be
+		    specified, for instance as ``2*m - 1`` in the typical case,
 		
 		Raises
 		------
@@ -506,10 +537,12 @@ package numpy.fft.fftpack;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd.
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -568,6 +601,7 @@ package numpy.fft.fftpack;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -648,6 +682,7 @@ package numpy.fft.fftpack;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -730,6 +765,7 @@ package numpy.fft.fftpack;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -787,32 +823,32 @@ package numpy.fft.fftpack;
 	**/
 	static public function ifftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Compute the inverse FFT of a signal which has Hermitian symmetry.
+		Compute the inverse FFT of a signal that has Hermitian symmetry.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		n : int, optional
-		    Length of the inverse FFT.
-		    Number of points along transformation axis in the input to use.
-		    If `n` is smaller than the length of the input, the input is cropped.
-		    If it is larger, the input is padded with zeros. If `n` is not given,
-		    the length of the input along the axis specified by `axis` is used.
+		    Length of the inverse FFT, the number of points along
+		    transformation axis in the input to use.  If `n` is smaller than
+		    the length of the input, the input is cropped.  If it is larger,
+		    the input is padded with zeros. If `n` is not given, the length of
+		    the input along the axis specified by `axis` is used.
 		axis : int, optional
 		    Axis over which to compute the inverse FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
 		out : complex ndarray
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
-		    If `n` is even, the length of the transformed axis is ``(n/2)+1``.
-		    If `n` is odd, the length is ``(n+1)/2``.
+		    The length of the transformed axis is ``n//2 + 1``.
 		
 		See also
 		--------
@@ -821,10 +857,12 @@ package numpy.fft.fftpack;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd:
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -864,6 +902,7 @@ package numpy.fft.fftpack;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -927,6 +966,7 @@ package numpy.fft.fftpack;
 		    Default is the last two axes.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -978,6 +1018,7 @@ package numpy.fft.fftpack;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1049,6 +1090,7 @@ package numpy.fft.fftpack;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1117,6 +1159,7 @@ package numpy.fft.fftpack;
 		    Axes over which to compute the FFT.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1162,6 +1205,7 @@ package numpy.fft.fftpack;
 		    axes are used, or all axes if `s` is also not specified.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1254,7 +1298,7 @@ package numpy.fft.fftpack;
 	**/
 	static public function shape(a:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -1262,9 +1306,17 @@ package numpy.fft.fftpack;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1315,8 +1367,8 @@ package numpy.fft.fftpack;
 		Returns
 		-------
 		a_swapped : ndarray
-		    For Numpy >= 1.10, if `a` is an ndarray, then a view of `a` is
-		    returned; otherwise a new array is created. For earlier Numpy
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
 		    versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		

@@ -21,12 +21,12 @@ package scipy.sparse.linalg.isolve.iterative;
 	static public var _type_conv : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Use BIConjugate Gradient iteration to solve A x = b
+		Use BIConjugate Gradient iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
+		    The real or complex N-by-N matrix of the linear system.
 		    It is required that the linear operator can produce
 		    ``Ax`` and ``A^T x``.
 		b : {array, matrix}
@@ -72,13 +72,12 @@ package scipy.sparse.linalg.isolve.iterative;
 	**/
 	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use BIConjugate Gradient STABilized iteration to solve A x = b
+		Use BIConjugate Gradient STABilized iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
-		    ``A`` must represent a hermitian, positive definite matrix
+		    The real or complex N-by-N matrix of the linear system.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -122,13 +121,13 @@ package scipy.sparse.linalg.isolve.iterative;
 	**/
 	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use Conjugate Gradient iteration to solve A x = b
+		Use Conjugate Gradient iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
-		    ``A`` must represent a hermitian, positive definite matrix
+		    The real or complex N-by-N matrix of the linear system.
+		    ``A`` must represent a hermitian, positive definite matrix.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -172,12 +171,12 @@ package scipy.sparse.linalg.isolve.iterative;
 	**/
 	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use Conjugate Gradient Squared iteration to solve A x = b
+		Use Conjugate Gradient Squared iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real-valued N-by-N matrix of the linear system
+		    The real-valued N-by-N matrix of the linear system.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -228,7 +227,7 @@ package scipy.sparse.linalg.isolve.iterative;
 	static public function decorator(caller:Dynamic, ?_func:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Use Generalized Minimal RESidual iteration to solve A x = b.
+		Use Generalized Minimal RESidual iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
@@ -339,7 +338,7 @@ package scipy.sparse.linalg.isolve.iterative;
 	static public function non_reentrant(?err_msg:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Use Quasi-Minimal Residual iteration to solve A x = b
+		Use Quasi-Minimal Residual iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------

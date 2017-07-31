@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.graph_editor.transform;
 @:pythonImport("tensorflow.contrib.graph_editor.transform") extern class Transform_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,9 +14,12 @@ package tensorflow.contrib.graph_editor.transform;
 	/**
 		Add the transformed elem to the (renamed) collections of elem.
 		
+		A collection is renamed only if is not a known key, as described in
+		`tf.GraphKeys`.
+		
 		Args:
-		  info: Transform._Info instance.
-		  elem: the original element (tf.Tensor or tf.Operation)
+		  info: Transform._TmpInfo instance.
+		  elem: the original element (`tf.Tensor` or `tf.Operation`)
 		  elem_: the transformed element
 	**/
 	static public function assign_renamed_collections_handler(info:Dynamic, elem:Dynamic, elem_:Dynamic):Dynamic;
@@ -28,24 +32,62 @@ package tensorflow.contrib.graph_editor.transform;
 		  dst_graph: the destination graph.
 		  dst_scope: the destination scope.
 		  src_scope: the source scope.
+		  reuse_dst_scope: if True the dst_scope is re-used if it already exists.
+		    Otherwise, the scope is given a unique name based on the one given
+		    by appending an underscore followed by a digit (default).
 		Returns:
-		  the subgraph view of the copied subgraph.
+		  A tuple `(sgv, info)` where:
+		    `sgv` is the transformed subgraph view;
+		    `info` is an instance of TransformerInfo containing
+		    information about the transform, including mapping between
+		    original and transformed tensors and operations.
 		Raises:
-		  TypeError: if dst_graph is not a tf.Graph.
+		  TypeError: if `dst_graph` is not a `tf.Graph`.
 		  StandardError: if sgv cannot be converted to a SubGraphView using
 		    the same rules than the function subgraph.make_view.
 	**/
-	static public function copy(sgv:Dynamic, ?dst_graph:Dynamic, ?dst_scope:Dynamic, ?src_scope:Dynamic):Dynamic;
+	static public function copy(sgv:Dynamic, ?dst_graph:Dynamic, ?dst_scope:Dynamic, ?src_scope:Dynamic, ?reuse_dst_scope:Dynamic):Dynamic;
 	/**
-		Copy a tf.Operation.
+		Copy a `tf.Operation`.
 		
 		Args:
-		  info: Transform._Info instance.
-		  op: the tf.Operation to be copied.
+		  info: Transform._TmpInfo instance.
+		  op: the `tf.Operation` to be copied.
+		  copy_shape: also copy the shape of the tensor
 		Returns:
-		  A copy of op.
+		  A `(op, op_outputs)` tuple containing the transformed op and its outputs.
 	**/
-	static public function copy_op_handler(info:Dynamic, op:Dynamic):Dynamic;
+	static public function copy_op_handler(info:Dynamic, op:Dynamic, ?copy_shape:Dynamic):Dynamic;
+	/**
+		Copy a subgraph, replacing some of its inputs.
+		
+		Note a replacement only happens if the tensor to be replaced
+		is an input of the given subgraph. The inputs of a subgraph can
+		be queried using sgv.inputs.
+		
+		Args:
+		  sgv: the source subgraph-view. This argument is converted to a subgraph
+		    using the same rules as the function subgraph.make_view.
+		  replacement_ts: dictionary mapping from original tensors to the
+		    replaced one.
+		  dst_graph: the destination graph.
+		  dst_scope: the destination scope.
+		  src_scope: the source scope.
+		  reuse_dst_scope: if True the dst_scope is re-used if it already exists.
+		    Otherwise, the scope is given a unique name based on the one given
+		    by appending an underscore followed by a digit (default).
+		Returns:
+		  A tuple `(sgv, info)` where:
+		    `sgv` is the transformed subgraph view;
+		    `info` is an instance of TransformerInfo containing
+		    information about the transform, including mapping between
+		    original and transformed tensors and operations.
+		Raises:
+		  TypeError: if dst_graph is not a tf.Graph.
+		  StandardError: if sgv cannot be converted to a SubGraphView using
+		    the same rules as the function subgraph.make_view.
+	**/
+	static public function copy_with_input_replacements(sgv:Dynamic, replacement_ts:Dynamic, ?dst_graph:Dynamic, ?dst_scope:Dynamic, ?src_scope:Dynamic, ?reuse_dst_scope:Dynamic):Dynamic;
 	/**
 		Deep copy operation on arbitrary Python objects.
 		
@@ -54,9 +96,32 @@ package tensorflow.contrib.graph_editor.transform;
 	static public function deepcopy(x:Dynamic, ?memo:Dynamic, ?_nil:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Create a new graph which compute the targets from the replaced Tensors.
+		
+		Args:
+		  target_ts: a single tf.Tensor or an iterable of tf.Tensor.
+		  replacement_ts: dictionary mapping from original tensors to replaced tensors
+		  dst_scope: the destination scope.
+		  src_scope: the source scope.
+		  reuse_dst_scope: if True the dst_scope is re-used if it already exists.
+		    Otherwise, the scope is given a unique name based on the one given
+		    by appending an underscore followed by a digit (default).
+		Returns:
+		  A single tf.Tensor or a list of target tf.Tensor, depending on
+		  the type of the input argument `target_ts`.
+		  The returned tensors are recomputed using the tensors from replacement_ts.
+		Raises:
+		  ValueError: if the targets are not connected to replacement_ts.
+	**/
+	static public function graph_replace(target_ts:Dynamic, replacement_ts:Dynamic, ?dst_scope:Dynamic, ?src_scope:Dynamic, ?reuse_dst_scope:Dynamic):Dynamic;
+	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
 	static public function iteritems(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return an iterator over the keys of a dictionary.
+	**/
+	static public function iterkeys(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Transform a tensor into itself (identity) if possible.
 		
@@ -65,41 +130,13 @@ package tensorflow.contrib.graph_editor.transform;
 		This handler is typically used to transform a hidden input tensors.
 		
 		Args:
-		  info: Transform._Info instance.
+		  info: Transform._TmpInfo instance.
 		  t: tensor whose input must be transformed into a place holder.
 		Returns:
 		  The tensor generated by the newly created place holder.
 	**/
-	static public function keep_same_tensor_if_possible_handler(info:Dynamic, t:Dynamic):Dynamic;
+	static public function keep_t_if_possible_handler(info:Dynamic, t:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Transform a op in-place - experimental!
-		
-		Transform an operation in place. It reconnects the inputs if they have been
-		modified. if detach_outputs is True, the outputs of op are also detached.
-		
-		Args:
-		  info: Transform._Info instance.
-		  op: the op to transform in place.
-		  detach_outputs: if True, the outputs of op are detached, ready for the user
-		    to add more operation.
-		Returns:
-		  the transformed op.
-	**/
-	static public function transform_op_in_place(info:Dynamic, op:Dynamic, ?detach_outputs:Dynamic):Dynamic;
-	/**
-		Transform an optional op only if it is inside the subgraph.
-		
-		This handler is typically use to handle original op: it is fine to keep them
-		if they are inside the subgraph, otherwise they are just ignored.
-		
-		Args:
-		  info: Transform._Info instance.
-		  op: the optional op to transform (or ignore).
-		Returns:
-		  the transformed op or None if ignored.
-	**/
-	static public function transform_optional_op_if_inside_handler(info:Dynamic, op:Dynamic):Dynamic;
 	/**
 		Transform a tensor into a placeholder tensor.
 		
@@ -107,10 +144,26 @@ package tensorflow.contrib.graph_editor.transform;
 		placeholder.
 		
 		Args:
-		  info: Transform._Info instance.
+		  info: Transform._TmpInfo instance.
 		  t: tensor whose input must be transformed into a place holder.
 		Returns:
 		  The tensor generated by the newly created place holder.
 	**/
-	static public function transform_tensor_into_placeholder_handler(info:Dynamic, t:Dynamic):Dynamic;
+	static public function replace_t_with_placeholder_handler(info:Dynamic, t:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
+	/**
+		Transform an optional op only if it is inside the subgraph.
+		
+		This handler is typically use to handle original op: it is fine to keep them
+		if they are inside the subgraph, otherwise they are just ignored.
+		
+		Args:
+		  info: Transform._TmpInfo instance.
+		  op: the optional op to transform (or ignore).
+		  keep_if_possible: re-attach to the original op if possible, that is,
+		    if the source graph and the destination graph are the same.
+		Returns:
+		  The transformed op or None.
+	**/
+	static public function transform_op_if_inside_handler(info:Dynamic, op:Dynamic, ?keep_if_possible:Dynamic):Dynamic;
 }

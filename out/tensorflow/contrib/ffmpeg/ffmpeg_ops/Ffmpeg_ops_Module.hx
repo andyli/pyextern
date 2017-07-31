@@ -9,47 +9,18 @@ package tensorflow.contrib.ffmpeg.ffmpeg_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Computes the shape of a DecodeAudio operation.
-		
-		Args:
-		  op: A DecodeAudio operation.
-		
-		Returns:
-		  A list of output shapes. There's exactly one output, the sampled audio.
-		  This is a rank 2 tensor with an unknown number of samples and a
-		  known number of channels.
-	**/
-	static public function _decode_audio_shape(op:Dynamic):Dynamic;
-	/**
-		Computes the shape of an EncodeAudio operation.
-		
-		Returns:
-		  A list of output shapes. There's exactly one output, the formatted audio
-		  file. This is a rank 0 tensor.
-	**/
-	static public function _encode_audio_shape(unused_op:Dynamic):Dynamic;
-	/**
-		Loads a .so file containing the specified operators.
-		
-		Args:
-		  name: The name of the .so file to load.
-		  op_list: A list of names of operators that the library should have. If None
-		      then the .so file's contents will not be verified.
-		
-		Raises:
-		  NameError if one of the required ops is missing.
-	**/
-	static public function _load_library(name:Dynamic, ?op_list:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Create an op that decodes the contents of an audio file.
+		
+		Note that ffmpeg is free to select the "best" audio track from an mp4.
+		https://trac.ffmpeg.org/wiki/Map
 		
 		Args:
 		  contents: The binary contents of the audio file to decode. This is a
 		      scalar.
 		  file_format: A string specifying which format the contents will conform
-		      to. This can be mp3, ogg, or wav.
+		      to. This can be mp3, mp4, ogg, or wav.
 		  samples_per_second: The number of samples per second that is assumed.
 		      In some cases, resampling will occur to generate the correct sample
 		      rate.

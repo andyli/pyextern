@@ -22,7 +22,7 @@ package scipy.integrate;
 		x : array_like, optional
 		    The coordinate to integrate along.  If None (default), use spacing `dx`
 		    between consecutive elements in `y`.
-		dx : int, optional
+		dx : float, optional
 		    Spacing between elements of `y`.  Only used if `x` is None.
 		axis : int, optional
 		    Specifies the axis to cumulate.  Default is -1 (last axis).
@@ -124,6 +124,8 @@ package scipy.integrate;
 		----------
 		func : callable
 		    A Python function or method to integrate (must accept vector inputs).
+		    If integrating a vector-valued function, the returned array must have
+		    shape ``(..., len(x))``.
 		a : float
 		    Lower limit of integration.
 		b : float
@@ -204,27 +206,24 @@ package scipy.integrate;
 		
 		Parameters
 		----------
-		func : callable
+		func : {callable, scipy.LowLevelCallable}
 		    The function to be integrated. Has arguments of ``x0, ... xn``,
 		    ``t0, tm``, where integration is carried out over ``x0, ... xn``, which
 		    must be floats.  Function signature should be
 		    ``func(x0, x1, ..., xn, t0, t1, ..., tm)``.  Integration is carried out
 		    in order.  That is, integration over ``x0`` is the innermost integral,
 		    and ``xn`` is the outermost.
-		    If performance is a concern, this function may be a ctypes function of
-		    the form::
 		
-		        f(int n, double args[n])
+		    If the user desires improved integration performance, then `f` may
+		    be a `scipy.LowLevelCallable` with one of the signatures::
+		
+		        double func(int n, double *xx)
+		        double func(int n, double *xx, void *user_data)
 		
 		    where ``n`` is the number of extra parameters and args is an array
-		    of doubles of the additional parameters.  This function may then
-		    be compiled to a dynamic/shared library then imported through
-		    ``ctypes``, setting the function's argtypes to ``(c_int, c_double)``,
-		    and the function's restype to ``(c_double)``.  Its pointer may then be
-		    passed into `nquad` normally.
-		    This allows the underlying Fortran library to evaluate the function in
-		    the innermost integration calls without callbacks to Python, and also
-		    speeds up the evaluation of the function itself.
+		    of doubles of the additional parameters, the ``xx`` array contains the 
+		    coordinates. The ``user_data`` is the data contained in the
+		    `scipy.LowLevelCallable`.
 		ranges : iterable object
 		    Each element of ranges may be either a sequence  of 2 numbers, or else
 		    a callable that returns such a sequence.  ``ranges[0]`` corresponds to
@@ -504,18 +503,26 @@ package scipy.integrate;
 		
 		Parameters
 		----------
-		func : function
+		func : {function, scipy.LowLevelCallable}
 		    A Python function or method to integrate.  If `func` takes many
 		    arguments, it is integrated along the axis corresponding to the
 		    first argument.
-		    If the user desires improved integration performance, then f may
-		    instead be a ``ctypes`` function of the form:
 		
-		        f(int n, double args[n]),
+		    If the user desires improved integration performance, then `f` may
+		    be a `scipy.LowLevelCallable` with one of the signatures::
 		
-		    where ``args`` is an array of function arguments and ``n`` is the
-		    length of ``args``. ``f.argtypes`` should be set to
-		    ``(c_int, c_double)``, and ``f.restype`` should be ``(c_double,)``.
+		        double func(double x)
+		        double func(double x, void *user_data)
+		        double func(int n, double *xx)
+		        double func(int n, double *xx, void *user_data)
+		
+		    The ``user_data`` is the data contained in the `scipy.LowLevelCallable`.
+		    In the call forms with ``xx``,  ``n`` is the length of the ``xx`` 
+		    array which contains ``xx[0] == x`` and the rest of the items are
+		    numbers contained in the ``args`` argument of quad.
+		
+		    In addition, certain ctypes call signatures are supported for 
+		    backward compatibility, but those should not be used in new code.
 		a : float
 		    Lower limit of integration (use -numpy.inf for -infinity).
 		b : float
@@ -958,7 +965,7 @@ package scipy.integrate;
 		    `x` is None. Default is 1.
 		axis : int, optional
 		    Axis along which to integrate. Default is the last axis.
-		even : {'avg', 'first', 'str'}, optional
+		even : str {'avg', 'first', 'last'}, optional
 		    'avg' : Average two results:1) use the first N-2 intervals with
 		              a trapezoidal rule on the last interval and 2) use the last
 		              N-2 intervals with a trapezoidal rule on the first interval.
@@ -1298,12 +1305,14 @@ package scipy.integrate;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

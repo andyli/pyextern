@@ -47,6 +47,13 @@ package docutils.parsers.rst.directives.tables;
 	**/
 	public function new(name:Dynamic, arguments:Dynamic, options:Dynamic, content:Dynamic, lineno:Dynamic, content_offset:Dynamic, block_text:Dynamic, state:Dynamic, state_machine:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -141,4 +148,5 @@ package docutils.parsers.rst.directives.tables;
 	public function run():Dynamic;
 	public function severe(message:Dynamic):Dynamic;
 	public function warning(message:Dynamic):Dynamic;
+	public var widths : Dynamic;
 }

@@ -16,11 +16,11 @@ package tensorflow.python.ops.gradient_checker;
 	/**
 		Computes the theoretical and numerical jacobian.
 	**/
-	static public function _compute_gradient(x:Dynamic, x_shape:Dynamic, dx:Dynamic, y:Dynamic, y_shape:Dynamic, dy:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic):Dynamic;
+	static public function _compute_gradient(x:Dynamic, x_shape:Dynamic, dx:Dynamic, y:Dynamic, y_shape:Dynamic, dy:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?extra_feed_dict:Dynamic):Dynamic;
 	/**
 		Compute gradients for a list of x values.
 	**/
-	static public function _compute_gradient_list(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic):Dynamic;
+	static public function _compute_gradient_list(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic, ?extra_feed_dict:Dynamic):Dynamic;
 	/**
 		Computes the numeric Jacobian for dy/dx.
 		
@@ -34,13 +34,15 @@ package tensorflow.python.ops.gradient_checker;
 		  y: the tensor "y".
 		  y_shape: the dimensions of y as a tuple or an array of ints.
 		  delta: the amount of perturbation we give to the input
+		  extra_feed_dict: dict that allows fixing specified tensor values
+		    during the jacobian calculation.
 		
 		Returns:
 		  A 2-d numpy array representing the Jacobian for dy/dx. It has "x_size" rows
 		  and "y_size" columns where "x_size" is the number of elements in x and
 		  "y_size" is the number of elements in y.
 	**/
-	static public function _compute_numeric_jacobian(x:Dynamic, x_shape:Dynamic, x_data:Dynamic, y:Dynamic, y_shape:Dynamic, delta:Dynamic):Dynamic;
+	static public function _compute_numeric_jacobian(x:Dynamic, x_shape:Dynamic, x_data:Dynamic, y:Dynamic, y_shape:Dynamic, delta:Dynamic, extra_feed_dict:Dynamic):Dynamic;
 	/**
 		Computes the theoretical Jacobian for dy/dx.
 		
@@ -54,6 +56,8 @@ package tensorflow.python.ops.gradient_checker;
 		  dy: the tensor "dy".
 		  dy_shape: the dimensions of dy as a tuple or an array of ints.
 		  dx: Tensor or IndexedSlices representing dx
+		  extra_feed_dict: dict that allows fixing specified tensor values
+		    during the jacobian calculation.
 		
 		Returns:
 		  A 2-d numpy array representing the Jacobian for dy/dx. It has "x_size" rows
@@ -63,7 +67,8 @@ package tensorflow.python.ops.gradient_checker;
 		Raises:
 		  ValueError: If `dy` is empty but the gradient is nonzero.
 	**/
-	static public function _compute_theoretical_jacobian(x:Dynamic, x_shape:Dynamic, x_data:Dynamic, dy:Dynamic, dy_shape:Dynamic, dx:Dynamic):Dynamic;
+	static public function _compute_theoretical_jacobian(x:Dynamic, x_shape:Dynamic, x_data:Dynamic, dy:Dynamic, dy_shape:Dynamic, dx:Dynamic, extra_feed_dict:Dynamic):Dynamic;
+	static public function _extra_feeds(extra_feed_dict:Dynamic, new_feeds:Dynamic):Dynamic;
 	static public function _product(t:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -94,6 +99,8 @@ package tensorflow.python.ops.gradient_checker;
 		  delta: (optional) the amount of perturbation.
 		  init_targets: list of targets to run to initialize model params.
 		    TODO(mrry): remove this argument.
+		  extra_feed_dict: dict that allows fixing specified tensor values
+		    during the Jacobian calculation.
 		
 		Returns:
 		  Two 2-d numpy arrays representing the theoretical and numerical
@@ -101,7 +108,7 @@ package tensorflow.python.ops.gradient_checker;
 		  where "x_size" is the number of elements in x and "y_size" is the
 		  number of elements in y. If x is a list, returns a list of two numpy arrays.
 	**/
-	static public function compute_gradient(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic):Dynamic;
+	static public function compute_gradient(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic, ?extra_feed_dict:Dynamic):Dynamic;
 	/**
 		Computes the gradient error.
 		
@@ -129,11 +136,13 @@ package tensorflow.python.ops.gradient_checker;
 		  delta: (optional) the amount of perturbation.
 		  init_targets: list of targets to run to initialize model params.
 		    TODO(mrry): Remove this argument.
+		  extra_feed_dict: dict that allows fixing specified tensor values
+		    during the Jacobian calculation.
 		
 		Returns:
 		  The maximum error in between the two Jacobians.
 	**/
-	static public function compute_gradient_error(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic):Dynamic;
+	static public function compute_gradient_error(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic, ?extra_feed_dict:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

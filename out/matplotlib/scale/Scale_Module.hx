@@ -9,20 +9,6 @@ package matplotlib.scale;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _clip_non_logit(a:Dynamic):Dynamic;
-	static public function _clip_non_positives(a:Dynamic):Dynamic;
-	/**
-		Return a Numpy array where all values outside ]0, 1[ are
-		replaced with NaNs. If all values are inside ]0, 1[, the original
-		array is returned.
-	**/
-	static public function _mask_non_logit(a:Dynamic):Dynamic;
-	/**
-		Return a Numpy array where all non-positive values are
-		replaced with NaNs. If there are no non-positive values, the
-		original array is returned.
-	**/
-	static public function _mask_non_positives(a:Dynamic):Dynamic;
 	static public var _scale_mapping : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**

@@ -22,54 +22,51 @@ package scipy.interpolate.interpolate;
 		Similar to numpy.dot, but sum over last axis of a and 1st axis of b
 	**/
 	static public function _dot0(a:Dynamic, b:Dynamic):Dynamic;
-	static public function _find_clamped(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _find_fixed(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _find_mixed(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _find_natural(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _find_not_a_knot(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _find_periodic(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
 	static public function _find_smoothest(xk:Dynamic, yk:Dynamic, order:Dynamic, ?conds:Dynamic, ?B:Dynamic):Dynamic;
-	static public function _find_smoothest2(xk:Dynamic, yk:Dynamic):Dynamic;
-	static public function _find_symmetric(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
 	static public function _find_user(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	static public function _get_spline2_Bb(xk:Dynamic, yk:Dynamic, kind:Dynamic, conds:Dynamic):Dynamic;
-	static public function _get_spline3_Bb(xk:Dynamic, yk:Dynamic, kind:Dynamic, conds:Dynamic):Dynamic;
 	/**
 		Convert a tuple of coordinate arrays to a (..., ndim)-shaped array.
 	**/
 	static public function _ndim_coords_from_arrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _setdiag(a:Dynamic, k:Dynamic, v:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -85,7 +82,13 @@ package scipy.interpolate.interpolate;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -150,8 +153,8 @@ package scipy.interpolate.interpolate;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -212,7 +215,7 @@ package scipy.interpolate.interpolate;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -249,7 +252,7 @@ package scipy.interpolate.interpolate;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -294,6 +297,10 @@ package scipy.interpolate.interpolate;
 		-------
 		val : int, ndarray
 		    The total number of combinations.
+		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
 		
 		Notes
 		-----
@@ -465,80 +472,109 @@ package scipy.interpolate.interpolate;
 	**/
 	static public function lagrange(x:Dynamic, w:Dynamic):Dynamic;
 	/**
-		logical_or(x1, x2[, out])
-		
-		Compute the truth value of x1 OR x2 element-wise.
+		Compute the (coefficients of) interpolating B-spline.
 		
 		Parameters
 		----------
-		x1, x2 : array_like
-		    Logical OR is applied to the elements of `x1` and `x2`.
-		    They have to be of the same shape.
+		x : array_like, shape (n,)
+		    Abscissas.
+		y : array_like, shape (n, ...)
+		    Ordinates.
+		k : int, optional
+		    B-spline degree. Default is cubic, k=3.
+		t : array_like, shape (nt + k + 1,), optional.
+		    Knots.
+		    The number of knots needs to agree with the number of datapoints and
+		    the number of derivatives at the edges. Specifically, ``nt - n`` must
+		    equal ``len(deriv_l) + len(deriv_r)``.
+		bc_type : 2-tuple or None
+		    Boundary conditions.
+		    Default is None, which means choosing the boundary conditions
+		    automatically. Otherwise, it must be a length-two tuple where the first
+		    element sets the boundary conditions at ``x[0]`` and the second
+		    element sets the boundary conditions at ``x[-1]``. Each of these must
+		    be an iterable of pairs ``(order, value)`` which gives the values of
+		    derivatives of specified orders at the given edge of the interpolation
+		    interval.
+		axis : int, optional
+		    Interpolation axis. Default is 0.
+		check_finite : bool, optional
+		    Whether to check that the input arrays contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default is True.
 		
 		Returns
 		-------
-		y : ndarray or bool
-		    Boolean result with the same shape as `x1` and `x2` of the logical
-		    OR operation on elements of `x1` and `x2`.
-		
-		See Also
-		--------
-		logical_and, logical_not, logical_xor
-		bitwise_or
+		b : a BSpline object of the degree ``k`` and with knots ``t``.
 		
 		Examples
 		--------
-		>>> np.logical_or(True, False)
+		
+		Use cubic interpolation on Chebyshev nodes:
+		
+		>>> def cheb_nodes(N):
+		...     jj = 2.*np.arange(N) + 1
+		...     x = np.cos(np.pi * jj / 2 / N)[::-1]
+		...     return x
+		
+		>>> x = cheb_nodes(20)
+		>>> y = np.sqrt(1 - x**2)
+		
+		>>> from scipy.interpolate import BSpline, make_interp_spline
+		>>> b = make_interp_spline(x, y)
+		>>> np.allclose(b(x), y)
 		True
-		>>> np.logical_or([True, False], [False, False])
-		array([ True, False], dtype=bool)
 		
-		>>> x = np.arange(5)
-		>>> np.logical_or(x < 1, x > 3)
-		array([ True, False, False, False,  True], dtype=bool)
-	**/
-	static public function logical_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return a new array of given shape and type, filled with ones.
+		Note that the default is a cubic spline with a not-a-knot boundary condition
 		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		>>> b.k
+		3
 		
-		Returns
-		-------
-		out : ndarray
-		    Array of ones with the given shape, dtype, and order.
+		Here we use a 'natural' spline, with zero 2nd derivatives at edges:
+		
+		>>> l, r = [(2, 0)], [(2, 0)]
+		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))
+		>>> np.allclose(b_n(x), y)
+		True
+		>>> x0, x1 = x[0], x[-1]
+		>>> np.allclose([b_n(x0, 2), b_n(x1, 2)], [0, 0])
+		True
+		
+		Interpolation of parametric curves is also supported. As an example, we
+		compute a discretization of a snail curve in polar coordinates
+		
+		>>> phi = np.linspace(0, 2.*np.pi, 40)
+		>>> r = 0.3 + np.cos(phi)
+		>>> x, y = r*np.cos(phi), r*np.sin(phi)  # convert to Cartesian coordinates
+		
+		Build an interpolating curve, parameterizing it by the angle
+		
+		>>> from scipy.interpolate import make_interp_spline
+		>>> spl = make_interp_spline(phi, np.c_[x, y])
+		
+		Evaluate the interpolant on a finer grid (note that we transpose the result
+		to unpack it into a pair of x- and y-arrays)
+		
+		>>> phi_new = np.linspace(0, 2.*np.pi, 100)
+		>>> x_new, y_new = spl(phi_new).T
+		
+		Plot the result
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'o')
+		>>> plt.plot(x_new, y_new, '-')
+		>>> plt.show()
 		
 		See Also
 		--------
-		zeros, ones_like
-		
-		Examples
-		--------
-		>>> np.ones(5)
-		array([ 1.,  1.,  1.,  1.,  1.])
-		
-		>>> np.ones((5,), dtype=np.int)
-		array([1, 1, 1, 1, 1])
-		
-		>>> np.ones((2, 1))
-		array([[ 1.],
-		       [ 1.]])
-		
-		>>> s = (2,2)
-		>>> np.ones(s)
-		array([[ 1.,  1.],
-		       [ 1.,  1.]])
+		BSpline : base class representing the B-spline objects
+		CubicSpline : a cubic spline in the polynomial basis
+		make_lsq_spline : a similar factory function for spline fitting
+		UnivariateSpline : a wrapper over FITPACK spline fitting routines
+		splrep : a wrapper over FITPACK spline fitting routines
 	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function make_interp_spline(x:Dynamic, y:Dynamic, ?k:Dynamic, ?t:Dynamic, ?bc_type:Dynamic, ?axis:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Product of a list of numbers; ~40x faster vs np.prod for Python tuples
@@ -645,7 +681,6 @@ package scipy.interpolate.interpolate;
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
 	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
-	static public function reduce_sometrue(a:Dynamic):Dynamic;
 	/**
 		Find indices where elements should be inserted to maintain order.
 		
@@ -685,7 +720,7 @@ package scipy.interpolate.interpolate;
 		-----
 		Binary search is used to find the required insertion points.
 		
-		As of Numpy 1.4.0 `searchsorted` works with real/complex arrays containing
+		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
 		
 		Examples
@@ -699,141 +734,114 @@ package scipy.interpolate.interpolate;
 	**/
 	static public function searchsorted(a:Dynamic, v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
-		Return the shape of an array.
+		`spleval` is deprecated!
+		spleval is deprecated in scipy 0.19.0, use BSpline instead.
 		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
 		
-		Returns
-		-------
-		shape : tuple of ints
-		    The elements of the shape tuple give the lengths of the
-		    corresponding array dimensions.
+		    Evaluate a fixed spline represented by the given tuple at the new x-values
 		
-		See Also
-		--------
-		alen
-		ndarray.shape : Equivalent array method.
+		    The `xj` values are the interior knot points.  The approximation
+		    region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
+		    should have length N+k where `k` is the order of the spline.
 		
-		Examples
-		--------
-		>>> np.shape(np.eye(3))
-		(3, 3)
-		>>> np.shape([[1, 2]])
-		(1, 2)
-		>>> np.shape([0])
-		(1,)
-		>>> np.shape(0)
-		()
+		    Parameters
+		    ----------
+		    (xj, cvals, k) : tuple
+		        Parameters that define the fixed spline
+		    xj : array_like
+		        Interior knot points
+		    cvals : array_like
+		        Curvature
+		    k : int
+		        Order of the spline
+		    xnew : array_like
+		        Locations to calculate spline
+		    deriv : int
+		        Deriv
 		
-		>>> a = np.array([(1, 2), (3, 4)], dtype=[('x', 'i4'), ('y', 'i4')])
-		>>> np.shape(a)
-		(2,)
-		>>> a.shape
-		(2,)
-	**/
-	static public function shape(a:Dynamic):Dynamic;
-	/**
-		Check whether some values are true.
+		    Returns
+		    -------
+		    spleval : ndarray
+		        If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
+		        `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
+		        providing the interpolation of multiple curves.
 		
-		Refer to `any` for full documentation.
+		    Notes
+		    -----
+		    Internally, an additional `k`-1 knot points are added on either side of
+		    the spline.
 		
-		See Also
-		--------
-		any : equivalent function
-	**/
-	static public function sometrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	/**
-		Evaluate a fixed spline represented by the given tuple at the new x-values
-		
-		The `xj` values are the interior knot points.  The approximation
-		region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
-		should have length N+k where `k` is the order of the spline.
-		
-		Parameters
-		----------
-		(xj, cvals, k) : tuple
-		    Parameters that define the fixed spline
-		xj : array_like
-		    Interior knot points
-		cvals : array_like
-		    Curvature
-		k : int
-		    Order of the spline
-		xnew : array_like
-		    Locations to calculate spline
-		deriv : int
-		    Deriv
-		
-		Returns
-		-------
-		spleval : ndarray
-		    If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
-		    `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
-		    providing the interpolation of multiple curves.
-		
-		Notes
-		-----
-		Internally, an additional `k`-1 knot points are added on either side of
-		the spline.
-	**/
-	static public function spleval(xck:Dynamic, xnew:Dynamic, ?deriv:Dynamic):Dynamic;
-	/**
-		Interpolate a curve at new points using a spline fit
-		
-		Parameters
-		----------
-		xk, yk : array_like
-		    The x and y values that define the curve.
-		xnew : array_like
-		    The x values where spline should estimate the y values.
-		order : int
-		    Default is 3.
-		kind : string
-		    One of {'smoothest'}
-		conds : Don't know
-		    Don't know
-		
-		Returns
-		-------
-		spline : ndarray
-		    An array of y values; the spline evaluated at the positions `xnew`.
-	**/
-	static public function spline(xk:Dynamic, yk:Dynamic, xnew:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):Dynamic;
-	/**
-		Return a representation of a spline given data-points at internal knots
-		
-		Parameters
-		----------
-		xk : array_like
-		    The input array of x values of rank 1
-		yk : array_like
-		    The input array of y values of rank N. `yk` can be an N-d array to
-		    represent more than one curve, through the same `xk` points. The first
-		    dimension is assumed to be the interpolating dimension and is the same
-		    length of `xk`.
-		order : int, optional
-		    Order of the spline
-		kind : str, optional
-		    Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
-		    'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
-		conds : optional
-		    Conds
-		
-		Returns
-		-------
-		splmake : tuple
-		    Return a (`xk`, `cvals`, `k`) representation of a spline given
-		    data-points where the (internal) knots are at the data-points.
-	**/
-	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):python.Tuple<Dynamic>;
-	/**
-		Return a piece-wise polynomial object from a fixed-spline tuple.
 		    
 	**/
-	static public function spltopp(xk:Dynamic, cvals:Dynamic, k:Dynamic):Dynamic;
+	static public function spleval(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`spline` is deprecated!
+		spline is deprecated in scipy 0.19.0, use Bspline class instead.
+		
+		
+		    Interpolate a curve at new points using a spline fit
+		
+		    Parameters
+		    ----------
+		    xk, yk : array_like
+		        The x and y values that define the curve.
+		    xnew : array_like
+		        The x values where spline should estimate the y values.
+		    order : int
+		        Default is 3.
+		    kind : string
+		        One of {'smoothest'}
+		    conds : Don't know
+		        Don't know
+		
+		    Returns
+		    -------
+		    spline : ndarray
+		        An array of y values; the spline evaluated at the positions `xnew`.
+		
+		    
+	**/
+	static public function spline(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`splmake` is deprecated!
+		splmake is deprecated in scipy 0.19.0, use make_interp_spline instead.
+		
+		
+		    Return a representation of a spline given data-points at internal knots
+		
+		    Parameters
+		    ----------
+		    xk : array_like
+		        The input array of x values of rank 1
+		    yk : array_like
+		        The input array of y values of rank N. `yk` can be an N-d array to
+		        represent more than one curve, through the same `xk` points. The first
+		        dimension is assumed to be the interpolating dimension and is the same
+		        length of `xk`.
+		    order : int, optional
+		        Order of the spline
+		    kind : str, optional
+		        Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
+		        'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
+		    conds : optional
+		        Conds
+		
+		    Returns
+		    -------
+		    splmake : tuple
+		        Return a (`xk`, `cvals`, `k`) representation of a spline given
+		        data-points where the (internal) knots are at the data-points.
+		
+		    
+	**/
+	static public function splmake(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`spltopp` is deprecated!
+		spltopp is deprecated in scipy 0.19.0, use PPoly.from_spline instead.
+		
+		Return a piece-wise polynomial object from a fixed-spline tuple.
+	**/
+	static public function spltopp(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Permute the dimensions of an array.

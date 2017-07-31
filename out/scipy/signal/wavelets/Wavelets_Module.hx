@@ -65,6 +65,10 @@ package scipy.signal.wavelets;
 		val : int, ndarray
 		    The total number of combinations.
 		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
+		
 		Notes
 		-----
 		- Array arguments accepted only for exact=False case.
@@ -95,8 +99,6 @@ package scipy.signal.wavelets;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -105,10 +107,25 @@ package scipy.signal.wavelets;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		method : str {'auto', 'direct', 'fft'}, optional
+		    A string indicating which method to use to calculate the convolution.
+		
+		    ``direct``
+		       The convolution is determined directly from sums, the definition of
+		       convolution.
+		    ``fft``
+		       The Fourier Transform is used to perform the convolution by calling
+		       `fftconvolve`.
+		    ``auto``
+		       Automatically chooses direct or Fourier method based on an estimate
+		       of which is faster (default).  See Notes for more detail.
+		
+		       .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -116,10 +133,21 @@ package scipy.signal.wavelets;
 		    An N-dimensional array containing a subset of the discrete linear
 		    convolution of `in1` with `in2`.
 		
-		See also
+		See Also
 		--------
 		numpy.polymul : performs polynomial multiplication (same operation, but
 		                also accepts poly1d objects)
+		choose_conv_method : chooses the fastest appropriate convolution method
+		fftconvolve
+		
+		Notes
+		-----
+		By default, `convolve` and `correlate` use ``method='auto'``, which calls
+		`choose_conv_method` to choose the fastest method using pre-computed
+		values (`choose_conv_method` can also measure real-world timing with a
+		keyword argument). Because `fftconvolve` relies on floating point numbers,
+		there are certain constraints that may force `method=direct` (more detail
+		in `choose_conv_method` docstring).
 		
 		Examples
 		--------
@@ -144,7 +172,7 @@ package scipy.signal.wavelets;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?method:Dynamic):Array<Dynamic>;
 	/**
 		Continuous wavelet transform.
 		
@@ -241,11 +269,20 @@ package scipy.signal.wavelets;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its
+		    multiplicity. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		vl : (M, M) double or complex ndarray
 		    The normalized left eigenvector corresponding to the eigenvalue
 		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
@@ -262,9 +299,9 @@ package scipy.signal.wavelets;
 		--------
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
 	**/
-	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -272,6 +309,17 @@ package scipy.signal.wavelets;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -316,12 +364,12 @@ package scipy.signal.wavelets;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
@@ -363,7 +411,7 @@ package scipy.signal.wavelets;
 		    There are `num` equally spaced samples in the closed interval
 		    ``[start, stop]`` or the half-open interval ``[start, stop)``
 		    (depending on whether `endpoint` is True or False).
-		step : float
+		step : float, optional
 		    Only returned if `retstep` is True
 		
 		    Size of spacing between samples.
@@ -378,11 +426,11 @@ package scipy.signal.wavelets;
 		Examples
 		--------
 		>>> np.linspace(2.0, 3.0, num=5)
-		    array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
 		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
-		    array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
 		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
-		    (array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
 		
 		Graphical illustration:
 		

@@ -41,37 +41,47 @@ package matplotlib.mlab;
 		compute the SVD of a and store data for PCA.  Use project to
 		project the data onto a reduced set of dimensions
 		
-		Inputs:
+		Parameters
+		----------
+		a : np.ndarray
+		    A numobservations x numdims array
+		standardize : bool
+		    True if input data are to be standardized. If False, only centering
+		    will be carried out.
 		
-		  *a*: a numobservations x numdims array
-		  *standardize*: True if input data are to be standardized. If False,
-		  only centering will be carried out.
+		Attributes
+		----------
+		a
+		    A centered unit sigma version of input ``a``.
 		
-		Attrs:
+		numrows, numcols
+		    The dimensions of ``a``.
 		
-		  *a* a centered unit sigma version of input a
+		mu
+		    A numdims array of means of ``a``. This is the vector that points
+		    to the origin of PCA space.
 		
-		  *numrows*, *numcols*: the dimensions of a
+		sigma
+		    A numdims array of standard deviation of ``a``.
 		
-		  *mu*: a numdims array of means of a. This is the vector that points
-		  to the origin of PCA space.
+		fracs
+		    The proportion of variance of each of the principal components.
 		
-		  *sigma*: a numdims array of standard deviation of a
+		s
+		    The actual eigenvalues of the decomposition.
 		
-		  *fracs*: the proportion of variance of each of the principal
-		  components
+		Wt
+		    The weight vector for projecting a numdims point or array into
+		    PCA space.
 		
-		  *s*: the actual eigenvalues of the decomposition
+		Y
+		    A projected into PCA space.
 		
-		  *Wt*: the weight vector for projecting a numdims point or array into
-		  PCA space
-		
-		  *Y*: a projected into PCA space
-		
-		
-		The factor loadings are in the Wt factor, i.e., the factor
-		loadings for the 1st principal component are given by Wt[0].
-		This row is also the 1st eigenvector.
+		Notes
+		-----
+		The factor loadings are in the ``Wt`` factor, i.e., the factor loadings
+		for the first principal component are given by ``Wt[0]``. This row is
+		also the first eigenvector.
 	**/
 	@:native("__init__")
 	public function ___init__(a:Dynamic, ?standardize:Dynamic):Dynamic;
@@ -79,39 +89,56 @@ package matplotlib.mlab;
 		compute the SVD of a and store data for PCA.  Use project to
 		project the data onto a reduced set of dimensions
 		
-		Inputs:
+		Parameters
+		----------
+		a : np.ndarray
+		    A numobservations x numdims array
+		standardize : bool
+		    True if input data are to be standardized. If False, only centering
+		    will be carried out.
 		
-		  *a*: a numobservations x numdims array
-		  *standardize*: True if input data are to be standardized. If False,
-		  only centering will be carried out.
+		Attributes
+		----------
+		a
+		    A centered unit sigma version of input ``a``.
 		
-		Attrs:
+		numrows, numcols
+		    The dimensions of ``a``.
 		
-		  *a* a centered unit sigma version of input a
+		mu
+		    A numdims array of means of ``a``. This is the vector that points
+		    to the origin of PCA space.
 		
-		  *numrows*, *numcols*: the dimensions of a
+		sigma
+		    A numdims array of standard deviation of ``a``.
 		
-		  *mu*: a numdims array of means of a. This is the vector that points
-		  to the origin of PCA space.
+		fracs
+		    The proportion of variance of each of the principal components.
 		
-		  *sigma*: a numdims array of standard deviation of a
+		s
+		    The actual eigenvalues of the decomposition.
 		
-		  *fracs*: the proportion of variance of each of the principal
-		  components
+		Wt
+		    The weight vector for projecting a numdims point or array into
+		    PCA space.
 		
-		  *s*: the actual eigenvalues of the decomposition
+		Y
+		    A projected into PCA space.
 		
-		  *Wt*: the weight vector for projecting a numdims point or array into
-		  PCA space
-		
-		  *Y*: a projected into PCA space
-		
-		
-		The factor loadings are in the Wt factor, i.e., the factor
-		loadings for the 1st principal component are given by Wt[0].
-		This row is also the 1st eigenvector.
+		Notes
+		-----
+		The factor loadings are in the ``Wt`` factor, i.e., the factor loadings
+		for the first principal component are given by ``Wt[0]``. This row is
+		also the first eigenvector.
 	**/
 	public function new(a:Dynamic, ?standardize:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

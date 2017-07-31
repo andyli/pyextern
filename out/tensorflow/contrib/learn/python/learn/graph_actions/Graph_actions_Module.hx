@@ -12,12 +12,19 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	static public var __spec__ : Dynamic;
 	static public function _eval_results_to_str(eval_results:Dynamic):Dynamic;
 	static public function _get_first_op_from_collection(collection_name:Dynamic):Dynamic;
+	/**
+		Returns the local init ops to initialize tables and local variables.
+	**/
 	static public function _get_local_init_op():Dynamic;
 	static public function _get_ready_op():Dynamic;
 	/**
 		Lazy init and return saver.
 	**/
 	static public function _get_saver():Dynamic;
+	/**
+		Deprecation wrapper.
+	**/
+	static public function _graph_action_deprecation(func:Dynamic):Dynamic;
 	static public function _make_saver(graph:Dynamic, ?keep_checkpoint_max:Dynamic):Dynamic;
 	static public function _restore_from_checkpoint(session:Dynamic, graph:Dynamic, checkpoint_path:Dynamic, ?saver:Dynamic):Dynamic;
 	/**
@@ -25,72 +32,6 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	**/
 	static public function _run_with_monitors(session:Dynamic, step:Dynamic, tensors:Dynamic, feed_dict:Dynamic, monitors:Dynamic):Dynamic;
 	static public var _summary_writer_lock : Dynamic;
-	/**
-		Train a model via supervised_session.
-		
-		Given `graph`, a directory to write outputs to (`output_dir`), and some ops,
-		run a training loop. The given `train_op` performs one step of training on the
-		model. The `loss_op` represents the objective function of the training. It is
-		expected to increment the `global_step_tensor`, a scalar integer tensor
-		counting training steps. This function uses `Supervisor` to initialize the
-		graph (from a checkpoint if one is available in `output_dir`), write summaries
-		defined in the graph, and write regular checkpoints as defined by
-		`supervisor_save_model_secs`.
-		
-		Training continues until `global_step_tensor` evaluates to `max_steps`, or, if
-		`fail_on_nan_loss`, until `loss_op` evaluates to `NaN`. In that case the
-		program is terminated with exit code 1.
-		
-		Args:
-		  graph: A graph to train. It is expected that this graph is not in use
-		    elsewhere.
-		  output_dir: A directory to write outputs to.
-		  train_op: An op that performs one training step when run.
-		  loss_op: A scalar loss tensor.
-		  global_step_tensor: A tensor representing the global step. If none is given,
-		    one is extracted from the graph using the same logic as in `Supervisor`.
-		  init_op: An op that initializes the graph. If `None`, use `Supervisor`'s
-		    default.
-		  init_feed_dict: A dictionary that maps `Tensor` objects to feed values.
-		    This feed dictionary will be used when `init_op` is evaluated.
-		  init_fn: Optional callable passed to Supervisor to initialize the model.
-		  log_every_steps: Output logs regularly. The logs contain timing data and the
-		    current loss.
-		  supervisor_is_chief: Whether the current process is the chief supervisor in
-		    charge of restoring the model and running standard services.
-		  supervisor_master: The master string to use when preparing the session.
-		  supervisor_save_model_secs: Save model every
-		    `supervisor_save_model_secs` seconds when training.
-		  keep_checkpoint_max: The maximum number of recent checkpoint files to
-		    keep. As new files are created, older files are deleted. If None or 0,
-		    all checkpoint files are kept. This is simply passed as the max_to_keep
-		    arg to tf.Saver constructor.
-		  supervisor_save_summaries_steps: Save summaries every
-		    `supervisor_save_summaries_steps` seconds when training.
-		  feed_fn: A function that is called every iteration to produce a `feed_dict`
-		    passed to `session.run` calls. Optional.
-		  steps: Trains for this many steps (e.g. current global step + `steps`).
-		  fail_on_nan_loss: If true, raise `NanLossDuringTrainingError` if `loss_op`
-		    evaluates to `NaN`. If false, continue training as if nothing happened.
-		  monitors: List of `BaseMonitor` subclass instances. Used for callbacks
-		    inside the training loop.
-		  max_steps: Number of total steps for which to train model. If `None`,
-		    train forever. Two calls fit(steps=100) means 200 training iterations.
-		    On the other hand two calls of fit(max_steps=100) means, second call
-		    will not do any iteration since first call did all 100 steps.
-		
-		Returns:
-		  The final loss value.
-		
-		Raises:
-		  ValueError: If `output_dir`, `train_op`, `loss_op`, or `global_step_tensor`
-		    is not provided. See `tf.contrib.framework.get_global_step` for how we
-		    look up the latter if not provided explicitly.
-		  NanLossDuringTrainingError: If `fail_on_nan_loss` is `True`, and loss ever
-		    evaluates to `NaN`.
-		  ValueError: If both `steps` and `max_steps` are not `None`.
-	**/
-	static public function _supervised_train(graph:Dynamic, output_dir:Dynamic, train_op:Dynamic, loss_op:Dynamic, ?global_step_tensor:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?init_fn:Dynamic, ?log_every_steps:Dynamic, ?supervisor_is_chief:Dynamic, ?supervisor_master:Dynamic, ?supervisor_save_model_secs:Dynamic, ?keep_checkpoint_max:Dynamic, ?supervisor_save_summaries_steps:Dynamic, ?feed_fn:Dynamic, ?steps:Dynamic, ?fail_on_nan_loss:Dynamic, ?monitors:Dynamic, ?max_steps:Dynamic):Dynamic;
 	/**
 		See train.
 	**/
@@ -101,12 +42,51 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	static public function _write_summary_results(output_dir:Dynamic, eval_results:Dynamic, current_global_step:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Clear cached summary writers. Currently only used for unit tests.
+		Clear cached summary writers. Currently only used for unit tests. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
 	static public function clear_summary_writers():Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Evaluate a model loaded from a checkpoint.
+		Evaluate a model loaded from a checkpoint. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Given `graph`, a directory to write summaries to (`output_dir`), a checkpoint
 		to restore variables from, and a `dict` of `Tensor`s to evaluate, run an eval
@@ -129,7 +109,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 		    evaluated in every logging step. The result of the final evaluation is
 		    returned. If `update_op` is None, then it's evaluated in every step. If
 		    `max_steps` is `None`, this should depend on a reader that will raise an
-		    end-of-inupt exception when the inputs are exhausted.
+		    end-of-input exception when the inputs are exhausted.
 		  update_op: A `Tensor` which is run in every step.
 		  global_step_tensor: A `Variable` containing the global step. If `None`,
 		    one is extracted from the graph using the same logic as in `Supervisor`.
@@ -164,7 +144,11 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	**/
 	static public function get_summary_writer(logdir:Dynamic):Dynamic;
 	/**
-		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors.
+		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		If `restore_checkpoint_path` is supplied, restore from checkpoint. Otherwise,
 		init all variables.
@@ -185,17 +169,36 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 		  ValueError: if `output_dict` or `feed_dicts` is None or empty.
 	**/
 	static public function infer(restore_checkpoint_path:Dynamic, output_dict:Dynamic, ?feed_dict:Dynamic):Dynamic;
+	/**
+		Returns a Tensor with the contents of the given variable in the checkpoint.
+		
+		Args:
+		  checkpoint_dir: Directory with checkpoints file or path to checkpoint.
+		  name: Name of the tensor to return.
+		
+		Returns:
+		  `Tensor` object.
+	**/
+	static public function load_variable(checkpoint_dir:Dynamic, name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Reraise an exception.
 	**/
 	static public function reraise(tp:Dynamic, value:Dynamic, ?tb:Dynamic):Dynamic;
 	/**
-		See run_feeds_iter(). Returns a `list` instead of an iterator.
+		See run_feeds_iter(). Returns a `list` instead of an iterator. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
 	static public function run_feeds(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Run `output_dict` tensors with each input in `feed_dicts`.
+		Run `output_dict` tensors with each input in `feed_dicts`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		If `restore_checkpoint_path` is supplied, restore from checkpoint. Otherwise,
 		init all variables.
@@ -218,7 +221,11 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	**/
 	static public function run_feeds_iter(output_dict:Dynamic, feed_dicts:Dynamic, ?restore_checkpoint_path:Dynamic):Dynamic;
 	/**
-		Run `output_dict` tensors `n` times, with the same `feed_dict` each run.
+		Run `output_dict` tensors `n` times, with the same `feed_dict` each run. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Args:
 		  output_dict: A `dict` mapping string names to tensors to run. Must all be
@@ -234,7 +241,11 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	**/
 	static public function run_n(output_dict:Dynamic, ?feed_dict:Dynamic, ?restore_checkpoint_path:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Train a model.
+		Train a model. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Given `graph`, a directory to write outputs to (`output_dir`), and some ops,
 		run a training loop. The given `train_op` performs one step of training on the
@@ -272,7 +283,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 		  keep_checkpoint_max: The maximum number of recent checkpoint files to
 		    keep. As new files are created, older files are deleted. If None or 0,
 		    all checkpoint files are kept. This is simply passed as the max_to_keep
-		    arg to tf.Saver constructor.
+		    arg to tf.train.Saver constructor.
 		  supervisor_save_summaries_steps: Save summaries every
 		    `supervisor_save_summaries_steps` seconds when training.
 		  feed_fn: A function that is called every iteration to produce a `feed_dict`

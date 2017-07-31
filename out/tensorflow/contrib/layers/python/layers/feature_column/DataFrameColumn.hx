@@ -60,6 +60,13 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -88,7 +95,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self*value.n
@@ -149,7 +156,19 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	/**
+		Returns None, or a (path,tensor_name) to load a checkpoint from.
+	**/
+	public function _checkpoint_path():Dynamic;
+	/**
+		Returns arguments to embedding lookup to build an input layer.
+	**/
+	public function _deep_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
 	static public var _fields : Dynamic;
+	/**
+		Helper method for self.key() that omits particular properties.
+	**/
+	public function _key_without_properties(properties:Dynamic):Dynamic;
 	/**
 		Make a new DataFrameColumn object from a sequence or iterable
 	**/
@@ -160,11 +179,27 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
+		Returns a dense tensor representing this column's values.
+	**/
+	public function _to_dense_tensor(input_tensor:Dynamic):Dynamic;
+	/**
+		Returns a Tensor as an input to the first layer of neural network.
+	**/
+	public function _to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?output_rank:Dynamic):Dynamic;
+	/**
+		Returns arguments to look up embeddings for this column.
+	**/
+	public function _wide_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
+	/**
 		Alias for field number 0
 	**/
 	public var column_name : Dynamic;
 	/**
-		Returns configuration of the base feature for `tf.parse_example`.
+		Returns configuration of the base feature for `tf.parse_example`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var config : Dynamic;
 	/**
@@ -177,7 +212,11 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Apply transformation and inserts it into columns_to_tensors.
+		Apply transformation and inserts it into columns_to_tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 		
 		Args:
 		  columns_to_tensors: A mapping from feature columns to tensors. 'string'
@@ -190,19 +229,15 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public var key : Dynamic;
 	/**
-		Returns the name of column or transformed column.
+		Returns the name of column or transformed column. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var name : Dynamic;
 	/**
 		Alias for field number 1
 	**/
 	public var series : Dynamic;
-	/**
-		Returns a Tensor as an input to the first layer of neural network.
-	**/
-	public function to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
-	/**
-		Returns a Tensor as linear predictions and a list of created Variable.
-	**/
-	public function to_weighted_sum(input_tensor:Dynamic, ?num_outputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
 }

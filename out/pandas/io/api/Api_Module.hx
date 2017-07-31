@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.api;
 @:pythonImport("pandas.io.api") extern class Api_Module {
+	static public function Term(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -18,13 +19,17 @@ package pandas.io.api;
 		Read text from clipboard and pass to read_table. See read_table for the
 		full argument list
 		
-		If unspecified, `sep` defaults to '\s+'
+		Parameters
+		----------
+		sep : str, default '\s+'.
+		    A string or regex delimiter. The default of '\s+' denotes
+		    one or more whitespace characters.
 		
 		Returns
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	static public function read_clipboard(?sep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		
@@ -41,10 +46,12 @@ package pandas.io.api;
 		    file. For file URLs, a host is expected. For instance, a local file could
 		    be file ://localhost/path/to/table.csv
 		sep : str, default ','
-		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from ``'\s+'`` will
-		    be interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
+		    Delimiter to use. If sep is None, the C engine cannot automatically detect
+		    the separator, but the Python parsing engine can, meaning the latter will
+		    be used automatically. In addition, separators longer than 1 character and
+		    different from ``'\s+'`` will be interpreted as regular expressions and
+		    will also force the use of the Python parsing engine. Note that regex
+		    delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
@@ -74,13 +81,18 @@ package pandas.io.api;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -99,8 +111,9 @@ package pandas.io.api;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		engine : {'c', 'python'}, optional
 		    Parser engine to use. The C engine is faster while the python engine is
 		    currently more feature-complete.
@@ -113,9 +126,13 @@ package pandas.io.api;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -126,7 +143,7 @@ package pandas.io.api;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -144,16 +161,20 @@ package pandas.io.api;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -172,10 +193,10 @@ package pandas.io.api;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -221,8 +242,11 @@ package pandas.io.api;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -230,10 +254,10 @@ package pandas.io.api;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed
@@ -309,7 +333,9 @@ package pandas.io.api;
 		index_col : int, list of ints, default None
 		    Column (0-indexed) to use as the row labels of the DataFrame.
 		    Pass None if there is no such column.  If a list is passed,
-		    those columns will be combined into a ``MultiIndex``
+		    those columns will be combined into a ``MultiIndex``.  If a
+		    subset of data is selected with ``parse_cols``, index_col
+		    is based on the subset.
 		names : array-like, default None
 		    List of column names to use. If file contains no header row,
 		    then you should explicitly pass header=None
@@ -318,6 +344,14 @@ package pandas.io.api;
 		    either be integers or column labels, values are functions that take one
 		    input argument, the Excel cell content, and return the transformed
 		    content.
+		dtype : Type name or dict of column -> type, default None
+		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
+		    Use `object` to preserve data as stored in Excel and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
+		
+		    .. versionadded:: 0.20.0
+		
 		true_values : list, default None
 		    Values to consider as True
 		
@@ -332,8 +366,9 @@ package pandas.io.api;
 		    * If None then parse all columns,
 		    * If int then indicates last column to be parsed
 		    * If list of ints then indicates list of column numbers to be parsed
-		    * If string then indicates comma separated list of column names and
-		      column ranges (e.g. "A:E" or "A,C,E:F")
+		    * If string then indicates comma separated list of Excel column letters and
+		      column ranges (e.g. "A:E" or "A,C,E:F").  Ranges are inclusive of
+		      both sides.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		na_values : scalar, str, list-like, or dict, default None
@@ -369,7 +404,22 @@ package pandas.io.api;
 		    DataFrame from the passed in Excel file.  See notes in sheetname
 		    argument for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?dtype:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Load a feather-format object from the file path
+		
+		.. versionadded 0.20.0
+		
+		Parameters
+		----------
+		path : string
+		    File path
+		
+		Returns
+		-------
+		type of object stored in file
+	**/
+	static public function read_feather(path:Dynamic):Dynamic;
 	/**
 		Read a table of fixed-width formatted lines into DataFrame
 		
@@ -390,7 +440,7 @@ package pandas.io.api;
 		    fields of each line as half-open intervals (i.e.,  [from, to[ ).
 		    String value 'infer' can be used to instruct the parser to try
 		    detecting the column specifications from the first 100 rows of
-		    the data (default='infer').
+		    the data which are not being skipped via skiprows (default='infer').
 		widths : list of ints. optional
 		    A list of field widths which can be used instead of 'colspecs' if
 		    the intervals are contiguous.
@@ -424,13 +474,18 @@ package pandas.io.api;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -449,8 +504,9 @@ package pandas.io.api;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		
 		converters : dict, default None
 		    Dict of functions for converting values in certain columns. Keys can either
@@ -461,9 +517,13 @@ package pandas.io.api;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -474,7 +534,7 @@ package pandas.io.api;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -492,16 +552,20 @@ package pandas.io.api;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -520,10 +584,10 @@ package pandas.io.api;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -569,8 +633,11 @@ package pandas.io.api;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -578,10 +645,10 @@ package pandas.io.api;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed
@@ -622,22 +689,18 @@ package pandas.io.api;
 	/**
 		Load data from Google BigQuery.
 		
-		THIS IS AN EXPERIMENTAL LIBRARY
-		
 		The main method a user calls to execute a Query in Google BigQuery
 		and read results into a pandas DataFrame.
 		
 		Google BigQuery API Client Library v2 for Python is used.
-		Documentation is available at
-		https://developers.google.com/api-client-library/python/apis/bigquery/v2
+		Documentation is available `here
+		<https://developers.google.com/api-client-library/python/apis/bigquery/v2>`__
 		
 		Authentication to the Google BigQuery service is via OAuth 2.0.
 		
 		- If "private_key" is not provided:
 		
 		  By default "application default credentials" are used.
-		
-		  .. versionadded:: 0.19.0
 		
 		  If default application credentials are not found or are restrictive,
 		  user account credentials are used. In this case, you will be asked to
@@ -668,8 +731,6 @@ package pandas.io.api;
 		    or string contents. This is useful for remote server
 		    authentication (eg. jupyter iPython notebook on remote host)
 		
-		    .. versionadded:: 0.18.1
-		
 		dialect : {'legacy', 'standard'}, default 'legacy'
 		    'legacy' : Use BigQuery's legacy SQL dialect.
 		    'standard' : Use BigQuery's standard SQL (beta), which is
@@ -677,14 +738,21 @@ package pandas.io.api;
 		    see `BigQuery SQL Reference
 		    <https://cloud.google.com/bigquery/sql-reference/>`__
 		
-		    .. versionadded:: 0.19.0
+		**kwargs : Arbitrary keyword arguments
+		    configuration (dict): query config parameters for job processing.
+		    For example:
+		
+		        configuration = {'query': {'useQueryCache': False}}
+		
+		    For more information see `BigQuery SQL Reference
+		    <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__
 		
 		Returns
 		-------
 		df: DataFrame
 		    DataFrame representing results of query
 	**/
-	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic):Dynamic;
+	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		read from the store, close it if we opened it
 		
@@ -693,13 +761,16 @@ package pandas.io.api;
 		
 		Parameters
 		----------
-		path_or_buf : path (string), buffer, or path object (pathlib.Path or
-		    py._path.local.LocalPath) to read from
+		path_or_buf : path (string), buffer or path object (pathlib.Path or
+		    py._path.local.LocalPath) designating the file to open, or an
+		    already opened pd.HDFStore object
 		
 		    .. versionadded:: 0.19.0 support for pathlib, py.path.
 		
 		key : group identifier in the store. Can be omitted if the HDF file
 		    contains a single pandas object.
+		mode : string, {'r', 'r+', 'a'}, default 'r'. Mode to use when opening
+		    the file. Ignored if path_or_buf is a pd.HDFStore.
 		where : list of Term (or convertable) objects, optional
 		start : optional, integer (defaults to None), row number to start
 		    selection
@@ -714,7 +785,7 @@ package pandas.io.api;
 		-------
 		The selected object
 	**/
-	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read HTML tables into a ``list`` of ``DataFrame`` objects.
 		
@@ -823,7 +894,7 @@ package pandas.io.api;
 		Notes
 		-----
 		Before using this function you should read the :ref:`gotchas about the
-		HTML parsing libraries <html-gotchas>`.
+		HTML parsing libraries <io.html.gotchas>`.
 		
 		Expect to do some cleanup after you call this function. For example, you
 		might need to manually assign column names if the column names are
@@ -861,32 +932,38 @@ package pandas.io.api;
 		    file. For file URLs, a host is expected. For instance, a local file
 		    could be ``file://localhost/path/to/table.json``
 		
-		orient
+		orient : string,
+		    Indication of expected JSON string format.
+		    Compatible JSON strings can be produced by ``to_json()`` with a
+		    corresponding orient value.
+		    The set of possible orients is:
 		
-		    * `Series`
+		    - ``'split'`` : dict like
+		      ``{index -> [index], columns -> [columns], data -> [values]}``
+		    - ``'records'`` : list like
+		      ``[{column -> value}, ... , {column -> value}]``
+		    - ``'index'`` : dict like ``{index -> {column -> value}}``
+		    - ``'columns'`` : dict like ``{column -> {index -> value}}``
+		    - ``'values'`` : just the values array
 		
+		    The allowed and default values depend on the value
+		    of the `typ` parameter.
+		
+		    * when ``typ == 'series'``,
+		
+		      - allowed orients are ``{'split','records','index'}``
 		      - default is ``'index'``
-		      - allowed values are: ``{'split','records','index'}``
 		      - The Series index must be unique for orient ``'index'``.
 		
-		    * `DataFrame`
+		    * when ``typ == 'frame'``,
 		
+		      - allowed orients are ``{'split','records','index',
+		        'columns','values'}``
 		      - default is ``'columns'``
-		      - allowed values are: {'split','records','index','columns','values'}
-		      - The DataFrame index must be unique for orients 'index' and
-		        'columns'.
-		      - The DataFrame columns must be unique for orients 'index',
-		        'columns', and 'records'.
-		
-		    * The format of the JSON string
-		
-		      - split : dict like
-		        ``{index -> [index], columns -> [columns], data -> [values]}``
-		      - records : list like
-		        ``[{column -> value}, ... , {column -> value}]``
-		      - index : dict like ``{index -> {column -> value}}``
-		      - columns : dict like ``{column -> {index -> value}}``
-		      - values : just the values array
+		      - The DataFrame index must be unique for orients ``'index'`` and
+		        ``'columns'``.
+		      - The DataFrame columns must be unique for orients ``'index'``,
+		        ``'columns'``, and ``'records'``.
 		
 		typ : type of object to recover (series or frame), default 'frame'
 		dtype : boolean or dict, default True
@@ -935,7 +1012,59 @@ package pandas.io.api;
 		
 		Returns
 		-------
-		result : Series or DataFrame
+		result : Series or DataFrame, depending on the value of `typ`.
+		
+		See Also
+		--------
+		DataFrame.to_json
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame([['a', 'b'], ['c', 'd']],
+		...                   index=['row 1', 'row 2'],
+		...                   columns=['col 1', 'col 2'])
+		
+		Encoding/decoding a Dataframe using ``'split'`` formatted JSON:
+		
+		>>> df.to_json(orient='split')
+		'{"columns":["col 1","col 2"],
+		  "index":["row 1","row 2"],
+		  "data":[["a","b"],["c","d"]]}'
+		>>> pd.read_json(_, orient='split')
+		      col 1 col 2
+		row 1     a     b
+		row 2     c     d
+		
+		Encoding/decoding a Dataframe using ``'index'`` formatted JSON:
+		
+		>>> df.to_json(orient='index')
+		'{"row 1":{"col 1":"a","col 2":"b"},"row 2":{"col 1":"c","col 2":"d"}}'
+		>>> pd.read_json(_, orient='index')
+		      col 1 col 2
+		row 1     a     b
+		row 2     c     d
+		
+		Encoding/decoding a Dataframe using ``'records'`` formatted JSON.
+		Note that index labels are not preserved with this encoding.
+		
+		>>> df.to_json(orient='records')
+		'[{"col 1":"a","col 2":"b"},{"col 1":"c","col 2":"d"}]'
+		>>> pd.read_json(_, orient='records')
+		  col 1 col 2
+		0     a     b
+		1     c     d
+		
+		Encoding with Table Schema
+		
+		>>> df.to_json(orient='table')
+		'{"schema": {"fields": [{"name": "index", "type": "string"},
+		                        {"name": "col 1", "type": "string"},
+		                        {"name": "col 2", "type": "string"}],
+		                "primaryKey": "index",
+		                "pandas_version": "0.20.0"},
+		    "data": [{"index": "row 1", "col 1": "a", "col 2": "b"},
+		            {"index": "row 2", "col 1": "c", "col 2": "d"}]}'
 	**/
 	static public function read_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?typ:Dynamic, ?dtype:Dynamic, ?convert_axes:Dynamic, ?convert_dates:Dynamic, ?keep_default_dates:Dynamic, ?numpy:Dynamic, ?precise_float:Dynamic, ?date_unit:Dynamic, ?encoding:Dynamic, ?lines:Dynamic):Dynamic;
 	/**
@@ -968,12 +1097,19 @@ package pandas.io.api;
 		----------
 		path : string
 		    File path
+		compression : {'infer', 'gzip', 'bz2', 'xz', 'zip', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use
+		    gzip, bz2, xz or zip if path is a string ending in '.gz', '.bz2', 'xz',
+		    or 'zip' respectively, and no decompression otherwise.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.20.0
 		
 		Returns
 		-------
 		unpickled : type of object stored in file
 	**/
-	static public function read_pickle(path:Dynamic):Dynamic;
+	static public function read_pickle(path:Dynamic, ?compression:Dynamic):Dynamic;
 	/**
 		Read SAS files stored as either XPORT or SAS7BDAT format files.
 		
@@ -1014,7 +1150,7 @@ package pandas.io.api;
 		index_col : string or list of strings, optional, default: None
 		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects (like
+		    Attempt to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
@@ -1075,7 +1211,7 @@ package pandas.io.api;
 		index_col : string or list of strings, optional, default: None
 		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects (like
+		    Attempt to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
@@ -1129,7 +1265,7 @@ package pandas.io.api;
 		index_col : string or list of strings, optional, default: None
 		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects (like
+		    Attempt to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point. Can result in loss of Precision.
 		parse_dates : list or dict, default: None
 		    - List of column names to parse as dates
@@ -1172,7 +1308,7 @@ package pandas.io.api;
 		convert_categoricals : boolean, defaults to True
 		    Read value labels and convert columns to Categorical/Factor variables
 		encoding : string, None or encoding
-		    Encoding used to parse the files. None defaults to iso-8859-1.
+		    Encoding used to parse the files. None defaults to latin-1.
 		index : identifier of index column
 		    identifier of column that should be used as index of the DataFrame
 		convert_missing : boolean, defaults to False
@@ -1228,10 +1364,12 @@ package pandas.io.api;
 		    file. For file URLs, a host is expected. For instance, a local file could
 		    be file ://localhost/path/to/table.csv
 		sep : str, default \t (tab-stop)
-		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from ``'\s+'`` will
-		    be interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
+		    Delimiter to use. If sep is None, the C engine cannot automatically detect
+		    the separator, but the Python parsing engine can, meaning the latter will
+		    be used automatically. In addition, separators longer than 1 character and
+		    different from ``'\s+'`` will be interpreted as regular expressions and
+		    will also force the use of the Python parsing engine. Note that regex
+		    delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
@@ -1261,13 +1399,18 @@ package pandas.io.api;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -1286,8 +1429,9 @@ package pandas.io.api;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		engine : {'c', 'python'}, optional
 		    Parser engine to use. The C engine is faster while the python engine is
 		    currently more feature-complete.
@@ -1300,9 +1444,13 @@ package pandas.io.api;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -1313,7 +1461,7 @@ package pandas.io.api;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -1331,16 +1479,20 @@ package pandas.io.api;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -1359,10 +1511,10 @@ package pandas.io.api;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -1408,8 +1560,11 @@ package pandas.io.api;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -1417,10 +1572,10 @@ package pandas.io.api;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed
@@ -1480,6 +1635,10 @@ package pandas.io.api;
 		obj : any object
 		path : string
 		    File path
+		compression : {'infer', 'gzip', 'bz2', 'xz', None}, default 'infer'
+		    a string representing the compression to use in the output file
+		
+		    .. versionadded:: 0.20.0
 	**/
-	static public function to_pickle(obj:Dynamic, path:Dynamic):Dynamic;
+	static public function to_pickle(obj:Dynamic, path:Dynamic, ?compression:Dynamic):Dynamic;
 }

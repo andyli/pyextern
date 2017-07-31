@@ -2,6 +2,7 @@
 package pandas.core.api;
 @:pythonImport("pandas.core.api") extern class Api_Module {
 	static public var IndexSlice : Dynamic;
+	static public var NaT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -64,7 +65,7 @@ package pandas.core.api;
 		    Frequency strings can have multiples, e.g. '5H'
 		tz : string or None
 		    Time zone name for returning localized DatetimeIndex, for example
-		Asia/Hong_Kong
+		    Asia/Hong_Kong
 		normalize : bool, default False
 		    Normalize start/end dates to midnight before generating date range
 		name : str, default None
@@ -95,9 +96,13 @@ package pandas.core.api;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -128,6 +133,18 @@ package pandas.core.api;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -173,6 +190,12 @@ package pandas.core.api;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -182,13 +205,31 @@ package pandas.core.api;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -482,9 +523,13 @@ package pandas.core.api;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -517,6 +562,18 @@ package pandas.core.api;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -562,6 +619,12 @@ package pandas.core.api;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -571,13 +634,31 @@ package pandas.core.api;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -749,72 +830,32 @@ package pandas.core.api;
 		    [default: False] [currently: False]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function groupby(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Class for grouping and aggregating relational data. See aggregate,
-		transform, and apply functions on this object.
-		
-		It's easiest to use obj.groupby(...) to use GroupBy, but you can also do:
-		
-		::
-		
-		    grouped = groupby(obj, ...)
+		Return a fixed frequency IntervalIndex
 		
 		Parameters
 		----------
-		obj : pandas object
-		axis : int, default 0
-		level : int, default None
-		    Level of MultiIndex
-		groupings : list of Grouping objects
-		    Most users should ignore this
-		exclusions : array-like, optional
-		    List of columns to exclude
-		name : string
-		    Most users should ignore this
+		start : string or datetime-like, default None
+		    Left bound for generating data
+		end : string or datetime-like, default None
+		    Right bound for generating data
+		freq : interger, string or DateOffset, default 1
+		periods : interger, default None
+		name : str, default None
+		    Name of the resulting index
+		closed : string, default 'right'
+		    options are: 'left', 'right', 'both', 'neither'
 		
 		Notes
 		-----
-		After grouping, see aggregate, apply, and transform functions. Here are
-		some other brief notes about usage. When grouping by multiple groups, the
-		result index will be a MultiIndex (hierarchical) by default.
-		
-		Iteration produces (key, group) tuples, i.e. chunking the data by group. So
-		you can write code like:
-		
-		::
-		
-		    grouped = obj.groupby(keys, axis=axis)
-		    for key, group in grouped:
-		        # do something with the data
-		
-		Function calls on GroupBy, if not specially implemented, "dispatch" to the
-		grouped data. So if you group a DataFrame and wish to invoke the std()
-		method on each group, you can simply do:
-		
-		::
-		
-		    df.groupby(mapper).std()
-		
-		rather than
-		
-		::
-		
-		    df.groupby(mapper).aggregate(np.std)
-		
-		You can pass arguments to these "wrapped" functions, too.
-		
-		See the online documentation for full exposition on these topics and much
-		more
+		2 of start, end, or periods must be specified
 		
 		Returns
 		-------
-		**Attributes**
-		groups : dict
-		    {group name -> group labels}
-		len(grouped) : int
-		    Number of groups
+		rng : IntervalIndex
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Int;
+	static public function interval_range(?start:Dynamic, ?end:Dynamic, ?freq:Dynamic, ?periods:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.IntervalIndex;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -867,26 +908,7 @@ package pandas.core.api;
 		reshaped : DataFrame
 	**/
 	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
-	/**
-		Compute locations of to_match into values
-		
-		Parameters
-		----------
-		to_match : array-like
-		    values to find positions of
-		values : array-like
-		    Unique set of values
-		na_sentinel : int, default -1
-		    Value to mark "not found"
-		
-		Examples
-		--------
-		
-		Returns
-		-------
-		match : ndarray of integers
-	**/
-	static public function match(to_match:Dynamic, values:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	static public function match(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
 		on object arrays.
@@ -909,6 +931,27 @@ package pandas.core.api;
 	static public function notnull(obj:Dynamic):Dynamic;
 	static public var options : Dynamic;
 	/**
+		Return a fixed frequency datetime index, with day (calendar) as the default
+		frequency
+		
+		
+		Parameters
+		----------
+		start : starting value, period-like, optional
+		end : ending value, period-like, optional
+		periods : int, default None
+		    Number of periods in the index
+		freq : str/DateOffset, default 'D'
+		    Frequency alias
+		name : str, default None
+		    Name for the resulting PeriodIndex
+		
+		Returns
+		-------
+		prng : PeriodIndex
+	**/
+	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
+	/**
 		Produce 'pivot' table based on 3 columns of this DataFrame.
 		Uses unique values from index / columns and fills with values.
 		
@@ -928,8 +971,14 @@ package pandas.core.api;
 		Returns
 		-------
 		DataFrame
+		
+		See also
+		--------
+		DataFrame.pivot_table : generalization of pivot that can handle
+		    duplicate values for one index/column pair
 	**/
 	static public function pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
+	static public function pnow(?freq:Dynamic):Dynamic;
 	/**
 		reset_option(pat)
 		
@@ -939,9 +988,13 @@ package pandas.core.api;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -970,6 +1023,18 @@ package pandas.core.api;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -1015,6 +1080,12 @@ package pandas.core.api;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -1024,13 +1095,31 @@ package pandas.core.api;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -1217,9 +1306,13 @@ package pandas.core.api;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -1254,6 +1347,18 @@ package pandas.core.api;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -1299,6 +1404,12 @@ package pandas.core.api;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -1308,13 +1419,31 @@ package pandas.core.api;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -1487,11 +1616,43 @@ package pandas.core.api;
 	**/
 	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Return a fixed frequency timedelta index, with day as the default
+		frequency
+		
+		Parameters
+		----------
+		start : string or timedelta-like, default None
+		    Left bound for generating dates
+		end : string or datetime-like, default None
+		    Right bound for generating dates
+		periods : integer or None, default None
+		    If None, must specify start and end
+		freq : string or DateOffset, default 'D' (calendar daily)
+		    Frequency strings can have multiples, e.g. '5H'
+		name : str, default None
+		    Name of the resulting index
+		closed : string or None, default None
+		    Make the interval closed with respect to the given frequency to
+		    the 'left', 'right', or both sides (None)
+		
+		Returns
+		-------
+		rng : TimedeltaIndex
+		
+		Notes
+		-----
+		2 of start, end, or periods must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+	**/
+	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
+	/**
 		Convert argument to datetime.
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, Series
+		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
 		    .. versionadded: 0.18.1
 		
@@ -1537,13 +1698,27 @@ package pandas.core.api;
 		    - If False, allow the format to match anywhere in the target string.
 		
 		unit : string, default 'ns'
-		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
-		    (e.g. a unix timestamp), which is an integer/float number.
+		    unit of the arg (D,s,ms,us,ns) denote the unit, which is an
+		    integer or float number. This will be based off the origin.
+		    Example, with unit='ms' and origin='unix' (the default), this
+		    would calculate the number of milliseconds to the unix epoch start.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
 		    datetime strings, and if it can be inferred, switch to a faster
 		    method of parsing them. In some cases this can increase the parsing
 		    speed by ~5-10x.
+		origin : scalar, default is 'unix'
+		    Define the reference date. The numeric values would be parsed as number
+		    of units (defined by `unit`) since this reference date.
+		
+		    - If 'unix' (or POSIX) time; origin is set to 1970-01-01.
+		    - If 'julian', unit must be 'D', and origin is set to beginning of
+		      Julian Calendar. Julian day number 0 is assigned to the day starting
+		      at noon on January 1, 4713 BC.
+		    - If Timestamp convertible, origin is set to Timestamp identified by
+		      origin.
+		
+		    .. versionadded: 0.20.0
 		
 		Returns
 		-------
@@ -1573,10 +1748,15 @@ package pandas.core.api;
 		1   2016-03-05
 		dtype: datetime64[ns]
 		
-		If a date that does not meet timestamp limitations, passing errors='coerce'
-		will force to NaT. Furthermore this will force non-dates to NaT as well.
+		If a date does not meet the `timestamp limitations
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html
+		#timeseries-timestamp-limits>`_, passing errors='ignore'
+		will return the original input instead of raising any exception.
 		
-		>>> pd.to_datetime('13000101', format='%Y%m%d')
+		Passing errors='coerce' will force an out-of-bounds date to NaT,
+		in addition to forcing non-dates (or non-parseable dates) to NaT.
+		
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='ignore')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
@@ -1599,19 +1779,218 @@ package pandas.core.api;
 		
 		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
 		1 loop, best of 3: 471 ms per loop
+		
+		Using a unix epoch time
+		
+		>>> pd.to_datetime(1490195805, unit='s')
+		Timestamp('2017-03-22 15:16:45')
+		>>> pd.to_datetime(1490195805433502912, unit='ns')
+		Timestamp('2017-03-22 15:16:45.433502912')
+		
+		.. warning:: For float arg, precision rounding might happen. To prevent
+		    unexpected behavior use a fixed-width exact type.
+		
+		Using a non-unix epoch origin
+		
+		>>> pd.to_datetime([1, 2, 3], unit='D',
+		                   origin=pd.Timestamp('1960-01-01'))
+		0    1960-01-02
+		1    1960-01-03
+		2    1960-01-04
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
-		Compute unique values (not necessarily sorted) efficiently from input array
-		of values
+		Convert argument to a numeric type.
 		
 		Parameters
 		----------
-		values : array-like
+		arg : list, tuple, 1-d array, or Series
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as NaN
+		    - If 'ignore', then invalid parsing will return the input
+		downcast : {'integer', 'signed', 'unsigned', 'float'} , default None
+		    If not None, and if the data has been successfully cast to a
+		    numerical dtype (or if the data was numeric to begin with),
+		    downcast that resulting data to the smallest numerical dtype
+		    possible according to the following rules:
+		
+		    - 'integer' or 'signed': smallest signed int dtype (min.: np.int8)
+		    - 'unsigned': smallest unsigned int dtype (min.: np.uint8)
+		    - 'float': smallest float dtype (min.: np.float32)
+		
+		    As this behaviour is separate from the core conversion to
+		    numeric values, any errors raised during the downcasting
+		    will be surfaced regardless of the value of the 'errors' input.
+		
+		    In addition, downcasting will only occur if the size
+		    of the resulting data's dtype is strictly larger than
+		    the dtype it is to be cast to, so if none of the dtypes
+		    checked satisfy that specification, no downcasting will be
+		    performed on the data.
+		
+		    .. versionadded:: 0.19.0
 		
 		Returns
 		-------
-		uniques
+		ret : numeric if parsing succeeded.
+		    Return type depends on input.  Series if Series, otherwise ndarray
+		
+		Examples
+		--------
+		Take separate series and convert to numeric, coercing when told to
+		
+		>>> import pandas as pd
+		>>> s = pd.Series(['1.0', '2', -3])
+		>>> pd.to_numeric(s)
+		0    1.0
+		1    2.0
+		2   -3.0
+		dtype: float64
+		>>> pd.to_numeric(s, downcast='float')
+		0    1.0
+		1    2.0
+		2   -3.0
+		dtype: float32
+		>>> pd.to_numeric(s, downcast='signed')
+		0    1
+		1    2
+		2   -3
+		dtype: int8
+		>>> s = pd.Series(['apple', '1.0', '2', -3])
+		>>> pd.to_numeric(s, errors='ignore')
+		0    apple
+		1      1.0
+		2        2
+		3       -3
+		dtype: object
+		>>> pd.to_numeric(s, errors='coerce')
+		0    NaN
+		1    1.0
+		2    2.0
+		3   -3.0
+		dtype: float64
+	**/
+	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
+	/**
+		Convert argument to timedelta
+		
+		Parameters
+		----------
+		arg : string, timedelta, list, tuple, 1-d array, or Series
+		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
+		    integer/float number
+		box : boolean, default True
+		    - If True returns a Timedelta/TimedeltaIndex of the results
+		    - if False returns a np.timedelta64 or ndarray of values of dtype
+		      timedelta64[ns]
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as NaT
+		    - If 'ignore', then invalid parsing will return the input
+		
+		Returns
+		-------
+		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		
+		Examples
+		--------
+		
+		Parsing a single string to a Timedelta:
+		
+		>>> pd.to_timedelta('1 days 06:05:01.00003')
+		Timedelta('1 days 06:05:01.000030')
+		>>> pd.to_timedelta('15.5us')
+		Timedelta('0 days 00:00:00.000015')
+		
+		Parsing a list or array of strings:
+		
+		>>> pd.to_timedelta(['1 days 06:05:01.00003', '15.5us', 'nan'])
+		TimedeltaIndex(['1 days 06:05:01.000030', '0 days 00:00:00.000015', NaT],
+		               dtype='timedelta64[ns]', freq=None)
+		
+		Converting numbers by specifying the `unit` keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), unit='s')
+		TimedeltaIndex(['00:00:00', '00:00:01', '00:00:02',
+		                '00:00:03', '00:00:04'],
+		               dtype='timedelta64[ns]', freq=None)
+		>>> pd.to_timedelta(np.arange(5), unit='d')
+		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq=None)
+	**/
+	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
+		
+		Parameters
+		----------
+		values : 1d array-like
+		
+		Returns
+		-------
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(Series([pd.Timestamp('20160101'),
+		...                   pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'),
+		...                                 ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 	/**
@@ -1640,25 +2019,51 @@ package pandas.core.api;
 	/**
 		Wide panel to long format. Less flexible but more user-friendly than melt.
 		
+		With stubnames ['A', 'B'], this function expects to find one or more
+		group of columns with format Asuffix1, Asuffix2,..., Bsuffix1, Bsuffix2,...
+		You specify what you want to call this suffix in the resulting long format
+		with `j` (for example `j='year'`)
+		
+		Each row of these wide variables are assumed to be uniquely identified by
+		`i` (can be a single column name or a list of column names)
+		
+		All remaining variables in the data frame are left intact.
+		
 		Parameters
 		----------
 		df : DataFrame
 		    The wide-format DataFrame
-		stubnames : list
-		    A list of stub names. The wide format variables are assumed to
+		stubnames : str or list-like
+		    The stub name(s). The wide format variables are assumed to
 		    start with the stub names.
-		i : str
-		    The name of the id variable.
+		i : str or list-like
+		    Column(s) to use as id variable(s)
 		j : str
-		    The name of the subobservation variable.
-		stubend : str
-		    Regex to match for the end of the stubs.
+		    The name of the subobservation variable. What you wish to name your
+		    suffix in the long format.
+		sep : str, default ""
+		    A character indicating the separation of the variable names
+		    in the wide format, to be stripped from the names in the long format.
+		    For example, if your column names are A-suffix1, A-suffix2, you
+		    can strip the hypen by specifying `sep='-'`
+		
+		    .. versionadded:: 0.20.0
+		
+		suffix : str, default '\\d+'
+		    A regular expression capturing the wanted suffixes. '\\d+' captures
+		    numeric suffixes. Suffixes with no numbers could be specified with the
+		    negated character class '\\D+'. You can also further disambiguate
+		    suffixes, for example, if your wide variables are of the form
+		    Aone, Btwo,.., and you have an unrelated column Arating, you can
+		    ignore the last one by specifying `suffix='(!?one|two)'`
+		
+		    .. versionadded:: 0.20.0
 		
 		Returns
 		-------
 		DataFrame
-		    A DataFrame that contains each stub name as a variable as well as
-		    variables for i and j.
+		    A DataFrame that contains each stub name as a variable, with new index
+		    (i, j)
 		
 		Examples
 		--------
@@ -1677,7 +2082,7 @@ package pandas.core.api;
 		0     a     d    2.5    3.2 -1.085631   0
 		1     b     e    1.2    1.3  0.997345   1
 		2     c     f    0.7    0.1  0.282978   2
-		>>> wide_to_long(df, ["A", "B"], i="id", j="year")
+		>>> pd.wide_to_long(df, ["A", "B"], i="id", j="year")
 		                X  A    B
 		id year
 		0  1970 -1.085631  a  2.5
@@ -1687,11 +2092,107 @@ package pandas.core.api;
 		1  1980  0.997345  e  1.3
 		2  1980  0.282978  f  0.1
 		
+		With multuple id columns
+		
+		>>> df = pd.DataFrame({
+		...     'famid': [1, 1, 1, 2, 2, 2, 3, 3, 3],
+		...     'birth': [1, 2, 3, 1, 2, 3, 1, 2, 3],
+		...     'ht1': [2.8, 2.9, 2.2, 2, 1.8, 1.9, 2.2, 2.3, 2.1],
+		...     'ht2': [3.4, 3.8, 2.9, 3.2, 2.8, 2.4, 3.3, 3.4, 2.9]
+		... })
+		>>> df
+		   birth  famid  ht1  ht2
+		0      1      1  2.8  3.4
+		1      2      1  2.9  3.8
+		2      3      1  2.2  2.9
+		3      1      2  2.0  3.2
+		4      2      2  1.8  2.8
+		5      3      2  1.9  2.4
+		6      1      3  2.2  3.3
+		7      2      3  2.3  3.4
+		8      3      3  2.1  2.9
+		>>> l = pd.wide_to_long(df, stubnames='ht', i=['famid', 'birth'], j='age')
+		>>> l
+		                  ht
+		famid birth age
+		1     1     1    2.8
+		            2    3.4
+		      2     1    2.9
+		            2    3.8
+		      3     1    2.2
+		            2    2.9
+		2     1     1    2.0
+		            2    3.2
+		      2     1    1.8
+		            2    2.8
+		      3     1    1.9
+		            2    2.4
+		3     1     1    2.2
+		            2    3.3
+		      2     1    2.3
+		            2    3.4
+		      3     1    2.1
+		            2    2.9
+		
+		Going from long back to wide just takes some creative use of `unstack`
+		
+		>>> w = l.reset_index().set_index(['famid', 'birth', 'age']).unstack()
+		>>> w.columns = pd.Index(w.columns).str.join('')
+		>>> w.reset_index()
+		   famid  birth  ht1  ht2
+		0      1      1  2.8  3.4
+		1      1      2  2.9  3.8
+		2      1      3  2.2  2.9
+		3      2      1  2.0  3.2
+		4      2      2  1.8  2.8
+		5      2      3  1.9  2.4
+		6      3      1  2.2  3.3
+		7      3      2  2.3  3.4
+		8      3      3  2.1  2.9
+		
+		Less wieldy column names are also handled
+		
+		>>> df = pd.DataFrame({'A(quarterly)-2010': np.random.rand(3),
+		...                    'A(quarterly)-2011': np.random.rand(3),
+		...                    'B(quarterly)-2010': np.random.rand(3),
+		...                    'B(quarterly)-2011': np.random.rand(3),
+		...                    'X' : np.random.randint(3, size=3)})
+		>>> df['id'] = df.index
+		>>> df
+		  A(quarterly)-2010 A(quarterly)-2011 B(quarterly)-2010 B(quarterly)-2011
+		0          0.531828          0.724455          0.322959          0.293714
+		1          0.634401          0.611024          0.361789          0.630976
+		2          0.849432          0.722443          0.228263          0.092105
+		\
+		   X  id
+		0  0   0
+		1  1   1
+		2  2   2
+		>>> pd.wide_to_long(df, ['A(quarterly)', 'B(quarterly)'],
+		                    i='id', j='year', sep='-')
+		         X     A(quarterly)  B(quarterly)
+		id year
+		0  2010  0       0.531828       0.322959
+		1  2010  2       0.634401       0.361789
+		2  2010  2       0.849432       0.228263
+		0  2011  0       0.724455       0.293714
+		1  2011  2       0.611024       0.630976
+		2  2011  2       0.722443       0.092105
+		
+		If we have many columns, we could also use a regex to find our
+		stubnames and pass that list on to wide_to_long
+		
+		>>> stubnames = set([match[0] for match in
+		                    df.columns.str.findall('[A-B]\(.*\)').values
+		                    if match != [] ])
+		>>> list(stubnames)
+		['B(quarterly)', 'A(quarterly)']
+		
 		Notes
 		-----
-		All extra variables are treated as extra id variables. This simply uses
+		All extra variables are left untouched. This simply uses
 		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
 		in a typicaly case.
 	**/
-	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic):Dynamic;
+	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic, ?sep:Dynamic, ?suffix:Dynamic):Dynamic;
 }

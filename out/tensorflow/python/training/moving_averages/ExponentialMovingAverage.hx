@@ -44,7 +44,7 @@ package tensorflow.python.training.moving_averages;
 		ops to maintain moving averages.
 		
 		The optional `num_updates` parameter allows one to tweak the decay rate
-		dynamically. .  It is typical to pass the count of training steps, usually
+		dynamically. It is typical to pass the count of training steps, usually
 		kept in a variable that is incremented at each step, in which case the
 		decay rate is lower at the start of training.  This makes moving averages
 		move faster.  If passed, the actual decay rate used is:
@@ -54,11 +54,13 @@ package tensorflow.python.training.moving_averages;
 		Args:
 		  decay: Float.  The decay to use.
 		  num_updates: Optional count of number of updates applied to variables.
+		  zero_debias: If `True`, zero debias moving-averages that are initialized
+		    with tensors.
 		  name: String. Optional prefix name to use for the name of ops added in
 		    `apply()`.
 	**/
 	@:native("__init__")
-	public function ___init__(decay:Dynamic, ?num_updates:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(decay:Dynamic, ?num_updates:Dynamic, ?zero_debias:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Creates a new ExponentialMovingAverage object.
 		
@@ -66,7 +68,7 @@ package tensorflow.python.training.moving_averages;
 		ops to maintain moving averages.
 		
 		The optional `num_updates` parameter allows one to tweak the decay rate
-		dynamically. .  It is typical to pass the count of training steps, usually
+		dynamically. It is typical to pass the count of training steps, usually
 		kept in a variable that is incremented at each step, in which case the
 		decay rate is lower at the start of training.  This makes moving averages
 		move faster.  If passed, the actual decay rate used is:
@@ -76,10 +78,19 @@ package tensorflow.python.training.moving_averages;
 		Args:
 		  decay: Float.  The decay to use.
 		  num_updates: Optional count of number of updates applied to variables.
+		  zero_debias: If `True`, zero debias moving-averages that are initialized
+		    with tensors.
 		  name: String. Optional prefix name to use for the name of ops added in
 		    `apply()`.
 	**/
-	public function new(decay:Dynamic, ?num_updates:Dynamic, ?name:Dynamic):Void;
+	public function new(decay:Dynamic, ?num_updates:Dynamic, ?zero_debias:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -142,11 +153,12 @@ package tensorflow.python.training.moving_averages;
 		creates shadow variables for all elements of `var_list`.  Shadow variables
 		for `Variable` objects are initialized to the variable's initial value.
 		They will be added to the `GraphKeys.MOVING_AVERAGE_VARIABLES` collection.
-		For `Tensor` objects, the shadow variables are initialized to 0.
+		For `Tensor` objects, the shadow variables are initialized to 0 and zero
+		debiased (see docstring in `assign_moving_average` for more details).
 		
 		shadow variables are created with `trainable=False` and added to the
 		`GraphKeys.ALL_VARIABLES` collection.  They will be returned by calls to
-		`tf.all_variables()`.
+		`tf.global_variables()`.
 		
 		Returns an op that updates all shadow variables as described above.
 		
@@ -174,7 +186,7 @@ package tensorflow.python.training.moving_averages;
 		
 		Returns:
 		  A `Variable` object or `None` if the moving average of `var`
-		  is not maintained..
+		  is not maintained.
 	**/
 	public function average(_var:Dynamic):Dynamic;
 	/**

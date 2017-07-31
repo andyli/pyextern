@@ -51,6 +51,13 @@ package pandas.core.indexing;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(obj:Dynamic, name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -149,7 +156,7 @@ package pandas.core.indexing;
 		ix[['foo', 'bar', 'baz']] -> [i, j, k] (indices of foo, bar, baz)
 		
 		Going by Zen of Python?
-		"In the face of ambiguity, refuse the temptation to guess."
+		'In the face of ambiguity, refuse the temptation to guess.'
 		raise AmbiguousIndexError with integer labels?
 		- No, prefer label-based indexing
 	**/

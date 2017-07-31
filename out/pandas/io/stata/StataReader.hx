@@ -54,6 +54,13 @@ package pandas.io.stata;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

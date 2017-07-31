@@ -53,6 +53,13 @@ package pandas.tseries.frequencies;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -109,6 +116,8 @@ package pandas.tseries.frequencies;
 	public var __weakref__ : Dynamic;
 	static public var _freq_reso_map : Dynamic;
 	static public var _reso_freq_map : Dynamic;
+	static public var _reso_mult_map : Dynamic;
+	static public var _reso_str_bump_map : Dynamic;
 	static public var _reso_str_map : Dynamic;
 	static public var _str_reso_map : Dynamic;
 	/**
@@ -171,4 +180,30 @@ package pandas.tseries.frequencies;
 		'hour'
 	**/
 	static public function get_str_from_freq(freq:Dynamic):Dynamic;
+	/**
+		Convert freq with decimal stride into a higher freq with integer stride
+		
+		Parameters
+		----------
+		value : integer or float
+		freq : string
+		    Frequency string
+		
+		Raises
+		------
+		ValueError
+		    If the float cannot be converted to an integer at any resolution.
+		
+		Example
+		-------
+		>>> Resolution.get_stride_from_decimal(1.5, 'T')
+		(90, 'S')
+		
+		>>> Resolution.get_stride_from_decimal(1.04, 'H')
+		(3744, 'S')
+		
+		>>> Resolution.get_stride_from_decimal(1, 'D')
+		(1, 'D')
+	**/
+	static public function get_stride_from_decimal(value:Dynamic, freq:Dynamic):Dynamic;
 }

@@ -109,6 +109,13 @@ package numpy;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		int(self)
 	**/
 	public function __int__():Dynamic;
@@ -438,8 +445,8 @@ package numpy;
 	/**
 		B.count(sub[, start[, end]]) -> int
 		
-		Return the number of non-overlapping occurrences of substring sub in
-		string B[start:end].  Optional arguments start and end are interpreted
+		Return the number of non-overlapping occurrences of subsection sub in
+		bytes B[start:end].  Optional arguments start and end are interpreted
 		as in slice notation.
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -555,8 +562,8 @@ package numpy;
 	/**
 		B.find(sub[, start[, end]]) -> int
 		
-		Return the lowest index in B where substring sub is found,
-		such that sub is contained within B[start:end].  Optional
+		Return the lowest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
 		arguments start and end are interpreted as in slice notation.
 		
 		Return -1 on failure.
@@ -615,7 +622,11 @@ package numpy;
 	/**
 		B.index(sub[, start[, end]]) -> int
 		
-		Like B.find() but raise ValueError when the substring is not found.
+		Return the lowest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the subsection is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -935,8 +946,8 @@ package numpy;
 	/**
 		B.rfind(sub[, start[, end]]) -> int
 		
-		Return the highest index in B where substring sub is found,
-		such that sub is contained within B[start:end].  Optional
+		Return the highest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
 		arguments start and end are interpreted as in slice notation.
 		
 		Return -1 on failure.
@@ -945,7 +956,11 @@ package numpy;
 	/**
 		B.rindex(sub[, start[, end]]) -> int
 		
-		Like B.rfind() but raise ValueError when the substring is not found.
+		Return the highest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raise ValueError when the subsection is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1216,16 +1231,15 @@ package numpy;
 	**/
 	public function trace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		translate(table, [deletechars])
 		Return a copy with each character mapped by the given translation table.
 		
 		  table
 		    Translation table, which must be a bytes object of length 256.
 		
-		All characters occurring in the optional argument deletechars are removed.
+		All characters occurring in the optional argument delete are removed.
 		The remaining characters are mapped through the given translation table.
 	**/
-	public function translate(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function translate(table:Dynamic, ?delete:Dynamic):Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		

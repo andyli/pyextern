@@ -12,8 +12,9 @@ package tensorflow.contrib.grid_rnn.python.ops.grid_rnn_cell;
 	static public function _parse_rnn_config(num_dims:Dynamic, ls_input_dims:Dynamic, ls_output_dims:Dynamic, ls_priority_dims:Dynamic, ls_non_recurrent_dims:Dynamic, non_recurrent_fn:Dynamic, tied:Dynamic, num_units:Dynamic):Dynamic;
 	/**
 		Propagates through all the cells in dim_indices dimensions.
+		  
 	**/
-	static public function _propagate(dim_indices:Dynamic, conf:Dynamic, cell:Dynamic, c_prev:Dynamic, m_prev:Dynamic, new_output:Dynamic, new_state:Dynamic, first_call:Dynamic):Dynamic;
+	static public function _propagate(dim_indices:Dynamic, conf:Dynamic, cells:Dynamic, c_prev:Dynamic, m_prev:Dynamic, new_output:Dynamic, new_state:Dynamic, first_call:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -38,6 +39,6 @@ package tensorflow.contrib.grid_rnn.python.ops.grid_rnn_cell;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

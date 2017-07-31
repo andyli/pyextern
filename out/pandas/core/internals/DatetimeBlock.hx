@@ -55,6 +55,13 @@ package pandas.core.internals;
 	**/
 	public function new(values:Dynamic, placement:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -218,7 +225,7 @@ package pandas.core.internals;
 		array
 	**/
 	public var array_dtype : Dynamic;
-	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function astype(dtype:Dynamic, ?copy:Dynamic, ?errors:Dynamic, ?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		attempt to coerce any object types to better types return a copy
 		of the block (if copy = True) by definition we are not an ObjectBlock

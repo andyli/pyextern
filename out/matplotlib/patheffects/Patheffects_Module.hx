@@ -10,7 +10,6 @@ package matplotlib.patheffects;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
-	static public var colorConverter : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	static public var unicode_literals : Dynamic;

@@ -193,7 +193,18 @@ package scipy.optimize;
 		niter_success : integer, optional
 		    Stop the run if the global minimum candidate remains the same for this
 		    number of iterations.
-		
+		seed : int or `np.random.RandomState`, optional
+		    If `seed` is not specified the `np.RandomState` singleton is used.
+		    If `seed` is an int, a new `np.random.RandomState` instance is used,
+		    seeded with seed.
+		    If `seed` is already a `np.random.RandomState instance`, then that
+		    `np.random.RandomState` instance is used.
+		    Specify `seed` for repeatable minimizations. The random numbers
+		    generated with this seed only affect the default Metropolis
+		    `accept_test` and the default `take_step`. If you supply your own
+		    `take_step` and `accept_test`, and these functions use random
+		    number generation, then those functions are responsible for the state
+		    of their random number generator.
 		
 		Returns
 		-------
@@ -397,61 +408,7 @@ package scipy.optimize;
 		>>> ret = basinhopping(func2d, x0, minimizer_kwargs=minimizer_kwargs,
 		...                    niter=10, accept_test=mybounds)
 	**/
-	static public function basinhopping(func:Dynamic, x0:Dynamic, ?niter:Dynamic, ?T:Dynamic, ?stepsize:Dynamic, ?minimizer_kwargs:Dynamic, ?take_step:Dynamic, ?accept_test:Dynamic, ?callback:Dynamic, ?interval:Dynamic, ?disp:Dynamic, ?niter_success:Dynamic):Dynamic;
-	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
+	static public function basinhopping(func:Dynamic, x0:Dynamic, ?niter:Dynamic, ?T:Dynamic, ?stepsize:Dynamic, ?minimizer_kwargs:Dynamic, ?take_step:Dynamic, ?accept_test:Dynamic, ?callback:Dynamic, ?interval:Dynamic, ?disp:Dynamic, ?niter_success:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Find root of a function within an interval.
 		
@@ -736,7 +693,7 @@ package scipy.optimize;
 		n-dimensional root-finding
 		  `fsolve`
 		one-dimensional root-finding
-		  `brentq`, `brenth`, `ridder`, `bisect`, `newton`
+		  `brenth`, `ridder`, `bisect`, `newton`
 		scalar fixed-point finder
 		  `fixed_point`
 		
@@ -1146,8 +1103,7 @@ package scipy.optimize;
 		    The model function, f(x, ...).  It must take the independent
 		    variable as the first argument and the parameters to fit as
 		    separate remaining arguments.
-		xdata : An M-length sequence or an (k,M)-shaped array
-		    for functions with k predictors.
+		xdata : An M-length sequence or an (k,M)-shaped array for functions with k predictors
 		    The independent variable where the data is measured.
 		ydata : M-length sequence
 		    The dependent data --- nominally f(xdata, ...)
@@ -1156,28 +1112,41 @@ package scipy.optimize;
 		    values will all be 1 (if the number of parameters for the function
 		    can be determined using introspection, otherwise a ValueError
 		    is raised).
-		sigma : None or M-length sequence, optional
-		    If not None, the uncertainties in the ydata array. These are used as
-		    weights in the least-squares problem
-		    i.e. minimising ``np.sum( ((f(xdata, *popt) - ydata) / sigma)**2 )``
-		    If None, the uncertainties are assumed to be 1.
-		absolute_sigma : bool, optional
-		    If False, `sigma` denotes relative weights of the data points.
-		    The returned covariance matrix `pcov` is based on *estimated*
-		    errors in the data, and is not affected by the overall
-		    magnitude of the values in `sigma`. Only the relative
-		    magnitudes of the `sigma` values matter.
+		sigma : None or M-length sequence or MxM array, optional
+		    Determines the uncertainty in `ydata`. If we define residuals as
+		    ``r = ydata - f(xdata, *popt)``, then the interpretation of `sigma`
+		    depends on its number of dimensions:
 		
-		    If True, `sigma` describes one standard deviation errors of
-		    the input data points. The estimated covariance in `pcov` is
-		    based on these values.
+		        - A 1-d `sigma` should contain values of standard deviations of
+		          errors in `ydata`. In this case, the optimized function is
+		          ``chisq = sum((r / sigma) ** 2)``.
+		
+		        - A 2-d `sigma` should contain the covariance matrix of
+		          errors in `ydata`. In this case, the optimized function is
+		          ``chisq = r.T @ inv(sigma) @ r``.
+		
+		          .. versionadded:: 0.19
+		
+		    None (default) is equivalent of 1-d `sigma` filled with ones.
+		absolute_sigma : bool, optional
+		    If True, `sigma` is used in an absolute sense and the estimated parameter
+		    covariance `pcov` reflects these absolute values.
+		
+		    If False, only the relative magnitudes of the `sigma` values matter.
+		    The returned parameter covariance matrix `pcov` is based on scaling
+		    `sigma` by a constant factor. This constant is set by demanding that the
+		    reduced `chisq` for the optimal parameters `popt` when using the
+		    *scaled* `sigma` equals unity. In other words, `sigma` is scaled to
+		    match the sample variance of the residuals after the fit.
+		    Mathematically,
+		    ``pcov(absolute_sigma=False) = pcov(absolute_sigma=True) * chisq(popt)/(M-N)``
 		check_finite : bool, optional
 		    If True, check that the input arrays do not contain nans of infs,
 		    and raise a ValueError if they do. Setting this parameter to
 		    False may silently produce nonsensical results if the input arrays
 		    do contain nans. Default is True.
 		bounds : 2-tuple of array_like, optional
-		    Lower and upper bounds on independent variables. Defaults to no bounds.        
+		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each element of the tuple must be either an array with the length equal
 		    to the number of parameters, or a scalar (in which case the bound is
 		    taken to be the same for all parameters.) Use ``np.inf`` with an
@@ -1208,8 +1177,8 @@ package scipy.optimize;
 		Returns
 		-------
 		popt : array
-		    Optimal values for the parameters so that the sum of the squared error
-		    of ``f(xdata, *popt) - ydata`` is minimized
+		    Optimal values for the parameters so that the sum of the squared
+		    residuals of ``f(xdata, *popt) - ydata`` is minimized
 		pcov : 2d array
 		    The estimated covariance of popt. The diagonals provide the variance
 		    of the parameter estimate. To compute one standard deviation errors
@@ -1238,8 +1207,8 @@ package scipy.optimize;
 		See Also
 		--------
 		least_squares : Minimize the sum of squares of nonlinear functions.
-		stats.linregress : Calculate a linear least squares regression for two sets
-		                   of measurements.
+		scipy.stats.linregress : Calculate a linear least squares regression for
+		                         two sets of measurements.
 		
 		Notes
 		-----
@@ -1253,20 +1222,35 @@ package scipy.optimize;
 		Examples
 		--------
 		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy.optimize import curve_fit
+		
 		>>> def func(x, a, b, c):
 		...     return a * np.exp(-b * x) + c
 		
+		define the data to be fit with some noise
+		
 		>>> xdata = np.linspace(0, 4, 50)
 		>>> y = func(xdata, 2.5, 1.3, 0.5)
-		>>> ydata = y + 0.2 * np.random.normal(size=len(xdata))
+		>>> y_noise = 0.2 * np.random.normal(size=xdata.size)
+		>>> ydata = y + y_noise
+		>>> plt.plot(xdata, ydata, 'b-', label='data')
+		
+		Fit for the parameters a, b, c of the function `func`
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
+		>>> plt.plot(xdata, func(xdata, *popt), 'r-', label='fit')
 		
 		Constrain the optimization to the region of ``0 < a < 3``, ``0 < b < 2``
 		and ``0 < c < 1``:
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
+		>>> plt.plot(xdata, func(xdata, *popt), 'g--', label='fit-with-bounds')
+		
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
 	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
 	/**
@@ -1376,10 +1360,10 @@ package scipy.optimize;
 		    A multiplier for setting the total population size.  The population has
 		    ``popsize * len(x)`` individuals.
 		tol : float, optional
-		    When the mean of the population energies, multiplied by tol,
-		    divided by the standard deviation of the population energies
-		    is greater than 1 the solving process terminates:
-		    ``convergence = mean(pop) * tol / stdev(pop) > 1``
+		    Relative tolerance for convergence, the solving stops when
+		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
+		    where and `atol` and `tol` are the absolute and relative tolerance
+		    respectively.
 		mutation : float or tuple(float, float), optional
 		    The mutation constant. In the literature this is also known as
 		    differential weight, being denoted by F.
@@ -1426,6 +1410,11 @@ package scipy.optimize;
 		    maximize coverage of the available parameter space. 'random' initializes
 		    the population randomly - this has the drawback that clustering can
 		    occur, preventing the whole of parameter space being covered.
+		atol : float, optional
+		    Absolute tolerance for convergence, the solving stops when
+		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
+		    where and `atol` and `tol` are the absolute and relative tolerance
+		    respectively.
 		
 		Returns
 		-------
@@ -1505,7 +1494,7 @@ package scipy.optimize;
 		.. [2] http://www1.icsi.berkeley.edu/~storn/code.html
 		.. [3] http://en.wikipedia.org/wiki/Differential_evolution
 	**/
-	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic):Dynamic;
+	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Find a root of a function, using a tuned diagonal Jacobian approximation.
@@ -2319,7 +2308,7 @@ package scipy.optimize;
 		Parameters
 		----------
 		func : callable f(x,*args)
-		    Objective function.
+		    Objective function.  Must return a scalar.
 		x0 : 1-D ndarray of float
 		    Initial guess for the independent variable(s).
 		eqcons : list, optional
@@ -2728,6 +2717,8 @@ package scipy.optimize;
 		    x tolerance stop criterion
 		full_output : bool, optional
 		    If True, return optional outputs.
+		maxiter : int
+		    Maximum number of iterations to perform.
 		
 		See also
 		--------
@@ -2739,13 +2730,13 @@ package scipy.optimize;
 		Uses analog of bisection method to decrease the bracketed
 		interval.
 	**/
-	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic):Dynamic;
+	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		Solve a nonlinear least-squares problem with bounds on the variables.
 		
-		Given the residuals f(x) (an m-dimensional function of n variables) and
-		the loss function rho(s) (a scalar function), `least_squares` finds a
-		local minimum of the cost function F(x)::
+		Given the residuals f(x) (an m-dimensional real function of n real
+		variables) and the loss function rho(s) (a scalar function), `least_squares`
+		finds a local minimum of the cost function F(x)::
 		
 		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
 		    subject to lb <= x <= ub
@@ -2760,7 +2751,10 @@ package scipy.optimize;
 		    ``fun(x, *args, **kwargs)``, i.e., the minimization proceeds with
 		    respect to its first argument. The argument ``x`` passed to this
 		    function is an ndarray of shape (n,) (never a scalar, even for n=1).
-		    It must return a 1-d array_like of shape (m,) or a scalar.
+		    It must return a 1-d array_like of shape (m,) or a scalar. If the
+		    argument ``x`` is complex or the function ``fun`` returns complex
+		    residuals, it must be wrapped in a real function of real arguments,
+		    as shown at the end of the Examples section.
 		x0 : array_like with shape (n,) or float
 		    Initial guess on independent variables. If float, it will be treated
 		    as a 1-d array with one element.
@@ -3214,6 +3208,29 @@ package scipy.optimize;
 		>>> plt.ylabel("y")
 		>>> plt.legend()
 		>>> plt.show()
+		
+		In the next example, we show how complex-valued residual functions of
+		complex variables can be optimized with ``least_squares()``. Consider the
+		following function:
+		
+		>>> def f(z):
+		...     return z - (0.5 + 0.5j)
+		
+		We wrap it into a function of real variables that returns real residuals
+		by simply handling the real and imaginary parts as independent variables:
+		
+		>>> def f_wrap(x):
+		...     fx = f(x[0] + 1j*x[1])
+		...     return np.array([fx.real, fx.imag])
+		
+		Thus, instead of the original m-dimensional complex function of n complex
+		variables we optimize a 2m-dimensional real function of 2n real variables:
+		
+		>>> from scipy.optimize import least_squares
+		>>> res_wrapped = least_squares(f_wrap, (0.1, 0.1), bounds=([0, 0], [1, 1]))
+		>>> z = res_wrapped.x[0] + res_wrapped.x[1]*1j
+		>>> z
+		(0.49999999999925893+0.49999999999925893j)
 	**/
 	static public function least_squares(fun:Dynamic, x0:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?x_scale:Dynamic, ?loss:Dynamic, ?f_scale:Dynamic, ?diff_step:Dynamic, ?tr_solver:Dynamic, ?tr_options:Dynamic, ?jac_sparsity:Dynamic, ?max_nfev:Dynamic, ?verbose:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Float;
 	/**
@@ -4208,29 +4225,30 @@ package scipy.optimize;
 		    Scalar function, must return a scalar.
 		bracket : sequence, optional
 		    For methods 'brent' and 'golden', `bracket` defines the bracketing
-		    interval and can either have three items `(a, b, c)` so that `a < b
-		    < c` and `fun(b) < fun(a), fun(c)` or two items `a` and `c` which
-		    are assumed to be a starting interval for a downhill bracket search
-		    (see `bracket`); it doesn't always mean that the obtained solution
-		    will satisfy `a <= x <= c`.
+		    interval and can either have three items ``(a, b, c)`` so that
+		    ``a < b < c`` and ``fun(b) < fun(a), fun(c)`` or two items ``a`` and
+		    ``c`` which are assumed to be a starting interval for a downhill
+		    bracket search (see `bracket`); it doesn't always mean that the
+		    obtained solution will satisfy ``a <= x <= c``.
 		bounds : sequence, optional
 		    For method 'bounded', `bounds` is mandatory and must have two items
 		    corresponding to the optimization bounds.
 		args : tuple, optional
 		    Extra arguments passed to the objective function.
 		method : str or callable, optional
-		    Type of solver.  Should be one of
+		    Type of solver.  Should be one of:
 		
 		        - 'Brent'     :ref:`(see here) <optimize.minimize_scalar-brent>`
 		        - 'Bounded'   :ref:`(see here) <optimize.minimize_scalar-bounded>`
 		        - 'Golden'    :ref:`(see here) <optimize.minimize_scalar-golden>`
-		        - custom - a callable object (added in version 0.14.0),
-		          see below
+		        - custom - a callable object (added in version 0.14.0), see below
+		
 		tol : float, optional
 		    Tolerance for termination. For detailed control, use solver-specific
 		    options.
 		options : dict, optional
 		    A dictionary of solver options.
+		
 		        maxiter : int
 		            Maximum number of iterations to perform.
 		        disp : bool
@@ -4479,15 +4497,15 @@ package scipy.optimize;
 		References
 		----------
 		.. [1] D.A. Knoll and D.E. Keyes, J. Comp. Phys. 193, 357 (2004).
-		       doi:10.1016/j.jcp.2003.08.010
+		       :doi:`10.1016/j.jcp.2003.08.010`
 		.. [2] A.H. Baker and E.R. Jessup and T. Manteuffel,
 		       SIAM J. Matrix Anal. Appl. 26, 962 (2005).
-		       doi:10.1137/S0895479803422014
+		       :doi:`10.1137/S0895479803422014`
 	**/
 	static public function newton_krylov(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solve ``argmin_x || Ax - b ||_2`` for ``x>=0``. This is a wrapper
-		for a FORTAN non-negative least squares solver.
+		for a FORTRAN non-negative least squares solver.
 		
 		Parameters
 		----------
@@ -4878,12 +4896,14 @@ package scipy.optimize;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

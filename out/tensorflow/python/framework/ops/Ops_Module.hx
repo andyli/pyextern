@@ -2,15 +2,24 @@
 package tensorflow.python.framework.ops;
 @:pythonImport("tensorflow.python.framework.ops") extern class Ops_Module {
 	/**
-		Specifies that ops of type `op_type` do not have a defined gradient.
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
 		
 		This function is only used when defining a new op type. It may be
 		used for ops such as `tf.size()` that are not differentiable.  For
 		example:
 		
 		```python
-		tf.NoGradient("Size")
+		tf.NotDifferentiable("Size")
 		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
 		
 		Args:
 		  op_type: The string type of an operation. This corresponds to the
@@ -20,6 +29,34 @@ package tensorflow.python.framework.ops;
 		  TypeError: If `op_type` is not a string.
 	**/
 	static public function NoGradient(op_type:Dynamic):Dynamic;
+	/**
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
+		
+		This function is only used when defining a new op type. It may be
+		used for ops such as `tf.size()` that are not differentiable.  For
+		example:
+		
+		```python
+		tf.NotDifferentiable("Size")
+		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
+		
+		Args:
+		  op_type: The string type of an operation. This corresponds to the
+		    `OpDef.name` field for the proto that defines the operation.
+		
+		Raises:
+		  TypeError: If `op_type` is not a string.
+	**/
+	static public function NotDifferentiable(op_type:Dynamic):Dynamic;
 	/**
 		Create a NodeDef proto.
 		
@@ -33,11 +70,12 @@ package tensorflow.python.framework.ops;
 		    AttrValue).
 		
 		Returns:
-		  A graph_pb2.NodeDef protocol buffer.
+		  A node_def_pb2.NodeDef protocol buffer.
 	**/
 	static public function _NodeDef(op_type:Dynamic, name:Dynamic, ?device:Dynamic, ?attrs:Dynamic):Dynamic;
 	static public var _TENSOR_LIKE_TYPES : Dynamic;
 	static public function _TensorTensorConversionFunction(t:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public var _USE_C_API : Dynamic;
 	static public var _VALID_OP_NAME_REGEX : Dynamic;
 	static public var _VALID_SCOPE_NAME_REGEX : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -70,17 +108,24 @@ package tensorflow.python.framework.ops;
 		  ValueError: if graphs do not match.
 	**/
 	static public function _assert_same_graph(original_item:Dynamic, item:Dynamic):Dynamic;
+	static public function _call_cpp_shape_fn(op:Dynamic):Dynamic;
+	static public function _call_cpp_shape_fn_and_require_op(op:Dynamic):Dynamic;
 	/**
 		Converts a stack extracted using _extract_stack() to a traceback stack.
 		
 		Args:
-		  stack: A list of n 4-tuples, (filename, lineno, name, frame_globals).
+		  stack: A list of n 5-tuples,
+		    (filename, lineno, name, frame_globals, func_start_lineno).
+		  include_func_start_lineno: True if function start line number should be
+		    included as the 5th entry in return tuples.
 		
 		Returns:
-		  A list of n 4-tuples (filename, lineno, name, code), where the code tuple
-		  element is calculated from the corresponding elements of the input tuple.
+		  A list of n 4-tuples or 5-tuples
+		  (filename, lineno, name, code, [optional: func_start_lineno]), where the
+		  code tuple element is calculated from the corresponding elements of the
+		  input tuple.
 	**/
-	static public function _convert_stack(stack:Dynamic):Dynamic;
+	static public function _convert_stack(stack:Dynamic, ?include_func_start_lineno:Dynamic):Dynamic;
 	static public var _default_graph_stack : Dynamic;
 	static public var _default_session_stack : Dynamic;
 	static public var _default_shape_function_registry : Dynamic;
@@ -116,7 +161,8 @@ package tensorflow.python.framework.ops;
 		  be formatted etc. using traceback methods.
 		
 		Returns:
-		  A list of 4-tuples (filename, lineno, name, frame_globals) corresponding to
+		  A list of 5-tuples
+		  (filename, lineno, name, frame_globals, func_start_lineno) corresponding to
 		  the call stack of the current thread.
 	**/
 	static public function _extract_stack():Dynamic;
@@ -126,12 +172,14 @@ package tensorflow.python.framework.ops;
 		This library method provides a consistent algorithm for choosing the graph
 		in which an Operation should be constructed:
 		
-		1. If the "graph" is specified explicitly, we validate that all of the inputs
+		1. If the default graph is being used to construct a function, we
+		   use the default graph.
+		2. If the "graph" is specified explicitly, we validate that all of the inputs
 		   in "op_input_list" are compatible with that graph.
-		2. Otherwise, we attempt to select a graph from the first Operation-
+		3. Otherwise, we attempt to select a graph from the first Operation-
 		   or Tensor-valued input in "op_input_list", and validate that all other
 		   such inputs are in the same graph.
-		3. If the graph was not specified and it could not be inferred from
+		4. If the graph was not specified and it could not be inferred from
 		   "op_input_list", we attempt to use the default graph.
 		
 		Args:
@@ -151,7 +199,16 @@ package tensorflow.python.framework.ops;
 	**/
 	static public function _get_graph_from_inputs(op_input_list:Dynamic, ?graph:Dynamic):Dynamic;
 	static public var _gradient_registry : Dynamic;
-	static public function _no_shape_function(op:Dynamic):Dynamic;
+	/**
+		Returns the name of an op given the name of its scope.
+		
+		Args:
+		  name: the name of the scope.
+		
+		Returns:
+		  the name of the op (equal to scope name minus any trailing slash).
+	**/
+	static public function _name_from_scope_name(name:Dynamic):Dynamic;
 	/**
 		Produce a nice error if someone converts an Operation to a Tensor.
 	**/
@@ -162,7 +219,7 @@ package tensorflow.python.framework.ops;
 		Args:
 		  clazz_object: the class to override for; either Tensor or SparseTensor.
 		  operator: the string name of the operator to override.
-		  func: the function that replaces the overriden operator.
+		  func: the function that replaces the overridden operator.
 		
 		Raises:
 		  ValueError: If operator has already been overwritten,
@@ -186,6 +243,10 @@ package tensorflow.python.framework.ops;
 		    and it does not have "graph" as its graph.
 	**/
 	static public function _run_using_default_session(operation:Dynamic, feed_dict:Dynamic, graph:Dynamic, ?session:Dynamic):Dynamic;
+	/**
+		Sets default shape fns from passed common_shapes.call_cpp_shape_fn.
+	**/
+	static public function _set_call_cpp_shape_fn(call_cpp_shape_fn:Dynamic):Dynamic;
 	static public var _shape_registry : Dynamic;
 	static public var _stats_registry : Dynamic;
 	static public var _tensor_conversion_func_registry : Dynamic;
@@ -193,7 +254,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Wrapper for `Graph.add_to_collection()` using the default graph.
 		
-		See [`Graph.add_to_collection()`](../../api_docs/python/framework.md#Graph.add_to_collection)
+		See @{tf.Graph.add_to_collection}
 		for more details.
 		
 		Args:
@@ -205,7 +266,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Wrapper for `Graph.add_to_collections()` using the default graph.
 		
-		See [`Graph.add_to_collections()`](../../api_docs/python/framework.md#Graph.add_to_collections)
+		See @{tf.Graph.add_to_collections}
 		for more details.
 		
 		Args:
@@ -229,7 +290,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Wrapper for `Graph.control_dependencies()` using the default graph.
 		
-		See [`Graph.control_dependencies()`](../../api_docs/python/framework.md#Graph.control_dependencies)
+		See @{tf.Graph.control_dependencies}
 		for more details.
 		
 		Args:
@@ -252,7 +313,11 @@ package tensorflow.python.framework.ops;
 		  name: (Optional.) A name prefix to used when a new `Tensor` is
 		    created, in which case element `i` will be given the name `name
 		    + '_' + i`.
-		  as_ref: True if the caller wants the results as ref tensors.
+		  preferred_dtype: Optional element type for the returned tensors,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
 		
 		Returns:
 		  A list of `Tensor` and/or `IndexedSlices` objects.
@@ -263,9 +328,9 @@ package tensorflow.python.framework.ops;
 		  RuntimeError: If a registered conversion function returns an invalid
 		    value.
 	**/
-	static public function convert_n_to_tensor(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_n_to_tensor(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
 	/**
-		Converts `values` to a list of `Tensor` or `IndexedSlices` objects.
+		Converts `values` to a list of `Output` or `IndexedSlices` objects.
 		
 		Any `IndexedSlices` or `SparseTensor` objects in `values` are returned
 		unmodified.
@@ -278,7 +343,6 @@ package tensorflow.python.framework.ops;
 		  name: (Optional.) A name prefix to used when a new `Tensor` is
 		    created, in which case element `i` will be given the name `name
 		    + '_' + i`.
-		  as_ref: True if the caller wants the results as ref tensors.
 		
 		Returns:
 		  A list of `Tensor`, `IndexedSlices`, and/or `SparseTensor` objects.
@@ -289,7 +353,7 @@ package tensorflow.python.framework.ops;
 		  RuntimeError: If a registered conversion function returns an invalid
 		    value.
 	**/
-	static public function convert_n_to_tensor_or_indexed_slices(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_n_to_tensor_or_indexed_slices(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Converts the given `value` to a `Tensor`.
 		
@@ -321,17 +385,20 @@ package tensorflow.python.framework.ops;
 		  dtype: Optional element type for the returned tensor. If missing, the
 		    type is inferred from the type of `value`.
 		  name: Optional name to use if a new `Tensor` is created.
-		  as_ref: True if we want the result as a ref tensor. Only used if a new
-		    `Tensor` is created.
+		  preferred_dtype: Optional element type for the returned tensor,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
 		
 		Returns:
-		  A `Tensor` based on `value`.
+		  An `Output` based on `value`.
 		
 		Raises:
 		  TypeError: If no conversion function is registered for `value`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
 	**/
-	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
 	/**
 		Converts the given object to a `Tensor` or an `IndexedSlices`.
 		
@@ -345,7 +412,6 @@ package tensorflow.python.framework.ops;
 		  dtype: (Optional.) The required `DType` of the returned `Tensor` or
 		    `IndexedSlices`.
 		  name: (Optional.) A name to use if a new `Tensor` is created.
-		  as_ref: True if the caller wants the results as ref tensors.
 		
 		Returns:
 		  An `Tensor`, `IndexedSlices`, or `SparseTensor` based on `value`.
@@ -353,7 +419,7 @@ package tensorflow.python.framework.ops;
 		Raises:
 		  ValueError: If `dtype` does not match the element type of `value`.
 	**/
-	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Python "with" handler for defining a default session.
 		
@@ -404,7 +470,7 @@ package tensorflow.python.framework.ops;
 		Wrapper for `Graph.device()` using the default graph.
 		
 		See
-		[`Graph.device()`](../../api_docs/python/framework.md#Graph.device)
+		@{tf.Graph.device}
 		for more details.
 		
 		Args:
@@ -424,7 +490,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Wrapper for `Graph.get_collection()` using the default graph.
 		
-		See [`Graph.get_collection()`](../../api_docs/python/framework.md#Graph.get_collection)
+		See @{tf.Graph.get_collection}
 		for more details.
 		
 		Args:
@@ -450,7 +516,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Wrapper for `Graph.get_collection_ref()` using the default graph.
 		
-		See [`Graph.get_collection_ref()`](../../api_docs/python/framework.md#Graph.get_collection_ref)
+		See @{tf.Graph.get_collection_ref}
 		for more details.
 		
 		Args:
@@ -524,6 +590,112 @@ package tensorflow.python.framework.ops;
 	**/
 	static public function get_to_proto_function(collection_name:Dynamic):Dynamic;
 	/**
+		Converts `values` to a list of `Tensor` objects.
+		
+		Args:
+		  values: A list of objects that can be consumed by `tf.convert_to_tensor()`.
+		  dtype: (Optional.) The required `DType` of the returned `Tensor` objects.
+		  name: (Optional.) A name prefix to used when a new `Tensor` is
+		    created, in which case element `i` will be given the name `name
+		    + '_' + i`.
+		  as_ref: True if the caller wants the results as ref tensors.
+		  preferred_dtype: Optional element type for the returned tensors,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
+		
+		Returns:
+		  A list of `Tensor` and/or `IndexedSlices` objects.
+		
+		Raises:
+		  TypeError: If no conversion function is registered for an element in
+		    `values`.
+		  RuntimeError: If a registered conversion function returns an invalid
+		    value.
+	**/
+	static public function internal_convert_n_to_tensor(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
+	/**
+		Converts `values` to a list of `Tensor` or `IndexedSlices` objects.
+		
+		Any `IndexedSlices` or `SparseTensor` objects in `values` are returned
+		unmodified.
+		
+		Args:
+		  values: A list of `None`, `IndexedSlices`, `SparseTensor`, or objects that
+		    can be consumed by `convert_to_tensor()`.
+		  dtype: (Optional.) The required `DType` of the returned `Tensor`
+		    `IndexedSlices`.
+		  name: (Optional.) A name prefix to used when a new `Tensor` is
+		    created, in which case element `i` will be given the name `name
+		    + '_' + i`.
+		  as_ref: True if the caller wants the results as ref tensors.
+		
+		Returns:
+		  A list of `Tensor`, `IndexedSlices`, and/or `SparseTensor` objects.
+		
+		Raises:
+		  TypeError: If no conversion function is registered for an element in
+		    `values`.
+		  RuntimeError: If a registered conversion function returns an invalid
+		    value.
+	**/
+	static public function internal_convert_n_to_tensor_or_indexed_slices(values:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	/**
+		Converts the given `value` to an `Tensor`.
+		
+		This function converts Python objects of various types to `Tensor`
+		objects. It accepts `Tensor` objects, numpy arrays, Python lists,
+		and Python scalars. For example:
+		
+		This function can be useful when composing a new operation in Python
+		All standard Python op constructors apply this function to each of their
+		Tensor-valued inputs, which allows those ops to accept numpy arrays, Python
+		lists, and scalars in addition to `Tensor` objects.
+		
+		Args:
+		  value: An object whose type has a registered `Tensor` conversion function.
+		  dtype: Optional element type for the returned tensor. If missing, the
+		    type is inferred from the type of `value`.
+		  name: Optional name to use if a new `Tensor` is created.
+		  as_ref: True if we want the mutable view of Variables, if applicable.
+		  preferred_dtype: Optional element type for the returned tensor,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
+		
+		Returns:
+		  A `Tensor` based on `value`.
+		
+		Raises:
+		  TypeError: If no conversion function is registered for `value`.
+		  RuntimeError: If a registered conversion function returns an invalid value.
+	**/
+	static public function internal_convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
+	/**
+		Converts the given object to an `Tensor` or an `IndexedSlices`.
+		
+		If `value` is an `IndexedSlices` or `SparseTensor` it is returned
+		unmodified. Otherwise, it is converted to a `Tensor` using
+		`convert_to_tensor()`.
+		
+		Args:
+		  value: An `IndexedSlices`, `SparseTensor`, or an object that can be consumed
+		    by `convert_to_tensor()`.
+		  dtype: (Optional.) The required `DType` of the returned `Tensor` or
+		    `IndexedSlices`.
+		  name: (Optional.) A name to use if a new `Tensor` is created.
+		  as_ref: True if the caller wants the results as ref tensors.
+		
+		Returns:
+		  An `Tensor`, `IndexedSlices`, or `SparseTensor` based on `value`.
+		
+		Raises:
+		  ValueError: If `dtype` does not match the element type of `value`.
+	**/
+	static public function internal_convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	/**
 		EXPERIMENTAL: Returns true if `t` implements the tensor interface.
 		
 		See `register_dense_tensor_like_type()` for the current definition of a
@@ -537,32 +709,19 @@ package tensorflow.python.framework.ops;
 	**/
 	static public function is_dense_tensor_like(t:Dynamic):Dynamic;
 	/**
-		Wrapper for `Graph.name_scope()` using the default graph.
-		
-		See
-		[`Graph.name_scope()`](../../api_docs/python/framework.md#Graph.name_scope)
-		for more details.
-		
-		Args:
-		  name: A name for the scope.
-		
-		Returns:
-		  A context manager that installs `name` as a new name scope in the
-		  default graph.
-	**/
-	static public function name_scope(name:Dynamic):Dynamic;
-	/**
 		Returns a context manager for use when defining a Python op.
 		
 		This context manager validates that the given `values` are from the
-		same graph, ensures that graph is the default graph, and pushes a
-		name scope.
+		same graph, makes that graph the default graph, and pushes a
+		name scope in that graph (see
+		@{tf.Graph.name_scope}
+		for more details on that).
 		
 		For example, to define a new Python op called `my_op`:
 		
 		```python
 		def my_op(a, b, c, name=None):
-		  with tf.op_scope([a, b, c], name, "MyOp") as scope:
+		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
 		    a = tf.convert_to_tensor(a, name="a")
 		    b = tf.convert_to_tensor(b, name="b")
 		    c = tf.convert_to_tensor(c, name="c")
@@ -571,17 +730,34 @@ package tensorflow.python.framework.ops;
 		```
 		
 		Args:
-		  values: The list of `Tensor` arguments that are passed to the op function.
 		  name: The name argument that is passed to the op function.
 		  default_name: The default name to use if the `name` argument is `None`.
+		  values: The list of `Tensor` arguments that are passed to the op function.
 		
 		Returns:
 		  A context manager for use in defining Python ops. Yields the name scope.
 		
 		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided.
+		  ValueError: if neither `name` nor `default_name` is provided
+		    but `values` are.
+	**/
+	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	/**
+		DEPRECATED. Same as name_scope above, just different argument order.
 	**/
 	static public function op_scope(values:Dynamic, name:Dynamic, ?default_name:Dynamic):Dynamic;
+	/**
+		Prepends name scope to a name.
+		
+		Args:
+		  name: A `string` name.
+		  import_scope: Optional `string`. Name scope to add.
+		
+		Returns:
+		  Name with name scope added, or the original name if import_scope
+		  is None.
+	**/
+	static public function prepend_name_scope(name:Dynamic, import_scope:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		EXPERIMENTAL: Registers `tensor_type` as implementing the tensor interface.
@@ -618,8 +794,10 @@ package tensorflow.python.framework.ops;
 		
 		The conversion function must have the following signature:
 		
+		```python
 		    def conversion_func(value, dtype=None, name=None, as_ref=False):
 		      # ...
+		```
 		
 		It must return a `Tensor` with the given `dtype` if specified. If the
 		conversion function creates a new `Tensor`, it should use the given
@@ -665,4 +843,16 @@ package tensorflow.python.framework.ops;
 		Uses the registered shape functions to set the shapes for op's outputs.
 	**/
 	static public function set_shapes_for_outputs(op:Dynamic):Dynamic;
+	/**
+		Removes name scope from a name.
+		
+		Args:
+		  name: A `string` name.
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  Name with name scope removed, or the original name if export_scope
+		  is None.
+	**/
+	static public function strip_name_scope(name:Dynamic, export_scope:Dynamic):Dynamic;
 }

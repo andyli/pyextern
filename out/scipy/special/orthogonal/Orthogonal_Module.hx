@@ -34,11 +34,12 @@ package scipy.special.orthogonal;
 		See Also
 		--------
 		initial_nodes_a
-		h_roots_asy
+		roots_hermite_asy
 	**/
 	static public function _compute_tauk(n:Dynamic, k:Dynamic, ?maxit:Dynamic):Dynamic;
+	static public var _evalfuns : Dynamic;
 	/**
-		gamma(x[, out])
+		gamma(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gamma(z)
 		
@@ -66,50 +67,6 @@ package scipy.special.orthogonal;
 	**/
 	static public function _gen_roots_and_weights(n:Dynamic, mu0:Dynamic, an_func:Dynamic, bn_func:Dynamic, f:Dynamic, df:Dynamic, symmetrize:Dynamic, mu:Dynamic):Dynamic;
 	/**
-		Gauss-Hermite (physicst's) quadrature for large n.
-		
-		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the n-th degree Hermite polynomial,
-		:math:`H_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2n - 1` or less over the interval
-		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
-		
-		This method relies on asymptotic expansions which work best for n > 150.
-		The algorithm has linear runtime making computation for very large n
-		feasible.
-		
-		Parameters
-		----------
-		n : int
-		    quadrature order
-		
-		Returns
-		-------
-		nodes : ndarray
-		    Quadrature nodes
-		weights : ndarray
-		    Quadrature weights
-		
-		See Also
-		--------
-		h_roots
-		
-		References
-		----------
-		.. [townsend.trogdon.olver-2014]
-		   Townsend, A. and Trogdon, T. and Olver, S. (2014)
-		   *Fast computation of Gauss quadrature nodes and
-		   weights on the whole real line*. ArXiv 1410.5286.
-		
-		.. [townsend.trogdon.olver-2015]
-		   Townsend, A. and Trogdon, T. and Olver, S. (2015)
-		   *Fast computation of Gauss quadrature nodes and
-		   weights on the whole real line*.
-		   IMA Journal of Numerical Analysis
-		   doi: 10.1093/imanum/drv002
-	**/
-	static public function _h_roots_asy(n:Dynamic):Dynamic;
-	/**
 		Initial guesses for the Hermite roots
 		
 		Computes an initial approximation to the non-negative
@@ -129,7 +86,7 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		h_roots_asy
+		roots_hermite_asy
 	**/
 	static public function _initial_nodes(n:Dynamic):Dynamic;
 	/**
@@ -156,7 +113,7 @@ package scipy.special.orthogonal;
 		See Also
 		--------
 		initial_nodes
-		h_roots_asy
+		roots_hermite_asy
 	**/
 	static public function _initial_nodes_a(n:Dynamic, k:Dynamic):Dynamic;
 	/**
@@ -183,9 +140,10 @@ package scipy.special.orthogonal;
 		See Also
 		--------
 		initial_nodes
-		h_roots_asy
+		roots_hermite_asy
 	**/
 	static public function _initial_nodes_b(n:Dynamic, k:Dynamic):Dynamic;
+	static public var _modattrs : Dynamic;
 	/**
 		Newton iteration for polishing the asymptotic approximation
 		to the zeros of the Hermite polynomials.
@@ -210,7 +168,7 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		h_roots_asy
+		roots_hermite_asy
 	**/
 	static public function _newton(n:Dynamic, x_initial:Dynamic, ?maxit:Dynamic):Dynamic;
 	/**
@@ -220,7 +178,7 @@ package scipy.special.orthogonal;
 		original paper. Compared to the published version this code
 		adds one more term to the asymptotic series. The detailed
 		formulas can be found at [parabolic-asymptotics]_. The evaluation
-		is done in a transformed variable :math:`   heta := rccos(t)`
+		is done in a transformed variable :math:`\theta := \arccos(t)`
 		where :math:`t := x / \mu` and :math:`\mu := \sqrt{2n + 1}`.
 		
 		Parameters
@@ -233,14 +191,14 @@ package scipy.special.orthogonal;
 		Returns
 		-------
 		U : ndarray
-		    Value of the parabolic cylinder function :math:`U(a,    heta)`.
+		    Value of the parabolic cylinder function :math:`U(a, \theta)`.
 		Ud : ndarray
-		    Value of the derivative :math:`U^{\prime}(a,    heta)` of
+		    Value of the derivative :math:`U^{\prime}(a, \theta)` of
 		    the parabolic cylinder function.
 		
 		See Also
 		--------
-		h_roots_asy
+		roots_hermite_asy
 		
 		References
 		----------
@@ -248,9 +206,55 @@ package scipy.special.orthogonal;
 		   http://dlmf.nist.gov/12.10#vii
 	**/
 	static public function _pbcf(n:Dynamic, theta:Dynamic):Dynamic;
+	static public var _polyfuns : Dynamic;
+	static public var _rootfuns_map : Dynamic;
+	/**
+		Gauss-Hermite (physicst's) quadrature for large n.
+		
+		Computes the sample points and weights for Gauss-Hermite quadrature.
+		The sample points are the roots of the n-th degree Hermite polynomial,
+		:math:`H_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
+		
+		This method relies on asymptotic expansions which work best for n > 150.
+		The algorithm has linear runtime making computation for very large n
+		feasible.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		
+		Returns
+		-------
+		nodes : ndarray
+		    Quadrature nodes
+		weights : ndarray
+		    Quadrature weights
+		
+		See Also
+		--------
+		roots_hermite
+		
+		References
+		----------
+		.. [townsend.trogdon.olver-2014]
+		   Townsend, A. and Trogdon, T. and Olver, S. (2014)
+		   *Fast computation of Gauss quadrature nodes and
+		   weights on the whole real line*. :arXiv:`1410.5286`.
+		
+		.. [townsend.trogdon.olver-2015]
+		   Townsend, A. and Trogdon, T. and Olver, S. (2015)
+		   *Fast computation of Gauss quadrature nodes and
+		   weights on the whole real line*.
+		   IMA Journal of Numerical Analysis
+		   :doi:`10.1093/imanum/drv002`.
+	**/
+	static public function _roots_hermite_asy(n:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		airy(x[, out1, out2, out3, out4])
+		airy(x[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		airy(z)
 		
@@ -304,85 +308,6 @@ package scipy.special.orthogonal;
 		       http://netlib.org/amos/.org/amos/
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Test whether any array element along a given axis evaluates to True.
-		
-		Returns single boolean unless `axis` is not ``None``
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array or object that can be converted to an array.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a logical OR reduction is performed.
-		    The default (`axis` = `None`) is to perform a logical OR over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a reduction is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		out : ndarray, optional
-		    Alternate output array in which to place the result.  It must have
-		    the same shape as the expected output and its type is preserved
-		    (e.g., if it is of type float, then it will remain so, returning
-		    1.0 for True and 0.0 for False, regardless of the type of `a`).
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		    If the default value is passed, then `keepdims` will not be
-		    passed through to the `any` method of sub-classes of
-		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
-		    exceptions will be raised.
-		
-		Returns
-		-------
-		any : bool or ndarray
-		    A new boolean or `ndarray` is returned unless `out` is specified,
-		    in which case a reference to `out` is returned.
-		
-		See Also
-		--------
-		ndarray.any : equivalent method
-		
-		all : Test whether all elements along a given axis evaluate to True.
-		
-		Notes
-		-----
-		Not a Number (NaN), positive infinity and negative infinity evaluate
-		to `True` because these are not equal to zero.
-		
-		Examples
-		--------
-		>>> np.any([[True, False], [True, True]])
-		True
-		
-		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
-		
-		>>> np.any([-1, 0, 5])
-		True
-		
-		>>> np.any(np.nan)
-		True
-		
-		>>> o=np.array([False])
-		>>> z=np.any([-1, 4, 5], out=o)
-		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
-		>>> # Check now that z is a reference to o
-		>>> z is o
-		True
-		>>> id(z), id(o) # identity of z and o              # doctest: +SKIP
-		(191614240, 191614240)
-	**/
-	static public function any(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -443,7 +368,7 @@ package scipy.special.orthogonal;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arccos(x[, out])
+		arccos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse cosine, element-wise.
 		
@@ -454,10 +379,17 @@ package scipy.special.orthogonal;
 		x : array_like
 		    `x`-coordinate on the unit circle.
 		    For real arguments, the domain is [-1, 1].
-		
-		out : ndarray, optional
-		    Array of the same shape as `a`, to store results in. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -544,7 +476,7 @@ package scipy.special.orthogonal;
 		
 		Notes
 		-----
-		For values exactly halfway between rounded decimal values, Numpy
+		For values exactly halfway between rounded decimal values, NumPy
 		rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
 		-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
 		to the inexact representation of decimal fractions in the IEEE
@@ -574,11 +506,15 @@ package scipy.special.orthogonal;
 	**/
 	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		binom(x1, x2[, out])
+		binom(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		binom(n, k)
 		
 		Binomial coefficient
+		
+		See Also
+		--------
+		comb : The number of combinations of N things taken k at a time.
 	**/
 	static public function binom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -647,29 +583,142 @@ package scipy.special.orthogonal;
 	**/
 	static public function cg_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Return n-th order Chebyshev polynomial of first kind, :math:`C_n(x)`. 
-		Orthogonal over :math:`[-2, 2]` with weight function
-		:math:`f(x) = 1/\sqrt{1 - (x/2)^2}`
+		Chebyshev polynomial of the first kind on :math:`[-2, 2]`.
+		
+		Defined as :math:`C_n(x) = 2T_n(x/2)`, where :math:`T_n` is the
+		nth Chebychev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		C : orthopoly1d
+		    Chebyshev polynomial of the first kind on :math:`[-2, 2]`.
+		
+		Notes
+		-----
+		The polynomials :math:`C_n(x)` are orthogonal over :math:`[-2, 2]`
+		with weight function :math:`1/\sqrt{1 - (x/2)^2}`.
+		
+		See Also
+		--------
+		chebyt : Chebyshev polynomial of the first kind.
+		
+		References
+		----------
+		.. [1] Abramowitz and Stegun, "Handbook of Mathematical Functions"
+		       Section 22. National Bureau of Standards, 1972.
 	**/
 	static public function chebyc(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of second kind, :math:`S_n(x)`.
-		Orthogonal over :math:`[-2, 2]` with weight function
-		:math:`f(x) = \sqrt{1 - (x/2)^2}`.
+		Chebyshev polynomial of the second kind on :math:`[-2, 2]`.
+		
+		Defined as :math:`S_n(x) = U_n(x/2)` where :math:`U_n` is the
+		nth Chebychev polynomial of the second kind.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		S : orthopoly1d
+		    Chebyshev polynomial of the second kind on :math:`[-2, 2]`.
+		
+		Notes
+		-----
+		The polynomials :math:`S_n(x)` are orthogonal over :math:`[-2, 2]`
+		with weight function :math:`\sqrt{1 - (x/2)}^2`.
+		
+		See Also
+		--------
+		chebyu : Chebyshev polynomial of the second kind
+		
+		References
+		----------
+		.. [1] Abramowitz and Stegun, "Handbook of Mathematical Functions"
+		       Section 22. National Bureau of Standards, 1972.
 	**/
 	static public function chebys(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of first kind, Tn(x).  Orthogonal
-		over [-1,1] with weight function (1-x**2)**(-1/2).
+		Chebyshev polynomial of the first kind.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    (1 - x^2)\frac{d^2}{dx^2}T_n - x\frac{d}{dx}T_n + n^2T_n = 0;
+		
+		:math:`T_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		T : orthopoly1d
+		    Chebyshev polynomial of the first kind.
+		
+		Notes
+		-----
+		The polynomials :math:`T_n` are orthogonal over :math:`[-1, 1]`
+		with weight function :math:`(1 - x^2)^{-1/2}`.
+		
+		See Also
+		--------
+		chebyu : Chebyshev polynomial of the second kind.
 	**/
 	static public function chebyt(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of second kind, Un(x).  Orthogonal
-		over [-1,1] with weight function (1-x**2)**(1/2).
+		Chebyshev polynomial of the second kind.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    (1 - x^2)\frac{d^2}{dx^2}U_n - 3x\frac{d}{dx}U_n
+		      + n(n + 2)U_n = 0;
+		
+		:math:`U_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		U : orthopoly1d
+		    Chebyshev polynomial of the second kind.
+		
+		Notes
+		-----
+		The polynomials :math:`U_n` are orthogonal over :math:`[-1, 1]`
+		with weight function :math:`(1 - x^2)^{1/2}`.
+		
+		See Also
+		--------
+		chebyt : Chebyshev polynomial of the first kind.
 	**/
 	static public function chebyu(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		cos(x[, out])
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -677,18 +726,22 @@ package scipy.special.orthogonal;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -719,130 +772,603 @@ package scipy.special.orthogonal;
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		eval_chebyc(x1, x2[, out])
+		eval_chebyc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyc(n, x, out=None)
 		
-		Evaluate Chebyshev C polynomial at a point.
+		Evaluate Chebyshev polynomial of the first kind on [-2, 2] at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    S_n(x) = T_n(x/2)
+		
+		where :math:`T_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyt`.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		C : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyc : roots and quadrature weights of Chebyshev
+		               polynomials of the first kind on [-2, 2]
+		chebyc : Chebyshev polynomial object
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
+		eval_chebyt : evaluate Chebycshev polynomials of the first kind
 	**/
 	static public function eval_chebyc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebys(x1, x2[, out])
+		eval_chebys(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebys(n, x, out=None)
 		
-		Evaluate Chebyshev S polynomial at a point.
+		Evaluate Chebyshev polynomial of the second kind on [-2, 2] at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    S_n(x) = U_n(x/2)
+		
+		where :math:`U_n` is a Chebyshev polynomial of the second kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyu`.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		S : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebys : roots and quadrature weights of Chebyshev
+		               polynomials of the second kind on [-2, 2]
+		chebys : Chebyshev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
 	**/
 	static public function eval_chebys(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebyt(x1, x2[, out])
+		eval_chebyt(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyt(n, x, out=None)
 		
-		Evaluate Chebyshev T polynomial at a point.
+		Evaluate Chebyshev polynomial of the first kind at a point.
 		
+		The Chebyshev polynomials of the first kind can be defined via the
+		Gauss hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    T_n(x) = {}_2F_1(n, -n; 1/2; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		T : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyt : roots and quadrature weights of Chebyshev
+		               polynomials of the first kind
+		chebyu : Chebychev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
+		hyp2f1 : Gauss hypergeometric function
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
+		
+		Notes
+		-----
 		This routine is numerically stable for `x` in ``[-1, 1]`` at least
 		up to order ``10000``.
 	**/
 	static public function eval_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebyu(x1, x2[, out])
+		eval_chebyu(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyu(n, x, out=None)
 		
-		Evaluate Chebyshev U polynomial at a point.
+		Evaluate Chebyshev polynomial of the second kind at a point.
+		
+		The Chebyshev polynomials of the second kind can be defined via
+		the Gauss hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    U_n(x) = (n + 1) {}_2F_1(-n, n + 2; 3/2; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		U : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyu : roots and quadrature weights of Chebyshev
+		               polynomials of the second kind
+		chebyu : Chebyshev polynomial object
+		eval_chebyt : evaluate Chebyshev polynomials of the first kind
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_chebyu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_gegenbauer(x1, x2, x3[, out])
+		eval_gegenbauer(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_gegenbauer(n, alpha, x, out=None)
 		
 		Evaluate Gegenbauer polynomial at a point.
+		
+		The Gegenbauer polynomials can be defined via the Gauss
+		hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    C_n^{(\alpha)} = \frac{(2\alpha)_n}{\Gamma(n + 1)}
+		      {}_2F_1(-n, 2\alpha + n; \alpha + 1/2; (1 - z)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter
+		x : array_like
+		    Points at which to evaluate the Gegenbauer polynomial
+		
+		Returns
+		-------
+		C : ndarray
+		    Values of the Gegenbauer polynomial
+		
+		See Also
+		--------
+		roots_gegenbauer : roots and quadrature weights of Gegenbauer
+		                   polynomials
+		gegenbauer : Gegenbauer polynomial object
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_gegenbauer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_genlaguerre(x1, x2, x3[, out])
+		eval_genlaguerre(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_genlaguerre(n, alpha, x, out=None)
 		
 		Evaluate generalized Laguerre polynomial at a point.
+		
+		The generalized Laguerre polynomials can be defined via the
+		confluent hypergeometric function :math:`{}_1F_1` as
+		
+		.. math::
+		
+		    L_n^{(\alpha)}(x) = \binom{n + \alpha}{n}
+		      {}_1F_1(-n, \alpha + 1, x).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`. The Laguerre polynomials are the special case where
+		:math:`\alpha = 0`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the confluent hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter; must have ``alpha > -1``
+		x : array_like
+		    Points at which to evaluate the generalized Laguerre
+		    polynomial
+		
+		Returns
+		-------
+		L : ndarray
+		    Values of the generalized Laguerre polynomial
+		
+		See Also
+		--------
+		roots_genlaguerre : roots and quadrature weights of generalized
+		                    Laguerre polynomials
+		genlaguerre : generalized Laguerre polynomial object
+		hyp1f1 : confluent hypergeometric function
+		eval_laguerre : evaluate Laguerre polynomials
 	**/
 	static public function eval_genlaguerre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_hermite(x1, x2[, out])
+		eval_hermite(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_hermite(n, x, out=None)
 		
-		Evaluate Hermite polynomial at a point.
+		Evaluate physicist's Hermite polynomial at a point.
+		
+		Defined by
+		
+		.. math::
+		
+		    H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n} e^{-x^2};
+		
+		:math:`H_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial
+		x : array_like
+		    Points at which to evaluate the Hermite polynomial
+		
+		Returns
+		-------
+		H : ndarray
+		    Values of the Hermite polynomial
+		
+		See Also
+		--------
+		roots_hermite : roots and quadrature weights of physicist's
+		                Hermite polynomials
+		hermite : physicist's Hermite polynomial object
+		numpy.polynomial.hermite.Hermite : Physicist's Hermite series
+		eval_hermitenorm : evaluate Probabilist's Hermite polynomials
 	**/
 	static public function eval_hermite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_hermitenorm(x1, x2[, out])
+		eval_hermitenorm(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_hermitenorm(n, x, out=None)
 		
-		Evaluate normalized Hermite polynomial at a point.
+		Evaluate probabilist's (normalized) Hermite polynomial at a
+		point.
+		
+		Defined by
+		
+		.. math::
+		
+		    He_n(x) = (-1)^n e^{x^2/2} \frac{d^n}{dx^n} e^{-x^2/2};
+		
+		:math:`He_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial
+		x : array_like
+		    Points at which to evaluate the Hermite polynomial
+		
+		Returns
+		-------
+		He : ndarray
+		    Values of the Hermite polynomial
+		
+		See Also
+		--------
+		roots_hermitenorm : roots and quadrature weights of probabilist's
+		                    Hermite polynomials
+		hermitenorm : probabilist's Hermite polynomial object
+		numpy.polynomial.hermite_e.HermiteE : Probabilist's Hermite series
+		eval_hermite : evaluate physicist's Hermite polynomials
 	**/
 	static public function eval_hermitenorm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_jacobi(x1, x2, x3, x4[, out])
+		eval_jacobi(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_jacobi(n, alpha, beta, x, out=None)
 		
 		Evaluate Jacobi polynomial at a point.
+		
+		The Jacobi polynomials can be defined via the Gauss hypergeometric
+		function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    P_n^{(\alpha, \beta)}(x) = \frac{(\alpha + 1)_n}{\Gamma(n + 1)}
+		      {}_2F_1(-n, 1 + \alpha + \beta + n; \alpha + 1; (1 - z)/2)
+		
+		where :math:`(\cdot)_n` is the Pochhammer symbol; see `poch`. When
+		:math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter
+		beta : array_like
+		    Parameter
+		x : array_like
+		    Points at which to evaluate the polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the Jacobi polynomial
+		
+		See Also
+		--------
+		roots_jacobi : roots and quadrature weights of Jacobi polynomials
+		jacobi : Jacobi polynomial object
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_jacobi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_laguerre(x1, x2[, out])
+		eval_laguerre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_laguerre(n, x, out=None)
 		
 		Evaluate Laguerre polynomial at a point.
+		
+		The Laguerre polynomials can be defined via the confluent
+		hypergeometric function :math:`{}_1F_1` as
+		
+		.. math::
+		
+		    L_n(x) = {}_1F_1(-n, 1, x).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the confluent hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Laguerre polynomial
+		
+		Returns
+		-------
+		L : ndarray
+		    Values of the Laguerre polynomial
+		
+		See Also
+		--------
+		roots_laguerre : roots and quadrature weights of Laguerre
+		                 polynomials
+		laguerre : Laguerre polynomial object
+		numpy.polynomial.laguerre.Laguerre : Laguerre series
+		eval_genlaguerre : evaluate generalized Laguerre polynomials
 	**/
 	static public function eval_laguerre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_legendre(x1, x2[, out])
+		eval_legendre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_legendre(n, x, out=None)
 		
 		Evaluate Legendre polynomial at a point.
+		
+		The Legendre polynomials can be defined via the Gauss
+		hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    P_n(x) = {}_2F_1(-n, n + 1; 1; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Legendre polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the Legendre polynomial
+		
+		See Also
+		--------
+		roots_legendre : roots and quadrature weights of Legendre
+		                 polynomials
+		legendre : Legendre polynomial object
+		hyp2f1 : Gauss hypergeometric function
+		numpy.polynomial.legendre.Legendre : Legendre series
 	**/
 	static public function eval_legendre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_chebyt(x1, x2[, out])
+		eval_sh_chebyt(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_chebyt(n, x, out=None)
 		
-		Evaluate shifted Chebyshev T polynomial at a point.
+		Evaluate shifted Chebyshev polynomial of the first kind at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    T_n^*(x) = T_n(2x - 1)
+		
+		where :math:`T_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyt`.
+		x : array_like
+		    Points at which to evaluate the shifted Chebyshev polynomial
+		
+		Returns
+		-------
+		T : ndarray
+		    Values of the shifted Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_sh_chebyt : roots and quadrature weights of shifted
+		                  Chebyshev polynomials of the first kind
+		sh_chebyt : shifted Chebyshev polynomial object
+		eval_chebyt : evalaute Chebyshev polynomials of the first kind
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
 	**/
 	static public function eval_sh_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_chebyu(x1, x2[, out])
+		eval_sh_chebyu(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_chebyu(n, x, out=None)
 		
-		Evaluate shifted Chebyshev U polynomial at a point.
+		Evaluate shifted Chebyshev polynomial of the second kind at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    U_n^*(x) = U_n(2x - 1)
+		
+		where :math:`U_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyu`.
+		x : array_like
+		    Points at which to evaluate the shifted Chebyshev polynomial
+		
+		Returns
+		-------
+		U : ndarray
+		    Values of the shifted Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_sh_chebyu : roots and quadrature weights of shifted
+		                  Chebychev polynomials of the second kind
+		sh_chebyu : shifted Chebyshev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
 	**/
 	static public function eval_sh_chebyu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_jacobi(x1, x2, x3, x4[, out])
+		eval_sh_jacobi(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_jacobi(n, p, q, x, out=None)
 		
 		Evaluate shifted Jacobi polynomial at a point.
+		
+		Defined by
+		
+		.. math::
+		
+		    G_n^{(p, q)}(x)
+		      = \binom{2n + p - 1}{n}^{-1} P_n^{(p - q, q - 1)}(2x - 1),
+		
+		where :math:`P_n^{(\cdot, \cdot)}` is the n-th Jacobi polynomial.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `binom` and `eval_jacobi`.
+		p : float
+		    Parameter
+		q : float
+		    Parameter
+		
+		Returns
+		-------
+		G : ndarray
+		    Values of the shifted Jacobi polynomial.
+		
+		See Also
+		--------
+		roots_sh_jacobi : roots and quadrature weights of shifted Jacobi
+		                  polynomials
+		sh_jacobi : shifted Jacobi polynomial object
+		eval_jacobi : evaluate Jacobi polynomials
 	**/
 	static public function eval_sh_jacobi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_legendre(x1, x2[, out])
+		eval_sh_legendre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_legendre(n, x, out=None)
 		
 		Evaluate shifted Legendre polynomial at a point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    P_n^*(x) = P_n(2x - 1)
+		
+		where :math:`P_n` is a Legendre polynomial.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the value is
+		    determined via the relation to `eval_legendre`.
+		x : array_like
+		    Points at which to evaluate the shifted Legendre polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the shifted Legendre polynomial
+		
+		See Also
+		--------
+		roots_sh_legendre : roots and quadrature weights of shifted
+		                    Legendre polynomials
+		sh_legendre : shifted Legendre polynomial object
+		eval_legendre : evaluate Legendre polynomials
+		numpy.polynomial.legendre.Legendre : Legendre series
 	**/
 	static public function eval_sh_legendre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -850,6 +1376,17 @@ package scipy.special.orthogonal;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -894,18 +1431,18 @@ package scipy.special.orthogonal;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor(x[, out])
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -916,6 +1453,17 @@ package scipy.special.orthogonal;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -940,15 +1488,78 @@ package scipy.special.orthogonal;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth order Gegenbauer (ultraspherical) polynomial,
-		C^(alpha)_n(x), orthogonal over [-1,1] with weighting function
-		(1-x**2)**(alpha-1/2) with alpha > -1/2
+		Gegenbauer (ultraspherical) polynomial.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    (1 - x^2)\frac{d^2}{dx^2}C_n^{(\alpha)}
+		      - (2\alpha + 1)x\frac{d}{dx}C_n^{(\alpha)}
+		      + n(n + 2\alpha)C_n^{(\alpha)} = 0
+		
+		for :math:`\alpha > -1/2`; :math:`C_n^{(\alpha)}` is a polynomial
+		of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		C : orthopoly1d
+		    Gegenbauer polynomial.
+		
+		Notes
+		-----
+		The polynomials :math:`C_n^{(\alpha)}` are orthogonal over
+		:math:`[-1,1]` with weight function :math:`(1 - x^2)^{(\alpha -
+		1/2)}`.
 	**/
 	static public function gegenbauer(n:Dynamic, alpha:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Returns the nth order generalized (associated) Laguerre polynomial,
-		L^(alpha)_n(x), orthogonal over [0,inf) with weighting function
-		exp(-x) x**alpha with alpha > -1
+		Generalized (associated) Laguerre polynomial.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    x\frac{d^2}{dx^2}L_n^{(\alpha)} 
+		      + (\alpha + 1 - x)\frac{d}{dx}L_n^{(\alpha)}
+		      + nL_n^{(\alpha)} = 0,
+		
+		where :math:`\alpha > -1`; :math:`L_n^{(\alpha)}` is a polynomial
+		of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		alpha : float
+		    Parameter, must be greater than -1.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		L : orthopoly1d
+		    Generalized Laguerre polynomial.
+		
+		Notes
+		-----
+		For fixed :math:`\alpha`, the polynomials :math:`L_n^{(\alpha)}`
+		are orthogonal over :math:`[0, \infty)` with weight function
+		:math:`e^{-x}x^\alpha`.
+		
+		The Laguerre polynomials are the special case where :math:`\alpha
+		= 0`.
+		
+		See Also
+		--------
+		laguerre : Laguerre polynomial.
 	**/
 	static public function genlaguerre(n:Dynamic, alpha:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
@@ -993,21 +1604,21 @@ package scipy.special.orthogonal;
 		scipy.integrate.quadrature
 		scipy.integrate.fixed_quad
 		numpy.polynomial.hermite.hermgauss
-		he_roots
+		roots_hermitenorm
 		
 		References
 		----------
 		.. [townsend.trogdon.olver-2014]
 		   Townsend, A. and Trogdon, T. and Olver, S. (2014)
 		   *Fast computation of Gauss quadrature nodes and
-		   weights on the whole real line*. ArXiv 1410.5286.
+		   weights on the whole real line*. :arXiv:`1410.5286`.
 		
 		.. [townsend.trogdon.olver-2015]
 		   Townsend, A. and Trogdon, T. and Olver, S. (2015)
 		   *Fast computation of Gauss quadrature nodes and
 		   weights on the whole real line*.
 		   IMA Journal of Numerical Analysis
-		   doi: 10.1093/imanum/drv002
+		   :doi:`10.1093/imanum/drv002`.
 	**/
 	static public function h_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -1017,7 +1628,7 @@ package scipy.special.orthogonal;
 		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`He_n(x)`.  These sample points and weights correctly integrate
 		polynomials of degree :math:`2n - 1` or less over the interval
-		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-(x/2)^2}`.
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2/2}`.
 		
 		Parameters
 		----------
@@ -1055,13 +1666,64 @@ package scipy.special.orthogonal;
 	**/
 	static public function he_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Return the nth order Hermite polynomial, H_n(x), orthogonal over
-		(-inf,inf) with weighting function exp(-x**2)
+		Physicist's Hermite polynomial.
+		
+		Defined by
+		
+		.. math::
+		
+		    H_n(x) = (-1)^ne^{x^2}\frac{d^n}{dx^n}e^{-x^2};
+		
+		:math:`H_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		H : orthopoly1d
+		    Hermite polynomial.
+		
+		Notes
+		-----
+		The polynomials :math:`H_n` are orthogonal over :math:`(-\infty,
+		\infty)` with weight function :math:`e^{-x^2}`.
 	**/
 	static public function hermite(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return the nth order normalized Hermite polynomial, He_n(x), orthogonal
-		over (-inf,inf) with weighting function exp(-(x/2)**2)
+		Normalized (probabilist's) Hermite polynomial.
+		
+		Defined by
+		
+		.. math::
+		
+		    He_n(x) = (-1)^ne^{x^2/2}\frac{d^n}{dx^n}e^{-x^2/2};
+		
+		:math:`He_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		He : orthopoly1d
+		    Hermite polynomial.
+		
+		Notes
+		-----
+		
+		The polynomials :math:`He_n` are orthogonal over :math:`(-\infty,
+		\infty)` with weight function :math:`e^{-x^2/2}`.
 	**/
 	static public function hermitenorm(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
@@ -1069,6 +1731,10 @@ package scipy.special.orthogonal;
 		
 		Take a sequence of arrays and stack them horizontally to make
 		a single array. Rebuild arrays divided by `hsplit`.
+		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
 		
 		Parameters
 		----------
@@ -1087,10 +1753,12 @@ package scipy.special.orthogonal;
 		dstack : Stack arrays in sequence depth wise (along third axis).
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=1)``
+		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -1144,9 +1812,41 @@ package scipy.special.orthogonal;
 	**/
 	static public function j_roots(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Returns the nth order Jacobi polynomial, P^(alpha,beta)_n(x)
-		orthogonal over [-1,1] with weighting function
-		(1-x)**alpha (1+x)**beta with alpha,beta > -1.
+		Jacobi polynomial.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    (1 - x^2)\frac{d^2}{dx^2}P_n^{(\alpha, \beta)}
+		      + (\beta - \alpha - (\alpha + \beta + 2)x)
+		        \frac{d}{dx}P_n^{(\alpha, \beta)}
+		      + n(n + \alpha + \beta + 1)P_n^{(\alpha, \beta)} = 0
+		
+		for :math:`\alpha, \beta > -1`; :math:`P_n^{(\alpha, \beta)}` is a
+		polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		alpha : float
+		    Parameter, must be greater than -1.
+		beta : float
+		    Parameter, must be greater than -1.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		P : orthopoly1d
+		    Jacobi polynomial.
+		
+		Notes
+		-----
+		For fixed :math:`\alpha, \beta`, the polynomials
+		:math:`P_n^{(\alpha, \beta)}` are orthogonal over :math:`[-1, 1]`
+		with weight function :math:`(1 - x)^\alpha(1 + x)^\beta`.
 	**/
 	static public function jacobi(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
@@ -1252,28 +1952,62 @@ package scipy.special.orthogonal;
 	**/
 	static public function la_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Return the nth order Laguerre polynoimal, L_n(x), orthogonal over
-		[0,inf) with weighting function exp(-x)
-	**/
-	static public function laguerre(n:Dynamic, ?monic:Dynamic):Dynamic;
-	/**
-		Legendre polynomial coefficients
+		Laguerre polynomial.
 		
-		Returns the nth-order Legendre polynomial, P_n(x), orthogonal over
-		[-1, 1] with weight function 1.
+		Defined to be the solution of
+		
+		.. math::
+		    x\frac{d^2}{dx^2}L_n + (1 - x)\frac{d}{dx}L_n + nL_n = 0;
+		
+		:math:`L_n` is a polynomial of degree :math:`n`.
 		
 		Parameters
 		----------
-		n
-		    Order of the polynomial
+		n : int
+		    Degree of the polynomial.
 		monic : bool, optional
-		    If True, output is a monic polynomial (normalized so the leading
-		    coefficient is 1).  Default is False.
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		L : orthopoly1d
+		    Laguerre Polynomial.
+		
+		Notes
+		-----
+		The polynomials :math:`L_n` are orthogonal over :math:`[0,
+		\infty)` with weight function :math:`e^{-x}`.
+	**/
+	static public function laguerre(n:Dynamic, ?monic:Dynamic):Dynamic;
+	/**
+		Legendre polynomial.
+		
+		Defined to be the solution of
+		
+		.. math::
+		    \frac{d}{dx}\left[(1 - x^2)\frac{d}{dx}P_n(x)\right]
+		      + n(n + 1)P_n(x) = 0;
+		
+		:math:`P_n(x)` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
 		
 		Returns
 		-------
 		P : orthopoly1d
-		    The Legendre polynomial object
+		    Legendre polynomial.
+		
+		Notes
+		-----
+		The polynomials :math:`P_n` are orthogonal over :math:`[-1, 1]`
+		with weight function 1.
 		
 		Examples
 		--------
@@ -1284,6 +2018,8 @@ package scipy.special.orthogonal;
 		poly1d([ 2.5,  0. , -1.5,  0. ])
 	**/
 	static public function legendre(n:Dynamic, ?monic:Dynamic):Dynamic;
+	static public var newfun : Dynamic;
+	static public var oldfun : Dynamic;
 	/**
 		Gauss-Legendre quadrature.
 		
@@ -1318,7 +2054,7 @@ package scipy.special.orthogonal;
 	static public function p_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	static public var pi : Dynamic;
 	/**
-		poch(x1, x2[, out])
+		poch(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		poch(z, m)
 		
@@ -1366,6 +2102,533 @@ package scipy.special.orthogonal;
 	**/
 	static public function ps_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
+		Gauss-Chebyshev (first kind) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
+		the first kind, :math:`C_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-2, 2]` with weight function :math:`f(x) = 1/\sqrt{1 - (x/2)^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_chebyc(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Chebyshev (second kind) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
+		the second kind, :math:`S_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-2, 2]` with weight function :math:`f(x) = \sqrt{1 - (x/2)^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_chebys(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Chebyshev (first kind) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
+		the first kind, :math:`T_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function :math:`f(x) = 1/\sqrt{1 - x^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.chebyshev.chebgauss
+	**/
+	static public function roots_chebyt(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Chebyshev (second kind) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
+		the second kind, :math:`U_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function :math:`f(x) = \sqrt{1 - x^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_chebyu(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Gegenbauer quadrature.
+		
+		Computes the sample points and weights for Gauss-Gegenbauer quadrature.
+		The sample points are the roots of the n-th degree Gegenbauer polynomial,
+		:math:`C^{\alpha}_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function
+		:math:`f(x) = (1 - x^2)^{\alpha - 1/2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		alpha : float
+		    alpha must be > -0.5
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_gegenbauer(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-generalized Laguerre quadrature.
+		
+		Computes the sample points and weights for Gauss-generalized Laguerre
+		quadrature. The sample points are the roots of the n-th degree generalized
+		Laguerre polynomial, :math:`L^{\alpha}_n(x)`.  These sample points and
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
+		over the interval :math:`[0, \infty]` with weight function
+		:math:`f(x) = x^{\alpha} e^{-x}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		alpha : float
+		    alpha must be > -1
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_genlaguerre(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Hermite (physicst's) quadrature.
+		
+		Computes the sample points and weights for Gauss-Hermite quadrature.
+		The sample points are the roots of the n-th degree Hermite polynomial,
+		:math:`H_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		Notes
+		-----
+		For small n up to 150 a modified version of the Golub-Welsch
+		algorithm is used. Nodes are computed from the eigenvalue
+		problem and improved by one step of a Newton iteration.
+		The weights are computed from the well-known analytical formula.
+		
+		For n larger than 150 an optimal asymptotic algorithm is applied
+		which computes nodes and weights in a numerically stable manner.
+		The algorithm has linear runtime making computation for very
+		large n (several thousand or more) feasible.
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.hermite.hermgauss
+		roots_hermitenorm
+		
+		References
+		----------
+		.. [townsend.trogdon.olver-2014]
+		   Townsend, A. and Trogdon, T. and Olver, S. (2014)
+		   *Fast computation of Gauss quadrature nodes and
+		   weights on the whole real line*. :arXiv:`1410.5286`.
+		
+		.. [townsend.trogdon.olver-2015]
+		   Townsend, A. and Trogdon, T. and Olver, S. (2015)
+		   *Fast computation of Gauss quadrature nodes and
+		   weights on the whole real line*.
+		   IMA Journal of Numerical Analysis
+		   :doi:`10.1093/imanum/drv002`.
+	**/
+	static public function roots_hermite(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Hermite (statistician's) quadrature.
+		
+		Computes the sample points and weights for Gauss-Hermite quadrature.
+		The sample points are the roots of the n-th degree Hermite polynomial,
+		:math:`He_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2/2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		Notes
+		-----
+		For small n up to 150 a modified version of the Golub-Welsch
+		algorithm is used. Nodes are computed from the eigenvalue
+		problem and improved by one step of a Newton iteration.
+		The weights are computed from the well-known analytical formula.
+		
+		For n larger than 150 an optimal asymptotic algorithm is used
+		which computes nodes and weights in a numerical stable manner.
+		The algorithm has linear runtime making computation for very
+		large n (several thousand or more) feasible.
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.hermite_e.hermegauss
+	**/
+	static public function roots_hermitenorm(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Jacobi quadrature.
+		
+		Computes the sample points and weights for Gauss-Jacobi quadrature. The
+		sample points are the roots of the n-th degree Jacobi polynomial,
+		:math:`P^{\alpha, \beta}_n(x)`.  These sample points and weights
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
+		interval :math:`[-1, 1]` with weight function
+		:math:`f(x) = (1 - x)^{\alpha} (1 + x)^{\beta}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		alpha : float
+		    alpha must be > -1
+		beta : float
+		    beta must be > 0
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_jacobi(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Laguerre quadrature.
+		
+		Computes the sample points and weights for Gauss-Laguerre quadrature.
+		The sample points are the roots of the n-th degree Laguerre polynomial,
+		:math:`L_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[0, \infty]` with weight function :math:`f(x) = e^{-x}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.laguerre.laggauss
+	**/
+	static public function roots_laguerre(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Legendre quadrature.
+		
+		Computes the sample points and weights for Gauss-Legendre quadrature.
+		The sample points are the roots of the n-th degree Legendre polynomial
+		:math:`P_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.legendre.leggauss
+	**/
+	static public function roots_legendre(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Chebyshev (first kind, shifted) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree shifted Chebyshev
+		polynomial of the first kind, :math:`T_n(x)`.  These sample points and
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
+		over the interval :math:`[0, 1]` with weight function
+		:math:`f(x) = 1/\sqrt{x - x^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_sh_chebyt(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Chebyshev (second kind, shifted) quadrature.
+		
+		Computes the sample points and weights for Gauss-Chebyshev quadrature.
+		The sample points are the roots of the n-th degree shifted Chebyshev
+		polynomial of the second kind, :math:`U_n(x)`.  These sample points and
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
+		over the interval :math:`[0, 1]` with weight function
+		:math:`f(x) = \sqrt{x - x^2}`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_sh_chebyu(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Jacobi (shifted) quadrature.
+		
+		Computes the sample points and weights for Gauss-Jacobi (shifted)
+		quadrature. The sample points are the roots of the n-th degree shifted
+		Jacobi polynomial, :math:`G^{p,q}_n(x)`.  These sample points and weights
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
+		interval :math:`[0, 1]` with weight function
+		:math:`f(x) = (1 - x)^{p-q} x^{q-1}`
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		p1 : float
+		    (p1 - q1) must be > -1
+		q1 : float
+		    q1 must be > 0
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_sh_jacobi(n:Dynamic, p1:Dynamic, q1:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
+		Gauss-Legendre (shifted) quadrature.
+		
+		Computes the sample points and weights for Gauss-Legendre quadrature.
+		The sample points are the roots of the n-th degree shifted Legendre
+		polynomial :math:`P^*_n(x)`.  These sample points and weights correctly
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[0, 1]` with weight function :math:`f(x) = 1.0`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+	**/
+	static public function roots_sh_legendre(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
 		Gauss-Chebyshev (second kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
@@ -1397,28 +2660,118 @@ package scipy.special.orthogonal;
 	**/
 	static public function s_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Return nth order shifted Chebyshev polynomial of first kind, Tn(x).
-		Orthogonal over [0,1] with weight function (x-x**2)**(-1/2).
+		Shifted Chebyshev polynomial of the first kind.
+		
+		Defined as :math:`T^*_n(x) = T_n(2x - 1)` for :math:`T_n` the nth
+		Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		T : orthopoly1d
+		    Shifted Chebyshev polynomial of the first kind.
+		
+		Notes
+		-----
+		The polynomials :math:`T^*_n` are orthogonal over :math:`[0, 1]`
+		with weight function :math:`(x - x^2)^{-1/2}`.
 	**/
 	static public function sh_chebyt(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order shifted Chebyshev polynomial of second kind, Un(x).
-		Orthogonal over [0,1] with weight function (x-x**2)**(1/2).
+		Shifted Chebyshev polynomial of the second kind.
+		
+		Defined as :math:`U^*_n(x) = U_n(2x - 1)` for :math:`U_n` the nth
+		Chebyshev polynomial of the second kind.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		U : orthopoly1d
+		    Shifted Chebyshev polynomial of the second kind.
+		
+		Notes
+		-----
+		The polynomials :math:`U^*_n` are orthogonal over :math:`[0, 1]`
+		with weight function :math:`(x - x^2)^{1/2}`.
 	**/
 	static public function sh_chebyu(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Returns the nth order Jacobi polynomial, G_n(p,q,x)
-		orthogonal over [0,1] with weighting function
-		(1-x)**(p-q) (x)**(q-1) with p>q-1 and q > 0.
+		Shifted Jacobi polynomial.
+		
+		Defined by
+		
+		.. math::
+		
+		    G_n^{(p, q)}(x) 
+		      = \binom{2n + p - 1}{n}^{-1}P_n^{(p - q, q - 1)}(2x - 1),
+		
+		where :math:`P_n^{(\cdot, \cdot)}` is the nth Jacobi polynomial.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		p : float
+		    Parameter, must have :math:`p > q - 1`.
+		q : float
+		    Parameter, must be greater than 0.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		G : orthopoly1d
+		    Shifted Jacobi polynomial.
+		
+		Notes
+		-----
+		For fixed :math:`p, q`, the polynomials :math:`G_n^{(p, q)}` are
+		orthogonal over :math:`[0, 1]` with weight function :math:`(1 -
+		x)^{p - q}x^{q - 1}`.
 	**/
 	static public function sh_jacobi(n:Dynamic, p:Dynamic, q:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Returns the nth order shifted Legendre polynomial, P^*_n(x), orthogonal
-		over [0,1] with weighting function 1.
+		Shifted Legendre polynomial.
+		
+		Defined as :math:`P^*_n(x) = P_n(2x - 1)` for :math:`P_n` the nth
+		Legendre polynomial.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial.
+		monic : bool, optional
+		    If `True`, scale the leading coefficient to be 1. Default is
+		    `False`.
+		
+		Returns
+		-------
+		P : orthopoly1d
+		    Shifted Legendre polynomial.
+		
+		Notes
+		-----
+		The polynomials :math:`P^*_n` are orthogonal over :math:`[0, 1]`
+		with weight function 1.
 	**/
 	static public function sh_legendre(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -1426,6 +2779,17 @@ package scipy.special.orthogonal;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1474,7 +2838,7 @@ package scipy.special.orthogonal;
 	**/
 	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -1482,9 +2846,17 @@ package scipy.special.orthogonal;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------

@@ -32,6 +32,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function _fastCT(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _fastCopyAndTranspose(type:Dynamic, ?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _isEmpty2d(arr:Dynamic):Dynamic;
 	/**
 		Cast the type t to either double or cdouble.
 	**/
@@ -96,7 +97,7 @@ package numpy.linalg.linalg;
 	static public var _real_types_map : Dynamic;
 	static public function _to_native_byte_order(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -104,6 +105,17 @@ package numpy.linalg.linalg;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -131,13 +143,13 @@ package numpy.linalg.linalg;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		add(x1, x2[, out])
+		add(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Add arguments element-wise.
 		
@@ -147,6 +159,17 @@ package numpy.linalg.linalg;
 		    The arrays to be added.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -197,7 +220,7 @@ package numpy.linalg.linalg;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
@@ -253,7 +276,7 @@ package numpy.linalg.linalg;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -265,7 +288,7 @@ package numpy.linalg.linalg;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -337,7 +360,7 @@ package numpy.linalg.linalg;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -349,7 +372,7 @@ package numpy.linalg.linalg;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -411,35 +434,43 @@ package numpy.linalg.linalg;
 	**/
 	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -455,7 +486,13 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -569,8 +606,8 @@ package numpy.linalg.linalg;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -617,7 +654,6 @@ package numpy.linalg.linalg;
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
-	static public function asbytes(s:Dynamic):Dynamic;
 	/**
 		Return an array converted to a float type.
 		
@@ -657,7 +693,7 @@ package numpy.linalg.linalg;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -1083,6 +1119,10 @@ package numpy.linalg.linalg;
 		UPLO : {'L', 'U'}, optional
 		    Specifies whether the calculation is done with the lower triangular
 		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -1153,6 +1193,27 @@ package numpy.linalg.linalg;
 		array([ 0.17157288,  5.82842712])
 		matrix([[-0.92387953+0.j        , -0.38268343+0.j        ],
 		        [ 0.00000000+0.38268343j,  0.00000000-0.92387953j]])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eig() with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa, va = LA.eigh(a)
+		>>> wb, vb = LA.eig(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
+		>>> va; vb
+		array([[-0.44721360-0.j        , -0.89442719+0.j        ],
+		       [ 0.00000000+0.89442719j,  0.00000000-0.4472136j ]])
+		array([[ 0.89442719+0.j       ,  0.00000000-0.4472136j],
+		       [ 0.00000000-0.4472136j,  0.89442719+0.j       ]])
 	**/
 	static public function eigh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
@@ -1232,8 +1293,12 @@ package numpy.linalg.linalg;
 		    A complex- or real-valued matrix whose eigenvalues are to be
 		    computed.
 		UPLO : {'L', 'U'}, optional
-		    Same as `lower`, with 'L' for lower and 'U' for upper triangular.
-		    Deprecated.
+		    Specifies whether the calculation is done with the lower triangular
+		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -1269,6 +1334,23 @@ package numpy.linalg.linalg;
 		>>> a = np.array([[1, -2j], [2j, 5]])
 		>>> LA.eigvalsh(a)
 		array([ 0.17157288,  5.82842712])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eigvals()
+		>>> # with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa = LA.eigvalsh(a)
+		>>> wb = LA.eigvals(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
 	**/
 	static public function eigvalsh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
@@ -1384,7 +1466,7 @@ package numpy.linalg.linalg;
 		Return the current object that defines floating-point error handling.
 		
 		The error object contains all information that defines the error handling
-		behavior in Numpy. `geterrobj` is used internally by the other
+		behavior in NumPy. `geterrobj` is used internally by the other
 		functions that get and set error handling behavior (`geterr`, `seterr`,
 		`geterrcall`, `seterrcall`).
 		
@@ -1498,7 +1580,7 @@ package numpy.linalg.linalg;
 	static public function inv(a:Dynamic):Dynamic;
 	static public function isComplexType(t:Dynamic):Dynamic;
 	/**
-		isfinite(x[, out])
+		isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for finiteness (not infinity or not Not a Number).
 		
@@ -1508,9 +1590,17 @@ package numpy.linalg.linalg;
 		----------
 		x : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1534,7 +1624,7 @@ package numpy.linalg.linalg;
 		Not a Number, positive infinity and negative infinity are considered
 		to be non-finite.
 		
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Also that positive infinity is not equivalent to negative infinity. But
 		infinity is equivalent to positive infinity.  Errors result if the
@@ -1608,8 +1698,9 @@ package numpy.linalg.linalg;
 		    of `b`.
 		rcond : float, optional
 		    Cut-off ratio for small singular values of `a`.
-		    Singular values are set to zero if they are smaller than `rcond`
-		    times the largest singular value of `a`.
+		    For the purposes of rank determination, singular values are treated
+		    as zero if they are smaller than `rcond` times the largest singular
+		    value of `a`.
 		
 		Returns
 		-------
@@ -1727,7 +1818,7 @@ package numpy.linalg.linalg;
 		>>> q = np.zeros((4, 4))
 		>>> q[0:2, 0:2] = -i
 		>>> q[2:4, 2:4] = i
-		>>> q # one of the three quarternion units not equal to 1
+		>>> q # one of the three quaternion units not equal to 1
 		array([[ 0., -1.,  0.,  0.],
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
@@ -1747,8 +1838,8 @@ package numpy.linalg.linalg;
 		
 		Parameters
 		----------
-		M : {(M,), (M, N)} array_like
-		    array of <=2 dimensions
+		M : {(M,), (..., M, N)} array_like
+		    input vector or stack of matrices
 		tol : {None, float}, optional
 		   threshold below which SVD values are considered zero. If `tol` is
 		   None, and ``S`` is an array with singular values for `M`, and
@@ -1816,7 +1907,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function matrix_rank(M:Dynamic, ?tol:Dynamic):Dynamic;
 	/**
-		maximum(x1, x2[, out])
+		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -1832,6 +1923,17 @@ package numpy.linalg.linalg;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1931,17 +2033,16 @@ package numpy.linalg.linalg;
 		>>> # or
 		>>> A.dot(B).dot(C).dot(D)
 		
-		
-		Example: multiplication costs of different parenthesizations
-		------------------------------------------------------------
-		
+		Notes
+		-----
 		The cost for a matrix multiplication can be calculated with the
 		following function::
 		
-		    def cost(A, B): return A.shape[0] * A.shape[1] * B.shape[1]
+		    def cost(A, B):
+		        return A.shape[0] * A.shape[1] * B.shape[1]
 		
 		Let's assume we have three matrices
-		:math:`A_{10x100}, B_{100x5}, C_{5x50}$`.
+		:math:`A_{10x100}, B_{100x5}, C_{5x50}`.
 		
 		The costs for the two different parenthesizations are as follows::
 		
@@ -1950,7 +2051,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function multi_dot(arrays:Dynamic):numpy.Ndarray;
 	/**
-		multiply(x1, x2[, out])
+		multiply(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Multiply arguments element-wise.
 		
@@ -1958,6 +2059,17 @@ package numpy.linalg.linalg;
 		----------
 		x1, x2 : array_like
 		    Input arrays to be multiplied.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2120,6 +2232,97 @@ package numpy.linalg.linalg;
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return a new array of given shape and type, filled with ones.
+		
+		Parameters
+		----------
+		shape : int or sequence of ints
+		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
+		dtype : data-type, optional
+		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional
+		    Whether to store multidimensional data in C- or Fortran-contiguous
+		    (row- or column-wise) order in memory.
+		
+		Returns
+		-------
+		out : ndarray
+		    Array of ones with the given shape, dtype, and order.
+		
+		See Also
+		--------
+		zeros, ones_like
+		
+		Examples
+		--------
+		>>> np.ones(5)
+		array([ 1.,  1.,  1.,  1.,  1.])
+		
+		>>> np.ones((5,), dtype=np.int)
+		array([1, 1, 1, 1, 1])
+		
+		>>> np.ones((2, 1))
+		array([[ 1.],
+		       [ 1.]])
+		
+		>>> s = (2,2)
+		>>> np.ones(s)
+		array([[ 1.,  1.],
+		       [ 1.,  1.]])
+	**/
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
+	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
 		Calculate the generalized inverse of a matrix using its
@@ -2252,7 +2455,7 @@ package numpy.linalg.linalg;
 		`a` is of type `matrix`, all the return values will be matrices too.
 		
 		New 'reduced', 'complete', and 'raw' options for mode were added in
-		Numpy 1.8 and the old option 'full' was made an alias of 'reduced'.  In
+		NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In
 		addition the options 'full' and 'economic' were deprecated.  Because
 		'full' was the previous default and 'reduced' is the new default,
 		backward compatibility can be maintained by letting `mode` default.
@@ -2424,8 +2627,8 @@ package numpy.linalg.linalg;
 		Returns
 		-------
 		res : ndarray
-		    For Numpy >= 1.10 a view of `a` is always returned. For earlier
-		    Numpy versions a view of `a` is returned only if the order of the
+		    For NumPy >= 1.10.0 a view of `a` is always returned. For earlier
+		    NumPy versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
 		See Also
@@ -2515,7 +2718,7 @@ package numpy.linalg.linalg;
 		Broadcasting rules apply, see the `numpy.linalg` documentation for
 		details.
 		
-		.. versionadded:: 1.6.0.
+		.. versionadded:: 1.6.0
 		
 		The determinant is computed via LU factorization using the LAPACK
 		routine z/dgetrf.
@@ -2611,7 +2814,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function solve(a:Dynamic, b:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -2619,9 +2822,17 @@ package numpy.linalg.linalg;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2688,7 +2899,7 @@ package numpy.linalg.linalg;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
@@ -2854,7 +3065,7 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		tensordot, tensorsolve
+		numpy.tensordot, tensorsolve
 		
 		Examples
 		--------
@@ -2882,7 +3093,7 @@ package numpy.linalg.linalg;
 		
 		It is assumed that all indices of `x` are summed over in the product,
 		together with the rightmost indices of `a`, as is done in, for example,
-		``tensordot(a, x, axes=len(b.shape))``.
+		``tensordot(a, x, axes=b.ndim)``.
 		
 		Parameters
 		----------
@@ -2909,7 +3120,7 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		tensordot, tensorinv, einsum
+		numpy.tensordot, tensorinv, numpy.einsum
 		
 		Examples
 		--------

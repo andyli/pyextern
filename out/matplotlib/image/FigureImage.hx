@@ -54,6 +54,13 @@ package matplotlib.image;
 	**/
 	public function new(fig:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?offsetx:Dynamic, ?offsety:Dynamic, ?origin:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -109,6 +116,45 @@ package matplotlib.image;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		return True if the image is better to be drawn unsampled.
+		The derived class needs to override it.
+	**/
+	public function _check_unsampled_image(renderer:Dynamic):Dynamic;
+	/**
+		draw unsampled image. The renderer should support a draw_image method
+		with scale parameter.
+	**/
+	public function _draw_unsampled_image(renderer:Dynamic, gc:Dynamic):Dynamic;
+	static public var _interpd : Dynamic;
+	static public var _interpdr : Dynamic;
+	static public var _interpolation : Dynamic;
+	/**
+		Normalize, rescale and color the image `A` from the given
+		in_bbox (in data space), to the given out_bbox (in pixel
+		space) clipped to the given clip_bbox (also in pixel space),
+		and magnified by the magnification factor.
+		
+		`A` may be a greyscale image (MxN) with a dtype of `float32`,
+		`float64`, `uint16` or `uint8`, or an RGBA image (MxNx4) with
+		a dtype of `float32`, `float64`, or `uint8`.
+		
+		If `unsampled` is True, the image will not be scaled, but an
+		appropriate affine transformation will be returned instead.
+		
+		If `round_to_pixel_border` is True, the output image size will
+		be rounded to the nearest pixel boundary.  This makes the
+		images align correctly with the axes.  It should not be used
+		in cases where you want exact scaling, however, such as
+		FigureImage.
+		
+		Returns the resulting (image, x, y, trans), where (x, y) is
+		the upper left corner of the result in pixel space, and
+		`trans` is the affine transformation from the image to pixel
+		space.
+	**/
+	public function _make_image(A:Dynamic, in_bbox:Dynamic, out_bbox:Dynamic, clip_bbox:Dynamic, ?magnification:Dynamic, ?unsampled:Dynamic, ?round_to_pixel_border:Dynamic):Dynamic;
+	static public var _prop_order : Dynamic;
+	/**
 		Set the clip properly for the gc
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
@@ -142,8 +188,12 @@ package matplotlib.image;
 	**/
 	public var axes : Dynamic;
 	/**
-		Call this whenever the mappable is changed to notify all the
-		callbackSM listeners to the 'changed' signal
+		Returns `True` if the image can be composited with its neighbors.
+	**/
+	public function can_composite():Dynamic;
+	/**
+		Call this whenever the mappable is changed so observers can
+		update state
 	**/
 	public function changed():Dynamic;
 	/**
@@ -257,9 +307,25 @@ package matplotlib.image;
 	**/
 	public function get_figure():Dynamic;
 	/**
+		Return the filternorm setting
+	**/
+	public function get_filternorm():Dynamic;
+	/**
+		return the filterrad setting
+	**/
+	public function get_filterrad():Dynamic;
+	/**
 		Returns the group id
 	**/
 	public function get_gid():Dynamic;
+	/**
+		Return the interpolation method the image uses when resizing.
+		
+		One of 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36',
+		'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom',
+		'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos', or 'none'.
+	**/
+	public function get_interpolation():Dynamic;
 	/**
 		Get the label used for this artist in the legend.
 	**/
@@ -273,6 +339,10 @@ package matplotlib.image;
 		return True if the artist is to be rasterized
 	**/
 	public function get_rasterized():Dynamic;
+	/**
+		Return the image resample boolean
+	**/
+	public function get_resample():Dynamic;
 	/**
 		Get the numrows, numcols of the input image
 	**/
@@ -366,7 +436,8 @@ package matplotlib.image;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
-	public function make_image(?magnification:Dynamic):Dynamic;
+	static public var iterpnames : Dynamic;
+	public function make_image(renderer:Dynamic, ?magnification:Dynamic, ?unsampled:Dynamic):Dynamic;
 	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -374,9 +445,7 @@ package matplotlib.image;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -415,9 +484,7 @@ package matplotlib.image;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -426,9 +493,9 @@ package matplotlib.image;
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
 		Set the alpha value used for blending - not supported on
-		all backends.
+		all backends
 		
-		ACCEPTS: float (0.0 transparent through 1.0 opaque)
+		ACCEPTS: float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
@@ -438,7 +505,9 @@ package matplotlib.image;
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Deprecated; use set_data for consistency with other image types.
+		Retained for backwards compatibility - use set_data instead
+		
+		ACCEPTS: numpy array A or PIL Image
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
@@ -527,11 +596,39 @@ package matplotlib.image;
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
+		Set whether the resize filter norms the weights -- see
+		help for imshow
+		
+		ACCEPTS: 0 or 1
+	**/
+	public function set_filternorm(filternorm:Dynamic):Dynamic;
+	/**
+		Set the resize filter radius only applicable to some
+		interpolation schemes -- see help for imshow
+		
+		ACCEPTS: positive float
+	**/
+	public function set_filterrad(filterrad:Dynamic):Dynamic;
+	/**
 		Sets the (group) id for the artist
 		
 		ACCEPTS: an id string
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
+	/**
+		Set the interpolation method the image uses when resizing.
+		
+		if None, use a value from rc setting. If 'none', the image is
+		shown as is without interpolating. 'none' is only supported in
+		agg, ps and pdf backends and will fall back to 'nearest' mode
+		for other backends.
+		
+		ACCEPTS: ['nearest' | 'bilinear' | 'bicubic' | 'spline16' |
+		  'spline36' | 'hanning' | 'hamming' | 'hermite' | 'kaiser' |
+		  'quadric' | 'catrom' | 'gaussian' | 'bessel' | 'mitchell' |
+		  'sinc' | 'lanczos' | 'none' |]
+	**/
+	public function set_interpolation(s:Dynamic):Dynamic;
 	/**
 		Set the label to *s* for auto legend.
 		
@@ -587,6 +684,12 @@ package matplotlib.image;
 		ACCEPTS: [True | False | None]
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
+	/**
+		Set whether or not image resampling is used
+		
+		ACCEPTS: True|False
+	**/
+	public function set_resample(v:Dynamic):Dynamic;
 	/**
 		Sets the sketch parameters.
 		
@@ -652,6 +755,25 @@ package matplotlib.image;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Return a normalized rgba array corresponding to *x*.
 		
 		In the normal case, *x* is a 1-D or 2-D sequence of scalars, and
@@ -673,12 +795,15 @@ package matplotlib.image;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

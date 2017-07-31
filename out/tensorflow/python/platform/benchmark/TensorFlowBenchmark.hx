@@ -50,6 +50,13 @@ package tensorflow.python.platform.benchmark;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -107,7 +114,7 @@ package tensorflow.python.platform.benchmark;
 	/**
 		Returns full name of class and method calling report_benchmark.
 	**/
-	public function _get_name(overwrite_name:Dynamic):Dynamic;
+	public function _get_name(?overwrite_name:Dynamic):Dynamic;
 	static public function is_abstract():Dynamic;
 	/**
 		Report a benchmark.
@@ -137,10 +144,19 @@ package tensorflow.python.platform.benchmark;
 		    store the trace of iteration in the benchmark report.
 		    The trace will be stored as a string in Google Chrome trace format
 		    in the extras field "full_trace_chrome_format".
+		  store_memory_usage: Boolean, whether to run an extra
+		    untimed iteration, calculate memory usage, and store that in extras
+		    fields.
 		  name: (optional) Override the BenchmarkEntry name with `name`.
 		    Otherwise it is inferred from the top-level method name.
 		  extras: (optional) Dict mapping string keys to additional benchmark info.
 		    Values may be either floats or values that are convertible to strings.
+		  mbs: (optional) The number of megabytes moved by this op, used to
+		    calculate the ops throughput.
+		
+		Returns:
+		  A `dict` containing the key-value pairs that were passed to
+		  `report_benchmark`.
 	**/
-	public function run_op_benchmark(sess:Dynamic, op_or_tensor:Dynamic, ?feed_dict:Dynamic, ?burn_iters:Dynamic, ?min_iters:Dynamic, ?store_trace:Dynamic, ?name:Dynamic, ?extras:Dynamic):Dynamic;
+	public function run_op_benchmark(sess:Dynamic, op_or_tensor:Dynamic, ?feed_dict:Dynamic, ?burn_iters:Dynamic, ?min_iters:Dynamic, ?store_trace:Dynamic, ?store_memory_usage:Dynamic, ?name:Dynamic, ?extras:Dynamic, ?mbs:Dynamic):Dynamic;
 }

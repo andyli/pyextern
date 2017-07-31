@@ -258,19 +258,40 @@ package scipy.sparse.linalg.matfuncs;
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Solve the equation ``a x = b`` for ``x``.
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix.
-		b : (M,) or (M, N) array_like
-		    Right-hand side matrix in ``a x = b``.
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
 		sym_pos : bool, optional
-		    Assume `a` is symmetric and positive definite.
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
 		lower : bool, optional
-		    Use only data contained in the lower triangle of `a`, if `sym_pos` is
-		    true.  Default is to use upper triangle.
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
 		overwrite_a : bool, optional
 		    Allow overwriting data in `a` (may enhance performance).
 		    Default is False.
@@ -281,19 +302,25 @@ package scipy.sparse.linalg.matfuncs;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
+		    solved (only taken into account for ``'gen'``).
 		
 		Returns
 		-------
-		x : (M,) or (M, N) ndarray
-		    Solution to the system ``a x = b``.  Shape of the return matches the
-		    shape of `b`.
+		x : (N, NRHS) ndarray
+		    The solution array.
 		
 		Raises
 		------
-		LinAlgError
-		    If `a` is singular.
 		ValueError
-		    If `a` is not square
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		RuntimeWarning
+		    If an ill-conditioned input a is detected.
 		
 		Examples
 		--------
@@ -307,8 +334,19 @@ package scipy.sparse.linalg.matfuncs;
 		array([ 2., -2.,  9.])
 		>>> np.dot(a, x) == b
 		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		LAPACK respectively.
 	**/
-	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Solve the equation `a x = b` for `x`, assuming a is a triangular matrix.
 		

@@ -16,7 +16,7 @@ package importlib.util;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,6 +61,13 @@ package importlib.util;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(loader:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +128,11 @@ package importlib.util;
 	static public var _abc_negative_cache_version : Dynamic;
 	static public var _abc_registry : Dynamic;
 	/**
-		Create a module which can have its __class__ manipulated.
+		Return a module to initialize and into which to load.
+		
+		This method should raise ImportError if anything prevents it
+		from creating a new module.  It may return None to indicate
+		that the spec should create the new module.
 	**/
 	public function create_module(spec:Dynamic):Dynamic;
 	/**

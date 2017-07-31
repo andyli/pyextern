@@ -97,6 +97,13 @@ package pandas.compat.pickle_compat;
 	**/
 	public function new(file:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -152,7 +159,7 @@ package pandas.compat.pickle_compat;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _decode_string(value:Dynamic):Dynamic;
-	public function _instantiate(klass:Dynamic, k:Dynamic):Dynamic;
+	public function _instantiate(klass:Dynamic, args:Dynamic):Dynamic;
 	static public var dispatch : Dynamic;
 	public function find_class(module:Dynamic, name:Dynamic):Dynamic;
 	public function get_extension(code:Dynamic):Dynamic;
@@ -227,6 +234,6 @@ package pandas.compat.pickle_compat;
 	public function load_tuple2():Dynamic;
 	public function load_tuple3():Dynamic;
 	public function load_unicode():Dynamic;
-	public function marker():Dynamic;
 	public function persistent_load(pid:Dynamic):Dynamic;
+	public function pop_mark():Dynamic;
 }

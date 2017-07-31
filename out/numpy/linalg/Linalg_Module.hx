@@ -396,6 +396,10 @@ package numpy.linalg;
 		UPLO : {'L', 'U'}, optional
 		    Specifies whether the calculation is done with the lower triangular
 		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -466,6 +470,27 @@ package numpy.linalg;
 		array([ 0.17157288,  5.82842712])
 		matrix([[-0.92387953+0.j        , -0.38268343+0.j        ],
 		        [ 0.00000000+0.38268343j,  0.00000000-0.92387953j]])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eig() with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa, va = LA.eigh(a)
+		>>> wb, vb = LA.eig(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
+		>>> va; vb
+		array([[-0.44721360-0.j        , -0.89442719+0.j        ],
+		       [ 0.00000000+0.89442719j,  0.00000000-0.4472136j ]])
+		array([[ 0.89442719+0.j       ,  0.00000000-0.4472136j],
+		       [ 0.00000000-0.4472136j,  0.89442719+0.j       ]])
 	**/
 	static public function eigh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
@@ -545,8 +570,12 @@ package numpy.linalg;
 		    A complex- or real-valued matrix whose eigenvalues are to be
 		    computed.
 		UPLO : {'L', 'U'}, optional
-		    Same as `lower`, with 'L' for lower and 'U' for upper triangular.
-		    Deprecated.
+		    Specifies whether the calculation is done with the lower triangular
+		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -582,6 +611,23 @@ package numpy.linalg;
 		>>> a = np.array([[1, -2j], [2j, 5]])
 		>>> LA.eigvalsh(a)
 		array([ 0.17157288,  5.82842712])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eigvals()
+		>>> # with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa = LA.eigvalsh(a)
+		>>> wb = LA.eigvals(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
 	**/
 	static public function eigvalsh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
@@ -661,8 +707,9 @@ package numpy.linalg;
 		    of `b`.
 		rcond : float, optional
 		    Cut-off ratio for small singular values of `a`.
-		    Singular values are set to zero if they are smaller than `rcond`
-		    times the largest singular value of `a`.
+		    For the purposes of rank determination, singular values are treated
+		    as zero if they are smaller than `rcond` times the largest singular
+		    value of `a`.
 		
 		Returns
 		-------
@@ -780,7 +827,7 @@ package numpy.linalg;
 		>>> q = np.zeros((4, 4))
 		>>> q[0:2, 0:2] = -i
 		>>> q[2:4, 2:4] = i
-		>>> q # one of the three quarternion units not equal to 1
+		>>> q # one of the three quaternion units not equal to 1
 		array([[ 0., -1.,  0.,  0.],
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
@@ -800,8 +847,8 @@ package numpy.linalg;
 		
 		Parameters
 		----------
-		M : {(M,), (M, N)} array_like
-		    array of <=2 dimensions
+		M : {(M,), (..., M, N)} array_like
+		    input vector or stack of matrices
 		tol : {None, float}, optional
 		   threshold below which SVD values are considered zero. If `tol` is
 		   None, and ``S`` is an array with singular values for `M`, and
@@ -926,17 +973,16 @@ package numpy.linalg;
 		>>> # or
 		>>> A.dot(B).dot(C).dot(D)
 		
-		
-		Example: multiplication costs of different parenthesizations
-		------------------------------------------------------------
-		
+		Notes
+		-----
 		The cost for a matrix multiplication can be calculated with the
 		following function::
 		
-		    def cost(A, B): return A.shape[0] * A.shape[1] * B.shape[1]
+		    def cost(A, B):
+		        return A.shape[0] * A.shape[1] * B.shape[1]
 		
 		Let's assume we have three matrices
-		:math:`A_{10x100}, B_{100x5}, C_{5x50}$`.
+		:math:`A_{10x100}, B_{100x5}, C_{5x50}`.
 		
 		The costs for the two different parenthesizations are as follows::
 		
@@ -1205,7 +1251,7 @@ package numpy.linalg;
 		`a` is of type `matrix`, all the return values will be matrices too.
 		
 		New 'reduced', 'complete', and 'raw' options for mode were added in
-		Numpy 1.8 and the old option 'full' was made an alias of 'reduced'.  In
+		NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In
 		addition the options 'full' and 'economic' were deprecated.  Because
 		'full' was the previous default and 'reduced' is the new default,
 		backward compatibility can be maintained by letting `mode` default.
@@ -1296,7 +1342,7 @@ package numpy.linalg;
 		Broadcasting rules apply, see the `numpy.linalg` documentation for
 		details.
 		
-		.. versionadded:: 1.6.0.
+		.. versionadded:: 1.6.0
 		
 		The determinant is computed via LU factorization using the LAPACK
 		routine z/dgetrf.
@@ -1502,7 +1548,7 @@ package numpy.linalg;
 		
 		See Also
 		--------
-		tensordot, tensorsolve
+		numpy.tensordot, tensorsolve
 		
 		Examples
 		--------
@@ -1530,7 +1576,7 @@ package numpy.linalg;
 		
 		It is assumed that all indices of `x` are summed over in the product,
 		together with the rightmost indices of `a`, as is done in, for example,
-		``tensordot(a, x, axes=len(b.shape))``.
+		``tensordot(a, x, axes=b.ndim)``.
 		
 		Parameters
 		----------
@@ -1557,7 +1603,7 @@ package numpy.linalg;
 		
 		See Also
 		--------
-		tensordot, tensorinv, einsum
+		numpy.tensordot, tensorinv, numpy.einsum
 		
 		Examples
 		--------
@@ -1596,12 +1642,14 @@ package numpy.linalg;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

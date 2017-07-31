@@ -36,9 +36,9 @@ package tensorflow.contrib.framework.python.ops.arg_scope;
 		
 		Args:
 		  list_ops_or_scope: List or tuple of operations to set argument scope for or
-		    a dictionary containg the current scope. When list_ops_or_scope is a dict,
-		    kwargs must be empty. When list_ops_or_scope is a list or tuple, then
-		    every op in it need to be decorated with @add_arg_scope to work.
+		    a dictionary containing the current scope. When list_ops_or_scope is a
+		    dict, kwargs must be empty. When list_ops_or_scope is a list or tuple,
+		    then every op in it need to be decorated with @add_arg_scope to work.
 		  **kwargs: keyword=value that will define the defaults for each op in
 		            list_ops. All the ops need to accept the given set of arguments.
 		

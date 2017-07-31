@@ -66,7 +66,7 @@ package tensorflow.python.framework.op_def_library;
 		  single data structure implied by `structure[0]`.
 	**/
 	static public function _Restructure(l:Dynamic, structure:Dynamic):Dynamic;
-	static public function _SatisfiesTypeConstraint(dtype:Dynamic, attr_def:Dynamic):Dynamic;
+	static public function _SatisfiesTypeConstraint(dtype:Dynamic, attr_def:Dynamic, param_name:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

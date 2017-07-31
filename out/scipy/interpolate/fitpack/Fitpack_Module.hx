@@ -10,213 +10,7 @@ package scipy.interpolate.fitpack;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _curfit_cache : Dynamic;
-	static public var _iermess : Dynamic;
-	static public var _iermess2 : Dynamic;
-	/**
-		Cast the value to an intc and raise an OverflowError if the value
-		cannot fit.
-	**/
-	static public function _intc_overflow(x:Dynamic, ?msg:Dynamic):Dynamic;
-	static public var _parcur_cache : Dynamic;
-	static public var _surfit_cache : Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
-		
-		Create an array.
-		
-		Parameters
-		----------
-		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
-		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
-		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
-		subok : bool, optional
-		    If True, then sub-classes will be passed-through, otherwise
-		    the returned array will be forced to be a base-class array (default).
-		ndmin : int, optional
-		    Specifies the minimum number of dimensions that the resulting
-		    array should have.  Ones will be pre-pended to the shape as
-		    needed to meet this requirement.
-		
-		Returns
-		-------
-		out : ndarray
-		    An array object satisfying the specified requirements.
-		
-		See Also
-		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
-		
-		Examples
-		--------
-		>>> np.array([1, 2, 3])
-		array([1, 2, 3])
-		
-		Upcasting:
-		
-		>>> np.array([1, 2, 3.0])
-		array([ 1.,  2.,  3.])
-		
-		More than one dimension:
-		
-		>>> np.array([[1, 2], [3, 4]])
-		array([[1, 2],
-		       [3, 4]])
-		
-		Minimum dimensions 2:
-		
-		>>> np.array([1, 2, 3], ndmin=2)
-		array([[1, 2, 3]])
-		
-		Type provided:
-		
-		>>> np.array([1, 2, 3], dtype=complex)
-		array([ 1.+0.j,  2.+0.j,  3.+0.j])
-		
-		Data-type consisting of more than one element:
-		
-		>>> x = np.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])
-		>>> x['a']
-		array([1, 3])
-		
-		Creating an array from sub-classes:
-		
-		>>> np.array(np.mat('1 2; 3 4'))
-		array([[1, 2],
-		       [3, 4]])
-		
-		>>> np.array(np.mat('1 2; 3 4'), subok=True)
-		matrix([[1, 2],
-		        [3, 4]])
-	**/
-	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		Convert inputs to arrays with at least one dimension.
-		
-		Scalar inputs are converted to 1-dimensional arrays, whilst
-		higher-dimensional inputs are preserved.
-		
-		Parameters
-		----------
-		arys1, arys2, ... : array_like
-		    One or more input arrays.
-		
-		Returns
-		-------
-		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
-		    Copies are made only if necessary.
-		
-		See Also
-		--------
-		atleast_2d, atleast_3d
-		
-		Examples
-		--------
-		>>> np.atleast_1d(1.0)
-		array([ 1.])
-		
-		>>> x = np.arange(9.0).reshape(3,3)
-		>>> np.atleast_1d(x)
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4.,  5.],
-		       [ 6.,  7.,  8.]])
-		>>> np.atleast_1d(x) is x
-		True
-		
-		>>> np.atleast_1d(1, [3, 4])
-		[array([1]), array([3, 4])]
-	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Evaluate a bivariate B-spline and its derivatives.
 		
@@ -372,50 +166,6 @@ package scipy.interpolate.fitpack;
 	static public function dblint(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic, tck:Dynamic):Float;
 	static public var division : Dynamic;
 	/**
-		empty(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, without initializing entries.
-		
-		Parameters
-		----------
-		shape : int or tuple of int
-		    Shape of the empty array
-		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
-		    Whether to store multi-dimensional data in row-major
-		    (C-style) or column-major (Fortran-style) order in
-		    memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
-		    order.  Object arrays will be initialized to None.
-		
-		See Also
-		--------
-		empty_like, zeros, ones
-		
-		Notes
-		-----
-		`empty`, unlike `zeros`, does not set the array values to zero,
-		and may therefore be marginally faster.  On the other hand, it requires
-		the user to manually set all the values in the array, and should be
-		used with caution.
-		
-		Examples
-		--------
-		>>> np.empty([2, 2])
-		array([[ -9.74499359e+001,   6.69583040e-309],
-		       [  2.13182611e-314,   3.06959433e-309]])         #random
-		
-		>>> np.empty([2, 2], dtype=int)
-		array([[-1073741821, -1067949133],
-		       [  496041986,    19249760]])                     #random
-	**/
-	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Insert knots into a B-spline.
 		
 		Given the knots and coefficients of a B-spline representation, create a
@@ -427,10 +177,10 @@ package scipy.interpolate.fitpack;
 		x (u) : array_like
 		    A 1-D point at which to insert a new knot(s).  If `tck` was returned
 		    from ``splprep``, then the parameter values, u should be given.
-		tck : tuple
-		    A tuple (t,c,k) returned by ``splrep`` or ``splprep`` containing
-		    the vector of knots, the B-spline coefficients,
-		    and the degree of the spline.
+		tck : a `BSpline` instance or a tuple
+		    If tuple, then it is expected to be a tuple (t,c,k) containing
+		    the vector of knots, the B-spline coefficients, and the degree of
+		    the spline.
 		m : int, optional
 		    The number of times to insert the given knot (its multiplicity).
 		    Default is 1.
@@ -439,17 +189,21 @@ package scipy.interpolate.fitpack;
 		
 		Returns
 		-------
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
-		    coefficients, and the degree of the new spline.
+		BSpline instance or a tuple
+		    A new B-spline with knots t, coefficients c, and degree k.
 		    ``t(k+1) <= x <= t(n-k)``, where k is the degree of the spline.
 		    In case of a periodic spline (``per != 0``) there must be
 		    either at least k interior knots t(j) satisfying ``t(k+1)<t(j)<=x``
 		    or at least k interior knots t(j) satisfying ``x<=t(j)<t(n-k)``.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		Notes
 		-----
 		Based on algorithms from [1]_ and [2]_.
+		
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
 		
 		References
 		----------
@@ -458,150 +212,8 @@ package scipy.interpolate.fitpack;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines, Monographs on
 		    Numerical Analysis", Oxford University Press, 1993.
 	**/
-	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):python.Tuple<Dynamic>;
-	/**
-		Return a new array of given shape and type, filled with ones.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of ones with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros, ones_like
-		
-		Examples
-		--------
-		>>> np.ones(5)
-		array([ 1.,  1.,  1.,  1.,  1.])
-		
-		>>> np.ones((5,), dtype=np.int)
-		array([1, 1, 1, 1, 1])
-		
-		>>> np.ones((2, 1))
-		array([[ 1.],
-		       [ 1.]])
-		
-		>>> s = (2,2)
-		>>> np.ones(s)
-		array([[ 1.,  1.],
-		       [ 1.,  1.]])
-	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Return a contiguous flattened array.
-		
-		A 1-D array, containing the elements of the input, is returned.  A copy is
-		made only if needed.
-		
-		As of NumPy 1.10, the returned array will have the same type as the input
-		array. (for example, a masked array will be returned for a masked array
-		input)
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.  The elements in `a` are read in the order specified by
-		    `order`, and packed as a 1-D array.
-		order : {'C','F', 'A', 'K'}, optional
-		
-		    The elements of `a` are read using this index order. 'C' means
-		    to index the elements in row-major, C-style order,
-		    with the last axis index changing fastest, back to the first
-		    axis index changing slowest.  'F' means to index the elements
-		    in column-major, Fortran-style order, with the
-		    first index changing fastest, and the last index changing
-		    slowest. Note that the 'C' and 'F' options take no account of
-		    the memory layout of the underlying array, and only refer to
-		    the order of axis indexing.  'A' means to read the elements in
-		    Fortran-like index order if `a` is Fortran *contiguous* in
-		    memory, C-like order otherwise.  'K' means to read the
-		    elements in the order they occur in memory, except for
-		    reversing the data when strides are negative.  By default, 'C'
-		    index order is used.
-		
-		Returns
-		-------
-		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
-		
-		See Also
-		--------
-		ndarray.flat : 1-D iterator over an array.
-		ndarray.flatten : 1-D array copy of the elements of an array
-		                  in row-major order.
-		ndarray.reshape : Change the shape of an array without changing its data.
-		
-		Notes
-		-----
-		In row-major, C-style order, in two dimensions, the row index
-		varies the slowest, and the column index the quickest.  This can
-		be generalized to multiple dimensions, where row-major order
-		implies that the index along the first axis varies slowest, and
-		the index along the last quickest.  The opposite holds for
-		column-major, Fortran-style index ordering.
-		
-		When a view is desired in as many cases as possible, ``arr.reshape(-1)``
-		may be preferable.
-		
-		Examples
-		--------
-		It is equivalent to ``reshape(-1, order=order)``.
-		
-		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print(np.ravel(x))
-		[1 2 3 4 5 6]
-		
-		>>> print(x.reshape(-1))
-		[1 2 3 4 5 6]
-		
-		>>> print(np.ravel(x, order='F'))
-		[1 4 2 5 3 6]
-		
-		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
-		
-		>>> print(np.ravel(x.T))
-		[1 4 2 5 3 6]
-		>>> print(np.ravel(x.T, order='A'))
-		[1 2 3 4 5 6]
-		
-		When ``order`` is 'K', it will preserve orderings that are neither 'C'
-		nor 'F', but won't reverse axes:
-		
-		>>> a = np.arange(3)[::-1]; a
-		array([2, 1, 0])
-		>>> a.ravel(order='C')
-		array([2, 1, 0])
-		>>> a.ravel(order='K')
-		array([2, 1, 0])
-		
-		>>> a = np.arange(12).reshape(2,3,2).swapaxes(1,2); a
-		array([[[ 0,  2,  4],
-		        [ 1,  3,  5]],
-		       [[ 6,  8, 10],
-		        [ 7,  9, 11]]])
-		>>> a.ravel(order='C')
-		array([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])
-		>>> a.ravel(order='K')
-		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
-	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Evaluate all derivatives of a B-spline.
 		
@@ -614,8 +226,8 @@ package scipy.interpolate.fitpack;
 		    A point or a set of points at which to evaluate the derivatives.
 		    Note that ``t(k) <= x <= t(n-k+1)`` must hold for each `x`.
 		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots,
-		    the B-spline coefficients, and the degree of the spline.
+		    A tuple ``(t, c, k)``, containing the vector of knots, the B-spline
+		    coefficients, and the degree of the spline (see `splev`).
 		
 		Returns
 		-------
@@ -626,15 +238,15 @@ package scipy.interpolate.fitpack;
 		See Also
 		--------
 		splprep, splrep, splint, sproot, splev, bisplrep, bisplev,
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		References
 		----------
-		.. [1] de Boor C : On calculating with b-splines, J. Approximation Theory
+		.. [1] C. de Boor: On calculating with b-splines, J. Approximation Theory
 		   6 (1972) 50-62.
-		.. [2] Cox M.G. : The numerical evaluation of b-splines, J. Inst. Maths
+		.. [2] M. G. Cox : The numerical evaluation of b-splines, J. Inst. Maths
 		   applics 10 (1972) 134-149.
-		.. [3] Dierckx P. : Curve and surface fitting with splines, Monographs on
+		.. [3] P. Dierckx : Curve and surface fitting with splines, Monographs on
 		   Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function spalde(x:Dynamic, tck:Dynamic):Dynamic;
@@ -643,20 +255,23 @@ package scipy.interpolate.fitpack;
 		
 		Parameters
 		----------
-		tck : tuple of (t, c, k)
+		tck : BSpline instance or a tuple of (t, c, k)
 		    Spline whose antiderivative to compute
 		n : int, optional
 		    Order of antiderivative to evaluate. Default: 1
 		
 		Returns
 		-------
-		tck_ader : tuple of (t2, c2, k2)
+		BSpline instance or a tuple of (t2, c2, k2)
 		    Spline of order k2=k+n representing the antiderivative of the input
 		    spline.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		See Also
 		--------
 		splder, splev, spalde
+		BSpline
 		
 		Notes
 		-----
@@ -698,16 +313,18 @@ package scipy.interpolate.fitpack;
 		
 		Parameters
 		----------
-		tck : tuple of (t, c, k)
+		tck : BSpline instance or a tuple of (t, c, k)
 		    Spline whose derivative to compute
 		n : int, optional
 		    Order of derivative to evaluate. Default: 1
 		
 		Returns
 		-------
-		tck_der : tuple of (t2, c2, k2)
+		`BSpline` instance or tuple
 		    Spline of order k2=k-n representing the derivative
 		    of the input spline.
+		    A tuple is returned iff the input argument `tck` is a tuple, otherwise
+		    a BSpline object is constructed and returned.
 		
 		Notes
 		-----
@@ -717,6 +334,7 @@ package scipy.interpolate.fitpack;
 		See Also
 		--------
 		splantider, splev, spalde
+		BSpline
 		
 		Examples
 		--------
@@ -752,9 +370,10 @@ package scipy.interpolate.fitpack;
 		    An array of points at which to return the value of the smoothed
 		    spline or its derivatives.  If `tck` was returned from `splprep`,
 		    then the parameter values, u should be given.
-		tck : tuple
-		    A sequence of length 3 returned by `splrep` or `splprep` containing
-		    the knots, coefficients, and degree of the spline.
+		tck : 3-tuple or a BSpline object
+		    If a tuple, then it should be a sequence of length 3 returned by
+		    `splrep` or `splprep` containing the knots, coefficients, and degree
+		    of the spline. (Also see Notes.)
 		der : int, optional
 		    The order of derivative of the spline to compute (must be less than
 		    or equal to k).
@@ -773,37 +392,41 @@ package scipy.interpolate.fitpack;
 		-------
 		y : ndarray or list of ndarrays
 		    An array of values representing the spline function evaluated at
-		    the points in ``x``.  If `tck` was returned from `splprep`, then this
+		    the points in `x`.  If `tck` was returned from `splprep`, then this
 		    is a list of arrays representing the curve in N-dimensional space.
+		
+		Notes
+		-----
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using `BSpline` objects.
 		
 		See Also
 		--------
 		splprep, splrep, sproot, spalde, splint
 		bisplrep, bisplev
+		BSpline
 		
 		References
 		----------
 		.. [1] C. de Boor, "On calculating with b-splines", J. Approximation
 		    Theory, 6, p.50-62, 1972.
-		.. [2] M.G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
+		.. [2] M. G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
 		    Applics, 10, p.134-149, 1972.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function splev(x:Dynamic, tck:Dynamic, ?der:Dynamic, ?ext:Dynamic):Dynamic;
 	/**
-		Evaluate the definite integral of a B-spline.
-		
-		Given the knots and coefficients of a B-spline, evaluate the definite
-		integral of the smoothing polynomial between two given points.
+		Evaluate the definite integral of a B-spline between two given points.
 		
 		Parameters
 		----------
 		a, b : float
 		    The end-points of the integration interval.
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
-		    coefficients, and the degree of the spline (see `splev`).
+		tck : tuple or a BSpline instance
+		    If a tuple, then it should be a sequence of length 3, containing the
+		    vector of knots, the B-spline coefficients, and the degree of the
+		    spline (see `splev`).
 		full_output : int, optional
 		    Non-zero to return optional output.
 		
@@ -814,17 +437,21 @@ package scipy.interpolate.fitpack;
 		wrk : ndarray
 		    An array containing the integrals of the normalized B-splines
 		    defined on the set of knots.
+		    (Only returned if `full_output` is non-zero)
 		
 		Notes
 		-----
-		splint silently assumes that the spline function is zero outside the data
-		interval (a, b).
+		`splint` silently assumes that the spline function is zero outside the data
+		interval (`a`, `b`).
+		
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
 		
 		See Also
 		--------
 		splprep, splrep, sproot, spalde, splev
 		bisplrep, bisplev
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		References
 		----------
@@ -905,7 +532,7 @@ package scipy.interpolate.fitpack;
 		Returns
 		-------
 		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots, the B-spline
+		    (t,c,k) a tuple containing the vector of knots, the B-spline
 		    coefficients, and the degree of the spline.
 		u : array
 		    An array of the values of the parameter.
@@ -923,6 +550,8 @@ package scipy.interpolate.fitpack;
 		splrep, splev, sproot, spalde, splint,
 		bisplrep, bisplev
 		UnivariateSpline, BivariateSpline
+		BSpline
+		make_interp_spline
 		
 		Notes
 		-----
@@ -939,6 +568,30 @@ package scipy.interpolate.fitpack;
 		    K.U.Leuven, 1981.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs on
 		    Numerical Analysis, Oxford University Press, 1993.
+		
+		Examples
+		--------
+		Generate a discretization of a limacon curve in the polar coordinates:
+		
+		>>> phi = np.linspace(0, 2.*np.pi, 40)
+		>>> r = 0.5 + np.cos(phi)         # polar coords
+		>>> x, y = r * np.cos(phi), r * np.sin(phi)    # convert to cartesian
+		
+		And interpolate:
+		
+		>>> from scipy.interpolate import splprep, splev
+		>>> tck, u = splprep([x, y], s=0)
+		>>> new_points = splev(u, tck)
+		
+		Notice that (i) we force interpolation by using `s=0`,
+		(ii) the parameterization, ``u``, is generated automatically.
+		Now plot the result:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots()
+		>>> ax.plot(x, y, 'ro')
+		>>> ax.plot(new_points[0], new_points[1], 'r-')
+		>>> plt.show()
 	**/
 	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
@@ -1002,7 +655,7 @@ package scipy.interpolate.fitpack;
 		Returns
 		-------
 		tck : tuple
-		    (t,c,k) a tuple containing the vector of knots, the B-spline
+		    A tuple (t,c,k) containing the vector of knots, the B-spline
 		    coefficients, and the degree of the spline.
 		fp : array, optional
 		    The weighted sum of squared residuals of the spline approximation.
@@ -1013,23 +666,21 @@ package scipy.interpolate.fitpack;
 		msg : str, optional
 		    A message corresponding to the integer flag, ier.
 		
-		Notes
-		-----
-		See splev for evaluation of the spline and its derivatives.
-		
-		The user is responsible for assuring that the values of *x* are unique.
-		Otherwise, *splrep* will not return sensible results.
-		
 		See Also
 		--------
 		UnivariateSpline, BivariateSpline
 		splprep, splev, sproot, spalde, splint
 		bisplrep, bisplev
+		BSpline
+		make_interp_spline
 		
 		Notes
 		-----
-		See splev for evaluation of the spline and its derivatives. Uses the
-		FORTRAN routine curfit from FITPACK.
+		See `splev` for evaluation of the spline and its derivatives. Uses the
+		FORTRAN routine ``curfit`` from FITPACK.
+		
+		The user is responsible for assuring that the values of `x` are unique.
+		Otherwise, `splrep` will not return sensible results.
 		
 		If provided, knots `t` must satisfy the Schoenberg-Whitney conditions,
 		i.e., there must be a subset of data points ``x[j]`` such that
@@ -1057,9 +708,9 @@ package scipy.interpolate.fitpack;
 		>>> from scipy.interpolate import splev, splrep
 		>>> x = np.linspace(0, 10, 10)
 		>>> y = np.sin(x)
-		>>> tck = splrep(x, y)
+		>>> spl = splrep(x, y)
 		>>> x2 = np.linspace(0, 10, 200)
-		>>> y2 = splev(x2, tck)
+		>>> y2 = splev(x2, spl)
 		>>> plt.plot(x, y, 'o', x2, y2)
 		>>> plt.show()
 	**/
@@ -1072,9 +723,10 @@ package scipy.interpolate.fitpack;
 		
 		Parameters
 		----------
-		tck : tuple
-		    A tuple (t,c,k) containing the vector of knots,
-		    the B-spline coefficients, and the degree of the spline.
+		tck : tuple or a BSpline object
+		    If a tuple, then it should be a sequence of length 3, containing the
+		    vector of knots, the B-spline coefficients, and the degree of the
+		    spline.
 		    The number of knots must be >= 8, and the degree must be 3.
 		    The knots must be a montonically increasing sequence.
 		mest : int, optional
@@ -1085,164 +737,26 @@ package scipy.interpolate.fitpack;
 		zeros : ndarray
 		    An array giving the roots of the spline.
 		
+		Notes
+		-----
+		Manipulating the tck-tuples directly is not recommended. In new code,
+		prefer using the `BSpline` objects.
+		
 		See also
 		--------
 		splprep, splrep, splint, spalde, splev
 		bisplrep, bisplev
-		UnivariateSpline, BivariateSpline
+		BSpline
 		
 		
 		References
 		----------
 		.. [1] C. de Boor, "On calculating with b-splines", J. Approximation
 		    Theory, 6, p.50-62, 1972.
-		.. [2] M.G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
+		.. [2] M. G. Cox, "The numerical evaluation of b-splines", J. Inst. Maths
 		    Applics, 10, p.134-149, 1972.
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function sproot(tck:Dynamic, ?mest:Dynamic):Dynamic;
-	/**
-		sqrt(x[, out])
-		
-		Return the positive square-root of an array, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
-		
-		Returns
-		-------
-		y : ndarray
-		    An array of the same shape as `x`, containing the positive
-		    square-root of each element in `x`.  If any element in `x` is
-		    complex, a complex array is returned (and the square-roots of
-		    negative reals are calculated).  If all of the elements in `x`
-		    are real, so is `y`, with negative elements returning ``nan``.
-		    If `out` was provided, `y` is a reference to it.
-		
-		See Also
-		--------
-		lib.scimath.sqrt
-		    A version which returns complex numbers when given negative reals.
-		
-		Notes
-		-----
-		*sqrt* has--consistent with common convention--as its branch cut the
-		real "interval" [`-inf`, 0), and is continuous from above on it.
-		A branch cut is a curve in the complex plane across which a given
-		complex function fails to be continuous.
-		
-		Examples
-		--------
-		>>> np.sqrt([1,4,9])
-		array([ 1.,  2.,  3.])
-		
-		>>> np.sqrt([4, -1, -3+4J])
-		array([ 2.+0.j,  0.+1.j,  1.+2.j])
-		
-		>>> np.sqrt([4, -1, numpy.inf])
-		array([  2.,  NaN,  Inf])
-	**/
-	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Permute the dimensions of an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		axes : list of ints, optional
-		    By default, reverse the dimensions, otherwise permute the axes
-		    according to the values given.
-		
-		Returns
-		-------
-		p : ndarray
-		    `a` with its axes permuted.  A view is returned whenever
-		    possible.
-		
-		See Also
-		--------
-		moveaxis
-		argsort
-		
-		Notes
-		-----
-		Use `transpose(a, argsort(axes))` to invert the transposition of tensors
-		when using the `axes` keyword argument.
-		
-		Transposing a 1-D array returns an unchanged view of the original array.
-		
-		Examples
-		--------
-		>>> x = np.arange(4).reshape((2,2))
-		>>> x
-		array([[0, 1],
-		       [2, 3]])
-		
-		>>> np.transpose(x)
-		array([[0, 2],
-		       [1, 3]])
-		
-		>>> x = np.ones((1, 2, 3))
-		>>> np.transpose(x, (1, 0, 2)).shape
-		(2, 1, 3)
-	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):Dynamic;
-	/**
-		zeros(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, filled with zeros.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of zeros with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
-		
-		Examples
-		--------
-		>>> np.zeros(5)
-		array([ 0.,  0.,  0.,  0.,  0.])
-		
-		>>> np.zeros((5,), dtype=np.int)
-		array([0, 0, 0, 0, 0])
-		
-		>>> np.zeros((2, 1))
-		array([[ 0.],
-		       [ 0.]])
-		
-		>>> s = (2,2)
-		>>> np.zeros(s)
-		array([[ 0.,  0.],
-		       [ 0.,  0.]])
-		
-		>>> np.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype
-		array([(0, 0), (0, 0)],
-		      dtype=[('x', '<i4'), ('y', '<i4')])
-	**/
-	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

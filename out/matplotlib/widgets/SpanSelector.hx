@@ -38,72 +38,21 @@ package matplotlib.widgets;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a span selector in *ax*.  When a selection is made, clear
-		the span and call *onselect* with::
-		
-		    onselect(vmin, vmax)
-		
-		and clear the span.
-		
-		*direction* must be 'horizontal' or 'vertical'
-		
-		If *minspan* is not *None*, ignore events smaller than *minspan*
-		
-		The span rectangle is drawn with *rectprops*; default::
-		
-		  rectprops = dict(facecolor='red', alpha=0.5)
-		
-		Set the visible attribute to *False* if you want to turn off
-		the functionality of the span selector
-		
-		If *span_stays* is True, the span stays visble after making
-		a valid selection.
-		
-		*button* is a list of integers indicating which mouse buttons should
-		be used for selection.  You can also specify a single
-		integer if only a single button is desired.  Default is *None*,
-		which does not limit which button can be used.
-		
-		Note, typically:
-		 1 = left mouse button
-		 2 = center mouse button (scroll wheel)
-		 3 = right mouse button
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic, ?button:Dynamic):Dynamic;
 	/**
-		Create a span selector in *ax*.  When a selection is made, clear
-		the span and call *onselect* with::
-		
-		    onselect(vmin, vmax)
-		
-		and clear the span.
-		
-		*direction* must be 'horizontal' or 'vertical'
-		
-		If *minspan* is not *None*, ignore events smaller than *minspan*
-		
-		The span rectangle is drawn with *rectprops*; default::
-		
-		  rectprops = dict(facecolor='red', alpha=0.5)
-		
-		Set the visible attribute to *False* if you want to turn off
-		the functionality of the span selector
-		
-		If *span_stays* is True, the span stays visble after making
-		a valid selection.
-		
-		*button* is a list of integers indicating which mouse buttons should
-		be used for selection.  You can also specify a single
-		integer if only a single button is desired.  Default is *None*,
-		which does not limit which button can be used.
-		
-		Note, typically:
-		 1 = left mouse button
-		 2 = center mouse button (scroll wheel)
-		 3 = right mouse button
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic, ?button:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -227,6 +176,9 @@ package matplotlib.widgets;
 		return *True* if *event* should be ignored
 	**/
 	public function ignore(event:Dynamic):Dynamic;
+	/**
+		Set SpanSelector to operate on a new Axes
+	**/
 	public function new_axes(ax:Dynamic):Dynamic;
 	/**
 		Key press event handler and validator for all selection widgets

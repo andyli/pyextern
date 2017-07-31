@@ -42,8 +42,8 @@ package pandas.core.config_init;
 		
 		Returns
 		-------
-		validator - a function of a single argument x , which returns the
-		            True if x is an instance of `_type`
+		validator - a function of a single argument x , which raises
+		            ValueError if x is not an instance of `_type`
 	**/
 	static public function is_instance_factory(_type:Dynamic):Dynamic;
 	static public function is_int(x:Dynamic):Dynamic;
@@ -66,6 +66,9 @@ package pandas.core.config_init;
 	static public var pc_large_repr_doc : Dynamic;
 	static public var pc_latex_escape : Dynamic;
 	static public var pc_latex_longtable : Dynamic;
+	static public var pc_latex_multicolumn : Dynamic;
+	static public var pc_latex_multicolumn_format : Dynamic;
+	static public var pc_latex_multirow : Dynamic;
 	static public var pc_latex_repr_doc : Dynamic;
 	static public var pc_line_width_deprecation_warning : Dynamic;
 	static public var pc_line_width_doc : Dynamic;
@@ -83,10 +86,16 @@ package pandas.core.config_init;
 	static public var pc_pprint_nest_depth : Dynamic;
 	static public var pc_precision_doc : Dynamic;
 	static public var pc_show_dimensions_doc : Dynamic;
+	static public var pc_table_schema_doc : Dynamic;
 	static public var pc_width_doc : Dynamic;
 	static public var style_backup : Dynamic;
+	static public function table_schema_cb(key:Dynamic):Dynamic;
 	static public var tc_sim_interactive_doc : Dynamic;
+	static public function use_bottleneck_cb(key:Dynamic):Dynamic;
+	static public var use_bottleneck_doc : Dynamic;
 	static public function use_inf_as_null_cb(key:Dynamic):Dynamic;
 	static public var use_inf_as_null_doc : Dynamic;
+	static public function use_numexpr_cb(key:Dynamic):Dynamic;
+	static public var use_numexpr_doc : Dynamic;
 	static public var writer_engine_doc : Dynamic;
 }

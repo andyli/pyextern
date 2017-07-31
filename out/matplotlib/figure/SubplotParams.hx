@@ -43,23 +43,25 @@ package matplotlib.figure;
 		
 		The following attributes are available
 		
-		*left*  : 0.125
+		left  : 0.125
 		    The left side of the subplots of the figure
 		
-		*right* : 0.9
+		right : 0.9
 		    The right side of the subplots of the figure
 		
-		*bottom* : 0.1
+		bottom : 0.1
 		    The bottom of the subplots of the figure
 		
-		*top* : 0.9
+		top : 0.9
 		    The top of the subplots of the figure
 		
-		*wspace* : 0.2
-		    The amount of width reserved for blank space between subplots
+		wspace : 0.2
+		    The amount of width reserved for blank space between subplots,
+		    expressed as a fraction of the average axis width
 		
-		*hspace* : 0.2
-		    The amount of height reserved for white space between subplots
+		hspace : 0.2
+		    The amount of height reserved for white space between subplots,
+		    expressed as a fraction of the average axis height
 	**/
 	@:native("__init__")
 	public function ___init__(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Dynamic;
@@ -69,25 +71,34 @@ package matplotlib.figure;
 		
 		The following attributes are available
 		
-		*left*  : 0.125
+		left  : 0.125
 		    The left side of the subplots of the figure
 		
-		*right* : 0.9
+		right : 0.9
 		    The right side of the subplots of the figure
 		
-		*bottom* : 0.1
+		bottom : 0.1
 		    The bottom of the subplots of the figure
 		
-		*top* : 0.9
+		top : 0.9
 		    The top of the subplots of the figure
 		
-		*wspace* : 0.2
-		    The amount of width reserved for blank space between subplots
+		wspace : 0.2
+		    The amount of width reserved for blank space between subplots,
+		    expressed as a fraction of the average axis width
 		
-		*hspace* : 0.2
-		    The amount of height reserved for white space between subplots
+		hspace : 0.2
+		    The amount of height reserved for white space between subplots,
+		    expressed as a fraction of the average axis height
 	**/
 	public function new(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

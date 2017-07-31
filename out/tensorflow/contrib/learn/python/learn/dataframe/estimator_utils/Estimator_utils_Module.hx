@@ -41,7 +41,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.estimator_utils;
 		    fed via input_fn.
 		  feature_keys: the names of columns from which to generate FeatureColumns.
 		    These may include base features and/or derived features.
-		  target_keys: the names of columns to be used as targets.  None is
+		  label_keys: the names of columns to be used as labels.  None is
 		    acceptable for unsupervised learning.
 		  **kwargs: Additional keyword arguments, unused here.
 		
@@ -49,13 +49,13 @@ package tensorflow.contrib.learn.python.learn.dataframe.estimator_utils;
 		  A tuple of two elements:
 		  * A list of `FeatureColumn`s to be used when constructing an Estimator
 		  * An input_fn, i.e. a function that returns a pair of dicts
-		    (features, targets), each mapping string names to Tensors.
+		    (features, labels), each mapping string names to Tensors.
 		    the feature dict provides mappings for all the base columns required
 		    by the FeatureColumns.
 		
 		Raises:
-		  ValueError: when the feature and target key sets are non-disjoint, or the
-		    base_input and target sets are non-disjoint.
+		  ValueError: when the feature and label key sets are non-disjoint, or the
+		    base_input and label sets are non-disjoint.
 	**/
-	static public function to_feature_columns_and_input_fn(dataframe:Dynamic, base_input_keys_with_defaults:Dynamic, feature_keys:Dynamic, ?target_keys:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function to_feature_columns_and_input_fn(dataframe:Dynamic, base_input_keys_with_defaults:Dynamic, feature_keys:Dynamic, ?label_keys:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

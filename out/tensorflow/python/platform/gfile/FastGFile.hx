@@ -1,12 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.platform.gfile;
 @:pythonImport("tensorflow.python.platform.gfile", "FastGFile") extern class FastGFile {
-	/**
-		Get byte size of the file from the underlying file handle.
-	**/
-	public function Size():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -19,7 +14,7 @@ package tensorflow.python.platform.gfile;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
-		Make GFileBase usable with "with" statement.
+		Make usable with "with" statement.
 	**/
 	public function __enter__():Dynamic;
 	/**
@@ -27,7 +22,7 @@ package tensorflow.python.platform.gfile;
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		Make GFileBase usable with "with" statement.
+		Make usable with "with" statement.
 	**/
 	public function __exit__(unused_type:Dynamic, unused_value:Dynamic, unused_traceback:Dynamic):Dynamic;
 	/**
@@ -51,29 +46,21 @@ package tensorflow.python.platform.gfile;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create the GFileBase object with the given filename, mode, and locker.
-		
-		Args:
-		  name: string, the filename.
-		  mode: string, the mode to open the file with (e.g. "r", "w", "a+").
-		  locker: the thread locking object (e.g. _PythonLocker) for controlling
-		    thread access to the I/O methods of this class.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(name:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
-		Create the GFileBase object with the given filename, mode, and locker.
-		
-		Args:
-		  name: string, the filename.
-		  mode: string, the mode to open the file with (e.g. "r", "w", "a+").
-		  locker: the thread locking object (e.g. _PythonLocker) for controlling
-		    thread access to the I/O methods of this class.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(name:Dynamic, ?mode:Dynamic):Void;
 	/**
-		Enable line iteration on the underlying handle (not synchronized).
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
 	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -92,16 +79,6 @@ package tensorflow.python.platform.gfile;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Enable line iteration on the underlying handle (not synchronized).
-		
-		Returns:
-		  An line iterator from the underlying handle.
-		
-		Example:
-		  # read a file's lines by consuming the iterator with a list
-		  with open("filename", "r") as fp: lines = list(fp)
-	**/
 	public function __next__():Dynamic;
 	/**
 		helper for pickle
@@ -141,84 +118,76 @@ package tensorflow.python.platform.gfile;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _prepare_value(val:Dynamic):Dynamic;
+	public function _preread_check():Dynamic;
+	public function _prewrite_check():Dynamic;
 	/**
-		Synchronizes file I/O for methods in GFileBase.
-	**/
-	static public function _synchronized(fn:Dynamic):Dynamic;
-	/**
-		Close the underlying file handle.
+		Closes FileIO. Should be called for the WritableFile to be flushed.
 	**/
 	public function close():Dynamic;
 	/**
-		Returns "True" if the file handle is closed.  Otherwise False.
-	**/
-	public var closed : Dynamic;
-	/**
-		Flush the underlying file handle.
+		Flushes the Writable file.
+		
+		This only ensures that the data has made its way out of the process without
+		any guarantees on whether it's written to disk. This means that the
+		data would survive an application crash but not necessarily an OS crash.
 	**/
 	public function flush():Dynamic;
 	/**
-		Read n bytes from the underlying file handle.
+		Returns the mode in which the file was opened.
+	**/
+	public var mode : Dynamic;
+	/**
+		Returns the file name.
+	**/
+	public var name : Dynamic;
+	public function next():Dynamic;
+	/**
+		Returns the contents of a file as a string.
+		
+		Starts reading from current position in file.
 		
 		Args:
-		  n: Number of bytes to read (if negative, read to end of file handle.)
+		  n: Read 'n' bytes if n != -1. If n = -1, reads to end of file.
 		
 		Returns:
-		  A string of the bytes read, up to the end of file.
+		  'n' bytes of the file (or whole file) in bytes mode or 'n' bytes of the
+		  string if in string (regular) mode.
 	**/
 	public function read(?n:Dynamic):Dynamic;
 	/**
-		Read a single line (up to max_length) from the underlying file handle.
+		Reads the next line from the file. Leaves the '\n' at the end.
+	**/
+	public function readline():Dynamic;
+	/**
+		Returns all lines from the file in a list.
+	**/
+	public function readlines():Dynamic;
+	/**
+		Seeks to the offset in the file. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		position is deprecated in favor of the offset argument.
 		
 		Args:
-		  max_length: The maximum number of chsaracters to read.
-		
-		Returns:
-		  A string, including any newline at the end, or empty string if at EOF.
+		  offset: The byte count relative to the whence argument.
+		  whence: Valid values for whence are:
+		    0: start of the file (default)
+		    1: relative to the current position of the file
+		    2: relative to the end of file. offset is usually negative.
 	**/
-	public function readline(?max_length:Dynamic):Dynamic;
+	public function seek(?offset:Dynamic, ?whence:Dynamic, ?position:Dynamic):Dynamic;
 	/**
-		Read lines from the underlying file handle.
-		
-		Args:
-		  sizehint: See the python file.readlines() documentation.
-		
-		Returns:
-		  A list of strings from the underlying file handle.
+		Returns the size of the file.
 	**/
-	public function readlines(?sizehint:Dynamic):Dynamic;
+	public function size():Dynamic;
 	/**
-		Seek to offset (conditioned on whence) in the underlying file handle.
-		
-		Args:
-		  offset: int, the offset within the file to seek to.
-		  whence: 0, 1, or 2.  See python's seek() documentation for details.
-	**/
-	public function seek(offset:Dynamic, ?whence:Dynamic):Dynamic;
-	/**
-		Return the location from the underlying file handle.
-		
-		Returns:
-		  An integer location (which can be used in e.g., seek).
+		Returns the current position in the file.
 	**/
 	public function tell():Dynamic;
 	/**
-		Truncate the underlying file handle to new_size.
-		
-		Args:
-		  new_size: Size after truncation.  If None, the file handle is truncated
-		  to 0 bytes.
+		Writes file_content to the file. Appends to the end of the file.
 	**/
-	public function truncate(?new_size:Dynamic):Dynamic;
-	/**
-		Write data to the underlying file handle.
-		
-		Args:
-		  data: The string to write to the file handle.
-	**/
-	public function write(data:Dynamic):Dynamic;
-	/**
-		Write a sequence of strings to the underlying file handle.
-	**/
-	public function writelines(seq:Dynamic):Dynamic;
+	public function write(file_content:Dynamic):Dynamic;
 }

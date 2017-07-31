@@ -35,14 +35,35 @@ package tensorflow.python.training.input;
 	public function __gt__(value:Dynamic):Dynamic;
 	static public var __hash__ : Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Create the metadata.
+		
+		Args:
+		  sparse: Python boolean.
+		  map_op: The `Operation` that created the `SparseTensorsMap` in question.
+		    This Op contains information about the underlying Map object and the
+		    dtype of the original data.
+		  rank: The statically known rank of the `SparseTensor`.
 	**/
 	@:native("__init__")
-	public function ___init__(sparse:Dynamic, dtype:Dynamic, rank:Dynamic):Dynamic;
+	public function ___init__(sparse:Dynamic, map_op:Dynamic, rank:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Create the metadata.
+		
+		Args:
+		  sparse: Python boolean.
+		  map_op: The `Operation` that created the `SparseTensorsMap` in question.
+		    This Op contains information about the underlying Map object and the
+		    dtype of the original data.
+		  rank: The statically known rank of the `SparseTensor`.
 	**/
-	public function new(sparse:Dynamic, dtype:Dynamic, rank:Dynamic):Void;
+	public function new(sparse:Dynamic, map_op:Dynamic, rank:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -98,7 +119,7 @@ package tensorflow.python.training.input;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public var dtype : Dynamic;
+	public var map_op : Dynamic;
 	public function merge_with(other:Dynamic):Dynamic;
 	public var rank : Dynamic;
 	public var sparse : Dynamic;

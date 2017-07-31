@@ -47,6 +47,13 @@ package scipy.integrate._ode;
 	**/
 	public function new(?rtol:Dynamic, ?atol:Dynamic, ?nsteps:Dynamic, ?max_step:Dynamic, ?first_step:Dynamic, ?safety:Dynamic, ?ifactor:Dynamic, ?dfactor:Dynamic, ?beta:Dynamic, ?method:Dynamic, ?verbosity:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

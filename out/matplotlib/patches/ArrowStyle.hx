@@ -10,7 +10,7 @@ package matplotlib.patches;
 	**/
 	static public function BracketA(?widthA:Dynamic, ?lengthA:Dynamic, ?angleA:Dynamic):Dynamic;
 	/**
-		An arrow with a bracket(])  at both ends.
+		An arrow with a bracket(]) at both ends.
 	**/
 	static public function BracketAB(?widthA:Dynamic, ?lengthA:Dynamic, ?angleA:Dynamic, ?widthB:Dynamic, ?lengthB:Dynamic, ?angleB:Dynamic):Dynamic;
 	/**
@@ -38,8 +38,7 @@ package matplotlib.patches;
 	**/
 	static public function CurveFilledA(?head_length:Dynamic, ?head_width:Dynamic):Dynamic;
 	/**
-		An arrow with filled triangle heads both at the begin and the end
-		point.
+		An arrow with filled triangle heads at both ends.
 	**/
 	static public function CurveFilledAB(?head_length:Dynamic, ?head_width:Dynamic):Dynamic;
 	/**
@@ -134,6 +133,13 @@ package matplotlib.patches;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

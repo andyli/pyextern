@@ -46,11 +46,18 @@ package numpy.lib.function_base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic):Dynamic;
+	public function ___init__(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic, ?signature:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic):Void;
+	public function new(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic, ?signature:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -114,4 +121,8 @@ package numpy.lib.function_base;
 		Vectorized call to `func` over positional `args`.
 	**/
 	public function _vectorize_call(func:Dynamic, args:Dynamic):Dynamic;
+	/**
+		Vectorized call over positional arguments with a signature.
+	**/
+	public function _vectorize_call_with_signature(func:Dynamic, args:Dynamic):Dynamic;
 }

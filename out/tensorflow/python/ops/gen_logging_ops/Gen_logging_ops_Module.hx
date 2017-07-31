@@ -2,22 +2,14 @@
 package tensorflow.python.ops.gen_logging_ops;
 @:pythonImport("tensorflow.python.ops.gen_logging_ops") extern class Gen_logging_ops_Module {
 	static public function _InitOpDefLibrary():Dynamic;
-	static public var __assert_outputs : Dynamic;
-	static public var __audio_summary_outputs : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
-	static public var __histogram_summary_outputs : Dynamic;
-	static public var __image_summary_outputs : Dynamic;
 	static public var __loader__ : Dynamic;
-	static public var __merge_summary_outputs : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __print_outputs : Dynamic;
-	static public var __scalar_summary_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __tensor_summary_outputs : Dynamic;
 	/**
 		Asserts that the given condition is true.
 		
@@ -64,6 +56,35 @@ package tensorflow.python.ops.gen_logging_ops;
 		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
 	**/
 	static public function _audio_summary(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Outputs a `Summary` protocol buffer with audio.
+		
+		The summary has up to `max_outputs` summary values containing audio. The
+		audio is built from `tensor` which must be 3-D with shape `[batch_size,
+		frames, channels]` or 2-D with shape `[batch_size, frames]`. The values are
+		assumed to be in the range of `[-1.0, 1.0]` with a sample rate of `sample_rate`.
+		
+		The `tag` argument is a scalar `Tensor` of type `string`.  It is used to
+		build the `tag` of the summary values:
+		
+		*  If `max_outputs` is 1, the summary value tag is '*tag* /audio'.
+		*  If `max_outputs` is greater than 1, the summary value tags are
+		   generated sequentially as '*tag* /audio/0', '*tag* /audio/1', etc.
+		
+		Args:
+		  tag: A `Tensor` of type `string`.
+		    Scalar. Used to build the `tag` attribute of the summary values.
+		  tensor: A `Tensor` of type `float32`. 2-D of shape `[batch_size, frames]`.
+		  sample_rate: A `Tensor` of type `float32`.
+		    The sample rate of the signal in hertz.
+		  max_outputs: An optional `int` that is `>= 1`. Defaults to `3`.
+		    Max number of batch elements to generate audio for.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+	**/
+	static public function _audio_summary_v2(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with a histogram.
 		
@@ -129,7 +150,7 @@ package tensorflow.python.ops.gen_logging_ops;
 		    `channels` is 1, 3, or 4.
 		  max_images: An optional `int` that is `>= 1`. Defaults to `3`.
 		    Max number of batch elements to generate images for.
-		  bad_color: . Defaults to `[]`.
+		  bad_color: An optional `tf.TensorProto`. Defaults to `dtype: DT_UINT8 tensor_shape { dim { size: 4 } } int_val: 255 int_val: 0 int_val: 0 int_val: 255`.
 		    Color to use for pixels with non-finite values.
 		  name: A name for the operation (optional).
 		
@@ -149,7 +170,7 @@ package tensorflow.python.ops.gen_logging_ops;
 		in the summaries to merge use the same tag.
 		
 		Args:
-		  inputs: A list of at least 1 `Tensor` objects of type `string`.
+		  inputs: A list of at least 1 `Tensor` objects with type `string`.
 		    Can be of any shape.  Each must contain serialized `Summary` protocol
 		    buffers.
 		  name: A name for the operation (optional).
@@ -202,21 +223,15 @@ package tensorflow.python.ops.gen_logging_ops;
 		
 		Args:
 		  tensor: A `Tensor`. A tensor to serialize.
-		  display_name: A `string`. A name to associate with the data series.
 		  description: An optional `string`. Defaults to `""`.
-		    An optional long description of the data being output.
+		    A json-encoded SummaryDescription proto.
 		  labels: An optional list of `strings`. Defaults to `[]`.
-		    a list of strings used to specify how the data can be interpreted, e.g.
-		    a string tensor containing jpg images should have 'encoding:image/jpg'; a
-		    string tensor with foo protos should have 'encoding:proto/X/Y/foo.proto';
-		    a numeric tensor containing bounding boxes may have
-		    'bounding_box:x1,y1,x2,y2,'. If the tensor is a part of a group of related
-		    outputs, that can be encoded through a 'group:$groupName/$roleInGroup' label.
-		    Labels may be formatted as 'prefix:value'. The prefix may be re-used.
+		    An unused list of strings.
+		  display_name: An optional `string`. Defaults to `""`. An unused string.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `string`.
 	**/
-	static public function _tensor_summary(tensor:Dynamic, display_name:Dynamic, ?description:Dynamic, ?labels:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _tensor_summary(tensor:Dynamic, ?description:Dynamic, ?labels:Dynamic, ?display_name:Dynamic, ?name:Dynamic):Dynamic;
 }

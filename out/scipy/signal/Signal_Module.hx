@@ -46,7 +46,7 @@ package scipy.signal;
 		    Array in which to find the relative extrema.
 		comparator : callable
 		    Function to use to compare two data points.
-		    Should take 2 numbers as arguments.
+		    Should take two arrays as arguments.
 		axis : int, optional
 		    Axis over which to select from `data`.  Default is 0.
 		order : int, optional
@@ -282,6 +282,10 @@ package scipy.signal;
 		    and the maximum value normalized to 1 (though the value 1 does not
 		    appear if `M` is even and `sym` is True).
 		
+		See Also
+		--------
+		triang : A triangular window that does not touch zero at the ends
+		
 		Notes
 		-----
 		The Bartlett window is defined as
@@ -298,7 +302,7 @@ package scipy.signal;
 		discontinuities at the beginning and end of the sampled signal) or
 		tapering function. The Fourier transform of the Bartlett is the product
 		of two sinc functions.
-		Note the excellent discussion in Kanasewich.
+		Note the excellent discussion in Kanasewich. [2]_
 		
 		References
 		----------
@@ -338,60 +342,6 @@ package scipy.signal;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function bartlett(M:Dynamic, ?sym:Dynamic):Dynamic;
-	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Bessel/Thomson digital and analog filter design.
 		
@@ -601,8 +551,7 @@ package scipy.signal;
 		.. [1] C.R. Bond, "Bessel Filter Constants",
 		       http://www.crbond.com/papers/bsf.pdf
 		.. [2] Campos and Calderon, "Approximate closed-form formulas for the
-		       zeros of the Bessel Polynomials", arXiv:1105.0957 [math-ph],
-		       http://arxiv.org/abs/1105.0957
+		       zeros of the Bessel Polynomials", :arXiv:`1105.0957`.
 		.. [3] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
 		       Characteristics", Proceedings of the Institution of Electrical
 		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
@@ -611,7 +560,7 @@ package scipy.signal;
 		       April 1973
 		.. [5] Ehrlich, "A modified Newton method for polynomials", Communications
 		       of the ACM, Vol. 10, Issue 2, pp. 107-108, Feb. 1967,
-		       DOI:10.1145/363067.363115
+		       :DOI:`10.1145/363067.363115`
 		.. [6] Miller and Bohn, "A Bessel Filter Crossover, and Its Relation to
 		       Others", RaneNote 147, 1998, http://www.rane.com/note147.html
 	**/
@@ -652,6 +601,12 @@ package scipy.signal;
 		
 		.. math::  w(n) = 0.42 - 0.5 \cos(2\pi n/M) + 0.08 \cos(4\pi n/M)
 		
+		The "exact Blackman" window was designed to null out the third and fourth
+		sidelobes, but has discontinuities at the boundaries, resulting in a
+		6 dB/oct fall-off.  This window is an approximation of the "exact" window,
+		which does not null the sidelobes as well, but is smooth at the edges,
+		improving the fall-off rate to 18 dB/oct. [3]_
+		
 		Most references to the Blackman window come from the signal processing
 		literature, where it is used as one of many windowing functions for
 		smoothing values.  It is also known as an apodization (which means
@@ -666,6 +621,9 @@ package scipy.signal;
 		       spectra, Dover Publications, New York.
 		.. [2] Oppenheim, A.V., and R.W. Schafer. Discrete-Time Signal Processing.
 		       Upper Saddle River, NJ: Prentice-Hall, 1999, pp. 468-471.
+		.. [3] Harris, Fredric J. (Jan 1978). "On the use of Windows for Harmonic
+		       Analysis with the Discrete Fourier Transform". Proceedings of the
+		       IEEE 66 (1): 51-83. :doi:`10.1109/PROC.1978.10837`.
 		
 		Examples
 		--------
@@ -838,7 +796,8 @@ package scipy.signal;
 	/**
 		Return a boxcar or rectangular window.
 		
-		Included for completeness, this is equivalent to no window at all.
+		Also known as a rectangular window or Dirichlet window, this is equivalent
+		to no window at all.
 		
 		Parameters
 		----------
@@ -1476,6 +1435,97 @@ package scipy.signal;
 	**/
 	static public function cheby2(N:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
 	/**
+		Check whether the Constant OverLap Add (COLA) constraint is met
+		
+		Parameters
+		----------
+		window : str or tuple or array_like
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be `nperseg`.
+		nperseg : int
+		    Length of each segment.
+		noverlap : int
+		    Number of points to overlap between segments.
+		tol : float, optional
+		    The allowed variance of a bin's weighted sum from the median bin
+		    sum.
+		
+		Returns
+		-------
+		verdict : bool
+		    `True` if chosen combination satisfies COLA within `tol`,
+		    `False` otherwise
+		
+		See Also
+		--------
+		stft: Short Time Fourier Transform
+		istft: Inverse Short Time Fourier Transform
+		
+		Notes
+		-----
+		In order to enable inversion of an STFT via the inverse STFT in
+		`istft`, the signal windowing must obey the constraint of "Constant
+		OverLap Add" (COLA). This ensures that every point in the input data
+		is equally weighted, thereby avoiding aliasing and allowing full
+		reconstruction.
+		
+		Some examples of windows that satisfy COLA:
+		    - Rectangular window at overlap of 0, 1/2, 2/3, 3/4, ...
+		    - Bartlett window at overlap of 1/2, 3/4, 5/6, ...
+		    - Hann window at 1/2, 2/3, 3/4, ...
+		    - Any Blackman family window at 2/3 overlap
+		    - Any window with ``noverlap = nperseg-1``
+		
+		A very comprehensive list of other windows may be found in [2]_,
+		wherein the COLA condition is satisfied when the "Amplitude
+		Flatness" is unity.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] Julius O. Smith III, "Spectral Audio Signal Processing", W3K
+		       Publishing, 2011,ISBN 978-0-9745607-3-1.
+		.. [2] G. Heinzel, A. Ruediger and R. Schilling, "Spectrum and
+		       spectral density estimation by the Discrete Fourier transform
+		       (DFT), including a comprehensive list of window functions and
+		       some new at-top windows", 2002,
+		       http://hdl.handle.net/11858/00-001M-0000-0013-557A-5
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		
+		Confirm COLA condition for rectangular window of 75% (3/4) overlap:
+		
+		>>> signal.check_COLA(signal.boxcar(100), 100, 75)
+		True
+		
+		COLA is not true for 25% (1/4) overlap, though:
+		
+		>>> signal.check_COLA(signal.boxcar(100), 100, 25)
+		False
+		
+		"Symmetrical" Hann window (for filter design) is not COLA:
+		
+		>>> signal.check_COLA(signal.hann(120, sym=True), 120, 60)
+		False
+		
+		"Periodic" or "DFT-even" Hann window (for FFT analysis) is COLA for
+		overlap of 1/2, 2/3, 3/4, etc.:
+		
+		>>> signal.check_COLA(signal.hann(120, sym=False), 120, 60)
+		True
+		
+		>>> signal.check_COLA(signal.hann(120, sym=False), 120, 80)
+		True
+		
+		>>> signal.check_COLA(signal.hann(120, sym=False), 120, 90)
+		True
+	**/
+	static public function check_COLA(window:Dynamic, nperseg:Dynamic, noverlap:Dynamic, ?tol:Dynamic):Bool;
+	/**
 		Frequency-swept cosine generator.
 		
 		In the following, 'Hz' should be interpreted as 'cycles per unit';
@@ -1560,6 +1610,94 @@ package scipy.signal;
 	**/
 	static public function chirp(t:Dynamic, f0:Dynamic, t1:Dynamic, f1:Dynamic, ?method:Dynamic, ?phi:Dynamic, ?vertex_zero:Dynamic):Dynamic;
 	/**
+		Find the fastest convolution/correlation method.
+		
+		This primarily exists to be called during the ``method='auto'`` option in
+		`convolve` and `correlate`, but can also be used when performing many
+		convolutions of the same input shapes and dtypes, determining
+		which method to use for all of them, either to avoid the overhead of the
+		'auto' option or to use accurate real-world measurements.
+		
+		Parameters
+		----------
+		in1 : array_like
+		    The first argument passed into the convolution function.
+		in2 : array_like
+		    The second argument passed into the convolution function.
+		mode : str {'full', 'valid', 'same'}, optional
+		    A string indicating the size of the output:
+		
+		    ``full``
+		       The output is the full discrete linear convolution
+		       of the inputs. (Default)
+		    ``valid``
+		       The output consists only of those elements that do not
+		       rely on the zero-padding.
+		    ``same``
+		       The output is the same size as `in1`, centered
+		       with respect to the 'full' output.
+		measure : bool, optional
+		    If True, run and time the convolution of `in1` and `in2` with both
+		    methods and return the fastest. If False (default), predict the fastest
+		    method using precomputed values.
+		
+		Returns
+		-------
+		method : str
+		    A string indicating which convolution method is fastest, either
+		    'direct' or 'fft'
+		times : dict, optional
+		    A dictionary containing the times (in seconds) needed for each method.
+		    This value is only returned if ``measure=True``.
+		
+		See Also
+		--------
+		convolve
+		correlate
+		
+		Notes
+		-----
+		For large n, ``measure=False`` is accurate and can quickly determine the
+		fastest method to perform the convolution.  However, this is not as
+		accurate for small n (when any dimension in the input or output is small).
+		
+		In practice, we found that this function estimates the faster method up to
+		a multiplicative factor of 5 (i.e., the estimated method is *at most* 5
+		times slower than the fastest method). The estimation values were tuned on
+		an early 2015 MacBook Pro with 8GB RAM but we found that the prediction
+		held *fairly* accurately across different machines.
+		
+		If ``measure=True``, time the convolutions. Because this function uses
+		`fftconvolve`, an error will be thrown if it does not support the inputs.
+		There are cases when `fftconvolve` supports the inputs but this function
+		returns `direct` (e.g., to protect against floating point integer
+		precision).
+		
+		.. versionadded:: 0.19
+		
+		Examples
+		--------
+		Estimate the fastest method for a given input:
+		
+		>>> from scipy import signal
+		>>> a = np.random.randn(1000)
+		>>> b = np.random.randn(1000000)
+		>>> method = signal.choose_conv_method(a, b, mode='same')
+		>>> method
+		'fft'
+		
+		This can then be applied to other arrays of the same dtype and shape:
+		
+		>>> c = np.random.randn(1000)
+		>>> d = np.random.randn(1000000)
+		>>> # `method` works with correlate and convolve
+		>>> corr1 = signal.correlate(a, b, mode='same', method=method)
+		>>> corr2 = signal.correlate(c, d, mode='same', method=method)
+		>>> conv1 = signal.convolve(a, b, mode='same', method=method)
+		>>> conv2 = signal.convolve(c, d, mode='same', method=method)
+	**/
+	static public function choose_conv_method(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?measure:Dynamic):String;
+	/**
 		Sort roots based on magnitude.
 		
 		Parameters
@@ -1576,12 +1714,12 @@ package scipy.signal;
 	**/
 	static public function cmplx_sort(p:Dynamic):Dynamic;
 	/**
-		Estimate the magnitude squared coherence estimate, Cxy, of discrete-time
-		signals X and Y using Welch's method.
+		Estimate the magnitude squared coherence estimate, Cxy, of
+		discrete-time signals X and Y using Welch's method.
 		
-		Cxy = abs(Pxy)**2/(Pxx*Pyy), where Pxx and Pyy are power spectral density
-		estimates of X and Y, and Pxy is the cross spectral density estimate of X
-		and Y.
+		``Cxy = abs(Pxy)**2/(Pxx*Pyy)``, where `Pxx` and `Pyy` are power
+		spectral density estimates of X and Y, and `Pxy` is the cross
+		spectral density estimate of X and Y.
 		
 		Parameters
 		----------
@@ -1590,28 +1728,32 @@ package scipy.signal;
 		y : array_like
 		    Time series of measurement values
 		fs : float, optional
-		    Sampling frequency of the `x` and `y` time series. Defaults to 1.0.
+		    Sampling frequency of the `x` and `y` time series. Defaults
+		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows and
-		    required parameters. If `window` is array_like it will be used
-		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hann'.
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be `nperseg`.
+		    Defaults to a Hann window.
 		nperseg : int, optional
-		    Length of each segment.  Defaults to 256.
+		    Length of each segment. Defaults to None, but if window is str or
+		    tuple, is set to 256, and if window is array_like, is set to the
+		    length of the window.
 		noverlap: int, optional
-		    Number of points to overlap between segments. If None,
-		    ``noverlap = nperseg // 2``.  Defaults to None.
+		    Number of points to overlap between segments. If `None`,
+		    ``noverlap = nperseg // 2``. Defaults to `None`.
 		nfft : int, optional
-		    Length of the FFT used, if a zero padded FFT is desired.  If None,
-		    the FFT length is `nperseg`. Defaults to None.
-		detrend : str or function or False, optional
-		    Specifies how to detrend each segment. If `detrend` is a string,
-		    it is passed as the ``type`` argument to `detrend`.  If it is a
-		    function, it takes a segment and returns a detrended segment.
-		    If `detrend` is False, no detrending is done.  Defaults to 'constant'.
+		    Length of the FFT used, if a zero padded FFT is desired. If
+		    `None`, the FFT length is `nperseg`. Defaults to `None`.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to 'constant'.
 		axis : int, optional
-		    Axis along which the coherence is computed for both inputs; the default is
-		    over the last axis (i.e. ``axis=-1``).
+		    Axis along which the coherence is computed for both inputs; the
+		    default is over the last axis (i.e. ``axis=-1``).
 		
 		Returns
 		-------
@@ -1630,9 +1772,9 @@ package scipy.signal;
 		Notes
 		--------
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hann' window an
-		overlap of 50\% is a reasonable trade off between accurately estimating
-		the signal power, while not over counting any of the data.  Narrower
+		and on your requirements. For the default 'hann' window an overlap
+		of 50% is a reasonable trade off between accurately estimating the
+		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
 		.. versionadded:: 0.16.0
@@ -1643,8 +1785,8 @@ package scipy.signal;
 		       estimation of power spectra: A method based on time averaging
 		       over short, modified periodograms", IEEE Trans. Audio
 		       Electroacoust. vol. 15, pp. 70-73, 1967.
-		.. [2] Stoica, Petre, and Randolph Moses, "Spectral Analysis of Signals"
-		       Prentice Hall, 2005
+		.. [2] Stoica, Petre, and Randolph Moses, "Spectral Analysis of
+		       Signals" Prentice Hall, 2005
 		
 		Examples
 		--------
@@ -1746,8 +1888,6 @@ package scipy.signal;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1756,10 +1896,25 @@ package scipy.signal;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		method : str {'auto', 'direct', 'fft'}, optional
+		    A string indicating which method to use to calculate the convolution.
+		
+		    ``direct``
+		       The convolution is determined directly from sums, the definition of
+		       convolution.
+		    ``fft``
+		       The Fourier Transform is used to perform the convolution by calling
+		       `fftconvolve`.
+		    ``auto``
+		       Automatically chooses direct or Fourier method based on an estimate
+		       of which is faster (default).  See Notes for more detail.
+		
+		       .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -1767,10 +1922,21 @@ package scipy.signal;
 		    An N-dimensional array containing a subset of the discrete linear
 		    convolution of `in1` with `in2`.
 		
-		See also
+		See Also
 		--------
 		numpy.polymul : performs polynomial multiplication (same operation, but
 		                also accepts poly1d objects)
+		choose_conv_method : chooses the fastest appropriate convolution method
+		fftconvolve
+		
+		Notes
+		-----
+		By default, `convolve` and `correlate` use ``method='auto'``, which calls
+		`choose_conv_method` to choose the fastest method using pre-computed
+		values (`choose_conv_method` can also measure real-world timing with a
+		keyword argument). Because `fftconvolve` relies on floating point numbers,
+		there are certain constraints that may force `method=direct` (more detail
+		in `choose_conv_method` docstring).
 		
 		Examples
 		--------
@@ -1795,7 +1961,7 @@ package scipy.signal;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?method:Dynamic):Array<Dynamic>;
 	/**
 		Convolve two 2-dimensional arrays.
 		
@@ -1883,8 +2049,6 @@ package scipy.signal;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1893,10 +2057,25 @@ package scipy.signal;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		method : str {'auto', 'direct', 'fft'}, optional
+		    A string indicating which method to use to calculate the correlation.
+		
+		    ``direct``
+		       The correlation is determined directly from sums, the definition of
+		       correlation.
+		    ``fft``
+		       The Fast Fourier Transform is used to perform the correlation more
+		       quickly (only available for numerical arrays.)
+		    ``auto``
+		       Automatically chooses direct or Fourier method based on an estimate
+		       of which is faster (default).  See `convolve` Notes for more detail.
+		
+		       .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -1904,12 +2083,31 @@ package scipy.signal;
 		    An N-dimensional array containing a subset of the discrete linear
 		    cross-correlation of `in1` with `in2`.
 		
+		See Also
+		--------
+		choose_conv_method : contains more documentation on `method`.
+		
 		Notes
 		-----
-		The correlation z of two d-dimensional arrays x and y is defined as:
+		The correlation z of two d-dimensional arrays x and y is defined as::
 		
-		  z[...,k,...] = sum[..., i_l, ...]
-		                     x[..., i_l,...] * conj(y[..., i_l + k,...])
+		    z[...,k,...] = sum[..., i_l, ...] x[..., i_l,...] * conj(y[..., i_l - k,...])
+		
+		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')`` then
+		  
+		.. math::
+		
+		      z[k] = (x * y)(k - N + 1) 
+		           = \sum_{l=0}^{||x||-1}x_l y_{l-k+N-1}^{*}
+		
+		for :math:`k = 0, 1, ..., ||x|| + ||y|| - 2`
+		
+		where :math:`||x||` is the length of ``x``, :math:`N = \max(||x||,||y||)`,
+		and :math:`y_m` is 0 when m is outside the range of y.
+		
+		``method='fft'`` only works for numerical arrays as it relies on
+		`fftconvolve`. In certain cases (i.e., arrays of objects or when
+		rounding integers can lose precision), ``method='direct'`` is always used.
 		
 		Examples
 		--------
@@ -1937,7 +2135,7 @@ package scipy.signal;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?method:Dynamic):Array<Dynamic>;
 	/**
 		Cross-correlate two 2-dimensional arrays.
 		
@@ -2065,7 +2263,8 @@ package scipy.signal;
 	**/
 	static public function cosine(M:Dynamic, ?sym:Dynamic):Dynamic;
 	/**
-		Estimate the cross power spectral density, Pxy, using Welch's method.
+		Estimate the cross power spectral density, Pxy, using Welch's
+		method.
 		
 		Parameters
 		----------
@@ -2074,37 +2273,41 @@ package scipy.signal;
 		y : array_like
 		    Time series of measurement values
 		fs : float, optional
-		    Sampling frequency of the `x` and `y` time series. Defaults to 1.0.
+		    Sampling frequency of the `x` and `y` time series. Defaults
+		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows and
-		    required parameters. If `window` is array_like it will be used
-		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hann'.
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be nperseg.
+		    Defaults to a Hann window.
 		nperseg : int, optional
-		    Length of each segment.  Defaults to 256.
+		    Length of each segment. Defaults to None, but if window is str or
+		    tuple, is set to 256, and if window is array_like, is set to the
+		    length of the window.
 		noverlap: int, optional
-		    Number of points to overlap between segments. If None,
-		    ``noverlap = nperseg // 2``.  Defaults to None.
+		    Number of points to overlap between segments. If `None`,
+		    ``noverlap = nperseg // 2``. Defaults to `None`.
 		nfft : int, optional
-		    Length of the FFT used, if a zero padded FFT is desired.  If None,
-		    the FFT length is `nperseg`. Defaults to None.
-		detrend : str or function or False, optional
-		    Specifies how to detrend each segment. If `detrend` is a string,
-		    it is passed as the ``type`` argument to `detrend`.  If it is a
-		    function, it takes a segment and returns a detrended segment.
-		    If `detrend` is False, no detrending is done.  Defaults to 'constant'.
+		    Length of the FFT used, if a zero padded FFT is desired. If
+		    `None`, the FFT length is `nperseg`. Defaults to `None`.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
-		    If True, return a one-sided spectrum for real data. If False return
-		    a two-sided spectrum. Note that for complex data, a two-sided
-		    spectrum is always returned.
+		    If `True`, return a one-sided spectrum for real data. If
+		    `False` return a two-sided spectrum. Note that for complex
+		    data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the cross spectral density ('density')
 		    where `Pxy` has units of V**2/Hz and computing the cross spectrum
 		    ('spectrum') where `Pxy` has units of V**2, if `x` and `y` are
-		    measured in V and fs is measured in Hz.  Defaults to 'density'
+		    measured in V and `fs` is measured in Hz. Defaults to 'density'
 		axis : int, optional
-		    Axis along which the CSD is computed for both inputs; the default is
-		    over the last axis (i.e. ``axis=-1``).
+		    Axis along which the CSD is computed for both inputs; the
+		    default is over the last axis (i.e. ``axis=-1``).
 		
 		Returns
 		-------
@@ -2117,21 +2320,22 @@ package scipy.signal;
 		--------
 		periodogram: Simple, optionally modified periodogram
 		lombscargle: Lomb-Scargle periodogram for unevenly sampled data
-		welch: Power spectral density by Welch's method. [Equivalent to csd(x,x)]
+		welch: Power spectral density by Welch's method. [Equivalent to
+		       csd(x,x)]
 		coherence: Magnitude squared coherence by Welch's method.
 		
 		Notes
 		--------
-		By convention, Pxy is computed with the conjugate FFT of X multiplied by
-		the FFT of Y.
+		By convention, Pxy is computed with the conjugate FFT of X
+		multiplied by the FFT of Y.
 		
 		If the input series differ in length, the shorter series will be
 		zero-padded to match.
 		
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hann' window an
-		overlap of 50\% is a reasonable trade off between accurately estimating
-		the signal power, while not over counting any of the data.  Narrower
+		and on your requirements. For the default 'hann' window an overlap
+		of 50% is a reasonable trade off between accurately estimating the
+		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
 		.. versionadded:: 0.16.0
@@ -2433,7 +2637,7 @@ package scipy.signal;
 		>>> recovered
 		array([ 0.,  1.,  0.,  0.,  1.,  1.,  0.,  0.])
 		
-		See also
+		See Also
 		--------
 		numpy.polydiv : performs polynomial division (same operation, but
 		                also accepts poly1d objects)
@@ -2764,8 +2968,8 @@ package scipy.signal;
 		
 		References
 		----------
-		Lutova, Tosic, and Evans, "Filter Design for Signal Processing", Chapters 5
-		and 12.
+		.. [1] Lutova, Tosic, and Evans, "Filter Design for Signal Processing",
+		       Chapters 5 and 12.
 	**/
 	static public function ellipap(N:Dynamic, rp:Dynamic, rs:Dynamic):Dynamic;
 	/**
@@ -2921,6 +3125,9 @@ package scipy.signal;
 		but can be slower when only a few output values are needed, and can only
 		output float arrays (int or object array inputs will be cast to float).
 		
+		As of v0.19, `convolve` automatically chooses this method or the direct
+		method based on an estimation of which is faster.
+		
 		Parameters
 		----------
 		in1 : array_like
@@ -2950,8 +3157,7 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Autocorrelation of white noise is an impulse.  (This is at least 100 times
-		as fast as `convolve`.)
+		Autocorrelation of white noise is an impulse.
 		
 		>>> from scipy import signal
 		>>> sig = np.random.randn(1000)
@@ -3185,7 +3391,7 @@ package scipy.signal;
 		
 		Returns
 		-------
-		peaks_indices : list
+		peaks_indices : ndarray
 		    Indices of the locations in the `vector` where peaks were found.
 		    The list is sorted.
 		
@@ -3212,7 +3418,7 @@ package scipy.signal;
 		References
 		----------
 		.. [1] Bioinformatics (2006) 22 (17): 2059-2065.
-		    doi: 10.1093/bioinformatics/btl355
+		    :doi:`10.1093/bioinformatics/btl355`
 		    http://bioinformatics.oxfordjournals.org/content/22/17/2059.long
 		
 		Examples
@@ -3224,7 +3430,7 @@ package scipy.signal;
 		>>> peakind, xs[peakind], data[peakind]
 		([32], array([ 1.6]), array([ 0.9995736]))
 	**/
-	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Array<Dynamic>;
+	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Dynamic;
 	/**
 		Find array of frequencies for computing the response of an analog filter.
 		
@@ -3232,10 +3438,14 @@ package scipy.signal;
 		----------
 		num, den : array_like, 1-D
 		    The polynomial coefficients of the numerator and denominator of the
-		    transfer function of the filter or LTI system.  The coefficients are
-		    ordered from highest to lowest degree.
+		    transfer function of the filter or LTI system, where the coefficients
+		    are ordered from highest to lowest degree. Or, the roots  of the
+		    transfer function numerator and denominator (i.e. zeroes and poles).
 		N : int
 		    The length of the array to be computed.
+		kind : str {'ba', 'zp'}, optional
+		    Specifies whether the numerator and denominator are specified by their
+		    polynomial coefficients ('ba'), or their roots ('zp').
 		
 		Returns
 		-------
@@ -3255,7 +3465,7 @@ package scipy.signal;
 		         3.16227766e-01,   1.00000000e+00,   3.16227766e+00,
 		         1.00000000e+01,   3.16227766e+01,   1.00000000e+02])
 	**/
-	static public function findfreqs(num:Dynamic, den:Dynamic, N:Dynamic):Dynamic;
+	static public function findfreqs(num:Dynamic, den:Dynamic, N:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
 		FIR filter design using least-squares error minimization.
 		
@@ -3294,6 +3504,8 @@ package scipy.signal;
 		--------
 		firwin
 		firwin2
+		minimum_phase
+		remez
 		
 		Notes
 		-----
@@ -3422,6 +3634,7 @@ package scipy.signal;
 		--------
 		firwin2
 		firls
+		minimum_phase
 		remez
 		
 		Examples
@@ -3517,6 +3730,7 @@ package scipy.signal;
 		--------
 		firls
 		firwin
+		minimum_phase
 		remez
 		
 		Notes
@@ -3583,6 +3797,20 @@ package scipy.signal;
 		w : ndarray
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
+		
+		Notes
+		-----
+		Flat top windows are used for taking accurate measurements of signal
+		amplitude in the frequency domain, with minimal scalloping error from the
+		center of a frequency bin to its edges, compared to others.  This is a
+		5th-order cosine window, with the 5 terms optimized to make the main lobe
+		maximally flat. [1]_
+		
+		References
+		----------
+		.. [1] D'Antona, Gabriele, and A. Ferrero, "Digital Signal Processing for
+		       Measurement Systems", Springer Media, 2006, p. 70
+		       :doi:`10.1007/0-387-28666-7`.
 		
 		Examples
 		--------
@@ -3724,6 +3952,64 @@ package scipy.signal;
 	**/
 	static public function freqs(b:Dynamic, a:Dynamic, ?worN:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
+		Compute frequency response of analog filter.
+		
+		Given the zeros `z`, poles `p`, and gain `k` of a filter, compute its
+		frequency response::
+		
+		            (jw-z[0]) * (jw-z[1]) * ... * (jw-z[-1])
+		 H(w) = k * ----------------------------------------
+		            (jw-p[0]) * (jw-p[1]) * ... * (jw-p[-1])
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None, then compute at 200 frequencies around the interesting parts
+		    of the response curve (determined by pole-zero locations).  If a single
+		    integer, then compute at that many frequencies.  Otherwise, compute the
+		    response at the angular frequencies (e.g. rad/s) given in `worN`.
+		
+		Returns
+		-------
+		w : ndarray
+		    The angular frequencies at which `h` was computed.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqz : Compute the frequency response of a digital filter in TF form
+		freqz_zpk : Compute the frequency response of a digital filter in ZPK form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import freqs_zpk, iirfilter
+		
+		>>> z, p, k = iirfilter(4, [1, 10], 1, 60, analog=True, ftype='cheby1',
+		...                     output='zpk')
+		
+		>>> w, h = freqs_zpk(z, p, k, worN=np.logspace(-1, 2, 1000))
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.semilogx(w, 20 * np.log10(abs(h)))
+		>>> plt.xlabel('Frequency')
+		>>> plt.ylabel('Amplitude response [dB]')
+		>>> plt.grid()
+		>>> plt.show()
+	**/
+	static public function freqs_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic):Dynamic;
+	/**
 		Compute the frequency response of a digital filter.
 		
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
@@ -3762,7 +4048,11 @@ package scipy.signal;
 		    The normalized frequencies at which `h` was computed, in
 		    radians/sample.
 		h : ndarray
-		    The frequency response.
+		    The frequency response, as complex numbers.
+		
+		See Also
+		--------
+		sosfreqz
 		
 		Notes
 		-----
@@ -3794,6 +4084,78 @@ package scipy.signal;
 		>>> plt.show()
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	/**
+		Compute the frequency response of a digital filter in ZPK form.
+		
+		Given the Zeros, Poles and Gain of a digital filter, compute its frequency
+		response::
+		
+		:math:`H(z)=k \prod_i (z - Z[i]) / \prod_j (z - P[j])`
+		
+		where :math:`k` is the `gain`, :math:`Z` are the `zeros` and :math:`P` are
+		the `poles`.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqs_zpk : Compute the frequency response of an analog filter in ZPK form
+		freqz : Compute the frequency response of a digital filter in TF form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> z, p, k = signal.butter(4, 0.2, output='zpk')
+		>>> w, h = signal.freqz_zpk(z, p, k)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.title('Digital filter frequency response')
+		>>> ax1 = fig.add_subplot(111)
+		
+		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> plt.ylabel('Amplitude [dB]', color='b')
+		>>> plt.xlabel('Frequency [rad/sample]')
+		
+		>>> ax2 = ax1.twinx()
+		>>> angles = np.unwrap(np.angle(h))
+		>>> plt.plot(w, angles, 'g')
+		>>> plt.ylabel('Angle (radians)', color='g')
+		>>> plt.grid()
+		>>> plt.axis('tight')
+		>>> plt.show()
+	**/
+	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
 	/**
 		Gaussian approximation to B-spline basis function of order n.
 		    
@@ -3962,7 +4324,8 @@ package scipy.signal;
 		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
-		>>> plt.title(r"Freq. resp. of the gen. Gaussian window (p=1.5, $\sigma$=7)")
+		>>> plt.title(r"Freq. resp. of the gen. Gaussian "
+		...           "window (p=1.5, $\sigma$=7)")
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
@@ -4015,13 +4378,13 @@ package scipy.signal;
 		--------
 		>>> from scipy import signal
 		>>> signal.get_window('triang', 7)
-		array([ 0.25,  0.5 ,  0.75,  1.  ,  0.75,  0.5 ,  0.25])
+		array([ 0.125,  0.375,  0.625,  0.875,  0.875,  0.625,  0.375])
 		>>> signal.get_window(('kaiser', 4.0), 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 		>>> signal.get_window(4.0, 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 	**/
 	static public function get_window(window:Dynamic, Nx:Dynamic, ?fftbins:Dynamic):Dynamic;
 	/**
@@ -4339,6 +4702,10 @@ package scipy.signal;
 		xa : ndarray
 		    Analytic signal of `x`, of each 1-D array along `axis`
 		
+		See Also
+		--------
+		scipy.fftpack.hilbert : Return Hilbert transform of a periodic sequence x.
+		
 		Notes
 		-----
 		The analytic signal ``x_a(t)`` of signal ``x(t)`` is:
@@ -4374,14 +4741,15 @@ package scipy.signal;
 		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
 		
 		The amplitude envelope is given by magnitude of the analytic signal. The
-		instantaneous frequency can be obtained by differentiating the instantaneous
-		phase in respect to time. The instantaneous phase corresponds to the phase
-		angle of the analytic signal.
+		instantaneous frequency can be obtained by differentiating the
+		instantaneous phase in respect to time. The instantaneous phase corresponds
+		to the phase angle of the analytic signal.
 		
 		>>> analytic_signal = hilbert(signal)
 		>>> amplitude_envelope = np.abs(analytic_signal)
 		>>> instantaneous_phase = np.unwrap(np.angle(analytic_signal))
-		>>> instantaneous_frequency = np.diff(instantaneous_phase) / (2.0*np.pi) * fs
+		>>> instantaneous_frequency = (np.diff(instantaneous_phase) /
+		...                            (2.0*np.pi) * fs)
 		
 		>>> fig = plt.figure()
 		>>> ax0 = fig.add_subplot(211)
@@ -4399,8 +4767,9 @@ package scipy.signal;
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
-		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing,
-		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal
+		       Processing, Third Edition, 2009. Chapter 12.
+		       ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -4578,6 +4947,156 @@ package scipy.signal;
 		>>> plt.show()
 	**/
 	static public function iirfilter(N:Dynamic, Wn:Dynamic, ?rp:Dynamic, ?rs:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic):Dynamic;
+	/**
+		Design second-order IIR notch digital filter.
+		
+		A notch filter is a band-stop filter with a narrow bandwidth
+		(high quality factor). It rejects a narrow frequency band and
+		leaves the rest of the spectrum little changed.
+		
+		Parameters
+		----------
+		w0 : float
+		    Normalized frequency to remove from a signal. It is a
+		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1``
+		    corresponding to half of the sampling frequency.
+		Q : float
+		    Quality factor. Dimensionless parameter that characterizes
+		    notch filter -3 dB bandwidth ``bw`` relative to its center
+		    frequency, ``Q = w0/bw``.
+		
+		Returns
+		-------
+		b, a : ndarray, ndarray
+		    Numerator (``b``) and denominator (``a``) polynomials
+		    of the IIR filter.
+		
+		See Also
+		--------
+		iirpeak
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		References
+		----------
+		.. [1] Sophocles J. Orfanidis, "Introduction To Signal Processing",
+		       Prentice-Hall, 1996
+		
+		Examples
+		--------
+		Design and plot filter to remove the 60Hz component from a
+		signal sampled at 200Hz, using a quality factor Q = 30
+		
+		>>> from scipy import signal
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 200.0  # Sample frequency (Hz)
+		>>> f0 = 60.0  # Frequency to be removed from signal (Hz)
+		>>> Q = 30.0  # Quality factor
+		>>> w0 = f0/(fs/2)  # Normalized Frequency
+		>>> # Design notch filter
+		>>> b, a = signal.iirnotch(w0, Q)
+		
+		>>> # Frequency response
+		>>> w, h = signal.freqz(b, a)
+		>>> # Generate frequency axis
+		>>> freq = w*fs/(2*np.pi)
+		>>> # Plot
+		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
+		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
+		>>> ax[0].set_title("Frequency Response")
+		>>> ax[0].set_ylabel("Amplitude (dB)", color='blue')
+		>>> ax[0].set_xlim([0, 100])
+		>>> ax[0].set_ylim([-25, 10])
+		>>> ax[0].grid()
+		>>> ax[1].plot(freq, np.unwrap(np.angle(h))*180/np.pi, color='green')
+		>>> ax[1].set_ylabel("Angle (degrees)", color='green')
+		>>> ax[1].set_xlabel("Frequency (Hz)")
+		>>> ax[1].set_xlim([0, 100])
+		>>> ax[1].set_yticks([-90, -60, -30, 0, 30, 60, 90])
+		>>> ax[1].set_ylim([-90, 90])
+		>>> ax[1].grid()
+		>>> plt.show()
+	**/
+	static public function iirnotch(w0:Dynamic, Q:Dynamic):Dynamic;
+	/**
+		Design second-order IIR peak (resonant) digital filter.
+		
+		A peak filter is a band-pass filter with a narrow bandwidth
+		(high quality factor). It rejects components outside a narrow
+		frequency band.
+		
+		Parameters
+		----------
+		w0 : float
+		    Normalized frequency to be retained in a signal. It is a
+		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1`` corresponding
+		    to half of the sampling frequency.
+		Q : float
+		    Quality factor. Dimensionless parameter that characterizes
+		    peak filter -3 dB bandwidth ``bw`` relative to its center
+		    frequency, ``Q = w0/bw``.
+		
+		Returns
+		-------
+		b, a : ndarray, ndarray
+		    Numerator (``b``) and denominator (``a``) polynomials
+		    of the IIR filter.
+		
+		See Also
+		--------
+		iirnotch
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		References
+		----------
+		.. [1] Sophocles J. Orfanidis, "Introduction To Signal Processing",
+		       Prentice-Hall, 1996
+		
+		Examples
+		--------
+		Design and plot filter to remove the frequencies other than the 300Hz
+		component from a signal sampled at 1000Hz, using a quality factor Q = 30
+		
+		>>> from scipy import signal
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 1000.0  # Sample frequency (Hz)
+		>>> f0 = 300.0  # Frequency to be retained (Hz)
+		>>> Q = 30.0  # Quality factor
+		>>> w0 = f0/(fs/2)  # Normalized Frequency
+		>>> # Design peak filter
+		>>> b, a = signal.iirpeak(w0, Q)
+		
+		>>> # Frequency response
+		>>> w, h = signal.freqz(b, a)
+		>>> # Generate frequency axis
+		>>> freq = w*fs/(2*np.pi)
+		>>> # Plot
+		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
+		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
+		>>> ax[0].set_title("Frequency Response")
+		>>> ax[0].set_ylabel("Amplitude (dB)", color='blue')
+		>>> ax[0].set_xlim([0, 500])
+		>>> ax[0].set_ylim([-50, 10])
+		>>> ax[0].grid()
+		>>> ax[1].plot(freq, np.unwrap(np.angle(h))*180/np.pi, color='green')
+		>>> ax[1].set_ylabel("Angle (degrees)", color='green')
+		>>> ax[1].set_xlabel("Frequency (Hz)")
+		>>> ax[1].set_xlim([0, 500])
+		>>> ax[1].set_yticks([-90, -60, -30, 0, 30, 60, 90])
+		>>> ax[1].set_ylim([-90, 90])
+		>>> ax[1].grid()
+		>>> plt.show()
+	**/
+	static public function iirpeak(w0:Dynamic, Q:Dynamic):Dynamic;
 	/**
 		Impulse response of continuous-time system.
 		
@@ -4792,6 +5311,160 @@ package scipy.signal;
 	**/
 	static public function invresz(r:Dynamic, p:Dynamic, k:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
+		Perform the inverse Short Time Fourier transform (iSTFT).
+		
+		Parameters
+		----------
+		Zxx : array_like
+		    STFT of the signal to be reconstructed. If a purely real array
+		    is passed, it will be cast to a complex data type.
+		fs : float, optional
+		    Sampling frequency of the time series. Defaults to 1.0.
+		window : str or tuple or array_like, optional
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be `nperseg`.
+		    Defaults to a Hann window. Must match the window used to
+		    generate the STFT for faithful inversion.
+		nperseg : int, optional
+		    Number of data points corresponding to each STFT segment. This
+		    parameter must be specified if the number of data points per
+		    segment is odd, or if the STFT was padded via ``nfft >
+		    nperseg``. If `None`, the value depends on the shape of
+		    `Zxx` and `input_onesided`. If `input_onesided` is True,
+		    ``nperseg=2*(Zxx.shape[freq_axis] - 1)``. Otherwise,
+		    ``nperseg=Zxx.shape[freq_axis]``. Defaults to `None`.
+		noverlap : int, optional
+		    Number of points to overlap between segments. If `None`, half
+		    of the segment length. Defaults to `None`. When specified, the
+		    COLA constraint must be met (see Notes below), and should match
+		    the parameter used to generate the STFT. Defaults to `None`.
+		nfft : int, optional
+		    Number of FFT points corresponding to each STFT segment. This
+		    parameter must be specified if the STFT was padded via ``nfft >
+		    nperseg``. If `None`, the default values are the same as for
+		    `nperseg`, detailed above, with one exception: if
+		    `input_onesided` is True and
+		    ``nperseg==2*Zxx.shape[freq_axis] - 1``, `nfft` also takes on
+		    that value. This case allows the proper inversion of an
+		    odd-length unpadded STFT using ``nfft=None``. Defaults to
+		    `None`.
+		input_onesided : bool, optional
+		    If `True`, interpret the input array as one-sided FFTs, such
+		    as is returned by `stft` with ``return_onesided=True`` and
+		    `numpy.fft.rfft`. If `False`, interpret the input as a a
+		    two-sided FFT. Defaults to `True`.
+		boundary : bool, optional
+		    Specifies whether the input signal was extended at its
+		    boundaries by supplying a non-`None` ``boundary`` argument to
+		    `stft`. Defaults to `True`.
+		time_axis : int, optional
+		    Where the time segments of the STFT is located; the default is
+		    the last axis (i.e. ``axis=-1``).
+		freq_axis : int, optional
+		    Where the frequency axis of the STFT is located; the default is
+		    the penultimate axis (i.e. ``axis=-2``).
+		
+		Returns
+		-------
+		t : ndarray
+		    Array of output data times.
+		x : ndarray
+		    iSTFT of `Zxx`.
+		
+		See Also
+		--------
+		stft: Short Time Fourier Transform
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
+		            is met
+		
+		Notes
+		-----
+		In order to enable inversion of an STFT via the inverse STFT with
+		`istft`, the signal windowing must obey the constraint of "Constant
+		OverLap Add" (COLA). This ensures that every point in the input data
+		is equally weighted, thereby avoiding aliasing and allowing full
+		reconstruction. Whether a choice of `window`, `nperseg`, and
+		`noverlap` satisfy this constraint can be tested with
+		`check_COLA`, by using ``nperseg = Zxx.shape[freq_axis]``.
+		
+		An STFT which has been modified (via masking or otherwise) is not
+		guaranteed to correspond to a exactly realizible signal. This
+		function implements the iSTFT via the least-squares esimation
+		algorithm detailed in [2]_, which produces a signal that minimizes
+		the mean squared error between the STFT of the returned signal and
+		the modified STFT.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
+		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
+		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
+		       Modified Short Fourier Transform", IEEE 1984,
+		       10.1109/TASSP.1984.1164317
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Generate a test signal, a 2 Vrms sine wave at 50Hz corrupted by
+		0.001 V**2/Hz of white noise sampled at 1024 Hz.
+		
+		>>> fs = 1024
+		>>> N = 10*fs
+		>>> nperseg = 512
+		>>> amp = 2 * np.sqrt(2)
+		>>> noise_power = 0.001 * fs / 2
+		>>> time = np.arange(N) / float(fs)
+		>>> carrier = amp * np.sin(2*np.pi*50*time)
+		>>> noise = np.random.normal(scale=np.sqrt(noise_power),
+		...                          size=time.shape)
+		>>> x = carrier + noise
+		
+		Compute the STFT, and plot its magnitude
+		
+		>>> f, t, Zxx = signal.stft(x, fs=fs, nperseg=nperseg)
+		>>> plt.figure()
+		>>> plt.pcolormesh(t, f, np.abs(Zxx), vmin=0, vmax=amp)
+		>>> plt.ylim([f[1], f[-1]])
+		>>> plt.title('STFT Magnitude')
+		>>> plt.ylabel('Frequency [Hz]')
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.yscale('log')
+		>>> plt.show()
+		
+		Zero the components that are 10% or less of the carrier magnitude,
+		then convert back to a time series via inverse STFT
+		
+		>>> Zxx = np.where(np.abs(Zxx) >= amp/10, Zxx, 0)
+		>>> _, xrec = signal.istft(Zxx, fs)
+		
+		Compare the cleaned signal with the original and true carrier signals.
+		
+		>>> plt.figure()
+		>>> plt.plot(time, x, time, xrec, time, carrier)
+		>>> plt.xlim([2, 2.1])
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.ylabel('Signal')
+		>>> plt.legend(['Carrier + Noise', 'Filtered via STFT', 'True Carrier'])
+		>>> plt.show()
+		
+		Note that the cleaned signal does not start as abruptly as the original,
+		since some of the coefficients of the transient were also removed:
+		
+		>>> plt.figure()
+		>>> plt.plot(time, x, time, xrec, time, carrier)
+		>>> plt.xlim([0, 0.1])
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.ylabel('Signal')
+		>>> plt.legend(['Carrier + Noise', 'Filtered via STFT', 'True Carrier'])
+		>>> plt.show()
+	**/
+	static public function istft(Zxx:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?input_onesided:Dynamic, ?boundary:Dynamic, ?time_axis:Dynamic, ?freq_axis:Dynamic):Dynamic;
+	/**
 		Return a Kaiser window.
 		
 		The Kaiser window is a taper formed by using a Bessel function.
@@ -4835,8 +5508,8 @@ package scipy.signal;
 		maximizes the energy in the main lobe of the window relative to total
 		energy.
 		
-		The Kaiser can approximate many other windows by varying the beta
-		parameter.
+		The Kaiser can approximate other windows by varying the beta parameter.
+		(Some literature uses alpha = beta/pi.) [4]_
 		
 		====  =======================
 		beta  Window shape
@@ -4850,7 +5523,7 @@ package scipy.signal;
 		A beta value of 14 is probably a good starting point. Note that as beta
 		gets large, the window narrows, and so the number of samples needs to be
 		large enough to sample the increasingly narrow spike, otherwise NaNs will
-		get returned.
+		be returned.
 		
 		Most references to the Kaiser window come from the signal processing
 		literature, where it is used as one of many windowing functions for
@@ -4867,6 +5540,9 @@ package scipy.signal;
 		       University of Alberta Press, 1975, pp. 177-178.
 		.. [3] Wikipedia, "Window function",
 		       http://en.wikipedia.org/wiki/Window_function
+		.. [4] F. J. Harris, "On the use of windows for harmonic analysis with the
+		       discrete Fourier transform," Proceedings of the IEEE, vol. 66,
+		       no. 1, pp. 51-83, Jan. 1978. :doi:`10.1109/PROC.1978.10837`.
 		
 		Examples
 		--------
@@ -5058,8 +5734,9 @@ package scipy.signal;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		>>> t = np.linspace(-1, 1, 201)
-		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1)
-		...      + 0.18*np.cos(2*np.pi*3.85*t))
+		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) +
+		...      0.1*np.sin(2*np.pi*1.25*t + 1) +
+		...      0.18*np.cos(2*np.pi*3.85*t))
 		>>> xn = x + np.random.randn(len(t)) * 0.08
 		
 		Create an order 3 lowpass butterworth filter:
@@ -5586,6 +6263,129 @@ package scipy.signal;
 	**/
 	static public function medfilt2d(input:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	/**
+		Convert a linear-phase FIR filter to minimum phase
+		
+		Parameters
+		----------
+		h : array
+		    Linear-phase FIR filter coefficients.
+		method : {'hilbert', 'homomorphic'}
+		    The method to use:
+		
+		        'homomorphic' (default)
+		            This method [4]_ [5]_ works best with filters with an
+		            odd number of taps, and the resulting minimum phase filter
+		            will have a magnitude response that approximates the square
+		            root of the the original filter's magnitude response.
+		
+		        'hilbert'
+		            This method [1]_ is designed to be used with equiripple
+		            filters (e.g., from `remez`) with unity or zero gain
+		            regions.
+		
+		n_fft : int
+		    The number of points to use for the FFT. Should be at least a
+		    few times larger than the signal length (see Notes).
+		
+		Returns
+		-------
+		h_minimum : array
+		    The minimum-phase version of the filter, with length
+		    ``(length(h) + 1) // 2``.
+		
+		See Also
+		--------
+		firwin
+		firwin2
+		remez
+		
+		Notes
+		-----
+		Both the Hilbert [1]_ or homomorphic [4]_ [5]_ methods require selection
+		of an FFT length to estimate the complex cepstrum of the filter.
+		
+		In the case of the Hilbert method, the deviation from the ideal
+		spectrum ``epsilon`` is related to the number of stopband zeros
+		``n_stop`` and FFT length ``n_fft`` as::
+		
+		    epsilon = 2. * n_stop / n_fft
+		
+		For example, with 100 stopband zeros and a FFT length of 2048,
+		``epsilon = 0.0976``. If we conservatively assume that the number of
+		stopband zeros is one less than the filter length, we can take the FFT
+		length to be the next power of 2 that satisfies ``epsilon=0.01`` as::
+		
+		    n_fft = 2 ** int(np.ceil(np.log2(2 * (len(h) - 1) / 0.01)))
+		
+		This gives reasonable results for both the Hilbert and homomorphic
+		methods, and gives the value used when ``n_fft=None``.
+		
+		Alternative implementations exist for creating minimum-phase filters,
+		including zero inversion [2]_ and spectral factorization [3]_ [4]_.
+		For more information, see:
+		
+		    http://dspguru.com/dsp/howtos/how-to-design-minimum-phase-fir-filters
+		
+		Examples
+		--------
+		Create an optimal linear-phase filter, then convert it to minimum phase:
+		
+		>>> from scipy.signal import remez, minimum_phase, freqz, group_delay
+		>>> import matplotlib.pyplot as plt
+		>>> freq = [0, 0.2, 0.3, 1.0]
+		>>> desired = [1, 0]
+		>>> h_linear = remez(151, freq, desired, Hz=2.)
+		
+		Convert it to minimum phase:
+		
+		>>> h_min_hom = minimum_phase(h_linear, method='homomorphic')
+		>>> h_min_hil = minimum_phase(h_linear, method='hilbert')
+		
+		Compare the three filters:
+		
+		>>> fig, axs = plt.subplots(4, figsize=(4, 8))
+		>>> for h, style, color in zip((h_linear, h_min_hom, h_min_hil),
+		...                            ('-', '-', '--'), ('k', 'r', 'c')):
+		...     w, H = freqz(h)
+		...     w, gd = group_delay((h, 1))
+		...     w /= np.pi
+		...     axs[0].plot(h, color=color, linestyle=style)
+		...     axs[1].plot(w, np.abs(H), color=color, linestyle=style)
+		...     axs[2].plot(w, 20 * np.log10(np.abs(H)), color=color, linestyle=style)
+		...     axs[3].plot(w, gd, color=color, linestyle=style)
+		>>> for ax in axs:
+		...     ax.grid(True, color='0.5')
+		...     ax.fill_between(freq[1:3], *ax.get_ylim(), color='#ffeeaa', zorder=1)
+		>>> axs[0].set(xlim=[0, len(h_linear) - 1], ylabel='Amplitude', xlabel='Samples')
+		>>> axs[1].legend(['Linear', 'Min-Hom', 'Min-Hil'], title='Phase')
+		>>> for ax, ylim in zip(axs[1:], ([0, 1.1], [-150, 10], [-60, 60])):
+		...     ax.set(xlim=[0, 1], ylim=ylim, xlabel='Frequency')
+		>>> axs[1].set(ylabel='Magnitude')
+		>>> axs[2].set(ylabel='Magnitude (dB)')
+		>>> axs[3].set(ylabel='Group delay')
+		>>> plt.tight_layout()
+		
+		References
+		----------
+		.. [1] N. Damera-Venkata and B. L. Evans, "Optimal design of real and
+		       complex minimum phase digital FIR filters," Acoustics, Speech,
+		       and Signal Processing, 1999. Proceedings., 1999 IEEE International
+		       Conference on, Phoenix, AZ, 1999, pp. 1145-1148 vol.3.
+		       doi: 10.1109/ICASSP.1999.756179
+		.. [2] X. Chen and T. W. Parks, "Design of optimal minimum phase FIR
+		       filters by direct factorization," Signal Processing,
+		       vol. 10, no. 4, pp. 369–383, Jun. 1986.
+		.. [3] T. Saramaki, "Finite Impulse Response Filter Design," in
+		       Handbook for Digital Signal Processing, chapter 4,
+		       New York: Wiley-Interscience, 1993.
+		.. [4] J. S. Lim, Advanced Topics in Signal Processing.
+		       Englewood Cliffs, N.J.: Prentice Hall, 1988.
+		.. [5] A. V. Oppenheim, R. W. Schafer, and J. R. Buck,
+		       "Discrete-Time Signal Processing," 2nd edition.
+		       Upper Saddle River, N.J.: Prentice Hall, 1999.
+	**/
+	static public function minimum_phase(h:Dynamic, ?method:Dynamic, ?n_fft:Dynamic):Array<Dynamic>;
+	/**
 		Complex Morlet wavelet.
 		
 		Parameters
@@ -5636,14 +6436,38 @@ package scipy.signal;
 	**/
 	static public function morlet(M:Dynamic, ?w:Dynamic, ?s:Dynamic, ?complete:Dynamic):Dynamic;
 	/**
-		Normalize polynomial representation of a transfer function.
+		Normalize numerator/denominator of a continuous-time transfer function.
 		
 		If values of `b` are too close to 0, they are removed. In that case, a
 		BadCoefficients warning is emitted.
+		
+		Parameters
+		----------
+		b: array_like
+		    Numerator of the transfer function. Can be a 2d array to normalize
+		    multiple transfer functions.
+		a: array_like
+		    Denominator of the transfer function. At most 1d.
+		
+		Returns
+		-------
+		num: array
+		    The numerator of the normalized transfer function. At least a 1d
+		    array. A 2d-array if the input `num` is a 2d array.
+		den: 1d-array
+		    The denominator of the normalized transfer function.
+		
+		Notes
+		-----
+		Coefficients for both the numerator and denominator should be specified in
+		descending exponent order (e.g., ``s^2 + 3s + 5`` would be represented as
+		``[1, 3, 5]``).
 	**/
 	static public function normalize(b:Dynamic, a:Dynamic):Dynamic;
 	/**
 		Return a minimum 4-term Blackman-Harris window according to Nuttall.
+		
+		This variation is called "Nuttall4c" by Heinzel. [2]_
 		
 		Parameters
 		----------
@@ -5660,6 +6484,16 @@ package scipy.signal;
 		w : ndarray
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
+		
+		References
+		----------
+		.. [1] A. Nuttall, "Some windows with very good sidelobe behavior," IEEE
+		       Transactions on Acoustics, Speech, and Signal Processing, vol. 29,
+		       no. 1, pp. 84-91, Feb 1981. :doi:`10.1109/TASSP.1981.1163506`.
+		.. [2] Heinzel G. et al., "Spectrum and spectral density estimation by the
+		       Discrete Fourier transform (DFT), including a comprehensive list of
+		       window functions and some new flat-top windows", February 15, 2002
+		       https://holometer.fnal.gov/GH_FFT.pdf
 		
 		Examples
 		--------
@@ -5757,6 +6591,11 @@ package scipy.signal;
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
 		
+		References
+		----------
+		.. [1] E. Parzen, "Mathematical Considerations in the Estimation of
+		       Spectra", Technometrics,  Vol. 3, No. 2 (May, 1961), pp. 167-190
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -5792,28 +6631,32 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows and
-		    required parameters. If `window` is an array it will be used
-		    directly as the window. Defaults to None; equivalent to 'boxcar'.
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be nperseg.
+		    Defaults to 'boxcar'.
 		nfft : int, optional
-		    Length of the FFT used. If None the length of `x` will be used.
-		detrend : str or function or False, optional
-		    Specifies how to detrend `x` prior to computing the spectrum. If
-		    `detrend` is a string, it is passed as the ``type`` argument to
-		    `detrend`.  If it is a function, it should return a detrended array.
-		    If `detrend` is False, no detrending is done.  Defaults to 'constant'.
+		    Length of the FFT used. If `None` the length of `x` will be
+		    used.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
-		    If True, return a one-sided spectrum for real data. If False return
-		    a two-sided spectrum. Note that for complex data, a two-sided
-		    spectrum is always returned.
+		    If `True`, return a one-sided spectrum for real data. If
+		    `False` return a two-sided spectrum. Note that for complex
+		    data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
-		    where `Pxx` has units of V**2/Hz and computing the power spectrum
-		    ('spectrum') where `Pxx` has units of V**2, if `x` is measured in V
-		    and fs is measured in Hz.  Defaults to 'density'
+		    where `Pxx` has units of V**2/Hz and computing the power
+		    spectrum ('spectrum') where `Pxx` has units of V**2, if `x`
+		    is measured in V and `fs` is measured in Hz. Defaults to
+		    'density'
 		axis : int, optional
-		    Axis along which the periodogram is computed; the default is over
-		    the last axis (i.e. ``axis=-1``).
+		    Axis along which the periodogram is computed; the default is
+		    over the last axis (i.e. ``axis=-1``).
 		
 		Returns
 		-------
@@ -5874,7 +6717,8 @@ package scipy.signal;
 		>>> plt.ylabel('Linear spectrum [V RMS]')
 		>>> plt.show()
 		
-		The peak height in the power spectrum is an estimate of the RMS amplitude.
+		The peak height in the power spectrum is an estimate of the RMS
+		amplitude.
 		
 		>>> np.sqrt(Pxx_spec.max())
 		2.0077340678640727
@@ -6169,10 +7013,10 @@ package scipy.signal;
 		
 		See Also
 		--------
-		freqz
 		firls
 		firwin
 		firwin2
+		minimum_phase
 		
 		References
 		----------
@@ -6232,7 +7076,7 @@ package scipy.signal;
 		    containing the resampled array and the corresponding resampled
 		    positions.
 		
-		See also
+		See Also
 		--------
 		decimate : Downsample the signal after applying an FIR or IIR filter.
 		resample_poly : Resample using polyphase filtering and an FIR filter.
@@ -6312,7 +7156,7 @@ package scipy.signal;
 		resampled_x : array
 		    The resampled array.
 		
-		See also
+		See Also
 		--------
 		decimate : Downsample the signal after applying an FIR or IIR filter.
 		resample : Resample up or down using the FFT method.
@@ -6457,7 +7301,7 @@ package scipy.signal;
 		k : ndarray
 		    Coefficients of the direct polynomial term.
 		
-		See also
+		See Also
 		--------
 		invresz, residue, unique_roots
 	**/
@@ -6743,6 +7587,15 @@ package scipy.signal;
 		w : ndarray
 		    The window, with the maximum value always normalized to 1
 		
+		References
+		----------
+		.. [1] D. Slepian & H. O. Pollak: "Prolate spheroidal wave functions,
+		       Fourier analysis and uncertainty-I," Bell Syst. Tech. J., vol.40,
+		       pp.43-63, 1961. https://archive.org/details/bstj40-1-43
+		.. [2] H. J. Landau & H. O. Pollak: "Prolate spheroidal wave functions,
+		       Fourier analysis and uncertainty-II," Bell Syst. Tech. J. , vol.40,
+		       pp.65-83, 1961. https://archive.org/details/bstj40-1-65
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -6854,7 +7707,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt
+		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt, sosfreqz
 		
 		Notes
 		-----
@@ -6875,8 +7728,7 @@ package scipy.signal;
 		>>> from scipy import signal
 		>>> b, a = signal.ellip(13, 0.009, 80, 0.05, output='ba')
 		>>> sos = signal.ellip(13, 0.009, 80, 0.05, output='sos')
-		>>> x = np.zeros(700)
-		>>> x[0] = 1.
+		>>> x = signal.unit_impulse(700)
 		>>> y_tf = signal.lfilter(b, a, x)
 		>>> y_sos = signal.sosfilt(sos, x)
 		>>> plt.plot(y_tf, 'r', label='TF')
@@ -6979,13 +7831,108 @@ package scipy.signal;
 		
 		See Also
 		--------
-		filtfilt, sosfilt, sosfilt_zi
+		filtfilt, sosfilt, sosfilt_zi, sosfreqz
 		
 		Notes
 		-----
 		.. versionadded:: 0.18.0
 	**/
 	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
+	/**
+		Compute the frequency response of a digital filter in SOS format.
+		
+		Given `sos`, an array with shape (n, 6) of second order sections of
+		a digital filter, compute the frequency response of the system function::
+		
+		           B0(z)   B1(z)         B{n-1}(z)
+		    H(z) = ----- * ----- * ... * ---------
+		           A0(z)   A1(z)         A{n-1}(z)
+		
+		for z = exp(omega*1j), where B{k}(z) and A{k}(z) are numerator and
+		denominator of the transfer function of the k-th second order section.
+		
+		Parameters
+		----------
+		sos : array_like
+		    Array of second-order filter coefficients, must have shape
+		    ``(n_sections, 6)``. Each row corresponds to a second-order
+		    section, with the first three columns providing the numerator
+		    coefficients and the last three providing the denominator
+		    coefficients.
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response, as complex numbers.
+		
+		See Also
+		--------
+		freqz, sosfilt
+		
+		Notes
+		-----
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		Design a 15th-order bandpass filter in SOS format.
+		
+		>>> from scipy import signal
+		>>> sos = signal.ellip(15, 0.5, 60, (0.2, 0.4), btype='bandpass',
+		...                    output='sos')
+		
+		Compute the frequency response at 1500 points from DC to Nyquist.
+		
+		>>> w, h = signal.sosfreqz(sos, worN=1500)
+		
+		Plot the response.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.subplot(2, 1, 1)
+		>>> db = 20*np.log10(np.abs(h))
+		>>> plt.plot(w/np.pi, db)
+		>>> plt.ylim(-75, 5)
+		>>> plt.grid(True)
+		>>> plt.yticks([0, -20, -40, -60])
+		>>> plt.ylabel('Gain [dB]')
+		>>> plt.title('Frequency Response')
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(w/np.pi, np.angle(h))
+		>>> plt.grid(True)
+		>>> plt.yticks([-np.pi, -0.5*np.pi, 0, 0.5*np.pi, np.pi],
+		...            [r'$-\pi$', r'$-\pi/2$', '0', r'$\pi/2$', r'$\pi$'])
+		>>> plt.ylabel('Phase [rad]')
+		>>> plt.xlabel('Normalized frequency (1.0 = Nyquist)')
+		>>> plt.show()
+		
+		If the same filter is implemented as a single transfer function,
+		numerical error corrupts the frequency response:
+		
+		>>> b, a = signal.ellip(15, 0.5, 60, (0.2, 0.4), btype='bandpass',
+		...                    output='ba')
+		>>> w, h = signal.freqz(b, a, worN=1500)
+		>>> plt.subplot(2, 1, 1)
+		>>> db = 20*np.log10(np.abs(h))
+		>>> plt.plot(w/np.pi, db)
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(w/np.pi, np.angle(h))
+		>>> plt.show()
+	**/
+	static public function sosfreqz(sos:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
 	/**
 		Compute a spectrogram with consecutive Fourier transforms.
 		
@@ -6999,38 +7946,46 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows and
-		    required parameters. If `window` is array_like it will be used
-		    directly as the window and its length will be used for nperseg.
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be nperseg.
 		    Defaults to a Tukey window with shape parameter of 0.25.
 		nperseg : int, optional
-		    Length of each segment.  Defaults to 256.
+		    Length of each segment. Defaults to None, but if window is str or
+		    tuple, is set to 256, and if window is array_like, is set to the
+		    length of the window.
 		noverlap : int, optional
-		    Number of points to overlap between segments. If None,
-		    ``noverlap = nperseg // 8``.  Defaults to None.
+		    Number of points to overlap between segments. If `None`,
+		    ``noverlap = nperseg // 8``. Defaults to `None`.
 		nfft : int, optional
-		    Length of the FFT used, if a zero padded FFT is desired.  If None,
-		    the FFT length is `nperseg`. Defaults to None.
-		detrend : str or function or False, optional
-		    Specifies how to detrend each segment. If `detrend` is a string,
-		    it is passed as the ``type`` argument to `detrend`.  If it is a
-		    function, it takes a segment and returns a detrended segment.
-		    If `detrend` is False, no detrending is done.  Defaults to 'constant'.
+		    Length of the FFT used, if a zero padded FFT is desired. If
+		    `None`, the FFT length is `nperseg`. Defaults to `None`.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
-		    If True, return a one-sided spectrum for real data. If False return
-		    a two-sided spectrum. Note that for complex data, a two-sided
-		    spectrum is always returned.
+		    If `True`, return a one-sided spectrum for real data. If
+		    `False` return a two-sided spectrum. Note that for complex
+		    data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
-		    where `Pxx` has units of V**2/Hz and computing the power spectrum
-		    ('spectrum') where `Pxx` has units of V**2, if `x` is measured in V
-		    and fs is measured in Hz.  Defaults to 'density'
+		    where `Sxx` has units of V**2/Hz and computing the power
+		    spectrum ('spectrum') where `Sxx` has units of V**2, if `x`
+		    is measured in V and `fs` is measured in Hz. Defaults to
+		    'density'.
 		axis : int, optional
 		    Axis along which the spectrogram is computed; the default is over
 		    the last axis (i.e. ``axis=-1``).
 		mode : str, optional
-		    Defines what kind of return values are expected. Options are ['psd',
-		    'complex', 'magnitude', 'angle', 'phase'].
+		    Defines what kind of return values are expected. Options are
+		    ['psd', 'complex', 'magnitude', 'angle', 'phase']. 'complex' is
+		    equivalent to the output of `stft` with no padding or boundary
+		    extension. 'magnitude' returns the absolute magnitude of the
+		    STFT. 'angle' and 'phase' return the complex angle of the STFT,
+		    with and without unwrapping, respectively.
 		
 		Returns
 		-------
@@ -7039,8 +7994,8 @@ package scipy.signal;
 		t : ndarray
 		    Array of segment times.
 		Sxx : ndarray
-		    Spectrogram of x. By default, the last axis of Sxx corresponds to the
-		    segment times.
+		    Spectrogram of x. By default, the last axis of Sxx corresponds
+		    to the segment times.
 		
 		See Also
 		--------
@@ -7052,35 +8007,39 @@ package scipy.signal;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. In contrast to welch's method, where the entire
-		data stream is averaged over, one may wish to use a smaller overlap (or
-		perhaps none at all) when computing a spectrogram, to maintain some
-		statistical independence between individual segments.
+		and on your requirements. In contrast to welch's method, where the
+		entire data stream is averaged over, one may wish to use a smaller
+		overlap (or perhaps none at all) when computing a spectrogram, to
+		maintain some statistical independence between individual segments.
+		It is for this reason that the default window is a Tukey window with
+		1/8th of a window's length overlap at each end.
 		
 		.. versionadded:: 0.16.0
 		
 		References
 		----------
-		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck "Discrete-Time
-		       Signal Processing", Prentice Hall, 1999.
+		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
+		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
 		
 		Examples
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		Generate a test signal, a 2 Vrms sine wave whose frequency linearly changes
-		with time from 1kHz to 2kHz, corrupted by 0.001 V**2/Hz of white noise
-		sampled at 10 kHz.
+		Generate a test signal, a 2 Vrms sine wave whose frequency is slowly
+		modulated around 3kHz, corrupted by white noise of exponentially
+		decreasing magnitude sampled at 10 kHz.
 		
 		>>> fs = 10e3
 		>>> N = 1e5
 		>>> amp = 2 * np.sqrt(2)
-		>>> noise_power = 0.001 * fs / 2
-		>>> time = np.arange(N) / fs
-		>>> freq = np.linspace(1e3, 2e3, N)
-		>>> x = amp * np.sin(2*np.pi*freq*time)
-		>>> x += np.random.normal(scale=np.sqrt(noise_power), size=time.shape)
+		>>> noise_power = 0.01 * fs / 2
+		>>> time = np.arange(N) / float(fs)
+		>>> mod = 500*np.cos(2*np.pi*0.25*time)
+		>>> carrier = amp * np.sin(2*np.pi*3e3*time + mod)
+		>>> noise = np.random.normal(scale=np.sqrt(noise_power), size=time.shape)
+		>>> noise *= np.exp(-time/5)
+		>>> x = carrier + noise
 		
 		Compute and plot the spectrogram.
 		
@@ -7320,6 +8279,139 @@ package scipy.signal;
 	**/
 	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Compute the Short Time Fourier Transform (STFT).
+		
+		STFTs can be used as a way of quantifying the change of a
+		nonstationary signal's frequency and phase content over time.
+		
+		Parameters
+		----------
+		x : array_like
+		    Time series of measurement values
+		fs : float, optional
+		    Sampling frequency of the `x` time series. Defaults to 1.0.
+		window : str or tuple or array_like, optional
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be nperseg.
+		    Defaults to a Hann window.
+		nperseg : int, optional
+		    Length of each segment. Defaults to 256.
+		noverlap : int, optional
+		    Number of points to overlap between segments. If `None`,
+		    ``noverlap = nperseg // 2``. Defaults to `None`. When
+		    specified, the COLA constraint must be met (see Notes below).
+		nfft : int, optional
+		    Length of the FFT used, if a zero padded FFT is desired. If
+		    `None`, the FFT length is `nperseg`. Defaults to `None`.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to `False`.
+		return_onesided : bool, optional
+		    If `True`, return a one-sided spectrum for real data. If
+		    `False` return a two-sided spectrum. Note that for complex
+		    data, a two-sided spectrum is always returned. Defaults to
+		    `True`.
+		boundary : str or None, optional
+		    Specifies whether the input signal is extended at both ends, and
+		    how to generate the new values, in order to center the first
+		    windowed segment on the first input point. This has the benefit
+		    of enabling reconstruction of the first input point when the
+		    employed window function starts at zero. Valid options are
+		    ``['even', 'odd', 'constant', 'zeros', None]``. Defaults to
+		    'zeros', for zero padding extension. I.e. ``[1, 2, 3, 4]`` is
+		    extended to ``[0, 1, 2, 3, 4, 0]`` for ``nperseg=3``.
+		padded : bool, optional
+		    Specifies whether the input signal is zero-padded at the end to
+		    make the signal fit exactly into an integer number of window
+		    segments, so that all of the signal is included in the output.
+		    Defaults to `True`. Padding occurs after boundary extension, if
+		    `boundary` is not `None`, and `padded` is `True`, as is the
+		    default.
+		axis : int, optional
+		    Axis along which the STFT is computed; the default is over the
+		    last axis (i.e. ``axis=-1``).
+		
+		Returns
+		-------
+		f : ndarray
+		    Array of sample frequencies.
+		t : ndarray
+		    Array of segment times.
+		Zxx : ndarray
+		    STFT of `x`. By default, the last axis of `Zxx` corresponds
+		    to the segment times.
+		
+		See Also
+		--------
+		istft: Inverse Short Time Fourier Transform
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
+		            is met
+		welch: Power spectral density by Welch's method.
+		spectrogram: Spectrogram by Welch's method.
+		csd: Cross spectral density by Welch's method.
+		lombscargle: Lomb-Scargle periodogram for unevenly sampled data
+		
+		Notes
+		-----
+		In order to enable inversion of an STFT via the inverse STFT in
+		`istft`, the signal windowing must obey the constraint of "Constant
+		OverLap Add" (COLA), and the input signal must have complete
+		windowing coverage (i.e. ``(x.shape[axis] - nperseg) %
+		(nperseg-noverlap) == 0``). The `padded` argument may be used to
+		accomplish this.
+		
+		The COLA constraint ensures that every point in the input data is
+		equally weighted, thereby avoiding aliasing and allowing full
+		reconstruction. Whether a choice of `window`, `nperseg`, and
+		`noverlap` satisfy this constraint can be tested with
+		`check_COLA`.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
+		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
+		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
+		       Modified Short Fourier Transform", IEEE 1984,
+		       10.1109/TASSP.1984.1164317
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Generate a test signal, a 2 Vrms sine wave whose frequency is slowly
+		modulated around 3kHz, corrupted by white noise of exponentially
+		decreasing magnitude sampled at 10 kHz.
+		
+		>>> fs = 10e3
+		>>> N = 1e5
+		>>> amp = 2 * np.sqrt(2)
+		>>> noise_power = 0.01 * fs / 2
+		>>> time = np.arange(N) / float(fs)
+		>>> mod = 500*np.cos(2*np.pi*0.25*time)
+		>>> carrier = amp * np.sin(2*np.pi*3e3*time + mod)
+		>>> noise = np.random.normal(scale=np.sqrt(noise_power),
+		...                          size=time.shape)
+		>>> noise *= np.exp(-time/5)
+		>>> x = carrier + noise
+		
+		Compute and plot the STFT's magnitude.
+		
+		>>> f, t, Zxx = signal.stft(x, fs, nperseg=1000)
+		>>> plt.pcolormesh(t, f, np.abs(Zxx), vmin=0, vmax=amp)
+		>>> plt.title('STFT Magnitude')
+		>>> plt.ylabel('Frequency [Hz]')
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.show()
+	**/
+	static public function stft(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?boundary:Dynamic, ?padded:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
 		Frequency-swept cosine generator, with a time-dependent frequency.
 		
 		This function generates a sinusoidal function whose instantaneous
@@ -7469,12 +8561,14 @@ package scipy.signal;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -7669,6 +8763,10 @@ package scipy.signal;
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
 		
+		See Also
+		--------
+		bartlett : A triangular window that touches zero
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -7703,7 +8801,7 @@ package scipy.signal;
 		    Number of points in the output window. If zero or less, an empty
 		    array is returned.
 		alpha : float, optional
-		    Shape parameter of the Tukey window, representing the faction of the
+		    Shape parameter of the Tukey window, representing the fraction of the
 		    window inside the cosine tapered region.
 		    If zero, the Tukey window is equivalent to a rectangular window.
 		    If one, the Tukey window is equivalent to a Hann window.
@@ -7722,7 +8820,7 @@ package scipy.signal;
 		----------
 		.. [1] Harris, Fredric J. (Jan 1978). "On the use of Windows for Harmonic
 		       Analysis with the Discrete Fourier Transform". Proceedings of the
-		       IEEE 66 (1): 51-83. doi:10.1109/PROC.1978.10837
+		       IEEE 66 (1): 51-83. :doi:`10.1109/PROC.1978.10837`
 		.. [2] Wikipedia, "Window function",
 		       http://en.wikipedia.org/wiki/Window_function#Tukey_window
 		
@@ -7794,6 +8892,78 @@ package scipy.signal;
 		array([ 1.305])
 	**/
 	static public function unique_roots(p:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
+	/**
+		Unit impulse signal (discrete delta function) or unit basis vector.
+		
+		Parameters
+		----------
+		shape : int or tuple of int
+		    Number of samples in the output (1-D), or a tuple that represents the
+		    shape of the output (N-D).
+		idx : None or int or tuple of int or 'mid', optional
+		    Index at which the value is 1.  If None, defaults to the 0th element.
+		    If ``idx='mid'``, the impulse will be centered at ``shape // 2`` in
+		    all dimensions.  If an int, the impulse will be at `idx` in all
+		    dimensions.
+		dtype : data-type, optional
+		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
+		    `numpy.float64`.
+		
+		Returns
+		-------
+		y : ndarray
+		    Output array containing an impulse signal.
+		
+		Notes
+		-----
+		The 1D case is also known as the Kronecker delta.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		An impulse at the 0th element (:math:`\delta[n]`):
+		
+		>>> from scipy import signal
+		>>> signal.unit_impulse(8)
+		array([ 1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.])
+		
+		Impulse offset by 2 samples (:math:`\delta[n-2]`):
+		
+		>>> signal.unit_impulse(7, 2)
+		array([ 0.,  0.,  1.,  0.,  0.,  0.,  0.])
+		
+		2-dimensional impulse, centered:
+		
+		>>> signal.unit_impulse((3, 3), 'mid')
+		array([[ 0.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  0.]])
+		
+		Impulse at (2, 2), using broadcasting:
+		
+		>>> signal.unit_impulse((4, 4), 2)
+		array([[ 0.,  0.,  0.,  0.],
+		       [ 0.,  0.,  0.,  0.],
+		       [ 0.,  0.,  1.,  0.],
+		       [ 0.,  0.,  0.,  0.]])
+		
+		Plot the impulse response of a 4th-order Butterworth lowpass filter:
+		
+		>>> imp = signal.unit_impulse(100, 'mid')
+		>>> b, a = signal.butter(4, 0.2)
+		>>> response = signal.lfilter(b, a, imp)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(np.arange(-50, 50), imp)
+		>>> plt.plot(np.arange(-50, 50), response)
+		>>> plt.margins(0.1, 0.1)
+		>>> plt.xlabel('Time [samples]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.grid(True)
+		>>> plt.show()
+	**/
+	static public function unit_impulse(shape:Dynamic, ?idx:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Upsample, FIR filter, and downsample
 		
@@ -7920,22 +9090,23 @@ package scipy.signal;
 		van Hemmen, JL, Longtin, A, and Vollmayr, AN. Testing resonating vector
 		    strength: Auditory system, electric fish, and noise.
 		    Chaos 21, 047508 (2011);
-		    doi: 10.1063/1.3670512
+		    :doi:`10.1063/1.3670512`.
 		van Hemmen, JL.  Vector strength after Goldberg, Brown, and von Mises:
 		    biological and mathematical perspectives.  Biol Cybern.
-		    2013 Aug;107(4):385-96. doi: 10.1007/s00422-013-0561-7.
+		    2013 Aug;107(4):385-96. :doi:`10.1007/s00422-013-0561-7`.
 		van Hemmen, JL and Vollmayr, AN.  Resonating vector strength: what happens
 		    when we vary the "probing" frequency while keeping the spike times
 		    fixed.  Biol Cybern. 2013 Aug;107(4):491-94.
-		    doi: 10.1007/s00422-013-0560-8
+		    :doi:`10.1007/s00422-013-0560-8`.
 	**/
 	static public function vectorstrength(events:Dynamic, period:Dynamic):Dynamic;
 	/**
 		Estimate power spectral density using Welch's method.
 		
-		Welch's method [1]_ computes an estimate of the power spectral density
-		by dividing the data into overlapping segments, computing a modified
-		periodogram for each segment and averaging the periodograms.
+		Welch's method [1]_ computes an estimate of the power spectral
+		density by dividing the data into overlapping segments, computing a
+		modified periodogram for each segment and averaging the
+		periodograms.
 		
 		Parameters
 		----------
@@ -7944,35 +9115,39 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows and
-		    required parameters. If `window` is array_like it will be used
-		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hann'.
+		    Desired window to use. See `get_window` for a list of windows
+		    and required parameters. If `window` is array_like it will be
+		    used directly as the window and its length must be nperseg.
+		    Defaults to a Hann window.
 		nperseg : int, optional
-		    Length of each segment.  Defaults to 256.
+		    Length of each segment. Defaults to None, but if window is str or
+		    tuple, is set to 256, and if window is array_like, is set to the
+		    length of the window.
 		noverlap : int, optional
-		    Number of points to overlap between segments. If None,
-		    ``noverlap = nperseg // 2``.  Defaults to None.
+		    Number of points to overlap between segments. If `None`,
+		    ``noverlap = nperseg // 2``. Defaults to `None`.
 		nfft : int, optional
-		    Length of the FFT used, if a zero padded FFT is desired.  If None,
-		    the FFT length is `nperseg`. Defaults to None.
-		detrend : str or function or False, optional
-		    Specifies how to detrend each segment. If `detrend` is a string,
-		    it is passed as the ``type`` argument to `detrend`.  If it is a
-		    function, it takes a segment and returns a detrended segment.
-		    If `detrend` is False, no detrending is done.  Defaults to 'constant'.
+		    Length of the FFT used, if a zero padded FFT is desired. If
+		    `None`, the FFT length is `nperseg`. Defaults to `None`.
+		detrend : str or function or `False`, optional
+		    Specifies how to detrend each segment. If `detrend` is a
+		    string, it is passed as the `type` argument to the `detrend`
+		    function. If it is a function, it takes a segment and returns a
+		    detrended segment. If `detrend` is `False`, no detrending is
+		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
-		    If True, return a one-sided spectrum for real data. If False return
-		    a two-sided spectrum. Note that for complex data, a two-sided
-		    spectrum is always returned.
+		    If `True`, return a one-sided spectrum for real data. If
+		    `False` return a two-sided spectrum. Note that for complex
+		    data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
-		    where `Pxx` has units of V**2/Hz and computing the power spectrum
-		    ('spectrum') where `Pxx` has units of V**2, if `x` is measured in V
-		    and fs is measured in Hz.  Defaults to 'density'
+		    where `Pxx` has units of V**2/Hz and computing the power
+		    spectrum ('spectrum') where `Pxx` has units of V**2, if `x`
+		    is measured in V and `fs` is measured in Hz. Defaults to
+		    'density'
 		axis : int, optional
-		    Axis along which the periodogram is computed; the default is over
-		    the last axis (i.e. ``axis=-1``).
+		    Axis along which the periodogram is computed; the default is
+		    over the last axis (i.e. ``axis=-1``).
 		
 		Returns
 		-------
@@ -7989,12 +9164,13 @@ package scipy.signal;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hann' window an
-		overlap of 50% is a reasonable trade off between accurately estimating
-		the signal power, while not over counting any of the data.  Narrower
+		and on your requirements. For the default 'hann' window an overlap
+		of 50% is a reasonable trade off between accurately estimating the
+		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
-		If `noverlap` is 0, this method is equivalent to Bartlett's method [2]_.
+		If `noverlap` is 0, this method is equivalent to Bartlett's method
+		[2]_.
 		
 		.. versionadded:: 0.12.0
 		
@@ -8049,7 +9225,8 @@ package scipy.signal;
 		>>> plt.ylabel('Linear spectrum [V RMS]')
 		>>> plt.show()
 		
-		The peak height in the power spectrum is an estimate of the RMS amplitude.
+		The peak height in the power spectrum is an estimate of the RMS
+		amplitude.
 		
 		>>> np.sqrt(Pxx_spec.max())
 		2.0077340678640727

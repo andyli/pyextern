@@ -15,7 +15,6 @@ package numpy.core.arrayprint;
 	static public var __spec__ : Dynamic;
 	static public function _array2string(a:Dynamic, max_line_width:Dynamic, precision:Dynamic, suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?formatter:Dynamic):Dynamic;
 	static public function _boolFormatter(x:Dynamic):Dynamic;
-	static public function _convert_arrays(obj:Dynamic):Dynamic;
 	static public function _digits(x:Dynamic, precision:Dynamic, format:Dynamic):Dynamic;
 	static public function _extendLine(s:Dynamic, line:Dynamic, word:Dynamic, max_line_len:Dynamic, next_line_prefix:Dynamic):Dynamic;
 	static public var _float_output_precision : Dynamic;
@@ -29,14 +28,32 @@ package numpy.core.arrayprint;
 	**/
 	static public function _formatArray(a:Dynamic, format_function:Dynamic, rank:Dynamic, max_line_len:Dynamic, next_line_prefix:Dynamic, separator:Dynamic, edge_items:Dynamic, summary_insert:Dynamic):Dynamic;
 	static public var _formatter : Dynamic;
+	/**
+		find the right formatting function for the dtype_
+	**/
+	static public function _get_format_function(data:Dynamic, precision:Dynamic, suppress_small:Dynamic, formatter:Dynamic):Dynamic;
+	static public function _get_formatdict(data:Dynamic, precision:Dynamic, suppress_small:Dynamic, formatter:Dynamic):Dynamic;
 	static public var _inf_str : Dynamic;
 	static public function _leading_trailing(a:Dynamic):Dynamic;
 	static public var _line_width : Dynamic;
 	static public var _nan_str : Dynamic;
+	/**
+		Object arrays containing lists should be printed unambiguously 
+	**/
+	static public function _object_format(o:Dynamic):Dynamic;
+	/**
+		Like the python 3.2 reprlib.recursive_repr, but forwards *args and **kwargs
+		
+		Decorates a function such that if it calls itself with the same first
+		argument, it returns `fillvalue` instead of recursing.
+		
+		Largely copied from reprlib.recursive_repr
+	**/
+	static public function _recursive_guard(?fillvalue:Dynamic):Dynamic;
 	static public var _summaryEdgeItems : Dynamic;
 	static public var _summaryThreshold : Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -44,6 +61,17 @@ package numpy.core.arrayprint;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -71,41 +99,49 @@ package numpy.core.arrayprint;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -121,7 +157,13 @@ package numpy.core.arrayprint;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -209,7 +251,7 @@ package numpy.core.arrayprint;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::
@@ -279,8 +321,8 @@ package numpy.core.arrayprint;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -332,6 +374,18 @@ package numpy.core.arrayprint;
 	static public var division : Dynamic;
 	static public function format_longfloat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		get_ident() -> integer
+		
+		Return a non-zero integer that uniquely identifies the current thread
+		amongst other threads that exist simultaneously.
+		This may be used to identify per-thread resources.
+		Even though on some platforms threads identities may appear to be
+		allocated consecutive numbers starting at 1, this behavior should not
+		be relied upon, and the number should be seen purely as a magic cookie.
+		A thread's identity may be reused for another thread after it exits.
+	**/
+	static public function get_ident(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return the current print options.
 		
 		Returns
@@ -356,7 +410,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	/**
-		isinf(x[, out])
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -367,8 +421,17 @@ package numpy.core.arrayprint;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -392,7 +455,7 @@ package numpy.core.arrayprint;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first
@@ -419,7 +482,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function isinf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		isnan(x[, out])
+		isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for NaN and return result as a boolean array.
 		
@@ -427,6 +490,17 @@ package numpy.core.arrayprint;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -441,11 +515,11 @@ package numpy.core.arrayprint;
 		
 		See Also
 		--------
-		isinf, isneginf, isposinf, isfinite
+		isinf, isneginf, isposinf, isfinite, isnat
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		Examples
@@ -459,7 +533,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		maximum(x1, x2[, out])
+		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -475,6 +549,17 @@ package numpy.core.arrayprint;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -517,7 +602,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function maximum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		minimum(x1, x2[, out])
+		minimum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise minimum of array elements.
 		
@@ -533,6 +618,17 @@ package numpy.core.arrayprint;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -575,7 +671,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function minimum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		not_equal(x1, x2[, out])
+		not_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return (x1 != x2) element-wise.
 		
@@ -583,9 +679,17 @@ package numpy.core.arrayprint;
 		----------
 		x1, x2 : array_like
 		  Input arrays.
-		out : ndarray, optional
-		  A placeholder the same shape as `x1` to store the result.
-		  See `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -710,17 +814,6 @@ package numpy.core.arrayprint;
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
 	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
-	/**
-		reduce(function, sequence[, initial]) -> value
-		
-		Apply a function of two arguments cumulatively to the items of a sequence,
-		from left to right, so as to reduce the sequence to a single value.
-		For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
-		((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
-		of the sequence in the calculation, and serves as a default when the
-		sequence is empty.
-	**/
-	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function repr_format(x:Dynamic):Dynamic;
 	/**
 		Set printing options.
@@ -763,7 +856,8 @@ package numpy.core.arrayprint;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		        - 'object' : `np.object_` arrays
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::

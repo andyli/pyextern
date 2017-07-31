@@ -15,6 +15,15 @@ package seaborn.utils;
 	**/
 	static public function _kde_support(data:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic):Dynamic;
 	/**
+		Decorator that will skip a test if `url` is unreachable.
+		
+		Parameters
+		----------
+		t : function, optional
+		url : str, optional
+	**/
+	static public function _network(?t:Dynamic, ?url:Dynamic):Dynamic;
+	/**
 		Set the spine's position without resetting an associated axis.
 		
 		As of matplotlib v. 1.0.0, if a spine has an associated axis, then
@@ -118,11 +127,13 @@ package seaborn.utils;
 		    Specific axes object to despine.
 		top, right, left, bottom : boolean, optional
 		    If True, remove that spine.
-		offset : int or None  (default), optional
+		offset : int or dict, optional
 		    Absolute distance, in points, spines should be moved away
-		    from the axes (negative values move spines inward).
+		    from the axes (negative values move spines inward). A single value
+		    applies to all spines; a dict can be used to set offset values per
+		    side.
 		trim : bool, optional
-		    If true, limit spines to the smallest and largest major tick
+		    If True, limit spines to the smallest and largest major tick
 		    on each non-despined axis.
 		
 		Returns
@@ -164,34 +175,12 @@ package seaborn.utils;
 		cache : boolean, optional
 		    If True, then cache data locally and use the cache on subsequent calls
 		data_home : string, optional
-		    The directory in which to cache data. By default, uses ~/seaborn_data/
+		    The directory in which to cache data. By default, uses ~/seaborn-data/
 		kws : dict, optional
 		    Passed to pandas.read_csv
 	**/
 	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	static public var mpl_ge_150 : Dynamic;
-	/**
-		Simple function to offset spines away from axes.
-		
-		Use this immediately after creating figure and axes objects.
-		Offsetting spines after plotting or manipulating the axes
-		objects may result in loss of labels, ticks, and formatting.
-		
-		Parameters
-		----------
-		offset : int, optional
-		    Absolute distance, in points, spines should be moved away
-		    from the axes (negative values move spines inward).
-		fig : matplotlib figure, optional
-		    Figure to despine all axes of, default uses current figure.
-		ax : matplotlib axes, optional
-		    Specific axes object to despine
-		
-		Returns
-		-------
-		None
-	**/
-	static public function offset_spines(?offset:Dynamic, ?fig:Dynamic, ?ax:Dynamic):Dynamic;
 	static public var pandas_has_categoricals : Dynamic;
 	/**
 		Like scoreatpercentile but can take and return array of percentiles.
@@ -303,6 +292,63 @@ package seaborn.utils;
 		    UTF-8-encoded string representation of ``obj``
 	**/
 	static public function to_utf8(obj:Dynamic):Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Retrieve a URL into a temporary location on disk.

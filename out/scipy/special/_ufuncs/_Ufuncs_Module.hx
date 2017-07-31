@@ -9,85 +9,117 @@ package scipy.special._ufuncs;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
-		_cospi(x[, out])
+		_cospi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, do not use.
 	**/
 	static public function _cospi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_ellip_harm(x1, x2, x3, x4, x5, x6, x7[, out])
+		_ellip_harm(x1, x2, x3, x4, x5, x6, x7, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `ellip_harm` instead.
 	**/
 	static public function _ellip_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_gammaln(x[, out])
+		_gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use ``gammaln`` instead.
 	**/
 	static public function _gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_lambertw(x1, x2, x3[, out])
+		_igam_fac(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Internal function, do not use.
+	**/
+	static public function _igam_fac(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_lambertw(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `lambertw` instead.
 	**/
 	static public function _lambertw(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_sinpi(x[, out])
+		_lanczos_sum_expg_scaled(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Internal function, do not use.
+	**/
+	static public function _lanczos_sum_expg_scaled(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_lgam1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Internal function, do not use.
+	**/
+	static public function _lgam1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_log1pmx(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Internal function, do not use.
+	**/
+	static public function _log1pmx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _sf_error_action_map : Dynamic;
+	static public var _sf_error_code_map : Dynamic;
+	/**
+		_sf_error_test_function(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Private function; do not use.
+	**/
+	static public function _sf_error_test_function(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_sinpi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, do not use.
 	**/
 	static public function _sinpi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_in(x1, x2[, out])
+		_spherical_in(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_in` instead.
 	**/
 	static public function _spherical_in(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_in_d(x1, x2[, out])
+		_spherical_in_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_in` instead.
 	**/
 	static public function _spherical_in_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_jn(x1, x2[, out])
+		_spherical_jn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_jn` instead.
 	**/
 	static public function _spherical_jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_jn_d(x1, x2[, out])
+		_spherical_jn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_jn` instead.
 	**/
 	static public function _spherical_jn_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_kn(x1, x2[, out])
+		_spherical_kn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_kn` instead.
 	**/
 	static public function _spherical_kn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_kn_d(x1, x2[, out])
+		_spherical_kn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_kn` instead.
 	**/
 	static public function _spherical_kn_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_yn(x1, x2[, out])
+		_spherical_yn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_yn` instead.
 	**/
 	static public function _spherical_yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_spherical_yn_d(x1, x2[, out])
+		_spherical_yn_d(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `spherical_yn` instead.
 	**/
 	static public function _spherical_yn_d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_struve_asymp_large_z(x1, x2, x3[, out1, out2])
+		_struve_asymp_large_z(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		_struve_asymp_large_z(v, z, is_h)
 		
@@ -101,7 +133,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function _struve_asymp_large_z(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_struve_bessel_series(x1, x2, x3[, out1, out2])
+		_struve_bessel_series(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		_struve_bessel_series(v, z, is_h)
 		
@@ -115,7 +147,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function _struve_bessel_series(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_struve_power_series(x1, x2, x3[, out1, out2])
+		_struve_power_series(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		_struve_power_series(v, z, is_h)
 		
@@ -129,7 +161,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function _struve_power_series(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_zeta(x1, x2[, out])
+		_zeta(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		_zeta(x, q)
 		
@@ -137,7 +169,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function _zeta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		airy(x[, out1, out2, out3, out4])
+		airy(x[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		airy(z)
 		
@@ -192,7 +224,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		airye(x[, out1, out2, out3, out4])
+		airye(x[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		airye(z)
 		
@@ -202,8 +234,8 @@ package scipy.special._ufuncs;
 		
 		    eAi  = Ai  * exp(2.0/3.0*z*sqrt(z))
 		    eAip = Aip * exp(2.0/3.0*z*sqrt(z))
-		    eBi  = Bi  * exp(-abs((2.0/3.0*z*sqrt(z)).real))
-		    eBip = Bip * exp(-abs((2.0/3.0*z*sqrt(z)).real))
+		    eBi  = Bi  * exp(-abs(2.0/3.0*(z*sqrt(z)).real))
+		    eBip = Bip * exp(-abs(2.0/3.0*(z*sqrt(z)).real))
 		
 		Parameters
 		----------
@@ -231,7 +263,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function airye(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bdtr(x1, x2, x3[, out])
+		bdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bdtr(k, n, p)
 		
@@ -274,7 +306,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bdtrc(x1, x2, x3[, out])
+		bdtrc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bdtrc(k, n, p)
 		
@@ -322,7 +354,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bdtri(x1, x2, x3[, out])
+		bdtri(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bdtri(k, n, y)
 		
@@ -368,7 +400,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bdtrik(x1, x2, x3[, out])
+		bdtrik(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bdtrik(y, n, p)
 		
@@ -418,7 +450,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bdtrin(x1, x2, x3[, out])
+		bdtrin(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bdtrin(k, y, p)
 		
@@ -468,7 +500,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bei(x[, out])
+		bei(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		bei(x)
 		
@@ -476,7 +508,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function bei(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		beip(x[, out])
+		beip(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		beip(x)
 		
@@ -484,7 +516,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function beip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ber(x[, out])
+		ber(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ber(x)
 		
@@ -492,7 +524,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		berp(x[, out])
+		berp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		berp(x)
 		
@@ -500,7 +532,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function berp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		besselpoly(x1, x2, x3[, out])
+		besselpoly(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		besselpoly(a, lmb, nu)
 		
@@ -515,7 +547,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function besselpoly(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		beta(x1, x2[, out])
+		beta(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		beta(a, b)
 		
@@ -527,7 +559,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		betainc(x1, x2, x3[, out])
+		betainc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		betainc(a, b, x)
 		
@@ -547,7 +579,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function betainc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		betaincinv(x1, x2, x3[, out])
+		betaincinv(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		betaincinv(a, b, y)
 		
@@ -557,7 +589,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function betaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		betaln(x1, x2[, out])
+		betaln(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		betaln(a, b)
 		
@@ -567,15 +599,19 @@ package scipy.special._ufuncs;
 	**/
 	static public function betaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		binom(x1, x2[, out])
+		binom(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		binom(n, k)
 		
 		Binomial coefficient
+		
+		See Also
+		--------
+		comb : The number of combinations of N things taken k at a time.
 	**/
 	static public function binom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		boxcox(x1, x2[, out])
+		boxcox(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		boxcox(x, lmbda)
 		
@@ -616,7 +652,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function boxcox(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		boxcox1p(x1, x2[, out])
+		boxcox1p(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		boxcox1p(x, lmbda)
 		
@@ -657,7 +693,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function boxcox1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		btdtr(x1, x2, x3[, out])
+		btdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		btdtr(a, b, x)
 		
@@ -704,7 +740,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function btdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		btdtri(x1, x2, x3[, out])
+		btdtri(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		btdtri(a, b, p)
 		
@@ -749,7 +785,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function btdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		btdtria(x1, x2, x3[, out])
+		btdtria(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		btdtria(p, b, x)
 		
@@ -802,7 +838,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function btdtria(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		btdtrib(x1, x2, x3[, out])
+		btdtrib(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		btdtria(a, p, x)
 		
@@ -855,7 +891,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function btdtrib(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cbrt(x[, out])
+		cbrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		cbrt(x)
 		
@@ -863,7 +899,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chdtr(x1, x2[, out])
+		chdtr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chdtr(v, x)
 		
@@ -876,7 +912,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chdtrc(x1, x2[, out])
+		chdtrc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chdtrc(v, x)
 		
@@ -890,7 +926,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chdtri(x1, x2[, out])
+		chdtri(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chdtri(v, p)
 		
@@ -900,9 +936,9 @@ package scipy.special._ufuncs;
 	**/
 	static public function chdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chdtriv(x1, x2[, out])
+		chdtriv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		chdtri(p, x)
+		chdtriv(p, x)
 		
 		Inverse to `chdtr` vs `v`
 		
@@ -910,7 +946,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chdtriv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chndtr(x1, x2, x3[, out])
+		chndtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chndtr(x, df, nc)
 		
@@ -918,7 +954,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chndtridf(x1, x2, x3[, out])
+		chndtridf(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chndtridf(x, p, nc)
 		
@@ -926,7 +962,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chndtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chndtrinc(x1, x2, x3[, out])
+		chndtrinc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chndtrinc(x, df, p)
 		
@@ -934,7 +970,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chndtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chndtrix(x1, x2, x3[, out])
+		chndtrix(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chndtrix(p, df, nc)
 		
@@ -942,7 +978,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function chndtrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosdg(x[, out])
+		cosdg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		cosdg(x)
 		
@@ -950,7 +986,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function cosdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosm1(x[, out])
+		cosm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		cosm1(x)
 		
@@ -958,7 +994,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function cosm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cotdg(x[, out])
+		cotdg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		cotdg(x)
 		
@@ -966,7 +1002,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function cotdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dawsn(x[, out])
+		dawsn(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		dawsn(x)
 		
@@ -997,7 +1033,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function dawsn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ellipe(x[, out])
+		ellipe(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipe(m)
 		
@@ -1046,7 +1082,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ellipe(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ellipeinc(x1, x2[, out])
+		ellipeinc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipeinc(phi, m)
 		
@@ -1089,7 +1125,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ellipeinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ellipj(x1, x2[, out1, out2, out3, out4])
+		ellipj(x1, x2[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipj(u, m)
 		
@@ -1141,7 +1177,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ellipj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ellipkinc(x1, x2[, out])
+		ellipkinc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipkinc(phi, m)
 		
@@ -1185,7 +1221,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ellipkinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ellipkm1(x[, out])
+		ellipkm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipkm1(p)
 		
@@ -1238,7 +1274,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		entr(x[, out])
+		entr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		entr(x)
 		
@@ -1268,7 +1304,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erf(x[, out])
+		erf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		erf(z)
 		
@@ -1317,7 +1353,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erfc(x[, out])
+		erfc(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		erfc(x)
 		
@@ -1344,7 +1380,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erfcx(x[, out])
+		erfcx(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		erfcx(x)
 		
@@ -1376,7 +1412,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function erfcx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erfi(x[, out])
+		erfi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		erfi(z)
 		
@@ -1408,148 +1444,646 @@ package scipy.special._ufuncs;
 	**/
 	static public function erfi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		errprint(inflag=None)
+		`errprint` is deprecated!
+		`errprint` is deprecated in SciPy 0.19. Use `errstate` instead.
 		
-		Sets or returns the error printing flag for special functions.
 		
-		Parameters
-		----------
-		inflag : bool, optional
-		    Whether warnings concerning evaluation of special functions in
-		    scipy.special are shown. If omitted, no change is made to the
-		    current setting.
+		    errprint(inflag=None)
 		
-		Returns
-		-------
-		old_flag
-		    Previous value of the error flag
+		    Set or return the error printing flag for special functions.
+		
+		    Parameters
+		    ----------
+		    inflag : bool, optional
+		        Whether warnings concerning evaluation of special functions in
+		        ``scipy.special`` are shown. If omitted, no change is made to
+		        the current setting.
+		
+		    Returns
+		    -------
+		    old_flag : bool
+		        Previous value of the error flag
+		
+		    Examples
+		    --------
+		    Turn on error printing.
+		
+		    >>> import warnings
+		    >>> import scipy.special as sc
+		    >>> sc.bdtr(-1, 10, 0.3)
+		    nan
+		    >>> sc.errprint(True)
+		    False
+		    >>> with warnings.catch_warnings(record=True) as w:
+		    ...     sc.bdtr(-1, 10, 0.3)
+		    ...
+		    nan
+		    >>> len(w)
+		    1
+		    >>> w[0].message
+		    SpecialFunctionWarning('scipy.special/bdtr: domain error',)
+		
+		    
 	**/
-	static public function errprint(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function errprint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		eval_chebyc(x1, x2[, out])
+		eval_chebyc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyc(n, x, out=None)
 		
-		Evaluate Chebyshev C polynomial at a point.
+		Evaluate Chebyshev polynomial of the first kind on [-2, 2] at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    S_n(x) = T_n(x/2)
+		
+		where :math:`T_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyt`.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		C : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyc : roots and quadrature weights of Chebyshev
+		               polynomials of the first kind on [-2, 2]
+		chebyc : Chebyshev polynomial object
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
+		eval_chebyt : evaluate Chebycshev polynomials of the first kind
 	**/
 	static public function eval_chebyc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebys(x1, x2[, out])
+		eval_chebys(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebys(n, x, out=None)
 		
-		Evaluate Chebyshev S polynomial at a point.
+		Evaluate Chebyshev polynomial of the second kind on [-2, 2] at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    S_n(x) = U_n(x/2)
+		
+		where :math:`U_n` is a Chebyshev polynomial of the second kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyu`.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		S : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebys : roots and quadrature weights of Chebyshev
+		               polynomials of the second kind on [-2, 2]
+		chebys : Chebyshev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
 	**/
 	static public function eval_chebys(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebyt(x1, x2[, out])
+		eval_chebyt(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyt(n, x, out=None)
 		
-		Evaluate Chebyshev T polynomial at a point.
+		Evaluate Chebyshev polynomial of the first kind at a point.
 		
+		The Chebyshev polynomials of the first kind can be defined via the
+		Gauss hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    T_n(x) = {}_2F_1(n, -n; 1/2; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		T : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyt : roots and quadrature weights of Chebyshev
+		               polynomials of the first kind
+		chebyu : Chebychev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
+		hyp2f1 : Gauss hypergeometric function
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
+		
+		Notes
+		-----
 		This routine is numerically stable for `x` in ``[-1, 1]`` at least
 		up to order ``10000``.
 	**/
 	static public function eval_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_chebyu(x1, x2[, out])
+		eval_chebyu(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_chebyu(n, x, out=None)
 		
-		Evaluate Chebyshev U polynomial at a point.
+		Evaluate Chebyshev polynomial of the second kind at a point.
+		
+		The Chebyshev polynomials of the second kind can be defined via
+		the Gauss hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    U_n(x) = (n + 1) {}_2F_1(-n, n + 2; 3/2; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Chebyshev polynomial
+		
+		Returns
+		-------
+		U : ndarray
+		    Values of the Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_chebyu : roots and quadrature weights of Chebyshev
+		               polynomials of the second kind
+		chebyu : Chebyshev polynomial object
+		eval_chebyt : evaluate Chebyshev polynomials of the first kind
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_chebyu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_gegenbauer(x1, x2, x3[, out])
+		eval_gegenbauer(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_gegenbauer(n, alpha, x, out=None)
 		
 		Evaluate Gegenbauer polynomial at a point.
+		
+		The Gegenbauer polynomials can be defined via the Gauss
+		hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    C_n^{(\alpha)} = \frac{(2\alpha)_n}{\Gamma(n + 1)}
+		      {}_2F_1(-n, 2\alpha + n; \alpha + 1/2; (1 - z)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter
+		x : array_like
+		    Points at which to evaluate the Gegenbauer polynomial
+		
+		Returns
+		-------
+		C : ndarray
+		    Values of the Gegenbauer polynomial
+		
+		See Also
+		--------
+		roots_gegenbauer : roots and quadrature weights of Gegenbauer
+		                   polynomials
+		gegenbauer : Gegenbauer polynomial object
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_gegenbauer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_genlaguerre(x1, x2, x3[, out])
+		eval_genlaguerre(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_genlaguerre(n, alpha, x, out=None)
 		
 		Evaluate generalized Laguerre polynomial at a point.
+		
+		The generalized Laguerre polynomials can be defined via the
+		confluent hypergeometric function :math:`{}_1F_1` as
+		
+		.. math::
+		
+		    L_n^{(\alpha)}(x) = \binom{n + \alpha}{n}
+		      {}_1F_1(-n, \alpha + 1, x).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`. The Laguerre polynomials are the special case where
+		:math:`\alpha = 0`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the confluent hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter; must have ``alpha > -1``
+		x : array_like
+		    Points at which to evaluate the generalized Laguerre
+		    polynomial
+		
+		Returns
+		-------
+		L : ndarray
+		    Values of the generalized Laguerre polynomial
+		
+		See Also
+		--------
+		roots_genlaguerre : roots and quadrature weights of generalized
+		                    Laguerre polynomials
+		genlaguerre : generalized Laguerre polynomial object
+		hyp1f1 : confluent hypergeometric function
+		eval_laguerre : evaluate Laguerre polynomials
 	**/
 	static public function eval_genlaguerre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_hermite(x1, x2[, out])
+		eval_hermite(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_hermite(n, x, out=None)
 		
-		Evaluate Hermite polynomial at a point.
+		Evaluate physicist's Hermite polynomial at a point.
+		
+		Defined by
+		
+		.. math::
+		
+		    H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n} e^{-x^2};
+		
+		:math:`H_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial
+		x : array_like
+		    Points at which to evaluate the Hermite polynomial
+		
+		Returns
+		-------
+		H : ndarray
+		    Values of the Hermite polynomial
+		
+		See Also
+		--------
+		roots_hermite : roots and quadrature weights of physicist's
+		                Hermite polynomials
+		hermite : physicist's Hermite polynomial object
+		numpy.polynomial.hermite.Hermite : Physicist's Hermite series
+		eval_hermitenorm : evaluate Probabilist's Hermite polynomials
 	**/
 	static public function eval_hermite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_hermitenorm(x1, x2[, out])
+		eval_hermitenorm(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_hermitenorm(n, x, out=None)
 		
-		Evaluate normalized Hermite polynomial at a point.
+		Evaluate probabilist's (normalized) Hermite polynomial at a
+		point.
+		
+		Defined by
+		
+		.. math::
+		
+		    He_n(x) = (-1)^n e^{x^2/2} \frac{d^n}{dx^n} e^{-x^2/2};
+		
+		:math:`He_n` is a polynomial of degree :math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial
+		x : array_like
+		    Points at which to evaluate the Hermite polynomial
+		
+		Returns
+		-------
+		He : ndarray
+		    Values of the Hermite polynomial
+		
+		See Also
+		--------
+		roots_hermitenorm : roots and quadrature weights of probabilist's
+		                    Hermite polynomials
+		hermitenorm : probabilist's Hermite polynomial object
+		numpy.polynomial.hermite_e.HermiteE : Probabilist's Hermite series
+		eval_hermite : evaluate physicist's Hermite polynomials
 	**/
 	static public function eval_hermitenorm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_jacobi(x1, x2, x3, x4[, out])
+		eval_jacobi(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_jacobi(n, alpha, beta, x, out=None)
 		
 		Evaluate Jacobi polynomial at a point.
+		
+		The Jacobi polynomials can be defined via the Gauss hypergeometric
+		function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    P_n^{(\alpha, \beta)}(x) = \frac{(\alpha + 1)_n}{\Gamma(n + 1)}
+		      {}_2F_1(-n, 1 + \alpha + \beta + n; \alpha + 1; (1 - z)/2)
+		
+		where :math:`(\cdot)_n` is the Pochhammer symbol; see `poch`. When
+		:math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		alpha : array_like
+		    Parameter
+		beta : array_like
+		    Parameter
+		x : array_like
+		    Points at which to evaluate the polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the Jacobi polynomial
+		
+		See Also
+		--------
+		roots_jacobi : roots and quadrature weights of Jacobi polynomials
+		jacobi : Jacobi polynomial object
+		hyp2f1 : Gauss hypergeometric function
 	**/
 	static public function eval_jacobi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_laguerre(x1, x2[, out])
+		eval_laguerre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_laguerre(n, x, out=None)
 		
 		Evaluate Laguerre polynomial at a point.
+		
+		The Laguerre polynomials can be defined via the confluent
+		hypergeometric function :math:`{}_1F_1` as
+		
+		.. math::
+		
+		    L_n(x) = {}_1F_1(-n, 1, x).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer the result is
+		    determined via the relation to the confluent hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Laguerre polynomial
+		
+		Returns
+		-------
+		L : ndarray
+		    Values of the Laguerre polynomial
+		
+		See Also
+		--------
+		roots_laguerre : roots and quadrature weights of Laguerre
+		                 polynomials
+		laguerre : Laguerre polynomial object
+		numpy.polynomial.laguerre.Laguerre : Laguerre series
+		eval_genlaguerre : evaluate generalized Laguerre polynomials
 	**/
 	static public function eval_laguerre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_legendre(x1, x2[, out])
+		eval_legendre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_legendre(n, x, out=None)
 		
 		Evaluate Legendre polynomial at a point.
+		
+		The Legendre polynomials can be defined via the Gauss
+		hypergeometric function :math:`{}_2F_1` as
+		
+		.. math::
+		
+		    P_n(x) = {}_2F_1(-n, n + 1; 1; (1 - x)/2).
+		
+		When :math:`n` is an integer the result is a polynomial of degree
+		:math:`n`.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to the Gauss hypergeometric
+		    function.
+		x : array_like
+		    Points at which to evaluate the Legendre polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the Legendre polynomial
+		
+		See Also
+		--------
+		roots_legendre : roots and quadrature weights of Legendre
+		                 polynomials
+		legendre : Legendre polynomial object
+		hyp2f1 : Gauss hypergeometric function
+		numpy.polynomial.legendre.Legendre : Legendre series
 	**/
 	static public function eval_legendre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_chebyt(x1, x2[, out])
+		eval_sh_chebyt(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_chebyt(n, x, out=None)
 		
-		Evaluate shifted Chebyshev T polynomial at a point.
+		Evaluate shifted Chebyshev polynomial of the first kind at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    T_n^*(x) = T_n(2x - 1)
+		
+		where :math:`T_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyt`.
+		x : array_like
+		    Points at which to evaluate the shifted Chebyshev polynomial
+		
+		Returns
+		-------
+		T : ndarray
+		    Values of the shifted Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_sh_chebyt : roots and quadrature weights of shifted
+		                  Chebyshev polynomials of the first kind
+		sh_chebyt : shifted Chebyshev polynomial object
+		eval_chebyt : evalaute Chebyshev polynomials of the first kind
+		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
 	**/
 	static public function eval_sh_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_chebyu(x1, x2[, out])
+		eval_sh_chebyu(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_chebyu(n, x, out=None)
 		
-		Evaluate shifted Chebyshev U polynomial at a point.
+		Evaluate shifted Chebyshev polynomial of the second kind at a
+		point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    U_n^*(x) = U_n(2x - 1)
+		
+		where :math:`U_n` is a Chebyshev polynomial of the first kind.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `eval_chebyu`.
+		x : array_like
+		    Points at which to evaluate the shifted Chebyshev polynomial
+		
+		Returns
+		-------
+		U : ndarray
+		    Values of the shifted Chebyshev polynomial
+		
+		See Also
+		--------
+		roots_sh_chebyu : roots and quadrature weights of shifted
+		                  Chebychev polynomials of the second kind
+		sh_chebyu : shifted Chebyshev polynomial object
+		eval_chebyu : evaluate Chebyshev polynomials of the second kind
 	**/
 	static public function eval_sh_chebyu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_jacobi(x1, x2, x3, x4[, out])
+		eval_sh_jacobi(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_jacobi(n, p, q, x, out=None)
 		
 		Evaluate shifted Jacobi polynomial at a point.
+		
+		Defined by
+		
+		.. math::
+		
+		    G_n^{(p, q)}(x)
+		      = \binom{2n + p - 1}{n}^{-1} P_n^{(p - q, q - 1)}(2x - 1),
+		
+		where :math:`P_n^{(\cdot, \cdot)}` is the n-th Jacobi polynomial.
+		
+		Parameters
+		----------
+		n : int
+		    Degree of the polynomial. If not an integer, the result is
+		    determined via the relation to `binom` and `eval_jacobi`.
+		p : float
+		    Parameter
+		q : float
+		    Parameter
+		
+		Returns
+		-------
+		G : ndarray
+		    Values of the shifted Jacobi polynomial.
+		
+		See Also
+		--------
+		roots_sh_jacobi : roots and quadrature weights of shifted Jacobi
+		                  polynomials
+		sh_jacobi : shifted Jacobi polynomial object
+		eval_jacobi : evaluate Jacobi polynomials
 	**/
 	static public function eval_sh_jacobi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eval_sh_legendre(x1, x2[, out])
+		eval_sh_legendre(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		eval_sh_legendre(n, x, out=None)
 		
 		Evaluate shifted Legendre polynomial at a point.
+		
+		These polynomials are defined as
+		
+		.. math::
+		
+		    P_n^*(x) = P_n(2x - 1)
+		
+		where :math:`P_n` is a Legendre polynomial.
+		
+		Parameters
+		----------
+		n : array_like
+		    Degree of the polynomial. If not an integer, the value is
+		    determined via the relation to `eval_legendre`.
+		x : array_like
+		    Points at which to evaluate the shifted Legendre polynomial
+		
+		Returns
+		-------
+		P : ndarray
+		    Values of the shifted Legendre polynomial
+		
+		See Also
+		--------
+		roots_sh_legendre : roots and quadrature weights of shifted
+		                    Legendre polynomials
+		sh_legendre : shifted Legendre polynomial object
+		eval_legendre : evaluate Legendre polynomials
+		numpy.polynomial.legendre.Legendre : Legendre series
 	**/
 	static public function eval_sh_legendre(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp1(x[, out])
+		exp1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		exp1(z)
 		
@@ -1561,7 +2095,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function exp1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp10(x[, out])
+		exp10(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		exp10(x)
 		
@@ -1569,7 +2103,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function exp10(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp2(x[, out])
+		exp2(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		exp2(x)
 		
@@ -1577,7 +2111,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function exp2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expi(x[, out])
+		expi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		expi(x)
 		
@@ -1591,7 +2125,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function expi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expit(x[, out])
+		expit(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		expit(x)
 		
@@ -1621,7 +2155,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function expit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expm1(x[, out])
+		expm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		expm1(x)
 		
@@ -1629,7 +2163,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expn(x1, x2[, out])
+		expn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		expn(n, x)
 		
@@ -1642,7 +2176,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function expn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exprel(x[, out])
+		exprel(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		exprel(x)
 		
@@ -1666,7 +2200,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function exprel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fdtr(x1, x2, x3[, out])
+		fdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		fdtr(dfn, dfd, x)
 		
@@ -1717,7 +2251,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function fdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fdtrc(x1, x2, x3[, out])
+		fdtrc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		fdtrc(dfn, dfd, x)
 		
@@ -1762,7 +2296,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function fdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fdtri(x1, x2, x3[, out])
+		fdtri(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		fdtri(dfn, dfd, p)
 		
@@ -1810,7 +2344,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function fdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fdtridfd(x1, x2, x3[, out])
+		fdtridfd(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		fdtridfd(dfn, p, x)
 		
@@ -1820,7 +2354,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function fdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fresnel(x[, out1, out2])
+		fresnel(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		fresnel(z)
 		
@@ -1843,7 +2377,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function fresnel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gamma(x[, out])
+		gamma(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gamma(z)
 		
@@ -1855,35 +2389,73 @@ package scipy.special._ufuncs;
 	**/
 	static public function gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammainc(x1, x2[, out])
+		gammainc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gammainc(a, x)
 		
-		Incomplete gamma function
+		Regularized lower incomplete gamma function.
 		
-		Defined as::
+		Defined as
 		
-		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=0..x)
+		.. math::
 		
-		`a` must be positive and `x` must be >= 0.
+		    \frac{1}{\Gamma(a)} \int_0^x t^{a - 1}e^{-t} dt
+		
+		for :math:`a > 0` and :math:`x \geq 0`. The function satisfies the
+		relation ``gammainc(a, x) + gammaincc(a, x) = 1`` where
+		`gammaincc` is the regularized upper incomplete gamma function.
+		
+		Notes
+		-----
+		The implementation largely follows that of [1]_.
+		
+		See also
+		--------
+		gammaincc : regularized upper incomplete gamma function
+		gammaincinv : inverse to ``gammainc`` versus ``x``
+		gammainccinv : inverse to ``gammaincc`` versus ``x``
+		
+		References
+		----------
+		.. [1] Maddock et. al., "Incomplete Gamma Functions",
+		   http://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
 	**/
 	static public function gammainc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaincc(x1, x2[, out])
+		gammaincc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gammaincc(a, x)
 		
-		Complemented incomplete gamma integral
+		Regularized upper incomplete gamma function.
 		
-		Defined as::
+		Defined as
 		
-		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=x..inf) = 1 - gammainc(a, x)
+		.. math::
 		
-		`a` must be positive and `x` must be >= 0.
+		    \frac{1}{\Gamma(a)} \int_x^\infty t^{a - 1}e^{-t} dt
+		
+		for :math:`a > 0` and :math:`x \geq 0`. The function satisfies the
+		relation ``gammainc(a, x) + gammaincc(a, x) = 1`` where `gammainc`
+		is the regularized lower incomplete gamma function.
+		
+		Notes
+		-----
+		The implementation largely follows that of [1]_.
+		
+		See also
+		--------
+		gammainc : regularized lower incomplete gamma function
+		gammaincinv : inverse to ``gammainc`` versus ``x``
+		gammainccinv : inverse to ``gammaincc`` versus ``x``
+		
+		References
+		----------
+		.. [1] Maddock et. al., "Incomplete Gamma Functions",
+		   http://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
 	**/
 	static public function gammaincc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammainccinv(x1, x2[, out])
+		gammainccinv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gammainccinv(a, y)
 		
@@ -1893,7 +2465,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gammainccinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaincinv(x1, x2[, out])
+		gammaincinv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gammaincinv(a, y)
 		
@@ -1903,7 +2475,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gammaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammasgn(x[, out])
+		gammasgn(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gammasgn(x)
 		
@@ -1916,7 +2488,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gammasgn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gdtr(x1, x2, x3[, out])
+		gdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gdtr(a, b, x)
 		
@@ -1967,7 +2539,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gdtrc(x1, x2, x3[, out])
+		gdtrc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gdtrc(a, b, x)
 		
@@ -2017,7 +2589,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gdtria(x1, x2, x3[, out])
+		gdtria(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gdtria(p, b, x, out=None)
 		
@@ -2087,7 +2659,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gdtria(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gdtrib(x1, x2, x3[, out])
+		gdtrib(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gdtrib(a, p, x, out=None)
 		
@@ -2157,7 +2729,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function gdtrib(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gdtrix(x1, x2, x3[, out])
+		gdtrix(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gdtrix(a, b, p, out=None)
 		
@@ -2228,7 +2800,49 @@ package scipy.special._ufuncs;
 	**/
 	static public function gdtrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hankel1(x1, x2[, out])
+		Get the current way of handling special-function errors.
+		
+		Returns
+		-------
+		err : dict
+		    A dictionary with keys "singular", "underflow", "overflow",
+		    "slow", "loss", "no_result", "domain", "arg", and "other",
+		    whose values are from the strings "ignore", "warn", and
+		    "raise". The keys represent possible special-function errors,
+		    and the values define how these errors are handled.
+		
+		See Also
+		--------
+		seterr : set how special-function errors are handled
+		errstate : context manager for special-function error handling
+		numpy.geterr : similar numpy function for floating-point errors
+		
+		Notes
+		-----
+		For complete documentation of the types of special-function errors
+		and treatment options, see `seterr`.
+		
+		Examples
+		--------
+		By default all errors are ignored.
+		
+		>>> import scipy.special as sc
+		>>> for key, value in sorted(sc.geterr().items()):
+		...     print("{}: {}".format(key, value))
+		...
+		arg: ignore
+		domain: ignore
+		loss: ignore
+		no_result: ignore
+		other: ignore
+		overflow: ignore
+		singular: ignore
+		slow: ignore
+		underflow: ignore
+	**/
+	static public function geterr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hankel1(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel1(v, z)
 		
@@ -2271,7 +2885,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hankel1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hankel1e(x1, x2[, out])
+		hankel1e(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel1e(v, z)
 		
@@ -2314,7 +2928,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hankel1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hankel2(x1, x2[, out])
+		hankel2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel2(v, z)
 		
@@ -2357,7 +2971,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hankel2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hankel2e(x1, x2[, out])
+		hankel2e(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel2e(v, z)
 		
@@ -2400,7 +3014,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hankel2e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		huber(x1, x2[, out])
+		huber(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		huber(delta, r)
 		
@@ -2428,7 +3042,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function huber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp0f1(x1, x2[, out])
+		hyp0f1(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp0f1(v, x)
 		
@@ -2455,7 +3069,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp0f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp1f1(x1, x2, x3[, out])
+		hyp1f1(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp1f1(a, b, x)
 		
@@ -2463,7 +3077,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp1f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp1f2(x1, x2, x3, x4[, out1, out2])
+		hyp1f2(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp1f2(a, b, c, x)
 		
@@ -2478,7 +3092,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp1f2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp2f0(x1, x2, x3, x4[, out1, out2])
+		hyp2f0(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp2f0(a, b, x, type)
 		
@@ -2496,7 +3110,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp2f0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp2f1(x1, x2, x3, x4[, out])
+		hyp2f1(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp2f1(a, b, c, z)
 		
@@ -2504,7 +3118,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp2f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp3f0(x1, x2, x3, x4[, out1, out2])
+		hyp3f0(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp3f0(a, b, c, x)
 		
@@ -2519,7 +3133,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyp3f0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyperu(x1, x2, x3[, out])
+		hyperu(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyperu(a, b, x)
 		
@@ -2527,7 +3141,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function hyperu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		i0(x[, out])
+		i0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i0(x)
 		
@@ -2569,7 +3183,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		i0e(x[, out])
+		i0e(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i0e(x)
 		
@@ -2611,7 +3225,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function i0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		i1(x[, out])
+		i1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i1(x)
 		
@@ -2654,7 +3268,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function i1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		i1e(x[, out])
+		i1e(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i1e(x)
 		
@@ -2696,7 +3310,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function i1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		inv_boxcox(x1, x2[, out])
+		inv_boxcox(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		inv_boxcox(y, lmbda)
 		
@@ -2733,7 +3347,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function inv_boxcox(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		inv_boxcox1p(x1, x2[, out])
+		inv_boxcox1p(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		inv_boxcox1p(y, lmbda)
 		
@@ -2770,7 +3384,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function inv_boxcox1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		it2i0k0(x[, out1, out2])
+		it2i0k0(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		it2i0k0(x)
 		
@@ -2785,7 +3399,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function it2i0k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		it2j0y0(x[, out1, out2])
+		it2j0y0(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		it2j0y0(x)
 		
@@ -2800,7 +3414,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function it2j0y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		it2struve0(x[, out])
+		it2struve0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		it2struve0(x)
 		
@@ -2840,7 +3454,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function it2struve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		itairy(x[, out1, out2, out3, out4])
+		itairy(x[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		itairy(x)
 		
@@ -2880,7 +3494,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function itairy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		iti0k0(x[, out1, out2])
+		iti0k0(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		iti0k0(x)
 		
@@ -2895,7 +3509,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function iti0k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		itj0y0(x[, out1, out2])
+		itj0y0(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		itj0y0(x)
 		
@@ -2910,7 +3524,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function itj0y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		itmodstruve0(x[, out])
+		itmodstruve0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		itmodstruve0(x)
 		
@@ -2942,7 +3556,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function itmodstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		itstruve0(x[, out])
+		itstruve0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		itstruve0(x)
 		
@@ -2978,7 +3592,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function itstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		iv(x1, x2[, out])
+		iv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		iv(v, z)
 		
@@ -3037,7 +3651,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function iv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ive(x1, x2[, out])
+		ive(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ive(v, z)
 		
@@ -3090,7 +3704,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		j0(x[, out])
+		j0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		j0(x)
 		
@@ -3123,10 +3737,13 @@ package scipy.special._ufuncs;
 		two rational functions of degree 6/6 and 7/7.
 		
 		This function is a wrapper for the Cephes [1]_ routine `j0`.
+		It should not to be confused with the spherical Bessel functions (see
+		`spherical_jn`).
 		
 		See also
 		--------
 		jv : Bessel function of real order and complex argument.
+		spherical_jn : spherical Bessel functions.
 		
 		References
 		----------
@@ -3135,7 +3752,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function j0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		j1(x[, out])
+		j1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		j1(x)
 		
@@ -3159,10 +3776,13 @@ package scipy.special._ufuncs;
 		functions of degree 5/5.
 		
 		This function is a wrapper for the Cephes [1]_ routine `j1`.
+		It should not to be confused with the spherical Bessel functions (see
+		`spherical_jn`).
 		
 		See also
 		--------
 		jv
+		spherical_jn : spherical Bessel functions.
 		
 		References
 		----------
@@ -3171,7 +3791,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function j1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		jv(x1, x2[, out])
+		jv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		jv(v, z)
 		
@@ -3209,9 +3829,12 @@ package scipy.special._ufuncs;
 		term is exactly zero for integer `v`; to improve accuracy the second
 		term is explicitly omitted for `v` values such that `v = floor(v)`.
 		
+		Not to be confused with the spherical Bessel functions (see `spherical_jn`).
+		
 		See also
 		--------
 		jve : :math:`J_v` with leading exponential behavior stripped off.
+		spherical_jn : spherical Bessel functions.
 		
 		References
 		----------
@@ -3221,7 +3844,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		jv(x1, x2[, out])
+		jv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		jv(v, z)
 		
@@ -3259,9 +3882,12 @@ package scipy.special._ufuncs;
 		term is exactly zero for integer `v`; to improve accuracy the second
 		term is explicitly omitted for `v` values such that `v = floor(v)`.
 		
+		Not to be confused with the spherical Bessel functions (see `spherical_jn`).
+		
 		See also
 		--------
 		jve : :math:`J_v` with leading exponential behavior stripped off.
+		spherical_jn : spherical Bessel functions.
 		
 		References
 		----------
@@ -3271,7 +3897,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		jve(x1, x2[, out])
+		jve(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		jve(v, z)
 		
@@ -3321,7 +3947,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function jve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		k0(x[, out])
+		k0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		k0(x)
 		
@@ -3359,7 +3985,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		k0e(x[, out])
+		k0e(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		k0e(x)
 		
@@ -3399,7 +4025,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function k0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		k1(x[, out])
+		k1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		k1(x)
 		
@@ -3434,7 +4060,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function k1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		k1e(x[, out])
+		k1e(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		k1e(x)
 		
@@ -3474,7 +4100,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function k1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kei(x[, out])
+		kei(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kei(x)
 		
@@ -3482,7 +4108,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kei(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		keip(x[, out])
+		keip(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		keip(x)
 		
@@ -3490,7 +4116,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function keip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kelvin(x[, out1, out2, out3, out4])
+		kelvin(x[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kelvin(x)
 		
@@ -3507,7 +4133,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kelvin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ker(x[, out])
+		ker(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ker(x)
 		
@@ -3515,7 +4141,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ker(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kerp(x[, out])
+		kerp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kerp(x)
 		
@@ -3523,7 +4149,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kerp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kl_div(x1, x2[, out])
+		kl_div(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kl_div(x, y)
 		
@@ -3555,7 +4181,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kn(x1, x2[, out])
+		kn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kn(n, x)
 		
@@ -3619,7 +4245,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kolmogi(x[, out])
+		kolmogi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kolmogi(p)
 		
@@ -3629,7 +4255,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kolmogi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kolmogorov(x[, out])
+		kolmogorov(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kolmogorov(y)
 		
@@ -3643,7 +4269,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kolmogorov(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kv(x1, x2[, out])
+		kv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kv(v, z)
 		
@@ -3716,7 +4342,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kve(x1, x2[, out])
+		kve(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kve(v, z)
 		
@@ -3756,7 +4382,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function kve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log1p(x[, out])
+		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		log1p(x)
 		
@@ -3764,7 +4390,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log_ndtr(x[, out])
+		log_ndtr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		log_ndtr(x)
 		
@@ -3794,7 +4420,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function log_ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		loggamma(x[, out])
+		loggamma(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		loggamma(z, out=None)
 		
@@ -3856,7 +4482,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function loggamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logit(x[, out])
+		logit(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		logit(x)
 		
@@ -3887,39 +4513,62 @@ package scipy.special._ufuncs;
 	**/
 	static public function logit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		lpmv(x1, x2, x3[, out])
+		lpmv(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		lpmv(m, v, x)
 		
-		Associated legendre function of integer order.
+		Associated Legendre function of integer order and real degree.
+		
+		Defined as
+		
+		.. math::
+		
+		    P_v^m = (-1)^m (1 - x^2)^{m/2} \frac{d^m}{dx^m} P_v(x)
+		
+		where
+		
+		.. math::
+		
+		    P_v = \sum_{k = 0}^\infty \frac{(-v)_k (v + 1)_k}{(k!)^2}
+		            \left(\frac{1 - x}{2}\right)^k
+		
+		is the Legendre function of the first kind. Here :math:`(\cdot)_k`
+		is the Pochhammer symbol; see `poch`.
 		
 		Parameters
 		----------
-		m : int
-		    Order
-		v : float
-		    Degree.
-		x : float
-		    Argument. Must be ``|x| <= 1``.
+		m : array_like
+		    Order (int or float). If passed a float not equal to an
+		    integer the function returns NaN.
+		v : array_like
+		    Degree (float).
+		x : array_like
+		    Argument (float). Must have ``|x| <= 1``.
 		
 		Returns
 		-------
-		res : float
-		    The value of the function.
+		pmv : ndarray
+		    Value of the associated Legendre function.
 		
 		See Also
 		--------
-		lpmn : Similar, but computes values for all orders 0..m and degrees 0..n.
-		clpmn : Similar to `lpmn` but allows a complex argument.
+		lpmn : Compute the associated Legendre function for all orders
+		       ``0, ..., m`` and degrees ``0, ..., n``.
+		clpmn : Compute the associated Legendre function at complex
+		        arguments.
 		
 		Notes
 		-----
-		It is possible to extend the domain of this function to all
-		complex m, v, x, but this is not yet implemented.
+		Note that this implementation includes the Condon-Shortley phase.
+		
+		References
+		----------
+		.. [1] Zhang, Jin, "Computation of Special Functions", John Wiley
+		       and Sons, Inc, 1996.
 	**/
 	static public function lpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_a(x1, x2[, out])
+		mathieu_a(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_a(m, q)
 		
@@ -3930,7 +4579,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_a(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_b(x1, x2[, out])
+		mathieu_b(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_b(m, q)
 		
@@ -3941,7 +4590,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_b(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_cem(x1, x2, x3[, out1, out2])
+		mathieu_cem(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_cem(m, q, x)
 		
@@ -3969,7 +4618,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_cem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_modcem1(x1, x2, x3[, out1, out2])
+		mathieu_modcem1(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_modcem1(m, q, x)
 		
@@ -3988,7 +4637,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_modcem1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_modcem2(x1, x2, x3[, out1, out2])
+		mathieu_modcem2(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_modcem2(m, q, x)
 		
@@ -4007,7 +4656,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_modcem2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_modsem1(x1, x2, x3[, out1, out2])
+		mathieu_modsem1(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_modsem1(m, q, x)
 		
@@ -4026,7 +4675,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_modsem1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_modsem2(x1, x2, x3[, out1, out2])
+		mathieu_modsem2(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_modsem2(m, q, x)
 		
@@ -4045,7 +4694,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_modsem2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_sem(x1, x2, x3[, out1, out2])
+		mathieu_sem(x1, x2, x3[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_sem(m, q, x)
 		
@@ -4073,7 +4722,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function mathieu_sem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		modfresnelm(x[, out1, out2])
+		modfresnelm(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		modfresnelm(x)
 		
@@ -4088,7 +4737,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function modfresnelm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		modfresnelp(x[, out1, out2])
+		modfresnelp(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		modfresnelp(x)
 		
@@ -4103,7 +4752,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function modfresnelp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		modstruve(x1, x2[, out])
+		modstruve(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		modstruve(v, x)
 		
@@ -4152,7 +4801,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function modstruve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nbdtr(x1, x2, x3[, out])
+		nbdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nbdtr(k, n, p)
 		
@@ -4208,7 +4857,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nbdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nbdtrc(x1, x2, x3[, out])
+		nbdtrc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nbdtrc(k, n, p)
 		
@@ -4260,7 +4909,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nbdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nbdtri(x1, x2, x3[, out])
+		nbdtri(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nbdtri(k, n, y)
 		
@@ -4302,7 +4951,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nbdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nbdtrik(x1, x2, x3[, out])
+		nbdtrik(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nbdtrik(y, n, p)
 		
@@ -4358,7 +5007,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nbdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nbdtrin(x1, x2, x3[, out])
+		nbdtrin(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nbdtrin(k, y, p)
 		
@@ -4414,7 +5063,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nbdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ncfdtr(x1, x2, x3, x4[, out])
+		ncfdtr(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ncfdtr(dfn, dfd, nc, f)
 		
@@ -4504,7 +5153,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ncfdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ncfdtri(x1, x2, x3, x4[, out])
+		ncfdtri(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ncfdtri(p, dfn, dfd, nc)
 		
@@ -4514,7 +5163,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ncfdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ncfdtridfd(x1, x2, x3, x4[, out])
+		ncfdtridfd(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ncfdtridfd(p, f, dfn, nc)
 		
@@ -4531,7 +5180,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ncfdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ncfdtridfn(x1, x2, x3, x4[, out])
+		ncfdtridfn(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ncfdtridfn(p, f, dfd, nc)
 		
@@ -4548,7 +5197,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ncfdtridfn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ncfdtrinc(x1, x2, x3, x4[, out])
+		ncfdtrinc(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ncfdtrinc(p, f, dfn, dfd)
 		
@@ -4558,7 +5207,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ncfdtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nctdtr(x1, x2, x3[, out])
+		nctdtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nctdtr(df, nc, t)
 		
@@ -4607,7 +5256,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nctdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nctdtridf(x1, x2, x3[, out])
+		nctdtridf(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nctdtridf(p, nc, t)
 		
@@ -4626,7 +5275,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nctdtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nctdtrinc(x1, x2, x3[, out])
+		nctdtrinc(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nctdtrinc(df, p, t)
 		
@@ -4645,7 +5294,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nctdtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nctdtrit(x1, x2, x3[, out])
+		nctdtrit(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nctdtrit(df, nc, p)
 		
@@ -4664,7 +5313,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nctdtrit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ndtr(x[, out])
+		ndtr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ndtr(x)
 		
@@ -4696,7 +5345,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ndtri(x[, out])
+		ndtri(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ndtri(y)
 		
@@ -4708,7 +5357,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function ndtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nrdtrimn(x1, x2, x3[, out])
+		nrdtrimn(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nrdtrimn(p, x, std)
 		
@@ -4734,7 +5383,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nrdtrimn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nrdtrisd(x1, x2, x3[, out])
+		nrdtrisd(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		nrdtrisd(p, x, mn)
 		
@@ -4760,7 +5409,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function nrdtrisd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_ang1(x1, x2, x3, x4[, out1, out2])
+		obl_ang1(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_ang1(m, n, c, x)
 		
@@ -4779,7 +5428,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_ang1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_ang1_cv(x1, x2, x3, x4, x5[, out1, out2])
+		obl_ang1_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_ang1_cv(m, n, c, cv, x)
 		
@@ -4799,7 +5448,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_ang1_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_cv(x1, x2, x3[, out])
+		obl_cv(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_cv(m, n, c)
 		
@@ -4810,7 +5459,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_rad1(x1, x2, x3, x4[, out1, out2])
+		obl_rad1(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_rad1(m, n, c, x)
 		
@@ -4829,7 +5478,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_rad1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
+		obl_rad1_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_rad1_cv(m, n, c, cv, x)
 		
@@ -4849,7 +5498,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_rad1_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_rad2(x1, x2, x3, x4[, out1, out2])
+		obl_rad2(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_rad2(m, n, c, x)
 		
@@ -4868,7 +5517,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_rad2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		obl_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
+		obl_rad2_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		obl_rad2_cv(m, n, c, cv, x)
 		
@@ -4888,7 +5537,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function obl_rad2_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pbdv(x1, x2[, out1, out2])
+		pbdv(x1, x2[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pbdv(v, x)
 		
@@ -4906,7 +5555,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pbdv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pbvv(x1, x2[, out1, out2])
+		pbvv(x1, x2[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pbvv(v, x)
 		
@@ -4924,7 +5573,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pbvv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pbwa(x1, x2[, out1, out2])
+		pbwa(x1, x2[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pbwa(a, x)
 		
@@ -4946,7 +5595,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pbwa(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pdtr(x1, x2[, out])
+		pdtr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pdtr(k, m)
 		
@@ -4958,7 +5607,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pdtrc(x1, x2[, out])
+		pdtrc(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pdtrc(k, m)
 		
@@ -4970,7 +5619,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pdtri(x1, x2[, out])
+		pdtri(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pdtri(k, y)
 		
@@ -4983,7 +5632,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pdtrik(x1, x2[, out])
+		pdtrik(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pdtrik(p, m)
 		
@@ -4993,7 +5642,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		poch(x1, x2[, out])
+		poch(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		poch(z, m)
 		
@@ -5009,7 +5658,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_ang1(x1, x2, x3, x4[, out1, out2])
+		pro_ang1(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_ang1(m, n, c, x)
 		
@@ -5028,7 +5677,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_ang1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_ang1_cv(x1, x2, x3, x4, x5[, out1, out2])
+		pro_ang1_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_ang1_cv(m, n, c, cv, x)
 		
@@ -5048,7 +5697,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_ang1_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_cv(x1, x2, x3[, out])
+		pro_cv(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_cv(m, n, c)
 		
@@ -5059,7 +5708,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_rad1(x1, x2, x3, x4[, out1, out2])
+		pro_rad1(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_rad1(m, n, c, x)
 		
@@ -5078,7 +5727,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_rad1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
+		pro_rad1_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_rad1_cv(m, n, c, cv, x)
 		
@@ -5098,7 +5747,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_rad1_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_rad2(x1, x2, x3, x4[, out1, out2])
+		pro_rad2(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_rad2(m, n, c, x)
 		
@@ -5117,7 +5766,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_rad2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pro_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
+		pro_rad2_cv(x1, x2, x3, x4, x5[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pro_rad2_cv(m, n, c, cv, x)
 		
@@ -5137,7 +5786,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pro_rad2_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pseudo_huber(x1, x2[, out])
+		pseudo_huber(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		pseudo_huber(delta, r)
 		
@@ -5165,7 +5814,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function pseudo_huber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		psi(x[, out])
+		psi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		psi(z, out=None)
 		
@@ -5211,7 +5860,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		radian(x1, x2, x3[, out])
+		radian(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		radian(d, m, s)
 		
@@ -5222,7 +5871,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function radian(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		rel_entr(x1, x2[, out])
+		rel_entr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		rel_entr(x, y)
 		
@@ -5254,7 +5903,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function rel_entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		rgamma(x[, out])
+		rgamma(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		rgamma(z)
 		
@@ -5264,7 +5913,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function rgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		round(x[, out])
+		round(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		round(x)
 		
@@ -5276,39 +5925,187 @@ package scipy.special._ufuncs;
 	**/
 	static public function round(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		shichi(x[, out1, out2])
+		Set how special-function errors are handled.
 		
-		shichi(x)
+		Parameters
+		----------
+		all : {'ignore', 'warn' 'raise'}, optional
+		    Set treatment for all type of special-function errors at
+		    once. The options are:
 		
-		Hyperbolic sine and cosine integrals
+		    - 'ignore' Take no action when the error occurs
+		    - 'warn' Print a `SpecialFunctionWarning` when the error
+		      occurs (via the Python `warnings` module)
+		    - 'raise' Raise a `SpecialFunctionError` when the error
+		      occurs.
+		
+		    The default is to not change the current behavior. If
+		    behaviors for additional categories of special-function errors
+		    are specified, then ``all`` is applied first, followed by the
+		    additional categories.
+		singular : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for singularities.
+		underflow : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for underflow.
+		overflow : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for overflow.
+		slow : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for slow convergence.
+		loss : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for loss of accuracy.
+		no_result : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for failing to find a result.
+		domain : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for an invalid argument to a function.
+		arg : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for an invalid parameter to a function.
+		other : {'ignore', 'warn', 'raise'}, optional
+		    Treatment for an unknown error.
 		
 		Returns
 		-------
-		shi
-		    ``integral(sinh(t)/t, t=0..x)``
-		chi
-		    ``eul + ln x + integral((cosh(t)-1)/t, t=0..x)``
-		    where ``eul`` is Euler's constant.
+		olderr : dict
+		    Dictionary containing the old settings.
+		
+		See Also
+		--------
+		geterr : get the current way of handling special-function errors
+		errstate : context manager for special-function error handling
+		numpy.seterr : similar numpy function for floating-point errors
+		
+		Examples
+		--------
+		>>> import scipy.special as sc
+		>>> from numpy.testing import assert_raises
+		>>> sc.gammaln(0)
+		inf
+		>>> olderr = sc.seterr(singular='raise')
+		>>> with assert_raises(sc.SpecialFunctionError):
+		...     sc.gammaln(0)
+		...
+		>>> _ = sc.seterr(**olderr)
+		
+		We can also raise for every category except one.
+		
+		>>> olderr = sc.seterr(all='raise', singular='ignore')
+		>>> sc.gammaln(0)
+		inf
+		>>> with assert_raises(sc.SpecialFunctionError):
+		...     sc.spence(-1)
+		...
+		>>> _ = sc.seterr(**olderr)
+	**/
+	static public function seterr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		shichi(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		shichi(x, out=None)
+		
+		Hyperbolic sine and cosine integrals.
+		
+		The hyperbolic sine integral is
+		
+		.. math::
+		
+		  \int_0^x \frac{\sinh{t}}{t}dt
+		
+		and the hyperbolic cosine integral is
+		
+		.. math::
+		
+		  \gamma + \log(x) + \int_0^x \frac{\cosh{t} - 1}{t} dt
+		
+		where :math:`\gamma` is Euler's constant and :math:`\log` is the
+		principle branch of the logarithm.
+		
+		Parameters
+		----------
+		x : array_like
+		    Real or complex points at which to compute the hyperbolic sine
+		    and cosine integrals.
+		
+		Returns
+		-------
+		si : ndarray
+		    Hyperbolic sine integral at ``x``
+		ci : ndarray
+		    Hyperbolic cosine integral at ``x``
+		
+		Notes
+		-----
+		For real arguments with ``x < 0``, ``chi`` is the real part of the
+		hyperbolic cosine integral. For such points ``chi(x)`` and ``chi(x
+		+ 0j)`` differ by a factor of ``1j*pi``.
+		
+		For real arguments the function is computed by calling Cephes'
+		[1]_ *shichi* routine. For complex arguments the algorithm is based
+		on Mpmath's [2]_ *shi* and *chi* routines.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function shichi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sici(x[, out1, out2])
+		sici(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		sici(x)
+		sici(x, out=None)
 		
-		Sine and cosine integrals
+		Sine and cosine integrals.
+		
+		The sine integral is
+		
+		.. math::
+		
+		  \int_0^x \frac{\sin{t}}{t}dt
+		
+		and the cosine integral is
+		
+		.. math::
+		
+		  \gamma + \log(x) + \int_0^x \frac{\cos{t} - 1}{t}dt
+		
+		where :math:`\gamma` is Euler's constant and :math:`\log` is the
+		principle branch of the logarithm.
+		
+		Parameters
+		----------
+		x : array_like
+		    Real or complex points at which to compute the sine and cosine
+		    integrals.
 		
 		Returns
 		-------
-		si
-		    ``integral(sin(t)/t, t=0..x)``
-		ci
-		    ``eul + ln x + integral((cos(t) - 1)/t, t=0..x)``
-		    where ``eul`` is Euler's constant.
+		si : ndarray
+		    Sine integral at ``x``
+		ci : ndarray
+		    Cosine integral at ``x``
+		
+		Notes
+		-----
+		For real arguments with ``x < 0``, ``ci`` is the real part of the
+		cosine integral. For such points ``ci(x)`` and ``ci(x + 0j)``
+		differ by a factor of ``1j*pi``.
+		
+		For real arguments the function is computed by calling Cephes'
+		[1]_ *sici* routine. For complex arguments the algorithm is based
+		on Mpmath's [2]_ *si* and *ci* routines.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function sici(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sindg(x[, out])
+		sindg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		sindg(x)
 		
@@ -5316,7 +6113,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function sindg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		smirnov(x1, x2[, out])
+		smirnov(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		smirnov(n, e)
 		
@@ -5331,7 +6128,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function smirnov(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		smirnovi(x1, x2[, out])
+		smirnovi(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		smirnovi(n, y)
 		
@@ -5341,12 +6138,13 @@ package scipy.special._ufuncs;
 	**/
 	static public function smirnovi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		spence(x[, out])
+		spence(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		spence(z)
+		spence(z, out=None)
 		
-		Spence's function, also known as the dilogarithm. It is defined to
-		be
+		Spence's function, also known as the dilogarithm.
+		
+		It is defined to be
 		
 		.. math::
 		  \int_0^z \frac{\log(t)}{1 - t}dt
@@ -5356,8 +6154,20 @@ package scipy.special._ufuncs;
 		analytic everywhere except the negative real axis where it has a
 		branch cut.
 		
-		Note that there is a different convention which defines Spence's
-		function by the integral
+		Parameters
+		----------
+		z : array_like
+		    Points at which to evaluate Spence's function
+		
+		Returns
+		-------
+		s : ndarray
+		    Computed values of Spence's function
+		
+		Notes
+		-----
+		There is a different convention which defines Spence's function by
+		the integral
 		
 		.. math::
 		  -\int_0^z \frac{\log(1 - t)}{t}dt;
@@ -5366,46 +6176,72 @@ package scipy.special._ufuncs;
 	**/
 	static public function spence(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sph_harm(x1, x2, x3, x4[, out])
+		sph_harm(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		sph_harm(m, n, theta, phi)
 		
 		Compute spherical harmonics.
 		
-		.. math:: Y^m_n(\theta,\phi) = \sqrt{\frac{2n+1}{4\pi}\frac{(n-m)!}{(n+m)!}} e^{i m \theta} P^m_n(\cos(\phi))
+		The spherical harmonics are defined as
+		
+		.. math::
+		
+		    Y^m_n(\theta,\phi) = \sqrt{\frac{2n+1}{4\pi} \frac{(n-m)!}{(n+m)!}}
+		      e^{i m \theta} P^m_n(\cos(\phi))
+		
+		where :math:`P_n^m` are the associated Legendre functions; see `lpmv`.
 		
 		Parameters
 		----------
-		m : int
-		   ``|m| <= n``; the order of the harmonic.
-		n : int
-		   where `n` >= 0; the degree of the harmonic.  This is often called
-		   ``l`` (lower case L) in descriptions of spherical harmonics.
-		theta : float
-		   [0, 2*pi]; the azimuthal (longitudinal) coordinate.
-		phi : float
-		   [0, pi]; the polar (colatitudinal) coordinate.
+		m : array_like
+		    Order of the harmonic (int); must have ``|m| <= n``.
+		n : array_like
+		   Degree of the harmonic (int); must have ``n >= 0``. This is
+		   often denoted by ``l`` (lower case L) in descriptions of
+		   spherical harmonics.
+		theta : array_like
+		   Azimuthal (longitudinal) coordinate; must be in ``[0, 2*pi]``.
+		phi : array_like
+		   Polar (colatitudinal) coordinate; must be in ``[0, pi]``.
 		
 		Returns
 		-------
 		y_mn : complex float
-		   The harmonic :math:`Y^m_n` sampled at `theta` and `phi`
+		   The harmonic :math:`Y^m_n` sampled at ``theta`` and ``phi``.
 		
 		Notes
 		-----
-		There are different conventions for the meaning of input arguments
-		`theta` and `phi`.  We take `theta` to be the azimuthal angle and
-		`phi` to be the polar angle.  It is common to see the opposite
-		convention - that is `theta` as the polar angle and `phi` as the
-		azimuthal angle.
+		There are different conventions for the meanings of the input
+		arguments ``theta`` and ``phi``. In SciPy ``theta`` is the
+		azimuthal angle and ``phi`` is the polar angle. It is common to
+		see the opposite convention, that is, ``theta`` as the polar angle
+		and ``phi`` as the azimuthal angle.
+		
+		Note that SciPy's spherical harmonics include the Condon-Shortley
+		phase [2]_ because it is part of `lpmv`.
+		
+		With SciPy's conventions, the first several spherical harmonics
+		are
+		
+		.. math::
+		
+		    Y_0^0(\theta, \phi) &= \frac{1}{2} \sqrt{\frac{1}{\pi}} \\
+		    Y_1^{-1}(\theta, \phi) &= \frac{1}{2} \sqrt{\frac{3}{2\pi}}
+		                                e^{-i\theta} \sin(\phi) \\
+		    Y_1^0(\theta, \phi) &= \frac{1}{2} \sqrt{\frac{3}{\pi}}
+		                             \cos(\phi) \\
+		    Y_1^1(\theta, \phi) &= -\frac{1}{2} \sqrt{\frac{3}{2\pi}}
+		                             e^{i\theta} \sin(\phi).
 		
 		References
 		----------
-		.. [1] Digital Library of Mathematical Functions, 14.30. http://dlmf.nist.gov/14.30
+		.. [1] Digital Library of Mathematical Functions, 14.30.
+		       http://dlmf.nist.gov/14.30
+		.. [2] https://en.wikipedia.org/wiki/Spherical_harmonics#Condon.E2.80.93Shortley_phase
 	**/
 	static public function sph_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		stdtr(x1, x2[, out])
+		stdtr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		stdtr(df, t)
 		
@@ -5419,7 +6255,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function stdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		stdtridf(x1, x2[, out])
+		stdtridf(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		stdtridf(p, t)
 		
@@ -5429,7 +6265,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function stdtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		stdtrit(x1, x2[, out])
+		stdtrit(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		stdtrit(df, p)
 		
@@ -5439,7 +6275,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function stdtrit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		struve(x1, x2[, out])
+		struve(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		struve(v, x)
 		
@@ -5488,7 +6324,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function struve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tandg(x[, out])
+		tandg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		tandg(x)
 		
@@ -5496,7 +6332,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function tandg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tklmbda(x1, x2[, out])
+		tklmbda(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		tklmbda(x, lmbda)
 		
@@ -5504,7 +6340,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function tklmbda(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		wofz(x[, out])
+		wofz(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		wofz(z)
 		
@@ -5535,7 +6371,59 @@ package scipy.special._ufuncs;
 	**/
 	static public function wofz(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		xlog1py(x1, x2[, out])
+		wrightomega(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		wrightomega(z, out=None)
+		
+		Wright Omega function.
+		
+		Defined as the solution to
+		
+		.. math::
+		
+		    \omega + \log(\omega) = z
+		
+		where :math:`\log` is the principal branch of the complex logarithm.
+		
+		Parameters
+		----------
+		z : array_like
+		    Points at which to evaluate the Wright Omega function
+		
+		Returns
+		-------
+		omega : ndarray
+		    Values of the Wright Omega function
+		
+		Notes
+		-----
+		.. versionadded:: 0.19.0
+		
+		The function can also be defined as
+		
+		.. math::
+		
+		    \omega(z) = W_{K(z)}(e^z)
+		
+		where :math:`K(z) = \lceil (\Im(z) - \pi)/(2\pi) \rceil` is the
+		unwinding number and :math:`W` is the Lambert W function.
+		
+		The implementation here is taken from [1]_.
+		
+		See Also
+		--------
+		lambertw : The Lambert W function
+		
+		References
+		----------
+		.. [1] Lawrence, Corless, and Jeffrey, "Algorithm 917: Complex
+		       Double-Precision Evaluation of the Wright :math:`\omega`
+		       Function." ACM Transactions on Mathematical Software,
+		       2012. :doi:`10.1145/2168773.2168779`.
+	**/
+	static public function wrightomega(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xlog1py(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		xlog1py(x, y)
 		
@@ -5560,7 +6448,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function xlog1py(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		xlogy(x1, x2[, out])
+		xlogy(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		xlogy(x, y)
 		
@@ -5585,7 +6473,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function xlogy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		y0(x[, out])
+		y0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		y0(x)
 		
@@ -5631,7 +6519,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		y1(x[, out])
+		y1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		y1(x)
 		
@@ -5671,7 +6559,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function y1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		yn(x1, x2[, out])
+		yn(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		yn(n, x)
 		
@@ -5708,7 +6596,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		yv(x1, x2[, out])
+		yv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		yv(v, z)
 		
@@ -5755,7 +6643,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		yve(x1, x2[, out])
+		yve(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		yve(v, z)
 		
@@ -5803,7 +6691,7 @@ package scipy.special._ufuncs;
 	**/
 	static public function yve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zetac(x[, out])
+		zetac(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		zetac(x)
 		

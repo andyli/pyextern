@@ -81,6 +81,13 @@ package scipy.io.matlab.mio5;
 	**/
 	public function new(file_stream:Dynamic, ?do_compression:Dynamic, ?unicode_strings:Dynamic, ?global_vars:Dynamic, ?long_field_names:Dynamic, ?oned_as:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

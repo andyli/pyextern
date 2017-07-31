@@ -110,8 +110,9 @@ package tensorflow.python.training.saver;
 		checkpoints per device.
 		
 		Args:
-		  var_list: A list of `Variable` objects or a dictionary mapping names to
-		    variables.  If `None`, defaults to the list of all variables.
+		  var_list: A list of `Variable`/`SaveableObject`, or a dictionary mapping
+		    names to `SaveableObject`s. If `None`, defaults to the list of all
+		    saveable objects.
 		  reshape: If `True`, allows restoring parameters from a checkpoint
 		    where the variables have a different shape.
 		  sharded: If `True`, shard the checkpoints, one per device.
@@ -130,13 +131,30 @@ package tensorflow.python.training.saver;
 		    `as_saver_def()` call of the `Saver` that was created for that `Graph`.
 		  builder: Optional `SaverBuilder` to use if a `saver_def` was not provided.
 		    Defaults to `BaseSaverBuilder()`.
+		  defer_build: If `True`, defer adding the save and restore ops to the
+		    `build()` call. In that case `build()` should be called before
+		    finalizing the graph or using the saver.
+		  allow_empty: If `False` (default) raise an error if there are no
+		    variables in the graph. Otherwise, construct the saver anyway and make
+		    it a no-op.
+		  write_version: controls what format to use when saving checkpoints.  It
+		    also affects certain filepath matching logic.  The V2 format is the
+		    recommended choice: it is much more optimized than V1 in terms of
+		    memory required and latency incurred during restore.  Regardless of
+		    this flag, the Saver is able to restore from both V2 and V1 checkpoints.
+		  pad_step_number: if True, pads the global step number in the checkpoint
+		    filepaths to some fixed width (8 by default).  This is turned off by
+		    default.
+		  save_relative_paths: If `True`, will write relative paths to the
+		    checkpoint state file. This is needed if the user wants to copy the
+		    checkpoint directory and reload from the copied directory.
 		
 		Raises:
 		  TypeError: If `var_list` is invalid.
 		  ValueError: If any of the keys or values in `var_list` are not unique.
 	**/
 	@:native("__init__")
-	public function ___init__(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic):Dynamic;
+	public function ___init__(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic):Dynamic;
 	/**
 		Creates a `Saver`.
 		
@@ -175,8 +193,9 @@ package tensorflow.python.training.saver;
 		checkpoints per device.
 		
 		Args:
-		  var_list: A list of `Variable` objects or a dictionary mapping names to
-		    variables.  If `None`, defaults to the list of all variables.
+		  var_list: A list of `Variable`/`SaveableObject`, or a dictionary mapping
+		    names to `SaveableObject`s. If `None`, defaults to the list of all
+		    saveable objects.
 		  reshape: If `True`, allows restoring parameters from a checkpoint
 		    where the variables have a different shape.
 		  sharded: If `True`, shard the checkpoints, one per device.
@@ -195,12 +214,36 @@ package tensorflow.python.training.saver;
 		    `as_saver_def()` call of the `Saver` that was created for that `Graph`.
 		  builder: Optional `SaverBuilder` to use if a `saver_def` was not provided.
 		    Defaults to `BaseSaverBuilder()`.
+		  defer_build: If `True`, defer adding the save and restore ops to the
+		    `build()` call. In that case `build()` should be called before
+		    finalizing the graph or using the saver.
+		  allow_empty: If `False` (default) raise an error if there are no
+		    variables in the graph. Otherwise, construct the saver anyway and make
+		    it a no-op.
+		  write_version: controls what format to use when saving checkpoints.  It
+		    also affects certain filepath matching logic.  The V2 format is the
+		    recommended choice: it is much more optimized than V1 in terms of
+		    memory required and latency incurred during restore.  Regardless of
+		    this flag, the Saver is able to restore from both V2 and V1 checkpoints.
+		  pad_step_number: if True, pads the global step number in the checkpoint
+		    filepaths to some fixed width (8 by default).  This is turned off by
+		    default.
+		  save_relative_paths: If `True`, will write relative paths to the
+		    checkpoint state file. This is needed if the user wants to copy the
+		    checkpoint directory and reload from the copied directory.
 		
 		Raises:
 		  TypeError: If `var_list` is invalid.
 		  ValueError: If any of the keys or values in `var_list` are not unique.
 	**/
-	public function new(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic):Void;
+	public function new(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -262,8 +305,11 @@ package tensorflow.python.training.saver;
 		Args:
 		  meta_graph_def: MetaGraphDef protocol buffer.
 		  key: One of the GraphKeys or user-defined string.
+		  export_scope: Optional `string`. Name scope to remove.
 	**/
-	static public function _add_collection_def(meta_graph_def:Dynamic, key:Dynamic):Dynamic;
+	static public function _add_collection_def(meta_graph_def:Dynamic, key:Dynamic, ?export_scope:Dynamic):Dynamic;
+	public function _check_saver_def():Dynamic;
+	public function _delete_file_if_exists(filespec:Dynamic):Dynamic;
 	/**
 		Generates a `SaverDef` representation of this saver.
 		
@@ -272,21 +318,35 @@ package tensorflow.python.training.saver;
 	**/
 	public function as_saver_def():Dynamic;
 	/**
+		Builds saver_def.
+	**/
+	public function build():Dynamic;
+	/**
 		Writes `MetaGraphDef` to save_path/filename.
 		
 		Args:
 		  filename: Optional meta_graph filename including the path.
 		  collection_list: List of string keys to collect.
 		  as_text: If `True`, writes the meta_graph as an ASCII proto.
+		  export_scope: Optional `string`. Name scope to remove.
+		  clear_devices: Whether or not to clear the device field for an `Operation`
+		    or `Tensor` during export.
 		
 		Returns:
 		  A `MetaGraphDef` proto.
 	**/
-	public function export_meta_graph(?filename:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic):Dynamic;
+	public function export_meta_graph(?filename:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic):Dynamic;
 	/**
 		Returns a `Saver` object created from `saver_def`.
+		
+		Args:
+		  saver_def: a `SaveDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to use.
+		
+		Returns:
+		  A `Saver` built from saver_def.
 	**/
-	static public function from_proto(saver_def:Dynamic):Dynamic;
+	static public function from_proto(saver_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
 		List of not-yet-deleted checkpoint filenames.
 		
@@ -296,6 +356,18 @@ package tensorflow.python.training.saver;
 		  A list of checkpoint filenames, sorted from oldest to newest.
 	**/
 	public var last_checkpoints : Dynamic;
+	/**
+		Recovers the internal saver state after a crash.
+		
+		This method is useful for recovering the "self._last_checkpoints" state.
+		
+		Globs for the checkpoints pointed to by `checkpoint_paths`.  If the files
+		exist, use their mtime as the checkpoint timestamp.
+		
+		Args:
+		  checkpoint_paths: a list of checkpoint paths.
+	**/
+	public function recover_last_checkpoints(checkpoint_paths:Dynamic):Dynamic;
 	/**
 		Restores previously saved variables.
 		
@@ -310,9 +382,6 @@ package tensorflow.python.training.saver;
 		Args:
 		  sess: A `Session` to use to restore the parameters.
 		  save_path: Path where parameters were previously saved.
-		
-		Raises:
-		  ValueError: If the given `save_path` does not point to a file.
 	**/
 	public function restore(sess:Dynamic, save_path:Dynamic):Dynamic;
 	/**
@@ -340,18 +409,22 @@ package tensorflow.python.training.saver;
 		  meta_graph_suffix: Suffix for `MetaGraphDef` file. Defaults to 'meta'.
 		  write_meta_graph: `Boolean` indicating whether or not to write the meta
 		    graph file.
+		  write_state: `Boolean` indicating whether or not to write the
+		    `CheckpointStateProto`.
 		
 		Returns:
 		  A string: path at which the variables were saved.  If the saver is
 		    sharded, this string ends with: '-?????-of-nnnnn' where 'nnnnn'
 		    is the number of shards created.
+		  If the saver is empty, returns None.
 		
 		Raises:
 		  TypeError: If `sess` is not a `Session`.
 		  ValueError: If `latest_filename` contains path components, or if it
 		    collides with `save_path`.
+		  RuntimeError: If save and restore ops weren't built.
 	**/
-	public function save(sess:Dynamic, save_path:Dynamic, ?global_step:Dynamic, ?latest_filename:Dynamic, ?meta_graph_suffix:Dynamic, ?write_meta_graph:Dynamic):Dynamic;
+	public function save(sess:Dynamic, save_path:Dynamic, ?global_step:Dynamic, ?latest_filename:Dynamic, ?meta_graph_suffix:Dynamic, ?write_meta_graph:Dynamic, ?write_state:Dynamic):Dynamic;
 	/**
 		DEPRECATED: Use set_last_checkpoints_with_time.
 		
@@ -378,8 +451,11 @@ package tensorflow.python.training.saver;
 	/**
 		Converts this `Saver` to a `SaverDef` protocol buffer.
 		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
 		Returns:
 		  A `SaverDef` protocol buffer.
 	**/
-	public function to_proto():Dynamic;
+	public function to_proto(?export_scope:Dynamic):Dynamic;
 }

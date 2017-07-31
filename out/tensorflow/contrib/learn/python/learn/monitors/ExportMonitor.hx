@@ -38,32 +38,73 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initializes ExportMonitor.
+		Initializes ExportMonitor. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Instructions for updating:
+		ExportMonitor is deprecated. Please pass an ExportStrategy to Experiment instead.
 		
 		Args:
 		  every_n_steps: Run monitor every N steps.
 		  export_dir: str, folder to export.
+		  input_fn: A function that takes no argument and returns a tuple of
+		    (features, labels), where features is a dict of string key to `Tensor`
+		    and labels is a `Tensor` that's currently not used (and so can be
+		    `None`).
+		  input_feature_key: String key into the features dict returned by
+		    `input_fn` that corresponds to the raw `Example` strings `Tensor` that
+		    the exported model will take as input. Should be `None` if and only if
+		    you're passing in a `signature_fn` that does not use the first arg
+		    (`Tensor` of `Example` strings).
 		  exports_to_keep: int, number of exports to keep.
-		  signature_fn: Function that given `Tensor` of `Example` strings,
-		    `dict` of `Tensor`s for features and `dict` of `Tensor`s for predictions
-		    and returns default and named exporting signautres.
+		  signature_fn: Function that returns a default signature and a named
+		    signature map, given `Tensor` of `Example` strings, `dict` of `Tensor`s
+		    for features and `dict` of `Tensor`s for predictions.
 		  default_batch_size: Default batch size of the `Example` placeholder.
+		
+		Raises:
+		  ValueError: If `input_fn` and `input_feature_key` are not both defined or
+		    are not both `None`.
 	**/
 	@:native("__init__")
-	public function ___init__(every_n_steps:Dynamic, export_dir:Dynamic, ?exports_to_keep:Dynamic, ?signature_fn:Dynamic, ?default_batch_size:Dynamic):Dynamic;
+	public function ___init__(every_n_steps:Dynamic, export_dir:Dynamic, ?input_fn:Dynamic, ?input_feature_key:Dynamic, ?exports_to_keep:Dynamic, ?signature_fn:Dynamic, ?default_batch_size:Dynamic):Dynamic;
 	/**
-		Initializes ExportMonitor.
+		Initializes ExportMonitor. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Instructions for updating:
+		ExportMonitor is deprecated. Please pass an ExportStrategy to Experiment instead.
 		
 		Args:
 		  every_n_steps: Run monitor every N steps.
 		  export_dir: str, folder to export.
+		  input_fn: A function that takes no argument and returns a tuple of
+		    (features, labels), where features is a dict of string key to `Tensor`
+		    and labels is a `Tensor` that's currently not used (and so can be
+		    `None`).
+		  input_feature_key: String key into the features dict returned by
+		    `input_fn` that corresponds to the raw `Example` strings `Tensor` that
+		    the exported model will take as input. Should be `None` if and only if
+		    you're passing in a `signature_fn` that does not use the first arg
+		    (`Tensor` of `Example` strings).
 		  exports_to_keep: int, number of exports to keep.
-		  signature_fn: Function that given `Tensor` of `Example` strings,
-		    `dict` of `Tensor`s for features and `dict` of `Tensor`s for predictions
-		    and returns default and named exporting signautres.
+		  signature_fn: Function that returns a default signature and a named
+		    signature map, given `Tensor` of `Example` strings, `dict` of `Tensor`s
+		    for features and `dict` of `Tensor`s for predictions.
 		  default_batch_size: Default batch size of the `Example` placeholder.
+		
+		Raises:
+		  ValueError: If `input_fn` and `input_feature_key` are not both defined or
+		    are not both `None`.
 	**/
-	public function new(every_n_steps:Dynamic, export_dir:Dynamic, ?exports_to_keep:Dynamic, ?signature_fn:Dynamic, ?default_batch_size:Dynamic):Void;
+	public function new(every_n_steps:Dynamic, export_dir:Dynamic, ?input_fn:Dynamic, ?input_feature_key:Dynamic, ?exports_to_keep:Dynamic, ?signature_fn:Dynamic, ?default_batch_size:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -199,6 +240,18 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  `bool`. True if training should stop.
 	**/
 	public function every_n_step_end(step:Dynamic, outputs:Dynamic):Dynamic;
+	public var export_dir : Dynamic;
+	public var exports_to_keep : Dynamic;
+	/**
+		Returns the directory containing the last completed export.
+		
+		Returns:
+		  The string path to the exported directory. NB: this functionality was
+		  added on 2016/09/25; clients that depend on the return value may need
+		  to handle the case where this function returns None because the
+		  estimator being fitted does not yet return a value during export.
+	**/
+	public var last_export_dir : Dynamic;
 	/**
 		Callback after the step is finished.
 		
@@ -214,6 +267,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		A setter called automatically by the target estimator.
 		
+		If the estimator is locked, this method does nothing.
+		
 		Args:
 		  estimator: the estimator that this monitor monitors.
 		
@@ -221,6 +276,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  ValueError: if the estimator is None.
 	**/
 	public function set_estimator(estimator:Dynamic):Dynamic;
+	public var signature_fn : Dynamic;
 	/**
 		Overrides `BaseMonitor.step_begin`.
 		

@@ -6,6 +6,9 @@ package scipy.cluster._hierarchy;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_Heap(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_LinkageUnionFind(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -124,6 +127,34 @@ package scipy.cluster._hierarchy;
 	**/
 	static public function cophenetic_distances(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Perform hierarchy clustering.
+		
+		It implements "Generic Clustering Algorithm" from [1]. The worst case
+		time complexity is O(N^3), but the best case time complexity is O(N^2) and
+		it usually works quite close to the best case.
+		
+		Parameters
+		----------
+		dists : ndarray
+		    A condensed matrix stores the pairwise distances of the observations.
+		n : int
+		    The number of observations.
+		method : int
+		    The linkage method. 0: single 1: complete 2: average 3: centroid
+		    4: median 5: ward 6: weighted
+		
+		Returns
+		-------
+		Z : ndarray, shape (n - 1, 4)
+		    Computed linkage matrix.
+		
+		References
+		----------
+		.. [1] Daniel Mullner, "Modern hierarchical, agglomerative clustering
+		   algorithms", :arXiv:`1109.2378v1`.
+	**/
+	static public function fast_linkage(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Get the maximum statistic for each non-singleton cluster. For the i'th
 		non-singleton cluster, max_rfs[i] = max{R[j, rf] j is a descendent of i}.
 		
@@ -223,6 +254,22 @@ package scipy.cluster._hierarchy;
 	**/
 	static public function linkage(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Perform hierarchy clustering using MST algorithm for single linkage.
+		
+		Parameters
+		----------
+		dists : ndarray
+		    A condensed matrix stores the pairwise distances of the observations.
+		n : int
+		    The number of observations.
+		
+		Returns
+		-------
+		Z : ndarray, shape (n - 1, 4)
+		    Computed linkage matrix.
+	**/
+	static public function mst_single_linkage(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Perform hierarchy clustering using nearest-neighbor chain algorithm.
 		
 		Parameters
@@ -255,25 +302,4 @@ package scipy.cluster._hierarchy;
 		    The number of observations.
 	**/
 	static public function prelist(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		The SLINK algorithm. Single linkage in O(n^2) time complexity.
-		
-		Parameters
-		----------
-		dists : ndarray
-		    A condensed matrix stores the pairwise distances of the observations.
-		n : int
-		    The number of observations.
-		
-		Returns
-		-------
-		Z : ndarray, shape (n - 1, 4)
-		    Compute linkage matrix.
-		
-		References
-		----------
-		R. Sibson, "SLINK: An optimally efficient algorithm for the single-link
-		cluster method", The Computer Journal 1973 16: 30-34.
-	**/
-	static public function slink(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

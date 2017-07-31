@@ -42,6 +42,8 @@ package pandas.core.series;
 		True if the key is in the info axis
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
+	public function __copy__(?deep:Dynamic):Dynamic;
+	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -105,6 +107,13 @@ package pandas.core.series;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?data:Dynamic, ?index:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
@@ -218,6 +227,27 @@ package pandas.core.series;
 	**/
 	static public function _add_series_or_dataframe_operations():Dynamic;
 	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _agg_doc : Dynamic;
+	/**
+		provide an implementation for the aggregators
+		
+		Parameters
+		----------
+		arg : string, dict, function
+		*args : args to pass on to the function
+		**kwargs : kwargs to pass on to the function
+		
+		Returns
+		-------
+		tuple of result, how
+		
+		Notes
+		-----
+		how can be a string describe the required post-processing, or
+		None if not required
+	**/
+	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	static public var _allow_index_ops : Dynamic;
@@ -242,6 +272,7 @@ package pandas.core.series;
 	**/
 	public function _binop(other:Dynamic, func:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.Series;
 	public function _box_item_values(key:Dynamic, values:Dynamic):Dynamic;
+	static public var _builtin_table : Dynamic;
 	public var _can_hold_na : Dynamic;
 	/**
 		check whether we allow in-place setting with this type of value 
@@ -291,6 +322,21 @@ package pandas.core.series;
 	**/
 	public function _check_setitem_copy(?stacklevel:Dynamic, ?t:Dynamic, ?force:Dynamic):Dynamic;
 	public function _clear_item_cache(?i:Dynamic):Dynamic;
+	public function _clip_with_scalar(lower:Dynamic, upper:Dynamic):Dynamic;
+	/**
+		Compute NDFrame with "consolidated" internals (data of each dtype
+		grouped together in a single ndarray).
+		
+		Parameters
+		----------
+		inplace : boolean, default False
+		    If False return new object, otherwise modify existing object
+		
+		Returns
+		-------
+		consolidated : type of caller
+	**/
+	public function _consolidate(?inplace:Dynamic):Dynamic;
 	/**
 		Consolidate data in place and return None
 	**/
@@ -358,6 +404,7 @@ package pandas.core.series;
 		Create an indexer like _name in the class.
 	**/
 	static public function _create_indexer(name:Dynamic, indexer:Dynamic):Dynamic;
+	static public var _cython_table : Dynamic;
 	/**
 		add the string-like attributes from the info_axis 
 	**/
@@ -387,13 +434,22 @@ package pandas.core.series;
 	**/
 	public function _get_item_cache(item:Dynamic):Dynamic;
 	public function _get_numeric_data():Dynamic;
-	/**
-		Internal function, should always return unicode string
-	**/
-	public function _get_repr(?name:Dynamic, ?header:Dynamic, ?index:Dynamic, ?length:Dynamic, ?dtype:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?max_rows:Dynamic):Dynamic;
 	public function _get_values(indexer:Dynamic):Dynamic;
 	public function _get_values_tuple(key:Dynamic):Dynamic;
 	public function _get_with(key:Dynamic):Dynamic;
+	/**
+		sub-classes to define
+		return a sliced object
+		
+		Parameters
+		----------
+		key : string / list of selections
+		ndim : 1,2
+		    requested ndim of result
+		subset : object, default None
+		    subset to act on
+	**/
+	public function _gotitem(key:Dynamic, ndim:Dynamic, ?subset:Dynamic):Dynamic;
 	static public var _iat : Dynamic;
 	/**
 		Return the cached item, item represents a positional indexer.
@@ -412,9 +468,18 @@ package pandas.core.series;
 	static public var _internal_names : Dynamic;
 	static public var _internal_names_set : Dynamic;
 	/**
+		if we define an builtin function for this argument, return it,
+		otherwise return the arg
+	**/
+	public function _is_builtin_func(arg:Dynamic):Dynamic;
+	/**
 		Return boolean indicating if self is cached or not.
 	**/
 	public var _is_cached : Dynamic;
+	/**
+		if we define an internal function for this argument, return it 
+	**/
+	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public var _is_datelike_mixed_type : Dynamic;
 	public var _is_mixed_type : Dynamic;
 	public var _is_numeric_mixed_type : Dynamic;
@@ -465,6 +530,10 @@ package pandas.core.series;
 	**/
 	public function _needs_reindex_multi(axes:Dynamic, method:Dynamic, level:Dynamic):Dynamic;
 	/**
+		internal compat with SelectionMixin 
+	**/
+	public var _obj_with_exclusions : Dynamic;
+	/**
 		Consolidate _data -- if the blocks have changed, then clear the
 		cache
 	**/
@@ -488,6 +557,16 @@ package pandas.core.series;
 	**/
 	public function _reindex_with_indexers(reindexers:Dynamic, ?fill_value:Dynamic, ?copy:Dynamic, ?allow_dups:Dynamic):Dynamic;
 	/**
+		Not a real Jupyter special repr method, but we use the same
+		naming convention.
+	**/
+	public function _repr_data_resource_():Dynamic;
+	/**
+		Returns a LaTeX representation for a particular object.
+		Mainly for use with nbconvert (jupyter notebook conversion to pdf).
+	**/
+	public function _repr_latex_():Dynamic;
+	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
@@ -495,6 +574,18 @@ package pandas.core.series;
 		Reset the cacher.
 	**/
 	public function _reset_cacher():Dynamic;
+	/**
+		internal compat with SelectionMixin 
+	**/
+	public var _selected_obj : Dynamic;
+	static public var _selection : Dynamic;
+	public var _selection_list : Dynamic;
+	/**
+		return a name for myself; this would ideally be called
+		the 'name' property, but we cannot conflict with the
+		Series.name property which can be set
+	**/
+	public var _selection_name : Dynamic;
 	/**
 		Set the _cacher attribute on the calling object with a weakref to
 		cacher.
@@ -574,6 +665,10 @@ package pandas.core.series;
 	**/
 	static public function _setup_axes(axes:Dynamic, ?info_axis:Dynamic, ?stat_axis:Dynamic, ?aliases:Dynamic, ?slicers:Dynamic, ?axes_are_reversed:Dynamic, ?build_axes:Dynamic, ?ns:Dynamic):Dynamic;
 	/**
+		return a new object with the replacement attributes 
+	**/
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Construct a slice of this container.
 		
 		kind parameter is maintained for compatibility with Series slicing.
@@ -582,6 +677,13 @@ package pandas.core.series;
 	public var _stat_axis : Dynamic;
 	static public var _stat_axis_name : Dynamic;
 	static public var _stat_axis_number : Dynamic;
+	/**
+		if arg is a string, then try to operate on it:
+		- try to find a function (or attribute) on ourselves
+		- try to find a numpy function
+		- raise
+	**/
+	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _typ : Dynamic;
 	public function _unpickle_series_compat(state:Dynamic):Dynamic;
 	/**
@@ -691,7 +793,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -732,6 +834,108 @@ package pandas.core.series;
 		with_suffix : type of caller
 	**/
 	public function add_suffix(suffix:Dynamic):Dynamic;
+	/**
+		Aggregate using callable, string, dict, or list of string/callables
+		
+		.. versionadded:: 0.20.0
+		
+		Parameters
+		----------
+		func : callable, string, dictionary, or list of string/callables
+		    Function to use for aggregating the data. If a function, must either
+		    work when passed a Series or when passed to Series.apply. For
+		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		
+		    Accepted Combinations are:
+		
+		    - string function name
+		    - function
+		    - list of functions
+		    - dict of column names -> functions (or list of functions)
+		
+		Notes
+		-----
+		Numpy functions mean/median/prod/sum/std/var are special cased so the
+		default behavior is applying the function along axis=0
+		(e.g., np.mean(arr_2d, axis=0)) as opposed to
+		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
+		
+		agg is an alias for aggregate. Use it.
+		
+		Returns
+		-------
+		aggregated : Series
+		
+		Examples
+		--------
+		
+		>>> s = Series(np.random.randn(10))
+		
+		>>> s.agg('min')
+		-1.3018049988556679
+		
+		>>> s.agg(['min', 'max'])
+		min   -1.301805
+		max    1.127688
+		dtype: float64
+		
+		See also
+		--------
+		pandas.Series.apply
+		pandas.Series.transform
+	**/
+	public function agg(func:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
+	/**
+		Aggregate using callable, string, dict, or list of string/callables
+		
+		.. versionadded:: 0.20.0
+		
+		Parameters
+		----------
+		func : callable, string, dictionary, or list of string/callables
+		    Function to use for aggregating the data. If a function, must either
+		    work when passed a Series or when passed to Series.apply. For
+		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		
+		    Accepted Combinations are:
+		
+		    - string function name
+		    - function
+		    - list of functions
+		    - dict of column names -> functions (or list of functions)
+		
+		Notes
+		-----
+		Numpy functions mean/median/prod/sum/std/var are special cased so the
+		default behavior is applying the function along axis=0
+		(e.g., np.mean(arr_2d, axis=0)) as opposed to
+		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
+		
+		agg is an alias for aggregate. Use it.
+		
+		Returns
+		-------
+		aggregated : Series
+		
+		Examples
+		--------
+		
+		>>> s = Series(np.random.randn(10))
+		
+		>>> s.agg('min')
+		-1.3018049988556679
+		
+		>>> s.agg(['min', 'max'])
+		min   -1.301805
+		max    1.127688
+		dtype: float64
+		
+		See also
+		--------
+		pandas.Series.apply
+		pandas.Series.transform
+	**/
+	public function aggregate(func:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Align two object on their axes with the
 		specified join method for each axis Index
@@ -864,6 +1068,8 @@ package pandas.core.series;
 		With `verify_integrity` set to True:
 		
 		>>> s1.append(s2, verify_integrity=True)
+		Traceback (most recent call last):
+		...
 		ValueError: Indexes have overlapping values: [0, 1, 2]
 	**/
 	public function append(to_append:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic):pandas.Series;
@@ -889,6 +1095,8 @@ package pandas.core.series;
 		See also
 		--------
 		Series.map: For element-wise operations
+		Series.agg: only perform aggregating type operations
+		Series.transform: only perform transformating type operations
 		
 		Examples
 		--------
@@ -899,6 +1107,7 @@ package pandas.core.series;
 		>>> import numpy as np
 		>>> series = pd.Series([20, 21, 12], index=['London',
 		... 'New York','Helsinki'])
+		>>> series
 		London      20
 		New York    21
 		Helsinki    12
@@ -1085,6 +1294,10 @@ package pandas.core.series;
 		
 		Optionally provide filling method to pad/backfill missing values.
 		
+		Returns the original data conformed to a new index with the specified
+		frequency. ``resample`` is more appropriate if an operation, such as
+		summarization, is necessary to represent the data at the new frequency.
+		
 		Parameters
 		----------
 		freq : DateOffset object, or string
@@ -1099,15 +1312,77 @@ package pandas.core.series;
 		    For PeriodIndex only, see PeriodIndex.asfreq
 		normalize : bool, default False
 		    Whether to reset output index to midnight
+		fill_value: scalar, optional
+		    Value to use for missing values, applied during upsampling (note
+		    this does not fill NaNs that already were present).
+		
+		    .. versionadded:: 0.20.0
 		
 		Returns
 		-------
 		converted : type of caller
 		
+		Examples
+		--------
+		
+		Start by creating a series with 4 one minute timestamps.
+		
+		>>> index = pd.date_range('1/1/2000', periods=4, freq='T')
+		>>> series = pd.Series([0.0, None, 2.0, 3.0], index=index)
+		>>> df = pd.DataFrame({'s':series})
+		>>> df
+		                       s
+		2000-01-01 00:00:00    0.0
+		2000-01-01 00:01:00    NaN
+		2000-01-01 00:02:00    2.0
+		2000-01-01 00:03:00    3.0
+		
+		Upsample the series into 30 second bins.
+		
+		>>> df.asfreq(freq='30S')
+		                       s
+		2000-01-01 00:00:00    0.0
+		2000-01-01 00:00:30    NaN
+		2000-01-01 00:01:00    NaN
+		2000-01-01 00:01:30    NaN
+		2000-01-01 00:02:00    2.0
+		2000-01-01 00:02:30    NaN
+		2000-01-01 00:03:00    3.0
+		
+		Upsample again, providing a ``fill value``.
+		
+		>>> df.asfreq(freq='30S', fill_value=9.0)
+		                       s
+		2000-01-01 00:00:00    0.0
+		2000-01-01 00:00:30    9.0
+		2000-01-01 00:01:00    NaN
+		2000-01-01 00:01:30    9.0
+		2000-01-01 00:02:00    2.0
+		2000-01-01 00:02:30    9.0
+		2000-01-01 00:03:00    3.0
+		
+		Upsample again, providing a ``method``.
+		
+		>>> df.asfreq(freq='30S', method='bfill')
+		                       s
+		2000-01-01 00:00:00    0.0
+		2000-01-01 00:00:30    NaN
+		2000-01-01 00:01:00    NaN
+		2000-01-01 00:01:30    2.0
+		2000-01-01 00:02:00    2.0
+		2000-01-01 00:02:30    3.0
+		2000-01-01 00:03:00    3.0
+		
+		See Also
+		--------
+		reindex
+		
+		Notes
+		-----
 		To learn more about the frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
-	public function asfreq(freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic):Dynamic;
+	public function asfreq(freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		return object Series which contains boxed values
 		
@@ -1120,7 +1395,8 @@ package pandas.core.series;
 		
 		.. versionadded:: 0.19.0 For DataFrame
 		
-		If there is no good value, NaN is returned.
+		If there is no good value, NaN is returned for a Series
+		a Series of NaN values for a DataFrame
 		
 		Parameters
 		----------
@@ -1158,14 +1434,22 @@ package pandas.core.series;
 		    the same type. Alternatively, use {col: dtype, ...}, where col is a
 		    column label and dtype is a numpy.dtype or Python type to cast one
 		    or more of the DataFrame's columns to column-specific types.
-		raise_on_error : raise on invalid input
+		errors : {'raise', 'ignore'}, default 'raise'.
+		    Control raising of exceptions on invalid data for provided dtype.
+		
+		    - ``raise`` : allow exceptions to be raised
+		    - ``ignore`` : suppress exceptions. On error return original object
+		
+		    .. versionadded:: 0.20.0
+		
+		raise_on_error : DEPRECATED use ``errors`` instead
 		kwargs : keyword arguments to pass on to the constructor
 		
 		Returns
 		-------
 		casted : type of caller
 	**/
-	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function astype(dtype:Dynamic, ?copy:Dynamic, ?errors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fast label-based scalar accessor
 		
@@ -1239,7 +1523,7 @@ package pandas.core.series;
 	**/
 	public function between_time(start_time:Dynamic, end_time:Dynamic, ?include_start:Dynamic, ?include_end:Dynamic):Dynamic;
 	/**
-		Synonym for NDFrame.fillna(method='bfill')
+		Synonym for :meth:`DataFrame.fillna(method='bfill') <DataFrame.fillna>`
 	**/
 	public function bfill(?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
@@ -1292,12 +1576,13 @@ package pandas.core.series;
 		Examples
 		--------
 		>>> df
-		  0         1
+		          0         1
 		0  0.335232 -1.256177
 		1 -1.367855  0.746646
 		2  0.027753 -1.176076
 		3  0.230930 -0.679613
 		4  1.261967  0.570967
+		
 		>>> df.clip(-1.0, 0.5)
 		          0         1
 		0  0.335232 -1.000000
@@ -1305,6 +1590,7 @@ package pandas.core.series;
 		2  0.027753 -1.000000
 		3  0.230930 -0.679613
 		4  0.500000  0.500000
+		
 		>>> t
 		0   -0.3
 		1   -0.2
@@ -1312,6 +1598,7 @@ package pandas.core.series;
 		3    0.0
 		4    0.1
 		dtype: float64
+		
 		>>> df.clip(t, t + 1, axis=0)
 		          0         1
 		0  0.335232 -0.300000
@@ -1416,18 +1703,7 @@ package pandas.core.series;
 	**/
 	public function compress(condition:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute NDFrame with "consolidated" internals (data of each dtype
-		grouped together in a single ndarray). Mainly an internal API function,
-		but available here to the savvy user
-		
-		Parameters
-		----------
-		inplace : boolean, default False
-		    If False return new object, otherwise modify existing object
-		
-		Returns
-		-------
-		consolidated : type of caller
+		DEPRECATED: consolidate will be an internal implementation only.
 	**/
 	public function consolidate(?inplace:Dynamic):Dynamic;
 	/**
@@ -1544,6 +1820,13 @@ package pandas.core.series;
 		Returns
 		-------
 		cummax : scalar
+		
+		
+		
+		See also
+		--------
+		pandas.core.window.Expanding.max : Similar functionality
+		    but ignores ``NaN`` values.
 	**/
 	public function cummax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1559,6 +1842,13 @@ package pandas.core.series;
 		Returns
 		-------
 		cummin : scalar
+		
+		
+		
+		See also
+		--------
+		pandas.core.window.Expanding.min : Similar functionality
+		    but ignores ``NaN`` values.
 	**/
 	public function cummin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1574,6 +1864,13 @@ package pandas.core.series;
 		Returns
 		-------
 		cumprod : scalar
+		
+		
+		
+		See also
+		--------
+		pandas.core.window.Expanding.prod : Similar functionality
+		    but ignores ``NaN`` values.
 	**/
 	public function cumprod(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1589,6 +1886,13 @@ package pandas.core.series;
 		Returns
 		-------
 		cumsum : scalar
+		
+		
+		
+		See also
+		--------
+		pandas.core.window.Expanding.sum : Similar functionality
+		    but ignores ``NaN`` values.
 	**/
 	public function cumsum(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1596,54 +1900,214 @@ package pandas.core.series;
 	**/
 	public var data : Dynamic;
 	/**
-		Generate various summary statistics, excluding NaN values.
+		Generates descriptive statistics that summarize the central tendency,
+		dispersion and shape of a dataset's distribution, excluding
+		``NaN`` values.
+		
+		Analyzes both numeric and object series, as well
+		as ``DataFrame`` column sets of mixed data types. The output
+		will vary depending on what is provided. Refer to the notes
+		below for more detail.
 		
 		Parameters
 		----------
-		percentiles : array-like, optional
-		    The percentiles to include in the output. Should all
-		    be in the interval [0, 1]. By default `percentiles` is
-		    [.25, .5, .75], returning the 25th, 50th, and 75th percentiles.
-		include, exclude : list-like, 'all', or None (default)
-		    Specify the form of the returned result. Either:
+		percentiles : list-like of numbers, optional
+		    The percentiles to include in the output. All should
+		    fall between 0 and 1. The default is
+		    ``[.25, .5, .75]``, which returns the 25th, 50th, and
+		    75th percentiles.
+		include : 'all', list-like of dtypes or None (default), optional
+		    A white list of data types to include in the result. Ignored
+		    for ``Series``. Here are the options:
 		
-		    - None to both (default). The result will include only
-		      numeric-typed columns or, if none are, only categorical columns.
-		    - A list of dtypes or strings to be included/excluded.
-		      To select all numeric types use numpy numpy.number. To select
-		      categorical objects use type object. See also the select_dtypes
-		      documentation. eg. df.describe(include=['O'])
-		    - If include is the string 'all', the output column-set will
-		      match the input one.
+		    - 'all' : All columns of the input will be included in the output.
+		    - A list-like of dtypes : Limits the results to the
+		      provided data types.
+		      To limit the result to numeric types submit
+		      ``numpy.number``. To limit it instead to categorical
+		      objects submit the ``numpy.object`` data type. Strings
+		      can also be used in the style of
+		      ``select_dtypes`` (e.g. ``df.describe(include=['O'])``)
+		    - None (default) : The result will include all numeric columns.
+		exclude : list-like of dtypes or None (default), optional,
+		    A black list of data types to omit from the result. Ignored
+		    for ``Series``. Here are the options:
+		
+		    - A list-like of dtypes : Excludes the provided data types
+		      from the result. To select numeric types submit
+		      ``numpy.number``. To select categorical objects submit the data
+		      type ``numpy.object``. Strings can also be used in the style of
+		      ``select_dtypes`` (e.g. ``df.describe(include=['O'])``)
+		    - None (default) : The result will exclude nothing.
 		
 		Returns
 		-------
-		summary: NDFrame of summary statistics
+		summary:  Series/DataFrame of summary statistics
 		
 		Notes
 		-----
-		The output DataFrame index depends on the requested dtypes:
+		For numeric data, the result's index will include ``count``,
+		``mean``, ``std``, ``min``, ``max`` as well as lower, ``50`` and
+		upper percentiles. By default the lower percentile is ``25`` and the
+		upper percentile is ``75``. The ``50`` percentile is the
+		same as the median.
 		
-		For numeric dtypes, it will include: count, mean, std, min,
-		max, and lower, 50, and upper percentiles.
+		For object data (e.g. strings or timestamps), the result's index
+		will include ``count``, ``unique``, ``top``, and ``freq``. The ``top``
+		is the most common value. The ``freq`` is the most common value's
+		frequency. Timestamps also include the ``first`` and ``last`` items.
 		
-		For object dtypes (e.g. timestamps or strings), the index
-		will include the count, unique, most common, and frequency of the
-		most common. Timestamps also include the first and last items.
-		
-		For mixed dtypes, the index will be the union of the corresponding
-		output types. Non-applicable entries will be filled with NaN.
-		Note that mixed-dtype outputs can only be returned from mixed-dtype
-		inputs and appropriate use of the include/exclude arguments.
-		
-		If multiple values have the highest count, then the
-		`count` and `most common` pair will be arbitrarily chosen from
+		If multiple object values have the highest count, then the
+		``count`` and ``top`` results will be arbitrarily chosen from
 		among those with the highest count.
 		
-		The include, exclude arguments are ignored for Series.
+		For mixed data types provided via a ``DataFrame``, the default is to
+		return only an analysis of numeric columns. If ``include='all'``
+		is provided as an option, the result will include a union of
+		attributes of each type.
+		
+		The `include` and `exclude` parameters can be used to limit
+		which columns in a ``DataFrame`` are analyzed for the output.
+		The parameters are ignored when analyzing a ``Series``.
+		
+		Examples
+		--------
+		Describing a numeric ``Series``.
+		
+		>>> s = pd.Series([1, 2, 3])
+		>>> s.describe()
+		count    3.0
+		mean     2.0
+		std      1.0
+		min      1.0
+		25%      1.5
+		50%      2.0
+		75%      2.5
+		max      3.0
+		
+		Describing a categorical ``Series``.
+		
+		>>> s = pd.Series(['a', 'a', 'b', 'c'])
+		>>> s.describe()
+		count     4
+		unique    3
+		top       a
+		freq      2
+		dtype: object
+		
+		Describing a timestamp ``Series``.
+		
+		>>> s = pd.Series([
+		...   np.datetime64("2000-01-01"),
+		...   np.datetime64("2010-01-01"),
+		...   np.datetime64("2010-01-01")
+		... ])
+		>>> s.describe()
+		count                       3
+		unique                      2
+		top       2010-01-01 00:00:00
+		freq                        2
+		first     2000-01-01 00:00:00
+		last      2010-01-01 00:00:00
+		dtype: object
+		
+		Describing a ``DataFrame``. By default only numeric fields
+		are returned.
+		
+		>>> df = pd.DataFrame([[1, 'a'], [2, 'b'], [3, 'c']],
+		...                   columns=['numeric', 'object'])
+		>>> df.describe()
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
+		
+		Describing all columns of a ``DataFrame`` regardless of data type.
+		
+		>>> df.describe(include='all')
+		        numeric object
+		count       3.0      3
+		unique      NaN      3
+		top         NaN      b
+		freq        NaN      1
+		mean        2.0    NaN
+		std         1.0    NaN
+		min         1.0    NaN
+		25%         1.5    NaN
+		50%         2.0    NaN
+		75%         2.5    NaN
+		max         3.0    NaN
+		
+		Describing a column from a ``DataFrame`` by accessing it as
+		an attribute.
+		
+		>>> df.numeric.describe()
+		count    3.0
+		mean     2.0
+		std      1.0
+		min      1.0
+		25%      1.5
+		50%      2.0
+		75%      2.5
+		max      3.0
+		Name: numeric, dtype: float64
+		
+		Including only numeric columns in a ``DataFrame`` description.
+		
+		>>> df.describe(include=[np.number])
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
+		
+		Including only string columns in a ``DataFrame`` description.
+		
+		>>> df.describe(include=[np.object])
+		       object
+		count       3
+		unique      3
+		top         b
+		freq        1
+		
+		Excluding numeric columns from a ``DataFrame`` description.
+		
+		>>> df.describe(exclude=[np.number])
+		       object
+		count       3
+		unique      3
+		top         b
+		freq        1
+		
+		Excluding object columns from a ``DataFrame`` description.
+		
+		>>> df.describe(exclude=[np.object])
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
 		
 		See Also
 		--------
+		DataFrame.count
+		DataFrame.max
+		DataFrame.min
+		DataFrame.mean
+		DataFrame.std
 		DataFrame.select_dtypes
 	**/
 	public function describe(?percentiles:Dynamic, ?include:Dynamic, ?exclude:Dynamic):Dynamic;
@@ -1668,7 +2132,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -1693,7 +2157,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -1754,7 +2218,6 @@ package pandas.core.series;
 		    - ``first`` : Drop duplicates except for the first occurrence.
 		    - ``last`` : Drop duplicates except for the last occurrence.
 		    - False : Drop all duplicates.
-		take_last : deprecated
 		inplace : boolean, default False
 		If True, performs operation inplace and returns None.
 		
@@ -1805,51 +2268,12 @@ package pandas.core.series;
 		    - ``last`` : Mark duplicates as ``True`` except for the last
 		      occurrence.
 		    - False : Mark all duplicates as ``True``.
-		take_last : deprecated
 		
 		Returns
 		-------
 		duplicated : Series
 	**/
 	public function duplicated(?keep:Dynamic):pandas.Series;
-	/**
-		True if NDFrame is entirely empty [no items], meaning any of the
-		axes are of length 0.
-		
-		Notes
-		-----
-		If NDFrame contains only NaNs, it is still not considered empty. See
-		the example below.
-		
-		Examples
-		--------
-		An example of an actual empty DataFrame. Notice the index is empty:
-		
-		>>> df_empty = pd.DataFrame({'A' : []})
-		>>> df_empty
-		Empty DataFrame
-		Columns: [A]
-		Index: []
-		>>> df_empty.empty
-		True
-		
-		If we only have NaNs in our DataFrame, it is not considered empty! We
-		will need to drop the NaNs to make the DataFrame empty:
-		
-		>>> df = pd.DataFrame({'A' : [np.nan]})
-		>>> df
-		    A
-		0 NaN
-		>>> df.empty
-		False
-		>>> df.dropna().empty
-		True
-		
-		See also
-		--------
-		pandas.Series.dropna
-		pandas.DataFrame.dropna
-	**/
 	public var empty : Dynamic;
 	/**
 		Equal to of series and other, element-wise (binary operator `eq`).
@@ -1859,7 +2283,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2037,7 +2461,7 @@ package pandas.core.series;
 	**/
 	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
 	/**
-		Synonym for NDFrame.fillna(method='ffill')
+		Synonym for :meth:`DataFrame.fillna(method='ffill') <DataFrame.fillna>`
 	**/
 	public function ffill(?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
@@ -2066,7 +2490,7 @@ package pandas.core.series;
 		    a gap with more than this number of consecutive NaNs, it will only
 		    be partially filled. If method is not specified, this is the
 		    maximum number of entries along the entire axis where NaNs will be
-		    filled.
+		    filled. Must be greater than 0 if not None.
 		downcast : dict, default is None
 		    a dict of item->dtype of what to downcast if possible,
 		    or the string 'infer' which will try to downcast to an appropriate
@@ -2174,7 +2598,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2258,7 +2682,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2319,11 +2743,14 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		by : mapping function / list of functions, dict, Series, or tuple /
-		    list of column names.
-		    Called on each element of the object index to determine the groups.
-		    If a dict or Series is passed, the Series or dict VALUES will be
-		    used to determine the groups
+		by : mapping, function, str, or iterable
+		    Used to determine the groups for the groupby.
+		    If ``by`` is a function, it's called on each value of the object's
+		    index. If a dict or Series is passed, the Series or dict VALUES
+		    will be used to determine the groups (the Series' values are first
+		    aligned; see ``.align()`` method). If an ndarray is passed, the
+		    values are used as-is determine the groups. A str or list of strs
+		    may be passed to group by the columns in ``self``
 		axis : int, default 0
 		level : int, level name, or sequence of such, default None
 		    If the axis is a MultiIndex (hierarchical), group by a particular
@@ -2366,7 +2793,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2471,14 +2898,6 @@ package pandas.core.series;
 	**/
 	public function idxmin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		DEPRECATED. Use ``.iloc[i]`` or ``.iat[i]`` instead
-	**/
-	public function iget(i:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		DEPRECATED. Use ``.iloc[i]`` or ``.iat[i]`` instead
-	**/
-	public function iget_value(i:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
 		Purely integer-location based indexing for selection by position.
 		
 		``.iloc[]`` is primarily integer position based (from ``0`` to
@@ -2528,14 +2947,17 @@ package pandas.core.series;
 		      require that you also specify an `order` (int),
 		      e.g. df.interpolate(method='polynomial', order=4).
 		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
-		      wrappers around the scipy interpolation methods of similar
-		      names. These use the actual numerical values of the index. See
-		      the scipy documentation for more on their behavior
-		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
-		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima'
+		      are all wrappers around the scipy interpolation methods of
+		      similar names. These use the actual numerical values of the
+		      index. For more information on their behavior, see the
+		      `scipy documentation
+		      <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__
+		      and `tutorial documentation
+		      <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__
 		    * 'from_derivatives' refers to BPoly.from_derivatives which
-		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		      replaces 'piecewise_polynomial' interpolation method in
+		      scipy 0.18
 		
 		    .. versionadded:: 0.18.1
 		
@@ -2548,8 +2970,8 @@ package pandas.core.series;
 		    * 0: fill column-by-column
 		    * 1: fill row-by-row
 		limit : int, default None.
-		    Maximum number of consecutive NaNs to fill.
-		limit_direction : {'forward', 'backward', 'both'}, defaults to 'forward'
+		    Maximum number of consecutive NaNs to fill. Must be greater than 0.
+		limit_direction : {'forward', 'backward', 'both'}, default 'forward'
 		    If limit is specified, consecutive NaNs will be filled in this
 		    direction.
 		
@@ -2583,10 +3005,6 @@ package pandas.core.series;
 		dtype: float64
 	**/
 	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		DEPRECATED. Use ``.iloc[i]`` or ``.iat[i]`` instead
-	**/
-	public function irow(i:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var is_copy : Dynamic;
 	/**
 		Return boolean if values in the object are
@@ -2621,7 +3039,6 @@ package pandas.core.series;
 		is_monotonic : boolean
 	**/
 	public var is_monotonic_increasing : Dynamic;
-	public var is_time_series : Dynamic;
 	/**
 		Return boolean if values in the object are unique
 		
@@ -2704,10 +3121,6 @@ package pandas.core.series;
 		Lazily iterate over (index, value) tuples
 	**/
 	public function iteritems():Dynamic;
-	/**
-		iteritems alias used to get around 2to3. Deprecated
-	**/
-	public function iterkv(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A primarily label-location based indexer, with integer position
 		fallback.
@@ -2807,7 +3220,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2855,7 +3268,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -2912,43 +3325,77 @@ package pandas.core.series;
 		Examples
 		--------
 		
-		Map inputs to outputs
+		Map inputs to outputs (both of type `Series`)
 		
+		>>> x = pd.Series([1,2,3], index=['one', 'two', 'three'])
 		>>> x
-		one   1
-		two   2
-		three 3
+		one      1
+		two      2
+		three    3
+		dtype: int64
 		
+		>>> y = pd.Series(['foo', 'bar', 'baz'], index=[1,2,3])
 		>>> y
-		1  foo
-		2  bar
-		3  baz
+		1    foo
+		2    bar
+		3    baz
 		
 		>>> x.map(y)
 		one   foo
 		two   bar
 		three baz
 		
+		If `arg` is a dictionary, return a new Series with values converted
+		according to the dictionary's mapping:
+		
+		>>> z = {1: 'A', 2: 'B', 3: 'C'}
+		
+		>>> x.map(z)
+		one   A
+		two   B
+		three C
+		
 		Use na_action to control whether NA values are affected by the mapping
 		function.
 		
 		>>> s = pd.Series([1, 2, 3, np.nan])
 		
-		>>> s2 = s.map(lambda x: 'this is a string {}'.format(x),
-		               na_action=None)
+		>>> s2 = s.map('this is a string {}'.format, na_action=None)
 		0    this is a string 1.0
 		1    this is a string 2.0
 		2    this is a string 3.0
 		3    this is a string nan
 		dtype: object
 		
-		>>> s3 = s.map(lambda x: 'this is a string {}'.format(x),
-		               na_action='ignore')
+		>>> s3 = s.map('this is a string {}'.format, na_action='ignore')
 		0    this is a string 1.0
 		1    this is a string 2.0
 		2    this is a string 3.0
 		3                     NaN
 		dtype: object
+		
+		See Also
+		--------
+		Series.apply: For applying more complex functions on a Series
+		DataFrame.apply: Apply a function row-/column-wise
+		DataFrame.applymap: Apply a function elementwise on a whole DataFrame
+		
+		Notes
+		-----
+		When `arg` is a dictionary, values in Series that are not in the
+		dictionary (as keys) are converted to ``NaN``. However, if the
+		dictionary is a ``dict`` subclass that defines ``__missing__`` (i.e.
+		provides a method for default values), then this default is used
+		rather than ``NaN``:
+		
+		>>> from collections import Counter
+		>>> counter = Counter()
+		>>> counter['bar'] += 1
+		>>> y.map(counter)
+		1    0
+		2    1
+		3    0
+		dtype: int64
 	**/
 	public function map(arg:Dynamic, ?na_action:Dynamic):pandas.Series;
 	/**
@@ -2958,25 +3405,21 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame, array or callable
+		cond : boolean NDFrame, array-like, or callable
 		    If cond is callable, it is computed on the NDFrame and
-		    should return boolean NDFrame or array.
-		    The callable must not change input NDFrame
-		    (though pandas doesn't check it).
+		    should return boolean NDFrame or array. The callable must
+		    not change input NDFrame (though pandas doesn't check it).
 		
 		    .. versionadded:: 0.18.1
-		
-		    A callable can be used as cond.
+		        A callable can be used as cond.
 		
 		other : scalar, NDFrame, or callable
 		    If other is callable, it is computed on the NDFrame and
-		    should return scalar or NDFrame.
-		    The callable must not change input NDFrame
-		    (though pandas doesn't check it).
+		    should return scalar or NDFrame. The callable must not
+		    change input NDFrame (though pandas doesn't check it).
 		
 		    .. versionadded:: 0.18.1
-		
-		    A callable can be used as other.
+		        A callable can be used as other.
 		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
@@ -3166,7 +3609,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3184,16 +3627,9 @@ package pandas.core.series;
 	**/
 	public function mod(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
-		Returns the mode(s) of the dataset.
+		Return the mode(s) of the dataset.
 		
-		Empty if nothing occurs at least 2 times.  Always returns Series even
-		if only one value.
-		
-		Parameters
-		----------
-		sort : bool, default True
-		    If True, will lexicographically sort values, if False skips
-		    sorting. Result ordering when ``sort=False`` is not defined.
+		Always returns Series even if only one value is returned.
 		
 		Returns
 		-------
@@ -3208,7 +3644,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3233,7 +3669,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3268,7 +3704,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3296,7 +3732,6 @@ package pandas.core.series;
 		    Where there are duplicate values:
 		    - ``first`` : take the first occurrence.
 		    - ``last`` : take the last occurrence.
-		take_last : deprecated
 		
 		Returns
 		-------
@@ -3316,8 +3751,19 @@ package pandas.core.series;
 		--------
 		>>> import pandas as pd
 		>>> import numpy as np
-		>>> s = pd.Series(np.random.randn(1e6))
+		>>> s = pd.Series(np.random.randn(10**6))
 		>>> s.nlargest(10)  # only sorts up to the N requested
+		219921    4.644710
+		82124     4.608745
+		421689    4.564644
+		425277    4.447014
+		718691    4.414137
+		43154     4.403520
+		283187    4.313922
+		595519    4.273635
+		503969    4.250236
+		121637    4.240952
+		dtype: float64
 	**/
 	public function nlargest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
@@ -3364,7 +3810,6 @@ package pandas.core.series;
 		    Where there are duplicate values:
 		    - ``first`` : take the first occurrence.
 		    - ``last`` : take the last occurrence.
-		take_last : deprecated
 		
 		Returns
 		-------
@@ -3384,8 +3829,19 @@ package pandas.core.series;
 		--------
 		>>> import pandas as pd
 		>>> import numpy as np
-		>>> s = pd.Series(np.random.randn(1e6))
+		>>> s = pd.Series(np.random.randn(10**6))
 		>>> s.nsmallest(10)  # only sorts up to the N requested
+		288532   -4.954580
+		732345   -4.835960
+		64803    -4.812550
+		446457   -4.609998
+		501225   -4.483945
+		669476   -4.472935
+		973615   -4.401699
+		621279   -4.355126
+		773916   -4.347355
+		359919   -4.331927
+		dtype: float64
 	**/
 	public function nsmallest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
@@ -3403,37 +3859,6 @@ package pandas.core.series;
 		nunique : int
 	**/
 	public function nunique(?dropna:Dynamic):Int;
-	/**
-		DEPRECATED: use :meth:`Series.sort_values`
-		
-		Sorts Series object, by value, maintaining index-value link.
-		This will return a new Series by default. Series.sort is the equivalent
-		but as an inplace method.
-		
-		Parameters
-		----------
-		na_last : boolean (optional, default=True)--DEPRECATED; use na_position
-		    Put NaN's at beginning or end
-		ascending : boolean, default True
-		    Sort ascending. Passing False sorts descending
-		kind : {'mergesort', 'quicksort', 'heapsort'}, default 'quicksort'
-		    Choice of sorting algorithm. See np.sort for more
-		    information. 'mergesort' is the only stable algorithm
-		na_position : {'first', 'last'} (optional, default='last')
-		    'first' puts NaNs at the beginning
-		    'last' puts NaNs at the end
-		inplace : boolean, default False
-		    Do operation in place.
-		
-		Returns
-		-------
-		y : Series
-		
-		See Also
-		--------
-		Series.sort_values
-	**/
-	public function order(?na_last:Dynamic, ?ascending:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?inplace:Dynamic):pandas.Series;
 	/**
 		Percent change over given number of periods.
 		
@@ -3537,7 +3962,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3674,7 +4099,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3697,7 +4122,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		axis: {0 or 'index', 1 or 'columns'}, default 0
+		axis : {0 or 'index', 1 or 'columns'}, default 0
 		    index to direct ranking
 		method : {'average', 'min', 'max', 'first', 'dense'}
 		    * average: average rank of group
@@ -3738,7 +4163,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -3807,7 +4232,7 @@ package pandas.core.series;
 		...      'response_time': [0.04, 0.02, 0.07, 0.08, 1.0]},
 		...       index=index)
 		>>> df
-		            http_status  response_time
+		           http_status  response_time
 		Firefox            200           0.04
 		Chrome             200           0.02
 		Safari             404           0.07
@@ -3822,11 +4247,11 @@ package pandas.core.series;
 		...             'Chrome']
 		>>> df.reindex(new_index)
 		               http_status  response_time
-		Safari                 404           0.07
+		Safari               404.0           0.07
 		Iceweasel              NaN            NaN
 		Comodo Dragon          NaN            NaN
-		IE10                   404           0.08
-		Chrome                 200           0.02
+		IE10                 404.0           0.08
+		Chrome               200.0           0.02
 		
 		We can fill in the missing values by passing a value to
 		the keyword ``fill_value``. Because the index is not monotonically
@@ -3964,6 +4389,9 @@ package pandas.core.series;
 		inplace : boolean, default False
 		    Whether to return a new Series. If True then value of copy is
 		    ignored.
+		level : int or level name, default None
+		    In case of a MultiIndex, only rename labels in the specified
+		    level.
 		
 		Returns
 		-------
@@ -3998,6 +4426,7 @@ package pandas.core.series;
 		dtype: int64
 		>>> df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
 		>>> df.rename(2)
+		Traceback (most recent call last):
 		...
 		TypeError: 'int' object is not callable
 		>>> df.rename(index=str, columns={"A": "a", "B": "c"})
@@ -4014,7 +4443,7 @@ package pandas.core.series;
 	public function rename(?index:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter index and / or columns using input function or functions.
-		A scaler or list-like for ``mapper`` will alter the ``Index.name``
+		A scalar or list-like for ``mapper`` will alter the ``Index.name``
 		or ``MultiIndex.names`` attribute.
 		A function or dict for ``mapper`` will alter the labels.
 		Function / dict values must be unique (1-to-1). Labels not contained in
@@ -4064,9 +4493,9 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		order: list of int representing new level order.
+		order : list of int representing new level order.
 		       (reference level by number or key)
-		axis: where to reorder levels
+		axis : where to reorder levels
 		
 		Returns
 		-------
@@ -4075,13 +4504,13 @@ package pandas.core.series;
 	public function reorder_levels(order:Dynamic):Dynamic;
 	/**
 		Repeat elements of an Series. Refer to `numpy.ndarray.repeat`
-		for more information about the `reps` argument.
+		for more information about the `repeats` argument.
 		
 		See also
 		--------
 		numpy.ndarray.repeat
 	**/
-	public function repeat(reps:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replace values given in 'to_replace' with 'value'.
 		
@@ -4216,6 +4645,8 @@ package pandas.core.series;
 		
 		    .. versionadded:: 0.19.0
 		
+		Notes
+		-----
 		To learn more about the offset strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
@@ -4276,11 +4707,11 @@ package pandas.core.series;
 		Upsample the series into 30 second bins.
 		
 		>>> series.resample('30S').asfreq()[0:5] #select first 5 rows
-		2000-01-01 00:00:00     0
+		2000-01-01 00:00:00   0.0
 		2000-01-01 00:00:30   NaN
-		2000-01-01 00:01:00     1
+		2000-01-01 00:01:00   1.0
 		2000-01-01 00:01:30   NaN
-		2000-01-01 00:02:00     2
+		2000-01-01 00:02:00   2.0
 		Freq: 30S, dtype: float64
 		
 		Upsample the series into 30 second bins and fill the ``NaN``
@@ -4315,6 +4746,31 @@ package pandas.core.series;
 		2000-01-01 00:03:00    17
 		2000-01-01 00:06:00    26
 		Freq: 3T, dtype: int64
+		
+		For DataFrame objects, the keyword ``on`` can be used to specify the
+		column instead of the index for resampling.
+		
+		>>> df = pd.DataFrame(data=9*[range(4)], columns=['a', 'b', 'c', 'd'])
+		>>> df['time'] = pd.date_range('1/1/2000', periods=9, freq='T')
+		>>> df.resample('3T', on='time').sum()
+		                     a  b  c  d
+		time
+		2000-01-01 00:00:00  0  3  6  9
+		2000-01-01 00:03:00  0  3  6  9
+		2000-01-01 00:06:00  0  3  6  9
+		
+		For a DataFrame with MultiIndex, the keyword ``level`` can be used to
+		specify on level the resampling needs to take place.
+		
+		>>> time = pd.date_range('1/1/2000', periods=5, freq='T')
+		>>> df2 = pd.DataFrame(data=10*[range(4)],
+		                       columns=['a', 'b', 'c', 'd'],
+		                       index=pd.MultiIndex.from_product([time, [1, 2]])
+		                       )
+		>>> df2.resample('3T', level=0).sum()
+		                     a  b   c   d
+		2000-01-01 00:00:00  0  6  12  18
+		2000-01-01 00:03:00  0  4   8  12
 	**/
 	public function resample(rule:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?convention:Dynamic, ?kind:Dynamic, ?loffset:Dynamic, ?limit:Dynamic, ?base:Dynamic, ?on:Dynamic, ?level:Dynamic):Dynamic;
 	/**
@@ -4359,7 +4815,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4384,7 +4840,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4409,7 +4865,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4455,8 +4911,14 @@ package pandas.core.series;
 		on : string, optional
 		    For a DataFrame, column on which to calculate
 		    the rolling window, rather than the index
+		closed : string, default None
+		    Make the interval closed on the 'right', 'left', 'both' or
+		    'neither' endpoints.
+		    For offset-based windows, it defaults to 'right'.
+		    For fixed windows, defaults to 'both'. Remaining cases not implemented
+		    for fixed windows.
 		
-		    .. versionadded:: 0.19.0
+		    .. versionadded:: 0.20.0
 		
 		axis : int or string, default 0
 		
@@ -4567,7 +5029,7 @@ package pandas.core.series;
 		* ``general_gaussian`` (needs power, width)
 		* ``slepian`` (needs width).
 	**/
-	public function rolling(window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?on:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rolling(window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?on:Dynamic, ?axis:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
 		Round each value in a Series to the given number of decimals.
 		
@@ -4596,7 +5058,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4621,7 +5083,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4646,7 +5108,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -4748,12 +5210,12 @@ package pandas.core.series;
 		Find indices where elements should be inserted to maintain order.
 		
 		Find the indices into a sorted Series `self` such that, if the
-		corresponding elements in `v` were inserted before the indices, the
-		order of `self` would be preserved.
+		corresponding elements in `value` were inserted before the indices,
+		the order of `self` would be preserved.
 		
 		Parameters
 		----------
-		v : array_like
+		value : array_like
 		    Values to insert into `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
@@ -4766,7 +5228,7 @@ package pandas.core.series;
 		Returns
 		-------
 		indices : array of ints
-		    Array of insertion points with the same shape as `v`.
+		    Array of insertion points with the same shape as `value`.
 		
 		See Also
 		--------
@@ -4778,34 +5240,43 @@ package pandas.core.series;
 		
 		Examples
 		--------
+		
 		>>> x = pd.Series([1, 2, 3])
 		>>> x
 		0    1
 		1    2
 		2    3
 		dtype: int64
+		
 		>>> x.searchsorted(4)
 		array([3])
+		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
+		
 		>>> x.searchsorted([1, 3], side='left')
 		array([0, 2])
+		
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
-		>>>
+		
 		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
+		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
+		
 		>>> x.searchsorted(['bread'])
 		array([1])
+		
 		>>> x.searchsorted(['bread', 'eggs'])
 		array([1, 4])
+		
 		>>> x.searchsorted(['bread', 'eggs'], side='right')
 		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
+	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		Return data corresponding to axis labels matching criteria
 		
@@ -4943,32 +5414,6 @@ package pandas.core.series;
 	**/
 	public function slice_shift(?periods:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		DEPRECATED: use :meth:`Series.sort_values(inplace=True)` for INPLACE
-		sorting
-		
-		Sort values and index labels by value. This is an inplace sort by
-		default.  Series.order is the equivalent but returns a new Series.
-		
-		Parameters
-		----------
-		axis : int (can only be zero)
-		ascending : boolean, default True
-		    Sort ascending. Passing False sorts descending
-		kind : {'mergesort', 'quicksort', 'heapsort'}, default 'quicksort'
-		    Choice of sorting algorithm. See np.sort for more
-		    information. 'mergesort' is the only stable algorithm
-		na_position : {'first', 'last'} (optional, default='last')
-		    'first' puts NaNs at the beginning
-		    'last' puts NaNs at the end
-		inplace : boolean, default True
-		    Do operation in place.
-		
-		See Also
-		--------
-		Series.sort_values
-	**/
-	public function sort(?axis:Dynamic, ?ascending:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?inplace:Dynamic):Dynamic;
-	/**
 		Sort object by labels (along an axis)
 		
 		Parameters
@@ -4986,7 +5431,8 @@ package pandas.core.series;
 		     DataFrames, this option is only applied when sorting on a single
 		     column or label.
 		na_position : {'first', 'last'}, default 'last'
-		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
+		     `first` puts NaNs at the beginning, `last` puts NaNs at the end.
+		     Not implemented for MultiIndex.
 		sort_remaining : bool, default True
 		    if true and sorting by level and index is multilevel, sort by other
 		    levels too (in order) after sorting by specified level
@@ -4995,7 +5441,7 @@ package pandas.core.series;
 		-------
 		sorted_obj : Series
 	**/
-	public function sort_index(?axis:Dynamic, ?level:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?sort_remaining:Dynamic):Dynamic;
+	public function sort_index(?axis:Dynamic, ?level:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?sort_remaining:Dynamic):Dynamic;
 	/**
 		Sort by the values along either axis
 		
@@ -5025,6 +5471,8 @@ package pandas.core.series;
 	**/
 	public function sort_values(?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic):Dynamic;
 	/**
+		DEPRECATED: use :meth:`Series.sort_index`
+		
 		Sort Series with MultiIndex by chosen level. Data will be
 		lexicographically sorted by the chosen level followed by the other
 		levels (in order)
@@ -5045,8 +5493,19 @@ package pandas.core.series;
 	public function sortlevel(?level:Dynamic, ?ascending:Dynamic, ?sort_remaining:Dynamic):pandas.Series;
 	/**
 		Squeeze length 1 dimensions.
+		
+		Parameters
+		----------
+		axis : None, integer or string axis name, optional
+		    The axis to squeeze if 1-sized.
+		
+		    .. versionadded:: 0.20.0
+		
+		Returns
+		-------
+		scalar if 1-sized, else original object
 	**/
-	public function squeeze(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function squeeze(?axis:Dynamic):Dynamic;
 	/**
 		Return sample standard deviation over requested axis.
 		
@@ -5095,7 +5554,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -5120,7 +5579,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -5273,6 +5732,70 @@ package pandas.core.series;
 	**/
 	public function to_dict():Dynamic;
 	/**
+		Write Series to an excel sheet
+		
+		.. versionadded:: 0.20.0
+		
+		
+		Parameters
+		----------
+		excel_writer : string or ExcelWriter object
+		    File path or existing ExcelWriter
+		sheet_name : string, default 'Sheet1'
+		    Name of sheet which will contain DataFrame
+		na_rep : string, default ''
+		    Missing data representation
+		float_format : string, default None
+		    Format string for floating point numbers
+		columns : sequence, optional
+		    Columns to write
+		header : boolean or list of string, default True
+		    Write out column names. If a list of string is given it is
+		    assumed to be aliases for the column names
+		index : boolean, default True
+		    Write row names (index)
+		index_label : string or sequence, default None
+		    Column label for index column(s) if desired. If None is given, and
+		    `header` and `index` are True, then the index names are used. A
+		    sequence should be given if the DataFrame uses MultiIndex.
+		startrow :
+		    upper left cell row to dump data frame
+		startcol :
+		    upper left cell column to dump data frame
+		engine : string, default None
+		    write engine to use - you can also set this via the options
+		    ``io.excel.xlsx.writer``, ``io.excel.xls.writer``, and
+		    ``io.excel.xlsm.writer``.
+		merge_cells : boolean, default True
+		    Write MultiIndex and Hierarchical Rows as merged cells.
+		encoding: string, default None
+		    encoding of the resulting excel file. Only necessary for xlwt,
+		    other writers support unicode natively.
+		inf_rep : string, default 'inf'
+		    Representation for infinity (there is no native representation for
+		    infinity in Excel)
+		freeze_panes : tuple of integer (length 2), default None
+		    Specifies the one-based bottommost row and rightmost column that
+		    is to be frozen
+		
+		    .. versionadded:: 0.20.0
+		
+		Notes
+		-----
+		If passing an existing ExcelWriter object, then the sheet will be added
+		to the existing workbook.  This can be used to save different
+		DataFrames to one workbook:
+		
+		>>> writer = pd.ExcelWriter('output.xlsx')
+		>>> df1.to_excel(writer,'Sheet1')
+		>>> df2.to_excel(writer,'Sheet2')
+		>>> writer.save()
+		
+		For compatibility with to_csv, to_excel serializes lists and dicts to
+		strings before writing.
+	**/
+	public function to_excel(excel_writer:Dynamic, ?sheet_name:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?columns:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?startrow:Dynamic, ?startcol:Dynamic, ?engine:Dynamic, ?merge_cells:Dynamic, ?encoding:Dynamic, ?inf_rep:Dynamic, ?verbose:Dynamic):Dynamic;
+	/**
 		Convert Series to DataFrame
 		
 		Parameters
@@ -5293,7 +5816,7 @@ package pandas.core.series;
 		----------
 		path_or_buf : the path (string) or HDFStore object
 		key : string
-		    indentifier for the group in the store
+		    identifier for the group in the store
 		mode : optional, {'a', 'w', 'r+'}, default 'a'
 		
 		  ``'w'``
@@ -5320,12 +5843,17 @@ package pandas.core.series;
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#query-via-data-columns>`__.
 		
 		    Applicable only to format='table'.
-		complevel : int, 1-9, default 0
-		    If a complib is specified compression will be applied
-		    where possible
-		complib : {'zlib', 'bzip2', 'lzo', 'blosc', None}, default None
-		    If complevel is > 0 apply compression to objects written
-		    in the store wherever possible
+		complevel : int, 0-9, default 0
+		    Specifies a compression level for data.
+		    A value of 0 disables compression.
+		complib : {'zlib', 'lzo', 'bzip2', 'blosc', None}, default None
+		    Specifies the compression library to be used.
+		    As of v0.20.2 these additional compressors for Blosc are supported
+		    (default if no compressor specified: 'blosc:blosclz'):
+		    {'blosc:blosclz', 'blosc:lz4', 'blosc:lz4hc', 'blosc:snappy',
+		     'blosc:zlib', 'blosc:zstd'}.
+		    Specifying a compression library which is not available issues
+		    a ValueError.
 		fletcher32 : bool, default False
 		    If applying compression use the fletcher32 checksum
 		dropna : boolean, default False.
@@ -5364,10 +5892,17 @@ package pandas.core.series;
 		      - index : dict like {index -> {column -> value}}
 		      - columns : dict like {column -> {index -> value}}
 		      - values : just the values array
+		      - table : dict like {'schema': {schema}, 'data': {data}}
+		        describing the data, and the data component is
+		        like ``orient='records'``.
 		
-		date_format : {'epoch', 'iso'}
+		        .. versionchanged:: 0.20.0
+		
+		date_format : {None, 'epoch', 'iso'}
 		    Type of date conversion. `epoch` = epoch milliseconds,
-		    `iso`` = ISO8601, default is epoch.
+		    `iso` = ISO8601. The default depends on the `orient`. For
+		    `orient='table'`, the default is `'iso'`. For all other orients,
+		    the default is `'epoch'`.
 		double_precision : The number of decimal places to use when encoding
 		    floating point values, default 10.
 		force_ascii : force encoded string to be ASCII, default True.
@@ -5379,19 +5914,108 @@ package pandas.core.series;
 		    Handler to call if object cannot otherwise be converted to a
 		    suitable format for JSON. Should receive a single argument which is
 		    the object to convert and return a serialisable object.
-		lines : boolean, defalut False
+		lines : boolean, default False
 		    If 'orient' is 'records' write out line delimited json format. Will
 		    throw ValueError if incorrect 'orient' since others are not list
 		    like.
 		
 		    .. versionadded:: 0.19.0
 		
-		
 		Returns
 		-------
 		same type as input object with filtered info axis
+		
+		See Also
+		--------
+		pd.read_json
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame([['a', 'b'], ['c', 'd']],
+		...                   index=['row 1', 'row 2'],
+		...                   columns=['col 1', 'col 2'])
+		>>> df.to_json(orient='split')
+		'{"columns":["col 1","col 2"],
+		  "index":["row 1","row 2"],
+		  "data":[["a","b"],["c","d"]]}'
+		
+		Encoding/decoding a Dataframe using ``'index'`` formatted JSON:
+		
+		>>> df.to_json(orient='index')
+		'{"row 1":{"col 1":"a","col 2":"b"},"row 2":{"col 1":"c","col 2":"d"}}'
+		
+		Encoding/decoding a Dataframe using ``'records'`` formatted JSON.
+		Note that index labels are not preserved with this encoding.
+		
+		>>> df.to_json(orient='records')
+		'[{"col 1":"a","col 2":"b"},{"col 1":"c","col 2":"d"}]'
+		
+		Encoding with Table Schema
+		
+		>>> df.to_json(orient='table')
+		'{"schema": {"fields": [{"name": "index", "type": "string"},
+		                        {"name": "col 1", "type": "string"},
+		                        {"name": "col 2", "type": "string"}],
+		             "primaryKey": "index",
+		             "pandas_version": "0.20.0"},
+		  "data": [{"index": "row 1", "col 1": "a", "col 2": "b"},
+		           {"index": "row 2", "col 1": "c", "col 2": "d"}]}'
 	**/
 	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic):Dynamic;
+	/**
+		Render an object to a tabular environment table. You can splice
+		this into a LaTeX document. Requires \usepackage{booktabs}.
+		
+		.. versionchanged:: 0.20.2
+		   Added to Series
+		
+		`to_latex`-specific options:
+		
+		bold_rows : boolean, default False
+		    Make the row labels bold in the output
+		column_format : str, default None
+		    The columns format as specified in `LaTeX table format
+		    <https://en.wikibooks.org/wiki/LaTeX/Tables>`__ e.g 'rcl' for 3
+		    columns
+		longtable : boolean, default will be read from the pandas config module
+		    Default: False.
+		    Use a longtable environment instead of tabular. Requires adding
+		    a \usepackage{longtable} to your LaTeX preamble.
+		escape : boolean, default will be read from the pandas config module
+		    Default: True.
+		    When set to False prevents from escaping latex special
+		    characters in column names.
+		encoding : str, default None
+		    A string representing the encoding to use in the output file,
+		    defaults to 'ascii' on Python 2 and 'utf-8' on Python 3.
+		decimal : string, default '.'
+		    Character recognized as decimal separator, e.g. ',' in Europe.
+		
+		    .. versionadded:: 0.18.0
+		
+		multicolumn : boolean, default True
+		    Use \multicolumn to enhance MultiIndex columns.
+		    The default will be read from the config module.
+		
+		    .. versionadded:: 0.20.0
+		
+		multicolumn_format : str, default 'l'
+		    The alignment for multicolumns, similar to `column_format`
+		    The default will be read from the config module.
+		
+		    .. versionadded:: 0.20.0
+		
+		multirow : boolean, default False
+		    Use \multirow to enhance MultiIndex rows.
+		    Requires adding a \usepackage{multirow} to your LaTeX preamble.
+		    Will print centered labels (instead of top-aligned)
+		    across the contained rows, separating groups via clines.
+		    The default will be read from the pandas config module.
+		
+		    .. versionadded:: 0.20.0
+	**/
+	public function to_latex(?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?bold_rows:Dynamic, ?column_format:Dynamic, ?longtable:Dynamic, ?escape:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?multicolumn:Dynamic, ?multicolumn_format:Dynamic, ?multirow:Dynamic):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		
@@ -5428,8 +6052,12 @@ package pandas.core.series;
 		----------
 		path : string
 		    File path
+		compression : {'infer', 'gzip', 'bz2', 'xz', None}, default 'infer'
+		    a string representing the compression to use in the output file
+		
+		    .. versionadded:: 0.20.0
 	**/
-	public function to_pickle(path:Dynamic):Dynamic;
+	public function to_pickle(path:Dynamic, ?compression:Dynamic):Dynamic;
 	/**
 		Convert Series to SparseSeries
 		
@@ -5615,6 +6243,53 @@ package pandas.core.series;
 	**/
 	public function tolist():Dynamic;
 	/**
+		Call function producing a like-indexed NDFrame
+		and return a NDFrame with the transformed values`
+		
+		.. versionadded:: 0.20.0
+		
+		Parameters
+		----------
+		func : callable, string, dictionary, or list of string/callables
+		    To apply to column
+		
+		    Accepted Combinations are:
+		
+		    - string function name
+		    - function
+		    - list of functions
+		    - dict of column names -> functions (or list of functions)
+		
+		Returns
+		-------
+		transformed : NDFrame
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame(np.random.randn(10, 3), columns=['A', 'B', 'C'],
+		...                   index=pd.date_range('1/1/2000', periods=10))
+		df.iloc[3:7] = np.nan
+		
+		>>> df.transform(lambda x: (x - x.mean()) / x.std())
+		                   A         B         C
+		2000-01-01  0.579457  1.236184  0.123424
+		2000-01-02  0.370357 -0.605875 -1.231325
+		2000-01-03  1.455756 -0.277446  0.288967
+		2000-01-04       NaN       NaN       NaN
+		2000-01-05       NaN       NaN       NaN
+		2000-01-06       NaN       NaN       NaN
+		2000-01-07       NaN       NaN       NaN
+		2000-01-08 -0.498658  1.274522  1.642524
+		2000-01-09 -0.540524 -1.012676 -0.828968
+		2000-01-10 -1.366388 -0.614710  0.005378
+		
+		See also
+		--------
+		pandas.NDFrame.aggregate
+		pandas.NDFrame.apply
+	**/
+	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.core.frame.NDFrame;
+	/**
 		return the transpose, which is by definition self 
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -5626,7 +6301,7 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		other: Series or scalar value
+		other : Series or scalar value
 		fill_value : None or float value, default None (NaN)
 		    Fill missing (NaN) values with this value. If both Series are
 		    missing, the result will be missing
@@ -5742,13 +6417,25 @@ package pandas.core.series;
 	**/
 	public function tz_localize(tz:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?ambiguous:Dynamic):Dynamic;
 	/**
-		Return np.ndarray of unique values in the object.
-		Significantly faster than numpy.unique. Includes NA values.
-		The order of the original is preserved.
+		Return unique values in the object. Uniques are returned in order
+		of appearance, this does NOT sort. Hash table-based unique.
+		
+		Parameters
+		----------
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques : np.ndarray
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		See Also
+		--------
+		unique
+		Index.unique
+		Series.unique
 	**/
 	public function unique():Dynamic;
 	/**
@@ -5766,21 +6453,24 @@ package pandas.core.series;
 		
 		Examples
 		--------
+		>>> s = pd.Series([1, 2, 3, 4],
+		...     index=pd.MultiIndex.from_product([['one', 'two'], ['a', 'b']]))
 		>>> s
-		one  a   1.
-		one  b   2.
-		two  a   3.
-		two  b   4.
+		one  a    1
+		     b    2
+		two  a    3
+		     b    4
+		dtype: int64
 		
 		>>> s.unstack(level=-1)
-		     a   b
-		one  1.  2.
-		two  3.  4.
+		     a  b
+		one  1  2
+		two  3  4
 		
 		>>> s.unstack(level=0)
 		   one  two
-		a  1.   2.
-		b  3.   4.
+		a    1    3
+		b    2    4
 		
 		Returns
 		-------
@@ -5847,10 +6537,10 @@ package pandas.core.series;
 		Timezone aware datetime data is converted to UTC:
 		
 		>>> pd.Series(pd.date_range('20130101', periods=3,
-		                            tz='US/Eastern')).values
-		array(['2013-01-01T00:00:00.000000000-0500',
-		       '2013-01-02T00:00:00.000000000-0500',
-		       '2013-01-03T00:00:00.000000000-0500'], dtype='datetime64[ns]')
+		...                         tz='US/Eastern')).values
+		array(['2013-01-01T05:00:00.000000000',
+		       '2013-01-02T05:00:00.000000000',
+		       '2013-01-03T05:00:00.000000000'], dtype='datetime64[ns]')
 	**/
 	public var values : Dynamic;
 	/**
@@ -5887,25 +6577,21 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame, array or callable
+		cond : boolean NDFrame, array-like, or callable
 		    If cond is callable, it is computed on the NDFrame and
-		    should return boolean NDFrame or array.
-		    The callable must not change input NDFrame
-		    (though pandas doesn't check it).
+		    should return boolean NDFrame or array. The callable must
+		    not change input NDFrame (though pandas doesn't check it).
 		
 		    .. versionadded:: 0.18.1
-		
-		    A callable can be used as cond.
+		        A callable can be used as cond.
 		
 		other : scalar, NDFrame, or callable
 		    If other is callable, it is computed on the NDFrame and
-		    should return scalar or NDFrame.
-		    The callable must not change input NDFrame
-		    (though pandas doesn't check it).
+		    should return scalar or NDFrame. The callable must not
+		    change input NDFrame (though pandas doesn't check it).
 		
 		    .. versionadded:: 0.18.1
-		
-		    A callable can be used as other.
+		        A callable can be used as other.
 		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data

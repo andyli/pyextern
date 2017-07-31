@@ -72,6 +72,10 @@ package scipy.sparse.dok;
 	**/
 	static public function iteritems(d:Dynamic):Dynamic;
 	/**
+		Return an iterator over the keys of a dictionary.
+	**/
+	static public function iterkeys(d:Dynamic):Dynamic;
+	/**
 		Return an iterator over the values of a dictionary.
 	**/
 	static public function itervalues(d:Dynamic):Dynamic;

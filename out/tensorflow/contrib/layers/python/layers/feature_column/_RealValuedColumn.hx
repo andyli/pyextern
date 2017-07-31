@@ -63,6 +63,13 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -91,7 +98,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self*value.n
@@ -104,7 +111,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, column_name:Dynamic, dimension:Dynamic, default_value:Dynamic, dtype:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, column_name:Dynamic, dimension:Dynamic, default_value:Dynamic, dtype:Dynamic, normalizer:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -152,22 +159,123 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	/**
+		Returns None, or a (path,tensor_name) to load a checkpoint from.
+	**/
+	public function _checkpoint_path():Dynamic;
+	/**
+		Returns arguments to embedding lookup to build an input layer.
+	**/
+	public function _deep_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
 	static public var _fields : Dynamic;
+	/**
+		Returns a `Tensor`.
+		
+		The output of this function will be used by model-builder-functions. For
+		example the pseudo code of `input_layer` will be like:
+		
+		```python
+		def input_layer(features, feature_columns, ...):
+		  outputs = [fc._get_dense_tensor(...) for fc in feature_columns]
+		  return tf.concat(outputs)
+		```
+		
+		Args:
+		  inputs: A `_LazyBuilder` object to access inputs.
+		  weight_collections: List of graph collections to which Variables (if any
+		    will be created) are added.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see ${tf.Variable}).
+		
+		Returns:
+		  `Tensor` of shape [batch_size] + `_variable_shape`.
+	**/
+	public function _get_dense_tensor(inputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	/**
+		Helper method for self.key() that omits particular properties.
+	**/
+	public function _key_without_properties(properties:Dynamic):Dynamic;
 	/**
 		Make a new _RealValuedColumn object from a sequence or iterable
 	**/
 	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
+	/**
+		Returns the input tensor after custom normalization is applied.
+	**/
+	public function _normalized_input_tensor(input_tensor:Dynamic):Dynamic;
+	/**
+		Returns a `tf.Example` parsing spec as dict.
+		
+		It is used for get_parsing_spec for `tf.parse_example`. Returned spec is a
+		dict from keys ('string') to `VarLenFeature`, `FixedLenFeature`, and other
+		supported objects. Please check documentation of ${tf.parse_example} for all
+		supported spec objects.
+		
+		Let's say a Feature column depends on raw feature ('raw') and another
+		`_FeatureColumn` (input_fc). One possible implementation of
+		_parse_example_spec is as follows:
+		
+		```python
+		spec = {'raw': tf.FixedLenFeature(...)}
+		spec.update(input_fc._parse_example_spec)
+		return spec
+		```
+	**/
+	public var _parse_example_spec : Dynamic;
 	/**
 		Return a new _RealValuedColumn object replacing specified fields with new values
 	**/
 	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
+		Returns a dense tensor representing this column's values.
+	**/
+	public function _to_dense_tensor(input_tensor:Dynamic):Dynamic;
+	/**
+		Returns a Tensor as an input to the first layer of neural network.
+	**/
+	public function _to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?output_rank:Dynamic):Dynamic;
+	/**
+		Returns intermediate representation (usually a `Tensor`).
+		
+		Uses `inputs` to create an intermediate representation (usually a `Tensor`)
+		that other feature columns can use.
+		
+		Example usage of `inputs`:
+		Let's say a Feature column depends on raw feature ('raw') and another
+		`_FeatureColumn` (input_fc). To access corresponding `Tensor`s, inputs will
+		be used as follows:
+		
+		```python
+		raw_tensor = inputs.get('raw')
+		fc_tensor = inputs.get(input_fc)
+		```
+		
+		Args:
+		  inputs: A `_LazyBuilder` object to access inputs.
+		
+		Returns:
+		  Transformed feature `Tensor`.
+	**/
+	public function _transform_feature(inputs:Dynamic):Dynamic;
+	/**
+		`TensorShape` of `_get_dense_tensor`, without batch dimension.
+	**/
+	public var _variable_shape : Dynamic;
+	/**
+		Returns arguments to look up embeddings for this column.
+	**/
+	public function _wide_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
+	/**
 		Alias for field number 0
 	**/
 	public var column_name : Dynamic;
 	/**
-		Returns configuration of the base feature for `tf.parse_example`.
+		Returns configuration of the base feature for `tf.parse_example`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var config : Dynamic;
 	/**
@@ -205,15 +313,19 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public var key : Dynamic;
 	/**
-		Returns the name of column or transformed column.
+		Returns the name of column or transformed column. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var name : Dynamic;
 	/**
-		Returns a Tensor as an input to the first layer of neural network.
+		Alias for field number 4
 	**/
-	public function to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	public var normalizer : Dynamic;
 	/**
-		Returns a Tensor as linear predictions and a list of created Variable.
+		Returns the function used to normalize the column.
 	**/
-	public function to_weighted_sum(input_tensor:Dynamic, ?num_outputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	public var normalizer_fn : Dynamic;
 }

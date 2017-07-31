@@ -18,50 +18,18 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function _Check3DImage(image:Dynamic, ?require_static:Dynamic):Dynamic;
 	/**
-		Assert that we are working with properly shaped image.
-		
-		Args:
-		  image: >= 3-D Tensor of size [*, height, width, depth]
-		
-		Raises:
-		  ValueError: if image.shape is not a [>= 3] vector.
-	**/
-	static public function _CheckAtLeast3DImage(image:Dynamic):Dynamic;
-	/**
-		Shape function for colorspace ops.
-	**/
-	static public function _ColorspaceShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for image decoding ops.
-	**/
-	static public function _ImageDecodeShape(op:Dynamic):Dynamic;
-	/**
 		Returns the dimensions of an image tensor.
 		
 		Args:
-		  images: 4-D Tensor of shape `[batch, height, width, channels]`
-		  static_only: Boolean, whether to return only static shape.
+		  image: A rank-D Tensor. For 3-D  of shape: `[height, width, channels]`.
+		  rank: The expected rank of the image
 		
 		Returns:
-		  list of integers `[batch, height, width, channels]`, when static shape is
-		  fully defined or `static_only` is `True`.
-		  list of integer scalar tensors `[batch, height, width, channels]`, when
-		  static shape is not fully defined.
+		  A list of corresponding to the dimensions of the
+		  input image.  Dimensions that are statically known are python integers,
+		  otherwise they are integer scalar tensors.
 	**/
-	static public function _ImageDimensions(images:Dynamic, ?static_only:Dynamic):Dynamic;
-	/**
-		Shape function for image encoding ops.
-	**/
-	static public function _ImageEncodeShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the resize_bilinear and resize_nearest_neighbor ops.
-	**/
-	static public function _ResizeShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the sample distorted bounding box.
-	**/
-	static public function _SampleDistortedBoundingBoxShape(unused_op:Dynamic):Dynamic;
-	static public var __all__ : Dynamic;
+	static public function _ImageDimensions(image:Dynamic, rank:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -70,39 +38,7 @@ package tensorflow.python.ops.image_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		A polymorphic assert, works with tensors and boolean expressions.
-		
-		If `cond` is not a tensor, behave like an ordinary assert statement, except
-		that a empty list is returned. If `cond` is a tensor, return a list
-		containing a single TensorFlow assert op.
-		
-		Args:
-		  cond: Something evaluates to a boolean value. May be a tensor.
-		  ex_type: The exception class to use.
-		  msg: The error message.
-		
-		Returns:
-		  A list, containing at most one assert op.
-	**/
-	static public function _assert(cond:Dynamic, ex_type:Dynamic, msg:Dynamic):Dynamic;
-	/**
-		Shape function for the CropAndResize op.
-	**/
-	static public function _crop_and_resize_shape(op:Dynamic):Dynamic;
-	/**
-		Shape function for ExtractGlimpse op.
-	**/
-	static public function _extract_glimpse_shape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the NonMaxSuppression op.
-	**/
-	static public function _non_max_suppression_shape(_:Dynamic):Dynamic;
-	/**
-		Shape function for RandomCrop op.
-	**/
-	static public function _random_crop_shape(op:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Adjust the brightness of RGB or Grayscale images.
 		
@@ -151,6 +87,34 @@ package tensorflow.python.ops.image_ops;
 		  The contrast-adjusted image or images.
 	**/
 	static public function adjust_contrast(images:Dynamic, contrast_factor:Dynamic):Dynamic;
+	/**
+		Performs Gamma Correction on the input image.
+		
+		  Also known as Power Law Transform. This function transforms the
+		  input image pixelwise according to the equation Out = In**gamma
+		  after scaling each pixel to the range 0 to 1.
+		
+		Args:
+		  image : A Tensor.
+		  gamma : A scalar. Non negative real number.
+		  gain  : A scalar. The constant multiplier.
+		
+		Returns:
+		  A Tensor. Gamma corrected output image.
+		
+		Raises:
+		  ValueError: If gamma is negative.
+		
+		Notes:
+		  For gamma greater than 1, the histogram will shift towards left and
+		  the output image will be darker than the input image.
+		  For gamma less than 1, the histogram will shift towards right and
+		  the output image will be brighter than the input image.
+		
+		References:
+		  [1] http://en.wikipedia.org/wiki/Gamma_correction
+	**/
+	static public function adjust_gamma(image:Dynamic, ?gamma:Dynamic, ?gain:Dynamic):Dynamic;
 	/**
 		Adjust hue of an RGB image.
 		
@@ -298,73 +262,6 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function crop_and_resize(image:Dynamic, boxes:Dynamic, box_ind:Dynamic, crop_size:Dynamic, ?method:Dynamic, ?extrapolation_value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the gradient of the crop_and_resize op wrt the input boxes tensor.
-		
-		Args:
-		  grads: A `Tensor` of type `float32`.
-		    A 4-D tensor of shape `[num_boxes, crop_height, crop_width, depth]`.
-		  image: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
-		    A 4-D tensor of shape `[batch, image_height, image_width, depth]`.
-		    Both `image_height` and `image_width` need to be positive.
-		  boxes: A `Tensor` of type `float32`.
-		    A 2-D tensor of shape `[num_boxes, 4]`. The `i`-th row of the tensor
-		    specifies the coordinates of a box in the `box_ind[i]` image and is specified
-		    in normalized coordinates `[y1, x1, y2, x2]`. A normalized coordinate value of
-		    `y` is mapped to the image coordinate at `y * (image_height - 1)`, so as the
-		    `[0, 1]` interval of normalized image height is mapped to
-		    `[0, image_height - 1] in image height coordinates. We do allow y1 > y2, in
-		    which case the sampled crop is an up-down flipped version of the original
-		    image. The width dimension is treated similarly. Normalized coordinates
-		    outside the `[0, 1]` range are allowed, in which case we use
-		    `extrapolation_value` to extrapolate the input image values.
-		  box_ind: A `Tensor` of type `int32`.
-		    A 1-D tensor of shape `[num_boxes]` with int32 values in `[0, batch)`.
-		    The value of `box_ind[i]` specifies the image that the `i`-th box refers to.
-		  method: An optional `string` from: `"bilinear"`. Defaults to `"bilinear"`.
-		    A string specifying the interpolation method. Only 'bilinear' is
-		    supported for now.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `float32`. A 2-D tensor of shape `[num_boxes, 4]`.
-	**/
-	static public function crop_and_resize_grad_boxes(grads:Dynamic, image:Dynamic, boxes:Dynamic, box_ind:Dynamic, ?method:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the gradient of the crop_and_resize op wrt the input image tensor.
-		
-		Args:
-		  grads: A `Tensor` of type `float32`.
-		    A 4-D tensor of shape `[num_boxes, crop_height, crop_width, depth]`.
-		  boxes: A `Tensor` of type `float32`.
-		    A 2-D tensor of shape `[num_boxes, 4]`. The `i`-th row of the tensor
-		    specifies the coordinates of a box in the `box_ind[i]` image and is specified
-		    in normalized coordinates `[y1, x1, y2, x2]`. A normalized coordinate value of
-		    `y` is mapped to the image coordinate at `y * (image_height - 1)`, so as the
-		    `[0, 1]` interval of normalized image height is mapped to
-		    `[0, image_height - 1] in image height coordinates. We do allow y1 > y2, in
-		    which case the sampled crop is an up-down flipped version of the original
-		    image. The width dimension is treated similarly. Normalized coordinates
-		    outside the `[0, 1]` range are allowed, in which case we use
-		    `extrapolation_value` to extrapolate the input image values.
-		  box_ind: A `Tensor` of type `int32`.
-		    A 1-D tensor of shape `[num_boxes]` with int32 values in `[0, batch)`.
-		    The value of `box_ind[i]` specifies the image that the `i`-th box refers to.
-		  image_size: A `Tensor` of type `int32`.
-		    A 1-D tensor with value `[batch, image_height, image_width, depth]`
-		    containing the original image size. Both `image_height` and `image_width` need
-		    to be positive.
-		  T: A `tf.DType` from: `tf.float32, tf.half, tf.float64`.
-		  method: An optional `string` from: `"bilinear"`. Defaults to `"bilinear"`.
-		    A string specifying the interpolation method. Only 'bilinear' is
-		    supported for now.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `T`.
-		  A 4-D tensor of shape `[batch, image_height, image_width, depth]`.
-	**/
-	static public function crop_and_resize_grad_image(grads:Dynamic, boxes:Dynamic, box_ind:Dynamic, image_size:Dynamic, T:Dynamic, ?method:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Crops an image to a specified bounding box.
 		
 		This op cuts a rectangular part out of `image`. The top-left corner of the
@@ -373,7 +270,8 @@ package tensorflow.python.ops.image_ops;
 		`offset_height + target_height, offset_width + target_width`.
 		
 		Args:
-		  image: 3-D tensor with shape `[height, width, channels]`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  offset_height: Vertical coordinate of the top-left corner of the result in
 		                 the input.
 		  offset_width: Horizontal coordinate of the top-left corner of the result in
@@ -382,7 +280,10 @@ package tensorflow.python.ops.image_ops;
 		  target_width: Width of the result.
 		
 		Returns:
-		  3-D tensor of image with shape `[target_height, target_width, channels]`
+		  If `image` was 4-D, a 4-D float Tensor of shape
+		  `[batch, target_height, target_width, channels]`
+		  If `image` was 3-D, a 3-D float Tensor of shape
+		  `[target_height, target_width, channels]`
 		
 		Raises:
 		  ValueError: If the shape of `image` is incompatible with the `offset_*` or
@@ -396,7 +297,10 @@ package tensorflow.python.ops.image_ops;
 		GIF with frame or transparency compression are not supported
 		convert animated GIF from compressed to uncompressed by:
 		
-		convert $src.gif -coalesce $dst.gif
+		    convert $src.gif -coalesce $dst.gif
+		
+		This op also supports decoding JPEGs and PNGs, though it is cleaner to use
+		`tf.image.decode_image`.
 		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The GIF-encoded image.
@@ -407,6 +311,33 @@ package tensorflow.python.ops.image_ops;
 		  4-D with shape `[num_frames, height, width, 3]`. RGB order
 	**/
 	static public function decode_gif(contents:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Convenience function for `decode_gif`, `decode_jpeg`, and `decode_png`.
+		
+		Detects whether an image is a GIF, JPEG, or PNG, and performs the appropriate
+		operation to convert the input bytes `string` into a `Tensor` of type `uint8`.
+		
+		Note: `decode_gif` returns a 4-D array `[num_frames, height, width, 3]`, as
+		opposed to `decode_jpeg` and `decode_png`, which return 3-D arrays
+		`[height, width, num_channels]`. Make sure to take this into account when
+		constructing your graph if you are intermixing GIF files with JPEG and/or PNG
+		files.
+		
+		Args:
+		  contents: 0-D `string`. The encoded image bytes.
+		  channels: An optional `int`. Defaults to `0`. Number of color channels for
+		    the decoded image.
+		  name: A name for the operation (optional)
+		
+		Returns:
+		  `Tensor` with type `uint8` with shape `[height, width, num_channels]` for
+		    JPEG and PNG images and shape `[num_frames, height, width, 3]` for GIF
+		    images.
+		
+		Raises:
+		  ValueError: On incorrect number of channels.
+	**/
+	static public function decode_image(contents:Dynamic, ?channels:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decode a JPEG-encoded image to a uint8 tensor.
 		
@@ -426,6 +357,9 @@ package tensorflow.python.ops.image_ops;
 		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
 		downscaling the image later.
 		
+		This op also supports decoding PNGs and non-animated GIFs since the interface is
+		the same, though it is cleaner to use `tf.image.decode_image`.
+		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The JPEG-encoded image.
 		  channels: An optional `int`. Defaults to `0`.
@@ -439,12 +373,19 @@ package tensorflow.python.ops.image_ops;
 		  acceptable_fraction: An optional `float`. Defaults to `1`.
 		    The minimum required fraction of lines before a truncated
 		    input is accepted.
+		  dct_method: An optional `string`. Defaults to `""`.
+		    string specifying a hint about the algorithm used for
+		    decompression.  Defaults to "" which maps to a system-specific
+		    default.  Currently valid values are ["INTEGER_FAST",
+		    "INTEGER_ACCURATE"].  The hint may be ignored (e.g., the internal
+		    jpeg library changes to a version that does not have that specific
+		    option.)
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `uint8`. 3-D with shape `[height, width, channels]`..
 	**/
-	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?name:Dynamic):Dynamic;
+	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decode a PNG-encoded image to a uint8 or uint16 tensor.
 		
@@ -461,6 +402,9 @@ package tensorflow.python.ops.image_ops;
 		If needed, the PNG-encoded image is transformed to match the requested number
 		of color channels.
 		
+		This op also supports decoding JPEGs and non-animated GIFs since the interface
+		is the same, though it is cleaner to use `tf.image.decode_image`.
+		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The PNG-encoded image.
 		  channels: An optional `int`. Defaults to `0`.
@@ -472,7 +416,6 @@ package tensorflow.python.ops.image_ops;
 		  A `Tensor` of type `dtype`. 3-D with shape `[height, width, channels]`.
 	**/
 	static public function decode_png(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Draw bounding boxes on a batch of images.
 		
@@ -483,7 +426,7 @@ package tensorflow.python.ops.image_ops;
 		height of the underlying image.
 		
 		For example, if an image is 100 x 200 pixels and the bounding box is
-		`[0.1, 0.5, 0.2, 0.9]`, the bottom-left and upper-right coordinates of the
+		`[0.1, 0.2, 0.5, 0.9]`, the bottom-left and upper-right coordinates of the
 		bounding box will be `(10, 40)` to `(50, 180)`.
 		
 		Parts of the bounding box may fall outside the image.
@@ -609,7 +552,7 @@ package tensorflow.python.ops.image_ops;
 		    by the glimpse width.
 		  offsets: A `Tensor` of type `float32`.
 		    A 2-D integer tensor of shape `[batch_size, 2]` containing
-		    the x, y locations of the center of each window.
+		    the y, x locations of the center of each window.
 		  centered: An optional `bool`. Defaults to `True`.
 		    indicates if the offset coordinates are centered relative to
 		    the image, in which case the (0, 0) offset is relative to the center
@@ -619,7 +562,7 @@ package tensorflow.python.ops.image_ops;
 		    indicates if the offset coordinates are normalized.
 		  uniform_noise: An optional `bool`. Defaults to `True`.
 		    indicates if the noise should be generated using a
-		    uniform distribution or a gaussian distribution.
+		    uniform distribution or a Gaussian distribution.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -697,36 +640,6 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function hsv_to_rgb(images:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Check for tensor types.
-		Check whether an object is a tensor. Equivalent to
-		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
-		
-		Args:
-		  x: An python object to check.
-		
-		Returns:
-		  `True` if `x` is a tensor, `False` if not.
-	**/
-	static public function is_tensor(x:Dynamic):Dynamic;
-	/**
-		Generate `__all__` from the docstring of one or more modules.
-		
-		Usage: `make_all(__name__)` or
-		`make_all(__name__, [sys.modules(__name__), other_module])`. The doc string
-		modules must each a docstring, and `__all__` will contain all symbols with
-		`@@` references, where that symbol currently exists in the module named
-		`module_name`.
-		
-		Args:
-		  module_name: The name of the module (usually `__name__`).
-		  doc_string_modules: a list of modules from which to take docstring.
-		  If None, then a list containing only the module named `module_name` is used.
-		
-		Returns:
-		  A list suitable for use as `__all__`.
-	**/
-	static public function make_all(module_name:Dynamic, ?doc_string_modules:Dynamic):Dynamic;
-	/**
 		Greedily selects a subset of bounding boxes in descending order of score,
 		
 		pruning away boxes that have high intersection-over-union (IOU) overlap
@@ -742,7 +655,7 @@ package tensorflow.python.ops.image_ops;
 		The output of this operation is a set of integers indexing into the input
 		collection of bounding boxes representing the selected boxes.  The bounding
 		box coordinates corresponding to the selected indices can then be obtained
-		using the tf.gather operation.  For example:
+		using the `tf.gather operation`.  For example:
 		
 		  selected_indices = tf.image.non_max_suppression(
 		      boxes, scores, max_output_size, iou_threshold)
@@ -779,14 +692,18 @@ package tensorflow.python.ops.image_ops;
 		`target_height` by `target_width`.
 		
 		Args:
-		  image: 3-D tensor with shape `[height, width, channels]`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  offset_height: Number of rows of zeros to add on top.
 		  offset_width: Number of columns of zeros to add on the left.
 		  target_height: Height of output image.
 		  target_width: Width of output image.
 		
 		Returns:
-		  3-D tensor of shape `[target_height, target_width, channels]`
+		  If `image` was 4-D, a 4-D float Tensor of shape
+		  `[batch, target_height, target_width, channels]`
+		  If `image` was 3-D, a 3-D float Tensor of shape
+		  `[target_height, target_width, channels]`
 		
 		Raises:
 		  ValueError: If the shape of `image` is incompatible with the `offset_*` or
@@ -804,21 +721,16 @@ package tensorflow.python.ops.image_ops;
 		`stddev` is the standard deviation of all values in `image`. It is capped
 		away from zero to protect against division by 0 when handling uniform images.
 		
-		Note that this implementation is limited:
-		*  It only whitens based on the statistics of an individual image.
-		*  It does not take into account the covariance structure.
-		
 		Args:
 		  image: 3-D tensor of shape `[height, width, channels]`.
 		
 		Returns:
-		  The whitened image with same shape as `image`.
+		  The standardized image with same shape as `image`.
 		
 		Raises:
 		  ValueError: if the shape of 'image' is incompatible with this function.
 	**/
-	static public function per_image_whitening(image:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
+	static public function per_image_standardization(image:Dynamic):Dynamic;
 	/**
 		Adjust the brightness of images by a random factor.
 		
@@ -829,7 +741,7 @@ package tensorflow.python.ops.image_ops;
 		  image: An image.
 		  max_delta: float, must be non-negative.
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		
 		Returns:
@@ -850,7 +762,7 @@ package tensorflow.python.ops.image_ops;
 		  lower: float.  Lower bound for the random contrast factor.
 		  upper: float.  Upper bound for the random contrast factor.
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		
 		Returns:
@@ -869,7 +781,7 @@ package tensorflow.python.ops.image_ops;
 		Args:
 		  image: A 3-D tensor of shape `[height, width, channels].`
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		
 		Returns:
@@ -888,7 +800,7 @@ package tensorflow.python.ops.image_ops;
 		Args:
 		  image: A 3-D tensor of shape `[height, width, channels].`
 		  seed: A Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		
 		Returns:
@@ -1019,7 +931,8 @@ package tensorflow.python.ops.image_ops;
 		dimension.
 		
 		Args:
-		  image: 3-D tensor of shape `[height, width, channels]`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  target_height: Target height.
 		  target_width: Target width.
 		
@@ -1027,32 +940,35 @@ package tensorflow.python.ops.image_ops;
 		  ValueError: if `target_height` or `target_width` are zero or negative.
 		
 		Returns:
-		  Cropped and/or padded image of shape
-		  `[target_height, target_width, channels]`
+		  Cropped and/or padded image.
+		  If `images` was 4-D, a 4-D float Tensor of shape
+		  `[batch, new_height, new_width, channels]`.
+		  If `images` was 3-D, a 3-D float Tensor of shape
+		  `[new_height, new_width, channels]`.
 	**/
 	static public function resize_image_with_crop_or_pad(image:Dynamic, target_height:Dynamic, target_width:Dynamic):Dynamic;
 	/**
-		Resize `images` to `new_width`, `new_height` using the specified `method`.
+		Resize `images` to `size` using the specified `method`.
 		
 		Resized images will be distorted if their original aspect ratio is not
-		the same as `new_width`, `new_height`.  To avoid distortions see
-		[`resize_image_with_crop_or_pad`](#resize_image_with_crop_or_pad).
+		the same as `size`.  To avoid distortions see
+		@{tf.image.resize_image_with_crop_or_pad}.
 		
 		`method` can be one of:
 		
-		*   <b>`ResizeMethod.BILINEAR`</b>: [Bilinear interpolation.]
-		    (https://en.wikipedia.org/wiki/Bilinear_interpolation)
-		*   <b>`ResizeMethod.NEAREST_NEIGHBOR`</b>: [Nearest neighbor interpolation.]
-		    (https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation)
-		*   <b>`ResizeMethod.BICUBIC`</b>: [Bicubic interpolation.]
-		    (https://en.wikipedia.org/wiki/Bicubic_interpolation)
+		*   <b>`ResizeMethod.BILINEAR`</b>: [Bilinear interpolation.](
+		  https://en.wikipedia.org/wiki/Bilinear_interpolation)
+		*   <b>`ResizeMethod.NEAREST_NEIGHBOR`</b>: [Nearest neighbor interpolation.](
+		  https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation)
+		*   <b>`ResizeMethod.BICUBIC`</b>: [Bicubic interpolation.](
+		  https://en.wikipedia.org/wiki/Bicubic_interpolation)
 		*   <b>`ResizeMethod.AREA`</b>: Area interpolation.
 		
 		Args:
 		  images: 4-D Tensor of shape `[batch, height, width, channels]` or
 		          3-D Tensor of shape `[height, width, channels]`.
-		  new_height: integer.
-		  new_width: integer.
+		  size: A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
+		        new size for the images.
 		  method: ResizeMethod.  Defaults to `ResizeMethod.BILINEAR`.
 		  align_corners: bool. If true, exactly align all 4 corners of the input and
 		                 output. Defaults to `false`.
@@ -1060,6 +976,7 @@ package tensorflow.python.ops.image_ops;
 		Raises:
 		  ValueError: if the shape of `images` is incompatible with the
 		    shape arguments to this function
+		  ValueError: if `size` has invalid shape or type.
 		  ValueError: if an unsupported resize method is specified.
 		
 		Returns:
@@ -1068,7 +985,7 @@ package tensorflow.python.ops.image_ops;
 		  If `images` was 3-D, a 3-D float Tensor of shape
 		  `[new_height, new_width, channels]`.
 	**/
-	static public function resize_images(images:Dynamic, new_height:Dynamic, new_width:Dynamic, ?method:Dynamic, ?align_corners:Dynamic):Dynamic;
+	static public function resize_images(images:Dynamic, size:Dynamic, ?method:Dynamic, ?align_corners:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using nearest neighbor interpolation.
 		
@@ -1128,13 +1045,14 @@ package tensorflow.python.ops.image_ops;
 		Rotate an image counter-clockwise by 90 degrees.
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels].`
-		  k: Number of times the image is rotated by 90 degrees.
+		  image: A 3-D tensor of shape `[height, width, channels]`.
+		  k: A scalar integer. The number of times the image is rotated by 90 degrees.
+		  name: A name for this operation (optional).
 		
 		Returns:
 		  A rotated 3-D tensor of the same type and shape as `image`.
 	**/
-	static public function rot90(image:Dynamic, ?k:Dynamic):Dynamic;
+	static public function rot90(image:Dynamic, ?k:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Generate a single randomly distorted bounding box for an image.
 		
@@ -1148,7 +1066,7 @@ package tensorflow.python.ops.image_ops;
 		The output of this Op is a single bounding box that may be used to crop the
 		original image. The output is returned as 3 tensors: `begin`, `size` and
 		`bboxes`. The first 2 tensors can be fed directly into `tf.slice` to crop the
-		image. The latter may be supplied to `tf.image.draw_bounding_box` to visualize
+		image. The latter may be supplied to `tf.image.draw_bounding_boxes` to visualize
 		what the bounding box looks like.
 		
 		Bounding boxes are supplied and returned as `[y_min, x_min, y_max, x_max]`. The
@@ -1157,6 +1075,7 @@ package tensorflow.python.ops.image_ops;
 		
 		For example,
 		
+		```python
 		    # Generate a single distorted bounding box.
 		    begin, size, bbox_for_draw = tf.image.sample_distorted_bounding_box(
 		        tf.shape(image),
@@ -1169,6 +1088,7 @@ package tensorflow.python.ops.image_ops;
 		
 		    # Employ the bounding box to distort the image.
 		    distorted_image = tf.slice(image, begin, size)
+		```
 		
 		Note that if no bounding box information is available, setting
 		`use_image_if_no_bounding_boxes = true` will assume there is a single implicit
@@ -1189,7 +1109,9 @@ package tensorflow.python.ops.image_ops;
 		    A second seed to avoid seed collision.
 		  min_object_covered: An optional `float`. Defaults to `0.1`.
 		    The cropped area of the image must contain at least this
-		    fraction of any bounding box supplied.
+		    fraction of any bounding box supplied. The value of this parameter should be
+		    non-negative. In the case of 0, the cropped area does not need to overlap
+		    any of the bounding boxes supplied.
 		  aspect_ratio_range: An optional list of `floats`. Defaults to `[0.75, 1.33]`.
 		    The cropped area of the image must have an aspect ratio =
 		    width / height within this range.
@@ -1208,6 +1130,7 @@ package tensorflow.python.ops.image_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (begin, size, bboxes).
+		
 		  begin: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[offset_height, offset_width, 0]`. Provide as input to
 		    `tf.slice`.
 		  size: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[target_height, target_width, -1]`. Provide as input to
@@ -1216,6 +1139,40 @@ package tensorflow.python.ops.image_ops;
 		    Provide as input to `tf.image.draw_bounding_boxes`.
 	**/
 	static public function sample_distorted_bounding_box(image_size:Dynamic, bounding_boxes:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?min_object_covered:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calculate and return the total variation for one or more images.
+		
+		The total variation is the sum of the absolute differences for neighboring
+		pixel-values in the input images. This measures how much noise is in the
+		images.
+		
+		This can be used as a loss-function during optimization so as to suppress
+		noise in images. If you have a batch of images, then you should calculate
+		the scalar loss-value as the sum:
+		`loss = tf.reduce_sum(tf.image.total_variation(images))`
+		
+		This implements the anisotropic 2-D version of the formula described here:
+		
+		https://en.wikipedia.org/wiki/Total_variation_denoising
+		
+		Args:
+		  images: 4-D Tensor of shape `[batch, height, width, channels]` or
+		          3-D Tensor of shape `[height, width, channels]`.
+		
+		  name: A name for the operation (optional).
+		
+		Raises:
+		  ValueError: if images.shape is not a 3-D or 4-D vector.
+		
+		Returns:
+		  The total variation of `images`.
+		
+		  If `images` was 4-D, return a 1-D float Tensor of shape `[batch]` with the
+		  total variation for each image in the batch.
+		  If `images` was 3-D, return a scalar float with the total variation for
+		  that image.
+	**/
+	static public function total_variation(images:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Transpose an image by swapping the first and second dimension.
 		

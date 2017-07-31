@@ -44,6 +44,13 @@ package scipy.cluster.hierarchy;
 	**/
 	public function new(id:Dynamic, ?left:Dynamic, ?right:Dynamic, ?dist:Dynamic, ?count:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -169,9 +176,10 @@ package scipy.cluster.hierarchy;
 		----------
 		func : function
 		    Applied to each leaf ClusterNode object in the pre-order traversal.
-		    Given the i'th leaf node in the pre-ordeR traversal ``n[i]``, the
-		    result of func(n[i]) is stored in L[i]. If not provided, the index
-		    of the original observation to which the node corresponds is used.
+		    Given the ``i``-th leaf node in the pre-order traversal ``n[i]``, the
+		    result of ``func(n[i])`` is stored in ``L[i]``. If not provided,
+		    the index of the original observation to which the node
+		    corresponds is used.
 		
 		Returns
 		-------

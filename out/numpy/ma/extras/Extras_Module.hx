@@ -34,9 +34,9 @@ package numpy.ma.extras;
 		a : array_like
 		    Input array or object that can be converted to an array.
 		func : callable
-		    Reduction function Kapable of receiving an axis argument.
+		    Reduction function capable of receiving a single axis argument.
 		    It is is called with `a` as first argument followed by `kwargs`.
-		 kwargs : keyword arguments
+		kwargs : keyword arguments
 		    additional keyword arguments to pass to `func`.
 		
 		Returns
@@ -49,7 +49,7 @@ package numpy.ma.extras;
 	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
-		add(x1, x2[, out])
+		add(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Add arguments element-wise.
 		
@@ -59,6 +59,17 @@ package numpy.ma.extras;
 		    The arrays to be added.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -99,7 +110,7 @@ package numpy.ma.extras;
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
-		kwargs: any
+		kwargs : any
 		    Additional named arguments to `func1d`.
 		
 		    .. versionadded:: 1.9.0
@@ -109,9 +120,10 @@ package numpy.ma.extras;
 		-------
 		apply_along_axis : ndarray
 		    The output array. The shape of `outarr` is identical to the shape of
-		    `arr`, except along the `axis` dimension, where the length of `outarr`
-		    is equal to the size of the return value of `func1d`.  If `func1d`
-		    returns a scalar `outarr` will have one fewer dimensions than `arr`.
+		    `arr`, except along the `axis` dimension. This axis is removed, and
+		    replaced with new dimensions equal to the shape of the return value
+		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    fewer dimensions than `arr`.
 		
 		See Also
 		--------
@@ -128,7 +140,7 @@ package numpy.ma.extras;
 		>>> np.apply_along_axis(my_func, 1, b)
 		array([ 2.,  5.,  8.])
 		
-		For a function that doesn't return a scalar, the number of dimensions in
+		For a function that returns a 1D array, the number of dimensions in
 		`outarr` is the same as `arr`.
 		
 		>>> b = np.array([[8,1,7], [4,3,9], [5,2,6]])
@@ -136,6 +148,23 @@ package numpy.ma.extras;
 		array([[1, 7, 8],
 		       [3, 4, 9],
 		       [2, 5, 6]])
+		
+		For a function that returns a higher dimensional array, those dimensions
+		are inserted in place of the `axis` dimension.
+		
+		>>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+		>>> np.apply_along_axis(np.diag, -1, b)
+		array([[[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]],
+		
+		       [[4, 0, 0],
+		        [0, 5, 0],
+		        [0, 0, 6]],
+		
+		       [[7, 0, 0],
+		        [0, 8, 0],
+		        [0, 0, 9]]])
 	**/
 	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -308,7 +337,7 @@ package numpy.ma.extras;
 		    Returns
 		    -------
 		    ret : ndarray
-		        An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		        An array, or list of arrays, each with ``a.ndim >= 1``.
 		        Copies are made only if necessary.
 		
 		    See Also
@@ -352,7 +381,7 @@ package numpy.ma.extras;
 		    Returns
 		    -------
 		    res, res2, ... : ndarray
-		        An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		        An array, or list of arrays, each with ``a.ndim >= 2``.
 		        Copies are avoided where possible, and views with two or more
 		        dimensions are returned.
 		
@@ -395,7 +424,7 @@ package numpy.ma.extras;
 		    Returns
 		    -------
 		    res1, res2, ... : ndarray
-		        An array, or tuple of arrays, each with ``a.ndim >= 3``.  Copies are
+		        An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
 		        avoided where possible, and views with three or more dimensions are
 		        returned.  For example, a 1-D array of shape ``(N,)`` becomes a view
 		        of shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a
@@ -417,7 +446,7 @@ package numpy.ma.extras;
 		    >>> x = np.arange(12.0).reshape(4,3)
 		    >>> np.atleast_3d(x).shape
 		    (4, 3, 1)
-		    >>> np.atleast_3d(x).base is x
+		    >>> np.atleast_3d(x).base is x.base  # x is a reshape, so not base itself
 		    True
 		
 		    >>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
@@ -587,7 +616,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function column_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function column_stack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Suppress whole columns of a 2-D array that contain masked values.
 		
@@ -600,7 +629,7 @@ package numpy.ma.extras;
 	**/
 	static public function compress_cols(a:Dynamic):Dynamic;
 	/**
-		Supress slices from multiple dimensions which contain masked values.
+		Suppress slices from multiple dimensions which contain masked values.
 		
 		Parameters
 		----------
@@ -609,10 +638,10 @@ package numpy.ma.extras;
 		    elements are masked, `x` is interpreted as a MaskedArray with `mask`
 		    set to `nomask`.
 		axis : tuple of ints or int, optional
-		    Which dimensions to supress slices from can be configured with this
+		    Which dimensions to suppress slices from can be configured with this
 		    parameter.
-		    - If axis is a tuple of ints, those are the axes to supress slices from.
-		    - If axis is an int, then that is the only axis to supress slices from.
+		    - If axis is a tuple of ints, those are the axes to suppress slices from.
+		    - If axis is an int, then that is the only axis to suppress slices from.
 		    - If axis is None, all axis are selected.
 		
 		Returns
@@ -973,7 +1002,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function diagflat(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function diagflat(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the dot product of two arrays.
@@ -1043,6 +1072,10 @@ package numpy.ma.extras;
 		    This is a simple way to stack 2D arrays (images) into a single
 		    3D array for processing.
 		
+		    This function continues to be supported for backward compatibility, but
+		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		    function was added in NumPy 1.10.
+		
 		    Parameters
 		    ----------
 		    tup : sequence of arrays
@@ -1064,7 +1097,8 @@ package numpy.ma.extras;
 		
 		    Notes
 		    -----
-		    Equivalent to ``np.concatenate(tup, axis=2)``.
+		    Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
+		    are at least 3-dimensional.
 		
 		    Examples
 		    --------
@@ -1087,7 +1121,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function dstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function dstack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the differences between consecutive elements of an array.
 		
@@ -1434,7 +1468,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hsplit(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function hsplit(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hstack(tup)
 		
@@ -1442,6 +1476,10 @@ package numpy.ma.extras;
 		
 		    Take a sequence of arrays and stack them horizontally to make
 		    a single array. Rebuild arrays divided by `hsplit`.
+		
+		    This function continues to be supported for backward compatibility, but
+		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		    function was added in NumPy 1.10.
 		
 		    Parameters
 		    ----------
@@ -1460,10 +1498,12 @@ package numpy.ma.extras;
 		    dstack : Stack arrays in sequence depth wise (along third axis).
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    hsplit : Split array along second axis.
+		    block : Assemble arrays from blocks.
 		
 		    Notes
 		    -----
-		    Equivalent to ``np.concatenate(tup, axis=1)``
+		    Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		    are at least 2-dimensional.
 		
 		    Examples
 		    --------
@@ -1483,15 +1523,18 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function hstack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Test whether each element of an array is also present in a second
 		array.
 		
 		The output is always a masked array. See `numpy.in1d` for more details.
 		
+		We recommend using :func:`isin` instead of `in1d` for new code.
+		
 		See Also
 		--------
+		isin       : Version of this function that preserves the shape of ar1.
 		numpy.in1d : Equivalent function for ndarrays.
 		
 		Notes
@@ -1522,6 +1565,23 @@ package numpy.ma.extras;
 	**/
 	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
 	/**
+		Calculates `element in test_elements`, broadcasting over
+		`element` only.
+		
+		The output is always a masked array of the same shape as `element`.
+		See `numpy.isin` for more details.
+		
+		See Also
+		--------
+		in1d       : Flattened version of this function.
+		numpy.isin : Equivalent function for ndarrays.
+		
+		Notes
+		-----
+		.. versionadded:: 1.13.0
+	**/
+	static public function isin(element:Dynamic, test_elements:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
+	/**
 		Is seq a sequence (ndarray, list or tuple)?
 	**/
 	static public function issequence(seq:Dynamic):Dynamic;
@@ -1551,7 +1611,7 @@ package numpy.ma.extras;
 		>>> ma.make_mask_descr(dtype)
 		dtype([('foo', '|b1'), ('bar', '|b1')])
 		>>> ma.make_mask_descr(np.float32)
-		<type 'numpy.bool_'>
+		dtype('bool')
 	**/
 	static public function make_mask_descr(ndtype:Dynamic):Dynamic;
 	/**
@@ -1911,6 +1971,99 @@ package numpy.ma.extras;
 	static public var mr_ : Dynamic;
 	static public var nomask : Dynamic;
 	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Normalizes an axis argument into a tuple of non-negative integer axes.
+		
+		This handles shorthands such as ``1`` and converts them to ``(1,)``,
+		as well as performing the handling of negative indices covered by
+		`normalize_axis_index`.
+		
+		By default, this forbids axes from being specified multiple times.
+		
+		Used internally by multi-axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int, iterable of int
+		    The un-normalized index or indices of the axis.
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against.
+		argname : str, optional
+		    A prefix to put before the error message, typically the name of the
+		    argument.
+		allow_duplicate : bool, optional
+		    If False, the default, disallow an axis from being specified twice.
+		
+		Returns
+		-------
+		normalized_axes : tuple of int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If any axis provided is out of range
+		ValueError
+		    If an axis is repeated
+		
+		See also
+		--------
+		normalize_axis_index : normalizing a single scalar axis
+	**/
+	static public function normalize_axis_tuple(axis:Dynamic, ndim:Dynamic, ?argname:Dynamic, ?allow_duplicate:Dynamic):Dynamic;
+	/**
 		Find contiguous unmasked data in a masked array along the given axis.
 		
 		Parameters
@@ -1992,35 +2145,43 @@ package numpy.ma.extras;
 	**/
 	static public function notmasked_edges(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -2036,7 +2197,13 @@ package numpy.ma.extras;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -2159,11 +2326,11 @@ package numpy.ma.extras;
 		
 		Returns
 		-------
-		p : ndarray, shape (M,) or (M, K)
+		p : ndarray, shape (deg + 1,) or (deg + 1, K)
 		    Polynomial coefficients, highest power first.  If `y` was 2-D, the
 		    coefficients for `k`-th data set are in ``p[:,k]``.
 		
-		residuals, rank, singular_values, rcond :
+		residuals, rank, singular_values, rcond
 		    Present only if `full` = True.  Residuals of the least-squares fit,
 		    the effective rank of the scaled Vandermonde coefficient matrix,
 		    its singular values, and the specified value of `rcond`. For more
@@ -2286,6 +2453,10 @@ package numpy.ma.extras;
 		    Take a sequence of arrays and stack them vertically to make a single
 		    array. Rebuild arrays divided by `vsplit`.
 		
+		    This function continues to be supported for backward compatibility, but
+		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		    function was added in NumPy 1.10.
+		
 		    Parameters
 		    ----------
 		    tup : sequence of ndarrays
@@ -2304,6 +2475,7 @@ package numpy.ma.extras;
 		    dstack : Stack arrays in sequence depth wise (along third dimension).
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    vsplit : Split array into a list of multiple sub-arrays vertically.
+		    block : Assemble arrays from blocks.
 		
 		    Notes
 		    -----
@@ -2333,7 +2505,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function row_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function row_stack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set difference of 1D arrays with unique elements.
 		
@@ -2380,12 +2552,11 @@ package numpy.ma.extras;
 		    to compare first, second, and so on.  This list does not need to
 		    include all of the fields.
 		endwith : {True, False}, optional
-		    Whether missing values (if any) should be forced in the upper indices
-		    (at the end of the array) (True) or lower indices (at the beginning).
-		    When the array contains unmasked values of the largest (or smallest if
-		    False) representable value of the datatype the ordering of these values
-		    and the masked values is undefined.  To enforce the masked values are
-		    at the end (beginning) in this case one must sort the mask.
+		    Whether missing values (if any) should be treated as the largest values
+		    (True) or the smallest values (False)
+		    When the array contains unmasked values at the same extremes of the
+		    datatype, the ordering of these values and the masked values is
+		    undefined.
 		fill_value : {var}, optional
 		    Value used internally for the masked values.
 		    If ``fill_value`` is not None, it supersedes ``endwith``.
@@ -2534,6 +2705,10 @@ package numpy.ma.extras;
 		    Take a sequence of arrays and stack them vertically to make a single
 		    array. Rebuild arrays divided by `vsplit`.
 		
+		    This function continues to be supported for backward compatibility, but
+		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		    function was added in NumPy 1.10.
+		
 		    Parameters
 		    ----------
 		    tup : sequence of ndarrays
@@ -2552,6 +2727,7 @@ package numpy.ma.extras;
 		    dstack : Stack arrays in sequence depth wise (along third dimension).
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    vsplit : Split array into a list of multiple sub-arrays vertically.
+		    block : Assemble arrays from blocks.
 		
 		    Notes
 		    -----
@@ -2581,7 +2757,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function vstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function vstack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

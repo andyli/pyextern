@@ -8,6 +8,8 @@ package importlib._bootstrap_external;
 	static public var OPTIMIZED_BYTECODE_SUFFIXES : Dynamic;
 	static public var SOURCE_SUFFIXES : Dynamic;
 	static public var _CASE_INSENSITIVE_PLATFORMS : Dynamic;
+	static public var _CASE_INSENSITIVE_PLATFORMS_BYTES_KEY : Dynamic;
+	static public var _CASE_INSENSITIVE_PLATFORMS_STR_KEY : Dynamic;
 	static public var _OPT : Dynamic;
 	static public var _POPULATE : Dynamic;
 	static public var _PYCACHE : Dynamic;
@@ -120,10 +122,6 @@ package importlib._bootstrap_external;
 		truncated.
 	**/
 	static public function _validate_bytecode_header(data:Dynamic, ?source_stats:Dynamic, ?name:Dynamic, ?path:Dynamic):Dynamic;
-	/**
-		Print the message to stderr if -v/PYTHONVERBOSE is turned on.
-	**/
-	static public function _verbose_message(message:Dynamic, ?args:python.VarArgs<Dynamic>, ?verbosity:Dynamic):Dynamic;
 	/**
 		Convert a 32-bit integer to little-endian.
 	**/

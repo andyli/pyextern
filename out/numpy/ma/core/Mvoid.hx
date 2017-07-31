@@ -39,6 +39,7 @@ package numpy.ma.core;
 		Array protocol: C-struct side.
 	**/
 	public var __array_struct__ : Dynamic;
+	public function __array_ufunc__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Special hook for ufuncs.
 		
@@ -50,6 +51,7 @@ package numpy.ma.core;
 	**/
 	public function __bool__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __complex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -99,6 +101,14 @@ package numpy.ma.core;
 	static public var __doc__ : Dynamic;
 	/**
 		Check whether other equals self elementwise.
+		
+		When either of the elements is masked, the result is masked as well,
+		but the underlying boolean data are still set, with self and other
+		considered equal if both are masked, and unequal otherwise.
+		
+		For structured arrays, all fields are combined, with masked values
+		ignored. The result is masked if all fields were masked, with self
+		and other considered equal only if both were fully masked.
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
@@ -125,13 +135,6 @@ package numpy.ma.core;
 		Get the index.
 	**/
 	public function __getitem__(indx:Dynamic):Dynamic;
-	/**
-		x.__getslice__(i, j) <==> x[i:j]
-		
-		Return the slice described by (i, j).  The use of negative indices
-		is not supported.
-	**/
-	public function __getslice__(i:Dynamic, j:Dynamic):Dynamic;
 	/**
 		Return the internal state of the masked array, for pickling
 		purposes.
@@ -187,6 +190,13 @@ package numpy.ma.core;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert to int.
 	**/
@@ -253,7 +263,15 @@ package numpy.ma.core;
 	**/
 	public function __mul__(other:Dynamic):Dynamic;
 	/**
-		Check whether other doesn't equal self elementwise
+		Check whether other does not equal self elementwise.
+		
+		When either of the elements is masked, the result is masked as well,
+		but the underlying boolean data are still set, with self and other
+		considered equal if both are masked, and unequal otherwise.
+		
+		For structured arrays, all fields are combined, with masked values
+		ignored. The result is masked if all fields were masked, with self
+		and other considered equal only if both were fully masked.
 	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	/**
@@ -370,13 +388,6 @@ package numpy.ma.core;
 	**/
 	public function __setmask__(mask:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		x.__setslice__(i, j, value) <==> x[i:j]=value
-		
-		Set the slice (i,j) of a to value. If value is masked, mask those
-		locations.
-	**/
-	public function __setslice__(i:Dynamic, j:Dynamic, value:Dynamic):Dynamic;
-	/**
 		Restore the internal state of the masked array, for
 		pickling purposes.  ``state`` is typically the output of the
 		``__getstate__`` output, and is a 5-tuple:
@@ -433,7 +444,7 @@ package numpy.ma.core;
 		a low-level method (`ndarray(...)`) for instantiating an array.
 		
 		For more information, refer to the `numpy` module and examine the
-		the methods and attributes of an array.
+		methods and attributes of an array.
 		
 		Parameters
 		----------
@@ -537,6 +548,18 @@ package numpy.ma.core;
 		array([2, 3])
 	**/
 	static public function _baseclass(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Compare self with other using operator.eq or operator.ne.
+		
+		When either of the elements is masked, the result is masked as well,
+		but the underlying boolean data are still set, with self and other
+		considered equal if both are masked, and unequal otherwise.
+		
+		For structured arrays, all fields are combined, with masked values
+		ignored. The result is masked if all fields were masked, with self
+		and other considered equal only if both were fully masked.
+	**/
+	public function _comparison(other:Dynamic, compare:Dynamic):Dynamic;
 	public var _data : Dynamic;
 	static public var _defaulthardmask : Dynamic;
 	static public var _defaultmask : Dynamic;
@@ -727,7 +750,7 @@ package numpy.ma.core;
 		--------
 		numpy.argpartition : equivalent function
 	**/
-	public function argpartition(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function argpartition(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an ndarray of indices that sort the array along the
 		specified axis.  Masked values are filled beforehand to
@@ -736,17 +759,30 @@ package numpy.ma.core;
 		Parameters
 		----------
 		axis : int, optional
-		    Axis along which to sort.  The default is -1 (last axis).
-		    If None, the flattened array is used.
-		fill_value : var, optional
-		    Value used to fill the array before sorting.
-		    The default is the `fill_value` attribute of the input array.
+		    Axis along which to sort. If None, the default, the flattened array
+		    is used.
+		
+		    ..  versionchanged:: 1.13.0
+		        Previously, the default was documented to be -1, but that was
+		        in error. At some future date, the default will change to -1, as
+		        originally intended.
+		        Until then, the axis should be given explicitly when
+		        ``arr.ndim > 1``, to avoid a FutureWarning.
 		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
 		    Sorting algorithm.
 		order : list, optional
 		    When `a` is an array with fields defined, this argument specifies
 		    which fields to compare first, second, etc.  Not all fields need be
 		    specified.
+		endwith : {True, False}, optional
+		    Whether missing values (if any) should be treated as the largest values
+		    (True) or the smallest values (False)
+		    When the array contains unmasked values at the same extremes of the
+		    datatype, the ordering of these values and the masked values is
+		    undefined.
+		fill_value : {var}, optional
+		    Value used internally for the masked values.
+		    If ``fill_value`` is not None, it supersedes ``endwith``.
 		
 		Returns
 		-------
@@ -756,7 +792,7 @@ package numpy.ma.core;
 		
 		See Also
 		--------
-		sort : Describes sorting algorithms used.
+		MaskedArray.sort : Describes sorting algorithms used.
 		lexsort : Indirect stable sort with multiple keys.
 		ndarray.sort : Inplace sort.
 		
@@ -774,7 +810,7 @@ package numpy.ma.core;
 		>>> a.argsort()
 		array([1, 0, 2])
 	**/
-	public function argsort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function argsort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Returns a copy of the MaskedArray cast to given newtype.
 		
@@ -1862,6 +1898,14 @@ package numpy.ma.core;
 	/**
 		Return the array minimum along the specified axis.
 		
+		.. deprecated:: 1.13.0
+		   This function is identical to both:
+		
+		    * ``self.min(keepdims=True, axis=axis).squeeze(axis=axis)``
+		    * ``np.ma.minimum.reduce(self, axis=axis)``
+		
+		   Typically though, ``self.min(axis=axis)`` is sufficient.
+		
 		Parameters
 		----------
 		axis : int, optional
@@ -1890,6 +1934,15 @@ package numpy.ma.core;
 		       fill_value = 999999)
 		>>> print(x.mini(axis=1))
 		[0 2 4]
+		
+		There is a small difference between `mini` and `min`:
+		
+		>>> x[:,1].mini(axis=0)
+		masked_array(data = --,
+		             mask = True,
+		       fill_value = 999999)
+		>>> x[:,1].min(axis=0)
+		masked
 	**/
 	public function mini(?axis:Dynamic):Dynamic;
 	/**
@@ -2104,14 +2157,14 @@ package numpy.ma.core;
 		Examples
 		--------
 		>>> a = np.array([3, 4, 2, 1])
-		>>> a.partition(a, 3)
+		>>> a.partition(3)
 		>>> a
 		array([2, 1, 3, 4])
 		
 		>>> a.partition((1, 3))
 		array([1, 2, 3, 4])
 	**/
-	public function partition(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function partition(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the product of the array elements over the given axis.
 		
@@ -2149,7 +2202,7 @@ package numpy.ma.core;
 	**/
 	public function product(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Return (maximum - minimum) along the the given dimension
+		Return (maximum - minimum) along the given dimension
 		(i.e. peak-to-peak value).
 		
 		Parameters
@@ -2596,12 +2649,11 @@ package numpy.ma.core;
 		    to compare first, second, and so on.  This list does not need to
 		    include all of the fields.
 		endwith : {True, False}, optional
-		    Whether missing values (if any) should be forced in the upper indices
-		    (at the end of the array) (True) or lower indices (at the beginning).
-		    When the array contains unmasked values of the largest (or smallest if
-		    False) representable value of the datatype the ordering of these values
-		    and the masked values is undefined.  To enforce the masked values are
-		    at the end (beginning) in this case one must sort the mask.
+		    Whether missing values (if any) should be treated as the largest values
+		    (True) or the smallest values (False)
+		    When the array contains unmasked values at the same extremes of the
+		    datatype, the ordering of these values and the masked values is
+		    undefined.
 		fill_value : {var}, optional
 		    Value used internally for the masked values.
 		    If ``fill_value`` is not None, it supersedes ``endwith``.
@@ -2782,7 +2834,7 @@ package numpy.ma.core;
 		Parameters
 		----------
 		fill_value : scalar, optional
-		    Value used to fill in the masked values. Deafult is None, in which
+		    Value used to fill in the masked values. Default is None, in which
 		    case `MaskedArray.fill_value` is used.
 		order : {'C','F','A'}, optional
 		    Order of the data item in the copy. Default is 'C'.
@@ -3003,7 +3055,7 @@ package numpy.ma.core;
 		    Axis or axes along which the variance is computed.  The default is to
 		    compute the variance of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a variance is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -3022,7 +3074,7 @@ package numpy.ma.core;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of

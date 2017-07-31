@@ -54,6 +54,13 @@ package matplotlib.mathtext;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -118,7 +125,6 @@ package matplotlib.mathtext;
 	static public var _fontnames : Dynamic;
 	static public var _function_names : Dynamic;
 	public function _genfrac(ldelim:Dynamic, rdelim:Dynamic, rule:Dynamic, style:Dynamic, num:Dynamic, den:Dynamic):Dynamic;
-	public function _get_fontset_name():Dynamic;
 	static public var _left_delim : Dynamic;
 	public function _make_space(percentage:Dynamic):Dynamic;
 	static public var _overunder_functions : Dynamic;
@@ -146,6 +152,7 @@ package matplotlib.mathtext;
 	**/
 	public function get_state():Dynamic;
 	public function group(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
+	public function is_between_brackets(s:Dynamic, loc:Dynamic):Dynamic;
 	public function is_dropsub(nucleus:Dynamic):Dynamic;
 	public function is_overunder(nucleus:Dynamic):Dynamic;
 	public function is_slanted(nucleus:Dynamic):Dynamic;

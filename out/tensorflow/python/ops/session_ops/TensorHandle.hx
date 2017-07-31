@@ -64,6 +64,13 @@ package tensorflow.python.ops.session_ops;
 	**/
 	public function new(handle:Dynamic, dtype:Dynamic, session:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -119,10 +126,6 @@ package tensorflow.python.ops.session_ops;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		The graph key for deleter.
-	**/
-	static public function _get_deleter_key(handle:Dynamic):Dynamic;
-	/**
 		The device name encoded in the handle.
 	**/
 	static public function _get_device_name(handle:Dynamic):Dynamic;
@@ -134,6 +137,10 @@ package tensorflow.python.ops.session_ops;
 		The graph key for reader.
 	**/
 	static public function _get_reader_key(handle:Dynamic):Dynamic;
+	/**
+		The ResourceHandle representation of this handle.
+	**/
+	public function _get_resource_handle():Dynamic;
 	/**
 		Force the deletion of this persistent tensor.
 	**/
@@ -154,4 +161,12 @@ package tensorflow.python.ops.session_ops;
 		The string representation of this handle.
 	**/
 	public var handle : Dynamic;
+	/**
+		Convert a TensorHandle object to a feedable numpy value.
+		
+		Returns:
+		  A numpy array of a custom struct type that can be used as a feed value
+		  to run().
+	**/
+	public function to_numpy_array():Dynamic;
 }

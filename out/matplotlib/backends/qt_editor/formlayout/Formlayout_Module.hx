@@ -3,7 +3,6 @@ package matplotlib.backends.qt_editor.formlayout;
 @:pythonImport("matplotlib.backends.qt_editor.formlayout") extern class Formlayout_Module {
 	static public var BLACKLIST : Dynamic;
 	static public var DEBUG : Dynamic;
-	static public var STDERR : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -15,11 +14,6 @@ package matplotlib.backends.qt_editor.formlayout;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Convert matplotlib color to hex before passing to Qt
-	**/
-	static public function col2hex(color:Dynamic):Dynamic;
-	static public var colorConverter : Dynamic;
 	static public var division : Dynamic;
 	/**
 		Create form dialog and return result
@@ -53,17 +47,9 @@ package matplotlib.backends.qt_editor.formlayout;
 		Check if font is installed
 	**/
 	static public function font_is_installed(font:Dynamic):Dynamic;
-	/**
-		Return *True* if *c* can be converted to *RGB*
-	**/
-	static public function is_color_like(c:Dynamic):Dynamic;
 	static public function is_edit_valid(edit:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function qfont_to_tuple(font:Dynamic):Dynamic;
-	/**
-		Given an rgb or rgba sequence of 0-1 floats, return the hex string
-	**/
-	static public function rgb2hex(rgb:Dynamic):Dynamic;
 	/**
 		Create a QColor from a matplotlib color
 	**/

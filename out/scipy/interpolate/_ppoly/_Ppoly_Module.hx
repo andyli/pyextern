@@ -6,6 +6,7 @@ package scipy.interpolate._ppoly;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -31,13 +32,13 @@ package scipy.interpolate._ppoly;
 		    There are `n` polynomials in each interval.
 		    Coefficient of highest order-term comes first.
 		x : ndarray, shape (m+1,)
-		    Breakpoints of polynomials
+		    Breakpoints of polynomials.
 		xp : ndarray, shape (r,)
 		    Points to evaluate the piecewise polynomial at.
 		dx : int
 		    Order of derivative to evaluate.  The derivative is evaluated
 		    piecewise and may have discontinuities.
-		extrapolate : bint, optional
+		extrapolate : bint
 		    Whether to extrapolate to out-of-bounds points based on first
 		    and last intervals, or to return NaNs.
 		out : ndarray, shape (r, n)

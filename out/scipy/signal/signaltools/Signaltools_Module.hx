@@ -14,6 +14,17 @@ package scipy.signal.signaltools;
 	static public function _bvalfromboundary(boundary:Dynamic):Dynamic;
 	static public function _centered(arr:Dynamic, newshape:Dynamic):Dynamic;
 	/**
+		See if using `fftconvolve` or `_correlateND` is faster. The boolean value
+		returned depends on the sizes and shapes of the input values.
+		
+		The big O ratios were found to hold across different machines, which makes
+		sense as it's the ratio that matters (the effective speed of the computer
+		is found in both big O constants). Regardless, this had been tuned on an
+		early 2015 MacBook Pro with 8GB RAM and an Intel i5 processor.
+	**/
+	static public function _fftconv_faster(x:Dynamic, h:Dynamic, mode:Dynamic):Dynamic;
+	static public function _fftconvolve_valid(volume:Dynamic, kernel:Dynamic):Dynamic;
+	/**
 		Forward-backward IIR filter that uses Gustafsson's method.
 		
 		Apply the IIR filter defined by `(b,a)` to `x` twice, first forward
@@ -60,23 +71,66 @@ package scipy.signal.signaltools;
 	**/
 	static public function _filtfilt_gust(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?irlen:Dynamic):Dynamic;
 	/**
-		If in 'valid' mode, checks whether or not one of the array shapes
-		is at least as large as the other in every dimension. Returns whether
-		or not the input arrays need to be swapped depending on whether shape2
-		is larger than shape1. This is important for some of the correlation and
-		convolution implementations in this module, where the larger array input
-		needs to come before the smaller array input when operating in this mode.
+		If in 'valid' mode, returns whether or not the input arrays need to be
+		swapped depending on whether `shape1` is at least as large as `shape2` in
+		every dimension.
+		
+		This is important for some of the correlation and convolution
+		implementations in this module, where the larger array input needs to come
+		before the smaller array input when operating in this mode.
+		
 		Note that if the mode provided is not 'valid', False is immediately
 		returned.
 	**/
 	static public function _inputs_swap_needed(mode:Dynamic, shape1:Dynamic, shape2:Dynamic):Dynamic;
 	static public var _modedict : Dynamic;
 	/**
+		See if numpy supports convolution of `volume` and `kernel` (i.e. both are
+		1D ndarrays and of the appropriate shape).  Numpy's 'same' mode uses the
+		size of the larger input, while Scipy's uses the size of the first input.
+	**/
+	static public function _np_conv_ok(volume:Dynamic, kernel:Dynamic, mode:Dynamic):Dynamic;
+	/**
+		See if a list of arrays are all numeric.
+		
+		Parameters
+		----------
+		ndarrays : array or list of arrays
+		    arrays to check if numeric.
+		numeric_kinds : string-like
+		    The dtypes of the arrays to be checked. If the dtype.kind of
+		    the ndarrays are not in this string the function returns False and
+		    otherwise returns True.
+	**/
+	static public function _numeric_arrays(arrays:Dynamic, ?kinds:Dynamic):Dynamic;
+	/**
 		The output length that results from a given input
 	**/
 	static public function _output_len(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Product of a list of numbers.
+		Faster than np.prod for short lists like array shapes.
+	**/
+	static public function _prod(iterable:Dynamic):Dynamic;
+	/**
+		Reverse array `x` in all dimensions and perform the complex conjugate
+	**/
+	static public function _reverse_and_conj(x:Dynamic):Dynamic;
 	static public var _rfft_lock : Dynamic;
 	static public var _rfft_mt_safe : Dynamic;
+	/**
+		Returns the time the statement/function took, in seconds.
+		
+		Faster, less precise version of IPython's timeit. `stmt` can be a statement
+		written as a string or a callable.
+		
+		Will do only 1 loop (like IPython's timeit) with no repetitions
+		(unlike IPython) for very slow functions.  For fast functions, only does
+		enough loops to take 5 ms, which seems to produce similar results (on
+		Windows at least), and avoids doing an extraneous cycle that isn't
+		measured.
+	**/
+	static public function _timeit_fast(?stmt:Dynamic, ?setup:Dynamic, ?repeat:Dynamic):Dynamic;
 	static public function _valfrommode(mode:Dynamic):Dynamic;
 	/**
 		Helper to validate padding for filtfilt
@@ -319,35 +373,43 @@ package scipy.signal.signaltools;
 	**/
 	static public function argsort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -363,7 +425,13 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -428,8 +496,8 @@ package scipy.signal.signaltools;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -490,7 +558,7 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -527,7 +595,7 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -676,6 +744,94 @@ package scipy.signal.signaltools;
 	**/
 	static public function cheby1(N:Dynamic, rp:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
 	/**
+		Find the fastest convolution/correlation method.
+		
+		This primarily exists to be called during the ``method='auto'`` option in
+		`convolve` and `correlate`, but can also be used when performing many
+		convolutions of the same input shapes and dtypes, determining
+		which method to use for all of them, either to avoid the overhead of the
+		'auto' option or to use accurate real-world measurements.
+		
+		Parameters
+		----------
+		in1 : array_like
+		    The first argument passed into the convolution function.
+		in2 : array_like
+		    The second argument passed into the convolution function.
+		mode : str {'full', 'valid', 'same'}, optional
+		    A string indicating the size of the output:
+		
+		    ``full``
+		       The output is the full discrete linear convolution
+		       of the inputs. (Default)
+		    ``valid``
+		       The output consists only of those elements that do not
+		       rely on the zero-padding.
+		    ``same``
+		       The output is the same size as `in1`, centered
+		       with respect to the 'full' output.
+		measure : bool, optional
+		    If True, run and time the convolution of `in1` and `in2` with both
+		    methods and return the fastest. If False (default), predict the fastest
+		    method using precomputed values.
+		
+		Returns
+		-------
+		method : str
+		    A string indicating which convolution method is fastest, either
+		    'direct' or 'fft'
+		times : dict, optional
+		    A dictionary containing the times (in seconds) needed for each method.
+		    This value is only returned if ``measure=True``.
+		
+		See Also
+		--------
+		convolve
+		correlate
+		
+		Notes
+		-----
+		For large n, ``measure=False`` is accurate and can quickly determine the
+		fastest method to perform the convolution.  However, this is not as
+		accurate for small n (when any dimension in the input or output is small).
+		
+		In practice, we found that this function estimates the faster method up to
+		a multiplicative factor of 5 (i.e., the estimated method is *at most* 5
+		times slower than the fastest method). The estimation values were tuned on
+		an early 2015 MacBook Pro with 8GB RAM but we found that the prediction
+		held *fairly* accurately across different machines.
+		
+		If ``measure=True``, time the convolutions. Because this function uses
+		`fftconvolve`, an error will be thrown if it does not support the inputs.
+		There are cases when `fftconvolve` supports the inputs but this function
+		returns `direct` (e.g., to protect against floating point integer
+		precision).
+		
+		.. versionadded:: 0.19
+		
+		Examples
+		--------
+		Estimate the fastest method for a given input:
+		
+		>>> from scipy import signal
+		>>> a = np.random.randn(1000)
+		>>> b = np.random.randn(1000000)
+		>>> method = signal.choose_conv_method(a, b, mode='same')
+		>>> method
+		'fft'
+		
+		This can then be applied to other arrays of the same dtype and shape:
+		
+		>>> c = np.random.randn(1000)
+		>>> d = np.random.randn(1000000)
+		>>> # `method` works with correlate and convolve
+		>>> corr1 = signal.correlate(a, b, mode='same', method=method)
+		>>> corr2 = signal.correlate(c, d, mode='same', method=method)
+		>>> conv1 = signal.convolve(a, b, mode='same', method=method)
+		>>> conv2 = signal.convolve(c, d, mode='same', method=method)
+	**/
+	static public function choose_conv_method(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?measure:Dynamic):String;
+	/**
 		Sort roots based on magnitude.
 		
 		Parameters
@@ -692,7 +848,9 @@ package scipy.signal.signaltools;
 	**/
 	static public function cmplx_sort(p:Dynamic):Dynamic;
 	/**
-		Create an ndarray that is a constant extension of x along an axis.
+		Constant extension at the boundaries of an array
+		
+		Generate a new ndarray that is a constant extension of `x` along an axis.
 		
 		The extension repeats the values at the first and last element of
 		the axis.
@@ -702,16 +860,29 @@ package scipy.signal.signaltools;
 		x : ndarray
 		    The array to be extended.
 		n : int
-		    The number of elements by which to extend x at each end of the axis.
+		    The number of elements by which to extend `x` at each end of the axis.
 		axis : int, optional
-		    The axis along which to extend x.  Default is -1.
+		    The axis along which to extend `x`.  Default is -1.
 		
 		Examples
 		--------
-		>>> a = array([[1.0,2.0,3.0,4.0,5.0], [0.0, 1.0, 4.0, 9.0, 16.0]])
-		>>> _const_ext(a, 2)
-		array([[  1.,   1.,   1.,   2.,   3.,   4.,   5.,   5.,   5.],
-		       [  0.,   0.,   0.,   1.,   4.,   9.,  16.,  16.,  16.]])
+		>>> from scipy.signal._arraytools import const_ext
+		>>> a = np.array([[1, 2, 3, 4, 5], [0, 1, 4, 9, 16]])
+		>>> const_ext(a, 2)
+		array([[ 1,  1,  1,  2,  3,  4,  5,  5,  5],
+		       [ 0,  0,  0,  1,  4,  9, 16, 16, 16]])
+		
+		Constant extension continues with the same values as the endpoints of the
+		array:
+		
+		>>> t = np.linspace(0, 1.5, 100)
+		>>> a = 0.9 * np.sin(2 * np.pi * t**2)
+		>>> b = const_ext(a, 40)
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(arange(-40, 140), b, 'b', lw=1, label='constant extension')
+		>>> plt.plot(arange(100), a, 'r', lw=2, label='original')
+		>>> plt.legend(loc='best')
+		>>> plt.show()
 	**/
 	static public function const_ext(x:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -726,8 +897,6 @@ package scipy.signal.signaltools;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -736,10 +905,25 @@ package scipy.signal.signaltools;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		method : str {'auto', 'direct', 'fft'}, optional
+		    A string indicating which method to use to calculate the convolution.
+		
+		    ``direct``
+		       The convolution is determined directly from sums, the definition of
+		       convolution.
+		    ``fft``
+		       The Fourier Transform is used to perform the convolution by calling
+		       `fftconvolve`.
+		    ``auto``
+		       Automatically chooses direct or Fourier method based on an estimate
+		       of which is faster (default).  See Notes for more detail.
+		
+		       .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -747,10 +931,21 @@ package scipy.signal.signaltools;
 		    An N-dimensional array containing a subset of the discrete linear
 		    convolution of `in1` with `in2`.
 		
-		See also
+		See Also
 		--------
 		numpy.polymul : performs polynomial multiplication (same operation, but
 		                also accepts poly1d objects)
+		choose_conv_method : chooses the fastest appropriate convolution method
+		fftconvolve
+		
+		Notes
+		-----
+		By default, `convolve` and `correlate` use ``method='auto'``, which calls
+		`choose_conv_method` to choose the fastest method using pre-computed
+		values (`choose_conv_method` can also measure real-world timing with a
+		keyword argument). Because `fftconvolve` relies on floating point numbers,
+		there are certain constraints that may force `method=direct` (more detail
+		in `choose_conv_method` docstring).
 		
 		Examples
 		--------
@@ -775,7 +970,7 @@ package scipy.signal.signaltools;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?method:Dynamic):Array<Dynamic>;
 	/**
 		Convolve two 2-dimensional arrays.
 		
@@ -863,8 +1058,6 @@ package scipy.signal.signaltools;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -873,10 +1066,25 @@ package scipy.signal.signaltools;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		method : str {'auto', 'direct', 'fft'}, optional
+		    A string indicating which method to use to calculate the correlation.
+		
+		    ``direct``
+		       The correlation is determined directly from sums, the definition of
+		       correlation.
+		    ``fft``
+		       The Fast Fourier Transform is used to perform the correlation more
+		       quickly (only available for numerical arrays.)
+		    ``auto``
+		       Automatically chooses direct or Fourier method based on an estimate
+		       of which is faster (default).  See `convolve` Notes for more detail.
+		
+		       .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -884,12 +1092,31 @@ package scipy.signal.signaltools;
 		    An N-dimensional array containing a subset of the discrete linear
 		    cross-correlation of `in1` with `in2`.
 		
+		See Also
+		--------
+		choose_conv_method : contains more documentation on `method`.
+		
 		Notes
 		-----
-		The correlation z of two d-dimensional arrays x and y is defined as:
+		The correlation z of two d-dimensional arrays x and y is defined as::
 		
-		  z[...,k,...] = sum[..., i_l, ...]
-		                     x[..., i_l,...] * conj(y[..., i_l + k,...])
+		    z[...,k,...] = sum[..., i_l, ...] x[..., i_l,...] * conj(y[..., i_l - k,...])
+		
+		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')`` then
+		  
+		.. math::
+		
+		      z[k] = (x * y)(k - N + 1) 
+		           = \sum_{l=0}^{||x||-1}x_l y_{l-k+N-1}^{*}
+		
+		for :math:`k = 0, 1, ..., ||x|| + ||y|| - 2`
+		
+		where :math:`||x||` is the length of ``x``, :math:`N = \max(||x||,||y||)`,
+		and :math:`y_m` is 0 when m is outside the range of y.
+		
+		``method='fft'`` only works for numerical arrays as it relies on
+		`fftconvolve`. In certain cases (i.e., arrays of objects or when
+		rounding integers can lose precision), ``method='direct'`` is always used.
 		
 		Examples
 		--------
@@ -917,7 +1144,7 @@ package scipy.signal.signaltools;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?method:Dynamic):Array<Dynamic>;
 	/**
 		Cross-correlate two 2-dimensional arrays.
 		
@@ -1078,7 +1305,7 @@ package scipy.signal.signaltools;
 		>>> recovered
 		array([ 0.,  1.,  0.,  0.,  1.,  1.,  0.,  0.])
 		
-		See also
+		See Also
 		--------
 		numpy.polydiv : performs polynomial division (same operation, but
 		                also accepts poly1d objects)
@@ -1195,27 +1422,41 @@ package scipy.signal.signaltools;
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Create an ndarray that is an even extension of x along an axis.
+		Even extension at the boundaries of an array
+		
+		Generate a new ndarray by making an even extension of `x` along an axis.
 		
 		Parameters
 		----------
 		x : ndarray
 		    The array to be extended.
 		n : int
-		    The number of elements by which to extend x at each end of the axis.
+		    The number of elements by which to extend `x` at each end of the axis.
 		axis : int, optional
-		    The axis along which to extend x.  Default is -1.
+		    The axis along which to extend `x`.  Default is -1.
 		
 		Examples
 		--------
-		>>> a = array([[1.0,2.0,3.0,4.0,5.0], [0.0, 1.0, 4.0, 9.0, 16.0]])
-		>>> _even_ext(a, 2)
-		array([[  3.,   2.,   1.,   2.,   3.,   4.,   5.,   4.,   3.],
-		       [  4.,   1.,   0.,   1.,   4.,   9.,  16.,   9.,   4.]])
+		>>> from scipy.signal._arraytools import even_ext
+		>>> a = np.array([[1, 2, 3, 4, 5], [0, 1, 4, 9, 16]])
+		>>> even_ext(a, 2)
+		array([[ 3,  2,  1,  2,  3,  4,  5,  4,  3],
+		       [ 4,  1,  0,  1,  4,  9, 16,  9,  4]])
+		
+		Even extension is a "mirror image" at the boundaries of the original array:
+		
+		>>> t = np.linspace(0, 1.5, 100)
+		>>> a = 0.9 * np.sin(2 * np.pi * t**2)
+		>>> b = even_ext(a, 40)
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(arange(-40, 140), b, 'b', lw=1, label='even extension')
+		>>> plt.plot(arange(100), a, 'r', lw=2, label='original')
+		>>> plt.legend(loc='best')
+		>>> plt.show()
 	**/
 	static public function even_ext(x:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -1223,6 +1464,17 @@ package scipy.signal.signaltools;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1267,12 +1519,12 @@ package scipy.signal.signaltools;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
@@ -1280,14 +1532,20 @@ package scipy.signal.signaltools;
 	/**
 		Expand the shape of an array.
 		
-		Insert a new axis, corresponding to a given position in the array shape.
+		Insert a new axis that will appear at the `axis` position in the expanded
+		array shape.
+		
+		.. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+		   ``axis > a.ndim`` raised errors or put the new axis where documented.
+		   Those axis values are now deprecated and will raise an AxisError in the
+		   future.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		axis : int
-		    Position (amongst axes) where new axis is to be inserted.
+		    Position in the expanded axes where the new axis is placed.
 		
 		Returns
 		-------
@@ -1297,6 +1555,8 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
+		squeeze : The inverse operation, removing singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
 		doc.indexing, atleast_1d, atleast_2d, atleast_3d
 		
 		Examples
@@ -1383,6 +1643,9 @@ package scipy.signal.signaltools;
 		but can be slower when only a few output values are needed, and can only
 		output float arrays (int or object array inputs will be cast to float).
 		
+		As of v0.19, `convolve` automatically chooses this method or the direct
+		method based on an estimation of which is faster.
+		
 		Parameters
 		----------
 		in1 : array_like
@@ -1412,8 +1675,7 @@ package scipy.signal.signaltools;
 		
 		Examples
 		--------
-		Autocorrelation of white noise is an impulse.  (This is at least 100 times
-		as fast as `convolve`.)
+		Autocorrelation of white noise is an impulse.
 		
 		>>> from scipy import signal
 		>>> sig = np.random.randn(1000)
@@ -1668,6 +1930,7 @@ package scipy.signal.signaltools;
 		--------
 		firwin2
 		firls
+		minimum_phase
 		remez
 		
 		Examples
@@ -1766,13 +2029,13 @@ package scipy.signal.signaltools;
 		--------
 		>>> from scipy import signal
 		>>> signal.get_window('triang', 7)
-		array([ 0.25,  0.5 ,  0.75,  1.  ,  0.75,  0.5 ,  0.25])
+		array([ 0.125,  0.375,  0.625,  0.875,  0.875,  0.625,  0.375])
 		>>> signal.get_window(('kaiser', 4.0), 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 		>>> signal.get_window(4.0, 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 	**/
 	static public function get_window(window:Dynamic, Nx:Dynamic, ?fftbins:Dynamic):Dynamic;
 	/**
@@ -1793,6 +2056,10 @@ package scipy.signal.signaltools;
 		-------
 		xa : ndarray
 		    Analytic signal of `x`, of each 1-D array along `axis`
+		
+		See Also
+		--------
+		scipy.fftpack.hilbert : Return Hilbert transform of a periodic sequence x.
 		
 		Notes
 		-----
@@ -1829,14 +2096,15 @@ package scipy.signal.signaltools;
 		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
 		
 		The amplitude envelope is given by magnitude of the analytic signal. The
-		instantaneous frequency can be obtained by differentiating the instantaneous
-		phase in respect to time. The instantaneous phase corresponds to the phase
-		angle of the analytic signal.
+		instantaneous frequency can be obtained by differentiating the
+		instantaneous phase in respect to time. The instantaneous phase corresponds
+		to the phase angle of the analytic signal.
 		
 		>>> analytic_signal = hilbert(signal)
 		>>> amplitude_envelope = np.abs(analytic_signal)
 		>>> instantaneous_phase = np.unwrap(np.angle(analytic_signal))
-		>>> instantaneous_frequency = np.diff(instantaneous_phase) / (2.0*np.pi) * fs
+		>>> instantaneous_frequency = (np.diff(instantaneous_phase) /
+		...                            (2.0*np.pi) * fs)
 		
 		>>> fig = plt.figure()
 		>>> ax0 = fig.add_subplot(211)
@@ -1854,8 +2122,9 @@ package scipy.signal.signaltools;
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
-		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing,
-		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal
+		       Processing, Third Edition, 2009. Chapter 12.
+		       ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -2105,8 +2374,9 @@ package scipy.signal.signaltools;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		>>> t = np.linspace(-1, 1, 201)
-		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1)
-		...      + 0.18*np.cos(2*np.pi*3.85*t))
+		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) +
+		...      0.1*np.sin(2*np.pi*1.25*t + 1) +
+		...      0.18*np.cos(2*np.pi*3.85*t))
 		>>> xn = x + np.random.randn(len(t)) * 0.08
 		
 		Create an order 3 lowpass butterworth filter:
@@ -2273,7 +2543,7 @@ package scipy.signal.signaltools;
 		    Axis or axes along which the means are computed. The default is to
 		    compute the mean of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a mean is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -2290,7 +2560,7 @@ package scipy.signal.signaltools;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
@@ -2320,6 +2590,9 @@ package scipy.signal.signaltools;
 		example below).  Specifying a higher-precision accumulator using the
 		`dtype` keyword can alleviate this issue.
 		
+		By default, `float16` results are computed using `float32` intermediates
+		for extra precision.
+		
 		Examples
 		--------
 		>>> a = np.array([[1, 2], [3, 4]])
@@ -2336,7 +2609,7 @@ package scipy.signal.signaltools;
 		>>> a[0, :] = 1.0
 		>>> a[1, :] = 0.1
 		>>> np.mean(a)
-		0.546875
+		0.54999924
 		
 		Computing the mean in float64 is more accurate:
 		
@@ -2393,23 +2666,38 @@ package scipy.signal.signaltools;
 	static public function medfilt2d(input:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
-		Generate a new ndarray by making an odd extension of x along an axis.
+		Odd extension at the boundaries of an array
+		
+		Generate a new ndarray by making an odd extension of `x` along an axis.
 		
 		Parameters
 		----------
 		x : ndarray
 		    The array to be extended.
 		n : int
-		    The number of elements by which to extend x at each end of the axis.
+		    The number of elements by which to extend `x` at each end of the axis.
 		axis : int, optional
-		    The axis along which to extend x.  Default is -1.
+		    The axis along which to extend `x`.  Default is -1.
 		
 		Examples
 		--------
-		>>> a = array([[1.0,2.0,3.0,4.0,5.0], [0.0, 1.0, 4.0, 9.0, 16.0]])
-		>>> _odd_ext(a, 2)
-		array([[-1.,  0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.],
-		       [-4., -1,   0.,  1.,  4.,  9., 16., 23., 28.]])
+		>>> from scipy.signal._arraytools import odd_ext
+		>>> a = np.array([[1, 2, 3, 4, 5], [0, 1, 4, 9, 16]])
+		>>> odd_ext(a, 2)
+		array([[-1,  0,  1,  2,  3,  4,  5,  6,  7],
+		       [-4, -1,  0,  1,  4,  9, 16, 23, 28]])
+		
+		Odd extension is a "180 degree rotation" at the endpoints of the original
+		array:
+		
+		>>> t = np.linspace(0, 1.5, 100)
+		>>> a = 0.9 * np.sin(2 * np.pi * t**2)
+		>>> b = odd_ext(a, 40)
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(arange(-40, 140), b, 'b', lw=1, label='odd extension')
+		>>> plt.plot(arange(100), a, 'r', lw=2, label='original')
+		>>> plt.legend(loc='best')
+		>>> plt.show()
 	**/
 	static public function odd_ext(x:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -2874,103 +3162,6 @@ package scipy.signal.signaltools;
 	/**
 		Return the product of array elements over a given axis.
 		
-		Parameters
-		----------
-		a : array_like
-		    Input data.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.  The default,
-		    axis=None, will calculate the product of all the elements in the
-		    input array. If axis is negative it counts from the last to the
-		    first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If axis is a tuple of ints, a product is performed on all of the
-		    axes specified in the tuple instead of a single axis or all the
-		    axes as before.
-		dtype : dtype, optional
-		    The type of the returned array, as well as of the accumulator in
-		    which the elements are multiplied.  The dtype of `a` is used by
-		    default unless `a` has an integer dtype of less precision than the
-		    default platform integer.  In that case, if `a` is signed then the
-		    platform integer is used while if `a` is unsigned then an unsigned
-		    integer of the same precision as the platform integer is used.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the output
-		    values will be cast if necessary.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the input array.
-		
-		    If the default value is passed, then `keepdims` will not be
-		    passed through to the `prod` method of sub-classes of
-		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
-		    exceptions will be raised.
-		
-		Returns
-		-------
-		product_along_axis : ndarray, see `dtype` parameter above.
-		    An array shaped as `a` but with the specified axis removed.
-		    Returns a reference to `out` if specified.
-		
-		See Also
-		--------
-		ndarray.prod : equivalent method
-		numpy.doc.ufuncs : Section "Output arguments"
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.  That means that, on a 32-bit platform:
-		
-		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
-		>>> np.prod(x) #random
-		16
-		
-		The product of an empty array is the neutral element 1:
-		
-		>>> np.prod([])
-		1.0
-		
-		Examples
-		--------
-		By default, calculate the product of all elements:
-		
-		>>> np.prod([1.,2.])
-		2.0
-		
-		Even when the input array is two-dimensional:
-		
-		>>> np.prod([[1.,2.],[3.,4.]])
-		24.0
-		
-		But we can also specify the axis over which to multiply:
-		
-		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
-		array([  2.,  12.])
-		
-		If the type of `x` is unsigned, then the output type is
-		the unsigned platform integer:
-		
-		>>> x = np.array([1, 2, 3], dtype=np.uint8)
-		>>> np.prod(x).dtype == np.uint
-		True
-		
-		If `x` is of a signed integer type, then the output type
-		is the default platform integer:
-		
-		>>> x = np.array([1, 2, 3], dtype=np.int8)
-		>>> np.prod(x).dtype == np.int
-		True
-	**/
-	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	/**
-		Return the product of array elements over a given axis.
-		
 		See Also
 		--------
 		prod : equivalent function; see for details.
@@ -3149,7 +3340,7 @@ package scipy.signal.signaltools;
 		    containing the resampled array and the corresponding resampled
 		    positions.
 		
-		See also
+		See Also
 		--------
 		decimate : Downsample the signal after applying an FIR or IIR filter.
 		resample_poly : Resample using polyphase filtering and an FIR filter.
@@ -3229,7 +3420,7 @@ package scipy.signal.signaltools;
 		resampled_x : array
 		    The resampled array.
 		
-		See also
+		See Also
 		--------
 		decimate : Downsample the signal after applying an FIR or IIR filter.
 		resample : Resample up or down using the FFT method.
@@ -3294,20 +3485,21 @@ package scipy.signal.signaltools;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -3467,7 +3659,7 @@ package scipy.signal.signaltools;
 		k : ndarray
 		    Coefficients of the direct polynomial term.
 		
-		See also
+		See Also
 		--------
 		invresz, residue, unique_roots
 	**/
@@ -3488,7 +3680,7 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		out : ndarray
-		    An array containing the complex roots of the polynomial.
+		    An array containing the roots of the polynomial.
 		
 		Raises
 		------
@@ -3589,6 +3781,12 @@ package scipy.signal.signaltools;
 		placements are sorted according to the non-nan part if it exists.
 		Non-nan values are sorted as before.
 		
+		.. versionadded:: 1.12.0
+		
+		quicksort has been changed to an introsort which will switch
+		heapsort when it does not make enough progress. This makes its
+		worst case O(n*log(n)).
+		
 		Examples
 		--------
 		>>> a = np.array([[1,4],[3,1]])
@@ -3661,7 +3859,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt
+		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt, sosfreqz
 		
 		Notes
 		-----
@@ -3682,8 +3880,7 @@ package scipy.signal.signaltools;
 		>>> from scipy import signal
 		>>> b, a = signal.ellip(13, 0.009, 80, 0.05, output='ba')
 		>>> sos = signal.ellip(13, 0.009, 80, 0.05, output='sos')
-		>>> x = np.zeros(700)
-		>>> x[0] = 1.
+		>>> x = signal.unit_impulse(700)
 		>>> y_tf = signal.lfilter(b, a, x)
 		>>> y_sos = signal.sosfilt(sos, x)
 		>>> plt.plot(y_tf, 'r', label='TF')
@@ -3786,99 +3983,13 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		filtfilt, sosfilt, sosfilt_zi
+		filtfilt, sosfilt, sosfilt_zi, sosfreqz
 		
 		Notes
 		-----
 		.. versionadded:: 0.18.0
 	**/
 	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
-	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.  The default,
-		    axis=None, will sum all of the elements of the input array.  If
-		    axis is negative it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If axis is a tuple of ints, a sum is performed on all of the axes
-		    specified in the tuple instead of a single axis or all the axes as
-		    before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which the
-		    elements are summed.  The dtype of `a` is used by default unless `a`
-		    has an integer dtype of less precision than the default platform
-		    integer.  In that case, if `a` is signed then the platform integer
-		    is used while if `a` is unsigned then an unsigned integer of the
-		    same precision as the platform integer is used.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the output
-		    values will be cast if necessary.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		    If the default value is passed, then `keepdims` will not be
-		    passed through to the `sum` method of sub-classes of
-		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
-		    exceptions will be raised.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Take elements from an array along an axis.
 		
@@ -4000,18 +4111,27 @@ package scipy.signal.signaltools;
 		Parameters
 		----------
 		ar : array_like
-		    Input array. This will be flattened if it is not already 1-D.
+		    Input array. Unless `axis` is specified, this will be flattened if it
+		    is not already 1-D.
 		return_index : bool, optional
-		    If True, also return the indices of `ar` that result in the unique
-		    array.
+		    If True, also return the indices of `ar` (along the specified axis,
+		    if provided, or in the flattened array) that result in the unique array.
 		return_inverse : bool, optional
-		    If True, also return the indices of the unique array that can be used
-		    to reconstruct `ar`.
+		    If True, also return the indices of the unique array (for the specified
+		    axis, if provided) that can be used to reconstruct `ar`.
 		return_counts : bool, optional
-		    If True, also return the number of times each unique value comes up
+		    If True, also return the number of times each unique item appears
 		    in `ar`.
-		
 		    .. versionadded:: 1.9.0
+		axis : int or None, optional
+		    The axis to operate on. If None, `ar` will be flattened beforehand.
+		    Otherwise, duplicate items will be removed along the provided axis,
+		    with all the other axes belonging to the each of the unique elements.
+		    Object arrays or structured arrays that contain objects are not
+		    supported if the `axis` kwarg is used.
+		    .. versionadded:: 1.13.0
+		
+		
 		
 		Returns
 		-------
@@ -4019,14 +4139,13 @@ package scipy.signal.signaltools;
 		    The sorted unique values.
 		unique_indices : ndarray, optional
 		    The indices of the first occurrences of the unique values in the
-		    (flattened) original array. Only provided if `return_index` is True.
+		    original array. Only provided if `return_index` is True.
 		unique_inverse : ndarray, optional
-		    The indices to reconstruct the (flattened) original array from the
+		    The indices to reconstruct the original array from the
 		    unique array. Only provided if `return_inverse` is True.
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
-		
 		    .. versionadded:: 1.9.0
 		
 		See Also
@@ -4041,6 +4160,12 @@ package scipy.signal.signaltools;
 		>>> a = np.array([[1, 1], [2, 3]])
 		>>> np.unique(a)
 		array([1, 2, 3])
+		
+		Return the unique rows of a 2D array
+		
+		>>> a = np.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])
+		>>> np.unique(a, axis=0)
+		array([[1, 0, 0], [2, 3, 4]])
 		
 		Return the indices of the original array that give the unique values:
 		
@@ -4066,7 +4191,7 @@ package scipy.signal.signaltools;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Determine unique roots and their multiplicities from a list of roots.
 		
@@ -4235,14 +4360,14 @@ package scipy.signal.signaltools;
 		van Hemmen, JL, Longtin, A, and Vollmayr, AN. Testing resonating vector
 		    strength: Auditory system, electric fish, and noise.
 		    Chaos 21, 047508 (2011);
-		    doi: 10.1063/1.3670512
+		    :doi:`10.1063/1.3670512`.
 		van Hemmen, JL.  Vector strength after Goldberg, Brown, and von Mises:
 		    biological and mathematical perspectives.  Biol Cybern.
-		    2013 Aug;107(4):385-96. doi: 10.1007/s00422-013-0561-7.
+		    2013 Aug;107(4):385-96. :doi:`10.1007/s00422-013-0561-7`.
 		van Hemmen, JL and Vollmayr, AN.  Resonating vector strength: what happens
 		    when we vary the "probing" frequency while keeping the spike times
 		    fixed.  Biol Cybern. 2013 Aug;107(4):491-94.
-		    doi: 10.1007/s00422-013-0560-8
+		    :doi:`10.1007/s00422-013-0560-8`.
 	**/
 	static public function vectorstrength(events:Dynamic, period:Dynamic):Dynamic;
 	/**
@@ -4257,8 +4382,8 @@ package scipy.signal.signaltools;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -4305,7 +4430,7 @@ package scipy.signal.signaltools;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],

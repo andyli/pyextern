@@ -10,15 +10,18 @@ package tensorflow.contrib.ffmpeg;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Create an op that decodes the contents of an audio file.
+		
+		Note that ffmpeg is free to select the "best" audio track from an mp4.
+		https://trac.ffmpeg.org/wiki/Map
 		
 		Args:
 		  contents: The binary contents of the audio file to decode. This is a
 		      scalar.
 		  file_format: A string specifying which format the contents will conform
-		      to. This can be mp3, ogg, or wav.
+		      to. This can be mp3, mp4, ogg, or wav.
 		  samples_per_second: The number of samples per second that is assumed.
 		      In some cases, resampling will occur to generate the correct sample
 		      rate.
@@ -34,7 +37,6 @@ package tensorflow.contrib.ffmpeg;
 		  audio then an empty tensor will be returned.
 	**/
 	static public function decode_audio(contents:Dynamic, ?file_format:Dynamic, ?samples_per_second:Dynamic, ?channel_count:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Creates an op that encodes an audio file using sampled audio from a tensor.
 		
@@ -51,5 +53,4 @@ package tensorflow.contrib.ffmpeg;
 		  format.
 	**/
 	static public function encode_audio(audio:Dynamic, ?file_format:Dynamic, ?samples_per_second:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 }

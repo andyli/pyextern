@@ -25,23 +25,6 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function AddBackPropAccumulator(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Add the backprop loop that controls the iterations.
-		
-		This is added to the backprop loop. It is used to control the loop
-		termination of the backprop loop. Called in the outer context of
-		this grad context.
-		
-		The pseudocode is:
-		  `n = count; while (n >= 1) { n--; }`
-		
-		Args:
-		  count: The number of iterations for backprop.
-		
-		Returns:
-		  The loop index.
-	**/
-	public function AddBackPropCounter(count:Dynamic):Dynamic;
-	/**
 		This is used for accumulating gradients that are IndexedSlices.
 		
 		This is essentially the equavalent of AddBackPropAccumulator but optimized
@@ -56,6 +39,27 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function AddBackPropIndexedSlicesAccumulator(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Add the backprop loop that controls the iterations.
+		
+		This is added to the backprop loop. It is used to control the loop
+		termination of the backprop loop. Called in the outer context of
+		this grad context.
+		
+		The pseudocode is:
+		  `n = count; while (n >= 1) { n--; }`
+		
+		Note that a control dependency is added to `final_zero` to ensure the
+		correct execution order of stack pop ops.
+		
+		Args:
+		  count: The number of iterations for backprop.
+		  outer_grad_state: The outer grad state. None if not nested.
+		
+		Returns:
+		  The loop index.
+	**/
+	public function AddBackPropLoopCounter(count:Dynamic, outer_grad_state:Dynamic):Dynamic;
+	/**
 		Adds a loop that counts the number of iterations.
 		
 		This is added to the forward loop at the time when we start to
@@ -65,10 +69,20 @@ package tensorflow.python.ops.control_flow_ops;
 		The pseudocode is:
 		  `n = 0; while (_pivot) { n++; }`
 		
+		Note that a control dependency is added to `n` to ensure the correct
+		execution order of stack push ops.
+		
+		Args:
+		  outer_grad_state: The outer grad state. None if not nested.
+		
 		Returns:
 		  The number of iterations taken by the forward loop and the loop index.
 	**/
-	public function AddForwardCounter():Dynamic;
+	public function AddForwardLoopCounter(outer_grad_state:Dynamic):Dynamic;
+	/**
+		Notifies a scope about an operator added to an inner scope.
+	**/
+	public function AddInnerOp(op:Dynamic):Dynamic;
 	public function AddName(name:Dynamic):Dynamic;
 	/**
 		Add `op` to the current context.
@@ -81,7 +95,7 @@ package tensorflow.python.ops.control_flow_ops;
 	/**
 		Add the loop termination condition and body to the graph.
 	**/
-	public function BuildLoop(pred:Dynamic, body:Dynamic, loop_vars:Dynamic):Dynamic;
+	public function BuildLoop(pred:Dynamic, body:Dynamic, loop_vars:Dynamic, shape_invariants:Dynamic):Dynamic;
 	/**
 		Enter this control flow context.
 	**/
@@ -94,22 +108,14 @@ package tensorflow.python.ops.control_flow_ops;
 		Make a list of tensors available in the outer context.
 	**/
 	public function ExitResult(result:Dynamic):Dynamic;
+	/**
+		Returns the pivot node for this context, or None.
+	**/
 	public function GetControlPivot():Dynamic;
 	/**
 		Return the while context containing this context.
 	**/
 	public function GetWhileContext():Dynamic;
-	/**
-		Add a control dependency to the containing WhileContext.
-		
-		The added control dependency ensures that the outputs of this op
-		belong to the WhileContext. Do nothing if the op is not contained
-		in a WhileContext.
-		
-		Args:
-		  op: An operation.
-	**/
-	public function MaybeAddToWhileContext(op:Dynamic):Dynamic;
 	/**
 		Add `op` to the current context.
 		
@@ -122,13 +128,21 @@ package tensorflow.python.ops.control_flow_ops;
 	/**
 		Core: Add the loop termination condition and body to the graph.
 	**/
-	public function _BuildLoop(pred:Dynamic, body:Dynamic, original_loop_vars:Dynamic, loop_vars:Dynamic):Dynamic;
+	public function _BuildLoop(pred:Dynamic, body:Dynamic, original_loop_vars:Dynamic, loop_vars:Dynamic, shape_invariants:Dynamic):Dynamic;
 	public function _FixControlInputsAndContext(enters:Dynamic):Dynamic;
+	/**
+		Makes the values known to this context.
+	**/
 	public function _InitializeValues(values:Dynamic):Dynamic;
+	public function _IsInOuterContext(op:Dynamic):Dynamic;
 	/**
 		Add a control input to the op if it only depends on loop invariants.
 	**/
 	public function _MaybeAddControlDependency(op:Dynamic):Dynamic;
+	/**
+		Remove any external control dependency on this op.
+	**/
+	public function _RemoveExternalControlEdges(op:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -166,14 +180,43 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		"Creates a `WhileContext`.
+		
+		Args:
+		  parallel_iterations: The number of iterations allowed to run in parallel.
+		  back_prop: Whether backprop is enabled for this while loop.
+		  swap_memory: Whether GPU-CPU memory swap is enabled for this loop.
+		  name: Optional name prefix for the returned tensors.
+		  grad_state: The gradient loop state.
+		  context_def: Optional `WhileContextDef` protocol buffer to initialize
+		    the `Whilecontext` python object from.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initialing from protocol buffer.
 	**/
 	@:native("__init__")
-	public function ___init__(parallel_iterations:Dynamic, back_prop:Dynamic, swap_memory:Dynamic, name:Dynamic, ?grad_state:Dynamic):Dynamic;
+	public function ___init__(?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic, ?grad_state:Dynamic, ?context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		"Creates a `WhileContext`.
+		
+		Args:
+		  parallel_iterations: The number of iterations allowed to run in parallel.
+		  back_prop: Whether backprop is enabled for this while loop.
+		  swap_memory: Whether GPU-CPU memory swap is enabled for this loop.
+		  name: Optional name prefix for the returned tensors.
+		  grad_state: The gradient loop state.
+		  context_def: Optional `WhileContextDef` protocol buffer to initialize
+		    the `Whilecontext` python object from.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initialing from protocol buffer.
 	**/
-	public function new(parallel_iterations:Dynamic, back_prop:Dynamic, swap_memory:Dynamic, name:Dynamic, ?grad_state:Dynamic):Void;
+	public function new(?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic, ?grad_state:Dynamic, ?context_def:Dynamic, ?import_scope:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -230,13 +273,71 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		True iff backprop is enabled for this While loop.
+		Returns a `ControlFlowContext` created from `values_def`.
+	**/
+	static public function _from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Creates a new `WhileContext` from arguments.
+		
+		Args:
+		  parallel_iterations: The number of iterations allowed to run in parallel.
+		  back_prop: Whether backprop is enabled for this while loop.
+		  swap_memory: Whether GPU-CPU memory swap is enabled for this loop.
+		  name: Optional name prefix for the returned tensors.
+		
+		Raises:
+		  ValueError: If `parallel_iterations` has invalid value.
+	**/
+	public function _init_from_args(parallel_iterations:Dynamic, back_prop:Dynamic, swap_memory:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Creates a new `WhileContext` from protocol buffer.
+		
+		Args:
+		  context_def: `WhileContextDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+	**/
+	public function _init_from_proto(context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Initializes values and external_values from `ValuesDef` protocol buffer.
+		
+		Args:
+		  values_def: `ValuesDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+	**/
+	public function _init_values_from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Converts the values to a `ValuesDef` protocol buffer.
+		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  A `ValuesDef` protocol buffer.
+	**/
+	public function _to_proto(?export_scope:Dynamic):Dynamic;
+	/**
+		True iff backprop is enabled for this while loop.
 	**/
 	public var back_prop : Dynamic;
+	/**
+		Returns a `WhileContext` object created from `context_def`.
+		
+		Args:
+		  context_def: A `WhileContextDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+		
+		Returns:
+		  A `WhileContext` Python object.
+	**/
+	static public function from_proto(context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
 		The gradient loop state.
 	**/
 	public var grad_state : Dynamic;
+	/**
+		The list of enter tensors for loop variables.
+	**/
+	public var loop_enters : Dynamic;
 	/**
 		The list of exit tensors for loop variables.
 	**/
@@ -255,7 +356,17 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public var pivot : Dynamic;
 	/**
-		True iff GPU-CPU memory swap is enabled for this While loop.
+		True iff GPU-CPU memory swap is enabled for this while loop.
 	**/
 	public var swap_memory : Dynamic;
+	/**
+		Converts a `WhileContext` to a `WhileContextDef` protocol buffer.
+		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  A `WhileContextDef` protocol buffer.
+	**/
+	public function to_proto(?export_scope:Dynamic):Dynamic;
 }

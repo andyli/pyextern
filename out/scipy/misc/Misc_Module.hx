@@ -133,6 +133,10 @@ package scipy.misc;
 		val : int, ndarray
 		    The total number of combinations.
 		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
+		
 		Notes
 		-----
 		- Array arguments accepted only for exact=False case.
@@ -425,8 +429,7 @@ package scipy.misc;
 		    Input array.
 		axis : None or int or tuple of ints, optional
 		    Axis or axes over which the sum is taken. By default `axis` is None,
-		    and all elements are summed. Tuple of ints is not accepted if NumPy
-		    version is lower than 1.7.0.
+		    and all elements are summed.
 		
 		    .. versionadded:: 0.11.0
 		keepdims : bool, optional
@@ -470,7 +473,7 @@ package scipy.misc;
 		
 		Examples
 		--------
-		>>> from scipy.misc import logsumexp
+		>>> from scipy.special import logsumexp
 		>>> a = np.arange(10)
 		>>> np.log(np.sum(np.exp(a)))
 		9.4586297444267107
@@ -514,19 +517,19 @@ package scipy.misc;
 		Returns
 		-------
 		p, q : Polynomial class
-		    The pade approximation of the polynomial defined by `an` is
-		    `p(x)/q(x)`.
+		    The Pade approximation of the polynomial defined by `an` is
+		    ``p(x)/q(x)``.
 		
 		Examples
 		--------
-		>>> from scipy import misc
+		>>> from scipy.interpolate import pade
 		>>> e_exp = [1.0, 1.0, 1.0/2.0, 1.0/6.0, 1.0/24.0, 1.0/120.0]
-		>>> p, q = misc.pade(e_exp, 2)
+		>>> p, q = pade(e_exp, 2)
 		
 		>>> e_exp.reverse()
 		>>> e_poly = np.poly1d(e_exp)
 		
-		Compare ``e_poly(x)`` and the pade approximation ``p(x)/q(x)``
+		Compare ``e_poly(x)`` and the Pade approximation ``p(x)/q(x)``
 		
 		>>> e_poly(1)
 		2.7166666666666668
@@ -537,7 +540,7 @@ package scipy.misc;
 	static public function pade(an:Dynamic, m:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Print or write to a file the source code for a Numpy object.
+		Print or write to a file the source code for a NumPy object.
 		
 		The source code is only returned for objects written in Python. Many
 		functions and classes are defined in C and will therefore not return
@@ -599,12 +602,14 @@ package scipy.misc;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -635,10 +640,10 @@ package scipy.misc;
 	**/
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
 	/**
-		Print the Numpy arrays in the given dictionary.
+		Print the NumPy arrays in the given dictionary.
 		
 		If there is no dictionary passed in or `vardict` is None then returns
-		Numpy arrays in the globals() dictionary (all Numpy arrays in the
+		NumPy arrays in the globals() dictionary (all NumPy arrays in the
 		namespace).
 		
 		Parameters

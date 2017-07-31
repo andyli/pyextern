@@ -13,7 +13,7 @@ package scipy.sparse.linalg._norm;
 	static public var __spec__ : Dynamic;
 	static public function _sparse_frobenius_norm(x:Dynamic):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -21,6 +21,17 @@ package scipy.sparse.linalg._norm;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -48,7 +59,7 @@ package scipy.sparse.linalg._norm;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -144,7 +155,7 @@ package scipy.sparse.linalg._norm;
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -152,9 +163,17 @@ package scipy.sparse.linalg._norm;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------

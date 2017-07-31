@@ -9,7 +9,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.difference;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _negate_sparse(sparse_tensor:Dynamic):Dynamic;
+	static public function _negate_sparse(st:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

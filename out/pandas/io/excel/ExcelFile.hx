@@ -49,6 +49,13 @@ package pandas.io.excel;
 	**/
 	public function new(io:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -103,7 +110,7 @@ package pandas.io.excel;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _parse_excel(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?names:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?has_index_names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?verbose:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _parse_excel(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?names:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?has_index_names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?verbose:Dynamic, ?dtype:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function _should_parse(i:Dynamic, parse_cols:Dynamic):Dynamic;
 	/**
 		close io if necessary

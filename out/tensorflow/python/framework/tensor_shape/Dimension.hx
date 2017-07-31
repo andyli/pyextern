@@ -121,6 +121,13 @@ package tensorflow.python.framework.tensor_shape;
 		Creates a new Dimension with the given value.
 	**/
 	public function new(value:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	/**
 		Returns True if `self` is known to be less than or equal to `other`.
@@ -181,16 +188,18 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are summed as follows:
 		
+		```
 		  Dimension(m)    * Dimension(n)    == Dimension(m * n)
 		  Dimension(m)    * Dimension(None) == Dimension(None)
 		  Dimension(None) * Dimension(n)    == Dimension(None)
 		  Dimension(None) * Dimension(None) == Dimension(None)
+		```
 		
 		Args:
 		  other: Another Dimension.
 		
 		Returns:
-		  A Dimension whose value is the sum of `self` and `other`.
+		  A Dimension whose value is the product of `self` and `other`.
 	**/
 	public function __mul__(other:Dynamic):Dynamic;
 	/**
@@ -285,11 +294,13 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are combined as follows:
 		
+		```python
 		    Dimension(n)   .merge_with(Dimension(n))    == Dimension(n)
 		    Dimension(n)   .merge_with(Dimension(None)) == Dimension(n)
 		    Dimension(None).merge_with(Dimension(n))    == Dimension(n)
 		    Dimension(None).merge_with(Dimension(None)) == Dimension(None)
 		    Dimension(n)   .merge_with(Dimension(m)) raises ValueError for n != m
+		```
 		
 		Args:
 		  other: Another Dimension.

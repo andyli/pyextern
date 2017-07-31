@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package pandas.io.packers;
-typedef _Packer = pandas.msgpack._packer.Packer;
+typedef _Packer = pandas.io.msgpack._packer.Packer;

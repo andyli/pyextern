@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.util;
 @:pythonImport("tensorflow.contrib.util") extern class Util_Module {
-	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -11,7 +10,6 @@ package tensorflow.contrib.util;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Returns the constant value of the given tensor, if efficiently calculable.
 		
@@ -38,25 +36,6 @@ package tensorflow.contrib.util;
 		  TypeError: if tensor is not an ops.Tensor.
 	**/
 	static public function constant_value(tensor:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	/**
-		Generate `__all__` from the docstring of one or more modules.
-		
-		Usage: `make_all(__name__)` or
-		`make_all(__name__, [sys.modules(__name__), other_module])`. The doc string
-		modules must each a docstring, and `__all__` will contain all symbols with
-		`@@` references, where that symbol currently exists in the module named
-		`module_name`.
-		
-		Args:
-		  module_name: The name of the module (usually `__name__`).
-		  doc_string_modules: a list of modules from which to take docstring.
-		  If None, then a list containing only the module named `module_name` is used.
-		
-		Returns:
-		  A list suitable for use as `__all__`.
-	**/
-	static public function make_all(module_name:Dynamic, ?doc_string_modules:Dynamic):Dynamic;
 	/**
 		Create a numpy ndarray from a tensor.
 		
@@ -76,9 +55,10 @@ package tensorflow.contrib.util;
 		Create a TensorProto.
 		
 		Args:
-		  values:    Values to put in the TensorProto.
-		  dtype:     Optional tensor_pb2 DataType value.
-		  shape:     List of integers representing the dimensions of tensor.
+		  values:         Values to put in the TensorProto.
+		  dtype:          Optional tensor_pb2 DataType value.
+		  shape:          List of integers representing the dimensions of tensor.
+		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
 		  A TensorProto. Depending on the type, it may contain data in the
@@ -88,7 +68,8 @@ package tensorflow.contrib.util;
 		
 		Raises:
 		  TypeError:  if unsupported types are provided.
-		  ValueError: if arguments have inappropriate values.
+		  ValueError: if arguments have inappropriate values or if verify_shape is
+		   True and shape of values is not equals to a shape from the argument.
 		
 		make_tensor_proto accepts "values" of a python scalar, a python list, a
 		numpy ndarray, or a numpy scalar.
@@ -110,7 +91,7 @@ package tensorflow.contrib.util;
 		Otherwise, "shape" specifies the tensor's shape and the numpy array
 		can not have more elements than what "shape" specifies.
 	**/
-	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic):Dynamic;
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	/**
 		Collect the list of ops used by a graph.
 		
@@ -123,7 +104,6 @@ package tensorflow.contrib.util;
 		  A list of strings, each naming an op used by the graph.
 	**/
 	static public function ops_used_by_graph_def(graph_def:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Collect the stripped OpDefs for ops used by a graph.
 		

@@ -48,6 +48,13 @@ package numpy.lib._datasource;
 	**/
 	public function new(?destpath:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -116,7 +123,7 @@ package numpy.lib._datasource;
 		return a path to that local file.
 		
 		The search will include possible compressed versions of the file
-		and return the first occurence found.
+		and return the first occurrence found.
 	**/
 	public function _findfile(path:Dynamic):Dynamic;
 	/**

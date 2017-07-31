@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package scipy.spatial._spherical_voronoi;
 @:pythonImport("scipy.spatial._spherical_voronoi") extern class _Spherical_voronoi_Module {
-	static public var HAS_NUMPY_VEC_DET : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.lib.io.tf_record;
 @:pythonImport("tensorflow.python.lib.io.tf_record", "TFRecordCompressionType") extern class TFRecordCompressionType {
+	static public var GZIP : Dynamic;
 	static public var NONE : Dynamic;
 	static public var ZLIB : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -48,6 +49,13 @@ package tensorflow.python.lib.io.tf_record;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

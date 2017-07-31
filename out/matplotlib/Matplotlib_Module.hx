@@ -3,6 +3,7 @@ package matplotlib;
 @:pythonImport("matplotlib") extern class Matplotlib_Module {
 	static public var URL_REGEX : Dynamic;
 	static public var _DATA_DOC_APPENDIX : Dynamic;
+	static public var __bibtex__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -25,6 +26,7 @@ package matplotlib;
 	static public function _decode_filesystem_path(path:Dynamic):Dynamic;
 	static public var _deprecated_ignore_map : Dynamic;
 	static public var _deprecated_map : Dynamic;
+	static public var _deprecated_set : Dynamic;
 	static public var _error_details_fmt : Dynamic;
 	/**
 		Return the location of the cache directory.
@@ -59,6 +61,7 @@ package matplotlib;
 	**/
 	static public function _get_data_path():Dynamic;
 	static public function _get_data_path_cached():Dynamic;
+	static public function _get_extra_test_plugins():Dynamic;
 	/**
 		Find user's home directory if possible.
 		Otherwise, returns None.
@@ -79,6 +82,7 @@ package matplotlib;
 		<http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>`_.
 	**/
 	static public function _get_xdg_config_dir():Dynamic;
+	static public function _init_tests():Dynamic;
 	/**
 		p is a string pointing to a putative writable dir -- return True p
 		is such a string, else False
@@ -86,7 +90,8 @@ package matplotlib;
 	static public function _is_writable_dir(p:Dynamic):Dynamic;
 	static public var _obsolete_set : Dynamic;
 	static public function _open_file_or_url(fname:Dynamic):Dynamic;
-	static public var _python26 : Dynamic;
+	static public var _python27 : Dynamic;
+	static public var _python34 : Dynamic;
 	/**
 		Return :class:`matplotlib.RcParams` from the contents of the given file.
 		
@@ -115,9 +120,9 @@ package matplotlib;
 		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.
 		
-		cyl(arg)
-		cyl(label, itr)
-		cyl(label1=itr1[, label2=itr2[, ...]])
+		cycler(arg)
+		cycler(label, itr)
+		cycler(label1=itr1[, label2=itr2[, ...]])
 		
 		Form 1 simply copies a given `Cycler` object.
 		
@@ -305,9 +310,9 @@ package matplotlib;
 		
 		  rc('font', **font)  # pass in the font dict as kwargs
 		
-		This enables you to easily switch between several configurations.
-		Use :func:`~matplotlib.pyplot.rcdefaults` to restore the default
-		rc params after changes.
+		This enables you to easily switch between several configurations.  Use
+		``matplotlib.style.use('default')`` or :func:`~matplotlib.rcdefaults` to
+		restore the default rc params after changes.
 	**/
 	static public function rc(group:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
@@ -318,8 +323,8 @@ package matplotlib;
 	**/
 	static public function rc_file(fname:Dynamic):Dynamic;
 	/**
-		Restore the default rc params from the original matplotlib rc that
-		was loaded
+		Restore the rc params from the original rc file loaded by Matplotlib.
+		    
 	**/
 	static public function rc_file_defaults():Dynamic;
 	/**
@@ -343,14 +348,18 @@ package matplotlib;
 	**/
 	static public function rc_params_from_file(fname:Dynamic, ?fail_on_error:Dynamic, ?use_default_template:Dynamic):Dynamic;
 	/**
-		Restore the default rc params.  These are not the params loaded by
-		the rc file, but mpl's internal params.  See rc_file_defaults for
-		reloading the default params from the rc file
+		Restore the rc params from Matplotlib's internal defaults.
+		
+		See Also
+		--------
+		rc_file_defaults :
+		    Restore the rc params from the rc file originally loaded by Matplotlib.
+		matplotlib.style.use :
+		    Use a specific style file.  Call ``style.use('default')`` to restore
+		    the default style.
 	**/
 	static public function rcdefaults():Dynamic;
 	/**
-		**DEPRECATED**
-		
 		Reload the module and return it.
 		
 		The module must have been successfully imported before.
@@ -403,6 +412,63 @@ package matplotlib;
 		    when the order and names of *args is clear before runtime!
 	**/
 	static public function unpack_labeled_data(?replace_names:Dynamic, ?replace_all_args:Dynamic, ?label_namer:Dynamic, ?positional_parameter_names:Dynamic):Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Set the matplotlib backend to one of the known backends.
@@ -430,5 +496,4 @@ package matplotlib;
 	static public function use(arg:Dynamic, ?warn:Dynamic, ?force:Dynamic):Dynamic;
 	static public function validate_backend(s:Dynamic):Dynamic;
 	static public var verbose : Dynamic;
-	static public function verify_test_dependencies():Dynamic;
 }

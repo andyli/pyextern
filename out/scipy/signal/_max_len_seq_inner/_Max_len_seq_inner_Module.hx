@@ -6,6 +6,7 @@ package scipy.signal._max_len_seq_inner;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function _max_len_seq_inner(args:haxe.extern.Rest<Dynamic>):Dynamic;

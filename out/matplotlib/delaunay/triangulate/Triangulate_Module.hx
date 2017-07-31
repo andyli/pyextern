@@ -34,7 +34,7 @@ package matplotlib.delaunay.triangulate;
 		Used to display deprecation warning in a standard way.
 		
 		Parameters
-		------------
+		----------
 		since : str
 		    The release at which this API became deprecated.
 		

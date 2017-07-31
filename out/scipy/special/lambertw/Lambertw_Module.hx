@@ -10,7 +10,7 @@ package scipy.special.lambertw;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		_lambertw(x1, x2, x3[, out])
+		_lambertw(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `lambertw` instead.
 	**/
@@ -20,7 +20,7 @@ package scipy.special.lambertw;
 	/**
 		lambertw(z, k=0, tol=1e-8)
 		
-		Lambert W function [1]_.
+		Lambert W function.
 		
 		The Lambert W function `W(z)` is defined as the inverse function
 		of ``w * exp(w)``. In other words, the value of ``W(z)`` is
@@ -70,6 +70,10 @@ package scipy.special.lambertw;
 		asymptotic approximation (O(log(w)) or `O(w)`) as the initial estimate.
 		
 		The definition, implementation and choice of branches is based on [2]_.
+		
+		See Also
+		--------
+		wrightomega : the Wright Omega function
 		
 		References
 		----------

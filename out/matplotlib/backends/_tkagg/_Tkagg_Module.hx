@@ -7,6 +7,5 @@ package matplotlib.backends._tkagg;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _pyobj_addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function tkinit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

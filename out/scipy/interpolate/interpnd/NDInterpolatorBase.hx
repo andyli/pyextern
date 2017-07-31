@@ -62,6 +62,13 @@ package scipy.interpolate.interpnd;
 	**/
 	public function new(points:Dynamic, values:Dynamic, ?fill_value:Dynamic, ?ndim:Dynamic, ?rescale:Dynamic, ?need_contiguous:Dynamic, ?need_values:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

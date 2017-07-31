@@ -6,6 +6,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
+	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
@@ -56,6 +57,13 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -186,6 +194,16 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 	**/
 	public function columns():Dynamic;
 	/**
+		Returns a new DataFrame with all columns not excluded via exclude_keys.
+		
+		Args:
+		  exclude_keys: A list of strings. Each should be the name of a column in
+		    the DataFrame.  These columns will be excluded from the result.
+		Returns:
+		  A new DataFrame containing all columns except those specified.
+	**/
+	public function exclude_columns(exclude_keys:Dynamic):Dynamic;
+	/**
 		Create a `DataFrame` from CSV files.
 		
 		If `has_header` is false, then `column_names` must be specified. If
@@ -298,6 +316,33 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 	**/
 	static public function from_numpy(numpy_array:Dynamic, ?num_threads:Dynamic, ?enqueue_size:Dynamic, ?batch_size:Dynamic, ?queue_capacity:Dynamic, ?min_after_dequeue:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?data_name:Dynamic):Dynamic;
 	/**
+		Creates a `tf.learn.DataFrame` from an `OrderedDict` of `numpy.ndarray`.
+		
+		The returned `DataFrame` contains a column for each key of the dict plus an
+		extra 'index' column. The 'index' column contains the row number. Each of
+		the other columns contains a row from the corresponding array.
+		
+		Args:
+		  ordered_dict_of_arrays: `OrderedDict` of `numpy.ndarray` that serves as a
+		      data source.
+		  num_threads: the number of threads to use for enqueueing.
+		  enqueue_size: the number of rows to enqueue per step.
+		  batch_size: desired batch size.
+		  queue_capacity: capacity of the queue that will store parsed `Example`s
+		  min_after_dequeue: minimum number of elements that can be left by a
+		    dequeue operation. Only used if `shuffle` is true.
+		  shuffle: whether records should be shuffled. Defaults to true.
+		  seed: passed to random shuffle operations. Only used if `shuffle` is true.
+		  data_name: a scope name identifying the data.
+		
+		Returns:
+		  A `tf.learn.DataFrame` that contains batches drawn from the given arrays.
+		
+		Raises:
+		  ValueError: `ordered_dict_of_arrays` contains the reserved name 'index'.
+	**/
+	static public function from_ordereddict(ordered_dict_of_arrays:Dynamic, ?num_threads:Dynamic, ?enqueue_size:Dynamic, ?batch_size:Dynamic, ?queue_capacity:Dynamic, ?min_after_dequeue:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?data_name:Dynamic):Dynamic;
+	/**
 		Create a `tf.learn.DataFrame` from a `pandas.DataFrame`.
 		
 		Args:
@@ -317,6 +362,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 		  `pandas_dataframe`.
 	**/
 	static public function from_pandas(pandas_dataframe:Dynamic, ?num_threads:Dynamic, ?enqueue_size:Dynamic, ?batch_size:Dynamic, ?queue_capacity:Dynamic, ?min_after_dequeue:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?data_name:Dynamic):Dynamic;
+	public function materialize_to_memory(batch_size:Dynamic):Dynamic;
 	/**
 		Builds and runs the columns of the `DataFrame` and yields batches.
 		
@@ -345,7 +391,17 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 		  A dictionary mapping column names to numpy arrays that contain a single
 		  batch of the `DataFrame`.
 	**/
-	public function run_once():Dynamic;
+	public function run_one_batch():Dynamic;
+	/**
+		Creates a new 'Graph` and `Session` and runs a single epoch.
+		
+		Naturally this makes sense only for DataFrames that fit in memory.
+		
+		Returns:
+		  A dictionary mapping column names to numpy arrays that contain a single
+		  epoch of the `DataFrame`.
+	**/
+	public function run_one_epoch():Dynamic;
 	/**
 		Returns a new DataFrame with a subset of columns.
 		
@@ -404,4 +460,36 @@ package tensorflow.contrib.learn.python.learn.dataframe.tensorflow_dataframe;
 		  Two `DataFrame`s containing the partitioned rows.
 	**/
 	public function split(index_series:Dynamic, proportion:Dynamic, ?batch_size:Dynamic):Dynamic;
+	/**
+		Deterministically split a `DataFrame` into two `DataFrame`s.
+		
+		Note this split is only as deterministic as the underlying hash function;
+		see `tf.string_to_hash_bucket_fast`.  The hash function is deterministic
+		for a given binary, but may change occasionally.  The only way to achieve
+		an absolute guarantee that the split `DataFrame`s do not change across runs
+		is to materialize them.
+		
+		Note too that the allocation of a row to one partition or the
+		other is evaluated independently for each row, so the exact number of rows
+		in each partition is binomially distributed.
+		
+		Args:
+		  index_series: a `Series` of unique strings, whose hash will determine the
+		    partitioning; or the name in this `DataFrame` of such a `Series`.
+		    (This `Series` must contain strings because TensorFlow provides hash
+		    ops only for strings, and there are no number-to-string converter ops.)
+		  proportion: The proportion of the rows to select for the 'left'
+		    partition; the remaining (1 - proportion) rows form the 'right'
+		    partition.
+		  batch_size: the batch size to use when rebatching the left and right
+		    `DataFrame`s.  If None (default), the `DataFrame`s are not rebatched;
+		    thus their batches will have variable sizes, according to which rows
+		    are selected from each batch of the original `DataFrame`.
+		  base_batch_size: the batch size to use for materialized data, prior to the
+		    split.
+		
+		Returns:
+		  Two `DataFrame`s containing the partitioned rows.
+	**/
+	public function split_fast(index_series:Dynamic, proportion:Dynamic, batch_size:Dynamic, ?base_batch_size:Dynamic):Dynamic;
 }

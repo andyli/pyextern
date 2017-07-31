@@ -4,6 +4,7 @@ package tensorflow.core.framework.summary_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _HISTOGRAMPROTO : Dynamic;
 	static public var _SUMMARY : Dynamic;
+	static public var _SUMMARYDESCRIPTION : Dynamic;
 	static public var _SUMMARY_AUDIO : Dynamic;
 	static public var _SUMMARY_IMAGE : Dynamic;
 	static public var _SUMMARY_VALUE : Dynamic;

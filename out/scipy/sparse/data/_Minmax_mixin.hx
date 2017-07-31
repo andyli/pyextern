@@ -47,6 +47,13 @@ package scipy.sparse.data;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -101,8 +108,54 @@ package scipy.sparse.data;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _arg_min_or_max(axis:Dynamic, out:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
+	public function _arg_min_or_max_axis(axis:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	public function _min_or_max(axis:Dynamic, out:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
+	/**
+		Return indices of minimum elements along an axis.
+		
+		Implicit zero elements are also taken into account. If there are
+		several maximum values, the index of the first occurrence is returned.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None}, optional
+		    Axis along which the argmax is computed. If None (default), index
+		    of the maximum element in the flatten data is returned.
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
+		
+		Returns
+		-------
+		ind : np.matrix or int
+		    Indices of maximum elements. If matrix, its size along `axis` is 1.
+	**/
+	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Return indices of minimum elements along an axis.
+		
+		Implicit zero elements are also taken into account. If there are
+		several minimum values, the index of the first occurrence is returned.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None}, optional
+		    Axis along which the argmin is computed. If None (default), index
+		    of the minimum element in the flatten data is returned.
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
+		
+		Returns
+		-------
+		 ind : np.matrix or int
+		    Indices of minimum elements. If matrix, its size along `axis` is 1.
+	**/
+	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Return the maximum of the matrix or maximum along an axis.
 		This takes all elements into account, not just the non-zero ones.

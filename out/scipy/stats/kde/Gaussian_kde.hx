@@ -67,6 +67,13 @@ package scipy.stats.kde;
 	**/
 	public function new(dataset:Dynamic, ?bw_method:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -238,11 +245,6 @@ package scipy.stats.kde;
 	public function integrate_kde(other:Dynamic):Dynamic;
 	/**
 		Evaluate the log of the estimated pdf on a provided set of points.
-		
-		Notes
-		-----
-		See `gaussian_kde.evaluate` for more details; this method simply
-		returns ``np.log(gaussian_kde.evaluate(x))``.
 	**/
 	public function logpdf(x:Dynamic):Dynamic;
 	/**

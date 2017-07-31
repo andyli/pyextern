@@ -63,6 +63,13 @@ package matplotlib.colorbar;
 	**/
 	public function new(ax:Dynamic, mappable:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -324,12 +331,15 @@ package matplotlib.colorbar;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Destroy and rebuild the colorbar.  This is
 		intended to become obsolete, and will probably be

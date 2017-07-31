@@ -16,7 +16,8 @@ package tensorflow.python.ops.functional_ops;
 		  input: A list of `Tensor` objects. a list of input tensors of size N + M;
 		  Tout: A list of `tf.DTypes` that has length `>= 1`.
 		    the type list for the input list.
-		  f: . The function we want to compute the gradient for.
+		  f: A function decorated with @Defun.
+		    The function we want to compute the gradient for.
 		
 		    The function 'f' must be a numerical function which takes N inputs and
 		    produces M outputs. Its gradient function 'g', which is computed by
@@ -41,7 +42,6 @@ package tensorflow.python.ops.functional_ops;
 		  a list of output tensors of size N;
 	**/
 	static public function _symbolic_gradient(input:Dynamic, Tout:Dynamic, f:Dynamic, ?name:Dynamic):Dynamic;
-	static public function _symbolic_gradient_shape(op:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -123,7 +123,7 @@ package tensorflow.python.ops.functional_ops;
 	/**
 		map on the list of tensors unpacked from `elems` on dimension 0.
 		
-		The simplest version of `map` repeatedly applies the callable `fn` to a
+		The simplest version of `map_fn` repeatedly applies the callable `fn` to a
 		sequence of elements from first to last. The elements are made of the
 		tensors unpacked from `elems`. `dtype` is the data type of the return
 		value of `fn`. Users must provide `dtype` if it is different from
@@ -143,6 +143,23 @@ package tensorflow.python.ops.functional_ops;
 		`fn` may look like: `fn = lambda t1: return (t1 + 1, t1 - 1)`.  In this case,
 		the `dtype` parameter is not optional: `dtype` must be a type or (possibly
 		nested) tuple of types matching the output of `fn`.
+		
+		To apply a functional operation to the nonzero elements of a SparseTensor
+		one of the following methods is recommended. First, if the function is
+		expressible as TensorFlow ops, use
+		
+		```python
+		  result = SparseTensor(input.indices, fn(input.values), input.dense_shape)
+		```
+		
+		If, however, the function is not expressible as a TensorFlow op, then use
+		
+		```python
+		result = SparseTensor(
+		  input.indices, map_fn(fn, input.values), input.dense_shape)
+		```
+		
+		instead.
 		
 		Args:
 		  fn: The callable to be performed.  It accepts one argument, which will
@@ -169,7 +186,7 @@ package tensorflow.python.ops.functional_ops;
 		
 		Raises:
 		  TypeError: if `fn` is not callable or the structure of the output of
-		    `fn` and `dtype` do not match.
+		    `fn` and `dtype` do not match, or if elems is a SparseTensor.
 		  ValueError: if the lengths of the output of `fn` and `dtype` do not match.
 		
 		Examples:
@@ -229,9 +246,9 @@ package tensorflow.python.ops.functional_ops;
 		
 		Args:
 		  fn: The callable to be performed.  It accepts two arguments.  The first
-		    will have the same (possibly nested) structure as `elems`.  The second
 		    will have the same structure as `initializer` if one is provided,
-		    otherwise it will have the same structure as `elems`.  Its output
+		    otherwise it will have the same structure as `elems`.  The second
+		    will have the same (possibly nested) structure as `elems`.  Its output
 		    must have the same structure as `initializer` if one is provided,
 		    otherwise it must have the same structure as `elems`.
 		  elems: A tensor or (possibly nested) sequence of tensors, each of which

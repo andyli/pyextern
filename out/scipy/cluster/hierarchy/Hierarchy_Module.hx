@@ -117,38 +117,36 @@ package scipy.cluster.hierarchy;
 		-------
 		Z : ndarray
 		    A linkage matrix containing the hierarchical clustering. See
-		    the ``linkage`` function documentation for more information
-		    on its structure.
+		    `linkage` for more information on its structure.
 		
 		See Also
 		--------
 		linkage: for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function average(y:Dynamic):Dynamic;
 	/**
 		Performs centroid/UPGMC linkage.
 		
-		See ``linkage`` for more information on the return structure
-		and algorithm.
+		See `linkage` for more information on the input matrix,
+		return structure, and algorithm.
 		
 		The following are common calling conventions:
 		
 		1. ``Z = centroid(y)``
 		
 		   Performs centroid/UPGMC linkage on the condensed distance
-		   matrix ``y``.  See ``linkage`` for more information on the return
-		   structure and algorithm.
+		   matrix ``y``.
 		
 		2. ``Z = centroid(X)``
 		
 		   Performs centroid/UPGMC linkage on the observation matrix ``X``
-		   using Euclidean distance as the distance metric. See ``linkage``
-		   for more information on the return structure and algorithm.
+		   using Euclidean distance as the distance metric.
 		
 		Parameters
 		----------
 		y : ndarray
-		    A condensed or redundant distance matrix. A condensed
+		    A condensed distance matrix. A condensed
 		    distance matrix is a flat array containing the upper
 		    triangular of the distance matrix. This is the form that
 		    ``pdist`` returns. Alternatively, a collection of
@@ -159,7 +157,7 @@ package scipy.cluster.hierarchy;
 		-------
 		Z : ndarray
 		    A linkage matrix containing the hierarchical clustering. See
-		    the ``linkage`` function documentation for more information
+		    the `linkage` function documentation for more information
 		    on its structure.
 		
 		See Also
@@ -180,12 +178,13 @@ package scipy.cluster.hierarchy;
 		-------
 		Z : ndarray
 		    A linkage matrix containing the hierarchical clustering. See
-		    the ``linkage`` function documentation for more information
+		    the `linkage` function documentation for more information
 		    on its structure.
 		
 		See Also
 		--------
-		linkage
+		linkage: for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function complete(y:Dynamic):Dynamic;
 	/**
@@ -214,7 +213,7 @@ package scipy.cluster.hierarchy;
 		Returns
 		-------
 		c : ndarray
-		    The cophentic correlation distance (if ``y`` is passed).
+		    The cophentic correlation distance (if ``Y`` is passed).
 		d : ndarray
 		    The cophenetic distance matrix in condensed form. The
 		    :math:`ij` th entry is the cophenetic distance between
@@ -293,11 +292,12 @@ package scipy.cluster.hierarchy;
 		
 		The dendrogram illustrates how each cluster is
 		composed by drawing a U-shaped link between a non-singleton
-		cluster and its children. The height of the top of the U-link is
-		the distance between its children clusters. It is also the
+		cluster and its children.  The top of the U-link indicates a
+		cluster merge.  The two legs of the U-link indicate which clusters
+		were merged.  The length of the two legs of the U-link represents
+		the distance between the child clusters.  It is also the
 		cophenetic distance between original observations in the two
-		children clusters. It is expected that the distances in Z[:,2] be
-		monotonic, otherwise crossings appear in the dendrogram.
+		children clusters.
 		
 		Parameters
 		----------
@@ -313,21 +313,23 @@ package scipy.cluster.hierarchy;
 		    large. Truncation is used to condense the dendrogram. There
 		    are several modes:
 		
-		    ``None/'none'``
-		      No truncation is performed (Default).
+		    ``None``
+		      No truncation is performed (default).
+		      Note: ``'none'`` is an alias for ``None`` that's kept for
+		      backward compatibility.
 		
 		    ``'lastp'``
-		      The last ``p`` non-singleton formed in the linkage are the only
-		      non-leaf nodes in the linkage; they correspond to rows
+		      The last ``p`` non-singleton clusters formed in the linkage are the
+		      only non-leaf nodes in the linkage; they correspond to rows
 		      ``Z[n-p-2:end]`` in ``Z``. All other non-singleton clusters are
 		      contracted into leaf nodes.
 		
-		    ``'mlab'``
-		      This corresponds to MATLAB(TM) behavior. (not implemented yet)
-		
-		    ``'level'/'mtica'``
+		    ``'level'``
 		      No more than ``p`` levels of the dendrogram tree are displayed.
-		      This corresponds to Mathematica(TM) behavior.
+		      A "level" includes all nodes with ``p`` merges from the last merge.
+		
+		      Note: ``'mtica'`` is an alias for ``'level'`` that's kept for
+		      backward compatibility.
 		
 		color_threshold : double, optional
 		    For brevity, let :math:`t` be the ``color_threshold``.
@@ -499,6 +501,11 @@ package scipy.cluster.hierarchy;
 		--------
 		linkage, set_link_color_palette
 		
+		Notes
+		-----
+		It is expected that the distances in ``Z[:,2]`` be monotonic, otherwise
+		crossings appear in the dendrogram.
+		
 		Examples
 		--------
 		>>> from scipy.cluster import hierarchy
@@ -528,7 +535,7 @@ package scipy.cluster.hierarchy;
 	static public var division : Dynamic;
 	/**
 		Forms flat clusters from the hierarchical clustering defined by
-		the linkage matrix ``Z``.
+		the given linkage matrix.
 		
 		Parameters
 		----------
@@ -595,8 +602,8 @@ package scipy.cluster.hierarchy;
 		Returns
 		-------
 		fcluster : ndarray
-		    An array of length n. T[i] is the flat cluster number to
-		    which original observation i belongs.
+		    An array of length ``n``. ``T[i]`` is the flat cluster number to
+		    which original observation ``i`` belongs.
 	**/
 	static public function fcluster(Z:Dynamic, t:Dynamic, ?criterion:Dynamic, ?depth:Dynamic, ?R:Dynamic, ?monocrit:Dynamic):Dynamic;
 	/**
@@ -609,8 +616,9 @@ package scipy.cluster.hierarchy;
 		and forms flat clusters using the inconsistency method with `t` as the
 		cut-off threshold.
 		
-		A one-dimensional array T of length n is returned. T[i] is the index
-		of the flat cluster to which the original observation i belongs.
+		A one-dimensional array ``T`` of length ``n`` is returned. ``T[i]`` is
+		the index of the flat cluster to which the original observation ``i``
+		belongs.
 		
 		Parameters
 		----------
@@ -624,7 +632,7 @@ package scipy.cluster.hierarchy;
 		    cluster formation algorithms. See `fcluster` for descriptions.
 		metric : str, optional
 		    The distance metric for calculating pairwise distances. See
-		    `distance.pdist` for descriptions and linkage to verify
+		    ``distance.pdist`` for descriptions and linkage to verify
 		    compatibility with the linkage method.
 		depth : int, optional
 		    The maximum depth for the inconsistency calculation. See
@@ -643,9 +651,13 @@ package scipy.cluster.hierarchy;
 		    A vector of length n. T[i] is the flat cluster number to
 		    which original observation i belongs.
 		
+		See Also
+		--------
+		scipy.spatial.distance.pdist : pairwise distance metrics
+		
 		Notes
 		-----
-		This function is similar to the MATLAB function clusterdata.
+		This function is similar to the MATLAB function ``clusterdata``.
 	**/
 	static public function fclusterdata(X:Dynamic, t:Dynamic, ?criterion:Dynamic, ?metric:Dynamic, ?depth:Dynamic, ?method:Dynamic, ?R:Dynamic):Dynamic;
 	/**
@@ -657,9 +669,9 @@ package scipy.cluster.hierarchy;
 		 * the indices are converted from ``1..N`` to ``0..(N-1)`` form,
 		   and
 		
-		 * a fourth column Z[:,3] is added where Z[i,3] is represents the
+		 * a fourth column ``Z[:,3]`` is added where ``Z[i,3]`` represents the
 		   number of original observations (leaves) in the non-singleton
-		   cluster i.
+		   cluster ``i``.
 		
 		This function is useful when loading in linkages from legacy data
 		files generated by MATLAB.
@@ -672,14 +684,11 @@ package scipy.cluster.hierarchy;
 		Returns
 		-------
 		ZS : ndarray
-		    A linkage matrix compatible with this library.
+		    A linkage matrix compatible with ``scipy.cluster.hierarchy``.
 	**/
 	static public function from_mlab_linkage(Z:Dynamic):Dynamic;
 	/**
-		Calculates inconsistency statistics on a linkage.
-		
-		Note: This function behaves similarly to the MATLAB(TM)
-		inconsistent function.
+		Calculates inconsistency statistics on a linkage matrix.
 		
 		Parameters
 		----------
@@ -702,6 +711,11 @@ package scipy.cluster.hierarchy;
 		    inconsistency coefficient,
 		
 		    .. math:: \frac{\mathtt{Z[i,2]} - \mathtt{R[i,0]}} {R[i,1]}
+		
+		Notes
+		-----
+		This function behaves similarly to the MATLAB(TM) ``inconsistent``
+		function.
 	**/
 	static public function inconsistent(Z:Dynamic, ?d:Dynamic):Dynamic;
 	/**
@@ -742,7 +756,7 @@ package scipy.cluster.hierarchy;
 	/**
 		Returns True if the inconsistency matrix passed is valid.
 		
-		It must be a :math:`n` by 4 numpy array of doubles. The standard
+		It must be a :math:`n` by 4 array of doubles. The standard
 		deviations ``R[:,1]`` must be nonnegative. The link counts
 		``R[:,2]`` must be positive and no greater than :math:`n-1`.
 		
@@ -793,8 +807,8 @@ package scipy.cluster.hierarchy;
 		    When True, throws a Python exception if the linkage
 		    matrix passed is invalid.
 		name : str, optional
-		       This string refers to the variable name of the invalid
-		       linkage matrix.
+		    This string refers to the variable name of the invalid
+		    linkage matrix.
 		
 		Returns
 		-------
@@ -829,7 +843,7 @@ package scipy.cluster.hierarchy;
 		----------
 		Z : ndarray
 		    The hierarchical clustering encoded as a matrix. See
-		    ``linkage`` for more information.
+		    `linkage` for more information.
 		T : ndarray
 		    The flat cluster assignment vector.
 		
@@ -862,7 +876,7 @@ package scipy.cluster.hierarchy;
 		----------
 		Z : ndarray
 		    The hierarchical clustering encoded as a matrix.  `Z` is
-		    a linkage matrix.  See ``linkage`` for more information.
+		    a linkage matrix.  See `linkage` for more information.
 		
 		Returns
 		-------
@@ -871,15 +885,18 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function leaves_list(Z:Dynamic):Dynamic;
 	/**
-		Performs hierarchical/agglomerative clustering on the condensed
-		distance matrix y.
+		Performs hierarchical/agglomerative clustering.
 		
-		y must be a :math:`{n \choose 2}` sized
+		The input y may be either a 1d compressed distance matrix
+		or a 2d array of observation vectors.
+		
+		If y is a 1d compressed distance matrix,
+		then y must be a :math:`{n \choose 2}` sized
 		vector where n is the number of original observations paired
 		in the distance matrix. The behavior of this function is very
 		similar to the MATLAB linkage function.
 		
-		An :math:`(n-1)` by 4  matrix ``Z`` is returned. At the
+		A :math:`(n-1)` by 4 matrix ``Z`` is returned. At the
 		:math:`i`-th iteration, clusters with indices ``Z[i, 0]`` and
 		``Z[i, 1]`` are combined to form cluster :math:`n + i`. A
 		cluster with an index less than :math:`n` corresponds to one of
@@ -1000,20 +1017,20 @@ package scipy.cluster.hierarchy;
 		Parameters
 		----------
 		y : ndarray
-		    A condensed or redundant distance matrix. A condensed distance matrix
+		    A condensed distance matrix. A condensed distance matrix
 		    is a flat array containing the upper triangular of the distance matrix.
 		    This is the form that ``pdist`` returns. Alternatively, a collection of
-		    :math:`m` observation vectors in n dimensions may be passed as an
-		    :math:`m` by :math:`n` array.
+		    :math:`m` observation vectors in :math:`n` dimensions may be passed as an
+		    :math:`m` by :math:`n` array. All elements of the condensed distance matrix
+		    must be finite, i.e. no NaNs or infs.
 		method : str, optional
 		    The linkage algorithm to use. See the ``Linkage Methods`` section below
 		    for full descriptions.
 		metric : str or function, optional
 		    The distance metric to use in the case that y is a collection of
-		    observation vectors; ignored otherwise. See the ``distance.pdist``
+		    observation vectors; ignored otherwise. See the ``pdist``
 		    function for a list of valid distance metrics. A custom distance
-		    function can also be used. See the ``distance.pdist`` function for
-		    details.
+		    function can also be used.
 		
 		Returns
 		-------
@@ -1022,10 +1039,10 @@ package scipy.cluster.hierarchy;
 		
 		Notes
 		-----
-		1. For method 'single' an optimized algorithm called SLINK is implemented,
-		   which has :math:`O(n^2)` time complexity.
+		1. For method 'single' an optimized algorithm based on minimum spanning
+		   tree is implemented. It has time complexity :math:`O(n^2)`.
 		   For methods 'complete', 'average', 'weighted' and 'ward' an algorithm
-		   called nearest-neighbors chain is implemented, which too has time
+		   called nearest-neighbors chain is implemented. It also has time
 		   complexity :math:`O(n^2)`.
 		   For other methods a naive algorithm is implemented with :math:`O(n^3)`
 		   time complexity.
@@ -1037,11 +1054,14 @@ package scipy.cluster.hierarchy;
 		   these distances are in fact Euclidean, otherwise the produced result
 		   will be incorrect.
 		
+		See Also
+		--------
+		scipy.spatial.distance.pdist : pairwise distance metrics
+		
 		References
 		----------
 		.. [1] Daniel Mullner, "Modern hierarchical, agglomerative clustering
-		       algorithms", `arXiv:1109.2378v1 <http://arxiv.org/abs/1109.2378v1>`_
-		       , 2011.
+		       algorithms", :arXiv:`1109.2378v1`.
 	**/
 	static public function linkage(y:Dynamic, ?method:Dynamic, ?metric:Dynamic):Dynamic;
 	/**
@@ -1095,7 +1115,7 @@ package scipy.cluster.hierarchy;
 		----------
 		Z : ndarray
 		    The hierarchical clustering encoded as a matrix. See
-		    ``linkage`` for more information.
+		    `linkage` for more information.
 		R : ndarray
 		    The inconsistency matrix.
 		
@@ -1108,7 +1128,7 @@ package scipy.cluster.hierarchy;
 	/**
 		Performs median/WPGMC linkage.
 		
-		See ``linkage`` for more information on the return structure
+		See `linkage` for more information on the return structure
 		and algorithm.
 		
 		 The following are common calling conventions:
@@ -1122,16 +1142,16 @@ package scipy.cluster.hierarchy;
 		 2. ``Z = median(X)``
 		
 		    Performs median/WPGMC linkage on the observation matrix ``X``
-		    using Euclidean distance as the distance metric. See linkage
+		    using Euclidean distance as the distance metric. See `linkage`
 		    for more information on the return structure and algorithm.
 		
 		Parameters
 		----------
 		y : ndarray
-		    A condensed or redundant distance matrix. A condensed
+		    A condensed distance matrix. A condensed
 		    distance matrix is a flat array containing the upper
 		    triangular of the distance matrix. This is the form that
-		    ``pdist`` returns. Alternatively, a collection of
+		    ``pdist`` returns.  Alternatively, a collection of
 		    m observation vectors in n dimensions may be passed as
 		    a m by n array.
 		
@@ -1143,6 +1163,7 @@ package scipy.cluster.hierarchy;
 		See Also
 		--------
 		linkage: for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function median(y:Dynamic):Dynamic;
 	/**
@@ -1233,6 +1254,7 @@ package scipy.cluster.hierarchy;
 		See Also
 		--------
 		linkage: for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function single(y:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
@@ -1247,7 +1269,7 @@ package scipy.cluster.hierarchy;
 		Parameters
 		----------
 		Z : ndarray
-		    A linkage matrix generated by this library.
+		    A linkage matrix generated by ``scipy.cluster.hierarchy``.
 		
 		Returns
 		-------
@@ -1260,83 +1282,104 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function to_mlab_linkage(Z:Dynamic):Dynamic;
 	/**
-		Converts a hierarchical clustering encoded in the matrix ``Z`` (by
-		linkage) into an easy-to-use tree object.
+		Converts a linkage matrix into an easy-to-use tree object.
 		
-		The reference r to the root ClusterNode object is returned.
+		The reference to the root `ClusterNode` object is returned (by default).
 		
-		Each ClusterNode object has a left, right, dist, id, and count
-		attribute. The left and right attributes point to ClusterNode objects
-		that were combined to generate the cluster. If both are None then
-		the ClusterNode object is a leaf node, its count must be 1, and its
-		distance is meaningless but set to 0.
+		Each `ClusterNode` object has a ``left``, ``right``, ``dist``, ``id``,
+		and ``count`` attribute. The left and right attributes point to
+		ClusterNode objects that were combined to generate the cluster.
+		If both are None then the `ClusterNode` object is a leaf node, its count
+		must be 1, and its distance is meaningless but set to 0.
 		
-		Note: This function is provided for the convenience of the library
+		*Note: This function is provided for the convenience of the library
 		user. ClusterNodes are not used as input to any of the functions in this
-		library.
+		library.*
 		
 		Parameters
 		----------
 		Z : ndarray
-		    The linkage matrix in proper form (see the ``linkage``
+		    The linkage matrix in proper form (see the `linkage`
 		    function documentation).
 		rd : bool, optional
-		    When False, a reference to the root ClusterNode object is
-		    returned.  Otherwise, a tuple (r,d) is returned. ``r`` is a
-		    reference to the root node while ``d`` is a dictionary
-		    mapping cluster ids to ClusterNode references. If a cluster id is
-		    less than n, then it corresponds to a singleton cluster
-		    (leaf node). See ``linkage`` for more information on the
-		    assignment of cluster ids to clusters.
+		    When False (default), a reference to the root `ClusterNode` object is
+		    returned.  Otherwise, a tuple ``(r, d)`` is returned. ``r`` is a
+		    reference to the root node while ``d`` is a list of `ClusterNode`
+		    objects - one per original entry in the linkage matrix plus entries
+		    for all clustering steps.  If a cluster id is
+		    less than the number of samples ``n`` in the data that the linkage
+		    matrix describes, then it corresponds to a singleton cluster (leaf
+		    node).
+		    See `linkage` for more information on the assignment of cluster ids
+		    to clusters.
 		
 		Returns
 		-------
-		L : list
-		    The pre-order traversal.
-	**/
-	static public function to_tree(Z:Dynamic, ?rd:Dynamic):Array<Dynamic>;
-	/**
-		Performs Ward's linkage on a condensed or redundant distance matrix.
+		tree : ClusterNode or tuple (ClusterNode, list of ClusterNode)
+		    If ``rd`` is False, a `ClusterNode`.
+		    If ``rd`` is True, a list of length ``2*n - 1``, with ``n`` the number
+		    of samples.  See the description of `rd` above for more details.
 		
-		See linkage for more information on the return structure
+		See Also
+		--------
+		linkage, is_valid_linkage, ClusterNode
+		
+		Examples
+		--------
+		>>> from scipy.cluster import hierarchy
+		>>> x = np.random.rand(10).reshape(5, 2)
+		>>> Z = hierarchy.linkage(x)
+		>>> hierarchy.to_tree(Z)
+		<scipy.cluster.hierarchy.ClusterNode object at ...
+		>>> rootnode, nodelist = hierarchy.to_tree(Z, rd=True)
+		>>> rootnode
+		<scipy.cluster.hierarchy.ClusterNode object at ...
+		>>> len(nodelist)
+		9
+	**/
+	static public function to_tree(Z:Dynamic, ?rd:Dynamic):Dynamic;
+	/**
+		Performs Ward's linkage on a condensed distance matrix.
+		
+		See `linkage` for more information on the return structure
 		and algorithm.
 		
 		The following are common calling conventions:
 		
 		1. ``Z = ward(y)``
-		   Performs Ward's linkage on the condensed distance matrix ``Z``. See
-		   linkage for more information on the return structure and
-		   algorithm.
+		   Performs Ward's linkage on the condensed distance matrix ``y``.
 		
 		2. ``Z = ward(X)``
 		   Performs Ward's linkage on the observation matrix ``X`` using
-		   Euclidean distance as the distance metric. See linkage for more
-		   information on the return structure and algorithm.
+		   Euclidean distance as the distance metric.
 		
 		Parameters
 		----------
 		y : ndarray
-		    A condensed or redundant distance matrix. A condensed
+		    A condensed distance matrix. A condensed
 		    distance matrix is a flat array containing the upper
 		    triangular of the distance matrix. This is the form that
-		    ``pdist`` returns. Alternatively, a collection of
+		    ``pdist`` returns.  Alternatively, a collection of
 		    m observation vectors in n dimensions may be passed as
 		    a m by n array.
 		
 		Returns
 		-------
 		Z : ndarray
-		    The hierarchical clustering encoded as a linkage matrix.
+		    The hierarchical clustering encoded as a linkage matrix. See
+		    `linkage` for more information on the return structure and
+		    algorithm.
 		
 		See Also
 		--------
 		linkage: for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function ward(y:Dynamic):Dynamic;
 	/**
 		Performs weighted/WPGMA linkage on the condensed distance matrix.
 		
-		See ``linkage`` for more information on the return
+		See `linkage` for more information on the return
 		structure and algorithm.
 		
 		Parameters
@@ -1349,12 +1392,12 @@ package scipy.cluster.hierarchy;
 		-------
 		Z : ndarray
 		    A linkage matrix containing the hierarchical clustering. See
-		    the ``linkage`` function documentation for more information
-		    on its structure.
+		    `linkage` for more information on its structure.
 		
 		See Also
 		--------
 		linkage : for advanced creation of hierarchical clusterings.
+		scipy.spatial.distance.pdist : pairwise distance metrics
 	**/
 	static public function weighted(y:Dynamic):Dynamic;
 }

@@ -62,7 +62,7 @@ package matplotlib.pylab;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -70,6 +70,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -97,7 +108,7 @@ package matplotlib.pylab;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -110,15 +121,14 @@ package matplotlib.pylab;
 		
 		x : sequence of scalar
 		
-		hold : boolean, optional, default: True
+		hold : boolean, optional, *deprecated*, default: True
 		
 		detrend : callable, optional, default: `mlab.detrend_none`
 		    x is detrended by the `detrend` callable. Default is no
 		    normalization.
 		
 		normed : boolean, optional, default: True
-		    if True, normalize the data by the autocorrelation at the 0-th
-		    lag.
+		    if True, input vectors are normalised to unit length.
 		
 		usevlines : boolean, optional, default: True
 		    if True, Axes.vlines is used to plot the vertical lines from the
@@ -139,7 +149,7 @@ package matplotlib.pylab;
 		  - `b` is the x-axis.
 		
 		Other parameters
-		-----------------
+		----------------
 		linestyle : `~matplotlib.lines.Line2D` prop, optional, default: None
 		    Only used if usevlines is False.
 		
@@ -158,23 +168,16 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/xcorr_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function acorr(x:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		add(x1, x2[, out])
+		add(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Add arguments element-wise.
 		
@@ -184,6 +187,17 @@ package matplotlib.pylab;
 		    The arrays to be added.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -315,7 +329,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
@@ -430,31 +444,6 @@ package matplotlib.pylab;
 	**/
 	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Change `dot`, `vdot`, and `inner` to use accelerated BLAS functions.
-		
-		Typically, as a user of Numpy, you do not explicitly call this
-		function. If Numpy is built with an accelerated BLAS, this function is
-		automatically called when Numpy is imported.
-		
-		When Numpy is built with an accelerated BLAS like ATLAS, these
-		functions are replaced to make use of the faster implementations.  The
-		faster implementations only affect float32, float64, complex64, and
-		complex128 arrays. Furthermore, the BLAS API only includes
-		matrix-matrix, matrix-vector, and vector-vector products. Products of
-		arrays with larger dimensionalities use the built in functions and are
-		not accelerated.
-		
-		.. note:: Deprecated in Numpy 1.10
-		          The cblas functions have been integrated into the multarray
-		          module and alterdot now longer does anything. It will be
-		          removed in Numpy 1.11.0.
-		
-		See Also
-		--------
-		restoredot : `restoredot` undoes the effects of `alterdot`.
-	**/
-	static public function alterdot():Dynamic;
-	/**
 		amap(function, sequence[, sequence, ...]) -> array.
 		
 		Works like :func:`map`, but it returns an array.  This is just a
@@ -472,7 +461,7 @@ package matplotlib.pylab;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -484,7 +473,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -556,7 +545,7 @@ package matplotlib.pylab;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -568,7 +557,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -672,33 +661,33 @@ package matplotlib.pylab;
 		Data is padded to a length of *pad_to* and the windowing function
 		*window* is applied to the signal.
 		
-		  *x*: 1-D array or sequence
+		Parameters
+		----------
+		x : 1-D array or sequence
 		    Array or sequence containing the data
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -707,24 +696,15 @@ package matplotlib.pylab;
 		    The default is None, which sets *pad_to* equal to the length of the
 		    input signal (i.e. no padding).
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		Returns the tuple (*spectrum*, *freqs*, *line*):
-		
-		  *spectrum*: 1-D array
-		    The values for the angle spectrum in radians (real valued)
-		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the elements in *spectrum*
-		
-		  *line*: a :class:`~matplotlib.lines.Line2D` instance
-		    The line created by this function
-		
-		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -768,37 +748,41 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		spectrum : 1-D array
+		    The values for the angle spectrum in radians (real valued)
 		
+		freqs : 1-D array
+		    The frequencies corresponding to the elements in *spectrum*
+		
+		line : a :class:`~matplotlib.lines.Line2D` instance
+		    The line created by this function
+		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/spectrum_demo.py
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`magnitude_spectrum`
+		    :func:`angle_spectrum` plots the magnitudes of the corresponding
+		    frequencies.
 		
-		    :func:`magnitude_spectrum`
-		        :func:`angle_spectrum` plots the magnitudes of the
-		        corresponding frequencies.
+		:func:`phase_spectrum`
+		    :func:`phase_spectrum` plots the unwrapped version of this
+		    function.
 		
-		    :func:`phase_spectrum`
-		        :func:`phase_spectrum` plots the unwrapped version of this
-		        function.
+		:func:`specgram`
+		    :func:`specgram` can plot the angle spectrum of segments within the
+		    signal in a colormap.
 		
-		    :func:`specgram`
-		        :func:`specgram` can plot the angle spectrum of segments
-		        within the signal in a colormap.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -978,7 +962,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
@@ -1090,7 +1074,7 @@ package matplotlib.pylab;
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
-		kwargs: any
+		kwargs : any
 		    Additional named arguments to `func1d`.
 		
 		    .. versionadded:: 1.9.0
@@ -1100,9 +1084,10 @@ package matplotlib.pylab;
 		-------
 		apply_along_axis : ndarray
 		    The output array. The shape of `outarr` is identical to the shape of
-		    `arr`, except along the `axis` dimension, where the length of `outarr`
-		    is equal to the size of the return value of `func1d`.  If `func1d`
-		    returns a scalar `outarr` will have one fewer dimensions than `arr`.
+		    `arr`, except along the `axis` dimension. This axis is removed, and
+		    replaced with new dimensions equal to the shape of the return value
+		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    fewer dimensions than `arr`.
 		
 		See Also
 		--------
@@ -1119,7 +1104,7 @@ package matplotlib.pylab;
 		>>> np.apply_along_axis(my_func, 1, b)
 		array([ 2.,  5.,  8.])
 		
-		For a function that doesn't return a scalar, the number of dimensions in
+		For a function that returns a 1D array, the number of dimensions in
 		`outarr` is the same as `arr`.
 		
 		>>> b = np.array([[8,1,7], [4,3,9], [5,2,6]])
@@ -1127,6 +1112,23 @@ package matplotlib.pylab;
 		array([[1, 7, 8],
 		       [3, 4, 9],
 		       [2, 5, 6]])
+		
+		For a function that returns a higher dimensional array, those dimensions
+		are inserted in place of the `axis` dimension.
+		
+		>>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+		>>> np.apply_along_axis(np.diag, -1, b)
+		array([[[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]],
+		
+		       [[4, 0, 0],
+		        [0, 5, 0],
+		        [0, 0, 6]],
+		
+		       [[7, 0, 0],
+		        [0, 8, 0],
+		        [0, 0, 9]]])
 	**/
 	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1163,7 +1165,7 @@ package matplotlib.pylab;
 		Notes
 		------
 		This function is equivalent to tuple axis arguments to reorderable ufuncs
-		with keepdims=True. Tuple axis arguments to ufuncs have been availabe since
+		with keepdims=True. Tuple axis arguments to ufuncs have been available since
 		version 1.7.0.
 		
 		Examples
@@ -1253,7 +1255,7 @@ package matplotlib.pylab;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arccos(x[, out])
+		arccos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse cosine, element-wise.
 		
@@ -1264,10 +1266,17 @@ package matplotlib.pylab;
 		x : array_like
 		    `x`-coordinate on the unit circle.
 		    For real arguments, the domain is [-1, 1].
-		
-		out : ndarray, optional
-		    Array of the same shape as `a`, to store results in. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1319,7 +1328,7 @@ package matplotlib.pylab;
 	**/
 	static public function arccos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arccosh(x[, out])
+		arccosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic cosine, element-wise.
 		
@@ -1327,10 +1336,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array of the same shape as `x`, to store results in.
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1372,7 +1388,7 @@ package matplotlib.pylab;
 	**/
 	static public function arccosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arcsin(x[, out])
+		arcsin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse sine, element-wise.
 		
@@ -1380,10 +1396,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    `y`-coordinate on the unit circle.
-		
-		out : ndarray, optional
-		    Array of the same shape as `x`, in which to store the results.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1429,7 +1452,7 @@ package matplotlib.pylab;
 	**/
 	static public function arcsin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arcsinh(x[, out])
+		arcsinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic sine element-wise.
 		
@@ -1437,9 +1460,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1476,7 +1507,7 @@ package matplotlib.pylab;
 	**/
 	static public function arcsinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan(x[, out])
+		arctan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse tangent, element-wise.
 		
@@ -1485,7 +1516,17 @@ package matplotlib.pylab;
 		Parameters
 		----------
 		x : array_like
-		    Input values.  `arctan` is applied to each element of `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1542,7 +1583,7 @@ package matplotlib.pylab;
 	**/
 	static public function arctan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan2(x1, x2[, out])
+		arctan2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.
 		
@@ -1565,6 +1606,17 @@ package matplotlib.pylab;
 		x2 : array_like, real-valued
 		    `x`-coordinates. `x2` must be broadcastable to match the shape of
 		    `x1` or vice versa.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1619,7 +1671,7 @@ package matplotlib.pylab;
 	**/
 	static public function arctan2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctanh(x[, out])
+		arctanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic tangent element-wise.
 		
@@ -1627,6 +1679,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1771,10 +1834,10 @@ package matplotlib.pylab;
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Perform an indirect partition along the given axis using the algorithm
-		specified by the `kind` keyword. It returns an array of indices of the
-		same shape as `a` that index data along the given axis in partitioned
-		order.
+		Perform an indirect partition along the given axis using the
+		algorithm specified by the `kind` keyword. It returns an array of
+		indices of the same shape as `a` that index data along the given
+		axis in partitioned order.
 		
 		.. versionadded:: 1.8.0
 		
@@ -1783,29 +1846,29 @@ package matplotlib.pylab;
 		a : array_like
 		    Array to sort.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth element will be in its final
-		    sorted position and all smaller elements will be moved before it and
-		    all larger elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all of them into
-		    their sorted position at once.
+		    Element index to partition by. The k-th element will be in its
+		    final sorted position and all smaller elements will be moved
+		    before it and all larger elements behind it. The order all
+		    elements in the partitions is undefined. If provided with a
+		    sequence of k-th it will partition all of them into their sorted
+		    position at once.
 		axis : int or None, optional
-		    Axis along which to sort.  The default is -1 (the last axis). If None,
-		    the flattened array is used.
+		    Axis along which to sort. The default is -1 (the last axis). If
+		    None, the flattened array is used.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
-		    but unspecified fields will still be used, in the order in which
-		    they come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc. A single
+		    field can be specified as a string, and not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
 		index_array : ndarray, int
 		    Array of indices that partition `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    In other words, ``a[index_array]`` yields a partitioned `a`.
 		
 		See Also
 		--------
@@ -1985,7 +2048,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		For values exactly halfway between rounded decimal values, Numpy
+		For values exactly halfway between rounded decimal values, NumPy
 		rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
 		-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
 		to the inexact representation of decimal fractions in the IEEE
@@ -2015,35 +2078,43 @@ package matplotlib.pylab;
 	**/
 	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -2059,7 +2130,13 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -2147,7 +2224,7 @@ package matplotlib.pylab;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::
@@ -2359,22 +2436,29 @@ package matplotlib.pylab;
 	/**
 		Add an arrow to the axes.
 		
-		Call signature::
+		Draws arrow on specified axis from (`x`, `y`) to (`x` + `dx`,
+		`y` + `dy`). Uses FancyArrow patch to construct the arrow.
 		
-		   arrow(x, y, dx, dy, **kwargs)
+		Parameters
+		----------
+		x : float
+		    X-coordinate of the arrow base
+		y : float
+		    Y-coordinate of the arrow base
+		dx : float
+		    Length of arrow along x-coordinate
+		dy : float
+		    Length of arrow along y-coordinate
 		
-		Draws arrow on specified axis from (*x*, *y*) to (*x* + *dx*,
-		*y* + *dy*). Uses FancyArrow patch to construct the arrow.
+		Returns
+		-------
+		a : FancyArrow
+		    patches.FancyArrow object
 		
-		The resulting arrow is affected by the axes aspect ratio and limits.
-		This may produce an arrow whose head is not square with its stem. To
-		create an arrow whose head is square with its stem, use
-		:meth:`annotate` for example::
-		
-		    ax.annotate("", xy=(0.5, 0.5), xytext=(0, 0),
-		        arrowprops=dict(arrowstyle="->"))
-		
-		Optional kwargs control the arrow construction and properties:
+		Other Parameters
+		-----------------
+		Optional kwargs (inherited from FancyArrow patch) control the arrow
+		construction and properties:
 		
 		Constructor arguments
 		  *width*: float (default: 0.001)
@@ -2412,7 +2496,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -2432,13 +2516,20 @@ package matplotlib.pylab;
 		  visible: [True | False] 
 		  zorder: any number 
 		
-		**Example:**
+		Notes
+		-----
+		The resulting arrow is affected by the axes aspect ratio and limits.
+		This may produce an arrow whose head is not square with its stem. To
+		create an arrow whose head is square with its stem, use
+		:meth:`annotate` for example::
+		
+		    ax.annotate("", xy=(0.5, 0.5), xytext=(0, 0),
+		        arrowprops=dict(arrowstyle="->"))
+		
+		Examples
+		--------
 		
 		.. plot:: mpl_examples/pylab_examples/arrow_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function arrow(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -2510,8 +2601,8 @@ package matplotlib.pylab;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -2775,7 +2866,7 @@ package matplotlib.pylab;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -2812,7 +2903,7 @@ package matplotlib.pylab;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -2848,7 +2939,7 @@ package matplotlib.pylab;
 		Returns
 		-------
 		res1, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 3``.  Copies are
+		    An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
 		    avoided where possible, and views with three or more dimensions are
 		    returned.  For example, a 1-D array of shape ``(N,)`` becomes a view
 		    of shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a
@@ -2870,7 +2961,7 @@ package matplotlib.pylab;
 		>>> x = np.arange(12.0).reshape(4,3)
 		>>> np.atleast_3d(x).shape
 		(4, 3, 1)
-		>>> np.atleast_3d(x).base is x
+		>>> np.atleast_3d(x).base is x.base  # x is a reshape, so not base itself
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
@@ -2923,9 +3014,16 @@ package matplotlib.pylab;
 		a : array_like
 		    Array containing data to be averaged. If `a` is not an array, a
 		    conversion is attempted.
-		axis : int, optional
-		    Axis along which to average `a`. If `None`, averaging is done over
-		    the flattened array.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which to average `a`.  The default,
+		    axis=None, will average over all of the elements of the input array.
+		    If axis is negative it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If axis is a tuple of ints, averaging is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		weights : array_like, optional
 		    An array of weights associated with the values in `a`. Each value in
 		    `a` contributes to the average according to its associated weight.
@@ -2995,28 +3093,28 @@ package matplotlib.pylab;
 		
 		- ``axes()`` by itself creates a default full ``subplot(111)`` window axis.
 		
-		- ``axes(rect, axisbg='w')`` where *rect* = [left, bottom, width,
-		  height] in normalized (0, 1) units.  *axisbg* is the background
+		- ``axes(rect, facecolor='w')`` where *rect* = [left, bottom, width,
+		  height] in normalized (0, 1) units.  *facecolor* is the background
 		  color for the axis, default white.
 		
 		- ``axes(h)`` where *h* is an axes instance makes *h* the current
 		  axis.  An :class:`~matplotlib.axes.Axes` instance is returned.
 		
-		=======   ==============   ==============================================
-		kwarg     Accepts          Description
-		=======   ==============   ==============================================
-		axisbg    color            the axes background color
-		frameon   [True|False]     display the frame?
-		sharex    otherax          current axes shares xaxis attribute
-		                           with otherax
-		sharey    otherax          current axes shares yaxis attribute
-		                           with otherax
-		polar     [True|False]     use a polar axes?
-		aspect    [str | num]      ['equal', 'auto'] or a number.  If a number
-		                           the ratio of x-unit/y-unit in screen-space.
-		                           Also see
-		                           :meth:`~matplotlib.axes.Axes.set_aspect`.
-		=======   ==============   ==============================================
+		=========   ==============   ==============================================
+		kwarg       Accepts          Description
+		=========   ==============   ==============================================
+		facecolor   color            the axes background color
+		frameon     [True|False]     display the frame?
+		sharex      otherax          current axes shares xaxis attribute
+		                             with otherax
+		sharey      otherax          current axes shares yaxis attribute
+		                             with otherax
+		polar       [True|False]     use a polar axes?
+		aspect      [str | num]      ['equal', 'auto'] or a number.  If a number
+		                             the ratio of x-unit/y-unit in screen-space.
+		                             Also see
+		                             :meth:`~matplotlib.axes.Axes.set_aspect`.
+		=========   ==============   ==============================================
 		
 		Examples:
 		
@@ -3114,21 +3212,10 @@ package matplotlib.pylab;
 		See also
 		--------
 		axhspan : for example plot and source code
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function axhline(?y:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a horizontal span (rectangle) across the axis.
-		
-		Call signature::
-		
-		  axhspan(ymin, ymax, xmin=0, xmax=1, **kwargs)
-		
-		*y* coords are in data units and *x* coords are in axes (relative
-		0-1) units.
 		
 		Draw a horizontal span (rectangle) from *ymin* to *ymax*.
 		With the default values of *xmin* = 0 and *xmax* = 1, this
@@ -3138,17 +3225,26 @@ package matplotlib.pylab;
 		0.5=middle, 1.0=right but the *y* location is in data
 		coordinates.
 		
-		Return value is a :class:`matplotlib.patches.Polygon`
-		instance.
+		Parameters
+		----------
+		ymin : float
+		       Lower limit of the horizontal span in data units.
+		ymax : float
+		       Upper limit of the horizontal span in data units.
+		xmin : float, optional, default: 0
+		       Lower limit of the vertical span in axes (relative
+		       0-1) units.
+		xmax : float, optional, default: 1
+		       Upper limit of the vertical span in axes (relative
+		       0-1) units.
 		
-		Examples:
+		Returns
+		-------
+		Polygon : `~matplotlib.patches.Polygon`
 		
-		* draw a gray rectangle from *y* = 0.25-0.75 that spans the
-		  horizontal extent of the axes::
-		
-		    >>> axhspan(0.25, 0.75, facecolor='0.5', alpha=0.5)
-		
-		Valid kwargs are :class:`~matplotlib.patches.Polygon` properties:
+		Other Parameters
+		----------------
+		kwargs : `~matplotlib.patches.Polygon` properties.
 		
 		  agg_filter: unknown
 		  alpha: float or None 
@@ -3161,7 +3257,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -3181,13 +3277,13 @@ package matplotlib.pylab;
 		  visible: [True | False] 
 		  zorder: any number 
 		
-		**Example:**
+		See Also
+		--------
+		axvspan : Add a vertical span (rectangle) across the axes.
 		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/axhspan_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3278,7 +3374,7 @@ package matplotlib.pylab;
 		
 		
 		Examples
-		---------
+		--------
 		* draw a thick red vline at *x* = 0 that spans the yrange::
 		
 		    >>> axvline(linewidth=4, color='r')
@@ -3340,81 +3436,54 @@ package matplotlib.pylab;
 		See also
 		--------
 		axhspan : for example plot and source code
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function axvline(?x:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a vertical span (rectangle) across the axes.
 		
-		Call signature::
-		
-		  axvspan(xmin, xmax, ymin=0, ymax=1, **kwargs)
-		
-		*x* coords are in data units and *y* coords are in axes (relative
-		0-1) units.
-		
-		Draw a vertical span (rectangle) from *xmin* to *xmax*.  With
-		the default values of *ymin* = 0 and *ymax* = 1, this always
+		Draw a vertical span (rectangle) from `xmin` to `xmax`.  With
+		the default values of `ymin` = 0 and `ymax` = 1. This always
 		spans the yrange, regardless of the ylim settings, even if you
 		change them, e.g., with the :meth:`set_ylim` command.  That is,
 		the vertical extent is in axes coords: 0=bottom, 0.5=middle,
-		1.0=top but the *y* location is in data coordinates.
+		1.0=top but the y location is in data coordinates.
 		
-		Return value is the :class:`matplotlib.patches.Polygon`
-		instance.
+		Parameters
+		----------
+		xmin : scalar
+		    Number indicating the first X-axis coordinate of the vertical
+		    span rectangle in data units.
+		xmax : scalar
+		    Number indicating the second X-axis coordinate of the vertical
+		    span rectangle in data units.
+		ymin : scalar, optional
+		    Number indicating the first Y-axis coordinate of the vertical
+		    span rectangle in relative Y-axis units (0-1). Default to 0.
+		ymax : scalar, optional
+		    Number indicating the second Y-axis coordinate of the vertical
+		    span rectangle in relative Y-axis units (0-1). Default to 1.
 		
-		Examples:
+		Returns
+		-------
+		rectangle : matplotlib.patches.Polygon
+		    Vertical span (rectangle) from (xmin, ymin) to (xmax, ymax).
 		
-		* draw a vertical green translucent rectangle from x=1.25 to 1.55 that
-		  spans the yrange of the axes::
+		Other Parameters
+		----------------
+		**kwargs
+		    Optional parameters are properties of the class
+		    matplotlib.patches.Polygon.
 		
-		    >>> axvspan(1.25, 1.55, facecolor='g', alpha=0.5)
+		See Also
+		--------
+		axhspan
 		
-		Valid kwargs are :class:`~matplotlib.patches.Polygon`
-		properties:
+		Examples
+		--------
+		Draw a vertical, green, translucent rectangle from x = 1.25 to
+		x = 1.55 that spans the yrange of the axes.
 		
-		  agg_filter: unknown
-		  alpha: float or None 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False]  or None for default 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  capstyle: ['butt' | 'round' | 'projecting'] 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: matplotlib color spec
-		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fill: [True | False] 
-		  gid: an id string 
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
-		  joinstyle: ['miter' | 'round' | 'bevel'] 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float or None for default 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  zorder: any number 
-		
-		.. seealso::
-		
-		    :meth:`axhspan`
-		        for example plot and source code
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		>>> axvspan(1.25, 1.55, facecolor='g', alpha=0.5)
 	**/
 	static public function axvspan(xmin:Dynamic, xmax:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3477,7 +3546,7 @@ package matplotlib.pylab;
 		    dictionary of kwargs to be passed to errorbar method. *ecolor* and
 		    *capsize* may be specified here rather than as independent kwargs.
 		
-		align : {'edge',  'center'}, optional
+		align : {'center', 'edge'}, optional
 		    If 'edge', aligns bars by their left edges (for vertical bars) and
 		    by their bottom edges (for horizontal bars). If 'center', interpret
 		    the `left` argument as the coordinates of the centers of the bars.
@@ -3519,7 +3588,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -3550,19 +3619,12 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/bar_stacked.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'linewidth', 'edgecolor', 'tick_label', 'left', 'ecolor', 'color', 'bottom', 'height', 'xerr', 'yerr', 'width'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'bottom', 'color', 'ecolor', 'edgecolor', 'height', 'left', 'linewidth', 'tick_label', 'width', 'xerr', 'yerr'.
 	**/
 	static public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3719,7 +3781,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -3740,19 +3802,12 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/barb_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function barbs(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3781,7 +3836,7 @@ package matplotlib.pylab;
 		    the x coordinates of the left sides of the bars
 		
 		Returns
-		--------
+		-------
 		`matplotlib.patches.Rectangle` instances.
 		
 		Other parameters
@@ -3817,10 +3872,12 @@ package matplotlib.pylab;
 		    dictionary of kwargs to be passed to errorbar method. `ecolor` and
 		    `capsize` may be specified here rather than as independent kwargs.
 		
-		align : ['edge' | 'center'], optional, default: 'edge'
-		    If `edge`, aligns bars by their left edges (for vertical bars) and
-		    by their bottom edges (for horizontal bars). If `center`, interpret
-		    the `left` argument as the coordinates of the centers of the bars.
+		align : {'center', 'edge'}, optional
+		    If 'edge', aligns bars by their left edges (for vertical
+		    bars) and by their bottom edges (for horizontal bars). If
+		    'center', interpret the `bottom` argument as the
+		    coordinates of the centers of the bars.  To align on the
+		    align bars on the top edge pass a negative 'height'.
 		
 		log : boolean, optional, default: False
 		    If true, sets the axis to be log scale
@@ -3848,7 +3905,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -3871,10 +3928,6 @@ package matplotlib.pylab;
 		See also
 		--------
 		bar: Plot a vertical bar plot.
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function barh(bottom:Dynamic, width:Dynamic, ?height:Dynamic, ?left:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3933,7 +3986,6 @@ package matplotlib.pylab;
 		.. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 		
-		
 		Examples
 		--------
 		>>> np.bartlett(12)
@@ -3981,7 +4033,7 @@ package matplotlib.pylab;
 		Parameters
 		----------
 		number : int
-		    The value to convert. Only positive values are handled.
+		    The value to convert. Positive and negative values are handled.
 		base : int, optional
 		    Convert `number` to the `base` number system. The valid range is 2-36,
 		    the default value is 2.
@@ -4087,20 +4139,20 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		a : float
+		a : float or array_like of floats
 		    Alpha, non-negative.
-		b : float
+		b : float or array_like of floats
 		    Beta, non-negative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` and ``b`` are both scalars.
+		    Otherwise, ``np.broadcast(a, b).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of the given shape, containing values drawn from a
-		    Beta distribution.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized beta distribution.
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4121,8 +4173,18 @@ package matplotlib.pylab;
 		num : int
 		    Only an integer decimal number can be used.
 		width : int, optional
-		    The length of the returned string if `num` is positive, the length of
-		    the two's complement if `num` is negative.
+		    The length of the returned string if `num` is positive, or the length
+		    of the two's complement if `num` is negative, provided that `width` is
+		    at least a sufficient number of bits for `num` to be represented in the
+		    designated form.
+		
+		    If the `width` value is insufficient, it will be ignored, and `num` will
+		    be returned in binary (`num` > 0) or two's complement (`num` < 0) form
+		    with its width equal to the minimum number of bits needed to represent
+		    the number in the designated form. This behavior is deprecated and will
+		    later raise an error.
+		
+		    .. deprecated:: 1.12.0
 		
 		Returns
 		-------
@@ -4133,6 +4195,7 @@ package matplotlib.pylab;
 		--------
 		base_repr: Return a string representation of a number in the given base
 		           system.
+		bin: Python's built-in binary representation generator of an integer.
 		
 		Notes
 		-----
@@ -4156,12 +4219,14 @@ package matplotlib.pylab;
 		The two's complement is returned when the input number is negative and
 		width is specified:
 		
-		>>> np.binary_repr(-3, width=4)
-		'1101'
+		>>> np.binary_repr(-3, width=3)
+		'101'
+		>>> np.binary_repr(-3, width=5)
+		'11101'
 	**/
 	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
-		bincount(x, weights=None, minlength=None)
+		bincount(x, weights=None, minlength=0)
 		
 		Count number of occurrences of each value in array of non-negative ints.
 		
@@ -4195,7 +4260,7 @@ package matplotlib.pylab;
 		------
 		ValueError
 		    If the input is not 1-dimensional, or contains elements with negative
-		    values, or if `minlength` is non-positive.
+		    values, or if `minlength` is negative.
 		TypeError
 		    If the type of the input is float or complex.
 		
@@ -4243,24 +4308,27 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		n : float (but truncated to an integer)
-		        parameter, >= 0.
-		p : float
-		        parameter, >= 0 and <=1.
+		n : int or array_like of ints
+		    Parameter of the distribution, >= 0. Floats are also accepted,
+		    but they will be truncated to integers.
+		p : float or array_like of floats
+		    Parameter of the distribution, >= 0 and <=1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``n`` and ``p`` are both scalars.
+		    Otherwise, ``np.broadcast(n, p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized binomial distribution, where
+		    each sample is equal to the number of successes over the n trials.
 		
 		See Also
 		--------
-		scipy.stats.distributions.binom : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.binom : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -4290,7 +4358,7 @@ package matplotlib.pylab;
 		.. [4] Weisstein, Eric W. "Binomial Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/BinomialDistribution.html
-		.. [5] Wikipedia, "Binomial-distribution",
+		.. [5] Wikipedia, "Binomial distribution",
 		       http://en.wikipedia.org/wiki/Binomial_distribution
 		
 		Examples
@@ -4313,7 +4381,7 @@ package matplotlib.pylab;
 	**/
 	static public function binomial(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_and(x1, x2[, out])
+		bitwise_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise AND of two arrays element-wise.
 		
@@ -4325,6 +4393,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4364,7 +4443,7 @@ package matplotlib.pylab;
 	**/
 	static public function bitwise_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		invert(x[, out])
+		invert(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute bit-wise inversion, or bit-wise NOT, element-wise.
 		
@@ -4381,8 +4460,19 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4444,7 +4534,7 @@ package matplotlib.pylab;
 	**/
 	static public function bitwise_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_or(x1, x2[, out])
+		bitwise_or(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise OR of two arrays element-wise.
 		
@@ -4456,9 +4546,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4503,7 +4601,7 @@ package matplotlib.pylab;
 	**/
 	static public function bitwise_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_xor(x1, x2[, out])
+		bitwise_xor(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise XOR of two arrays element-wise.
 		
@@ -4515,6 +4613,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4649,13 +4758,159 @@ package matplotlib.pylab;
 	**/
 	static public function blackman(M:Dynamic):Dynamic;
 	/**
+		Assemble an nd-array from nested lists of blocks.
+		
+		Blocks in the innermost lists are concatenated (see `concatenate`) along
+		the last dimension (-1), then these are concatenated along the
+		second-last dimension (-2), and so on until the outermost list is reached.
+		
+		Blocks can be of any dimension, but will not be broadcasted using the normal
+		rules. Instead, leading axes of size 1 are inserted, to make ``block.ndim``
+		the same for all blocks. This is primarily useful for working with scalars,
+		and means that code like ``np.block([v, 1])`` is valid, where
+		``v.ndim == 1``.
+		
+		When the nested list is two levels deep, this allows block matrices to be
+		constructed from their components.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		arrays : nested list of array_like or scalars (but not tuples)
+		    If passed a single ndarray or scalar (a nested list of depth 0), this
+		    is returned unmodified (and not copied).
+		
+		    Elements shapes must match along the appropriate axes (without
+		    broadcasting), but leading 1s will be prepended to the shape as
+		    necessary to make the dimensions match.
+		
+		Returns
+		-------
+		block_array : ndarray
+		    The array assembled from the given blocks.
+		
+		    The dimensionality of the output is equal to the greatest of:
+		    * the dimensionality of all the inputs
+		    * the depth to which the input list is nested
+		
+		Raises
+		------
+		ValueError
+		    * If list depths are mismatched - for instance, ``[[a, b], c]`` is
+		      illegal, and should be spelt ``[[a, b], [c]]``
+		    * If lists are empty - for instance, ``[[a, b], []]``
+		
+		See Also
+		--------
+		concatenate : Join a sequence of arrays together.
+		stack : Stack arrays in sequence along a new dimension.
+		hstack : Stack arrays in sequence horizontally (column wise).
+		vstack : Stack arrays in sequence vertically (row wise).
+		dstack : Stack arrays in sequence depth wise (along third dimension).
+		vsplit : Split array into a list of multiple sub-arrays vertically.
+		
+		Notes
+		-----
+		
+		When called with only scalars, ``np.block`` is equivalent to an ndarray
+		call. So ``np.block([[1, 2], [3, 4]])`` is equivalent to
+		``np.array([[1, 2], [3, 4]])``.
+		
+		This function does not enforce that the blocks lie on a fixed grid.
+		``np.block([[a, b], [c, d]])`` is not restricted to arrays of the form::
+		
+		    AAAbb
+		    AAAbb
+		    cccDD
+		
+		But is also allowed to produce, for some ``a, b, c, d``::
+		
+		    AAAbb
+		    AAAbb
+		    cDDDD
+		
+		Since concatenation happens along the last axis first, `block` is _not_
+		capable of producing the following directly::
+		
+		    AAAbb
+		    cccbb
+		    cccDD
+		
+		Matlab's "square bracket stacking", ``[A, B, ...; p, q, ...]``, is
+		equivalent to ``np.block([[A, B, ...], [p, q, ...]])``.
+		
+		Examples
+		--------
+		The most common use of this function is to build a block matrix
+		
+		>>> A = np.eye(2) * 2
+		>>> B = np.eye(3) * 3
+		>>> np.block([
+		...     [A,               np.zeros((2, 3))],
+		...     [np.ones((3, 2)), B               ]
+		... ])
+		array([[ 2.,  0.,  0.,  0.,  0.],
+		       [ 0.,  2.,  0.,  0.,  0.],
+		       [ 1.,  1.,  3.,  0.,  0.],
+		       [ 1.,  1.,  0.,  3.,  0.],
+		       [ 1.,  1.,  0.,  0.,  3.]])
+		
+		With a list of depth 1, `block` can be used as `hstack`
+		
+		>>> np.block([1, 2, 3])              # hstack([1, 2, 3])
+		array([1, 2, 3])
+		
+		>>> a = np.array([1, 2, 3])
+		>>> b = np.array([2, 3, 4])
+		>>> np.block([a, b, 10])             # hstack([a, b, 10])
+		array([1, 2, 3, 2, 3, 4, 10])
+		
+		>>> A = np.ones((2, 2), int)
+		>>> B = 2 * A
+		>>> np.block([A, B])                 # hstack([A, B])
+		array([[1, 1, 2, 2],
+		       [1, 1, 2, 2]])
+		
+		With a list of depth 2, `block` can be used in place of `vstack`:
+		
+		>>> a = np.array([1, 2, 3])
+		>>> b = np.array([2, 3, 4])
+		>>> np.block([[a], [b]])             # vstack([a, b])
+		array([[1, 2, 3],
+		       [2, 3, 4]])
+		
+		>>> A = np.ones((2, 2), int)
+		>>> B = 2 * A
+		>>> np.block([[A], [B]])             # vstack([A, B])
+		array([[1, 1],
+		       [1, 1],
+		       [2, 2],
+		       [2, 2]])
+		
+		It can also be used in places of `atleast_1d` and `atleast_2d`
+		
+		>>> a = np.array(0)
+		>>> b = np.array([1])
+		>>> np.block([a])                    # atleast_1d(a)
+		array([0])
+		>>> np.block([b])                    # atleast_1d(b)
+		array([1])
+		
+		>>> np.block([[a]])                  # atleast_2d(a)
+		array([[0]])
+		>>> np.block([[b]])                  # atleast_2d(b)
+		array([[1]])
+	**/
+	static public function block(arrays:Dynamic):Dynamic;
+	/**
 		Build a matrix object from a string, nested sequence, or array.
 		
 		Parameters
 		----------
 		obj : str or array_like
-		    Input data.  Names of variables in the current scope may be
-		    referenced, even if `obj` is a string.
+		    Input data. If a string, variables in the current scope may be
+		    referenced by name.
 		ldict : dict, optional
 		    A dictionary that replaces local operands in current frame.
 		    Ignored if `obj` is not a string or `gdict` is `None`.
@@ -4670,7 +4925,9 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		matrix
+		block :
+		    A generalization of this function for N-d arrays, that returns normal
+		    ndarrays.
 		
 		Examples
 		--------
@@ -4713,17 +4970,6 @@ package matplotlib.pylab;
 	/**
 		Make a box and whisker plot.
 		
-		Call signature::
-		
-		  boxplot(self, x, notch=None, sym=None, vert=None, whis=None,
-		          positions=None, widths=None, patch_artist=False,
-		          bootstrap=None, usermedians=None, conf_intervals=None,
-		          meanline=False, showmeans=False, showcaps=True,
-		          showbox=True, showfliers=True, boxprops=None,
-		          labels=None, flierprops=None, medianprops=None,
-		          meanprops=None, capprops=None, whiskerprops=None,
-		          manage_xticks=True, autorange=False):
-		
 		Make a box and whisker plot for each column of ``x`` or each
 		vector in sequence ``x``.  The box extends from the lower to
 		upper quartile values of the data, with a line at the median.
@@ -4737,7 +4983,19 @@ package matplotlib.pylab;
 		
 		notch : bool, optional (False)
 		    If `True`, will produce a notched box plot. Otherwise, a
-		    rectangular boxplot is produced.
+		    rectangular boxplot is produced. The notches represent the
+		    confidence interval (CI) around the median. See the entry
+		    for the ``bootstrap`` parameter for information regarding
+		    how the locations of the notches are computed.
+		
+		    .. note::
+		
+		        In cases where the values of the CI are less than the
+		        lower quartile or greater than the upper quartile, the
+		        notches will extend beyond the box, giving it a
+		        distinctive "flipped" appearance. This is expected
+		        behavior and consistent with other statistical
+		        visualization packages.
 		
 		sym : str, optional
 		    The default symbol for flier points. Enter an empty string
@@ -4750,9 +5008,12 @@ package matplotlib.pylab;
 		    everything is drawn horizontally.
 		
 		whis : float, sequence, or string (default = 1.5)
-		    As a float, determines the reach of the whiskers past the
-		    first and third quartiles (e.g., Q3 + whis*IQR,
-		    IQR = interquartile range, Q3-Q1). Beyond the whiskers, data
+		    As a float, determines the reach of the whiskers to the beyond the
+		    first and third quartiles. In other words, where IQR is the
+		    interquartile range (`Q3-Q1`), the upper whisker will extend to
+		    last datum less than `Q3 + whis*IQR`). Similarly, the lower whisker
+		    will extend to the first datum greater than `Q1 - whis*IQR`.
+		    Beyond the whiskers, data
 		    are considered outliers and are plotted as individual
 		    points. Set this to an unreasonably high value to force the
 		    whiskers to show the min and max values. Alternatively, set
@@ -4763,13 +5024,13 @@ package matplotlib.pylab;
 		
 		bootstrap : int, optional
 		    Specifies whether to bootstrap the confidence intervals
-		    around the median for notched boxplots. If `bootstrap` is None,
-		    no bootstrapping is performed, and notches are calculated
-		    using a Gaussian-based asymptotic approximation (see McGill,
-		    R., Tukey, J.W., and Larsen, W.A., 1978, and Kendall and
-		    Stuart, 1967). Otherwise, bootstrap specifies the number of
-		    times to bootstrap the median to determine its 95%
-		    confidence intervals. Values between 1000 and 10000 are
+		    around the median for notched boxplots. If ``bootstrap`` is
+		    None, no bootstrapping is performed, and notches are
+		    calculated using a Gaussian-based asymptotic approximation
+		    (see McGill, R., Tukey, J.W., and Larsen, W.A., 1978, and
+		    Kendall and Stuart, 1967). Otherwise, bootstrap specifies
+		    the number of times to bootstrap the median to determine its
+		    95% confidence intervals. Values between 1000 and 10000 are
 		    recommended.
 		
 		usermedians : array-like, optional
@@ -4822,24 +5083,31 @@ package matplotlib.pylab;
 		    ``shownotches`` is also True. Otherwise, means will be shown
 		    as points.
 		
+		zorder : scalar, optional (None)
+		    Sets the zorder of the boxplot.
+		
 		Other Parameters
 		----------------
-		The following boolean options toggle the drawing of individual
-		components of the boxplots:
-		    - showcaps: the caps on the ends of whiskers
-		      (default is True)
-		    - showbox: the central box (default is True)
-		    - showfliers: the outliers beyond the caps (default is True)
-		    - showmeans: the arithmetic means (default is False)
-		
-		The remaining options can accept dictionaries that specify the
-		style of the individual artists:
-		    - capprops
-		    - boxprops
-		    - whiskerprops
-		    - flierprops
-		    - medianprops
-		    - meanprops
+		showcaps : bool, optional (True)
+		    Show the caps on the ends of whiskers.
+		showbox : bool, optional (True)
+		    Show the central box.
+		showfliers : bool, optional (True)
+		    Show the outliers beyond the caps.
+		showmeans : bool, optional (False)
+		    Show the arithmetic means.
+		capprops : dict, optional (None)
+		    Specifies the style of the caps.
+		boxprops : dict, optional (None)
+		    Specifies the style of the box.
+		whiskerprops : dict, optional (None)
+		    Specifies the style of the whiskers.
+		flierprops : dict, optional (None)
+		    Specifies the style of the fliers.
+		medianprops : dict, optional (None)
+		    Specifies the style of the median.
+		meanprops : dict, optional (None)
+		    Specifies the style of the mean.
 		
 		Returns
 		-------
@@ -4870,21 +5138,14 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/statistics/boxplot_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
-	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
+	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?autorange:Dynamic, ?zorder:Dynamic, ?hold:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Broadcast any number of arrays against each other.
 		
@@ -4969,10 +5230,6 @@ package matplotlib.pylab;
 	/**
 		Plot horizontal bars.
 		
-		Call signature::
-		
-		  broken_barh(self, xranges, yrange, **kwargs)
-		
 		A collection of horizontal bars spanning *yrange* with a sequence of
 		*xranges*.
 		
@@ -5009,7 +5266,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -5037,19 +5294,12 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/broken_barh.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5345,7 +5595,7 @@ package matplotlib.pylab;
 	@:native("cast")
 	static public var _cast : Dynamic;
 	/**
-		cbrt(x[, out])
+		cbrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the cube-root of an array, element-wise.
 		
@@ -5355,9 +5605,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    The values whose cube-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -5374,7 +5632,7 @@ package matplotlib.pylab;
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ceil(x[, out])
+		ceil(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the ceiling of the input, element-wise.
 		
@@ -5385,6 +5643,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -5421,18 +5690,18 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		df : int
+		df : int or array_like of ints
 		     Number of degrees of freedom.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` is a scalar.  Otherwise,
+		    ``np.array(df).size`` samples are drawn.
 		
 		Returns
 		-------
-		output : ndarray
-		    Samples drawn from the distribution, packed in a `size`-shaped
-		    array.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized chi-square distribution.
 		
 		Raises
 		------
@@ -5482,7 +5751,7 @@ package matplotlib.pylab;
 		-----------
 		a : 1-D array-like or int
 		    If an ndarray, a random sample is generated from its elements.
-		    If an int, the random sample is generated as if a was np.arange(n)
+		    If an int, the random sample is generated as if a were np.arange(a)
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
@@ -5496,7 +5765,7 @@ package matplotlib.pylab;
 		
 		Returns
 		--------
-		samples : 1-D ndarray, shape (size,)
+		samples : single item or ndarray
 		    The generated random samples
 		
 		Raises
@@ -5817,10 +6086,6 @@ package matplotlib.pylab;
 		    therefore this can be used if aspect of the axes changes.
 		
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function clabel(CS:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5856,11 +6121,15 @@ package matplotlib.pylab;
 		----------
 		a : array_like
 		    Array containing elements to clip.
-		a_min : scalar or array_like
-		    Minimum value.
-		a_max : scalar or array_like
-		    Maximum value.  If `a_min` or `a_max` are array_like, then they will
-		    be broadcasted to the shape of `a`.
+		a_min : scalar or array_like or `None`
+		    Minimum value. If `None`, clipping is not performed on lower
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`.
+		a_max : scalar or array_like or `None`
+		    Maximum value. If `None`, clipping is not performed on upper
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`. If `a_min` or `a_max` are array_like, then the three
+		    arrays will be broadcasted to match their shapes.
 		out : ndarray, optional
 		    The results will be placed in this array. It may be the input
 		    array for in-place clipping.  `out` must be of the right shape
@@ -5889,7 +6158,7 @@ package matplotlib.pylab;
 		>>> a = np.arange(10)
 		>>> a
 		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-		>>> np.clip(a, [3,4,1,1,1,4,4,4,4,4], 8)
+		>>> np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
 	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):Dynamic;
@@ -5910,12 +6179,6 @@ package matplotlib.pylab;
 	/**
 		Plot the coherence between *x* and *y*.
 		
-		Call signature::
-		
-		  cohere(x, y, NFFT=256, Fs=2, Fc=0, detrend = mlab.detrend_none,
-		         window = mlab.window_hanning, noverlap=0, pad_to=None,
-		         sides='default', scale_by_freq=None, **kwargs)
-		
 		Plot the coherence between *x* and *y*.  Coherence is the
 		normalized cross spectral density:
 		
@@ -5923,30 +6186,30 @@ package matplotlib.pylab;
 		
 		  C_{xy} = \frac{|P_{xy}|^2}{P_{xx}P_{yy}}
 		
-		Keyword arguments:
+		Parameters
+		----------
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -5956,15 +6219,13 @@ package matplotlib.pylab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		*NFFT*: integer
+		NFFT : integer
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
 		    result will be incorrect. Use *pad_to* for this instead.
 		
-		*detrend*: [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or
-		           callable
-		
+		detrend : {'default', 'constant', 'mean', 'linear', 'none'} or callable
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
@@ -5978,34 +6239,25 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
 		    :func:`~matplotlib.pylab.detrend_none`.
 		
-		*scale_by_freq*: boolean
+		scale_by_freq : boolean, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
 		    The default is True for MATLAB compatibility.
 		
-		  *noverlap*: integer
+		noverlap : integer
 		    The number of points of overlap between blocks.  The
 		    default value is 0 (no overlap).
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		The return value is a tuple (*Cxy*, *f*), where *f* are the
-		frequencies of the coherence vector.
-		
-		kwargs are applied to the lines.
-		
-		References:
-		
-		  * Bendat & Piersol -- Random Data: Analysis and Measurement
-		    Procedures, John Wiley & Sons (1986)
-		
-		kwargs control the :class:`~matplotlib.lines.Line2D`
-		properties of the coherence plot:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties of the coherence plot:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -6049,23 +6301,28 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		The return value is a tuple (*Cxy*, *f*), where *f* are the
+		frequencies of the coherence vector.
 		
+		kwargs are applied to the lines.
+		
+		References
+		----------
+		Bendat & Piersol -- Random Data: Analysis and Measurement Procedures,
+		John Wiley & Sons (1986)
+		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/cohere_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -6323,7 +6580,7 @@ package matplotlib.pylab;
 		  ============  =======================================================
 		
 		The following colormaps are based on the `ColorBrewer
-		<http://colorbrewer.org>`_ color specifications and designs developed by
+		<http://colorbrewer2.org>`_ color specifications and designs developed by
 		Cynthia Brewer:
 		
 		ColorBrewer Diverging (luminance is highest at the midpoint, and
@@ -6370,11 +6627,9 @@ package matplotlib.pylab;
 		
 		ColorBrewer Qualitative:
 		
-		(For plotting nominal data, :class:`ListedColormap` should be used,
+		(For plotting nominal data, :class:`ListedColormap` is used,
 		not :class:`LinearSegmentedColormap`.  Different sets of colors are
-		recommended for different numbers of categories.  These continuous
-		versions of the qualitative schemes may be removed or converted in the
-		future.)
+		recommended for different numbers of categories.)
 		
 		* Accent
 		* Dark2
@@ -6441,7 +6696,7 @@ package matplotlib.pylab;
 		.. [#] Rainbow colormaps, ``jet`` in particular, are considered a poor
 		  choice for scientific visualization by many researchers: `Rainbow Color
 		  Map (Still) Considered Harmful
-		  <http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4118486>`_
+		  <http://ieeexplore.ieee.org/document/4118486/?arnumber=4118486>`_
 		
 		.. [#] Resembles "BkBlAqGrYeOrReViWh200" from NCAR Command
 		  Language. See `Color Table Gallery
@@ -6498,7 +6753,7 @@ package matplotlib.pylab;
 		The example below creates a subplot with a dark
 		slate gray background::
 		
-		   subplot(111, axisbg=(0.1843, 0.3098, 0.3098))
+		   subplot(111, facecolor=(0.1843, 0.3098, 0.3098))
 		
 		Here is an example that creates a pale turquoise title::
 		
@@ -6784,7 +7039,7 @@ package matplotlib.pylab;
 	**/
 	static public function cond(x:Dynamic, ?p:Dynamic):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -6795,6 +7050,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6813,7 +7079,7 @@ package matplotlib.pylab;
 	**/
 	static public function conj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -6824,6 +7090,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -7097,10 +7374,6 @@ package matplotlib.pylab;
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function contour(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7316,10 +7589,6 @@ package matplotlib.pylab;
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function contourf(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7429,7 +7698,7 @@ package matplotlib.pylab;
 		    Controls the memory layout of the copy. 'C' means C-order,
 		    'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,
 		    'C' otherwise. 'K' means match the layout of `a` as closely
-		    as possible. (Note that this function and :meth:ndarray.copy are very
+		    as possible. (Note that this function and :meth:`ndarray.copy` are very
 		    similar, but have different default values for their order=
 		    arguments.)
 		
@@ -7440,9 +7709,9 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		This is equivalent to
+		This is equivalent to:
 		
-		>>> np.array(a, copy=True)                              #doctest: +SKIP
+		>>> np.array(a, copy=True)  #doctest: +SKIP
 		
 		Examples
 		--------
@@ -7462,7 +7731,7 @@ package matplotlib.pylab;
 	**/
 	static public function copy(a:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		copysign(x1, x2[, out])
+		copysign(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Change the sign of x1 to that of x2, element-wise.
 		
@@ -7476,9 +7745,17 @@ package matplotlib.pylab;
 		    Values to change the sign of.
 		x2 : array_like
 		    The sign of `x2` is copied to `x1`.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -7551,8 +7828,8 @@ package matplotlib.pylab;
 		y : array_like, optional
 		    An additional set of variables and observations. `y` has the same
 		    shape as `x`.
-		rowvar : int, optional
-		    If `rowvar` is non-zero (default), then each row represents a
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
 		    variable, with observations in the columns. Otherwise, the relationship
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
@@ -7652,7 +7929,7 @@ package matplotlib.pylab;
 	**/
 	static public function correlate(a:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
-		cos(x[, out])
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -7660,18 +7937,22 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -7701,7 +7982,7 @@ package matplotlib.pylab;
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosh(x[, out])
+		cosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic cosine, element-wise.
 		
@@ -7711,6 +7992,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -7731,19 +8023,35 @@ package matplotlib.pylab;
 	**/
 	static public function cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		count_nonzero(a)
-		
 		Counts the number of non-zero values in the array ``a``.
+		
+		The word "non-zero" is in reference to the Python 2.x
+		built-in method ``__nonzero__()`` (renamed ``__bool__()``
+		in Python 3.x) of Python objects that tests an object's
+		"truthfulness". For example, any number is considered
+		truthful if it is nonzero, whereas any string is considered
+		truthful if it is not the empty string. Thus, this function
+		(recursively) counts how many elements in ``a`` (and in
+		sub-arrays thereof) have their ``__nonzero__()`` or ``__bool__()``
+		method evaluated to ``True``.
 		
 		Parameters
 		----------
 		a : array_like
 		    The array for which to count non-zeros.
+		axis : int or tuple, optional
+		    Axis or tuple of axes along which to count non-zeros.
+		    Default is None, meaning that non-zeros will be counted
+		    along a flattened version of ``a``.
+		
+		    .. versionadded:: 1.12.0
 		
 		Returns
 		-------
 		count : int or array of int
-		    Number of non-zero values in the array.
+		    Number of non-zero values in the array along a given axis.
+		    Otherwise, the total number of non-zero values in the array
+		    is returned.
 		
 		See Also
 		--------
@@ -7755,8 +8063,12 @@ package matplotlib.pylab;
 		4
 		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
 		5
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=0)
+		array([1, 1, 1, 1, 1])
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=1)
+		array([2, 3])
 	**/
-	static public function count_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function count_nonzero(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Estimate a covariance matrix, given data and weights.
 		
@@ -7784,9 +8096,9 @@ package matplotlib.pylab;
 		    contain observations.
 		bias : bool, optional
 		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
-		    number of observations given (unbiased estimate). If `bias` is True, then
-		    normalization is by ``N``. These values can be overridden by using the
-		    keyword ``ddof`` in numpy versions >= 1.5.
+		    number of observations given (unbiased estimate). If `bias` is True,
+		    then normalization is by ``N``. These values can be overridden by using
+		    the keyword ``ddof`` in numpy versions >= 1.5.
 		ddof : int, optional
 		    If not ``None`` the default value implied by `bias` is overridden.
 		    Note that ``ddof=1`` will return the unbiased estimate, even if both
@@ -8001,33 +8313,33 @@ package matplotlib.pylab;
 		If len(*x*) < *NFFT* or len(*y*) < *NFFT*, they will be zero
 		padded to *NFFT*.
 		
-		  *x*, *y*: 1-D arrays or sequences
+		Parameters
+		----------
+		x, y : 1-D arrays or sequences
 		    Arrays or sequences containing the data
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -8037,15 +8349,13 @@ package matplotlib.pylab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		*NFFT*: integer
+		NFFT : integer
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
 		    result will be incorrect. Use *pad_to* for this instead.
 		
-		*detrend*: [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or
-		           callable
-		
+		detrend : {'default', 'constant', 'mean', 'linear', 'none'} or callable
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
@@ -8059,49 +8369,29 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
 		    :func:`~matplotlib.pylab.detrend_none`.
 		
-		*scale_by_freq*: boolean
+		scale_by_freq : boolean, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
 		    The default is True for MATLAB compatibility.
 		
-		  *noverlap*: integer
+		noverlap : integer
 		    The number of points of overlap between segments.
 		    The default value is 0 (no overlap).
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		  *return_line*: bool
+		return_line : bool
 		    Whether to include the line object plotted in the returned values.
 		    Default is False.
 		
-		If *return_line* is False, returns the tuple (*Pxy*, *freqs*).
-		If *return_line* is True, returns the tuple (*Pxy*, *freqs*. *line*):
-		
-		  *Pxy*: 1-D array
-		    The values for the cross spectrum `P_{xy}` before scaling
-		    (complex valued)
-		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the elements in *Pxy*
-		
-		  *line*: a :class:`~matplotlib.lines.Line2D` instance
-		    The line created by this function.
-		    Only returend if *return_line* is True.
-		
-		For plotting, the power is plotted as
-		:math:`10\log_{10}(P_{xy})` for decibels, though `P_{xy}` itself
-		is returned.
-		
-		References:
-		  Bendat & Piersol -- Random Data: Analysis and Measurement
-		  Procedures, John Wiley & Sons (1986)
-		
-		kwargs control the Line2D properties:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -8145,28 +8435,45 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		Pxy : 1-D array
+		    The values for the cross spectrum `P_{xy}` before scaling
+		    (complex valued)
 		
-		.. plot:: mpl_examples/pylab_examples/csd_demo.py
+		freqs : 1-D array
+		    The frequencies corresponding to the elements in *Pxy*
 		
-		.. seealso::
-		
-		    :func:`psd`
-		        :func:`psd` is the equivalent to setting y=x.
+		line : a :class:`~matplotlib.lines.Line2D` instance
+		    The line created by this function.
+		    Only returned if *return_line* is True.
 		
 		Notes
 		-----
+		For plotting, the power is plotted as
+		:math:`10\log_{10}(P_{xy})` for decibels, though `P_{xy}` itself
+		is returned.
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
+		References
+		----------
+		Bendat & Piersol -- Random Data: Analysis and Measurement Procedures,
+		John Wiley & Sons (1986)
 		
-		* All arguments with the following names: 'x', 'y'.
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/csd_demo.py
 		
+		See Also
+		--------
+		:func:`psd`
+		    :func:`psd` is the equivalent to setting y=x.
 		
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -8431,7 +8738,7 @@ package matplotlib.pylab;
 	**/
 	static public function dedent(s:Dynamic):Dynamic;
 	/**
-		deg2rad(x[, out])
+		deg2rad(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from degrees to radians.
 		
@@ -8439,6 +8746,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Angles in degrees.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -8463,7 +8781,7 @@ package matplotlib.pylab;
 	**/
 	static public function deg2rad(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		degrees(x[, out])
+		degrees(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from radians to degrees.
 		
@@ -8471,8 +8789,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as x.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -8566,28 +8893,26 @@ package matplotlib.pylab;
 	/**
 		Return x minus its mean along the specified axis.
 		
-		Call signature::
-		
-		    demean(x, axis=0)
-		
-		  *x*: array or sequence
+		Parameters
+		----------
+		x : array or sequence
 		    Array or sequence containing the data
 		    Can have any dimensionality
 		
-		  *axis*: integer
+		axis : integer
 		    The axis along which to take the mean.  See numpy.mean for a
 		    description of this argument.
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`delinear`
 		
-		    :func:`delinear`
+		:func:`denone`
+		    :func:`delinear` and :func:`denone` are other detrend algorithms.
 		
-		    :func:`denone`
-		        :func:`delinear` and :func:`denone` are other detrend algorithms.
-		
-		    :func:`detrend_mean`
-		        This function is the same as as :func:`detrend_mean` except
-		        for the default *axis*.
+		:func:`detrend_mean`
+		    This function is the same as :func:`detrend_mean` except for the
+		    default *axis*.
 	**/
 	static public function demean(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -8627,11 +8952,58 @@ package matplotlib.pylab;
 		>>> olduint(6)
 		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
 		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning)
+		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
 		6
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
+	/**
+		Decorator to mark a function as deprecated.
+		
+		Parameters
+		----------
+		since : str
+		    The release at which this API became deprecated.  This is
+		    required.
+		
+		message : str, optional
+		    Override the default deprecation message.  The format
+		    specifier `%(func)s` may be used for the name of the function,
+		    and `%(alternative)s` may be used in the deprecation message
+		    to insert the name of an alternative to the deprecated
+		    function.  `%(obj_type)` may be used to insert a friendly name
+		    for the type of object being deprecated.
+		
+		name : str, optional
+		    The name of the deprecated function; if not provided the name
+		    is automatically determined from the passed in function,
+		    though this is useful in the case of renamed functions, where
+		    the new function is just assigned to the name of the
+		    deprecated function.  For example::
+		
+		        def new_function():
+		            ...
+		        oldFunction = new_function
+		
+		alternative : str, optional
+		    An alternative function that the user may use in place of the
+		    deprecated function.  The deprecation warning will tell the user about
+		    this alternative if provided.
+		
+		pending : bool, optional
+		    If True, uses a PendingDeprecationWarning instead of a
+		    DeprecationWarning.
+		
+		Examples
+		--------
+		
+		    Basic example::
+		
+		        @deprecated('1.4.0')
+		        def the_function_to_deprecate():
+		            pass
+	**/
+	static public function deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
 	/**
 		Compute the determinant of an array.
 		
@@ -8681,125 +9053,117 @@ package matplotlib.pylab;
 	/**
 		Return x with its trend removed.
 		
-		Call signature::
-		
-		    detrend(x, key='mean')
-		
-		  *x*: array or sequence
+		Parameters
+		----------
+		x : array or sequence
 		    Array or sequence containing the data.
 		
-		  *key*: [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or function
-		      Specifies the detrend algorithm to use.  'default' is 'mean',
-		      which is the same as :func:`detrend_mean`.  'constant' is the same.
-		      'linear' is the same as :func:`detrend_linear`.  'none' is the same
-		      as :func:`detrend_none`.  The default is 'mean'.  See the
-		      corresponding functions for more details regarding the algorithms.
-		      Can also be a function that carries out the detrend operation.
+		key : [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or function
+		    Specifies the detrend algorithm to use. 'default' is 'mean', which is
+		    the same as :func:`detrend_mean`. 'constant' is the same. 'linear' is
+		    the same as :func:`detrend_linear`. 'none' is the same as
+		    :func:`detrend_none`. The default is 'mean'. See the corresponding
+		    functions for more details regarding the algorithms. Can also be a
+		    function that carries out the detrend operation.
 		
-		  *axis*: integer
+		axis : integer
 		    The axis along which to do the detrending.
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`detrend_mean`
+		    :func:`detrend_mean` implements the 'mean' algorithm.
 		
-		    :func:`detrend_mean`
-		        :func:`detrend_mean` implements the 'mean' algorithm.
+		:func:`detrend_linear`
+		    :func:`detrend_linear` implements the 'linear' algorithm.
 		
-		    :func:`detrend_linear`
-		        :func:`detrend_linear` implements the 'linear' algorithm.
-		
-		    :func:`detrend_none`
-		        :func:`detrend_none` implements the 'none' algorithm.
+		:func:`detrend_none`
+		    :func:`detrend_none` implements the 'none' algorithm.
 	**/
 	static public function detrend(x:Dynamic, ?key:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return x minus best fit line; 'linear' detrending.
 		
-		Call signature::
-		
-		    detrend_linear(y)
-		
-		  *y*: 0-D or 1-D array or sequence
+		Parameters
+		----------
+		y : 0-D or 1-D array or sequence
 		    Array or sequence containing the data
 		
-		  *axis*: integer
+		axis : integer
 		    The axis along which to take the mean.  See numpy.mean for a
 		    description of this argument.
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`delinear`
+		    This function is the same as :func:`delinear` except for the default
+		    *axis*.
 		
-		    :func:`delinear`
-		        This function is the same as as :func:`delinear` except
-		        for the default *axis*.
+		:func:`detrend_mean`
 		
-		    :func:`detrend_mean`
+		:func:`detrend_none`
+		    :func:`detrend_mean` and :func:`detrend_none` are other detrend
+		    algorithms.
 		
-		    :func:`detrend_none`
-		        :func:`detrend_mean` and :func:`detrend_none` are other
-		        detrend algorithms.
-		
-		    :func:`detrend`
-		        :func:`detrend` is a wrapper around all the detrend algorithms.
+		:func:`detrend`
+		    :func:`detrend` is a wrapper around all the detrend algorithms.
 	**/
 	static public function detrend_linear(y:Dynamic):Dynamic;
 	/**
 		Return x minus the mean(x).
 		
-		Call signature::
-		
-		    detrend_mean(x, axis=None)
-		
-		  *x*: array or sequence
+		Parameters
+		----------
+		x : array or sequence
 		    Array or sequence containing the data
 		    Can have any dimensionality
 		
-		  *axis*: integer
+		axis : integer
 		    The axis along which to take the mean.  See numpy.mean for a
 		    description of this argument.
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`demean`
+		    This function is the same as :func:`demean` except for the default
+		    *axis*.
 		
-		    :func:`demean`
-		        This function is the same as as :func:`demean` except
-		        for the default *axis*.
+		:func:`detrend_linear`
 		
-		    :func:`detrend_linear`
+		:func:`detrend_none`
+		    :func:`detrend_linear` and :func:`detrend_none` are other detrend
+		    algorithms.
 		
-		    :func:`detrend_none`
-		        :func:`detrend_linear` and :func:`detrend_none` are other
-		        detrend algorithms.
-		
-		    :func:`detrend`
-		        :func:`detrend` is a wrapper around all the detrend algorithms.
+		:func:`detrend`
+		    :func:`detrend` is a wrapper around all the detrend algorithms.
 	**/
 	static public function detrend_mean(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return x: no detrending.
 		
-		Call signature::
-		
-		    detrend_none(x, axis=None)
-		
-		  *x*: any object
+		Parameters
+		----------
+		x : any object
 		    An object containing the data
 		
-		  *axis*: integer
+		axis : integer
 		    This parameter is ignored.
 		    It is included for compatibility with detrend_mean
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`denone`
+		    This function is the same as :func:`denone` except for the default
+		    *axis*, which has no effect.
 		
-		    :func:`denone`
-		        This function is the same as as :func:`denone` except
-		        for the default *axis*, which has no effect.
+		:func:`detrend_mean`
 		
-		    :func:`detrend_mean`
+		:func:`detrend_linear`
+		    :func:`detrend_mean` and :func:`detrend_linear` are other detrend
+		    algorithms.
 		
-		    :func:`detrend_linear`
-		        :func:`detrend_mean` and :func:`detrend_linear` are other
-		        detrend algorithms.
-		
-		    :func:`detrend`
-		        :func:`detrend` is a wrapper around all the detrend algorithms.
+		:func:`detrend`
+		    :func:`detrend` is a wrapper around all the detrend algorithms.
 	**/
 	static public function detrend_none(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -9080,48 +9444,69 @@ package matplotlib.pylab;
 	**/
 	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
 	/**
-		    Calculate the n-th discrete difference along given axis.
+		Calculate the n-th discrete difference along given axis.
 		
-		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
-		    the given axis, higher differences are calculated by using `diff`
-		    recursively.
+		The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		the given axis, higher differences are calculated by using `diff`
+		recursively.
 		
-		    Parameters
-		    ----------
-		    a : array_like
-		        Input array
-		    n : int, optional
-		        The number of times values are differenced.
-		    axis : int, optional
-		        The axis along which the difference is taken, default is the last axis.
+		Parameters
+		----------
+		a : array_like
+		    Input array
+		n : int, optional
+		    The number of times values are differenced.
+		axis : int, optional
+		    The axis along which the difference is taken, default is the last axis.
 		
-		    Returns
-		    -------
-		    diff : ndarray
-		        The n-th differences. The shape of the output is the same as `a`
-		        except along `axis` where the dimension is smaller by `n`.
-		.
+		Returns
+		-------
+		diff : ndarray
+		    The n-th differences. The shape of the output is the same as `a`
+		    except along `axis` where the dimension is smaller by `n`. The
+		    type of the output is the same as that of the input.
 		
-		    See Also
-		    --------
-		    gradient, ediff1d, cumsum
+		See Also
+		--------
+		gradient, ediff1d, cumsum
 		
-		    Examples
-		    --------
-		    >>> x = np.array([1, 2, 4, 7, 0])
-		    >>> np.diff(x)
-		    array([ 1,  2,  3, -7])
-		    >>> np.diff(x, n=2)
-		    array([  1,   1, -10])
+		Notes
+		-----
+		For boolean arrays, the preservation of type means that the result
+		will contain `False` when consecutive elements are the same and
+		`True` when they differ.
 		
-		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		    >>> np.diff(x)
-		    array([[2, 3, 4],
-		           [5, 1, 2]])
-		    >>> np.diff(x, axis=0)
-		    array([[-1,  2,  0, -2]])
+		For unsigned integer arrays, the results will also be unsigned. This should
+		not be surprising, as the result is consistent with calculating the
+		difference directly:
 		
-		    
+		>>> u8_arr = np.array([1, 0], dtype=np.uint8)
+		>>> np.diff(u8_arr)
+		array([255], dtype=uint8)
+		>>> u8_arr[1,...] - u8_arr[0,...]
+		array(255, np.uint8)
+		
+		If this is not desirable, then the array should be cast to a larger integer
+		type first:
+		
+		>>> i16_arr = u8_arr.astype(np.int16)
+		>>> np.diff(i16_arr)
+		array([-1], dtype=int16)
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 4, 7, 0])
+		>>> np.diff(x)
+		array([ 1,  2,  3, -7])
+		>>> np.diff(x, n=2)
+		array([  1,   1, -10])
+		
+		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		>>> np.diff(x)
+		array([[2, 3, 4],
+		       [5, 1, 2]])
+		>>> np.diff(x, axis=0)
+		array([[-1,  2,  0, -2]])
 	**/
 	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -9134,13 +9519,13 @@ package matplotlib.pylab;
 		`bins` is monotonically decreasing. If values in `x` are beyond the
 		bounds of `bins`, 0 or ``len(bins)`` is returned as appropriate. If right
 		is True, then the right bin is closed so that the index ``i`` is such
-		that ``bins[i-1] < x <= bins[i]`` or bins[i-1] >= x > bins[i]`` if `bins`
+		that ``bins[i-1] < x <= bins[i]`` or ``bins[i-1] >= x > bins[i]`` if `bins`
 		is monotonically increasing or decreasing, respectively.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array to be binned. Prior to Numpy 1.10.0, this array had to
+		    Input array to be binned. Prior to NumPy 1.10.0, this array had to
 		    be 1-dimensional, but can now have any shape.
 		bins : array_like
 		    Array of bins. It has to be 1-dimensional and monotonic.
@@ -9165,7 +9550,7 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		bincount, histogram, unique
+		bincount, histogram, unique, searchsorted
 		
 		Notes
 		-----
@@ -9313,7 +9698,7 @@ package matplotlib.pylab;
 		  *p*, *s0*, *s1* are *xy* sequences
 		
 		This algorithm from
-		http://softsurfer.com/Archive/algorithm_0102/algorithm_0102.htm#Distance%20to%20Ray%20or%20Segment
+		http://geomalgorithms.com/a02-_lines.html
 	**/
 	static public function dist_point_to_segment(p:Dynamic, s0:Dynamic, s1:Dynamic):Dynamic;
 	/**
@@ -9325,7 +9710,7 @@ package matplotlib.pylab;
 	**/
 	static public function distances_along_curve(X:Dynamic):Dynamic;
 	/**
-		true_divide(x1, x2[, out])
+		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns a true division of the inputs, element-wise.
 		
@@ -9339,6 +9724,17 @@ package matplotlib.pylab;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -9375,6 +9771,55 @@ package matplotlib.pylab;
 	**/
 	static public function divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	/**
+		divmod(x1, x2[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Return element-wise quotient and remainder simultaneously.
+		
+		.. versionadded:: 1.13.0
+		
+		``np.divmod(x, y)`` is equivalent to ``(x // y, x % y)``, but faster
+		because it avoids redundant work. It is used to implement the Python
+		built-in function ``divmod`` on NumPy arrays.
+		
+		Parameters
+		----------
+		x1 : array_like
+		    Dividend array.
+		x2 : array_like
+		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		out1 : ndarray
+		    Element-wise quotient resulting from floor division.
+		out2 : ndarray
+		    Element-wise remainder from floor division.
+		
+		See Also
+		--------
+		floor_divide : Equivalent to Python's ``//`` operator.
+		remainder : Equivalent to Python's ``%`` operator.
+		modf : Equivalent to ``divmod(x, 1)`` for positive ``x`` with the return
+		       values switched.
+		
+		Examples
+		--------
+		>>> np.divmod(np.arange(5), 3)
+		(array([0, 0, 0, 1, 1]), array([0, 1, 2, 0, 1]))
+	**/
+	static public function divmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		dot(a, b, out=None)
 		
@@ -9457,10 +9902,11 @@ package matplotlib.pylab;
 	/**
 		Redraw the current figure.
 		
-		This is used in interactive mode to update a figure that has been
-		altered, but not automatically re-drawn.  This should be only rarely
-		needed, but there may be ways to modify the state of a figure with
-		out marking it as `stale`.  Please report these cases as bugs.
+		This is used to update a figure that has been altered, but not
+		automatically re-drawn.  If interactive mode is on (:func:`.ion()`), this
+		should be only rarely needed, but there may be ways to modify the state of
+		a figure without marking it as `stale`.  Please report these cases as
+		bugs.
 		
 		A more object-oriented alternative, given any
 		:class:`~matplotlib.figure.Figure` instance, :attr:`fig`, that
@@ -9526,6 +9972,10 @@ package matplotlib.pylab;
 		This is a simple way to stack 2D arrays (images) into a single
 		3D array for processing.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of arrays
@@ -9547,7 +9997,8 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=2)``.
+		Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
+		are at least 3-dimensional.
 		
 		Examples
 		--------
@@ -9742,6 +10193,10 @@ package matplotlib.pylab;
 		UPLO : {'L', 'U'}, optional
 		    Specifies whether the calculation is done with the lower triangular
 		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -9812,6 +10267,27 @@ package matplotlib.pylab;
 		array([ 0.17157288,  5.82842712])
 		matrix([[-0.92387953+0.j        , -0.38268343+0.j        ],
 		        [ 0.00000000+0.38268343j,  0.00000000-0.92387953j]])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eig() with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa, va = LA.eigh(a)
+		>>> wb, vb = LA.eig(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
+		>>> va; vb
+		array([[-0.44721360-0.j        , -0.89442719+0.j        ],
+		       [ 0.00000000+0.89442719j,  0.00000000-0.4472136j ]])
+		array([[ 0.89442719+0.j       ,  0.00000000-0.4472136j],
+		       [ 0.00000000-0.4472136j,  0.89442719+0.j       ]])
 	**/
 	static public function eigh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
@@ -9891,8 +10367,12 @@ package matplotlib.pylab;
 		    A complex- or real-valued matrix whose eigenvalues are to be
 		    computed.
 		UPLO : {'L', 'U'}, optional
-		    Same as `lower`, with 'L' for lower and 'U' for upper triangular.
-		    Deprecated.
+		    Specifies whether the calculation is done with the lower triangular
+		    part of `a` ('L', default) or the upper triangular part ('U').
+		    Irrespective of this value only the real parts of the diagonal will
+		    be considered in the computation to preserve the notion of a Hermitian
+		    matrix. It therefore follows that the imaginary part of the diagonal
+		    will always be treated as zero.
 		
 		Returns
 		-------
@@ -9928,10 +10408,28 @@ package matplotlib.pylab;
 		>>> a = np.array([[1, -2j], [2j, 5]])
 		>>> LA.eigvalsh(a)
 		array([ 0.17157288,  5.82842712])
+		
+		>>> # demonstrate the treatment of the imaginary part of the diagonal
+		>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])
+		>>> a
+		array([[ 5.+2.j,  9.-2.j],
+		       [ 0.+2.j,  2.-1.j]])
+		>>> # with UPLO='L' this is numerically equivalent to using LA.eigvals()
+		>>> # with:
+		>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])
+		>>> b
+		array([[ 5.+0.j,  0.-2.j],
+		       [ 0.+2.j,  2.+0.j]])
+		>>> wa = LA.eigvalsh(a)
+		>>> wb = LA.eigvals(b)
+		>>> wa; wb
+		array([ 1.,  6.])
+		array([ 6.+0.j,  1.+0.j])
 	**/
 	static public function eigvalsh(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
-		einsum(subscripts, *operands, out=None, dtype=None, order='K', casting='safe')
+		einsum(subscripts, *operands, out=None, dtype=None, order='K',
+		       casting='safe', optimize=False)
 		
 		Evaluates the Einstein summation convention on the operands.
 		
@@ -9947,12 +10445,12 @@ package matplotlib.pylab;
 		    Specifies the subscripts for summation.
 		operands : list of array_like
 		    These are the arrays for the operation.
-		out : ndarray, optional
+		out : {ndarray, None}, optional
 		    If provided, the calculation is done into this array.
-		dtype : data-type, optional
+		dtype : {data-type, None}, optional
 		    If provided, forces the calculation to use the data type specified.
 		    Note that you may have to also give a more liberal `casting`
-		    parameter to allow the conversions.
+		    parameter to allow the conversions. Default is None.
 		order : {'C', 'F', 'A', 'K'}, optional
 		    Controls the memory layout of the output. 'C' means it should
 		    be C contiguous. 'F' means it should be Fortran contiguous,
@@ -9971,6 +10469,13 @@ package matplotlib.pylab;
 		        like float64 to float32, are allowed.
 		      * 'unsafe' means any data conversions may be done.
 		
+		    Default is 'safe'.
+		optimize : {False, True, 'greedy', 'optimal'}, optional
+		    Controls if intermediate optimization should occur. No optimization
+		    will occur if False and True will default to the 'greedy' algorithm.
+		    Also accepts an explicit contraction list from the ``np.einsum_path``
+		    function. See ``np.einsum_path`` for more details. Default is False.
+		
 		Returns
 		-------
 		output : ndarray
@@ -9978,7 +10483,7 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		dot, inner, outer, tensordot
+		einsum_path, dot, inner, outer, tensordot, linalg.multi_dot
 		
 		Notes
 		-----
@@ -10030,6 +10535,15 @@ package matplotlib.pylab;
 		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
 		of a 2D array.
 		
+		.. versionadded:: 1.12.0
+		
+		Added the ``optimize`` argument which will optimize the contraction order
+		of an einsum expression. For a contraction with three or more operands this
+		can greatly increase the computational efficiency at the cost of a larger
+		memory footprint during computation.
+		
+		See ``np.einsum_path`` for more details.
+		
 		Examples
 		--------
 		>>> a = np.arange(25).reshape(5,5)
@@ -10073,6 +10587,9 @@ package matplotlib.pylab;
 		       [2, 5]])
 		
 		>>> np.einsum('..., ...', 3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(',ij', 3, C)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
@@ -10147,7 +10664,115 @@ package matplotlib.pylab;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function einsum(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		einsum_path(subscripts, *operands, optimize='greedy')
+		
+		Evaluates the lowest cost contraction order for an einsum expression by
+		considering the creation of intermediate arrays.
+		
+		Parameters
+		----------
+		subscripts : str
+		    Specifies the subscripts for summation.
+		*operands : list of array_like
+		    These are the arrays for the operation.
+		optimize : {bool, list, tuple, 'greedy', 'optimal'}
+		    Choose the type of path. If a tuple is provided, the second argument is
+		    assumed to be the maximum intermediate size created. If only a single
+		    argument is provided the largest input or output array size is used
+		    as a maximum intermediate size.
+		
+		    * if a list is given that starts with ``einsum_path``, uses this as the
+		      contraction path
+		    * if False no optimization is taken
+		    * if True defaults to the 'greedy' algorithm
+		    * 'optimal' An algorithm that combinatorially explores all possible
+		      ways of contracting the listed tensors and choosest the least costly
+		      path. Scales exponentially with the number of terms in the
+		      contraction.
+		    * 'greedy' An algorithm that chooses the best pair contraction
+		      at each step. Effectively, this algorithm searches the largest inner,
+		      Hadamard, and then outer products at each step. Scales cubically with
+		      the number of terms in the contraction. Equivalent to the 'optimal'
+		      path for most contractions.
+		
+		    Default is 'greedy'.
+		
+		Returns
+		-------
+		path : list of tuples
+		    A list representation of the einsum path.
+		string_repr : str
+		    A printable representation of the einsum path.
+		
+		Notes
+		-----
+		The resulting path indicates which terms of the input contraction should be
+		contracted first, the result of this contraction is then appended to the
+		end of the contraction list. This list can then be iterated over until all
+		intermediate contractions are complete.
+		
+		See Also
+		--------
+		einsum, linalg.multi_dot
+		
+		Examples
+		--------
+		
+		We can begin with a chain dot example. In this case, it is optimal to
+		contract the ``b`` and ``c`` tensors first as reprsented by the first
+		element of the path ``(1, 2)``. The resulting tensor is added to the end
+		of the contraction and the remaining contraction ``(0, 1)`` is then
+		completed.
+		
+		>>> a = np.random.rand(2, 2)
+		>>> b = np.random.rand(2, 5)
+		>>> c = np.random.rand(5, 2)
+		>>> path_info = np.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')
+		>>> print(path_info[0])
+		['einsum_path', (1, 2), (0, 1)]
+		>>> print(path_info[1])
+		  Complete contraction:  ij,jk,kl->il
+		         Naive scaling:  4
+		     Optimized scaling:  3
+		      Naive FLOP count:  1.600e+02
+		  Optimized FLOP count:  5.600e+01
+		   Theoretical speedup:  2.857
+		  Largest intermediate:  4.000e+00 elements
+		-------------------------------------------------------------------------
+		scaling                  current                                remaining
+		-------------------------------------------------------------------------
+		   3                   kl,jk->jl                                ij,jl->il
+		   3                   jl,ij->il                                   il->il
+		
+		
+		A more complex index transformation example.
+		
+		>>> I = np.random.rand(10, 10, 10, 10)
+		>>> C = np.random.rand(10, 10)
+		>>> path_info = np.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,
+		                               optimize='greedy')
+		
+		>>> print(path_info[0])
+		['einsum_path', (0, 2), (0, 3), (0, 2), (0, 1)]
+		>>> print(path_info[1])
+		  Complete contraction:  ea,fb,abcd,gc,hd->efgh
+		         Naive scaling:  8
+		     Optimized scaling:  5
+		      Naive FLOP count:  8.000e+08
+		  Optimized FLOP count:  8.000e+05
+		   Theoretical speedup:  1000.000
+		  Largest intermediate:  1.000e+04 elements
+		--------------------------------------------------------------------------
+		scaling                  current                                remaining
+		--------------------------------------------------------------------------
+		   5               abcd,ea->bcde                      fb,gc,hd,bcde->efgh
+		   5               bcde,fb->cdef                         gc,hd,cdef->efgh
+		   5               cdef,gc->defg                            hd,defg->efgh
+		   5               defg,hd->efgh                               efgh->efgh
+	**/
+	static public function einsum_path(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
 		
@@ -10273,7 +10898,7 @@ package matplotlib.pylab;
 	**/
 	static public function epoch2num(e:Dynamic):Dynamic;
 	/**
-		equal(x1, x2[, out])
+		equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return (x1 == x2) element-wise.
 		
@@ -10281,6 +10906,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Input arrays of the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10306,63 +10942,58 @@ package matplotlib.pylab;
 	/**
 		Plot an errorbar graph.
 		
-		Call signature::
+		Plot x versus y with error deltas in yerr and xerr.
+		Vertical errorbars are plotted if yerr is not None.
+		Horizontal errorbars are plotted if xerr is not None.
 		
-		  errorbar(x, y, yerr=None, xerr=None,
-		           fmt='', ecolor=None, elinewidth=None, capsize=None,
-		           barsabove=False, lolims=False, uplims=False,
-		           xlolims=False, xuplims=False, errorevery=1,
-		           capthick=None)
+		x, y, xerr, and yerr can all be scalars, which plots a
+		single error bar at x, y.
 		
-		Plot *x* versus *y* with error deltas in *yerr* and *xerr*.
-		Vertical errorbars are plotted if *yerr* is not *None*.
-		Horizontal errorbars are plotted if *xerr* is not *None*.
+		Parameters
+		----------
+		x : scalar or array-like
+		y : scalar or array-like
 		
-		*x*, *y*, *xerr*, and *yerr* can all be scalars, which plots a
-		single error bar at *x*, *y*.
-		
-		Optional keyword arguments:
-		
-		  *xerr* /*yerr*: [ scalar | N, Nx1, or 2xN array-like ]
-		    If a scalar number, len(N) array-like object, or an Nx1
+		xerr/yerr : scalar or array-like, shape(N,) or shape(2,N), optional
+		    If a scalar number, len(N) array-like object, or a N-element
 		    array-like object, errorbars are drawn at +/-value relative
-		    to the data.
+		    to the data. Default is None.
 		
 		    If a sequence of shape 2xN, errorbars are drawn at -row1
 		    and +row2 relative to the data.
 		
-		  *fmt*: [ '' | 'none' | plot format string ]
-		    The plot format symbol. If *fmt* is 'none' (case-insensitive),
+		fmt : plot format string, optional, default: None
+		    The plot format symbol. If fmt is 'none' (case-insensitive),
 		    only the errorbars are plotted.  This is used for adding
 		    errorbars to a bar plot, for example.  Default is '',
 		    an empty plot format string; properties are
 		    then identical to the defaults for :meth:`plot`.
 		
-		  *ecolor*: [ *None* | mpl color ]
+		ecolor : mpl color, optional, default: None
 		    A matplotlib color arg which gives the color the errorbar lines;
-		    if *None*, use the color of the line connecting the markers.
+		    if None, use the color of the line connecting the markers.
 		
-		  *elinewidth*: scalar
-		    The linewidth of the errorbar lines. If *None*, use the linewidth.
+		elinewidth : scalar, optional, default: None
+		    The linewidth of the errorbar lines. If None, use the linewidth.
 		
-		  *capsize*: scalar
-		    The length of the error bar caps in points; if *None*, it will
+		capsize : scalar, optional, default: None
+		    The length of the error bar caps in points; if None, it will
 		    take the value from ``errorbar.capsize``
 		    :data:`rcParam<matplotlib.rcParams>`.
 		
-		  *capthick*: scalar
-		    An alias kwarg to *markeredgewidth* (a.k.a. - *mew*). This
+		capthick : scalar, optional, default: None
+		    An alias kwarg to markeredgewidth (a.k.a. - mew). This
 		    setting is a more sensible name for the property that
 		    controls the thickness of the error bar cap in points. For
-		    backwards compatibility, if *mew* or *markeredgewidth* are given,
-		    then they will over-ride *capthick*.  This may change in future
+		    backwards compatibility, if mew or markeredgewidth are given,
+		    then they will over-ride capthick. This may change in future
 		    releases.
 		
-		  *barsabove*: [ *True* | *False* ]
-		    if *True*, will plot the errorbars above the plot
+		barsabove : bool, optional, default: False
+		    if True , will plot the errorbars above the plot
 		    symbols. Default is below.
 		
-		  *lolims* / *uplims* / *xlolims* / *xuplims*: [ *False* | *True* ]
+		lolims / uplims / xlolims / xuplims : bool, optional, default:None
 		    These arguments can be used to indicate that a value gives
 		    only upper/lower limits. In that case a caret symbol is
 		    used to indicate this. lims-arguments may be of the same
@@ -10370,26 +11001,37 @@ package matplotlib.pylab;
 		    axes, :meth:`set_xlim` or :meth:`set_ylim` must be called
 		    before :meth:`errorbar`.
 		
-		  *errorevery*: positive integer
+		errorevery : positive integer, optional, default:1
 		    subsamples the errorbars. e.g., if errorevery=5, errorbars for
 		    every 5-th datapoint will be plotted. The data plot itself still
 		    shows all data points.
 		
-		All other keyword arguments are passed on to the plot command for the
-		markers. For example, this code makes big red squares with
-		thick green edges::
+		Returns
+		-------
+		plotline : :class:`~matplotlib.lines.Line2D` instance
+		    x, y plot markers and/or line
+		caplines : list of :class:`~matplotlib.lines.Line2D` instances
+		    error bar cap
+		barlinecols : list of :class:`~matplotlib.collections.LineCollection`
+		    horizontal and vertical error ranges.
 		
-		  x,y,yerr = rand(3,10)
-		  errorbar(x, y, yerr, marker='s',
-		           mfc='red', mec='green', ms=20, mew=4)
+		Other Parameters
+		----------------
+		kwargs : All other keyword arguments are passed on to the plot
+		    command for the markers. For example, this code makes big red
+		    squares with thick green edges::
 		
-		where *mfc*, *mec*, *ms* and *mew* are aliases for the longer
-		property names, *markerfacecolor*, *markeredgecolor*, *markersize*
-		and *markeredgewith*.
+		        x,y,yerr = rand(3,10)
+		        errorbar(x, y, yerr, marker='s', mfc='red',
+		                 mec='green', ms=20, mew=4)
 		
-		valid kwargs for the marker properties are
+		    where mfc, mec, ms and mew are aliases for the longer
+		    property names, markerfacecolor, markeredgecolor, markersize
+		    and markeredgewidth.
 		
-		  agg_filter: unknown
+		    valid kwargs for the marker properties are
+		
+		      agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
 		  animated: [True | False] 
 		  antialiased or aa: [True | False] 
@@ -10431,45 +11073,21 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		Returns (*plotline*, *caplines*, *barlinecols*):
-		
-		    *plotline*: :class:`~matplotlib.lines.Line2D` instance
-		        *x*, *y* plot markers and/or line
-		
-		    *caplines*: list of error bar cap
-		        :class:`~matplotlib.lines.Line2D` instances
-		    *barlinecols*: list of
-		        :class:`~matplotlib.collections.LineCollection` instances for
-		        the horizontal and vertical error ranges.
-		
-		**Example:**
-		
+		Examples
+		--------
 		.. plot:: mpl_examples/statistics/errorbar_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y', 'xerr', 'yerr'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'xerr', 'y', 'yerr'.
 	**/
 	static public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var euler_gamma : Dynamic;
 	/**
 		Plot identical parallel lines at specific positions.
-		
-		Call signature::
-		
-		  eventplot(positions, orientation='horizontal', lineoffsets=0,
-		            linelengths=1, linewidths=None, color =None,
-		            linestyles='solid'
 		
 		Plot parallel lines at the given positions.  positions should be a 1D
 		or 2D array-like object, with each row corresponding to a row or column
@@ -10484,9 +11102,9 @@ package matplotlib.pylab;
 		arrival times of people to a business on each day of the month or the
 		date of hurricanes each year of the last century.
 		
-		*orientation* : [ 'horizonal' | 'vertical' ]
-		  'horizonal' : the lines will be vertical and arranged in rows
-		  "vertical' : lines will be horizontal and arranged in columns
+		*orientation* : [ 'horizontal' | 'vertical' ]
+		  'horizontal' : the lines will be vertical and arranged in rows
+		  'vertical' : lines will be horizontal and arranged in columns
 		
 		*lineoffsets* :
 		  A float or array-like containing floats.
@@ -10535,7 +11153,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -10558,24 +11176,17 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/eventplot_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'positions', 'linewidths', 'lineoffsets', 'colors', 'linelengths', 'linestyles'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'colors', 'linelengths', 'lineoffsets', 'linestyles', 'linewidths', 'positions'.
 	**/
 	static public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function exception_to_str(?s:Dynamic):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -10583,6 +11194,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10627,18 +11249,18 @@ package matplotlib.pylab;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp2(x[, out])
+		exp2(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate `2**p` for all `p` in the input array.
 		
@@ -10646,9 +11268,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
-		
-		out : ndarray, optional
-		    Array to insert results into.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10682,14 +11312,20 @@ package matplotlib.pylab;
 	/**
 		Expand the shape of an array.
 		
-		Insert a new axis, corresponding to a given position in the array shape.
+		Insert a new axis that will appear at the `axis` position in the expanded
+		array shape.
+		
+		.. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+		   ``axis > a.ndim`` raised errors or put the new axis where documented.
+		   Those axis values are now deprecated and will raise an AxisError in the
+		   future.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		axis : int
-		    Position (amongst axes) where new axis is to be inserted.
+		    Position in the expanded axes where the new axis is placed.
 		
 		Returns
 		-------
@@ -10699,6 +11335,8 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
+		squeeze : The inverse operation, removing singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
 		doc.indexing, atleast_1d, atleast_2d, atleast_3d
 		
 		Examples
@@ -10730,7 +11368,7 @@ package matplotlib.pylab;
 	**/
 	static public function expand_dims(a:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		expm1(x[, out])
+		expm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate ``exp(x) - 1`` for all elements in the array.
 		
@@ -10738,6 +11376,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		   Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10787,20 +11436,26 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		scale : float
+		scale : float or array_like of floats
 		    The scale parameter, :math:`\beta = 1/\lambda`.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``scale`` is a scalar.  Otherwise,
+		    ``np.array(scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized exponential distribution.
 		
 		References
 		----------
 		.. [1] Peyton Z. Peebles Jr., "Probability, Random Variables and
 		       Random Signal Principles", 4th ed, 2001, p. 57.
-		.. [2] "Poisson Process", Wikipedia,
+		.. [2] Wikipedia, "Poisson process",
 		       http://en.wikipedia.org/wiki/Poisson_process
-		.. [3] "Exponential Distribution, Wikipedia,
+		.. [3] Wikipedia, "Exponential distribution",
 		       http://en.wikipedia.org/wiki/Exponential_distribution
 	**/
 	static public function exponential(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -10906,24 +11561,25 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		dfnum : float
+		dfnum : int or array_like of ints
 		    Degrees of freedom in numerator. Should be greater than zero.
-		dfden : float
+		dfden : int or array_like of ints
 		    Degrees of freedom in denominator. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``dfnum`` and ``dfden`` are both scalars.
+		    Otherwise, ``np.broadcast(dfnum, dfden).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Samples from the Fisher distribution.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Fisher distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.f : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.f : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -10971,7 +11627,7 @@ package matplotlib.pylab;
 	**/
 	static public function f(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fabs(x[, out])
+		fabs(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the absolute values element-wise.
 		
@@ -10984,9 +11640,17 @@ package matplotlib.pylab;
 		x : array_like
 		    The array of numbers for which the absolute values are required. If
 		    `x` is a scalar, the result `y` will also be a scalar.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11030,6 +11694,7 @@ package matplotlib.pylab;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -11080,6 +11745,10 @@ package matplotlib.pylab;
 		         1.14383329e-17 +1.22460635e-16j,
 		         -1.64863782e-15 +1.77635684e-15j])
 		
+		In this example, real input has an FFT which is Hermitian, i.e., symmetric
+		in the real part and anti-symmetric in the imaginary part, as described in
+		the `numpy.fft` documentation:
+		
 		>>> import matplotlib.pyplot as plt
 		>>> t = np.arange(256)
 		>>> sp = np.fft.fft(np.sin(t))
@@ -11087,10 +11756,6 @@ package matplotlib.pylab;
 		>>> plt.plot(freq, sp.real, freq, sp.imag)
 		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
 		>>> plt.show()
-		
-		In this example, real input has an FFT which is Hermitian, i.e., symmetric
-		in the real part and anti-symmetric in the imaginary part, as described in
-		the `numpy.fft` documentation.
 	**/
 	static public function fft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
@@ -11107,8 +11772,8 @@ package matplotlib.pylab;
 		    Input array, can be complex
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along each axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -11120,6 +11785,7 @@ package matplotlib.pylab;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -11225,8 +11891,8 @@ package matplotlib.pylab;
 		    Input array, can be complex.
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along any axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -11238,6 +11904,7 @@ package matplotlib.pylab;
 		    performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -11425,7 +12092,7 @@ package matplotlib.pylab;
 		(:meth:`~matplotlib.axes.Axes.imshow`) which will be resampled
 		to fit the current axes.  If you want a resampled image to
 		fill the entire figure, you can define an
-		:class:`~matplotlib.axes.Axes` with size [0,1,0,1].
+		:class:`~matplotlib.axes.Axes` with extent [0,0,1,1].
 		
 		An :class:`matplotlib.image.FigureImage` instance is returned.
 		
@@ -11434,7 +12101,6 @@ package matplotlib.pylab;
 		
 		Additional kwargs are Artist kwargs passed on to
 		:class:`~matplotlib.image.FigureImage`
-		Addition kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function figimage(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -11489,7 +12155,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -11572,83 +12238,47 @@ package matplotlib.pylab;
 	/**
 		Plot filled polygons.
 		
-		Call signature::
+		Parameters
+		----------
+		args : a variable length argument
+		    It allowing for multiple
+		    *x*, *y* pairs with an optional color format string; see
+		    :func:`~matplotlib.pyplot.plot` for details on the argument
+		    parsing.  For example, each of the following is legal::
 		
-		  fill(*args, **kwargs)
+		        ax.fill(x, y)
+		        ax.fill(x, y, "b")
+		        ax.fill(x, y, "b", x, y, "r")
 		
-		*args* is a variable length argument, allowing for multiple
-		*x*, *y* pairs with an optional color format string; see
-		:func:`~matplotlib.pyplot.plot` for details on the argument
-		parsing.  For example, to plot a polygon with vertices at *x*,
-		*y* in blue.::
+		    An arbitrary number of *x*, *y*, *color* groups can be specified::
+		    ax.fill(x1, y1, 'g', x2, y2, 'r')
 		
-		  ax.fill(x,y, 'b' )
+		Returns
+		-------
+		a list of :class:`~matplotlib.patches.Patch`
 		
-		An arbitrary number of *x*, *y*, *color* groups can be specified::
+		Other Parameters
+		----------------
+		kwargs : :class:`~matplotlib.patches.Polygon` properties
 		
-		  ax.fill(x1, y1, 'g', x2, y2, 'r')
-		
-		Return value is a list of :class:`~matplotlib.patches.Patch`
-		instances that were added.
-		
+		Notes
+		-----
 		The same color strings that :func:`~matplotlib.pyplot.plot`
 		supports are supported by the fill format string.
 		
 		If you would like to fill below a curve, e.g., shade a region
 		between 0 and *y* along *x*, use :meth:`fill_between`
 		
-		The *closed* kwarg will close the polygon when *True* (default).
-		
-		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
-		
-		  agg_filter: unknown
-		  alpha: float or None 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False]  or None for default 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  capstyle: ['butt' | 'round' | 'projecting'] 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: matplotlib color spec
-		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fill: [True | False] 
-		  gid: an id string 
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
-		  joinstyle: ['miter' | 'round' | 'bevel'] 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float or None for default 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  zorder: any number 
-		
-		**Example:**
-		
+		Examples
+		--------
 		.. plot:: mpl_examples/lines_bars_and_markers/fill_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function fill(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -11713,7 +12343,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -11740,27 +12370,16 @@ package matplotlib.pylab;
 		    :meth:`fill_betweenx`
 		        for filling between two sets of x-values
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y2', 'y1', 'where'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'where', 'x', 'y1', 'y2'.
 	**/
 	static public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make filled polygons between two horizontal curves.
-		
-		Call signature::
-		
-		  fill_betweenx(y, x1, x2=0, where=None, **kwargs)
 		
 		Create a :class:`~matplotlib.collections.PolyCollection`
 		filling the regions between *x1* and *x2* where
@@ -11813,7 +12432,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -11840,26 +12459,19 @@ package matplotlib.pylab;
 		    :meth:`fill_between`
 		        for filling between two sets of y-values
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'y', 'x2', 'where', 'x1'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'where', 'x1', 'x2', 'y'.
 	**/
 	static public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
 		
-		For an array `a` with ``a.ndim > 2``, the diagonal is the list of
-		locations with indices ``a[i, i, ..., i]`` all identical. This function
+		For an array `a` with ``a.ndim >= 2``, the diagonal is the list of
+		locations with indices ``a[i, ..., i]`` all identical. This function
 		modifies the input array in-place, it does not return a value.
 		
 		Parameters
@@ -12053,7 +12665,7 @@ package matplotlib.pylab;
 		>>> np.fix([2.1, 2.9, -2.1, -2.9])
 		array([ 2.,  2., -2., -2.])
 	**/
-	static public function fix(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function fix(x:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		set the default colormap to flag and apply to current image if any.
 		See help(colormaps) for more information
@@ -12106,10 +12718,71 @@ package matplotlib.pylab;
 		    ['John', 'Hunter', 1, 23, 42, 5, 23]
 		
 		By: Composite of Holger Krekel and Luther Blissett
-		From: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/121294
+		From: https://code.activestate.com/recipes/121294/
 		and Recipe 1.12 in cookbook
 	**/
 	static public function flatten(seq:Dynamic, ?scalarp:Dynamic):Dynamic;
+	/**
+		Reverse the order of elements in an array along the given axis.
+		
+		The shape of the array is preserved, but the elements are reordered.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		m : array_like
+		    Input array.
+		axis : integer
+		    Axis in array, which entries are reversed.
+		
+		
+		Returns
+		-------
+		out : array_like
+		    A view of `m` with the entries of axis reversed.  Since a view is
+		    returned, this operation is done in constant time.
+		
+		See Also
+		--------
+		flipud : Flip an array vertically (axis=0).
+		fliplr : Flip an array horizontally (axis=1).
+		
+		Notes
+		-----
+		flip(m, 0) is equivalent to flipud(m).
+		flip(m, 1) is equivalent to fliplr(m).
+		flip(m, n) corresponds to ``m[...,::-1,...]`` with ``::-1`` at position n.
+		
+		Examples
+		--------
+		>>> A = np.arange(8).reshape((2,2,2))
+		>>> A
+		array([[[0, 1],
+		        [2, 3]],
+		
+		       [[4, 5],
+		        [6, 7]]])
+		
+		>>> flip(A, 0)
+		array([[[4, 5],
+		        [6, 7]],
+		
+		       [[0, 1],
+		        [2, 3]]])
+		
+		>>> flip(A, 1)
+		array([[[2, 3],
+		        [0, 1]],
+		
+		       [[6, 7],
+		        [4, 5]]])
+		
+		>>> A = np.random.randn(3,4,5)
+		>>> np.all(flip(A,2) == A[:,:,::-1,...])
+		True
+	**/
+	static public function flip(m:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Flip array in the left/right direction.
 		
@@ -12134,7 +12807,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Equivalent to A[:,::-1]. Requires the array to be at least 2-D.
+		Equivalent to m[:,::-1]. Requires the array to be at least 2-D.
 		
 		Examples
 		--------
@@ -12149,7 +12822,7 @@ package matplotlib.pylab;
 		       [ 3.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.fliplr(A)==A[:,::-1,...])
+		>>> np.all(np.fliplr(A) == A[:,::-1,...])
 		True
 	**/
 	static public function fliplr(m:Dynamic):Dynamic;
@@ -12177,7 +12850,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Equivalent to ``A[::-1,...]``.
+		Equivalent to ``m[::-1,...]``.
 		Does not require the array to be two-dimensional.
 		
 		Examples
@@ -12193,7 +12866,7 @@ package matplotlib.pylab;
 		       [ 1.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.flipud(A)==A[::-1,...])
+		>>> np.all(np.flipud(A) == A[::-1,...])
 		True
 		
 		>>> np.flipud([1,2])
@@ -12201,7 +12874,75 @@ package matplotlib.pylab;
 	**/
 	static public function flipud(m:Dynamic):Dynamic;
 	/**
-		floor(x[, out])
+		float_power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		First array elements raised to powers from second array, element-wise.
+		
+		Raise each base in `x1` to the positionally-corresponding power in `x2`.
+		`x1` and `x2` must be broadcastable to the same shape. This differs from
+		the power function in that integers, float16, and float32  are promoted to
+		floats with a minimum precision of float64 so that the result is always
+		inexact.  The intent is that the function will return a usable result for
+		negative powers and seldom overflow for positive powers.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		x1 : array_like
+		    The bases.
+		x2 : array_like
+		    The exponents.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray
+		    The bases in `x1` raised to the exponents in `x2`.
+		
+		See Also
+		--------
+		power : power function that preserves type
+		
+		Examples
+		--------
+		Cube each element in a list.
+		
+		>>> x1 = range(6)
+		>>> x1
+		[0, 1, 2, 3, 4, 5]
+		>>> np.float_power(x1, 3)
+		array([   0.,    1.,    8.,   27.,   64.,  125.])
+		
+		Raise the bases to different exponents.
+		
+		>>> x2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]
+		>>> np.float_power(x1, x2)
+		array([  0.,   1.,   8.,  27.,  16.,   5.])
+		
+		The effect of broadcasting.
+		
+		>>> x2 = np.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])
+		>>> x2
+		array([[1, 2, 3, 3, 2, 1],
+		       [1, 2, 3, 3, 2, 1]])
+		>>> np.float_power(x1, x2)
+		array([[  0.,   1.,   8.,  27.,  16.,   5.],
+		       [  0.,   1.,   8.,  27.,  16.,   5.]])
+	**/
+	static public function float_power(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -12212,6 +12953,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12236,7 +12988,7 @@ package matplotlib.pylab;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor_divide(x1, x2[, out])
+		floor_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the largest integer smaller or equal to the division of the inputs.
 		It is equivalent to the Python ``//`` operator and pairs with the
@@ -12249,6 +13001,17 @@ package matplotlib.pylab;
 		    Numerator.
 		x2 : array_like
 		    Denominator.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12259,6 +13022,7 @@ package matplotlib.pylab;
 		See Also
 		--------
 		remainder : Remainder complementary to floor_divide.
+		divmod : Simultaneous floor division and remainder.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -12272,7 +13036,7 @@ package matplotlib.pylab;
 	**/
 	static public function floor_divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmax(x1, x2[, out])
+		fmax(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -12288,6 +13052,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12329,7 +13104,7 @@ package matplotlib.pylab;
 	**/
 	static public function fmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmin(x1, x2[, out])
+		fmin(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise minimum of array elements.
 		
@@ -12345,6 +13120,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12375,18 +13161,18 @@ package matplotlib.pylab;
 		Examples
 		--------
 		>>> np.fmin([2, 3, 4], [1, 5, 2])
-		array([2, 5, 4])
+		array([1, 3, 2])
 		
 		>>> np.fmin(np.eye(2), [0.5, 2])
-		array([[ 1. ,  2. ],
-		       [ 0.5,  2. ]])
+		array([[ 0.5,  0. ],
+		       [ 0. ,  1. ]])
 		
 		>>> np.fmin([np.nan, 0, np.nan],[0, np.nan, np.nan])
 		array([  0.,   0.,  NaN])
 	**/
 	static public function fmin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmod(x1, x2[, out])
+		fmod(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the element-wise remainder of division.
 		
@@ -12401,6 +13187,17 @@ package matplotlib.pylab;
 		  Dividend.
 		x2 : array_like
 		  Divisor.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12480,7 +13277,7 @@ package matplotlib.pylab;
 	**/
 	static public function frange(xini:Dynamic, ?xfin:Dynamic, ?delta:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		frexp(x[, out1, out2])
+		frexp(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Decompose the elements of x into mantissa and twos exponent.
 		
@@ -12496,6 +13293,17 @@ package matplotlib.pylab;
 		    Output array for the mantissa. Must have the same shape as `x`.
 		out2 : ndarray, optional
 		    Output array for the exponent. Must have the same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12538,7 +13346,7 @@ package matplotlib.pylab;
 		count : int, optional
 		    Number of items to read. ``-1`` means all data in the buffer.
 		offset : int, optional
-		    Start reading the buffer from this offset; default: 0.
+		    Start reading the buffer from this offset (in bytes); default: 0.
 		
 		Notes
 		-----
@@ -12645,8 +13453,8 @@ package matplotlib.pylab;
 		    The function is called with N parameters, where N is the rank of
 		    `shape`.  Each parameter represents the coordinates of the array
 		    varying along a specific axis.  For example, if `shape`
-		    were ``(2, 2)``, then the parameters in turn be (0, 0), (0, 1),
-		    (1, 0), (1, 1).
+		    were ``(2, 2)``, then the parameters would be
+		    ``array([[0, 0], [1, 1]])`` and ``array([[0, 1], [0, 1]])``
 		shape : (N,) tuple of ints
 		    Shape of the output array, which also determines the shape of
 		    the coordinate arrays passed to `function`.
@@ -12718,7 +13526,7 @@ package matplotlib.pylab;
 	/**
 		frompyfunc(func, nin, nout)
 		
-		Takes an arbitrary Python function and returns a Numpy ufunc.
+		Takes an arbitrary Python function and returns a NumPy ufunc.
 		
 		Can be used, for example, to add broadcasting to a built-in Python
 		function (see Examples section).
@@ -12735,7 +13543,11 @@ package matplotlib.pylab;
 		Returns
 		-------
 		out : ufunc
-		    Returns a Numpy universal function (``ufunc``) object.
+		    Returns a NumPy universal function (``ufunc``) object.
+		
+		See Also
+		--------
+		vectorize : evaluates pyfunc over input arrays using broadcasting rules of numpy
 		
 		Notes
 		-----
@@ -12867,9 +13679,8 @@ package matplotlib.pylab;
 		fill_value : scalar
 		    Fill value.
 		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `np.int8`.  Default
-		    is `float`, but will change to `np.array(fill_value).dtype` in a
-		    future release.
+		    The desired data-type for the array  The default, `None`, means
+		     `np.array(fill_value).dtype`.
 		order : {'C', 'F'}, optional
 		    Whether to store multidimensional data in C- or Fortran-contiguous
 		    (row- or column-wise) order in memory.
@@ -12894,7 +13705,7 @@ package matplotlib.pylab;
 		>>> np.full((2, 2), np.inf)
 		array([[ inf,  inf],
 		       [ inf,  inf]])
-		>>> np.full((2, 2), 10, dtype=np.int)
+		>>> np.full((2, 2), 10)
 		array([[10, 10],
 		       [10, 10]])
 	**/
@@ -13044,24 +13855,26 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		shape : scalar > 0
-		    The shape of the gamma distribution.
-		scale : scalar > 0, optional
-		    The scale of the gamma distribution.  Default is equal to 1.
+		shape : float or array_like of floats
+		    The shape of the gamma distribution. Should be greater than zero.
+		scale : float or array_like of floats, optional
+		    The scale of the gamma distribution. Should be greater than zero.
+		    Default is equal to 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``shape`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(shape, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray, float
-		    Returns one sample unless `size` parameter is specified.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized gamma distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.gamma : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.gamma : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -13081,14 +13894,14 @@ package matplotlib.pylab;
 		.. [1] Weisstein, Eric W. "Gamma Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
-		.. [2] Wikipedia, "Gamma-distribution",
-		       http://en.wikipedia.org/wiki/Gamma-distribution
+		.. [2] Wikipedia, "Gamma distribution",
+		       http://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
 		Draw samples from the distribution:
 		
-		>>> shape, scale = 2., 2. # mean and dispersion
+		>>> shape, scale = 2., 2.  # mean=4, std=2*sqrt(2)
 		>>> s = np.random.gamma(shape, scale, 1000)
 		
 		Display the histogram of the samples, along with
@@ -13108,7 +13921,7 @@ package matplotlib.pylab;
 		current figure matching the given keyword args, or create one.
 		
 		Examples
-		---------
+		--------
 		To get the current polar axes on the current figure::
 		
 		    plt.gca(projection='polar')
@@ -13147,9 +13960,9 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		fname : file, str, list of str, generator
+		fname : file, str, pathlib.Path, list of str, generator
 		    File, filename, list, or generator to read.  If the filename
-		    extension is `.gz` or `.bz2`, the file is first decompressed. Mote
+		    extension is `.gz` or `.bz2`, the file is first decompressed. Note
 		    that generators must return byte strings in Python 3k.  The strings
 		    in a list or produced by a generator are treated as lines.
 		dtype : dtype, optional
@@ -13248,7 +14061,7 @@ package matplotlib.pylab;
 		
 		References
 		----------
-		.. [1] Numpy User Guide, section `I/O with Numpy
+		.. [1] NumPy User Guide, section `I/O with NumPy
 		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
@@ -13312,18 +14125,18 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		p : float
+		p : float or array_like of floats
 		    The probability of success of an individual trial.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``p`` is a scalar.  Otherwise,
+		    ``np.array(p).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Samples from the geometric distribution, shaped according to
-		    `size`.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized geometric distribution.
 		
 		Examples
 		--------
@@ -13338,6 +14151,93 @@ package matplotlib.pylab;
 		0.34889999999999999 #random
 	**/
 	static public function geometric(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return numbers spaced evenly on a log scale (a geometric progression).
+		
+		This is similar to `logspace`, but with endpoints specified directly.
+		Each output sample is a constant multiple of the previous.
+		
+		Parameters
+		----------
+		start : scalar
+		    The starting value of the sequence.
+		stop : scalar
+		    The final value of the sequence, unless `endpoint` is False.
+		    In that case, ``num + 1`` values are spaced over the
+		    interval in log-space, of which all but the last (a sequence of
+		    length `num`) are returned.
+		num : integer, optional
+		    Number of samples to generate.  Default is 50.
+		endpoint : boolean, optional
+		    If true, `stop` is the last sample. Otherwise, it is not included.
+		    Default is True.
+		dtype : dtype
+		    The type of the output array.  If `dtype` is not given, infer the data
+		    type from the other input arguments.
+		
+		Returns
+		-------
+		samples : ndarray
+		    `num` samples, equally spaced on a log scale.
+		
+		See Also
+		--------
+		logspace : Similar to geomspace, but with endpoints specified using log
+		           and base.
+		linspace : Similar to geomspace, but with arithmetic instead of geometric
+		           progression.
+		arange : Similar to linspace, with the step size specified instead of the
+		         number of samples.
+		
+		Notes
+		-----
+		If the inputs or dtype are complex, the output will follow a logarithmic
+		spiral in the complex plane.  (There are an infinite number of spirals
+		passing through two points; the output will follow the shortest such path.)
+		
+		Examples
+		--------
+		>>> np.geomspace(1, 1000, num=4)
+		array([    1.,    10.,   100.,  1000.])
+		>>> np.geomspace(1, 1000, num=3, endpoint=False)
+		array([   1.,   10.,  100.])
+		>>> np.geomspace(1, 1000, num=4, endpoint=False)
+		array([   1.        ,    5.62341325,   31.6227766 ,  177.827941  ])
+		>>> np.geomspace(1, 256, num=9)
+		array([   1.,    2.,    4.,    8.,   16.,   32.,   64.,  128.,  256.])
+		
+		Note that the above may not produce exact integers:
+		
+		>>> np.geomspace(1, 256, num=9, dtype=int)
+		array([  1,   2,   4,   7,  16,  32,  63, 127, 256])
+		>>> np.around(np.geomspace(1, 256, num=9)).astype(int)
+		array([  1,   2,   4,   8,  16,  32,  64, 128, 256])
+		
+		Negative, decreasing, and complex inputs are allowed:
+		
+		>>> np.geomspace(1000, 1, num=4)
+		array([ 1000.,   100.,    10.,     1.])
+		>>> np.geomspace(-1000, -1, num=4)
+		array([-1000.,  -100.,   -10.,    -1.])
+		>>> np.geomspace(1j, 1000j, num=4)  # Straight line
+		array([ 0.   +1.j,  0.  +10.j,  0. +100.j,  0.+1000.j])
+		>>> np.geomspace(-1+0j, 1+0j, num=5)  # Circle
+		array([-1.00000000+0.j        , -0.70710678+0.70710678j,
+		        0.00000000+1.j        ,  0.70710678+0.70710678j,
+		        1.00000000+0.j        ])
+		
+		Graphical illustration of ``endpoint`` parameter:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> N = 10
+		>>> y = np.zeros(N)
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=True), y + 1, 'o')
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=False), y + 2, 'o')
+		>>> plt.axis([0.5, 2000, 0, 3])
+		>>> plt.grid(True, color='0.7', linestyle='-', which='both', axis='both')
+		>>> plt.show()
+	**/
+	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Return the value of object's property.  *property* is an optional string
 		for the property you want to return
@@ -13584,7 +14484,7 @@ package matplotlib.pylab;
 		Return the current object that defines floating-point error handling.
 		
 		The error object contains all information that defines the error handling
-		behavior in Numpy. `geterrobj` is used internally by the other
+		behavior in NumPy. `geterrobj` is used internally by the other
 		functions that get and set error handling behavior (`geterr`, `seterr`,
 		`geterrcall`, `seterrcall`).
 		
@@ -13669,11 +14569,6 @@ package matplotlib.pylab;
 	**/
 	static public function getp(obj:Dynamic, ?property:Dynamic):Dynamic;
 	/**
-		Call signature::
-		
-		  ginput(self, n=1, timeout=30, show_clicks=True,
-		         mouse_add=1, mouse_pop=3, mouse_stop=2)
-		
 		Blocking call to interact with the figure.
 		
 		This will wait for *n* clicks from the user and return a list of the
@@ -13703,45 +14598,71 @@ package matplotlib.pylab;
 		Return the gradient of an N-dimensional array.
 		
 		The gradient is computed using second order accurate central differences
-		in the interior and either first differences or second order accurate
-		one-sides (forward or backwards) differences at the boundaries. The
-		returned gradient hence has the same shape as the input array.
+		in the interior points and either first or second order accurate one-sides
+		(forward or backwards) differences at the boundaries.
+		The returned gradient hence has the same shape as the input array.
 		
 		Parameters
 		----------
 		f : array_like
 		    An N-dimensional array containing samples of a scalar function.
-		varargs : scalar or list of scalar, optional
-		    N scalars specifying the sample distances for each dimension,
-		    i.e. `dx`, `dy`, `dz`, ... Default distance: 1.
-		    single scalar specifies sample distance for all dimensions.
-		    if `axis` is given, the number of varargs must equal the number of axes.
+		varargs : list of scalar or array, optional
+		    Spacing between f values. Default unitary spacing for all dimensions.
+		    Spacing can be specified using:
+		
+		    1. single scalar to specify a sample distance for all dimensions.
+		    2. N scalars to specify a constant sample distance for each dimension.
+		       i.e. `dx`, `dy`, `dz`, ...
+		    3. N arrays to specify the coordinates of the values along each
+		       dimension of F. The length of the array must match the size of
+		       the corresponding dimension
+		    4. Any combination of N scalars/arrays with the meaning of 2. and 3.
+		
+		    If `axis` is given, the number of varargs must equal the number of axes.
+		    Default: 1.
+		
 		edge_order : {1, 2}, optional
-		    Gradient is calculated using N\ :sup:`th` order accurate differences
+		    Gradient is calculated using N-th order accurate differences
 		    at the boundaries. Default: 1.
 		
 		    .. versionadded:: 1.9.1
 		
 		axis : None or int or tuple of ints, optional
 		    Gradient is calculated only along the given axis or axes
-		    The default (axis = None) is to calculate the gradient for all the axes of the input array.
-		    axis may be negative, in which case it counts from the last to the first axis.
+		    The default (axis = None) is to calculate the gradient for all the axes
+		    of the input array. axis may be negative, in which case it counts from
+		    the last to the first axis.
 		
 		    .. versionadded:: 1.11.0
 		
 		Returns
 		-------
-		gradient : list of ndarray
-		    Each element of `list` has the same shape as `f` giving the derivative
-		    of `f` with respect to each dimension.
+		gradient : ndarray or list of ndarray
+		    A set of ndarrays (or a single ndarray if there is only one dimension)
+		    corresponding to the derivatives of f with respect to each dimension.
+		    Each derivative has the same shape as f.
 		
 		Examples
 		--------
-		>>> x = np.array([1, 2, 4, 7, 11, 16], dtype=np.float)
-		>>> np.gradient(x)
+		>>> f = np.array([1, 2, 4, 7, 11, 16], dtype=np.float)
+		>>> np.gradient(f)
 		array([ 1. ,  1.5,  2.5,  3.5,  4.5,  5. ])
-		>>> np.gradient(x, 2)
+		>>> np.gradient(f, 2)
 		array([ 0.5 ,  0.75,  1.25,  1.75,  2.25,  2.5 ])
+		
+		Spacing can be also specified with an array that represents the coordinates
+		of the values F along the dimensions.
+		For instance a uniform spacing:
+		
+		>>> x = np.arange(f.size)
+		>>> np.gradient(f, x)
+		array([ 1. ,  1.5,  2.5,  3.5,  4.5,  5. ])
+		
+		Or a non uniform one:
+		
+		>>> x = np.array([0., 1., 1.5, 3.5, 4., 6.], dtype=np.float)
+		>>> np.gradient(f, x)
+		array([ 1. ,  3. ,  3.5,  6.7,  6.9,  2.5])
 		
 		For two dimensional arrays, the return will be two arrays ordered by
 		axis. In this example the first array stands for the gradient in
@@ -13752,16 +14673,99 @@ package matplotlib.pylab;
 		        [ 2.,  2., -1.]]), array([[ 1. ,  2.5,  4. ],
 		        [ 1. ,  1. ,  1. ]])]
 		
+		In this example the spacing is also specified:
+		uniform for axis=0 and non uniform for axis=1
+		
+		>>> dx = 2.
+		>>> y = [1., 1.5, 3.5]
+		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float), dx, y)
+		[array([[ 1. ,  1. , -0.5],
+		        [ 1. ,  1. , -0.5]]), array([[ 2. ,  2. ,  2. ],
+		        [ 2. ,  1.7,  0.5]])]
+		
+		It is possible to specify how boundaries are treated using `edge_order`
+		
 		>>> x = np.array([0, 1, 2, 3, 4])
-		>>> dx = np.gradient(x)
-		>>> y = x**2
-		>>> np.gradient(y, dx, edge_order=2)
+		>>> f = x**2
+		>>> np.gradient(f, edge_order=1)
+		array([ 1.,  2.,  4.,  6.,  7.])
+		>>> np.gradient(f, edge_order=2)
 		array([-0.,  2.,  4.,  6.,  8.])
 		
-		The axis keyword can be used to specify a subset of axes of which the gradient is calculated
+		The `axis` keyword can be used to specify a subset of axes of which the
+		gradient is calculated
+		
 		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float), axis=0)
 		array([[ 2.,  2., -1.],
 		       [ 2.,  2., -1.]])
+		
+		Notes
+		-----
+		Assuming that :math:`f\in C^{3}` (i.e., :math:`f` has at least 3 continuous
+		derivatives) and let be :math:`h_{*}` a non homogeneous stepsize, the
+		spacing the finite difference coefficients are computed by minimising
+		the consistency error :math:`\eta_{i}`:
+		
+		.. math::
+		
+		    \eta_{i} = f_{i}^{\left(1\right)} -
+		                \left[ \alpha f\left(x_{i}\right) +
+		                        \beta f\left(x_{i} + h_{d}\right) +
+		                        \gamma f\left(x_{i}-h_{s}\right)
+		                \right]
+		
+		By substituting :math:`f(x_{i} + h_{d})` and :math:`f(x_{i} - h_{s})`
+		with their Taylor series expansion, this translates into solving
+		the following the linear system:
+		
+		.. math::
+		
+		    \left\{
+		        \begin{array}{r}
+		            \alpha+\beta+\gamma=0 \\
+		            -\beta h_{d}+\gamma h_{s}=1 \\
+		            \beta h_{d}^{2}+\gamma h_{s}^{2}=0
+		        \end{array}
+		    \right.
+		
+		The resulting approximation of :math:`f_{i}^{(1)}` is the following:
+		
+		.. math::
+		
+		    \hat f_{i}^{(1)} =
+		        \frac{
+		            h_{s}^{2}f\left(x_{i} + h_{d}\right)
+		            + \left(h_{d}^{2} - h_{s}^{2}\right)f\left(x_{i}\right)
+		            - h_{d}^{2}f\left(x_{i}-h_{s}\right)}
+		            { h_{s}h_{d}\left(h_{d} + h_{s}\right)}
+		        + \mathcal{O}\left(\frac{h_{d}h_{s}^{2}
+		                            + h_{s}h_{d}^{2}}{h_{d}
+		                            + h_{s}}\right)
+		
+		It is worth noting that if :math:`h_{s}=h_{d}`
+		(i.e., data are evenly spaced)
+		we find the standard second order approximation:
+		
+		.. math::
+		
+		    \hat f_{i}^{(1)}=
+		        \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h}
+		        + \mathcal{O}\left(h^{2}\right)
+		
+		With a similar procedure the forward/backward approximations used for
+		boundaries can be derived.
+		
+		References
+		----------
+		.. [1]  Quarteroni A., Sacco R., Saleri F. (2007) Numerical Mathematics
+		        (Texts in Applied Mathematics). New York: Springer.
+		.. [2]  Durran D. R. (1999) Numerical Methods for Wave Equations
+		        in Geophysical Fluid Dynamics. New York: Springer.
+		.. [3]  Fornberg B. (1988) Generation of Finite Difference Formulas on
+		        Arbitrarily Spaced Grids,
+		        Mathematics of Computation 51, no. 184 : 699-706.
+		        `PDF <http://www.ams.org/journals/mcom/1988-51-184/
+		        S0025-5718-1988-0935077-0/S0025-5718-1988-0935077-0.pdf>`_.
 	**/
 	static public function gradient(f:Dynamic, ?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -13770,7 +14774,7 @@ package matplotlib.pylab;
 	**/
 	static public function gray():Dynamic;
 	/**
-		greater(x1, x2[, out])
+		greater(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 > x2) element-wise.
 		
@@ -13780,6 +14784,17 @@ package matplotlib.pylab;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -13805,7 +14820,7 @@ package matplotlib.pylab;
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		greater_equal(x1, x2[, out])
+		greater_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 >= x2) element-wise.
 		
@@ -13815,6 +14830,17 @@ package matplotlib.pylab;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -13833,10 +14859,6 @@ package matplotlib.pylab;
 	static public function greater_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Turn the axes grids on or off.
-		
-		Call signature::
-		
-		   grid(self, b=None, which='major', axis='both', **kwargs)
 		
 		Set the axes grids on or off; *b* is a boolean.  (For MATLAB
 		compatibility, *b* may also be a string, 'on' or 'off'.)
@@ -13954,18 +14976,20 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : float
-		    The location of the mode of the distribution.
-		scale : float
-		    The scale parameter of the distribution.
+		loc : float or array_like of floats, optional
+		    The location of the mode of the distribution. Default is 0.
+		scale : float or array_like of floats, optional
+		    The scale parameter of the distribution. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Gumbel distribution.
 		
 		See Also
 		--------
@@ -14233,16 +15257,60 @@ package matplotlib.pylab;
 	**/
 	static public function hanning(M:Dynamic):Dynamic;
 	/**
+		heaviside(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Compute the Heaviside step function.
+		
+		The Heaviside step function is defined as::
+		
+		                          0   if x1 < 0
+		    heaviside(x1, x2) =  x2   if x1 == 0
+		                          1   if x1 > 0
+		
+		where `x2` is often taken to be 0.5, but 0 and 1 are also sometimes used.
+		
+		Parameters
+		----------
+		x1 : array_like
+		    Input values.
+		x2 : array_like
+		    The value of the function when x1 is 0.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		out : ndarray
+		    The output array, element-wise Heaviside step function of `x1`.
+		
+		Notes
+		-----
+		.. versionadded:: 1.13.0
+		
+		References
+		----------
+		.. Wikipedia, "Heaviside step function",
+		   https://en.wikipedia.org/wiki/Heaviside_step_function
+		
+		Examples
+		--------
+		>>> np.heaviside([-1.5, 0, 2.0], 0.5)
+		array([ 0. ,  0.5,  1. ])
+		>>> np.heaviside([-1.5, 0, 2.0], 1)
+		array([ 0.,  1.,  1.])
+	**/
+	static public function heaviside(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Make a hexagonal binning plot.
-		
-		Call signature::
-		
-		   hexbin(x, y, C = None, gridsize = 100, bins = None,
-		          xscale = 'linear', yscale = 'linear',
-		          cmap=None, norm=None, vmin=None, vmax=None,
-		          alpha=None, linewidths=None, edgecolors='none'
-		          reduce_C_function = np.mean, mincnt=None, marginals=True
-		          **kwargs)
 		
 		Make a hexagonal binning plot of *x* versus *y*, where *x*,
 		*y* are 1-D sequences of the same length, *N*. If *C* is *None*
@@ -14256,94 +15324,113 @@ package matplotlib.pylab;
 		specified, it must also be a 1-D sequence of the same length
 		as *x* and *y*.)
 		
-		*x*, *y* and/or *C* may be masked arrays, in which case only
-		unmasked points will be plotted.
+		Parameters
+		----------
+		x, y : array or masked array
 		
-		Optional keyword arguments:
+		C : array or masked array, optional, default is *None*
 		
-		*gridsize*: [ 100 | integer ]
-		   The number of hexagons in the *x*-direction, default is
-		   100. The corresponding number of hexagons in the
-		   *y*-direction is chosen such that the hexagons are
-		   approximately regular. Alternatively, gridsize can be a
-		   tuple with two elements specifying the number of hexagons
-		   in the *x*-direction and the *y*-direction.
+		gridsize : int or (int, int), optional, default is 100
+		    The number of hexagons in the *x*-direction, default is
+		    100. The corresponding number of hexagons in the
+		    *y*-direction is chosen such that the hexagons are
+		    approximately regular. Alternatively, gridsize can be a
+		    tuple with two elements specifying the number of hexagons
+		    in the *x*-direction and the *y*-direction.
 		
-		*bins*: [ *None* | 'log' | integer | sequence ]
-		   If *None*, no binning is applied; the color of each hexagon
-		   directly corresponds to its count value.
+		bins : {'log'} or int or sequence, optional, default is *None*
+		    If *None*, no binning is applied; the color of each hexagon
+		    directly corresponds to its count value.
 		
-		   If 'log', use a logarithmic scale for the color
-		   map. Internally, :math:`log_{10}(i+1)` is used to
-		   determine the hexagon color.
+		    If 'log', use a logarithmic scale for the color
+		    map. Internally, :math:`log_{10}(i+1)` is used to
+		    determine the hexagon color.
 		
-		   If an integer, divide the counts in the specified number
-		   of bins, and color the hexagons accordingly.
+		    If an integer, divide the counts in the specified number
+		    of bins, and color the hexagons accordingly.
 		
-		   If a sequence of values, the values of the lower bound of
-		   the bins to be used.
+		    If a sequence of values, the values of the lower bound of
+		    the bins to be used.
 		
-		*xscale*: [ 'linear' | 'log' ]
-		   Use a linear or log10 scale on the horizontal axis.
+		xscale : {'linear', 'log'}, optional, default is 'linear'
+		    Use a linear or log10 scale on the horizontal axis.
 		
-		*scale*: [ 'linear' | 'log' ]
-		   Use a linear or log10 scale on the vertical axis.
+		yscale : {'linear', 'log'}, optional, default is 'linear'
+		    Use a linear or log10 scale on the vertical axis.
 		
-		*mincnt*: [ *None* | a positive integer ]
-		   If not *None*, only display cells with more than *mincnt*
-		   number of points in the cell
+		mincnt : int > 0, optional, default is *None*
+		    If not *None*, only display cells with more than *mincnt*
+		    number of points in the cell
 		
-		*marginals*: [ *True* | *False* ]
-		   if marginals is *True*, plot the marginal density as
-		   colormapped rectagles along the bottom of the x-axis and
-		   left of the y-axis
+		marginals : bool, optional, default is *False*
+		    if marginals is *True*, plot the marginal density as
+		    colormapped rectagles along the bottom of the x-axis and
+		    left of the y-axis
 		
-		*extent*: [ *None* | scalars (left, right, bottom, top) ]
-		   The limits of the bins. The default assigns the limits
-		   based on gridsize, x, y, xscale and yscale.
+		extent : scalar, optional, default is *None*
+		    The limits of the bins. The default assigns the limits
+		    based on *gridsize*, *x*, *y*, *xscale* and *yscale*.
 		
-		Other keyword arguments controlling color mapping and normalization
-		arguments:
+		    If *xscale* or *yscale* is set to 'log', the limits are
+		    expected to be the exponent for a power of 10. E.g. for
+		    x-limits of 1 and 50 in 'linear' scale and y-limits
+		    of 10 and 1000 in 'log' scale, enter (1, 50, 1, 3).
 		
-		*cmap*: [ *None* | Colormap ]
-		   a :class:`matplotlib.colors.Colormap` instance. If *None*,
-		   defaults to rc ``image.cmap``.
+		    Order of scalars is (left, right, bottom, top).
 		
-		*norm*: [ *None* | Normalize ]
-		   :class:`matplotlib.colors.Normalize` instance is used to
-		   scale luminance data to 0,1.
+		Other parameters
+		----------------
+		cmap : object, optional, default is *None*
+		    a :class:`matplotlib.colors.Colormap` instance. If *None*,
+		    defaults to rc ``image.cmap``.
 		
-		*vmin* / *vmax*: scalar
-		   *vmin* and *vmax* are used in conjunction with *norm* to normalize
-		   luminance data.  If either are *None*, the min and max of the color
-		   array *C* is used.  Note if you pass a norm instance, your settings
-		   for *vmin* and *vmax* will be ignored.
+		norm : object, optional, default is *None*
+		    :class:`matplotlib.colors.Normalize` instance is used to
+		    scale luminance data to 0,1.
 		
-		*alpha*: scalar between 0 and 1, or *None*
-		   the alpha value for the patches
+		vmin, vmax : scalar, optional, default is *None*
+		    *vmin* and *vmax* are used in conjunction with *norm* to
+		    normalize luminance data. If *None*, the min and max of the
+		    color array *C* are used.  Note if you pass a norm instance
+		    your settings for *vmin* and *vmax* will be ignored.
 		
-		*linewidths*: [ *None* | scalar ]
-		   If *None*, defaults to rc lines.linewidth. Note that this
-		   is a tuple, and if you set the linewidths argument you
-		   must set it as a sequence of floats, as required by
-		   :class:`~matplotlib.collections.RegularPolyCollection`.
+		alpha : scalar between 0 and 1, optional, default is *None*
+		    the alpha value for the patches
 		
-		Other keyword arguments controlling the Collection properties:
+		linewidths : scalar, optional, default is *None*
+		    If *None*, defaults to 1.0.
 		
-		*edgecolors*: [ *None* | ``'none'`` | mpl color | color sequence ]
-		   If ``'none'``, draws the edges in the same color as the fill color.
-		   This is the default, as it avoids unsightly unpainted pixels
-		   between the hexagons.
+		edgecolors : {'none'} or mpl color, optional, default is 'none'
+		    If 'none', draws the edges in the same color as the fill color.
+		    This is the default, as it avoids unsightly unpainted pixels
+		    between the hexagons.
 		
-		   If *None*, draws the outlines in the default color.
+		    If *None*, draws outlines in the default color.
 		
-		   If a matplotlib color arg or sequence of rgba tuples, draws the
-		   outlines in the specified color.
+		    If a matplotlib color arg, draws outlines in the specified color.
 		
-		Here are the standard descriptions of all the
-		:class:`~matplotlib.collections.Collection` kwargs:
+		Returns
+		-------
+		object
+		    a :class:`~matplotlib.collections.PolyCollection` instance; use
+		    :meth:`~matplotlib.collections.PolyCollection.get_array` on
+		    this :class:`~matplotlib.collections.PolyCollection` to get
+		    the counts in each hexagon.
 		
-		  agg_filter: unknown
+		    If *marginals* is *True*, horizontal
+		    bar and vertical bar (both PolyCollections) will be attached
+		    to the return collection as attributes *hbar* and *vbar*.
+		
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/hexbin_demo.py
+		
+		Notes
+		--------
+		The standard descriptions of all the
+		:class:`~matplotlib.collections.Collection` parameters:
+		
+		      agg_filter: unknown
 		  alpha: float or None 
 		  animated: [True | False] 
 		  antialiased or antialiaseds: Boolean or sequence of booleans 
@@ -14363,7 +15450,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -14379,53 +15466,35 @@ package matplotlib.pylab;
 		  visible: [True | False] 
 		  zorder: any number 
 		
-		The return value is a
-		:class:`~matplotlib.collections.PolyCollection` instance; use
-		:meth:`~matplotlib.collections.PolyCollection.get_array` on
-		this :class:`~matplotlib.collections.PolyCollection` to get
-		the counts in each hexagon. If *marginals* is *True*, horizontal
-		bar and vertical bar (both PolyCollections) will be attached
-		to the return collection as attributes *hbar* and *vbar*.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		
-		**Example:**
-		
-		.. plot:: mpl_examples/pylab_examples/hexbin_demo.py
-		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute the FFT of a signal which has Hermitian symmetry (real spectrum).
+		Compute the FFT of a signal that has Hermitian symmetry, i.e., a real
+		spectrum.
 		
 		Parameters
 		----------
 		a : array_like
 		    The input array.
 		n : int, optional
-		    Length of the transformed axis of the output.
-		    For `n` output points, ``n//2+1`` input points are necessary.  If the
-		    input is longer than this, it is cropped.  If it is shorter than this,
-		    it is padded with zeros.  If `n` is not given, it is determined from
-		    the length of the input along the axis specified by `axis`.
+		    Length of the transformed axis of the output. For `n` output
+		    points, ``n//2 + 1`` input points are necessary.  If the input is
+		    longer than this, it is cropped.  If it is shorter than this, it is
+		    padded with zeros.  If `n` is not given, it is determined from the
+		    length of the input along the axis specified by `axis`.
 		axis : int, optional
 		    Axis over which to compute the FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
@@ -14433,8 +15502,9 @@ package matplotlib.pylab;
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
 		    The length of the transformed axis is `n`, or, if `n` is not given,
-		    ``2*(m-1)`` where ``m`` is the length of the transformed axis of the
-		    input. To get an odd number of output points, `n` must be specified.
+		    ``2*m - 2`` where ``m`` is the length of the transformed axis of
+		    the input. To get an odd number of output points, `n` must be
+		    specified, for instance as ``2*m - 1`` in the typical case,
 		
 		Raises
 		------
@@ -14449,10 +15519,12 @@ package matplotlib.pylab;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd.
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -14496,14 +15568,16 @@ package matplotlib.pylab;
 		    Input values, this takes either a single array or a sequency of
 		    arrays which are not required to be of the same length
 		
-		bins : integer or array_like, optional
+		bins : integer or array_like or 'auto', optional
 		    If an integer is given, `bins + 1` bin edges are returned,
 		    consistently with :func:`numpy.histogram` for numpy version >=
 		    1.3.
 		
 		    Unequally spaced bins are supported if `bins` is a sequence.
 		
-		    default is 10
+		    If Numpy 1.11 is installed, may also be ``'auto'``.
+		
+		    Default is taken from the rcParam ``hist.bins``.
 		
 		range : tuple or None, optional
 		    The lower and upper range of the bins. Lower and upper outliers
@@ -14658,19 +15732,12 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/statistics/histogram_demo_features.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'weights'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'weights', 'x'.
 	**/
 	static public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -14726,8 +15793,21 @@ package matplotlib.pylab;
 		The return value is ``(counts, xedges, yedges, Image)``.
 		
 		Other parameters
-		-----------------
-		kwargs : :meth:`pcolorfast` properties.
+		----------------
+		cmap : {Colormap, string}, optional
+		    A :class:`matplotlib.colors.Colormap` instance.  If not set, use rc
+		    settings.
+		
+		norm : Normalize, optional
+		    A :class:`matplotlib.colors.Normalize` instance is used to
+		    scale luminance data to ``[0, 1]``. If not set, defaults to
+		    ``Normalize()``.
+		
+		vmin/vmax : {None, scalar}, optional
+		    Arguments passed to the `Normalize` instance.
+		
+		alpha : ``0 <= scalar <= 1`` or ``None``, optional
+		    The alpha blending value.
 		
 		See also
 		--------
@@ -14745,19 +15825,12 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/pylab_examples/hist2d_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y', 'weights'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'weights', 'x', 'y'.
 	**/
 	static public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -14787,11 +15860,11 @@ package matplotlib.pylab;
 		
 		    'auto'
 		        Maximum of the 'sturges' and 'fd' estimators. Provides good
-		        all round performance
+		        all around performance.
 		
 		    'fd' (Freedman Diaconis Estimator)
 		        Robust (resilient to outliers) estimator that takes into
-		        account data variability and data size .
+		        account data variability and data size.
 		
 		    'doane'
 		        An improved version of Sturges' estimator that works better
@@ -14823,8 +15896,8 @@ package matplotlib.pylab;
 		    based on the actual data within `range`, the bin count will fill
 		    the entire range including portions containing no data.
 		normed : bool, optional
-		    This keyword is deprecated in Numpy 1.6 due to confusing/buggy
-		    behavior. It will be removed in Numpy 2.0. Use the ``density``
+		    This keyword is deprecated in NumPy 1.6.0 due to confusing/buggy
+		    behavior. It will be removed in NumPy 2.0.0. Use the ``density``
 		    keyword instead. If ``False``, the result will contain the
 		    number of samples in each bin. If ``True``, the result is the
 		    value of the probability *density* function at the bin,
@@ -14926,7 +15999,7 @@ package matplotlib.pylab;
 		
 		'Doane'
 		    .. math:: n_h = 1 + \log_{2}(n) +
-		                    \log_{2}(1 + \frac{|g_1|}{\sigma_{g_1})}
+		                    \log_{2}(1 + \frac{|g_1|}{\sigma_{g_1}})
 		
 		        g_1 = mean[(\frac{x - \mu}{\sigma})^3]
 		
@@ -14956,7 +16029,7 @@ package matplotlib.pylab;
 		array([ 0.5,  0. ,  0.5,  0. ,  0. ,  0.5,  0. ,  0.5,  0. ,  0.5])
 		>>> hist.sum()
 		2.4999999999999996
-		>>> np.sum(hist*np.diff(bin_edges))
+		>>> np.sum(hist * np.diff(bin_edges))
 		1.0
 		
 		.. versionadded:: 1.11.0
@@ -14968,7 +16041,7 @@ package matplotlib.pylab;
 		>>> rng = np.random.RandomState(10)  # deterministic random data
 		>>> a = np.hstack((rng.normal(size=1000),
 		...                rng.normal(loc=5, scale=2, size=1000)))
-		>>> plt.hist(a, bins='auto')  # plt.hist passes it's arguments to np.histogram
+		>>> plt.hist(a, bins='auto')  # arguments are passed to np.histogram
 		>>> plt.title("Histogram with 'auto' bins")
 		>>> plt.show()
 	**/
@@ -15017,9 +16090,9 @@ package matplotlib.pylab;
 		    The bi-dimensional histogram of samples `x` and `y`. Values in `x`
 		    are histogrammed along the first dimension and values in `y` are
 		    histogrammed along the second dimension.
-		xedges : ndarray, shape(nx,)
+		xedges : ndarray, shape(nx+1,)
 		    The bin edges along the first dimension.
-		yedges : ndarray, shape(ny,)
+		yedges : ndarray, shape(ny+1,)
 		    The bin edges along the second dimension.
 		
 		See Also
@@ -15044,55 +16117,43 @@ package matplotlib.pylab;
 		>>> import matplotlib as mpl
 		>>> import matplotlib.pyplot as plt
 		
-		Construct a 2D-histogram with variable bin width. First define the bin
+		Construct a 2-D histogram with variable bin width. First define the bin
 		edges:
 		
-		>>> xedges = [0, 1, 1.5, 3, 5]
+		>>> xedges = [0, 1, 3, 5]
 		>>> yedges = [0, 2, 3, 4, 6]
 		
 		Next we create a histogram H with random bin content:
 		
-		>>> x = np.random.normal(3, 1, 100)
+		>>> x = np.random.normal(2, 1, 100)
 		>>> y = np.random.normal(1, 1, 100)
-		>>> H, xedges, yedges = np.histogram2d(y, x, bins=(xedges, yedges))
+		>>> H, xedges, yedges = np.histogram2d(x, y, bins=(xedges, yedges))
+		>>> H = H.T  # Let each row list bins with common y range.
 		
-		Or we fill the histogram H with a determined bin content:
-		
-		>>> H = np.ones((4, 4)).cumsum().reshape(4, 4)
-		>>> print(H[::-1])  # This shows the bin content in the order as plotted
-		[[ 13.  14.  15.  16.]
-		 [  9.  10.  11.  12.]
-		 [  5.   6.   7.   8.]
-		 [  1.   2.   3.   4.]]
-		
-		Imshow can only do an equidistant representation of bins:
+		:func:`imshow <matplotlib.pyplot.imshow>` can only display square bins:
 		
 		>>> fig = plt.figure(figsize=(7, 3))
-		>>> ax = fig.add_subplot(131)
-		>>> ax.set_title('imshow: equidistant')
-		>>> im = plt.imshow(H, interpolation='nearest', origin='low',
-		                extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
+		>>> ax = fig.add_subplot(131, title='imshow: square bins')
+		>>> plt.imshow(H, interpolation='nearest', origin='low',
+		...         extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
 		
-		pcolormesh can display exact bin edges:
+		:func:`pcolormesh <matplotlib.pyplot.pcolormesh>` can display actual edges:
 		
-		>>> ax = fig.add_subplot(132)
-		>>> ax.set_title('pcolormesh: exact bin edges')
+		>>> ax = fig.add_subplot(132, title='pcolormesh: actual edges',
+		...         aspect='equal')
 		>>> X, Y = np.meshgrid(xedges, yedges)
 		>>> ax.pcolormesh(X, Y, H)
-		>>> ax.set_aspect('equal')
 		
-		NonUniformImage displays exact bin edges with interpolation:
+		:class:`NonUniformImage <matplotlib.image.NonUniformImage>` can be used to
+		display actual bin edges with interpolation:
 		
-		>>> ax = fig.add_subplot(133)
-		>>> ax.set_title('NonUniformImage: interpolated')
+		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
+		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
 		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
-		>>> xcenters = xedges[:-1] + 0.5 * (xedges[1:] - xedges[:-1])
-		>>> ycenters = yedges[:-1] + 0.5 * (yedges[1:] - yedges[:-1])
+		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
+		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
 		>>> ax.images.append(im)
-		>>> ax.set_xlim(xedges[0], xedges[-1])
-		>>> ax.set_ylim(yedges[0], yedges[-1])
-		>>> ax.set_aspect('equal')
 		>>> plt.show()
 	**/
 	static public function histogram2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):Dynamic;
@@ -15180,22 +16241,21 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'y', 'xmin', 'xmax'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'xmax', 'xmin', 'y'.
 	**/
 	static public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    pyplot.hold is deprecated.
+		    Future behavior will be consistent with the long-time default:
+		    plot commands add elements without first clearing the
+		    Axes and/or Figure.
+		
 		Set the hold state.  If *b* is None (default), toggle the
 		hold state, else set the hold state to boolean value *b*::
 		
@@ -15203,7 +16263,7 @@ package matplotlib.pylab;
 		  hold(True)  # hold is on
 		  hold(False) # hold is off
 		
-		When *hold* is *True*, subsequent plot commands will be added to
+		When *hold* is *True*, subsequent plot commands will add elements to
 		the current axes.  When *hold* is *False*, the current axes and
 		figure will be cleared on the next plot command.
 	**/
@@ -15273,6 +16333,10 @@ package matplotlib.pylab;
 		Take a sequence of arrays and stack them horizontally to make
 		a single array. Rebuild arrays divided by `hsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -15290,10 +16354,12 @@ package matplotlib.pylab;
 		dstack : Stack arrays in sequence depth wise (along third axis).
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=1)``
+		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -15326,27 +16392,29 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		ngood : int or array_like
+		ngood : int or array_like of ints
 		    Number of ways to make a good selection.  Must be nonnegative.
-		nbad : int or array_like
+		nbad : int or array_like of ints
 		    Number of ways to make a bad selection.  Must be nonnegative.
-		nsample : int or array_like
+		nsample : int or array_like of ints
 		    Number of items sampled.  Must be at least 1 and at most
 		    ``ngood + nbad``.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``ngood``, ``nbad``, and ``nsample``
+		    are all scalars.  Otherwise, ``np.broadcast(ngood, nbad, nsample).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized hypergeometric distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.hypergeom : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.hypergeom : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -15377,7 +16445,7 @@ package matplotlib.pylab;
 		.. [2] Weisstein, Eric W. "Hypergeometric Distribution." From
 		       MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/HypergeometricDistribution.html
-		.. [3] Wikipedia, "Hypergeometric-distribution",
+		.. [3] Wikipedia, "Hypergeometric distribution",
 		       http://en.wikipedia.org/wiki/Hypergeometric_distribution
 		
 		Examples
@@ -15400,7 +16468,7 @@ package matplotlib.pylab;
 	**/
 	static public function hypergeometric(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hypot(x1, x2[, out])
+		hypot(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Given the "legs" of a right triangle, return its hypotenuse.
 		
@@ -15413,9 +16481,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Leg of the triangle(s).
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -15553,6 +16629,7 @@ package matplotlib.pylab;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -15633,6 +16710,7 @@ package matplotlib.pylab;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -15715,6 +16793,7 @@ package matplotlib.pylab;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -15805,32 +16884,32 @@ package matplotlib.pylab;
 	**/
 	static public function ifftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
 	/**
-		Compute the inverse FFT of a signal which has Hermitian symmetry.
+		Compute the inverse FFT of a signal that has Hermitian symmetry.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		n : int, optional
-		    Length of the inverse FFT.
-		    Number of points along transformation axis in the input to use.
-		    If `n` is smaller than the length of the input, the input is cropped.
-		    If it is larger, the input is padded with zeros. If `n` is not given,
-		    the length of the input along the axis specified by `axis` is used.
+		    Length of the inverse FFT, the number of points along
+		    transformation axis in the input to use.  If `n` is smaller than
+		    the length of the input, the input is cropped.  If it is larger,
+		    the input is padded with zeros. If `n` is not given, the length of
+		    the input along the axis specified by `axis` is used.
 		axis : int, optional
 		    Axis over which to compute the inverse FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
 		out : complex ndarray
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
-		    If `n` is even, the length of the transformed axis is ``(n/2)+1``.
-		    If `n` is odd, the length is ``(n+1)/2``.
+		    The length of the transformed axis is ``n//2 + 1``.
 		
 		See also
 		--------
@@ -15839,10 +16918,12 @@ package matplotlib.pylab;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd:
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -15854,7 +16935,7 @@ package matplotlib.pylab;
 	**/
 	static public function ihfft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Return the imaginary part of the elements of the array.
+		Return the imaginary part of the complex argument.
 		
 		Parameters
 		----------
@@ -15863,9 +16944,10 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The imaginary component of the complex argument. If `val` is real,
+		    the type of `val` is used for the output.  If `val` has complex
+		    elements, the returned type is float.
 		
 		See Also
 		--------
@@ -15879,6 +16961,8 @@ package matplotlib.pylab;
 		>>> a.imag = np.array([8, 10, 12])
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
+		>>> np.imag(1 + 1j)
+		1.0
 	**/
 	static public function imag(val:Dynamic):Dynamic;
 	/**
@@ -15941,23 +17025,24 @@ package matplotlib.pylab;
 		Display an image on the axes.
 		
 		Parameters
-		-----------
+		----------
 		X : array_like, shape (n, m) or (n, m, 3) or (n, m, 4)
-		    Display the image in `X` to current axes.  `X` may be a float
-		    array, a uint8 array or a PIL image. If `X` is an array, it
-		    can have the following shapes:
+		    Display the image in `X` to current axes.  `X` may be an
+		    array or a PIL image. If `X` is an array, it
+		    can have the following shapes and types:
 		
-		    - MxN -- luminance (grayscale, float array only)
-		    - MxNx3 -- RGB (float or uint8 array)
-		    - MxNx4 -- RGBA (float or uint8 array)
+		    - MxN -- values to be mapped (float or int)
+		    - MxNx3 -- RGB (float or uint8)
+		    - MxNx4 -- RGBA (float or uint8)
 		
 		    The value for each component of MxNx3 and MxNx4 float arrays
-		    should be in the range 0.0 to 1.0; MxN float arrays may be
-		    normalised.
+		    should be in the range 0.0 to 1.0. MxN arrays are mapped
+		    to colors based on the `norm` (mapping scalar to scalar)
+		    and the `cmap` (mapping the normed scalar to a color).
 		
 		cmap : `~matplotlib.colors.Colormap`, optional, default: None
-		    If None, default to rc `image.cmap` value. `cmap` is ignored when
-		    `X` has RGB(A) information
+		    If None, default to rc `image.cmap` value. `cmap` is ignored
+		    if `X` is 3-D, directly specifying RGB(A) values.
 		
 		aspect : ['auto' | 'equal' | scalar], optional, default: None
 		    If 'auto', changes the image aspect ratio to match that of the
@@ -15983,9 +17068,11 @@ package matplotlib.pylab;
 		
 		norm : `~matplotlib.colors.Normalize`, optional, default: None
 		    A `~matplotlib.colors.Normalize` instance is used to scale
-		    luminance data to 0, 1. If `None`, use the default
-		    func:`normalize`. `norm` is only used if `X` is an array of
-		    floats.
+		    a 2-D float `X` input to the (0, 1) range for input to the
+		    `cmap`. If `norm` is None, use the default func:`normalize`.
+		    If `norm` is an instance of `~matplotlib.colors.NoNorm`,
+		    `X` must be an array of integers that index directly into
+		    the lookup table of the `cmap`.
 		
 		vmin, vmax : scalar, optional, default: None
 		    `vmin` and `vmax` are used in conjunction with norm to normalize
@@ -16021,7 +17108,7 @@ package matplotlib.pylab;
 		    when interpolation is one of: 'sinc', 'lanczos' or 'blackman'
 		
 		Returns
-		--------
+		-------
 		image : `~matplotlib.image.AxesImage`
 		
 		Other parameters
@@ -16043,19 +17130,12 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/image_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -16063,6 +17143,8 @@ package matplotlib.pylab;
 		
 		Returns a boolean array the same length as `ar1` that is True
 		where an element of `ar1` is in `ar2` and False otherwise.
+		
+		We recommend using :func:`isin` instead of `in1d` for new code.
 		
 		Parameters
 		----------
@@ -16088,6 +17170,8 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
+		isin                  : Version of this function that preserves the
+		                        shape of ar1.
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
 		
@@ -16384,13 +17468,13 @@ package matplotlib.pylab;
 		    `period` is not specified. Otherwise, `xp` is internally sorted after
 		    normalizing the periodic boundaries with ``xp = xp % period``.
 		
-		fp : 1-D sequence of floats
+		fp : 1-D sequence of float or complex
 		    The y-coordinates of the data points, same length as `xp`.
 		
-		left : float, optional
+		left : optional float or complex corresponding to fp
 		    Value to return for `x < xp[0]`, default is `fp[0]`.
 		
-		right : float, optional
+		right : optional float or complex corresponding to fp
 		    Value to return for `x > xp[-1]`, default is `fp[-1]`.
 		
 		period : None or float, optional
@@ -16402,7 +17486,7 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		y : float or ndarray
+		y : float or complex (corresponding to fp) or ndarray
 		    The interpolated values, same shape as `x`.
 		
 		Raises
@@ -16452,6 +17536,13 @@ package matplotlib.pylab;
 		>>> fp = [5, 10, 3, 4]
 		>>> np.interp(x, xp, fp, period=360)
 		array([7.5, 5., 8.75, 6.25, 3., 3.25, 3.5, 3.75])
+		
+		Complex interpolation
+		>>> x = [1.5, 4.0]
+		>>> xp = [2,3,5]
+		>>> fp = [1.0j, 0, 2+3j]
+		>>> np.interp(x, xp, fp)
+		array([ 0.+1.j ,  1.+1.5j])
 	**/
 	static public function interp(x:Dynamic, xp:Dynamic, fp:Dynamic, ?left:Dynamic, ?right:Dynamic, ?period:Dynamic):Dynamic;
 	/**
@@ -16546,7 +17637,7 @@ package matplotlib.pylab;
 	**/
 	static public function inv(a:Dynamic):Dynamic;
 	/**
-		invert(x[, out])
+		invert(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute bit-wise inversion, or bit-wise NOT, element-wise.
 		
@@ -16563,8 +17654,19 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -16744,6 +17846,7 @@ package matplotlib.pylab;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -16807,6 +17910,7 @@ package matplotlib.pylab;
 		    Default is the last two axes.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -16858,6 +17962,7 @@ package matplotlib.pylab;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -17150,7 +18255,7 @@ package matplotlib.pylab;
 	**/
 	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
-		isfinite(x[, out])
+		isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for finiteness (not infinity or not Not a Number).
 		
@@ -17160,9 +18265,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -17186,7 +18299,7 @@ package matplotlib.pylab;
 		Not a Number, positive infinity and negative infinity are considered
 		to be non-finite.
 		
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Also that positive infinity is not equivalent to negative infinity. But
 		infinity is equivalent to positive infinity.  Errors result if the
@@ -17221,7 +18334,7 @@ package matplotlib.pylab;
 		
 		This function is obsolete and, because of changes due to relaxed stride
 		checking, its return value for the same array may differ for versions
-		of Numpy >= 1.10 and previous versions. If you only want to check if an
+		of NumPy >= 1.10.0 and previous versions. If you only want to check if an
 		array is Fortran contiguous use ``a.flags.f_contiguous`` instead.
 		
 		Parameters
@@ -17275,11 +18388,102 @@ package matplotlib.pylab;
 	**/
 	static public function isfortran(a:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    pyplot.hold is deprecated.
+		    Future behavior will be consistent with the long-time default:
+		    plot commands add elements without first clearing the
+		    Axes and/or Figure.
+		
 		Return the hold status of the current axes.
 	**/
 	static public function ishold():Dynamic;
 	/**
-		isinf(x[, out])
+		Calculates `element in test_elements`, broadcasting over `element` only.
+		Returns a boolean array of the same shape as `element` that is True
+		where an element of `element` is in `test_elements` and False otherwise.
+		
+		Parameters
+		----------
+		element : array_like
+		    Input array.
+		test_elements : array_like
+		    The values against which to test each value of `element`.
+		    This argument is flattened if it is an array or array_like.
+		    See notes for behavior with non-array-like parameters.
+		assume_unique : bool, optional
+		    If True, the input arrays are both assumed to be unique, which
+		    can speed up the calculation.  Default is False.
+		invert : bool, optional
+		    If True, the values in the returned array are inverted, as if
+		    calculating `element not in test_elements`. Default is False.
+		    ``np.isin(a, b, invert=True)`` is equivalent to (but faster
+		    than) ``np.invert(np.isin(a, b))``.
+		
+		Returns
+		-------
+		isin : ndarray, bool
+		    Has the same shape as `element`. The values `element[isin]`
+		    are in `test_elements`.
+		
+		See Also
+		--------
+		in1d                  : Flattened version of this function.
+		numpy.lib.arraysetops : Module with a number of other functions for
+		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		
+		`isin` is an element-wise function version of the python keyword `in`.
+		``isin(a, b)`` is roughly equivalent to
+		``np.array([item in b for item in a])`` if `a` and `b` are 1-D sequences.
+		
+		`element` and `test_elements` are converted to arrays if they are not
+		already. If `test_elements` is a set (or other non-sequence collection)
+		it will be converted to an object array with one element, rather than an
+		array of the values contained in `test_elements`. This is a consequence
+		of the `array` constructor's way of handling non-sequence collections.
+		Converting the set to a list usually gives the desired behavior.
+		
+		.. versionadded:: 1.13.0
+		
+		Examples
+		--------
+		>>> element = 2*np.arange(4).reshape((2, 2))
+		>>> element
+		array([[0, 2],
+		       [4, 6]])
+		>>> test_elements = [1, 2, 4, 8]
+		>>> mask = np.isin(element, test_elements)
+		>>> mask
+		array([[ False,  True],
+		       [ True,  False]], dtype=bool)
+		>>> element[mask]
+		array([2, 4])
+		>>> mask = np.isin(element, test_elements, invert=True)
+		>>> mask
+		array([[ True, False],
+		       [ False, True]], dtype=bool)
+		>>> element[mask]
+		array([0, 6])
+		
+		Because of how `array` handles sets, the following does not
+		work as expected:
+		
+		>>> test_set = {1, 2, 4, 8}
+		>>> np.isin(element, test_set)
+		array([[ False, False],
+		       [ False, False]], dtype=bool)
+		
+		Casting the set to a list gives the expected result:
+		
+		>>> np.isin(element, list(test_set))
+		array([[ False,  True],
+		       [ True,  False]], dtype=bool)
+	**/
+	static public function isin(element:Dynamic, test_elements:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
+	/**
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -17290,8 +18494,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -17315,7 +18528,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first
@@ -17346,7 +18559,7 @@ package matplotlib.pylab;
 	**/
 	static public function isinteractive():Dynamic;
 	/**
-		isnan(x[, out])
+		isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for NaN and return result as a boolean array.
 		
@@ -17354,6 +18567,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -17368,11 +18592,11 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		isinf, isneginf, isposinf, isfinite
+		isinf, isneginf, isposinf, isfinite, isnat
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		Examples
@@ -17386,19 +18610,65 @@ package matplotlib.pylab;
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		isnat(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Test element-wise for NaT (not a time) and return result as a boolean array.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array with datetime or timedelta data type.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray or bool
+		    For scalar input, the result is a new boolean with value True if
+		    the input is NaT; otherwise the value is False.
+		
+		    For array input, the result is a boolean array of the same
+		    dimensions as the input and the values are True if the
+		    corresponding element of the input is NaT; otherwise the values are
+		    False.
+		
+		See Also
+		--------
+		isnan, isinf, isneginf, isposinf, isfinite
+		
+		Examples
+		--------
+		>>> np.isnat(np.datetime64("NaT"))
+		True
+		>>> np.isnat(np.datetime64("2016-01-01"))
+		False
+		>>> np.isnat(np.array(["NaT", "2016-01-01"], dtype="datetime64[ns]"))
+		array([ True, False], dtype=bool)
+	**/
+	static public function isnat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Test element-wise for negative infinity, return result as bool array.
 		
 		Parameters
 		----------
 		x : array_like
 		    The input array.
-		y : array_like, optional
+		out : array_like, optional
 		    A boolean array with the same shape and type as `x` to store the
 		    result.
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a numpy boolean array is
 		    returned with values True where the corresponding element of the
@@ -17408,7 +18678,7 @@ package matplotlib.pylab;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as
 		    zeros and ones, if the type is boolean then as False and True. The
-		    return value `y` is then a reference to that array.
+		    return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -17416,7 +18686,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
@@ -17440,7 +18710,7 @@ package matplotlib.pylab;
 		>>> y
 		array([1, 0, 0])
 	**/
-	static public function isneginf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isneginf(x:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Test element-wise for positive infinity, return result as bool array.
 		
@@ -17453,7 +18723,7 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a boolean array is returned
 		    with values True where the corresponding element of the input is
@@ -17463,7 +18733,7 @@ package matplotlib.pylab;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as zeros
 		    and ones, if the type is boolean then as False and True.
-		    The return value `y` is then a reference to that array.
+		    The return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -17471,7 +18741,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when `x` is a
@@ -17495,7 +18765,7 @@ package matplotlib.pylab;
 		>>> y
 		array([0, 0, 1])
 	**/
-	static public function isposinf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isposinf(x:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Returns the log base 2 of *n* if *n* is a power of 2, zero otherwise.
 		
@@ -17720,19 +18990,19 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		b : {0, 1}
-		  Return 1 if the object has an iterator method or is a sequence,
-		  and 0 otherwise.
+		b : bool
+		  Return ``True`` if the object has an iterator method or is a
+		  sequence and ``False`` otherwise.
 		
 		
 		Examples
 		--------
 		>>> np.iterable([1, 2, 3])
-		1
+		True
 		>>> np.iterable(2)
-		0
+		False
 	**/
-	static public function iterable(y:Dynamic):Dynamic;
+	static public function iterable(y:Dynamic):Bool;
 	/**
 		Construct an open mesh from multiple sequences.
 		
@@ -17748,6 +19018,10 @@ package matplotlib.pylab;
 		Parameters
 		----------
 		args : 1-D sequences
+		    Each sequence should be of integer or boolean type.
+		    Boolean sequences will be interpreted as boolean masks for the
+		    corresponding dimension (equivalent to passing in
+		    ``np.nonzero(boolean_sequence)``).
 		
 		Returns
 		-------
@@ -17765,12 +19039,21 @@ package matplotlib.pylab;
 		>>> a
 		array([[0, 1, 2, 3, 4],
 		       [5, 6, 7, 8, 9]])
-		>>> ixgrid = np.ix_([0,1], [2,4])
+		>>> ixgrid = np.ix_([0, 1], [2, 4])
 		>>> ixgrid
 		(array([[0],
 		       [1]]), array([[2, 4]]))
 		>>> ixgrid[0].shape, ixgrid[1].shape
 		((2, 1), (1, 2))
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		
+		>>> ixgrid = np.ix_([True, True], [2, 4])
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		>>> ixgrid = np.ix_([True, True], [False, False, True, False, True])
 		>>> a[ixgrid]
 		array([[2, 4],
 		       [7, 9]])
@@ -17991,18 +19274,20 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : float, optional
-		    The position, :math:`\mu`, of the distribution peak.
-		scale : float, optional
-		    :math:`\lambda`, the exponential decay.
+		loc : float or array_like of floats, optional
+		    The position, :math:`\mu`, of the distribution peak. Default is 0.
+		scale : float or array_like of floats, optional
+		    :math:`\lambda`, the exponential decay. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or float
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Laplace distribution.
 		
 		Notes
 		-----
@@ -18028,7 +19313,7 @@ package matplotlib.pylab;
 		.. [3] Weisstein, Eric W. "Laplace Distribution."
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/LaplaceDistribution.html
-		.. [4] Wikipedia, "Laplace Distribution",
+		.. [4] Wikipedia, "Laplace distribution",
 		       http://en.wikipedia.org/wiki/Laplace_distribution
 		
 		Examples
@@ -18055,7 +19340,7 @@ package matplotlib.pylab;
 	**/
 	static public function laplace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ldexp(x1, x2[, out])
+		ldexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns x1 * 2**x2, element-wise.
 		
@@ -18068,8 +19353,17 @@ package matplotlib.pylab;
 		    Array of multipliers.
 		x2 : array_like, int
 		    Array of twos exponents.
-		out : ndarray, optional
-		    Output array for the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18098,7 +19392,7 @@ package matplotlib.pylab;
 	**/
 	static public function ldexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		left_shift(x1, x2[, out])
+		left_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Shift the bits of an integer to the left.
 		
@@ -18112,6 +19406,17 @@ package matplotlib.pylab;
 		    Input values.
 		x2 : array_like of integer type
 		    Number of zeros to append to `x1`. Has to be non-negative.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18195,7 +19500,7 @@ package matplotlib.pylab;
 		    corner of the legend in axes coordinates (in which case
 		    ``bbox_to_anchor`` will be ignored).
 		
-		bbox_to_anchor : :class:`matplotlib.transforms.BboxBase` instance                          or tuple of floats
+		bbox_to_anchor : :class:`matplotlib.transforms.BboxBase` instance or tuple of floats
 		    Specify any arbitrary location for the legend in `bbox_transform`
 		    coordinates (default Axes coordinates).
 		
@@ -18211,7 +19516,7 @@ package matplotlib.pylab;
 		    The font properties of the legend. If None (default), the current
 		    :data:`matplotlib.rcParams` will be used.
 		
-		fontsize : int or float or {'xx-small', 'x-small', 'small', 'medium',                   'large', 'x-large', 'xx-large'}
+		fontsize : int or float or {'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
 		    Controls the font size of the legend. If the value is numeric the
 		    size will be the absolute font size in points. String values are
 		    relative to the current default font size. This argument is only
@@ -18241,13 +19546,13 @@ package matplotlib.pylab;
 		    drawn ones. Default is ``None`` which will take the value from
 		    the ``legend.markerscale`` :data:`rcParam <matplotlib.rcParams>`.
 		
-		*markerfirst*: [ *True* | *False* ]
+		markerfirst : bool
 		    if *True*, legend marker is placed to the left of the legend label
 		    if *False*, legend marker is placed to the right of the legend
 		    label
 		
 		frameon : None or bool
-		    Control whether a frame should be drawn around the legend.
+		    Control whether the legend should be drawn on a patch (frame).
 		    Default is ``None`` which will take the value from the
 		    ``legend.frameon`` :data:`rcParam<matplotlib.rcParams>`.
 		
@@ -18264,9 +19569,23 @@ package matplotlib.pylab;
 		    ``legend.shadow`` :data:`rcParam<matplotlib.rcParams>`.
 		
 		framealpha : None or float
-		    Control the alpha transparency of the legend's frame.
+		    Control the alpha transparency of the legend's background.
 		    Default is ``None`` which will take the value from the
 		    ``legend.framealpha`` :data:`rcParam<matplotlib.rcParams>`.
+		
+		facecolor : None or "inherit" or a color spec
+		    Control the legend's background color.
+		    Default is ``None`` which will take the value from the
+		    ``legend.facecolor`` :data:`rcParam<matplotlib.rcParams>`.
+		    If ``"inherit"``, it will take the ``axes.facecolor``
+		    :data:`rcParam<matplotlib.rcParams>`.
+		
+		edgecolor : None or "inherit" or a color spec
+		    Control the legend's background patch edge color.
+		    Default is ``None`` which will take the value from the
+		    ``legend.edgecolor`` :data:`rcParam<matplotlib.rcParams>`.
+		    If ``"inherit"``, it will take the ``axes.edgecolor``
+		    :data:`rcParam<matplotlib.rcParams>`.
 		
 		mode : {"expand", None}
 		    If `mode` is set to ``"expand"`` the legend will be horizontally
@@ -18335,7 +19654,7 @@ package matplotlib.pylab;
 	**/
 	static public function legend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		less(x1, x2[, out])
+		less(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 < x2) element-wise.
 		
@@ -18345,6 +19664,17 @@ package matplotlib.pylab;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18362,7 +19692,7 @@ package matplotlib.pylab;
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		less_equal(x1, x2[, out])
+		less_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 =< x2) element-wise.
 		
@@ -18372,6 +19702,17 @@ package matplotlib.pylab;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18499,7 +19840,7 @@ package matplotlib.pylab;
 		    There are `num` equally spaced samples in the closed interval
 		    ``[start, stop]`` or the half-open interval ``[start, stop)``
 		    (depending on whether `endpoint` is True or False).
-		step : float
+		step : float, optional
 		    Only returned if `retstep` is True
 		
 		    Size of spacing between samples.
@@ -18514,11 +19855,11 @@ package matplotlib.pylab;
 		Examples
 		--------
 		>>> np.linspace(2.0, 3.0, num=5)
-		    array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
 		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
-		    array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
 		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
-		    (array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
 		
 		Graphical illustration:
 		
@@ -18542,7 +19883,7 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		file : file-like object or string
+		file : file-like object, string, or pathlib.Path
 		    The file to read. File-like objects must support the
 		    ``seek()`` and ``read()`` methods. Pickled files require that the
 		    file-like object support the ``readline()`` method as well.
@@ -18588,6 +19929,7 @@ package matplotlib.pylab;
 		--------
 		save, savez, savez_compressed, loadtxt
 		memmap : Create a memory-map to an array stored in a file on disk.
+		lib.format.open_memmap : Create or load a memory-mapped ``.npy`` file.
 		
 		Notes
 		-----
@@ -18660,7 +20002,7 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		fname : file or str
+		fname : file, str, or pathlib.Path
 		    File, filename, or generator to read.  If the filename extension is
 		    ``.gz`` or ``.bz2``, the file is first decompressed. Note that
 		    generators should return byte strings for Python 3k.
@@ -18685,10 +20027,18 @@ package matplotlib.pylab;
 		    ``converters = {3: lambda s: float(s.strip() or 0)}``.  Default: None.
 		skiprows : int, optional
 		    Skip the first `skiprows` lines; default: 0.
-		usecols : sequence, optional
-		    Which columns to read, with 0 being the first.  For example,
-		    ``usecols = (1,4,5)`` will extract the 2nd, 5th and 6th columns.
+		
+		usecols : int or sequence, optional
+		    Which columns to read, with 0 being the first. For example,
+		    usecols = (1,4,5) will extract the 2nd, 5th and 6th columns.
 		    The default, None, results in all columns being read.
+		
+		    .. versionadded:: 1.11.0
+		
+		    Also when a single column has to be read it is possible to use
+		    an integer instead of a tuple. E.g ``usecols = 3`` reads the
+		    fourth column the same way as `usecols = (3,)`` would.
+		
 		unpack : bool, optional
 		    If True, the returned array is transposed, so that arguments may be
 		    unpacked using ``x, y, z = loadtxt(...)``.  When used with a structured
@@ -18776,7 +20126,7 @@ package matplotlib.pylab;
 	**/
 	static public function locator_params(?axis:Dynamic, ?tight:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -18788,6 +20138,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18826,7 +20187,7 @@ package matplotlib.pylab;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log10(x[, out])
+		log10(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the base 10 logarithm of the input array, element-wise.
 		
@@ -18834,6 +20195,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18873,7 +20245,7 @@ package matplotlib.pylab;
 	**/
 	static public function log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log1p(x[, out])
+		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the natural logarithm of one plus the input array, element-wise.
 		
@@ -18883,6 +20255,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18926,7 +20309,7 @@ package matplotlib.pylab;
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log2(x[, out])
+		log2(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Base-2 logarithm of `x`.
 		
@@ -18934,6 +20317,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18973,7 +20367,7 @@ package matplotlib.pylab;
 	**/
 	static public function log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logaddexp(x1, x2[, out])
+		logaddexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Logarithm of the sum of exponentiations of the inputs.
 		
@@ -18987,6 +20381,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19013,7 +20418,7 @@ package matplotlib.pylab;
 	**/
 	static public function logaddexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logaddexp2(x1, x2[, out])
+		logaddexp2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Logarithm of the sum of exponentiations of the inputs in base-2.
 		
@@ -19027,8 +20432,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array to store results in.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19055,7 +20469,7 @@ package matplotlib.pylab;
 	**/
 	static public function logaddexp2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_and(x1, x2[, out])
+		logical_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 AND x2 element-wise.
 		
@@ -19063,7 +20477,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Input arrays. `x1` and `x2` must be of the same shape.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19089,7 +20513,7 @@ package matplotlib.pylab;
 	**/
 	static public function logical_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_not(x[, out])
+		logical_not(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of NOT x element-wise.
 		
@@ -19097,6 +20521,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Logical NOT is applied to the elements of `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19121,7 +20556,7 @@ package matplotlib.pylab;
 	**/
 	static public function logical_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_or(x1, x2[, out])
+		logical_or(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 OR x2 element-wise.
 		
@@ -19130,6 +20565,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    Logical OR is applied to the elements of `x1` and `x2`.
 		    They have to be of the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19155,7 +20601,7 @@ package matplotlib.pylab;
 	**/
 	static public function logical_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_xor(x1, x2[, out])
+		logical_xor(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 XOR x2, element-wise.
 		
@@ -19164,6 +20610,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    Logical XOR is applied to the elements of `x1` and `x2`.  They must
 		    be broadcastable to the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19204,24 +20661,26 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : float
-		
-		scale : float > 0.
-		
+		loc : float or array_like of floats, optional
+		    Parameter of the distribution. Default is 0.
+		scale : float or array_like of floats, optional
+		    Parameter of the distribution. Should be greater than zero.
+		    Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized logistic distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.logistic : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.logistic : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -19267,10 +20726,6 @@ package matplotlib.pylab;
 	static public function logistic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on both the *x* and *y* axis.
-		
-		Call signature::
-		
-		  loglog(*args, **kwargs)
 		
 		:func:`~matplotlib.pyplot.loglog` supports all the keyword
 		arguments of :func:`~matplotlib.pyplot.plot` and
@@ -19340,10 +20795,6 @@ package matplotlib.pylab;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/log_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function loglog(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -19358,20 +20809,21 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		mean : float
-		    Mean value of the underlying normal distribution
-		sigma : float, > 0.
-		    Standard deviation of the underlying normal distribution
+		mean : float or array_like of floats, optional
+		    Mean value of the underlying normal distribution. Default is 0.
+		sigma : float or array_like of floats, optional
+		    Standard deviation of the underlying normal distribution. Should
+		    be greater than zero. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mean`` and ``sigma`` are both scalars.
+		    Otherwise, ``np.broadcast(mean, sigma).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or float
-		    The desired samples. An array of the same shape as `size` if given,
-		    if `size` is None a float is returned.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized log-normal distribution.
 		
 		See Also
 		--------
@@ -19459,24 +20911,23 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : float
-		
-		scale : float > 0.
-		
+		p : float or array_like of floats
+		    Shape parameter for the distribution.  Must be in the range (0, 1).
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``p`` is a scalar.  Otherwise,
+		    ``np.array(p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized logarithmic series distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.logser : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.logser : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -19503,8 +20954,8 @@ package matplotlib.pylab;
 		       Journal of Animal Ecology, 12:42-58.
 		.. [3] D. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small
 		       Data Sets, CRC Press, 1994.
-		.. [4] Wikipedia, "Logarithmic-distribution",
-		       http://en.wikipedia.org/wiki/Logarithmic-distribution
+		.. [4] Wikipedia, "Logarithmic distribution",
+		       http://en.wikipedia.org/wiki/Logarithmic_distribution
 		
 		Examples
 		--------
@@ -19538,7 +20989,7 @@ package matplotlib.pylab;
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
-		    length ``num``) are returned.
+		    length `num`) are returned.
 		num : integer, optional
 		    Number of samples to generate.  Default is 50.
 		endpoint : boolean, optional
@@ -19564,6 +21015,7 @@ package matplotlib.pylab;
 		         endpoint may or may not be included.
 		linspace : Similar to logspace, but with the samples uniformly distributed
 		           in linear space, instead of log space.
+		geomspace : Similar to logspace, but with endpoints specified directly.
 		
 		Notes
 		-----
@@ -19577,11 +21029,11 @@ package matplotlib.pylab;
 		Examples
 		--------
 		>>> np.logspace(2.0, 3.0, num=4)
-		    array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
+		array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
 		>>> np.logspace(2.0, 3.0, num=4, endpoint=False)
-		    array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
+		array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
 		>>> np.logspace(2.0, 3.0, num=4, base=2.0)
-		    array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
+		array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
 		
 		Graphical illustration:
 		
@@ -19674,8 +21126,9 @@ package matplotlib.pylab;
 		    of `b`.
 		rcond : float, optional
 		    Cut-off ratio for small singular values of `a`.
-		    Singular values are set to zero if they are smaller than `rcond`
-		    times the largest singular value of `a`.
+		    For the purposes of rank determination, singular values are treated
+		    as zero if they are smaller than `rcond` times the largest singular
+		    value of `a`.
 		
 		Returns
 		-------
@@ -19764,33 +21217,33 @@ package matplotlib.pylab;
 		length of *pad_to* and the windowing function *window* is applied to
 		the signal.
 		
-		  *x*: 1-D array or sequence
+		Parameters
+		----------
+		x : 1-D array or sequence
 		    Array or sequence containing the data
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -19799,30 +21252,21 @@ package matplotlib.pylab;
 		    The default is None, which sets *pad_to* equal to the length of the
 		    input signal (i.e. no padding).
 		
-		  *scale*: [ 'default' | 'linear' | 'dB' ]
+		scale : [ 'default' | 'linear' | 'dB' ]
 		    The scaling of the values in the *spec*.  'linear' is no scaling.
 		    'dB' returns the values in dB scale.  When *mode* is 'density',
 		    this is dB power (10 * log10).  Otherwise this is dB amplitude
 		    (20 * log10). 'default' is 'linear'.
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		Returns the tuple (*spectrum*, *freqs*, *line*):
-		
-		  *spectrum*: 1-D array
-		    The values for the magnitude spectrum before scaling (real valued)
-		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the elements in *spectrum*
-		
-		  *line*: a :class:`~matplotlib.lines.Line2D` instance
-		    The line created by this function
-		
-		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -19866,40 +21310,44 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		spectrum : 1-D array
+		    The values for the magnitude spectrum before scaling (real valued)
 		
+		freqs : 1-D array
+		    The frequencies corresponding to the elements in *spectrum*
+		
+		line : a :class:`~matplotlib.lines.Line2D` instance
+		    The line created by this function
+		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/spectrum_demo.py
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`psd`
+		    :func:`psd` plots the power spectral density.`.
 		
-		    :func:`psd`
-		        :func:`psd` plots the power spectral density.`.
+		:func:`angle_spectrum`
+		    :func:`angle_spectrum` plots the angles of the corresponding
+		    frequencies.
 		
-		    :func:`angle_spectrum`
-		        :func:`angle_spectrum` plots the angles of the corresponding
-		        frequencies.
+		:func:`phase_spectrum`
+		    :func:`phase_spectrum` plots the phase (unwrapped angle) of the
+		    corresponding frequencies.
 		
-		    :func:`phase_spectrum`
-		        :func:`phase_spectrum` plots the phase (unwrapped angle) of the
-		        corresponding frequencies.
+		:func:`specgram`
+		    :func:`specgram` can plot the magnitude spectrum of segments within
+		    the signal in a colormap.
 		
-		    :func:`specgram`
-		        :func:`specgram` can plot the magnitude spectrum of segments
-		        within the signal in a colormap.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -20060,7 +21508,7 @@ package matplotlib.pylab;
 		  were elements.
 		
 		.. warning::
-		   This function is preliminary and included in Numpy 1.10 for testing
+		   This function is preliminary and included in NumPy 1.10.0 for testing
 		   and documentation. Its semantics will not change, but the number and
 		   order of the optional arguments will.
 		
@@ -20210,7 +21658,7 @@ package matplotlib.pylab;
 		>>> q = np.zeros((4, 4))
 		>>> q[0:2, 0:2] = -i
 		>>> q[2:4, 2:4] = i
-		>>> q # one of the three quarternion units not equal to 1
+		>>> q # one of the three quaternion units not equal to 1
 		array([[ 0., -1.,  0.,  0.],
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
@@ -20230,8 +21678,8 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		M : {(M,), (M, N)} array_like
-		    array of <=2 dimensions
+		M : {(M,), (..., M, N)} array_like
+		    input vector or stack of matrices
 		tol : {None, float}, optional
 		   threshold below which SVD values are considered zero. If `tol` is
 		   None, and ``S`` is an array with singular values for `M`, and
@@ -20326,7 +21774,7 @@ package matplotlib.pylab;
 	**/
 	static public function matshow(A:Dynamic, ?fignum:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		maximum(x1, x2[, out])
+		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -20342,6 +21790,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -20472,7 +21931,7 @@ package matplotlib.pylab;
 		    Axis or axes along which the means are computed. The default is to
 		    compute the mean of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a mean is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -20489,7 +21948,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
@@ -20519,6 +21978,9 @@ package matplotlib.pylab;
 		example below).  Specifying a higher-precision accumulator using the
 		`dtype` keyword can alleviate this issue.
 		
+		By default, `float16` results are computed using `float32` intermediates
+		for extra precision.
+		
 		Examples
 		--------
 		>>> a = np.array([[1, 2], [3, 4]])
@@ -20535,7 +21997,7 @@ package matplotlib.pylab;
 		>>> a[0, :] = 1.0
 		>>> a[1, :] = 0.1
 		>>> np.mean(a)
-		0.546875
+		0.54999924
 		
 		Computing the mean in float64 is more accurate:
 		
@@ -20677,12 +22139,12 @@ package matplotlib.pylab;
 		'xy' indexing and (M, N, P) for 'ij' indexing.  The difference is
 		illustrated by the following code snippet::
 		
-		    xv, yv = meshgrid(x, y, sparse=False, indexing='ij')
+		    xv, yv = np.meshgrid(x, y, sparse=False, indexing='ij')
 		    for i in range(nx):
 		        for j in range(ny):
 		            # treat xv[i,j], yv[i,j]
 		
-		    xv, yv = meshgrid(x, y, sparse=False, indexing='xy')
+		    xv, yv = np.meshgrid(x, y, sparse=False, indexing='xy')
 		    for i in range(nx):
 		        for j in range(ny):
 		            # treat xv[j,i], yv[j,i]
@@ -20701,14 +22163,14 @@ package matplotlib.pylab;
 		>>> nx, ny = (3, 2)
 		>>> x = np.linspace(0, 1, nx)
 		>>> y = np.linspace(0, 1, ny)
-		>>> xv, yv = meshgrid(x, y)
+		>>> xv, yv = np.meshgrid(x, y)
 		>>> xv
 		array([[ 0. ,  0.5,  1. ],
 		       [ 0. ,  0.5,  1. ]])
 		>>> yv
 		array([[ 0.,  0.,  0.],
 		       [ 1.,  1.,  1.]])
-		>>> xv, yv = meshgrid(x, y, sparse=True)  # make sparse output arrays
+		>>> xv, yv = np.meshgrid(x, y, sparse=True)  # make sparse output arrays
 		>>> xv
 		array([[ 0. ,  0.5,  1. ]])
 		>>> yv
@@ -20719,7 +22181,7 @@ package matplotlib.pylab;
 		
 		>>> x = np.arange(-5, 5, 0.1)
 		>>> y = np.arange(-5, 5, 0.1)
-		>>> xx, yy = meshgrid(x, y, sparse=True)
+		>>> xx, yy = np.meshgrid(x, y, sparse=True)
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
@@ -20812,7 +22274,7 @@ package matplotlib.pylab;
 	**/
 	static public function min_scalar_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		minimum(x1, x2[, out])
+		minimum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise minimum of array elements.
 		
@@ -20828,6 +22290,17 @@ package matplotlib.pylab;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -20943,7 +22416,7 @@ package matplotlib.pylab;
 	**/
 	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
-		remainder(x1, x2[, out])
+		remainder(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return element-wise remainder of division.
 		
@@ -20958,9 +22431,17 @@ package matplotlib.pylab;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -20971,6 +22452,7 @@ package matplotlib.pylab;
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
+		divmod : Simultaneous floor division and remainder.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -20988,7 +22470,7 @@ package matplotlib.pylab;
 	**/
 	static public function mod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		modf(x[, out1, out2])
+		modf(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the fractional and integral parts of an array, element-wise.
 		
@@ -20999,6 +22481,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -21010,6 +22503,11 @@ package matplotlib.pylab;
 		Notes
 		-----
 		For integer input the return values are floats.
+		
+		See Also
+		--------
+		divmod : ``divmod(x, 1)`` is equivalent to ``modf`` with the return values
+		         switched, except it always has a positive remainder.
 		
 		Examples
 		--------
@@ -21063,7 +22561,7 @@ package matplotlib.pylab;
 		
 		>>> np.transpose(x).shape
 		(5, 4, 3)
-		>>> np.swapaxis(x, 0, -1).shape
+		>>> np.swapaxes(x, 0, -1).shape
 		(5, 4, 3)
 		>>> np.moveaxis(x, [0, 1], [-1, -2]).shape
 		(5, 4, 3)
@@ -21151,17 +22649,16 @@ package matplotlib.pylab;
 		>>> # or
 		>>> A.dot(B).dot(C).dot(D)
 		
-		
-		Example: multiplication costs of different parenthesizations
-		------------------------------------------------------------
-		
+		Notes
+		-----
 		The cost for a matrix multiplication can be calculated with the
 		following function::
 		
-		    def cost(A, B): return A.shape[0] * A.shape[1] * B.shape[1]
+		    def cost(A, B):
+		        return A.shape[0] * A.shape[1] * B.shape[1]
 		
 		Let's assume we have three matrices
-		:math:`A_{10x100}, B_{100x5}, C_{5x50}$`.
+		:math:`A_{10x100}, B_{100x5}, C_{5x50}`.
 		
 		The costs for the two different parenthesizations are as follows::
 		
@@ -21244,7 +22741,7 @@ package matplotlib.pylab;
 	**/
 	static public function multinomial(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		multiply(x1, x2[, out])
+		multiply(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Multiply arguments element-wise.
 		
@@ -21252,6 +22749,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    Input arrays to be multiplied.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -21277,7 +22785,7 @@ package matplotlib.pylab;
 	**/
 	static public function multiply(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		multivariate_normal(mean, cov[, size])
+		multivariate_normal(mean, cov[, size, check_valid, tol])
 		
 		Draw random samples from a multivariate normal distribution.
 		
@@ -21300,6 +22808,10 @@ package matplotlib.pylab;
 		    generated, and packed in an `m`-by-`n`-by-`k` arrangement.  Because
 		    each sample is `N`-dimensional, the output shape is ``(m,n,k,N)``.
 		    If no shape is specified, a single (`N`-D) sample is returned.
+		check_valid : { 'warn', 'raise', 'ignore' }, optional
+		    Behavior when the covariance matrix is not positive semidefinite.
+		tol : float, optional
+		    Tolerance when checking the singular values in covariance matrix.
 		
 		Returns
 		-------
@@ -21327,8 +22839,8 @@ package matplotlib.pylab;
 		Instead of specifying the full covariance matrix, popular
 		approximations include:
 		
-		  - Spherical covariance (*cov* is a multiple of the identity matrix)
-		  - Diagonal covariance (*cov* has non-negative elements, and only on
+		  - Spherical covariance (`cov` is a multiple of the identity matrix)
+		  - Diagonal covariance (`cov` has non-negative elements, and only on
 		    the diagonal)
 		
 		This geometrical property can be seen in two dimensions by plotting
@@ -21388,6 +22900,13 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input data.
+		copy : bool, optional
+		    Whether to create a copy of `x` (True) or to replace values
+		    in-place (False). The in-place operation only occurs if
+		    casting to an array does not require a copy.
+		    Default is True.
+		
+		    .. versionadded:: 1.13
 		
 		Returns
 		-------
@@ -21401,7 +22920,7 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		isinf : Shows which elements are negative or negative infinity.
+		isinf : Shows which elements are positive or negative infinity.
 		isneginf : Shows which elements are negative infinity.
 		isposinf : Shows which elements are positive infinity.
 		isnan : Shows which elements are Not a Number (NaN).
@@ -21409,7 +22928,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		
@@ -21421,7 +22940,7 @@ package matplotlib.pylab;
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
 	**/
-	static public function nan_to_num(x:Dynamic):Dynamic;
+	static public function nan_to_num(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Return the indices of the maximum values in the specified axis ignoring
 		NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the
@@ -21492,6 +23011,123 @@ package matplotlib.pylab;
 	**/
 	static public function nanargmin(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
+		Return the cumulative product of array elements over a given axis treating Not a
+		Numbers (NaNs) as one.  The cumulative product does not change when NaNs are
+		encountered and leading NaNs are replaced by ones.
+		
+		Ones are returned for slices that are all-NaN or empty.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int, optional
+		    Axis along which the cumulative product is computed.  By default
+		    the input is flattened.
+		dtype : dtype, optional
+		    Type of the returned array, as well as of the accumulator in which
+		    the elements are multiplied.  If *dtype* is not specified, it
+		    defaults to the dtype of `a`, unless `a` has an integer dtype with
+		    a precision less than that of the default platform integer.  In
+		    that case, the default platform integer is used instead.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output
+		    but the type of the resulting values will be cast if necessary.
+		
+		Returns
+		-------
+		nancumprod : ndarray
+		    A new array holding the result is returned unless `out` is
+		    specified, in which case it is returned.
+		
+		See Also
+		--------
+		numpy.cumprod : Cumulative product across array propagating NaNs.
+		isnan : Show which elements are NaN.
+		
+		Examples
+		--------
+		>>> np.nancumprod(1)
+		array([1])
+		>>> np.nancumprod([1])
+		array([1])
+		>>> np.nancumprod([1, np.nan])
+		array([ 1.,  1.])
+		>>> a = np.array([[1, 2], [3, np.nan]])
+		>>> np.nancumprod(a)
+		array([ 1.,  2.,  6.,  6.])
+		>>> np.nancumprod(a, axis=0)
+		array([[ 1.,  2.],
+		       [ 3.,  2.]])
+		>>> np.nancumprod(a, axis=1)
+		array([[ 1.,  2.],
+		       [ 3.,  3.]])
+	**/
+	static public function nancumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Return the cumulative sum of array elements over a given axis treating Not a
+		Numbers (NaNs) as zero.  The cumulative sum does not change when NaNs are
+		encountered and leading NaNs are replaced by zeros.
+		
+		Zeros are returned for slices that are all-NaN or empty.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int, optional
+		    Axis along which the cumulative sum is computed. The default
+		    (None) is to compute the cumsum over the flattened array.
+		dtype : dtype, optional
+		    Type of the returned array and of the accumulator in which the
+		    elements are summed.  If `dtype` is not specified, it defaults
+		    to the dtype of `a`, unless `a` has an integer dtype with a
+		    precision less than that of the default platform integer.  In
+		    that case, the default platform integer is used.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output
+		    but the type will be cast if necessary. See `doc.ufuncs`
+		    (Section "Output arguments") for more details.
+		
+		Returns
+		-------
+		nancumsum : ndarray.
+		    A new array holding the result is returned unless `out` is
+		    specified, in which it is returned. The result has the same
+		    size as `a`, and the same shape as `a` if `axis` is not None
+		    or `a` is a 1-d array.
+		
+		See Also
+		--------
+		numpy.cumsum : Cumulative sum across array propagating NaNs.
+		isnan : Show which elements are NaN.
+		
+		Examples
+		--------
+		>>> np.nancumsum(1)
+		array([1])
+		>>> np.nancumsum([1])
+		array([1])
+		>>> np.nancumsum([1, np.nan])
+		array([ 1.,  1.])
+		>>> a = np.array([[1, 2], [3, np.nan]])
+		>>> np.nancumsum(a)
+		array([ 1.,  3.,  6.,  6.])
+		>>> np.nancumsum(a, axis=0)
+		array([[ 1.,  2.],
+		       [ 4.,  2.]])
+		>>> np.nancumsum(a, axis=1)
+		array([[ 1.,  3.],
+		       [ 3.,  3.]])
+	**/
+	static public function nancumsum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
 		Return the maximum of an array or maximum along an axis, ignoring any
 		NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is
 		raised and NaN is returned for that slice.
@@ -21549,7 +23185,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Positive infinity is treated as a very large number and negative
 		infinity is treated as a very small (i.e. negative) number.
@@ -21788,7 +23424,7 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Positive infinity is treated as a very large number and negative
 		infinity is treated as a very small (i.e. negative) number.
@@ -21859,9 +23495,9 @@ package matplotlib.pylab;
 		        * nearest: ``i`` or ``j``, whichever is nearest.
 		        * midpoint: ``(i + j) / 2``.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
 		
 		    If this is anything but the default value it will be passed
 		    through (in the special case of an empty array) to the
@@ -21888,8 +23524,8 @@ package matplotlib.pylab;
 		Notes
 		-----
 		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
-		``V`` is the value ``q/100`` of the way from the mimumum to the
-		maximum in in a sorted copy of ``V``. The values and distances of
+		``V`` is the value ``q/100`` of the way from the minimum to the
+		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
 		will determine the percentile if the normalized ranking does not
 		match the location of ``q`` exactly. This function is the same as
@@ -21902,7 +23538,7 @@ package matplotlib.pylab;
 		>>> a[0][1] = np.nan
 		>>> a
 		array([[ 10.,  nan,   4.],
-		   [  3.,   2.,   1.]])
+		      [  3.,   2.,   1.]])
 		>>> np.percentile(a, 50)
 		nan
 		>>> np.nanpercentile(a, 50)
@@ -21927,7 +23563,7 @@ package matplotlib.pylab;
 	static public function nanpercentile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Return the product of array elements over a given axis treating Not a
-		Numbers (NaNs) as zero.
+		Numbers (NaNs) as ones.
 		
 		One is returned for slices that are all-NaN or empty.
 		
@@ -21961,19 +23597,14 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		y : ndarray or numpy scalar
+		nanprod : ndarray
+		    A new array holding the result is returned unless `out` is
+		    specified, in which case it is returned.
 		
 		See Also
 		--------
 		numpy.prod : Product across array propagating NaNs.
 		isnan : Show which elements are NaN.
-		
-		Notes
-		-----
-		Numpy integer arithmetic is modular. If the size of a product exceeds
-		the size of an integer accumulator, its value will wrap around and the
-		result will be incorrect. Specifying ``dtype=double`` can alleviate
-		that problem.
 		
 		Examples
 		--------
@@ -22087,7 +23718,7 @@ package matplotlib.pylab;
 		Return the sum of array elements over a given axis treating Not a
 		Numbers (NaNs) as zero.
 		
-		In Numpy versions <= 1.8 Nan is returned for slices that are all-NaN or
+		In NumPy versions <= 1.8.0 Nan is returned for slices that are all-NaN or
 		empty. In later versions zero is returned.
 		
 		Parameters
@@ -22130,7 +23761,11 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		y : ndarray or numpy scalar
+		nansum : ndarray.
+		    A new array holding the result is returned unless `out` is
+		    specified, in which it is returned. The result has the same
+		    size as `a`, and the same shape as `a` if `axis` is not None
+		    or `a` is a 1-d array.
 		
 		See Also
 		--------
@@ -22142,11 +23777,6 @@ package matplotlib.pylab;
 		-----
 		If both positive and negative infinity are present, the sum will be Not
 		A Number (NaN).
-		
-		Numpy integer arithmetic is modular. If the size of a sum exceeds the
-		size of an integer accumulator, its value will wrap around and the
-		result will be incorrect. Specifying ``dtype=double`` can alleviate
-		that problem.
 		
 		Examples
 		--------
@@ -22302,7 +23932,7 @@ package matplotlib.pylab;
 	**/
 	static public function ndim(a:Dynamic):Int;
 	/**
-		negative(x[, out])
+		negative(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Numerical negative, element-wise.
 		
@@ -22310,6 +23940,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like or scalar
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -22333,19 +23974,24 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		n : int
-		    Parameter, > 0.
-		p : float
-		    Parameter, >= 0 and <=1.
+		n : int or array_like of ints
+		    Parameter of the distribution, > 0. Floats are also accepted,
+		    but they will be truncated to integers.
+		p : float or array_like of floats
+		    Parameter of the distribution, >= 0 and <=1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``n`` and ``p`` are both scalars.
+		    Otherwise, ``np.broadcast(n, p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : int or ndarray of ints
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized negative binomial distribution,
+		    where each sample is equal to N, the number of trials it took to
+		    achieve n - 1 successes, N - (n - 1) failures, and a success on the,
+		    (N + n)th trial.
 		
 		Notes
 		-----
@@ -22394,7 +24040,7 @@ package matplotlib.pylab;
 	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
-		nextafter(x1, x2[, out])
+		nextafter(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the next floating-point value after x1 towards x2, element-wise.
 		
@@ -22404,9 +24050,17 @@ package matplotlib.pylab;
 		    Values to find the next representable value of.
 		x2 : array_like
 		    The direction where to look for the next representable value of `x1`.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -22423,6 +24077,11 @@ package matplotlib.pylab;
 	**/
 	static public function nextafter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		set the default colormap to nipy_spectral and apply to current image if any.
+		See help(colormaps) for more information
+	**/
+	static public function nipy_spectral():Dynamic;
+	/**
 		noncentral_chisquare(df, nonc, size=None)
 		
 		Draw samples from a noncentral chi-square distribution.
@@ -22432,15 +24091,21 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		df : int
-		    Degrees of freedom, should be > 0 as of Numpy 1.10,
+		df : int or array_like of ints
+		    Degrees of freedom, should be > 0 as of NumPy 1.10.0,
 		    should be > 1 for earlier versions.
-		nonc : float
+		nonc : float or array_like of floats
 		    Non-centrality, should be non-negative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` and ``nonc`` are both scalars.
+		    Otherwise, ``np.broadcast(df, nonc).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized noncentral chi-square distribution.
 		
 		Notes
 		-----
@@ -22507,21 +24172,23 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		dfnum : int
+		dfnum : int or array_like of ints
 		    Parameter, should be > 1.
-		dfden : int
+		dfden : int or array_like of ints
 		    Parameter, should be > 1.
-		nonc : float
+		nonc : float or array_like of floats
 		    Parameter, should be >= 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``dfnum``, ``dfden``, and ``nonc``
+		    are all scalars.  Otherwise, ``np.broadcast(dfnum, dfden, nonc).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized noncentral Fisher distribution.
 		
 		Notes
 		-----
@@ -22536,7 +24203,7 @@ package matplotlib.pylab;
 		.. [1] Weisstein, Eric W. "Noncentral F-Distribution."
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/NoncentralF-Distribution.html
-		.. [2] Wikipedia, "Noncentral F distribution",
+		.. [2] Wikipedia, "Noncentral F-distribution",
 		       http://en.wikipedia.org/wiki/Noncentral_F-distribution
 		
 		Examples
@@ -22599,13 +24266,13 @@ package matplotlib.pylab;
 		
 		Examples
 		--------
-		>>> x = np.eye(3)
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
 		>>> x
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2]), array([0, 1, 2]))
+		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
 		
 		>>> x[np.nonzero(x)]
 		array([ 1.,  1.,  1.])
@@ -22795,19 +24462,25 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : float
+		loc : float or array_like of floats
 		    Mean ("centre") of the distribution.
-		scale : float
+		scale : float or array_like of floats
 		    Standard deviation (spread or "width") of the distribution.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized normal distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.norm : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.norm : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -22865,7 +24538,7 @@ package matplotlib.pylab;
 	**/
 	static public function normpdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		not_equal(x1, x2[, out])
+		not_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return (x1 != x2) element-wise.
 		
@@ -22873,9 +24546,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		  Input arrays.
-		out : ndarray, optional
-		  A placeholder the same shape as `x1` to store the result.
-		  See `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -23252,6 +24933,12 @@ package matplotlib.pylab;
 	**/
 	static public function outer(a:Dynamic, b:Dynamic, ?out:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    pyplot.hold is deprecated.
+		    Future behavior will be consistent with the long-time default:
+		    plot commands add elements without first clearing the
+		    Axes and/or Figure.
+		
 		Call a function with hold(True).
 		
 		Calls::
@@ -23271,7 +24958,8 @@ package matplotlib.pylab;
 		Parameters
 		----------
 		myarray : array_like
-		    An integer type array whose elements should be packed to bits.
+		    An array of integers or booleans whose elements should be packed to
+		    bits.
 		axis : int, optional
 		    The dimension over which bit-packing is done.
 		    ``None`` implies packing the flattened array.
@@ -23525,19 +25213,25 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		shape : float, > 0.
-		    Shape of the distribution.
+		a : float or array_like of floats
+		    Shape of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Pareto distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.lomax.pdf : probability density function,
-		    distribution or cumulative density function, etc.
-		scipy.stats.distributions.genpareto.pdf : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.lomax : probability density function, distribution or
+		    cumulative density function, etc.
+		scipy.stats.genpareto : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -23589,11 +25283,12 @@ package matplotlib.pylab;
 	/**
 		Return a partitioned copy of an array.
 		
-		Creates a copy of the array with its elements rearranged in such a way that
-		the value of the element in kth position is in the position it would be in
-		a sorted array. All elements smaller than the kth element are moved before
-		this element and all equal or greater are moved behind it. The ordering of
-		the elements in the two partitions is undefined.
+		Creates a copy of the array with its elements rearranged in such a
+		way that the value of the element in k-th position is in the
+		position it would be in a sorted array. All elements smaller than
+		the k-th element are moved before this element and all equal or
+		greater are moved behind it. The ordering of the elements in the two
+		partitions is undefined.
 		
 		.. versionadded:: 1.8.0
 		
@@ -23602,23 +25297,23 @@ package matplotlib.pylab;
 		a : array_like
 		    Array to be sorted.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth value of the element will be in
-		    its final sorted position and all smaller elements will be moved before
-		    it and all equal or greater elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all elements
-		    indexed by kth  of them into their sorted position at once.
+		    Element index to partition by. The k-th value of the element
+		    will be in its final sorted position and all smaller elements
+		    will be moved before it and all equal or greater elements behind
+		    it. The order all elements in the partitions is undefined. If
+		    provided with a sequence of k-th it will partition all elements
+		    indexed by k-th  of them into their sorted position at once.
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'.
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string.  Not all fields need be specified, but
-		    unspecified fields will still be used, in the order in which they
-		    come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc.  A single
+		    field can be specified as a string.  Not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
@@ -23633,10 +25328,11 @@ package matplotlib.pylab;
 		
 		Notes
 		-----
-		The various selection algorithms are characterized by their average speed,
-		worst case performance, work space size, and whether they are stable. A
-		stable sort keeps items with the same key in the same relative order. The
-		available algorithms have the following properties:
+		The various selection algorithms are characterized by their average
+		speed, worst case performance, work space size, and whether they are
+		stable. A stable sort keeps items with the same key in the same
+		relative order. The available algorithms have the following
+		properties:
 		
 		================= ======= ============= ============ =======
 		   kind            speed   worst case    work space  stable
@@ -23645,14 +25341,14 @@ package matplotlib.pylab;
 		================= ======= ============= ============ =======
 		
 		All the partition algorithms make temporary copies of the data when
-		partitioning along any but the last axis.  Consequently, partitioning
-		along the last axis is faster and uses less space than partitioning
-		along any other axis.
+		partitioning along any but the last axis.  Consequently,
+		partitioning along the last axis is faster and uses less space than
+		partitioning along any other axis.
 		
-		The sort order for complex numbers is lexicographic. If both the real
-		and imaginary parts are non-nan then the order is determined by the
-		real parts except when they are equal, in which case the order is
-		determined by the imaginary parts.
+		The sort order for complex numbers is lexicographic. If both the
+		real and imaginary parts are non-nan then the order is determined by
+		the real parts except when they are equal, in which case the order
+		is determined by the imaginary parts.
 		
 		Examples
 		--------
@@ -23839,7 +25535,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -23872,19 +25568,12 @@ package matplotlib.pylab;
 		        For an explanation of the differences between
 		        pcolor and pcolormesh.
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function pcolor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -23975,7 +25664,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -23994,22 +25683,16 @@ package matplotlib.pylab;
 		.. seealso::
 		
 		    :func:`~matplotlib.pyplot.pcolor`
-		        For an explanation of the grid orientation and the
-		        expansion of 1-D *X* and/or *Y* to 2-D arrays.
+		        For an explanation of the grid orientation
+		        (:ref:`Grid Orientation <axes-pcolor-grid-orientation>`)
+		        and the expansion of 1-D *X* and/or *Y* to 2-D arrays.
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function pcolormesh(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -24033,7 +25716,7 @@ package matplotlib.pylab;
 		    have the same shape and buffer length as the expected output,
 		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		    If True, then allow use of memory of input array `a` 
+		    If True, then allow use of memory of input array `a`
 		    calculations. The input array will be modified by the call to
 		    `percentile`. This will save memory when you do not need to
 		    preserve the contents of the input array. In this case you
@@ -24068,7 +25751,7 @@ package matplotlib.pylab;
 		    If `q` is a single percentile and `axis=None`, then the result
 		    is a scalar. If multiple percentiles are given, first axis of
 		    the result corresponds to the percentiles. The other axes are
-		    the axes that remain after the reduction of `a`. If the input 
+		    the axes that remain after the reduction of `a`. If the input
 		    contains integers or floats smaller than ``float64``, the output
 		    data-type is ``float64``. Otherwise, the output data-type is the
 		    same as that of the input. If `out` is specified, that array is
@@ -24081,8 +25764,8 @@ package matplotlib.pylab;
 		Notes
 		-----
 		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
-		``V`` is the value ``q/100`` of the way from the mimumum to the
-		maximum in in a sorted copy of ``V``. The values and distances of
+		``V`` is the value ``q/100`` of the way from the minimum to the
+		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
 		will determine the percentile if the normalized ranking does not
 		match the location of ``q`` exactly. This function is the same as
@@ -24165,33 +25848,33 @@ package matplotlib.pylab;
 		Data is padded to a length of *pad_to* and the windowing function
 		*window* is applied to the signal.
 		
-		  *x*: 1-D array or sequence
+		Parameters
+		----------
+		x : 1-D array or sequence
 		    Array or sequence containing the data
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -24200,24 +25883,15 @@ package matplotlib.pylab;
 		    The default is None, which sets *pad_to* equal to the length of the
 		    input signal (i.e. no padding).
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		Returns the tuple (*spectrum*, *freqs*, *line*):
-		
-		  *spectrum*: 1-D array
-		    The values for the phase spectrum in radians (real valued)
-		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the elements in *spectrum*
-		
-		  *line*: a :class:`~matplotlib.lines.Line2D` instance
-		    The line created by this function
-		
-		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -24261,154 +25935,143 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		spectrum : 1-D array
+		    The values for the phase spectrum in radians (real valued)
 		
+		freqs : 1-D array
+		    The frequencies corresponding to the elements in *spectrum*
+		
+		line : a :class:`~matplotlib.lines.Line2D` instance
+		    The line created by this function
+		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/spectrum_demo.py
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`magnitude_spectrum`
+		    :func:`magnitude_spectrum` plots the magnitudes of the
+		    corresponding frequencies.
 		
-		    :func:`magnitude_spectrum`
-		        :func:`magnitude_spectrum` plots the magnitudes of the
-		        corresponding frequencies.
+		:func:`angle_spectrum`
+		    :func:`angle_spectrum` plots the wrapped version of this function.
 		
-		    :func:`angle_spectrum`
-		        :func:`angle_spectrum` plots the wrapped version of this
-		        function.
+		:func:`specgram`
+		    :func:`specgram` can plot the phase spectrum of segments within the
+		    signal in a colormap.
 		
-		    :func:`specgram`
-		        :func:`specgram` can plot the phase spectrum of segments
-		        within the signal in a colormap.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		Plot a pie chart.
 		
-		Call signature::
-		
-		  pie(x, explode=None, labels=None,
-		      colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'),
-		      autopct=None, pctdistance=0.6, shadow=False,
-		      labeldistance=1.1, startangle=None, radius=None,
-		      counterclock=True, wedgeprops=None, textprops=None,
-		      center = (0, 0), frame = False )
-		
 		Make a pie chart of array *x*.  The fractional area of each
-		wedge is given by x/sum(x).  If sum(x) <= 1, then the values
-		of x give the fractional area directly and the array will not
-		be normalized.  The wedges are plotted counterclockwise,
-		by default starting from the x-axis.
+		wedge is given by ``x/sum(x)``.  If ``sum(x) <= 1``, then the
+		values of x give the fractional area directly and the array
+		will not be normalized.  The wedges are plotted
+		counterclockwise, by default starting from the x-axis.
 		
-		Keyword arguments:
+		Parameters
+		----------
+		x : array-like
+		    The input array used to make the pie chart.
 		
-		  *explode*: [ *None* | len(x) sequence ]
+		explode : array-like, optional, default: None
 		    If not *None*, is a ``len(x)`` array which specifies the
 		    fraction of the radius with which to offset each wedge.
 		
-		  *colors*: [ *None* | color sequence ]
-		    A sequence of matplotlib color args through which the pie chart
-		    will cycle.
-		
-		  *labels*: [ *None* | len(x) sequence of strings ]
+		labels : list, optional, default: None
 		    A sequence of strings providing the labels for each wedge
 		
-		  *autopct*: [ *None* | format string | format function ]
+		colors : array-like, optional, default: None
+		    A sequence of matplotlib color args through which the pie chart
+		    will cycle.  If `None`, will use the colors in the currently
+		    active cycle.
+		
+		autopct : None (default), string, or function, optional
 		    If not *None*, is a string or function used to label the wedges
 		    with their numeric value.  The label will be placed inside the
 		    wedge.  If it is a format string, the label will be ``fmt%pct``.
 		    If it is a function, it will be called.
 		
-		  *pctdistance*: scalar
+		pctdistance : float, optional, default: 0.6
 		    The ratio between the center of each pie slice and the
 		    start of the text generated by *autopct*.  Ignored if
-		    *autopct* is *None*; default is 0.6.
+		    *autopct* is *None*.
 		
-		  *labeldistance*: scalar
-		    The radial distance at which the pie labels are drawn
-		
-		  *shadow*: [ *False* | *True* ]
+		shadow : bool, optional, default: False
 		    Draw a shadow beneath the pie.
 		
-		  *startangle*: [ *None* | Offset angle ]
+		labeldistance : float, optional, default: 1.1
+		    The radial distance at which the pie labels are drawn
+		
+		startangle : float, optional, default: None
 		    If not *None*, rotates the start of the pie chart by *angle*
 		    degrees counterclockwise from the x-axis.
 		
-		  *radius*: [ *None* | scalar ]
-		  The radius of the pie, if *radius* is *None* it will be set to 1.
+		radius : float, optional, default: None
+		    The radius of the pie, if *radius* is *None* it will be set to 1.
 		
-		  *counterclock*: [ *False* | *True* ]
+		counterclock : bool, optional, default: True
 		    Specify fractions direction, clockwise or counterclockwise.
 		
-		  *wedgeprops*: [ *None* | dict of key value pairs ]
+		wedgeprops : dict, optional, default: None
 		    Dict of arguments passed to the wedge objects making the pie.
-		    For example, you can pass in wedgeprops = { 'linewidth' : 3 }
+		    For example, you can pass in``wedgeprops = {'linewidth': 3}``
 		    to set the width of the wedge border lines equal to 3.
 		    For more details, look at the doc/arguments of the wedge object.
-		    By default `clip_on=False`.
+		    By default ``clip_on=False``.
 		
-		  *textprops*: [ *None* | dict of key value pairs ]
+		textprops : dict, optional, default: None
 		    Dict of arguments to pass to the text objects.
 		
-		  *center*: [ (0,0) | sequence of 2 scalars ]
-		  Center position of the chart.
+		center :  list of float, optional, default: (0, 0)
+		    Center position of the chart. Takes value (0, 0) or is a
+		    sequence of 2 scalars.
 		
-		  *frame*: [ *False* | *True* ]
-		    Plot axes frame with the chart.
+		frame : bool, optional, default: False
+		    Plot axes frame with the chart if true.
 		
-		The pie chart will probably look best if the figure and axes are
-		square, or the Axes aspect is equal.  e.g.::
+		Returns
+		-------
+		patches : list
+		    A sequence of :class:`matplotlib.patches.Wedge` instances
 		
-		  figure(figsize=(8,8))
-		  ax = axes([0.1, 0.1, 0.8, 0.8])
+		texts : list
+		    A is a list of the label :class:`matplotlib.text.Text` instances.
 		
-		or::
-		
-		  axes(aspect=1)
-		
-		Return value:
-		  If *autopct* is *None*, return the tuple (*patches*, *texts*):
-		
-		    - *patches* is a sequence of
-		      :class:`matplotlib.patches.Wedge` instances
-		
-		    - *texts* is a list of the label
-		      :class:`matplotlib.text.Text` instances.
-		
-		  If *autopct* is not *None*, return the tuple (*patches*,
-		  *texts*, *autotexts*), where *patches* and *texts* are as
-		  above, and *autotexts* is a list of
-		  :class:`~matplotlib.text.Text` instances for the numeric
-		  labels.
+		autotexts : list
+		    A is a list of :class:`~matplotlib.text.Text` instances for the
+		    numeric labels. Is returned only if parameter *autopct* is
+		    not *None*.
 		
 		Notes
 		-----
+		The pie chart will probably look best if the figure and axes are
+		square, or the Axes aspect is equal.
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
+		Examples
+		--------
+		.. plot:: mpl_examples/pie_and_polar_charts/pie_demo_features.py
 		
-		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'colors', 'explode', 'labels', 'x'.
 	**/
-	static public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
+	static public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?hold:Dynamic, ?data:Dynamic):Array<Dynamic>;
 	/**
 		Evaluate a piecewise-defined function.
 		
@@ -24417,9 +26080,9 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		x : ndarray
+		x : ndarray or scalar
 		    The input domain.
-		condlist : list of bool arrays
+		condlist : list of bool arrays or bool scalars
 		    Each boolean array corresponds to a function in `funclist`.  Wherever
 		    `condlist[i]` is True, `funclist[i](x)` is used as the output value.
 		
@@ -24443,8 +26106,8 @@ package matplotlib.pylab;
 		kw : dict, optional
 		    Keyword arguments used in calling `piecewise` are passed to the
 		    functions upon execution, i.e., if called
-		    ``piecewise(..., ..., lambda=1)``, then each function is called as
-		    ``f(x, lambda=1)``.
+		    ``piecewise(..., ..., alpha=1)``, then each function is called as
+		    ``f(x, alpha=1)``.
 		
 		Returns
 		-------
@@ -24487,6 +26150,12 @@ package matplotlib.pylab;
 		
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
+		
+		Apply the same function to a scalar value.
+		
+		>>> y = -2
+		>>> np.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])
+		array(2)
 	**/
 	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -24613,7 +26282,8 @@ package matplotlib.pylab;
 		vals : 1-D sequence
 		    Values to put into `a`. Only the first N elements are used, where
 		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
+		    than N, it will be repeated, and if elements of `a` are to be masked,
+		    this sequence must be non-empty.
 		
 		See Also
 		--------
@@ -24801,28 +26471,16 @@ package matplotlib.pylab;
 		whether the *x* and *y* axes are autoscaled; the default is
 		*True*.
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function plot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Plot with data with dates.
-		
-		Call signature::
-		
-		   plot_date(x, y, fmt='bo', tz=None, xdate=True,
-		             ydate=False, **kwargs)
+		A plot with data that contains dates.
 		
 		Similar to the :func:`~matplotlib.pyplot.plot` command, except
 		the *x* or *y* (or both) data is considered to be dates, and the
@@ -24831,36 +26489,52 @@ package matplotlib.pylab;
 		*x* and/or *y* can be a sequence of dates represented as float
 		days since 0001-01-01 UTC.
 		
-		Keyword arguments:
+		Note if you are using custom date tickers and formatters, it
+		may be necessary to set the formatters/locators after the call
+		to meth:`plot_date` since meth:`plot_date` will set the
+		default tick locator to
+		class:`matplotlib.dates.AutoDateLocator` (if the tick
+		locator is not already set to a
+		class:`matplotlib.dates.DateLocator` instance) and the
+		default tick formatter to
+		class:`matplotlib.dates.AutoDateFormatter` (if the tick
+		formatter is not already set to a
+		class:`matplotlib.dates.DateFormatter` instance).
 		
-		  *fmt*: string
+		
+		Parameters
+		----------
+		fmt : string
 		    The plot format string.
 		
-		  *tz*: [ *None* | timezone string | :class:`tzinfo` instance]
+		tz : [ *None* | timezone string | :class:`tzinfo` instance]
 		    The time zone to use in labeling dates. If *None*, defaults to rc
 		    value.
 		
-		  *xdate*: [ *True* | *False* ]
+		xdate : boolean
 		    If *True*, the *x*-axis will be labeled with dates.
 		
-		  *ydate*: [ *False* | *True* ]
+		ydate : boolean
 		    If *True*, the *y*-axis will be labeled with dates.
 		
-		Note if you are using custom date tickers and formatters, it
-		may be necessary to set the formatters/locators after the call
-		to :meth:`plot_date` since :meth:`plot_date` will set the
-		default tick locator to
-		:class:`matplotlib.dates.AutoDateLocator` (if the tick
-		locator is not already set to a
-		:class:`matplotlib.dates.DateLocator` instance) and the
-		default tick formatter to
-		:class:`matplotlib.dates.AutoDateFormatter` (if the tick
-		formatter is not already set to a
-		:class:`matplotlib.dates.DateFormatter` instance).
 		
-		Valid kwargs are :class:`~matplotlib.lines.Line2D` properties:
+		Returns
+		-------
+		lines
 		
-		  agg_filter: unknown
+		
+		See Also
+		--------
+		matplotlib.dates : helper functions on dates
+		matplotlib.dates.date2num : how to convert dates to num
+		matplotlib.dates.num2date : how to convert num to dates
+		matplotlib.dates.drange : how floating point dates
+		
+		
+		Other Parameters
+		----------------
+		kwargs : :class:`matplotlib.lines.Line2D`
+		properties :   agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
 		  animated: [True | False] 
 		  antialiased or aa: [True | False] 
@@ -24902,28 +26576,12 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		.. seealso::
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		   :mod:`~matplotlib.dates` for helper functions
-		
-		   :func:`~matplotlib.dates.date2num`,
-		   :func:`~matplotlib.dates.num2date` and
-		   :func:`~matplotlib.dates.drange` for help on creating the required
-		   floating point dates.
-		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -24979,142 +26637,142 @@ package matplotlib.pylab;
 	**/
 	static public function plotfile(fname:Dynamic, ?cols:Dynamic, ?plotfuncs:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?names:Dynamic, ?subplots:Dynamic, ?newfig:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		============================ =================================================================================================================================
-		Function                     Description                                                                                                                      
-		============================ =================================================================================================================================
-		`acorr`                      Plot the autocorrelation of `x`.                                                                                                 
-		`angle_spectrum`             Plot the angle spectrum.                                                                                                         
-		`annotate`                   Annotate the point ``xy`` with text ``s``.                                                                                       
-		`arrow`                      Add an arrow to the axes.                                                                                                        
-		`autoscale`                  Autoscale the axis view to the data (toggle).                                                                                    
-		`axes`                       Add an axes to the figure.                                                                                                       
-		`axhline`                    Add a horizontal line across the axis.                                                                                           
-		`axhspan`                    Add a horizontal span (rectangle) across the axis.                                                                               
-		`axis`                       Convenience method to get or set axis properties.                                                                                
-		`axvline`                    Add a vertical line across the axes.                                                                                             
-		`axvspan`                    Add a vertical span (rectangle) across the axes.                                                                                 
-		`bar`                        Make a bar plot.                                                                                                                 
-		`barbs`                      Plot a 2-D field of barbs.                                                                                                       
-		`barh`                       Make a horizontal bar plot.                                                                                                      
-		`box`                        Turn the axes box on or off.                                                                                                     
-		`boxplot`                    Make a box and whisker plot.                                                                                                     
-		`broken_barh`                Plot horizontal bars.                                                                                                            
-		`cla`                        Clear the current axes.                                                                                                          
-		`clabel`                     Label a contour plot.                                                                                                            
-		`clf`                        Clear the current figure.                                                                                                        
-		`clim`                       Set the color limits of the current image.                                                                                       
-		`close`                      Close a figure window.                                                                                                           
-		`cohere`                     Plot the coherence between *x* and *y*.                                                                                          
-		`colorbar`                   Add a colorbar to a plot.                                                                                                        
-		`contour`                    Plot contours.                                                                                                                   
-		`contourf`                   Plot contours.                                                                                                                   
-		`csd`                        Plot the cross-spectral density.                                                                                                 
-		`delaxes`                    Remove an axes from the current figure.                                                                                          
-		`draw`                       Redraw the current figure.                                                                                                       
-		`errorbar`                   Plot an errorbar graph.                                                                                                          
-		`eventplot`                  Plot identical parallel lines at specific positions.                                                                             
-		`figimage`                   Adds a non-resampled image to the figure.                                                                                        
-		`figlegend`                  Place a legend in the figure.                                                                                                    
-		`fignum_exists`                                                                                                                                               
-		`figtext`                    Add text to figure.                                                                                                              
-		`figure`                     Creates a new figure.                                                                                                            
-		`fill`                       Plot filled polygons.                                                                                                            
-		`fill_between`               Make filled polygons between two curves.                                                                                         
-		`fill_betweenx`              Make filled polygons between two horizontal curves.                                                                              
-		`findobj`                    Find artist objects.                                                                                                             
-		`gca`                        Get the current :class:`~matplotlib.axes.Axes` instance on the     current figure matching the given keyword args, or create one.
-		`gcf`                        Get a reference to the current figure.                                                                                           
-		`gci`                        Get the current colorable artist.                                                                                                
-		`get_figlabels`              Return a list of existing figure labels.                                                                                         
-		`get_fignums`                Return a list of existing figure numbers.                                                                                        
-		`grid`                       Turn the axes grids on or off.                                                                                                   
-		`hexbin`                     Make a hexagonal binning plot.                                                                                                   
-		`hist`                       Plot a histogram.                                                                                                                
-		`hist2d`                     Make a 2D histogram plot.                                                                                                        
-		`hlines`                     Plot horizontal lines at each `y` from `xmin` to `xmax`.                                                                         
-		`hold`                       Set the hold state.                                                                                                              
-		`imread`                     Read an image from a file into an array.                                                                                         
-		`imsave`                     Save an array as in image file.                                                                                                  
-		`imshow`                     Display an image on the axes.                                                                                                    
-		`install_repl_displayhook`   Install a repl display hook so that any stale figure are automatically     redrawn when control is returned to the repl.         
-		`ioff`                       Turn interactive mode off.                                                                                                       
-		`ion`                        Turn interactive mode on.                                                                                                        
-		`ishold`                     Return the hold status of the current axes.                                                                                      
-		`isinteractive`              Return status of interactive mode.                                                                                               
-		`legend`                     Places a legend on the axes.                                                                                                     
-		`locator_params`             Control behavior of tick locators.                                                                                               
-		`loglog`                     Make a plot with log scaling on both the *x* and *y* axis.                                                                       
-		`magnitude_spectrum`         Plot the magnitude spectrum.                                                                                                     
-		`margins`                    Set or retrieve autoscaling margins.                                                                                             
-		`matshow`                    Display an array as a matrix in a new figure window.                                                                             
-		`minorticks_off`             Remove minor ticks from the current plot.                                                                                        
-		`minorticks_on`              Display minor ticks on the current plot.                                                                                         
-		`over`                       Call a function with hold(True).                                                                                                 
-		`pause`                      Pause for *interval* seconds.                                                                                                    
-		`pcolor`                     Create a pseudocolor plot of a 2-D array.                                                                                        
-		`pcolormesh`                 Plot a quadrilateral mesh.                                                                                                       
-		`phase_spectrum`             Plot the phase spectrum.                                                                                                         
-		`pie`                        Plot a pie chart.                                                                                                                
-		`plot`                       Plot lines and/or markers to the :class:`~matplotlib.axes.Axes`.                                                                 
-		`plot_date`                  Plot with data with dates.                                                                                                       
-		`plotfile`                   Plot the data in in a file.                                                                                                      
-		`polar`                      Make a polar plot.                                                                                                               
-		`psd`                        Plot the power spectral density.                                                                                                 
-		`quiver`                     Plot a 2-D field of arrows.                                                                                                      
-		`quiverkey`                  Add a key to a quiver plot.                                                                                                      
-		`rc`                         Set the current rc params.                                                                                                       
-		`rc_context`                 Return a context manager for managing rc settings.                                                                               
-		`rcdefaults`                 Restore the default rc params.                                                                                                   
-		`rgrids`                     Get or set the radial gridlines on a polar plot.                                                                                 
-		`savefig`                    Save the current figure.                                                                                                         
-		`sca`                        Set the current Axes instance to *ax*.                                                                                           
-		`scatter`                    Make a scatter plot of x vs y, where x and y are sequence like objects of the same length.                                       
-		`sci`                        Set the current image.                                                                                                           
-		`semilogx`                   Make a plot with log scaling on the *x* axis.                                                                                    
-		`semilogy`                   Make a plot with log scaling on the *y* axis.                                                                                    
-		`set_cmap`                   Set the default colormap.                                                                                                        
-		`setp`                       Set a property on an artist object.                                                                                              
-		`show`                       Display a figure.                                                                                                                
-		`specgram`                   Plot a spectrogram.                                                                                                              
-		`spy`                        Plot the sparsity pattern on a 2-D array.                                                                                        
-		`stackplot`                  Draws a stacked area plot.                                                                                                       
-		`stem`                       Create a stem plot.                                                                                                              
-		`step`                       Make a step plot.                                                                                                                
-		`streamplot`                 Draws streamlines of a vector flow.                                                                                              
-		`subplot`                    Return a subplot axes positioned by the given grid definition.                                                                   
-		`subplot2grid`               Create a subplot in a grid.                                                                                                      
-		`subplot_tool`               Launch a subplot tool window for a figure.                                                                                       
-		`subplots`                   Create a figure with a set of subplots already made.                                                                             
-		`subplots_adjust`            Tune the subplot layout.                                                                                                         
-		`suptitle`                   Add a centered title to the figure.                                                                                              
-		`switch_backend`             Switch the default backend.                                                                                                      
-		`table`                      Add a table to the current axes.                                                                                                 
-		`text`                       Add text to the axes.                                                                                                            
-		`thetagrids`                 Get or set the theta locations of the gridlines in a polar plot.                                                                 
-		`tick_params`                Change the appearance of ticks and tick labels.                                                                                  
-		`ticklabel_format`           Change the `~matplotlib.ticker.ScalarFormatter` used by default for linear axes.                                                 
-		`tight_layout`               Automatically adjust subplot parameters to give specified padding.                                                               
-		`title`                      Set a title of the current axes.                                                                                                 
-		`tricontour`                 Draw contours on an unstructured triangular grid.                                                                                
-		`tricontourf`                Draw contours on an unstructured triangular grid.                                                                                
-		`tripcolor`                  Create a pseudocolor plot of an unstructured triangular grid.                                                                    
-		`triplot`                    Draw a unstructured triangular grid as lines and/or markers.                                                                     
-		`twinx`                      Make a second axes that shares the *x*-axis.                                                                                     
-		`twiny`                      Make a second axes that shares the *y*-axis.                                                                                     
-		`uninstall_repl_displayhook` Uninstalls the matplotlib display hook.                                                                                          
-		`violinplot`                 Make a violin plot.                                                                                                              
-		`vlines`                     Plot vertical lines.                                                                                                             
-		`xcorr`                      Plot the cross correlation between *x* and *y*.                                                                                  
-		`xkcd`                       Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.                                                                   
-		`xlabel`                     Set the *x* axis label of the current axis.                                                                                      
-		`xlim`                       Get or set the *x* limits of the current axes.                                                                                   
-		`xscale`                     Set the scaling of the *x*-axis.                                                                                                 
-		`xticks`                     Get or set the *x*-limits of the current tick locations and labels.                                                              
-		`ylabel`                     Set the *y* axis label of the current axis.                                                                                      
-		`ylim`                       Get or set the *y*-limits of the current axes.                                                                                   
-		`yscale`                     Set the scaling of the *y*-axis.                                                                                                 
-		`yticks`                     Get or set the *y*-limits of the current tick locations and labels.                                                              
-		============================ =================================================================================================================================
+		============================ =============================================================================================================================================================================================================================================
+		Function                     Description                                                                                                                                                                                                                                  
+		============================ =============================================================================================================================================================================================================================================
+		`acorr`                      Plot the autocorrelation of `x`.                                                                                                                                                                                                             
+		`angle_spectrum`             Plot the angle spectrum.                                                                                                                                                                                                                     
+		`annotate`                   Annotate the point ``xy`` with text ``s``.                                                                                                                                                                                                   
+		`arrow`                      Add an arrow to the axes.                                                                                                                                                                                                                    
+		`autoscale`                  Autoscale the axis view to the data (toggle).                                                                                                                                                                                                
+		`axes`                       Add an axes to the figure.                                                                                                                                                                                                                   
+		`axhline`                    Add a horizontal line across the axis.                                                                                                                                                                                                       
+		`axhspan`                    Add a horizontal span (rectangle) across the axis.                                                                                                                                                                                           
+		`axis`                       Convenience method to get or set axis properties.                                                                                                                                                                                            
+		`axvline`                    Add a vertical line across the axes.                                                                                                                                                                                                         
+		`axvspan`                    Add a vertical span (rectangle) across the axes.                                                                                                                                                                                             
+		`bar`                        Make a bar plot.                                                                                                                                                                                                                             
+		`barbs`                      Plot a 2-D field of barbs.                                                                                                                                                                                                                   
+		`barh`                       Make a horizontal bar plot.                                                                                                                                                                                                                  
+		`box`                        Turn the axes box on or off.                                                                                                                                                                                                                 
+		`boxplot`                    Make a box and whisker plot.                                                                                                                                                                                                                 
+		`broken_barh`                Plot horizontal bars.                                                                                                                                                                                                                        
+		`cla`                        Clear the current axes.                                                                                                                                                                                                                      
+		`clabel`                     Label a contour plot.                                                                                                                                                                                                                        
+		`clf`                        Clear the current figure.                                                                                                                                                                                                                    
+		`clim`                       Set the color limits of the current image.                                                                                                                                                                                                   
+		`close`                      Close a figure window.                                                                                                                                                                                                                       
+		`cohere`                     Plot the coherence between *x* and *y*.                                                                                                                                                                                                      
+		`colorbar`                   Add a colorbar to a plot.                                                                                                                                                                                                                    
+		`contour`                    Plot contours.                                                                                                                                                                                                                               
+		`contourf`                   Plot contours.                                                                                                                                                                                                                               
+		`csd`                        Plot the cross-spectral density.                                                                                                                                                                                                             
+		`delaxes`                    Remove an axes from the current figure.                                                                                                                                                                                                      
+		`draw`                       Redraw the current figure.                                                                                                                                                                                                                   
+		`errorbar`                   Plot an errorbar graph.                                                                                                                                                                                                                      
+		`eventplot`                  Plot identical parallel lines at specific positions.                                                                                                                                                                                         
+		`figimage`                   Adds a non-resampled image to the figure.                                                                                                                                                                                                    
+		`figlegend`                  Place a legend in the figure.                                                                                                                                                                                                                
+		`fignum_exists`                                                                                                                                                                                                                                                           
+		`figtext`                    Add text to figure.                                                                                                                                                                                                                          
+		`figure`                     Creates a new figure.                                                                                                                                                                                                                        
+		`fill`                       Plot filled polygons.                                                                                                                                                                                                                        
+		`fill_between`               Make filled polygons between two curves.                                                                                                                                                                                                     
+		`fill_betweenx`              Make filled polygons between two horizontal curves.                                                                                                                                                                                          
+		`findobj`                    Find artist objects.                                                                                                                                                                                                                         
+		`gca`                        Get the current :class:`~matplotlib.axes.Axes` instance on the     current figure matching the given keyword args, or create one.                                                                                                            
+		`gcf`                        Get a reference to the current figure.                                                                                                                                                                                                       
+		`gci`                        Get the current colorable artist.                                                                                                                                                                                                            
+		`get_figlabels`              Return a list of existing figure labels.                                                                                                                                                                                                     
+		`get_fignums`                Return a list of existing figure numbers.                                                                                                                                                                                                    
+		`grid`                       Turn the axes grids on or off.                                                                                                                                                                                                               
+		`hexbin`                     Make a hexagonal binning plot.                                                                                                                                                                                                               
+		`hist`                       Plot a histogram.                                                                                                                                                                                                                            
+		`hist2d`                     Make a 2D histogram plot.                                                                                                                                                                                                                    
+		`hlines`                     Plot horizontal lines at each `y` from `xmin` to `xmax`.                                                                                                                                                                                     
+		`hold`                       ..                                                                                                                                                                                                                                           
+		`imread`                     Read an image from a file into an array.                                                                                                                                                                                                     
+		`imsave`                     Save an array as in image file.                                                                                                                                                                                                              
+		`imshow`                     Display an image on the axes.                                                                                                                                                                                                                
+		`install_repl_displayhook`   Install a repl display hook so that any stale figure are automatically     redrawn when control is returned to the repl.                                                                                                                     
+		`ioff`                       Turn interactive mode off.                                                                                                                                                                                                                   
+		`ion`                        Turn interactive mode on.                                                                                                                                                                                                                    
+		`ishold`                     ..                                                                                                                                                                                                                                           
+		`isinteractive`              Return status of interactive mode.                                                                                                                                                                                                           
+		`legend`                     Places a legend on the axes.                                                                                                                                                                                                                 
+		`locator_params`             Control behavior of tick locators.                                                                                                                                                                                                           
+		`loglog`                     Make a plot with log scaling on both the *x* and *y* axis.                                                                                                                                                                                   
+		`magnitude_spectrum`         Plot the magnitude spectrum.                                                                                                                                                                                                                 
+		`margins`                    Set or retrieve autoscaling margins.                                                                                                                                                                                                         
+		`matshow`                    Display an array as a matrix in a new figure window.                                                                                                                                                                                         
+		`minorticks_off`             Remove minor ticks from the current plot.                                                                                                                                                                                                    
+		`minorticks_on`              Display minor ticks on the current plot.                                                                                                                                                                                                     
+		`over`                       ..                                                                                                                                                                                                                                           
+		`pause`                      Pause for *interval* seconds.                                                                                                                                                                                                                
+		`pcolor`                     Create a pseudocolor plot of a 2-D array.                                                                                                                                                                                                    
+		`pcolormesh`                 Plot a quadrilateral mesh.                                                                                                                                                                                                                   
+		`phase_spectrum`             Plot the phase spectrum.                                                                                                                                                                                                                     
+		`pie`                        Plot a pie chart.                                                                                                                                                                                                                            
+		`plot`                       Plot lines and/or markers to the :class:`~matplotlib.axes.Axes`.                                                                                                                                                                             
+		`plot_date`                  A plot with data that contains dates.                                                                                                                                                                                                        
+		`plotfile`                   Plot the data in in a file.                                                                                                                                                                                                                  
+		`polar`                      Make a polar plot.                                                                                                                                                                                                                           
+		`psd`                        Plot the power spectral density.                                                                                                                                                                                                             
+		`quiver`                     Plot a 2-D field of arrows.                                                                                                                                                                                                                  
+		`quiverkey`                  Add a key to a quiver plot.                                                                                                                                                                                                                  
+		`rc`                         Set the current rc params.                                                                                                                                                                                                                   
+		`rc_context`                 Return a context manager for managing rc settings.                                                                                                                                                                                           
+		`rcdefaults`                 Restore the rc params from Matplotlib's internal defaults.                                                                                                                                                                                   
+		`rgrids`                     Get or set the radial gridlines on a polar plot.                                                                                                                                                                                             
+		`savefig`                    Save the current figure.                                                                                                                                                                                                                     
+		`sca`                        Set the current Axes instance to *ax*.                                                                                                                                                                                                       
+		`scatter`                    Make a scatter plot of `x` vs `y`  Marker size is scaled by `s` and marker color is mapped to `c`  Parameters ---------- x, y : array_like, shape (n, )     Input data  s : scalar or array_like, shape (n, ), optional     size in points^2.
+		`sci`                        Set the current image.                                                                                                                                                                                                                       
+		`semilogx`                   Make a plot with log scaling on the *x* axis.                                                                                                                                                                                                
+		`semilogy`                   Make a plot with log scaling on the `y` axis.                                                                                                                                                                                                
+		`set_cmap`                   Set the default colormap.                                                                                                                                                                                                                    
+		`setp`                       Set a property on an artist object.                                                                                                                                                                                                          
+		`show`                       Display a figure.                                                                                                                                                                                                                            
+		`specgram`                   Plot a spectrogram.                                                                                                                                                                                                                          
+		`spy`                        Plot the sparsity pattern on a 2-D array.                                                                                                                                                                                                    
+		`stackplot`                  Draws a stacked area plot.                                                                                                                                                                                                                   
+		`stem`                       Create a stem plot.                                                                                                                                                                                                                          
+		`step`                       Make a step plot.                                                                                                                                                                                                                            
+		`streamplot`                 Draws streamlines of a vector flow.                                                                                                                                                                                                          
+		`subplot`                    Return a subplot axes positioned by the given grid definition.                                                                                                                                                                               
+		`subplot2grid`               Create a subplot in a grid.                                                                                                                                                                                                                  
+		`subplot_tool`               Launch a subplot tool window for a figure.                                                                                                                                                                                                   
+		`subplots`                   Create a figure and a set of subplots      This utility wrapper makes it convenient to create common layouts of     subplots, including the enclosing figure object, in a single call.                                                       
+		`subplots_adjust`            Tune the subplot layout.                                                                                                                                                                                                                     
+		`suptitle`                   Add a centered title to the figure.                                                                                                                                                                                                          
+		`switch_backend`             Switch the default backend.                                                                                                                                                                                                                  
+		`table`                      Add a table to the current axes.                                                                                                                                                                                                             
+		`text`                       Add text to the axes.                                                                                                                                                                                                                        
+		`thetagrids`                 Get or set the theta locations of the gridlines in a polar plot.                                                                                                                                                                             
+		`tick_params`                Change the appearance of ticks and tick labels.                                                                                                                                                                                              
+		`ticklabel_format`           Change the `~matplotlib.ticker.ScalarFormatter` used by default for linear axes.                                                                                                                                                             
+		`tight_layout`               Automatically adjust subplot parameters to give specified padding.                                                                                                                                                                           
+		`title`                      Set a title of the current axes.                                                                                                                                                                                                             
+		`tricontour`                 Draw contours on an unstructured triangular grid.                                                                                                                                                                                            
+		`tricontourf`                Draw contours on an unstructured triangular grid.                                                                                                                                                                                            
+		`tripcolor`                  Create a pseudocolor plot of an unstructured triangular grid.                                                                                                                                                                                
+		`triplot`                    Draw a unstructured triangular grid as lines and/or markers.                                                                                                                                                                                 
+		`twinx`                      Make a second axes that shares the *x*-axis.                                                                                                                                                                                                 
+		`twiny`                      Make a second axes that shares the *y*-axis.                                                                                                                                                                                                 
+		`uninstall_repl_displayhook` Uninstalls the matplotlib display hook.                                                                                                                                                                                                      
+		`violinplot`                 Make a violin plot.                                                                                                                                                                                                                          
+		`vlines`                     Plot vertical lines.                                                                                                                                                                                                                         
+		`xcorr`                      Plot the cross correlation between *x* and *y*.                                                                                                                                                                                              
+		`xkcd`                       Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.                                                                                                                                                                               
+		`xlabel`                     Set the *x* axis label of the current axis.                                                                                                                                                                                                  
+		`xlim`                       Get or set the *x* limits of the current axes.                                                                                                                                                                                               
+		`xscale`                     Set the scaling of the *x*-axis.                                                                                                                                                                                                             
+		`xticks`                     Get or set the *x*-limits of the current tick locations and labels.                                                                                                                                                                          
+		`ylabel`                     Set the *y* axis label of the current axis.                                                                                                                                                                                                  
+		`ylim`                       Get or set the *y*-limits of the current axes.                                                                                                                                                                                               
+		`yscale`                     Set the scaling of the *y*-axis.                                                                                                                                                                                                             
+		`yticks`                     Get or set the *y*-limits of the current tick locations and labels.                                                                                                                                                                          
+		============================ =============================================================================================================================================================================================================================================
 	**/
 	static public function plotting():Dynamic;
 	/**
@@ -25209,18 +26867,19 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		lam : float or sequence of float
+		lam : float or array_like of floats
 		    Expectation of interval, should be >= 0. A sequence of expectation
 		    intervals must be broadcastable over the requested size.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``lam`` is a scalar. Otherwise,
+		    ``np.array(lam).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The drawn samples, of shape *size*, if it was provided.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Poisson distribution.
 		
 		Notes
 		-----
@@ -25559,11 +27218,11 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		p : ndarray, shape (M,) or (M, K)
+		p : ndarray, shape (deg + 1,) or (deg + 1, K)
 		    Polynomial coefficients, highest power first.  If `y` was 2-D, the
 		    coefficients for `k`-th data set are in ``p[:,k]``.
 		
-		residuals, rank, singular_values, rcond :
+		residuals, rank, singular_values, rcond
 		    Present only if `full` = True.  Residuals of the least-squares fit,
 		    the effective rank of the scaled Vandermonde coefficient matrix,
 		    its singular values, and the specified value of `rcond`. For more
@@ -25872,6 +27531,29 @@ package matplotlib.pylab;
 	**/
 	static public function polyval(p:Dynamic, x:Dynamic):Dynamic;
 	/**
+		positive(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Numerical positive, element-wise.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		x : array_like or scalar
+		    Input array.
+		
+		Returns
+		-------
+		y : ndarray or scalar
+		    Returned array or scalar: `y = +x`.
+		
+		Notes
+		-----
+		Equivalent to `x.copy()`, but only defined for types that support
+		arithmetic.
+	**/
+	static public function positive(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		power(a, size=None)
 		
 		Draws samples in [0, 1] from a power distribution with positive
@@ -25881,17 +27563,18 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		a : float
-		    parameter, > 0
+		a : float or array_like of floats
+		    Parameter of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The returned samples lie in [0, 1].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized power distribution.
 		
 		Raises
 		------
@@ -26188,33 +27871,33 @@ package matplotlib.pylab;
 		
 		If len(*x*) < *NFFT*, it will be zero padded to *NFFT*.
 		
-		  *x*: 1-D array or sequence
+		Parameters
+		----------
+		x : 1-D array or sequence
 		    Array or sequence containing the data
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -26224,15 +27907,13 @@ package matplotlib.pylab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		*NFFT*: integer
+		NFFT : integer
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
 		    result will be incorrect. Use *pad_to* for this instead.
 		
-		*detrend*: [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or
-		           callable
-		
+		detrend : {'default', 'constant', 'mean', 'linear', 'none'} or callable
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
@@ -26246,49 +27927,29 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
 		    :func:`~matplotlib.pylab.detrend_none`.
 		
-		*scale_by_freq*: boolean
+		scale_by_freq : boolean, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
 		    The default is True for MATLAB compatibility.
 		
-		  *noverlap*: integer
+		noverlap : integer
 		    The number of points of overlap between segments.
 		    The default value is 0 (no overlap).
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		  *return_line*: bool
+		return_line : bool
 		    Whether to include the line object plotted in the returned values.
 		    Default is False.
 		
-		If *return_line* is False, returns the tuple (*Pxx*, *freqs*).
-		If *return_line* is True, returns the tuple (*Pxx*, *freqs*. *line*):
-		
-		  *Pxx*: 1-D array
-		    The values for the power spectrum `P_{xx}` before scaling
-		    (real valued)
-		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the elements in *Pxx*
-		
-		  *line*: a :class:`~matplotlib.lines.Line2D` instance
-		    The line created by this function.
-		    Only returend if *return_line* is True.
-		
-		For plotting, the power is plotted as
-		:math:`10\log_{10}(P_{xx})` for decibels, though *Pxx* itself
-		is returned.
-		
-		References:
-		  Bendat & Piersol -- Random Data: Analysis and Measurement
-		  Procedures, John Wiley & Sons (1986)
-		
-		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
+		**kwargs :
+		    Keyword arguments control the :class:`~matplotlib.lines.Line2D`
+		    properties:
 		
 		  agg_filter: unknown
 		  alpha: float (0.0 transparent through 1.0 opaque) 
@@ -26332,37 +27993,53 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		**Example:**
+		Returns
+		-------
+		Pxx : 1-D array
+		    The values for the power spectrum `P_{xx}` before scaling
+		    (real valued)
 		
-		.. plot:: mpl_examples/pylab_examples/psd_demo.py
+		freqs : 1-D array
+		    The frequencies corresponding to the elements in *Pxx*
 		
-		.. seealso::
-		
-		    :func:`specgram`
-		        :func:`specgram` differs in the default overlap; in not
-		        returning the mean of the segment periodograms; in  returning
-		        the times of the segments; and in plotting a colormap instead
-		        of a line.
-		
-		    :func:`magnitude_spectrum`
-		        :func:`magnitude_spectrum` plots the magnitude spectrum.
-		
-		    :func:`csd`
-		        :func:`csd` plots the spectral density between two signals.
+		line : a :class:`~matplotlib.lines.Line2D` instance
+		    The line created by this function.
+		    Only returned if *return_line* is True.
 		
 		Notes
 		-----
+		For plotting, the power is plotted as
+		:math:`10\log_{10}(P_{xx})` for decibels, though *Pxx* itself
+		is returned.
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
+		References
+		----------
+		Bendat & Piersol -- Random Data: Analysis and Measurement Procedures,
+		John Wiley & Sons (1986)
 		
-		* All arguments with the following names: 'x'.
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/psd_demo.py
 		
+		See Also
+		--------
+		:func:`specgram`
+		    :func:`specgram` differs in the default overlap; in not returning
+		    the mean of the segment periodograms; in returning the times of the
+		    segments; and in plotting a colormap instead of a line.
 		
+		:func:`magnitude_spectrum`
+		    :func:`magnitude_spectrum` plots the magnitude spectrum.
 		
+		:func:`csd`
+		    :func:`csd` plots the spectral density between two signals.
 		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
+		
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -26640,7 +28317,7 @@ package matplotlib.pylab;
 		`a` is of type `matrix`, all the return values will be matrices too.
 		
 		New 'reduced', 'complete', and 'raw' options for mode were added in
-		Numpy 1.8 and the old option 'full' was made an alias of 'reduced'.  In
+		NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In
 		addition the options 'full' and 'economic' were deprecated.  Because
 		'full' was the previous default and 'reduced' is the new default,
 		backward compatibility can be maintained by letting `mode` default.
@@ -26697,115 +28374,24 @@ package matplotlib.pylab;
 	/**
 		Plot a 2-D field of arrows.
 		
-		call signatures::
+		Call signatures::
 		
 		  quiver(U, V, **kw)
 		  quiver(U, V, C, **kw)
 		  quiver(X, Y, U, V, **kw)
 		  quiver(X, Y, U, V, C, **kw)
 		
-		Arguments:
+		*U* and *V* are the arrow data, *X* and *Y* set the locaiton of the
+		arrows, and *C* sets the color of the arrows. These arguments may be 1-D or
+		2-D arrays or sequences.
 		
-		  *X*, *Y*:
-		    The x and y coordinates of the arrow locations (default is tail of
-		    arrow; see *pivot* kwarg)
-		
-		  *U*, *V*:
-		    Give the x and y components of the arrow vectors
-		
-		  *C*:
-		    An optional array used to map colors to the arrows
-		
-		All arguments may be 1-D or 2-D arrays or sequences. If *X* and *Y*
-		are absent, they will be generated as a uniform grid.  If *U* and *V*
-		are 2-D arrays but *X* and *Y* are 1-D, and if ``len(X)`` and ``len(Y)``
-		match the column and row dimensions of *U*, then *X* and *Y* will be
+		If *X* and *Y* are absent, they will be generated as a uniform grid.
+		If *U* and *V* are 2-D arrays and *X* and *Y* are 1-D, and if ``len(X)`` and
+		``len(Y)`` match the column and row dimensions of *U*, then *X* and *Y* will be
 		expanded with :func:`numpy.meshgrid`.
 		
-		*U*, *V*, *C* may be masked arrays, but masked *X*, *Y* are not
-		supported at present.
-		
-		Keyword arguments:
-		
-		  *units*: [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
-		    Arrow units; the arrow dimensions *except for length* are in
-		    multiples of this unit.
-		
-		    * 'width' or 'height': the width or height of the axes
-		
-		    * 'dots' or 'inches': pixels or inches, based on the figure dpi
-		
-		    * 'x', 'y', or 'xy': *X*, *Y*, or sqrt(X^2+Y^2) data units
-		
-		    The arrows scale differently depending on the units.  For
-		    'x' or 'y', the arrows get larger as one zooms in; for other
-		    units, the arrow size is independent of the zoom state.  For
-		    'width or 'height', the arrow size increases with the width and
-		    height of the axes, respectively, when the window is resized;
-		    for 'dots' or 'inches', resizing does not change the arrows.
-		
-		
-		  *angles*: [ 'uv' | 'xy' | array ]
-		    With the default 'uv', the arrow axis aspect ratio is 1, so that
-		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
-		    CCW from the horizontal axis (positive to the right).
-		    With 'xy', the arrow points from (x,y) to (x+u, y+v).
-		    Use this for plotting a gradient field, for example.
-		    Alternatively, arbitrary angles may be specified as an array
-		    of values in degrees, CCW from the horizontal axis.
-		    Note: inverting a data axis will correspondingly invert the
-		    arrows *only* with `angles='xy'`.
-		
-		  *scale*: [ *None* | float ]
-		    Data units per arrow length unit, e.g., m/s per plot width; a smaller
-		    scale parameter makes the arrow longer.  If *None*, a simple
-		    autoscaling algorithm is used, based on the average vector length
-		    and the number of vectors.  The arrow length unit is given by
-		    the *scale_units* parameter
-		
-		  *scale_units*: *None*, or any of the *units* options.
-		    For example, if *scale_units* is 'inches', *scale* is 2.0, and
-		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
-		    If *scale_units* is 'width', then the vector will be half the width
-		    of the axes.
-		
-		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
-		    units.  To plot vectors in the x-y plane, with u and v having
-		    the same units as x and y, use
-		    "angles='xy', scale_units='xy', scale=1".
-		
-		  *width*:
-		    Shaft width in arrow units; default depends on choice of units,
-		    above, and number of vectors; a typical starting value is about
-		    0.005 times the width of the plot.
-		
-		  *headwidth*: scalar
-		    Head width as multiple of shaft width, default is 3
-		
-		  *headlength*: scalar
-		    Head length as multiple of shaft width, default is 5
-		
-		  *headaxislength*: scalar
-		    Head length at shaft intersection, default is 4.5
-		
-		  *minshaft*: scalar
-		    Length below which arrow scales, in units of head length. Do not
-		    set this to less than 1, or small arrows will look terrible!
-		    Default is 1
-		
-		  *minlength*: scalar
-		    Minimum length as a multiple of shaft width; if an arrow length
-		    is less than this, plot a dot (hexagon) of this diameter instead.
-		    Default is 1.
-		
-		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
-		    The part of the arrow that is at the grid point; the arrow rotates
-		    about this point, hence the name *pivot*.
-		
-		  *color*: [ color | color sequence ]
-		    This is a synonym for the
-		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
-		    If *C* has been set, *color* has no effect.
+		The default settings auto-scales the length of the arrows to a reasonable size.
+		To change this behavior see the *scale* and *scale_units* kwargs.
 		
 		The defaults give a slightly swept-back arrow; to make the head a
 		triangle, make *headaxislength* the same as *headlength*. To make the
@@ -26814,8 +28400,102 @@ package matplotlib.pylab;
 		scale down all the head parameters. You will probably do best to leave
 		minshaft alone.
 		
-		linewidths and edgecolors can be used to customize the arrow
-		outlines. Additional :class:`~matplotlib.collections.PolyCollection`
+		*linewidths* and *edgecolors* can be used to customize the arrow
+		outlines.
+		
+		Parameters
+		----------
+		X : 1D or 2D array, sequence, optional
+		    The x coordinates of the arrow locations
+		Y : 1D or 2D array, sequence, optional
+		    The y coordinates of the arrow locations
+		U : 1D or 2D array or masked array, sequence
+		    The x components of the arrow vectors
+		V : 1D or 2D array or masked array, sequence
+		    The y components of the arrow vectors
+		C : 1D or 2D array, sequence, optional
+		    The arrow colors
+		units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		    The arrow dimensions (except for *length*) are measured in multiples of
+		    this unit.
+		
+		    'width' or 'height': the width or height of the axis
+		
+		    'dots' or 'inches': pixels or inches, based on the figure dpi
+		
+		    'x', 'y', or 'xy': respectively *X*, *Y*, or :math:`\sqrt{X^2 + Y^2}`
+		    in data units
+		
+		    The arrows scale differently depending on the units.  For
+		    'x' or 'y', the arrows get larger as one zooms in; for other
+		    units, the arrow size is independent of the zoom state.  For
+		    'width or 'height', the arrow size increases with the width and
+		    height of the axes, respectively, when the window is resized;
+		    for 'dots' or 'inches', resizing does not change the arrows.
+		angles : [ 'uv' | 'xy' ], array, optional
+		    Method for determining the angle of the arrows. Default is 'uv'.
+		
+		    'uv': the arrow axis aspect ratio is 1 so that
+		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
+		    counter-clockwise from the horizontal axis (positive to the right).
+		
+		    'xy': arrows point from (x,y) to (x+u, y+v).
+		    Use this for plotting a gradient field, for example.
+		
+		    Alternatively, arbitrary angles may be specified as an array
+		    of values in degrees, counter-clockwise from the horizontal axis.
+		
+		    Note: inverting a data axis will correspondingly invert the
+		    arrows only with ``angles='xy'``.
+		scale : None, float, optional
+		    Number of data units per arrow length unit, e.g., m/s per plot width; a
+		    smaller scale parameter makes the arrow longer. Default is *None*.
+		
+		    If *None*, a simple autoscaling algorithm is used, based on the average
+		    vector length and the number of vectors. The arrow length unit is given by
+		    the *scale_units* parameter
+		scale_units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ], None, optional
+		    If the *scale* kwarg is *None*, the arrow length unit. Default is *None*.
+		
+		    e.g. *scale_units* is 'inches', *scale* is 2.0, and
+		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
+		
+		    If *scale_units* is 'width'/'height', then the vector will be half the
+		    width/height of the axes.
+		
+		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
+		    units. To plot vectors in the x-y plane, with u and v having
+		    the same units as x and y, use
+		    ``angles='xy', scale_units='xy', scale=1``.
+		width : scalar, optional
+		    Shaft width in arrow units; default depends on choice of units,
+		    above, and number of vectors; a typical starting value is about
+		    0.005 times the width of the plot.
+		headwidth : scalar, optional
+		    Head width as multiple of shaft width, default is 3
+		headlength : scalar, optional
+		    Head length as multiple of shaft width, default is 5
+		headaxislength : scalar, optional
+		    Head length at shaft intersection, default is 4.5
+		minshaft : scalar, optional
+		    Length below which arrow scales, in units of head length. Do not
+		    set this to less than 1, or small arrows will look terrible!
+		    Default is 1
+		minlength : scalar, optional
+		    Minimum length as a multiple of shaft width; if an arrow length
+		    is less than this, plot a dot (hexagon) of this diameter instead.
+		    Default is 1.
+		pivot : [ 'tail' | 'mid' | 'middle' | 'tip' ], optional
+		    The part of the arrow that is at the grid point; the arrow rotates
+		    about this point, hence the name *pivot*.
+		color : [ color | color sequence ], optional
+		    This is a synonym for the
+		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
+		    If *C* has been set, *color* has no effect.
+		
+		Notes
+		-----
+		Additional :class:`~matplotlib.collections.PolyCollection`
 		keyword arguments:
 		
 		  agg_filter: unknown
@@ -26838,7 +28518,7 @@ package matplotlib.pylab;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -26854,10 +28534,13 @@ package matplotlib.pylab;
 		  visible: [True | False] 
 		  zorder: any number 
 		
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/quiver_simple_demo.py
 		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		See Also
+		--------
+		quiverkey : Add a key to a quiver plot
 	**/
 	static public function quiver(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -26919,16 +28602,11 @@ package matplotlib.pylab;
 		positions the head, and if *labelpos* is 'W', *X*, *Y* positions the
 		tail; in either of these two cases, *X*, *Y* is somewhere in the
 		middle of the arrow+label key object.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function quiverkey(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var r_ : Dynamic;
 	/**
-		rad2deg(x[, out])
+		rad2deg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from radians to degrees.
 		
@@ -26936,9 +28614,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Angle in radians.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -26963,7 +28649,7 @@ package matplotlib.pylab;
 	**/
 	static public function rad2deg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		radians(x[, out])
+		radians(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from degrees to radians.
 		
@@ -26971,8 +28657,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array in degrees.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -27050,8 +28745,8 @@ package matplotlib.pylab;
 		----------
 		low : int
 		    Lowest (signed) integer to be drawn from the distribution (unless
-		    ``high=None``, in which case this parameter is the *highest* such
-		    integer).
+		    ``high=None``, in which case this parameter is one above the
+		    *highest* such integer).
 		high : int, optional
 		    If provided, one above the largest (signed) integer to be drawn
 		    from the distribution (see above for behavior if ``high=None``).
@@ -27240,7 +28935,7 @@ package matplotlib.pylab;
 		4
 		>>> type(np.random.random_integers(5))
 		<type 'int'>
-		>>> np.random.random_integers(5, size=(3.,2.))
+		>>> np.random.random_integers(5, size=(3,2))
 		array([[5, 4],
 		       [3, 3],
 		       [4, 5]])
@@ -27379,7 +29074,7 @@ package matplotlib.pylab;
 		Notes
 		-----
 		In the old Numeric package, `rank` was the term used for the number of
-		dimensions, but in Numpy `ndim` is used instead.
+		dimensions, but in NumPy `ndim` is used instead.
 		
 		Examples
 		--------
@@ -27601,12 +29296,18 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		scale : scalar
-		    Scale, also equals the mode. Should be >= 0.
+		scale : float or array_like of floats, optional
+		    Scale, also equals the mode. Should be >= 0. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``scale`` is a scalar.  Otherwise,
+		    ``np.array(scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Rayleigh distribution.
 		
 		Notes
 		-----
@@ -27690,9 +29391,9 @@ package matplotlib.pylab;
 		
 		  rc('font', **font)  # pass in the font dict as kwargs
 		
-		This enables you to easily switch between several configurations.
-		Use :func:`~matplotlib.pyplot.rcdefaults` to restore the default
-		rc params after changes.
+		This enables you to easily switch between several configurations.  Use
+		``matplotlib.style.use('default')`` or :func:`~matplotlib.rcdefaults` to
+		restore the default rc params after changes.
 	**/
 	static public function rc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
@@ -27722,13 +29423,19 @@ package matplotlib.pylab;
 	**/
 	static public function rc_context(?rc:Dynamic, ?fname:Dynamic):Dynamic;
 	/**
-		Restore the default rc params.  These are not the params loaded by
-		the rc file, but mpl's internal params.  See rc_file_defaults for
-		reloading the default params from the rc file
+		Restore the rc params from Matplotlib's internal defaults.
+		
+		See Also
+		--------
+		rc_file_defaults :
+		    Restore the rc params from the rc file originally loaded by Matplotlib.
+		matplotlib.style.use :
+		    Use a specific style file.  Call ``style.use('default')`` to restore
+		    the default style.
 	**/
 	static public function rcdefaults():Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -27737,9 +29444,10 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -27756,6 +29464,8 @@ package matplotlib.pylab;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
@@ -27814,12 +29524,11 @@ package matplotlib.pylab;
 		for formatd type FormatFloat, we override the precision to store
 		full precision floats in the CSV file
 		
-		
-		.. seealso::
-		
-		    :func:`csv2rec`
-		        For information about *missing* and *missingd*, which can
-		        be used to fill in masked values into your CSV file.
+		See Also
+		--------
+		:func:`csv2rec`
+		    For information about *missing* and *missingd*, which can be used to
+		    fill in masked values into your CSV file.
 	**/
 	static public function rec2csv(r:Dynamic, fname:Dynamic, ?delimiter:Dynamic, ?formatd:Dynamic, ?missing:Dynamic, ?missingd:Dynamic, ?withheader:Dynamic):Dynamic;
 	/**
@@ -27895,7 +29604,7 @@ package matplotlib.pylab;
 	**/
 	static public function recfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		reciprocal(x[, out])
+		reciprocal(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the reciprocal of the argument, element-wise.
 		
@@ -27905,6 +29614,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -27947,7 +29667,7 @@ package matplotlib.pylab;
 	**/
 	static public function register_cmap(?name:Dynamic, ?cmap:Dynamic, ?data:Dynamic, ?lut:Dynamic):Dynamic;
 	/**
-		remainder(x1, x2[, out])
+		remainder(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return element-wise remainder of division.
 		
@@ -27962,9 +29682,17 @@ package matplotlib.pylab;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -27975,6 +29703,7 @@ package matplotlib.pylab;
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
+		divmod : Simultaneous floor division and remainder.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -28017,6 +29746,8 @@ package matplotlib.pylab;
 		
 		Examples
 		--------
+		>>> np.repeat(3, 4)
+		array([3, 3, 3, 3])
 		>>> x = np.array([[1,2],[3,4]])
 		>>> np.repeat(x, 2)
 		array([1, 1, 2, 2, 3, 3, 4, 4])
@@ -28098,20 +29829,21 @@ package matplotlib.pylab;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -28222,25 +29954,6 @@ package matplotlib.pylab;
 	**/
 	static public function resize(a:Dynamic, new_shape:Dynamic):Dynamic;
 	/**
-		Restore `dot`, `vdot`, and `innerproduct` to the default non-BLAS
-		implementations.
-		
-		Typically, the user will only need to call this when troubleshooting
-		and installation problem, reproducing the conditions of a build without
-		an accelerated BLAS, or when being very careful about benchmarking
-		linear algebra operations.
-		
-		.. note:: Deprecated in Numpy 1.10
-		          The cblas functions have been integrated into the multarray
-		          module and restoredot now longer does anything. It will be
-		          removed in Numpy 1.11.0.
-		
-		See Also
-		--------
-		alterdot : `restoredot` undoes the effects of `alterdot`.
-	**/
-	static public function restoredot():Dynamic;
-	/**
 		result_type(*arrays_and_dtypes)
 		
 		Returns the type that results from applying the NumPy
@@ -28328,6 +30041,7 @@ package matplotlib.pylab;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -28396,6 +30110,7 @@ package matplotlib.pylab;
 		    Axes over which to compute the FFT.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -28483,6 +30198,7 @@ package matplotlib.pylab;
 		    axes are used, or all axes if `s` is also not specified.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -28568,7 +30284,7 @@ package matplotlib.pylab;
 	**/
 	static public function rgrids(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		right_shift(x1, x2[, out])
+		right_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Shift the bits of an integer to the right.
 		
@@ -28582,6 +30298,17 @@ package matplotlib.pylab;
 		    Input values.
 		x2 : array_like, int
 		    Number of bits to remove at the right of `x1`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -28608,7 +30335,7 @@ package matplotlib.pylab;
 	**/
 	static public function right_shift(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		rint(x[, out])
+		rint(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Round elements of the array to the nearest integer.
 		
@@ -28616,6 +30343,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -28639,20 +30377,22 @@ package matplotlib.pylab;
 		yourself stranded on a system w/o scipy.  Otherwise use
 		:func:`scipy.integrate`.
 		
-		*y0*
+		Parameters
+		----------
+		y0
 		    initial state vector
 		
-		*t*
+		t
 		    sample times
 		
-		*derivs*
+		derivs
 		    returns the derivative of the system and has the
 		    signature ``dy = derivs(yi, ti)``
 		
+		Examples
+		--------
 		
-		Example 1 ::
-		
-		    ## 2D system
+		A 2D system::
 		
 		    def derivs6(x,t):
 		        d1 =  x[0] + 2*x[1]
@@ -28663,16 +30403,14 @@ package matplotlib.pylab;
 		    y0 = (1,2)
 		    yout = rk4(derivs6, y0, t)
 		
-		Example 2::
+		A 1D system::
 		
-		    ## 1D system
 		    alpha = 2
 		    def derivs(x,t):
 		        return -alpha*x + exp(-t)
 		
 		    y0 = 1
 		    yout = rk4(derivs, y0, t)
-		
 		
 		If you have access to scipy, you should probably be using the
 		scipy.integrate tools rather than this function.
@@ -28692,11 +30430,15 @@ package matplotlib.pylab;
 		----------
 		a : array_like
 		    Input array.
-		shift : int
-		    The number of places by which elements are shifted.
-		axis : int, optional
-		    The axis along which elements are shifted.  By default, the array
-		    is flattened before shifting, after which the original
+		shift : int or tuple of ints
+		    The number of places by which elements are shifted.  If a tuple,
+		    then `axis` must be a tuple of the same size, and each of the
+		    given axes is shifted by the corresponding number.  If an int
+		    while `axis` is a tuple of ints, then the same value is used for
+		    all given axes.
+		axis : int or tuple of ints, optional
+		    Axis or axes along which elements are shifted.  By default, the
+		    array is flattened before shifting, after which the original
 		    shape is restored.
 		
 		Returns
@@ -28708,6 +30450,12 @@ package matplotlib.pylab;
 		--------
 		rollaxis : Roll the specified axis backwards, until it lies in a
 		           given position.
+		
+		Notes
+		-----
+		.. versionadded:: 1.12.0
+		
+		Supports rolling over multiple dimensions simultaneously.
 		
 		Examples
 		--------
@@ -28747,8 +30495,8 @@ package matplotlib.pylab;
 		Returns
 		-------
 		res : ndarray
-		    For Numpy >= 1.10 a view of `a` is always returned. For earlier
-		    Numpy versions a view of `a` is returned only if the order of the
+		    For NumPy >= 1.10.0 a view of `a` is always returned. For earlier
+		    NumPy versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
 		See Also
@@ -28784,7 +30532,7 @@ package matplotlib.pylab;
 		Returns
 		-------
 		out : ndarray
-		    An array containing the complex roots of the polynomial.
+		    An array containing the roots of the polynomial.
 		
 		Raises
 		------
@@ -28817,10 +30565,11 @@ package matplotlib.pylab;
 	**/
 	static public function roots(p:Dynamic):Dynamic;
 	/**
-		Rotate an array by 90 degrees in the counter-clockwise direction.
+		Rotate an array by 90 degrees in the plane specified by axes.
 		
-		The first two dimensions are rotated; therefore, the array must be at
-		least 2-D.
+		Rotation direction is from the first towards the second axis.
+		
+		.. versionadded:: 1.12.0
 		
 		Parameters
 		----------
@@ -28828,16 +30577,25 @@ package matplotlib.pylab;
 		    Array of two or more dimensions.
 		k : integer
 		    Number of times the array is rotated by 90 degrees.
+		axes: (2,) array_like
+		    The array is rotated in the plane defined by the axes.
+		    Axes must be different.
 		
 		Returns
 		-------
 		y : ndarray
-		    Rotated array.
+		    A rotated view of `m`.
 		
 		See Also
 		--------
+		flip : Reverse the order of elements in an array along the given axis.
 		fliplr : Flip an array horizontally.
 		flipud : Flip an array vertically.
+		
+		Notes
+		-----
+		rot90(m, k=1, axes=(1,0)) is the reverse of rot90(m, k=1, axes=(0,1))
+		rot90(m, k=1, axes=(1,0)) is equivalent to rot90(m, k=-1, axes=(0,1))
 		
 		Examples
 		--------
@@ -28851,8 +30609,15 @@ package matplotlib.pylab;
 		>>> np.rot90(m, 2)
 		array([[4, 3],
 		       [2, 1]])
+		>>> m = np.arange(8).reshape((2,2,2))
+		>>> np.rot90(m, 1, (1,2))
+		array([[[1, 3],
+		        [0, 2]],
+		
+		      [[5, 7],
+		       [4, 6]]])
 	**/
-	static public function rot90(m:Dynamic, ?k:Dynamic):Dynamic;
+	static public function rot90(m:Dynamic, ?k:Dynamic, ?axes:Dynamic):Dynamic;
 	/**
 		Round an array to the given number of decimals.
 		
@@ -28868,6 +30633,10 @@ package matplotlib.pylab;
 		
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
+		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
 		
 		Parameters
 		----------
@@ -28887,6 +30656,7 @@ package matplotlib.pylab;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -29001,9 +30771,9 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		file : file or str
+		file : file, str, or pathlib.Path
 		    File or filename to which the data is saved.  If file is a file-object,
-		    then the filename is unchanged.  If file is a string, a ``.npy``
+		    then the filename is unchanged.  If file is a string or Path, a ``.npy``
 		    extension will be appended to the file name if it does not already
 		    have one.
 		allow_pickle : bool, optional
@@ -29030,7 +30800,7 @@ package matplotlib.pylab;
 		Notes
 		-----
 		For a description of the ``.npy`` format, see the module docstring
-		of `numpy.lib.format` or the Numpy Enhancement Proposal
+		of `numpy.lib.format` or the NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		Examples
@@ -29142,7 +30912,7 @@ package matplotlib.pylab;
 		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
 		            like `' (%s+%sj)' % (fmt, fmt)`
 		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4j %.4e %+.4j %.4e %+.4j'` for 3 columns
+		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
 		        c) a list of specifiers, one per column - in this case, the real
 		            and imaginary part must have separate specifiers,
 		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
@@ -29246,8 +31016,9 @@ package matplotlib.pylab;
 		----------
 		file : str or file
 		    Either the file name (string) or an open file (file-like object)
-		    where the data will be saved. If file is a string, the ``.npz``
-		    extension will be appended to the file name if it is not already there.
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
 		args : Arguments, optional
 		    Arrays to save to the file. Since it is not possible for Python to
 		    know the names of the arrays outside `savez`, the arrays will be saved
@@ -29273,7 +31044,7 @@ package matplotlib.pylab;
 		variables they contain.  The archive is not compressed and each file
 		in the archive contains one variable in ``.npy`` format. For a
 		description of the ``.npy`` format, see `numpy.lib.format` or the
-		Numpy Enhancement Proposal
+		NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
@@ -29319,17 +31090,55 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		file : str
-		    File name of ``.npz`` file.
-		args : Arguments
-		    Function arguments.
-		kwds : Keyword arguments
-		    Keywords.
+		file : str or file
+		    Either the file name (string) or an open file (file-like object)
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
+		args : Arguments, optional
+		    Arrays to save to the file. Since it is not possible for Python to
+		    know the names of the arrays outside `savez`, the arrays will be saved
+		    with names "arr_0", "arr_1", and so on. These arguments can be any
+		    expression.
+		kwds : Keyword arguments, optional
+		    Arrays to save to the file. Arrays will be saved in the file with the
+		    keyword names.
+		
+		Returns
+		-------
+		None
 		
 		See Also
 		--------
+		numpy.save : Save a single array to a binary file in NumPy format.
+		numpy.savetxt : Save an array to a file as plain text.
 		numpy.savez : Save several arrays into an uncompressed ``.npz`` file format
 		numpy.load : Load the files created by savez_compressed.
+		
+		Notes
+		-----
+		The ``.npz`` file format is a zipped archive of files named after the
+		variables they contain.  The archive is compressed with
+		``zipfile.ZIP_DEFLATED`` and each file in the archive contains one variable
+		in ``.npy`` format. For a description of the ``.npy`` format, see
+		`numpy.lib.format` or the NumPy Enhancement Proposal
+		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		
+		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
+		returned. This is a dictionary-like object which can be queried for
+		its list of arrays (with the ``.files`` attribute), and for the arrays
+		themselves.
+		
+		Examples
+		--------
+		>>> test_array = np.random.rand(3, 2)
+		>>> test_vector = np.random.rand(4)
+		>>> np.savez_compressed('/tmp/123', a=test_array, b=test_vector)
+		>>> loaded = np.load('/tmp/123.npz')
+		>>> print(np.array_equal(test_array, loaded['a']))
+		True
+		>>> print(np.array_equal(test_vector, loaded['b']))
+		True
 	**/
 	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -29339,16 +31148,17 @@ package matplotlib.pylab;
 	**/
 	static public function sca(ax:Dynamic):Dynamic;
 	/**
-		Make a scatter plot of x vs y, where x and y are sequence like objects
-		of the same length.
+		Make a scatter plot of `x` vs `y`
+		
+		Marker size is scaled by `s` and marker color is mapped to `c`
 		
 		Parameters
 		----------
 		x, y : array_like, shape (n, )
 		    Input data
 		
-		s : scalar or array_like, shape (n, ), optional, default: 20
-		    size in points^2.
+		s : scalar or array_like, shape (n, ), optional
+		    size in points^2.  Default is `rcParams['lines.markersize'] ** 2`.
 		
 		c : color, sequence, or sequence of color, optional, default: 'b'
 		    `c` can be a single color format string, or a sequence of color
@@ -29388,12 +31198,23 @@ package matplotlib.pylab;
 		linewidths : scalar or array_like, optional, default: None
 		    If None, defaults to (lines.linewidth,).
 		
+		verts : sequence of (x, y), optional
+		    If `marker` is None, these vertices will be used to
+		    construct the marker.  The center of the marker is located
+		    at (0,0) in normalized units.  The overall marker is rescaled
+		    by ``s``.
+		
 		edgecolors : color or sequence of color, optional, default: None
-		    If None, defaults to (patch.edgecolor).
+		    If None, defaults to 'face'
+		
 		    If 'face', the edge color will always be the same as
-		    the face color.  If it is 'none', the patch boundary will not
-		    be drawn.  For non-filled markers, the `edgecolors` kwarg
-		    is ignored; color is determined by `c`.
+		    the face color.
+		
+		    If it is 'none', the patch boundary will not
+		    be drawn.
+		
+		    For non-filled markers, the `edgecolors` kwarg
+		    is ignored and forced to 'face' internally.
 		
 		Returns
 		-------
@@ -29403,35 +31224,36 @@ package matplotlib.pylab;
 		----------------
 		kwargs : `~matplotlib.collections.Collection` properties
 		
-		Notes
-		------
-		Any or all of `x`, `y`, `s`, and `c` may be masked arrays, in
-		which case all masks will be combined and only unmasked points
-		will be plotted.
+		See Also
+		--------
+		plot : to plot scatter plots when markers are identical in size and
+		    color
 		
-		Fundamentally, scatter works with 1-D arrays; `x`, `y`, `s`,
-		and `c` may be input as 2-D arrays, but within scatter
-		they will be flattened. The exception is `c`, which
-		will be flattened only if its size matches the size of `x`
-		and `y`.
+		Notes
+		-----
+		
+		* The `plot` function will be faster for scatterplots where markers
+		  don't vary in size or color.
+		
+		* Any or all of `x`, `y`, `s`, and `c` may be masked arrays, in which
+		  case all masks will be combined and only unmasked points will be
+		  plotted.
+		
+		  Fundamentally, scatter works with 1-D arrays; `x`, `y`, `s`, and `c`
+		  may be input as 2-D arrays, but within scatter they will be
+		  flattened. The exception is `c`, which will be flattened only if its
+		  size matches the size of `x` and `y`.
 		
 		Examples
 		--------
 		.. plot:: mpl_examples/shapes_and_collections/scatter_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'c', 'facecolor', 's', 'linewidths', 'y', 'color', 'facecolors', 'edgecolors'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'c', 'color', 'edgecolors', 'facecolor', 'facecolors', 'linewidths', 's', 'x', 'y'.
 	**/
 	static public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -29525,7 +31347,7 @@ package matplotlib.pylab;
 		-----
 		Binary search is used to find the required insertion points.
 		
-		As of Numpy 1.4.0 `searchsorted` works with real/complex arrays containing
+		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
 		
 		Examples
@@ -29604,30 +31426,29 @@ package matplotlib.pylab;
 	/**
 		Make a plot with log scaling on the *x* axis.
 		
-		Call signature::
+		Parameters
+		----------
+		basex : float, optional
+		    Base of the *x* logarithm. The scalar should be larger
+		    than 1.
 		
-		  semilogx(*args, **kwargs)
-		
-		:func:`semilogx` supports all the keyword arguments of
-		:func:`~matplotlib.pyplot.plot` and
-		:meth:`matplotlib.axes.Axes.set_xscale`.
-		
-		Notable keyword arguments:
-		
-		  *basex*: scalar > 1
-		    Base of the *x* logarithm
-		
-		  *subsx*: [ *None* | sequence ]
+		subsx : array_like, optional
 		    The location of the minor xticks; *None* defaults to
 		    autosubs, which depend on the number of decades in the
 		    plot; see :meth:`~matplotlib.axes.Axes.set_xscale` for
 		    details.
 		
-		  *nonposx*: [ 'mask' | 'clip' ]
+		nonposx : string, optional, {'mask', 'clip'}
 		    Non-positive values in *x* can be masked as
-		    invalid, or clipped to a very small positive number
+		    invalid, or clipped to a very small positive number.
 		
-		The remaining valid kwargs are
+		Returns
+		-------
+		`~matplotlib.pyplot.plot`
+		    Log-scaled plot on the *x* axis.
+		
+		Other Parameters
+		----------------
 		:class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
@@ -29672,95 +31493,93 @@ package matplotlib.pylab;
 		  ydata: 1D array 
 		  zorder: any number 
 		
-		.. seealso::
+		See Also
+		--------
+		loglog : For example code and figure.
 		
-		    :meth:`loglog`
-		        For example code and figure
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		Notes
+		-----
+		This function supports all the keyword arguments of
+		:func:`~matplotlib.pyplot.plot` and
+		:meth:`matplotlib.axes.Axes.set_xscale`.
 	**/
 	static public function semilogx(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Make a plot with log scaling on the *y* axis.
+		Make a plot with log scaling on the `y` axis.
 		
-		call signature::
+		      Parameters
+		      ----------
+		      basey : scalar > 1
+		          Base of the `y` logarithm.
 		
-		  semilogy(*args, **kwargs)
+		      subsy : None or iterable
+		          The location of the minor yticks. None defaults to
+		          autosubs, which depend on the number of decades in the
+		          plot. See :meth:`~matplotlib.axes.Axes.set_yscale` for
+		          details.
 		
-		:func:`semilogy` supports all the keyword arguments of
-		:func:`~matplotlib.pylab.plot` and
-		:meth:`matplotlib.axes.Axes.set_yscale`.
+		      nonposy : {'mask' | 'clip'} str
+		          Non-positive values in `y` can be masked as
+		          invalid, or clipped to a very small positive number.
 		
-		Notable keyword arguments:
+		      Returns
+		      -------
+		      `~matplotlib.lines.Line2D`
+		          Line instance of the plot.
 		
-		  *basey*: scalar > 1
-		    Base of the *y* logarithm
+		      Other Parameters
+		      ----------------
+		      kwargs : `~matplotlib.lines.Line2D` properties,
+		      `~matplotlib.pylab.plot` and
+		      `matplotlib.axes.Axes.set_yscale` arguments.
 		
-		  *subsy*: [ *None* | sequence ]
-		    The location of the minor yticks; *None* defaults to
-		    autosubs, which depend on the number of decades in the
-		    plot; see :meth:`~matplotlib.axes.Axes.set_yscale` for
-		    details.
+		        agg_filter: unknown
+		alpha: float (0.0 transparent through 1.0 opaque) 
+		animated: [True | False] 
+		antialiased or aa: [True | False] 
+		axes: an :class:`~matplotlib.axes.Axes` instance 
+		clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		clip_on: [True | False] 
+		clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		color or c: any matplotlib color 
+		contains: a callable function 
+		dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		dashes: sequence of on/off ink in points 
+		drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		figure: a :class:`matplotlib.figure.Figure` instance 
+		fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		gid: an id string 
+		label: string or anything printable with '%s' conversion. 
+		linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		linewidth or lw: float value in points 
+		marker: :mod:`A valid marker style <matplotlib.markers>`
+		markeredgecolor or mec: any matplotlib color 
+		markeredgewidth or mew: float value in points 
+		markerfacecolor or mfc: any matplotlib color 
+		markerfacecoloralt or mfcalt: any matplotlib color 
+		markersize or ms: float 
+		markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
+		path_effects: unknown
+		picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		pickradius: float distance in points 
+		rasterized: [True | False | None] 
+		sketch_params: unknown
+		snap: unknown
+		solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		transform: a :class:`matplotlib.transforms.Transform` instance 
+		url: a url string 
+		visible: [True | False] 
+		xdata: 1D array 
+		ydata: 1D array 
+		zorder: any number 
 		
-		  *nonposy*: [ 'mask' | 'clip' ]
-		    Non-positive values in *y* can be masked as
-		    invalid, or clipped to a very small positive number
+		      See also
+		      --------
+		      :meth:`loglog`: For example code and figure.
 		
-		The remaining valid kwargs are
-		:class:`~matplotlib.lines.Line2D` properties:
-		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color or c: any matplotlib color 
-		  contains: a callable function 
-		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
-		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  dashes: sequence of on/off ink in points 
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
-		  gid: an id string 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float value in points 
-		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color 
-		  markeredgewidth or mew: float value in points 
-		  markerfacecolor or mfc: any matplotlib color 
-		  markerfacecoloralt or mfcalt: any matplotlib color 
-		  markersize or ms: float 
-		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
-		  path_effects: unknown
-		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
-		  pickradius: float distance in points 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
-		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  transform: a :class:`matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  xdata: 1D array 
-		  ydata: 1D array 
-		  zorder: any number 
-		
-		.. seealso::
-		
-		    :meth:`loglog`
-		        For example code and figure
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		      
 	**/
 	static public function semilogy(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -29857,7 +31676,8 @@ package matplotlib.pylab;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		        - 'object' : `np.object_` arrays
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::
@@ -30218,7 +32038,7 @@ package matplotlib.pylab;
 		Set the object that defines floating-point error handling.
 		
 		The error object contains all information that defines the error handling
-		behavior in Numpy. `seterrobj` is used internally by the other
+		behavior in NumPy. `seterrobj` is used internally by the other
 		functions that set error handling behavior (`seterr`, `seterrcall`).
 		
 		Parameters
@@ -30438,6 +32258,10 @@ package matplotlib.pylab;
 		
 		Modify a sequence in-place by shuffling its contents.
 		
+		This function only shuffles the array along the first axis of a
+		multi-dimensional array. The order of sub-arrays is changed but
+		their contents remains the same.
+		
 		Parameters
 		----------
 		x : array_like
@@ -30454,8 +32278,7 @@ package matplotlib.pylab;
 		>>> arr
 		[1 7 5 2 9 4 3 6 0 8]
 		
-		This function only shuffles the array along the first index of a
-		multi-dimensional array:
+		Multi-dimensional arrays are only shuffled along the first axis:
 		
 		>>> arr = np.arange(9).reshape((3, 3))
 		>>> np.random.shuffle(arr)
@@ -30466,7 +32289,7 @@ package matplotlib.pylab;
 	**/
 	static public function shuffle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sign(x[, out])
+		sign(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns an element-wise indication of the sign of a number.
 		
@@ -30482,6 +32305,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		  Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -30505,7 +32339,7 @@ package matplotlib.pylab;
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		signbit(x[, out])
+		signbit(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns element-wise True where signbit is set (less than zero).
 		
@@ -30513,9 +32347,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    The input value(s).
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output.  See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -30531,7 +32373,7 @@ package matplotlib.pylab;
 	**/
 	static public function signbit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -30539,6 +32381,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -30660,7 +32513,7 @@ package matplotlib.pylab;
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
 	/**
-		sinh(x[, out])
+		sinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic sine, element-wise.
 		
@@ -30671,18 +32524,22 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -30786,7 +32643,7 @@ package matplotlib.pylab;
 		Broadcasting rules apply, see the `numpy.linalg` documentation for
 		details.
 		
-		.. versionadded:: 1.6.0.
+		.. versionadded:: 1.6.0
 		
 		The determinant is computed via LU factorization using the LAPACK
 		routine z/dgetrf.
@@ -30986,6 +32843,12 @@ package matplotlib.pylab;
 		placements are sorted according to the non-nan part if it exists.
 		Non-nan values are sorted as before.
 		
+		.. versionadded:: 1.12.0
+		
+		quicksort has been changed to an introsort which will switch
+		heapsort when it does not make enough progress. This makes its
+		worst case O(n*log(n)).
+		
 		Examples
 		--------
 		>>> a = np.array([[1,4],[3,1]])
@@ -31041,7 +32904,7 @@ package matplotlib.pylab;
 	**/
 	static public function sort_complex(a:Dynamic):Dynamic;
 	/**
-		Print or write to a file the source code for a Numpy object.
+		Print or write to a file the source code for a NumPy object.
 		
 		The source code is only returned for objects written in Python. Many
 		functions and classes are defined in C and will therefore not return
@@ -31079,14 +32942,25 @@ package matplotlib.pylab;
 	**/
 	static public function source(object:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		spacing(x[, out])
+		spacing(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the distance between x and the nearest adjacent number.
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Values to find the spacing of.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -31126,33 +33000,33 @@ package matplotlib.pylab;
 		specified with *noverlap*. The spectrogram is plotted as a colormap
 		(using imshow).
 		
-		*x*: 1-D array or sequence
-		    Array or sequence containing the data
+		Parameters
+		----------
+		x : 1-D array or sequence
+		    Array or sequence containing the data.
 		
-		Keyword arguments:
+		Fs : scalar
+		    The sampling frequency (samples per time unit).  It is used
+		    to calculate the Fourier frequencies, freqs, in cycles per time
+		    unit. The default value is 2.
 		
-		  *Fs*: scalar
-		      The sampling frequency (samples per time unit).  It is used
-		      to calculate the Fourier frequencies, freqs, in cycles per time
-		      unit. The default value is 2.
+		window : callable or ndarray
+		    A function or a vector of length *NFFT*. To create window
+		    vectors see :func:`window_hanning`, :func:`window_none`,
+		    :func:`numpy.blackman`, :func:`numpy.hamming`,
+		    :func:`numpy.bartlett`, :func:`scipy.signal`,
+		    :func:`scipy.signal.get_window`, etc. The default is
+		    :func:`window_hanning`.  If a function is passed as the
+		    argument, it must take a data segment as an argument and
+		    return the windowed version of the segment.
 		
-		  *window*: callable or ndarray
-		      A function or a vector of length *NFFT*. To create window
-		      vectors see :func:`window_hanning`, :func:`window_none`,
-		      :func:`numpy.blackman`, :func:`numpy.hamming`,
-		      :func:`numpy.bartlett`, :func:`scipy.signal`,
-		      :func:`scipy.signal.get_window`, etc. The default is
-		      :func:`window_hanning`.  If a function is passed as the
-		      argument, it must take a data segment as an argument and
-		      return the windowed version of the segment.
+		sides : [ 'default' | 'onesided' | 'twosided' ]
+		    Specifies which sides of the spectrum to return.  Default gives the
+		    default behavior, which returns one-sided for real data and both
+		    for complex data.  'onesided' forces the return of a one-sided
+		    spectrum, while 'twosided' forces two-sided.
 		
-		  *sides*: [ 'default' | 'onesided' | 'twosided' ]
-		      Specifies which sides of the spectrum to return.  Default gives the
-		      default behavior, which returns one-sided for real data and both
-		      for complex data.  'onesided' forces the return of a one-sided
-		      spectrum, while 'twosided' forces two-sided.
-		
-		*pad_to*: integer
+		pad_to : integer
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -31162,15 +33036,13 @@ package matplotlib.pylab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		*NFFT*: integer
+		NFFT : integer
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
 		    result will be incorrect. Use *pad_to* for this instead.
 		
-		*detrend*: [ 'default' | 'constant' | 'mean' | 'linear' | 'none'] or
-		           callable
-		
+		detrend : {'default', 'constant', 'mean', 'linear', 'none'} or callable
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
@@ -31184,24 +33056,24 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
 		    :func:`~matplotlib.pylab.detrend_none`.
 		
-		*scale_by_freq*: boolean
+		scale_by_freq : boolean, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
 		    The default is True for MATLAB compatibility.
 		
-		  *mode*: [ 'default' | 'psd' | 'magnitude' | 'angle' | 'phase' ]
-		    What sort of spectrum to use.  Default is 'psd'. which takes
+		mode : [ 'default' | 'psd' | 'magnitude' | 'angle' | 'phase' ]
+		    What sort of spectrum to use.  Default is 'psd', which takes
 		    the power spectral density.  'complex' returns the complex-valued
 		    frequency spectrum.  'magnitude' returns the magnitude spectrum.
 		    'angle' returns the phase spectrum without unwrapping.  'phase'
 		    returns the phase spectrum with unwrapping.
 		
-		  *noverlap*: integer
+		noverlap : integer
 		    The number of points of overlap between blocks.  The
 		    default value is 128.
 		
-		  *scale*: [ 'default' | 'linear' | 'dB' ]
+		scale : [ 'default' | 'linear' | 'dB' ]
 		    The scaling of the values in the *spec*.  'linear' is no scaling.
 		    'dB' returns the values in dB scale.  When *mode* is 'psd',
 		    this is dB power (10 * log10).  Otherwise this is dB amplitude
@@ -31209,81 +33081,75 @@ package matplotlib.pylab;
 		    'magnitude' and 'linear' otherwise.  This must be 'linear'
 		    if *mode* is 'angle' or 'phase'.
 		
-		  *Fc*: integer
+		Fc : integer
 		    The center frequency of *x* (defaults to 0), which offsets
 		    the x extents of the plot to reflect the frequency range used
 		    when a signal is acquired and then filtered and downsampled to
 		    baseband.
 		
-		  *cmap*:
+		cmap :
 		    A :class:`matplotlib.colors.Colormap` instance; if *None*, use
 		    default determined by rc
 		
-		  *xextent*:
-		    The image extent along the x-axis. xextent = (xmin,xmax)
-		    The default is (0,max(bins)), where bins is the return
-		    value from :func:`~matplotlib.mlab.specgram`
+		xextent : [None | (xmin, xmax)]
+		    The image extent along the x-axis. The default sets *xmin* to the
+		    left border of the first bin (*spectrum* column) and *xmax* to the
+		    right border of the last bin. Note that for *noverlap>0* the width
+		    of the bins is smaller than those of the segments.
 		
-		  *kwargs*:
+		**kwargs :
 		    Additional kwargs are passed on to imshow which makes the
 		    specgram image
 		
-		.. note::
-		
+		Notes
+		-----
 		    *detrend* and *scale_by_freq* only apply when *mode* is set to
 		    'psd'
 		
-		Returns the tuple (*spectrum*, *freqs*, *t*, *im*):
+		Returns
+		-------
+		spectrum : 2-D array
+		    Columns are the periodograms of successive segments.
 		
-		  *spectrum*: 2-D array
-		    columns are the periodograms of successive segments
+		freqs : 1-D array
+		    The frequencies corresponding to the rows in *spectrum*.
 		
-		  *freqs*: 1-D array
-		    The frequencies corresponding to the rows in *spectrum*
+		t : 1-D array
+		    The times corresponding to midpoints of segments (i.e., the columns
+		    in *spectrum*).
 		
-		  *t*: 1-D array
-		    The times corresponding to midpoints of segments (i.e the columns
-		    in *spectrum*)
-		
-		  *im*: instance of class :class:`~matplotlib.image.AxesImage`
+		im : instance of class :class:`~matplotlib.image.AxesImage`
 		    The image created by imshow containing the spectrogram
 		
-		**Example:**
-		
+		Examples
+		--------
 		.. plot:: mpl_examples/pylab_examples/specgram_demo.py
 		
-		.. seealso::
+		See Also
+		--------
+		:func:`psd`
+		    :func:`psd` differs in the default overlap; in returning the mean
+		    of the segment periodograms; in not returning times; and in
+		    generating a line plot instead of colormap.
 		
-		    :func:`psd`
-		        :func:`psd` differs in the default overlap; in returning
-		        the mean of the segment periodograms; in not returning
-		        times; and in generating a line plot instead of colormap.
+		:func:`magnitude_spectrum`
+		    A single spectrum, similar to having a single segment when *mode*
+		    is 'magnitude'. Plots a line instead of a colormap.
 		
-		    :func:`magnitude_spectrum`
-		        A single spectrum, similar to having a single segment when
-		        *mode* is 'magnitude'.  Plots a line instead of a colormap.
+		:func:`angle_spectrum`
+		    A single spectrum, similar to having a single segment when *mode*
+		    is 'angle'. Plots a line instead of a colormap.
 		
-		    :func:`angle_spectrum`
-		        A single spectrum, similar to having a single segment when
-		        *mode* is 'angle'.  Plots a line instead of a colormap.
+		:func:`phase_spectrum`
+		    A single spectrum, similar to having a single segment when *mode*
+		    is 'phase'. Plots a line instead of a colormap.
 		
-		    :func:`phase_spectrum`
-		        A single spectrum, similar to having a single segment when
-		        *mode* is 'phase'.  Plots a line instead of a colormap.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x'.
 	**/
 	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -31417,14 +33283,10 @@ package matplotlib.pylab;
 		--------
 		imshow : for image options.
 		plot : for plotting options
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -31432,9 +33294,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -31471,7 +33341,7 @@ package matplotlib.pylab;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		square(x[, out])
+		square(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the element-wise square of the input.
 		
@@ -31479,6 +33349,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -31519,6 +33400,16 @@ package matplotlib.pylab;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -31526,7 +33417,13 @@ package matplotlib.pylab;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
@@ -31555,6 +33452,7 @@ package matplotlib.pylab;
 		--------
 		concatenate : Join a sequence of arrays along an existing axis.
 		split : Split array into a list of multiple sub-arrays of equal size.
+		block : Assemble arrays from blocks.
 		
 		Examples
 		--------
@@ -31583,43 +33481,38 @@ package matplotlib.pylab;
 	/**
 		Draws a stacked area plot.
 		
-		    *x* : 1d array of dimension N
+		*x* : 1d array of dimension N
 		
-		    *y* : 2d array of dimension MxN, OR any number 1d arrays each of dimension
-		          1xN. The data is assumed to be unstacked. Each of the following
-		          calls is legal::
+		*y* : 2d array of dimension MxN, OR any number 1d arrays each of dimension
+		      1xN. The data is assumed to be unstacked. Each of the following
+		      calls is legal::
 		
-		            stackplot(x, y)               # where y is MxN
-		            stackplot(x, y1, y2, y3, y4)  # where y1, y2, y3, y4, are all 1xNm
+		        stackplot(x, y)               # where y is MxN
+		        stackplot(x, y1, y2, y3, y4)  # where y1, y2, y3, y4, are all 1xNm
 		
-		    Keyword arguments:
+		Keyword arguments:
 		
-		    *baseline* : ['zero', 'sym', 'wiggle', 'weighted_wiggle']
-		                Method used to calculate the baseline. 'zero' is just a
-		                simple stacked plot. 'sym' is symmetric around zero and
-		                is sometimes called `ThemeRiver`.  'wiggle' minimizes the
-		                sum of the squared slopes. 'weighted_wiggle' does the
-		                same but weights to account for size of each layer.
-		                It is also called `Streamgraph`-layout. More details
-		                can be found at http://www.leebyron.com/else/streamgraph/.
-		
-		
-		    *labels* : A list or tuple of labels to assign to each data series.
+		*baseline* : ['zero', 'sym', 'wiggle', 'weighted_wiggle']
+		            Method used to calculate the baseline. 'zero' is just a
+		            simple stacked plot. 'sym' is symmetric around zero and
+		            is sometimes called `ThemeRiver`.  'wiggle' minimizes the
+		            sum of the squared slopes. 'weighted_wiggle' does the
+		            same but weights to account for size of each layer.
+		            It is also called `Streamgraph`-layout. More details
+		            can be found at http://leebyron.com/streamgraph/.
 		
 		
-		    *colors* : A list or tuple of colors. These will be cycled through and
-		               used to colour the stacked areas.
-		               All other keyword arguments are passed to
-		               :func:`~matplotlib.Axes.fill_between`
-		
-		    Returns *r* : A list of
-		    :class:`~matplotlib.collections.PolyCollection`, one for each
-		    element in the stacked area plot.
-		    
+		*labels* : A list or tuple of labels to assign to each data series.
 		
 		
+		*colors* : A list or tuple of colors. These will be cycled through and
+		           used to colour the stacked areas.
+		           All other keyword arguments are passed to
+		           :func:`~matplotlib.Axes.fill_between`
 		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		Returns *r* : A list of
+		:class:`~matplotlib.collections.PolyCollection`, one for each
+		element in the stacked area plot.
 	**/
 	static public function stackplot(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -31719,22 +33612,23 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		shape : float
+		shape : float or array_like of floats
 		    Parameter, should be > 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``shape`` is a scalar.  Otherwise,
+		    ``np.array(shape).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized standard gamma distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.gamma : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.gamma : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -31754,8 +33648,8 @@ package matplotlib.pylab;
 		.. [1] Weisstein, Eric W. "Gamma Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
-		.. [2] Wikipedia, "Gamma-distribution",
-		       http://en.wikipedia.org/wiki/Gamma-distribution
+		.. [2] Wikipedia, "Gamma distribution",
+		       http://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
@@ -31818,17 +33712,18 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		df : int
+		df : int or array_like of ints
 		    Degrees of freedom, should be > 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` is a scalar.  Otherwise,
+		    ``np.array(df).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized standard Student's t distribution.
 		
 		Notes
 		-----
@@ -31843,7 +33738,7 @@ package matplotlib.pylab;
 		a good estimate of the true mean.
 		
 		The derivation of the t-distribution was first published in
-		1908 by William Gisset while working for the Guinness Brewery
+		1908 by William Gosset while working for the Guinness Brewery
 		in Dublin. Due to proprietary issues, he had to publish under
 		a pseudonym, and so he used the name Student.
 		
@@ -31907,7 +33802,7 @@ package matplotlib.pylab;
 		    Axis or axes along which the standard deviation is computed. The
 		    default is to compute the standard deviation of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a standard deviation is performed over
 		    multiple axes, instead of a single axis or all the axes as before.
@@ -31926,7 +33821,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `std` method of sub-classes of
@@ -32021,60 +33916,54 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/stem_plot.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All positional and all keyword arguments.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All positional and all keyword arguments.
 	**/
 	static public function stem(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a step plot.
 		
-		Call signature::
+		Parameters
+		----------
+		x : array_like
+		    1-D sequence, and it is assumed, but not checked,
+		    that it is uniformly increasing.
 		
-		  step(x, y, *args, **kwargs)
+		y : array_like
+		    1-D sequence, and it is assumed, but not checked,
+		    that it is uniformly increasing.
 		
-		Additional keyword args to :func:`step` are the same as those
-		for :func:`~matplotlib.pyplot.plot`.
+		Returns
+		-------
+		list
+		    List of lines that were added.
 		
-		*x* and *y* must be 1-D sequences, and it is assumed, but not checked,
-		that *x* is uniformly increasing.
+		Other parameters
+		----------------
+		where : [ 'pre' | 'post' | 'mid'  ]
+		    If 'pre' (the default), the interval from
+		    x[i] to x[i+1] has level y[i+1].
 		
-		Keyword arguments:
+		    If 'post', that interval has level y[i].
 		
-		*where*: [ 'pre' | 'post' | 'mid'  ]
-		  If 'pre' (the default), the interval from x[i] to x[i+1] has level
-		  y[i+1].
-		
-		  If 'post', that interval has level y[i].
-		
-		  If 'mid', the jumps in *y* occur half-way between the
-		  *x*-values.
-		
-		Return value is a list of lines that were added.
+		    If 'mid', the jumps in *y* occur half-way between the
+		    *x*-values.
 		
 		Notes
 		-----
+		Additional parameters are the same as those for
+		:func:`~matplotlib.pyplot.plot`.
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function step(x:Dynamic, y:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -32121,60 +34010,54 @@ package matplotlib.pylab;
 	/**
 		Draws streamlines of a vector flow.
 		
-		    *x*, *y* : 1d arrays
-		        an *evenly spaced* grid.
-		    *u*, *v* : 2d arrays
-		        x and y-velocities. Number of rows should match length of y, and
-		        the number of columns should match x.
-		    *density* : float or 2-tuple
-		        Controls the closeness of streamlines. When `density = 1`, the domain
-		        is divided into a 30x30 grid---*density* linearly scales this grid.
-		        Each cell in the grid can have, at most, one traversing streamline.
-		        For different densities in each direction, use [density_x, density_y].
-		    *linewidth* : numeric or 2d array
-		        vary linewidth when given a 2d array with the same shape as velocities.
-		    *color* : matplotlib color code, or 2d array
-		        Streamline color. When given an array with the same shape as
-		        velocities, *color* values are converted to colors using *cmap*.
-		    *cmap* : :class:`~matplotlib.colors.Colormap`
-		        Colormap used to plot streamlines and arrows. Only necessary when using
-		        an array input for *color*.
-		    *norm* : :class:`~matplotlib.colors.Normalize`
-		        Normalize object used to scale luminance data to 0, 1. If None, stretch
-		        (min, max) to (0, 1). Only necessary when *color* is an array.
-		    *arrowsize* : float
-		        Factor scale arrow size.
-		    *arrowstyle* : str
-		        Arrow style specification.
-		        See :class:`~matplotlib.patches.FancyArrowPatch`.
-		    *minlength* : float
-		        Minimum length of streamline in axes coordinates.
-		    *start_points*: Nx2 array
-		        Coordinates of starting points for the streamlines.
-		        In data coordinates, the same as the ``x`` and ``y`` arrays.
-		    *zorder* : int
-		        any number
+		*x*, *y* : 1d arrays
+		    an *evenly spaced* grid.
+		*u*, *v* : 2d arrays
+		    x and y-velocities. Number of rows should match length of y, and
+		    the number of columns should match x.
+		*density* : float or 2-tuple
+		    Controls the closeness of streamlines. When `density = 1`, the domain
+		    is divided into a 30x30 grid---*density* linearly scales this grid.
+		    Each cell in the grid can have, at most, one traversing streamline.
+		    For different densities in each direction, use [density_x, density_y].
+		*linewidth* : numeric or 2d array
+		    vary linewidth when given a 2d array with the same shape as velocities.
+		*color* : matplotlib color code, or 2d array
+		    Streamline color. When given an array with the same shape as
+		    velocities, *color* values are converted to colors using *cmap*.
+		*cmap* : :class:`~matplotlib.colors.Colormap`
+		    Colormap used to plot streamlines and arrows. Only necessary when using
+		    an array input for *color*.
+		*norm* : :class:`~matplotlib.colors.Normalize`
+		    Normalize object used to scale luminance data to 0, 1. If None, stretch
+		    (min, max) to (0, 1). Only necessary when *color* is an array.
+		*arrowsize* : float
+		    Factor scale arrow size.
+		*arrowstyle* : str
+		    Arrow style specification.
+		    See :class:`~matplotlib.patches.FancyArrowPatch`.
+		*minlength* : float
+		    Minimum length of streamline in axes coordinates.
+		*start_points*: Nx2 array
+		    Coordinates of starting points for the streamlines.
+		    In data coordinates, the same as the ``x`` and ``y`` arrays.
+		*zorder* : int
+		    any number
 		
-		    Returns:
+		Returns:
 		
-		        *stream_container* : StreamplotSet
-		            Container object with attributes
+		    *stream_container* : StreamplotSet
+		        Container object with attributes
 		
-		                - lines: `matplotlib.collections.LineCollection` of streamlines
+		            - lines: `matplotlib.collections.LineCollection` of streamlines
 		
-		                - arrows: collection of `matplotlib.patches.FancyArrowPatch`
-		                  objects representing arrows half-way along stream
-		                  lines.
+		            - arrows: collection of `matplotlib.patches.FancyArrowPatch`
+		              objects representing arrows half-way along stream
+		              lines.
 		
-		            This container will probably change in the future to allow changes
-		            to the colormap, alpha, etc. for both lines and arrows, but these
-		            changes should be backward compatible.
-		
-		    
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		        This container will probably change in the future to allow changes
+		        to the colormap, alpha, etc. for both lines and arrows, but these
+		        changes should be backward compatible.
 	**/
 	static public function streamplot(x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
 	/**
@@ -32203,8 +34086,8 @@ package matplotlib.pylab;
 		
 		.. note::
 		
-		   Creating a new subplot with a position which is entirely inside a
-		   pre-existing axes will trigger the larger axes to be deleted::
+		   Creating a subplot will delete any pre-existing subplot that overlaps
+		   with it beyond sharing a boundary::
 		
 		      import matplotlib.pyplot as plt
 		      # plot a line, implicitly creating a subplot(111)
@@ -32214,7 +34097,7 @@ package matplotlib.pylab;
 		      # first, the plot (and its axes) previously created, will be removed
 		      plt.subplot(211)
 		      plt.plot(range(12))
-		      plt.subplot(212, axisbg='y') # creates 2nd subplot with yellow background
+		      plt.subplot(212, facecolor='y') # creates 2nd subplot with yellow background
 		
 		   If you do not want this behavior, use the
 		   :meth:`~matplotlib.figure.Figure.add_subplot` method or the
@@ -32222,7 +34105,7 @@ package matplotlib.pylab;
 		
 		Keyword arguments:
 		
-		  *axisbg*:
+		  *facecolor*:
 		    The background color of the subplot, which can be any valid
 		    color specifier.  See :mod:`matplotlib.colors` for more
 		    information.
@@ -32271,113 +34154,116 @@ package matplotlib.pylab;
 	**/
 	static public function subplot_tool(?targetfig:Dynamic):Dynamic;
 	/**
-		Create a figure with a set of subplots already made.
+		Create a figure and a set of subplots
 		
 		This utility wrapper makes it convenient to create common layouts of
 		subplots, including the enclosing figure object, in a single call.
 		
-		Keyword arguments:
+		Parameters
+		----------
+		nrows, ncols : int, optional, default: 1
+		    Number of rows/columns of the subplot grid.
 		
-		  *nrows* : int
-		    Number of rows of the subplot grid.  Defaults to 1.
+		sharex, sharey : bool or {'none', 'all', 'row', 'col'}, default: False
+		    Controls sharing of properties among x (`sharex`) or y (`sharey`)
+		    axes:
 		
-		  *ncols* : int
-		    Number of columns of the subplot grid.  Defaults to 1.
+		        - True or 'all': x- or y-axis will be shared among all
+		          subplots.
+		        - False or 'none': each subplot x- or y-axis will be
+		          independent.
+		        - 'row': each subplot row will share an x- or y-axis.
+		        - 'col': each subplot column will share an x- or y-axis.
 		
-		  *sharex* : string or bool
-		    If *True*, the X axis will be shared amongst all subplots.  If
-		    *True* and you have multiple rows, the x tick labels on all but
-		    the last row of plots will have visible set to *False*
-		    If a string must be one of "row", "col", "all", or "none".
-		    "all" has the same effect as *True*, "none" has the same effect
-		    as *False*.
-		    If "row", each subplot row will share a X axis.
-		    If "col", each subplot column will share a X axis and the x tick
-		    labels on all but the last row will have visible set to *False*.
+		    When subplots have a shared x-axis along a column, only the x tick
+		    labels of the bottom subplot are visible.  Similarly, when subplots
+		    have a shared y-axis along a row, only the y tick labels of the first
+		    column subplot are visible.
 		
-		  *sharey* : string or bool
-		    If *True*, the Y axis will be shared amongst all subplots. If
-		    *True* and you have multiple columns, the y tick labels on all but
-		    the first column of plots will have visible set to *False*
-		    If a string must be one of "row", "col", "all", or "none".
-		    "all" has the same effect as *True*, "none" has the same effect
-		    as *False*.
-		    If "row", each subplot row will share a Y axis and the y tick
-		    labels on all but the first column will have visible set to *False*.
-		    If "col", each subplot column will share a Y axis.
+		squeeze : bool, optional, default: True
+		    - If True, extra dimensions are squeezed out from the returned Axes
+		      object:
 		
-		  *squeeze* : bool
-		    If *True*, extra dimensions are squeezed out from the
-		    returned axis object:
+		        - if only one subplot is constructed (nrows=ncols=1), the
+		          resulting single Axes object is returned as a scalar.
+		        - for Nx1 or 1xN subplots, the returned object is a 1D numpy
+		          object array of Axes objects are returned as numpy 1D arrays.
+		        - for NxM, subplots with N>1 and M>1 are returned as a 2D arrays.
 		
-		    - if only one subplot is constructed (nrows=ncols=1), the
-		      resulting single Axis object is returned as a scalar.
+		    - If False, no squeezing at all is done: the returned Axes object is
+		      always a 2D array containing Axes instances, even if it ends up
+		      being 1x1.
 		
-		    - for Nx1 or 1xN subplots, the returned object is a 1-d numpy
-		      object array of Axis objects are returned as numpy 1-d
-		      arrays.
-		
-		    - for NxM subplots with N>1 and M>1 are returned as a 2d
-		      array.
-		
-		    If *False*, no squeezing at all is done: the returned axis
-		    object is always a 2-d array containing Axis instances, even if it
-		    ends up being 1x1.
-		
-		  *subplot_kw* : dict
+		subplot_kw : dict, optional
 		    Dict with keywords passed to the
-		    :meth:`~matplotlib.figure.Figure.add_subplot` call used to
-		    create each subplots.
+		    :meth:`~matplotlib.figure.Figure.add_subplot` call used to create each
+		    subplot.
 		
-		  *gridspec_kw* : dict
+		gridspec_kw : dict, optional
 		    Dict with keywords passed to the
-		    :class:`~matplotlib.gridspec.GridSpec` constructor used to create
-		    the grid the subplots are placed on.
+		    :class:`~matplotlib.gridspec.GridSpec` constructor used to create the
+		    grid the subplots are placed on.
 		
-		  *fig_kw* : dict
-		    Dict with keywords passed to the :func:`figure` call.  Note that all
-		    keywords not recognized above will be automatically included here.
+		**fig_kw :
+		    All additional keyword arguments are passed to the :func:`figure` call.
 		
-		Returns:
+		Returns
+		-------
+		fig : :class:`matplotlib.figure.Figure` object
 		
-		fig, ax : tuple
+		ax : Axes object or array of Axes objects.
 		
-		  - *fig* is the :class:`matplotlib.figure.Figure` object
-		
-		  - *ax* can be either a single axis object or an array of axis
-		    objects if more than one subplot was created.  The dimensions
-		    of the resulting array can be controlled with the squeeze
+		    ax can be either a single :class:`matplotlib.axes.Axes` object or an
+		    array of Axes objects if more than one subplot was created.  The
+		    dimensions of the resulting array can be controlled with the squeeze
 		    keyword, see above.
 		
-		Examples::
+		Examples
+		--------
+		First create some toy data:
 		
-		    x = np.linspace(0, 2*np.pi, 400)
-		    y = np.sin(x**2)
+		>>> x = np.linspace(0, 2*np.pi, 400)
+		>>> y = np.sin(x**2)
 		
-		    # Just a figure and one subplot
-		    f, ax = plt.subplots()
-		    ax.plot(x, y)
-		    ax.set_title('Simple plot')
+		Creates just a figure and only one subplot
 		
-		    # Two subplots, unpack the output array immediately
-		    f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
-		    ax1.plot(x, y)
-		    ax1.set_title('Sharing Y axis')
-		    ax2.scatter(x, y)
+		>>> fig, ax = plt.subplots()
+		>>> ax.plot(x, y)
+		>>> ax.set_title('Simple plot')
 		
-		    # Four polar axes
-		    plt.subplots(2, 2, subplot_kw=dict(polar=True))
+		Creates two subplots and unpacks the output array immediately
 		
-		    # Share a X axis with each column of subplots
-		    plt.subplots(2, 2, sharex='col')
+		>>> f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+		>>> ax1.plot(x, y)
+		>>> ax1.set_title('Sharing Y axis')
+		>>> ax2.scatter(x, y)
 		
-		    # Share a Y axis with each row of subplots
-		    plt.subplots(2, 2, sharey='row')
+		Creates four polar axes, and accesses them through the returned array
 		
-		    # Share a X and Y axis with all subplots
-		    plt.subplots(2, 2, sharex='all', sharey='all')
-		    # same as
-		    plt.subplots(2, 2, sharex=True, sharey=True)
+		>>> fig, axes = plt.subplots(2, 2, subplot_kw=dict(polar=True))
+		>>> axes[0, 0].plot(x, y)
+		>>> axes[1, 1].scatter(x, y)
+		
+		Share a X axis with each column of subplots
+		
+		>>> plt.subplots(2, 2, sharex='col')
+		
+		Share a Y axis with each row of subplots
+		
+		>>> plt.subplots(2, 2, sharey='row')
+		
+		Share both X and Y axes with all subplots
+		
+		>>> plt.subplots(2, 2, sharex='all', sharey='all')
+		
+		Note that this is the same as
+		
+		>>> plt.subplots(2, 2, sharex=True, sharey=True)
+		
+		See Also
+		--------
+		figure
+		subplot
 	**/
 	static public function subplots(?nrows:Dynamic, ?ncols:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?gridspec_kw:Dynamic, ?fig_kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -32394,14 +34280,16 @@ package matplotlib.pylab;
 		  right = 0.9    # the right side of the subplots of the figure
 		  bottom = 0.1   # the bottom of the subplots of the figure
 		  top = 0.9      # the top of the subplots of the figure
-		  wspace = 0.2   # the amount of width reserved for blank space between subplots
-		  hspace = 0.2   # the amount of height reserved for white space between subplots
+		  wspace = 0.2   # the amount of width reserved for blank space between subplots,
+		                 # expressed as a fraction of the average axis width
+		  hspace = 0.2   # the amount of height reserved for white space between subplots,
+		                 # expressed as a fraction of the average axis height
 		
 		The actual defaults are controlled by the rc file
 	**/
 	static public function subplots_adjust(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		subtract(x1, x2[, out])
+		subtract(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Subtract arguments, element-wise.
 		
@@ -32409,6 +34297,17 @@ package matplotlib.pylab;
 		----------
 		x1, x2 : array_like
 		    The arrays to be subtracted from each other.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -32464,7 +34363,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
@@ -32530,17 +34429,22 @@ package matplotlib.pylab;
 		kwargs are :class:`matplotlib.text.Text` properties.  Using figure
 		coordinates, the defaults are:
 		
-		  *x* : 0.5
+		  x : 0.5
 		    The x location of the text in figure coords
 		
-		  *y* : 0.98
+		  y : 0.98
 		    The y location of the text in figure coords
 		
-		  *horizontalalignment* : 'center'
+		  horizontalalignment : 'center'
 		    The horizontal alignment of the text
 		
-		  *verticalalignment* : 'top'
+		  verticalalignment : 'top'
 		    The vertical alignment of the text
+		
+		If the `fontproperties` keyword argument is given then the
+		rcParams defaults for `fontsize` (`figure.titlesize`) and
+		`fontweight` (`figure.titleweight`) will be ignored in favour
+		of the `FontProperties` defaults.
 		
 		A :class:`matplotlib.text.Text` instance is returned.
 		
@@ -32646,8 +34550,8 @@ package matplotlib.pylab;
 		Returns
 		-------
 		a_swapped : ndarray
-		    For Numpy >= 1.10, if `a` is an ndarray, then a view of `a` is
-		    returned; otherwise a new array is created. For earlier Numpy
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
 		    versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
@@ -32696,10 +34600,10 @@ package matplotlib.pylab;
 		        colLabels=None, colColours=None, colLoc='center',
 		        loc='bottom', bbox=None):
 		
-		Returns a :class:`matplotlib.table.Table` instance.  For finer
-		grained control over tables, use the
-		:class:`~matplotlib.table.Table` class and add it to the axes
-		with :meth:`~matplotlib.axes.Axes.add_table`.
+		Returns a :class:`matplotlib.table.Table` instance. Either `cellText`
+		or `cellColours` must be provided. For finer grained control over
+		tables, use the :class:`~matplotlib.table.Table` class and add it to
+		the axes with :meth:`~matplotlib.axes.Axes.add_table`.
 		
 		Thanks to John Gill for providing the class and table.
 		
@@ -32794,7 +34698,7 @@ package matplotlib.pylab;
 	**/
 	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
-		tan(x[, out])
+		tan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute tangent element-wise.
 		
@@ -32804,18 +34708,22 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		  Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		  The corresponding tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -32847,7 +34755,7 @@ package matplotlib.pylab;
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tanh(x[, out])
+		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute hyperbolic tangent element-wise.
 		
@@ -32857,18 +34765,22 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -32934,9 +34846,9 @@ package matplotlib.pylab;
 		Notes
 		-----
 		Three common use cases are:
-		    ``axes = 0`` : tensor product $a\otimes b$
-		    ``axes = 1`` : tensor dot product $a\cdot b$
-		    ``axes = 2`` : (default) tensor double contraction $a:b$
+		    * ``axes = 0`` : tensor product :math:`a\otimes b`
+		    * ``axes = 1`` : tensor dot product :math:`a\cdot b`
+		    * ``axes = 2`` : (default) tensor double contraction :math:`a:b`
 		
 		When `axes` is integer_like, the sequence for evaluation will be: first
 		the -Nth axis in `a` and 0th axis in `b`, and the -1th axis in `a` and
@@ -33052,7 +34964,7 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		tensordot, tensorsolve
+		numpy.tensordot, tensorsolve
 		
 		Examples
 		--------
@@ -33080,7 +34992,7 @@ package matplotlib.pylab;
 		
 		It is assumed that all indices of `x` are summed over in the product,
 		together with the rightmost indices of `a`, as is done in, for example,
-		``tensordot(a, x, axes=len(b.shape))``.
+		``tensordot(a, x, axes=b.ndim)``.
 		
 		Parameters
 		----------
@@ -33107,7 +35019,7 @@ package matplotlib.pylab;
 		
 		See Also
 		--------
-		tensordot, tensorinv, einsum
+		numpy.tensordot, tensorinv, numpy.einsum
 		
 		Examples
 		--------
@@ -33146,12 +35058,14 @@ package matplotlib.pylab;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -33282,55 +35196,64 @@ package matplotlib.pylab;
 	/**
 		Change the appearance of ticks and tick labels.
 		
-		Keyword arguments:
+		Parameters
+		----------
+		axis : {'x', 'y', 'both'}, optional
+		    Which axis to apply the parameters to.
 		
-		*axis* : ['x' | 'y' | 'both']
+		Other Parameters
+		----------------
+		
+		axis : {'x', 'y', 'both'}
 		    Axis on which to operate; default is 'both'.
 		
-		*reset* : [True | False]
+		reset : bool
 		    If *True*, set all parameters to defaults
 		    before processing other keyword arguments.  Default is
 		    *False*.
 		
-		*which* : ['major' | 'minor' | 'both']
+		which : {'major', 'minor', 'both'}
 		    Default is 'major'; apply arguments to *which* ticks.
 		
-		*direction* : ['in' | 'out' | 'inout']
+		direction : {'in', 'out', 'inout'}
 		    Puts ticks inside the axes, outside the axes, or both.
 		
-		*length*
+		length : float
 		    Tick length in points.
 		
-		*width*
+		width : float
 		    Tick width in points.
 		
-		*color*
+		color : color
 		    Tick color; accepts any mpl color spec.
 		
-		*pad*
+		pad : float
 		    Distance in points between tick and label.
 		
-		*labelsize*
+		labelsize : float or str
 		    Tick label font size in points or as a string (e.g., 'large').
 		
-		*labelcolor*
+		labelcolor : color
 		    Tick label color; mpl color spec.
 		
-		*colors*
+		colors : color
 		    Changes the tick color and the label color to the same value:
 		    mpl color spec.
 		
-		*zorder*
+		zorder : float
 		    Tick and label zorder.
 		
-		*bottom*, *top*, *left*, *right* : [bool | 'on' | 'off']
+		bottom, top, left, right : bool or  {'on', 'off'}
 		    controls whether to draw the respective ticks.
 		
-		*labelbottom*, *labeltop*, *labelleft*, *labelright*
-		    Boolean or ['on' | 'off'], controls whether to draw the
+		labelbottom, labeltop, labelleft, labelright : bool or  {'on', 'off'}
+		    controls whether to draw the
 		    respective tick labels.
 		
-		Example::
+		Examples
+		--------
+		
+		Usage ::
 		
 		    ax.tick_params(direction='out', length=6, width=2, colors='r')
 		
@@ -33555,6 +35478,7 @@ package matplotlib.pylab;
 		(2, 3)
 	**/
 	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public var tracemalloc_domain : Dynamic;
 	/**
 		Permute the dimensions of an array.
 		
@@ -33700,7 +35624,8 @@ package matplotlib.pylab;
 	/**
 		triangular(left, mode, right, size=None)
 		
-		Draw samples from the triangular distribution.
+		Draw samples from the triangular distribution over the
+		interval ``[left, right]``.
 		
 		The triangular distribution is a continuous probability
 		distribution with lower limit left, peak at mode, and upper
@@ -33709,22 +35634,24 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		left : scalar
+		left : float or array_like of floats
 		    Lower limit.
-		mode : scalar
+		mode : float or array_like of floats
 		    The value where the peak of the distribution occurs.
 		    The value should fulfill the condition ``left <= mode <= right``.
-		right : scalar
+		right : float or array_like of floats
 		    Upper limit, should be larger than `left`.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``left``, ``mode``, and ``right``
+		    are all scalars.  Otherwise, ``np.broadcast(left, mode, right).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The returned samples all lie in the interval [left, right].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized triangular distribution.
 		
 		Notes
 		-----
@@ -33931,10 +35858,6 @@ package matplotlib.pylab;
 		**Examples:**
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function tricontour(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -34112,10 +36035,6 @@ package matplotlib.pylab;
 		**Examples:**
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function tricontourf(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -34321,10 +36240,6 @@ package matplotlib.pylab;
 		**Example:**
 		
 		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function tripcolor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -34362,10 +36277,6 @@ package matplotlib.pylab;
 		**Example:**
 		
 		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
 	static public function triplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -34494,7 +36405,7 @@ package matplotlib.pylab;
 	**/
 	static public function triu_indices_from(arr:Dynamic, ?k:Dynamic):Dynamic;
 	/**
-		true_divide(x1, x2[, out])
+		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns a true division of the inputs, element-wise.
 		
@@ -34508,6 +36419,17 @@ package matplotlib.pylab;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -34544,7 +36466,7 @@ package matplotlib.pylab;
 	**/
 	static public function true_divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		trunc(x[, out])
+		trunc(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truncated value of the input, element-wise.
 		
@@ -34556,6 +36478,17 @@ package matplotlib.pylab;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -34660,21 +36593,22 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		low : float, optional
+		low : float or array_like of floats, optional
 		    Lower boundary of the output interval.  All values generated will be
 		    greater than or equal to low.  The default value is 0.
-		high : float
+		high : float or array_like of floats
 		    Upper boundary of the output interval.  All values generated will be
 		    less than high.  The default value is 1.0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``low`` and ``high`` are both scalars.
+		    Otherwise, ``np.broadcast(low, high).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Drawn samples, with shape `size`.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized uniform distribution.
 		
 		See Also
 		--------
@@ -34694,6 +36628,12 @@ package matplotlib.pylab;
 		.. math:: p(x) = \frac{1}{b - a}
 		
 		anywhere within the interval ``[a, b)``, and zero elsewhere.
+		
+		When ``high`` == ``low``, values of ``low`` will be returned.
+		If ``high`` < ``low``, the results are officially undefined
+		and may eventually raise an error, i.e. do not rely on this
+		function to behave when passed arguments satisfying that
+		inequality condition.
 		
 		Examples
 		--------
@@ -34778,18 +36718,27 @@ package matplotlib.pylab;
 		Parameters
 		----------
 		ar : array_like
-		    Input array. This will be flattened if it is not already 1-D.
+		    Input array. Unless `axis` is specified, this will be flattened if it
+		    is not already 1-D.
 		return_index : bool, optional
-		    If True, also return the indices of `ar` that result in the unique
-		    array.
+		    If True, also return the indices of `ar` (along the specified axis,
+		    if provided, or in the flattened array) that result in the unique array.
 		return_inverse : bool, optional
-		    If True, also return the indices of the unique array that can be used
-		    to reconstruct `ar`.
+		    If True, also return the indices of the unique array (for the specified
+		    axis, if provided) that can be used to reconstruct `ar`.
 		return_counts : bool, optional
-		    If True, also return the number of times each unique value comes up
+		    If True, also return the number of times each unique item appears
 		    in `ar`.
-		
 		    .. versionadded:: 1.9.0
+		axis : int or None, optional
+		    The axis to operate on. If None, `ar` will be flattened beforehand.
+		    Otherwise, duplicate items will be removed along the provided axis,
+		    with all the other axes belonging to the each of the unique elements.
+		    Object arrays or structured arrays that contain objects are not
+		    supported if the `axis` kwarg is used.
+		    .. versionadded:: 1.13.0
+		
+		
 		
 		Returns
 		-------
@@ -34797,14 +36746,13 @@ package matplotlib.pylab;
 		    The sorted unique values.
 		unique_indices : ndarray, optional
 		    The indices of the first occurrences of the unique values in the
-		    (flattened) original array. Only provided if `return_index` is True.
+		    original array. Only provided if `return_index` is True.
 		unique_inverse : ndarray, optional
-		    The indices to reconstruct the (flattened) original array from the
+		    The indices to reconstruct the original array from the
 		    unique array. Only provided if `return_inverse` is True.
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
-		
 		    .. versionadded:: 1.9.0
 		
 		See Also
@@ -34819,6 +36767,12 @@ package matplotlib.pylab;
 		>>> a = np.array([[1, 1], [2, 3]])
 		>>> np.unique(a)
 		array([1, 2, 3])
+		
+		Return the unique rows of a 2D array
+		
+		>>> a = np.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])
+		>>> np.unique(a, axis=0)
+		array([[1, 0, 0], [2, 3, 4]])
 		
 		Return the indices of the original array that give the unique values:
 		
@@ -34844,7 +36798,7 @@ package matplotlib.pylab;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		unpackbits(myarray, axis=None)
 		
@@ -35054,7 +37008,7 @@ package matplotlib.pylab;
 		    Axis or axes along which the variance is computed.  The default is to
 		    compute the variance of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a variance is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -35073,7 +37027,7 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of
@@ -35206,108 +37160,94 @@ package matplotlib.pylab;
 	/**
 		Make a violin plot.
 		
-		        Call signature::
+		Make a violin plot for each column of *dataset* or each vector in
+		sequence *dataset*.  Each filled area extends to represent the
+		entire data range, with optional lines at the mean, the median,
+		the minimum, and the maximum.
 		
-		          violinplot(dataset, positions=None, vert=True, widths=0.5,
-		                     showmeans=False, showextrema=True, showmedians=False,
-		                     points=100, bw_method=None):
+		Parameters
+		----------
+		dataset : Array or a sequence of vectors.
+		  The input data.
 		
-		        Make a violin plot for each column of *dataset* or each vector in
-		        sequence *dataset*.  Each filled area extends to represent the
-		        entire data range, with optional lines at the mean, the median,
-		        the minimum, and the maximum.
+		positions : array-like, default = [1, 2, ..., n]
+		  Sets the positions of the violins. The ticks and limits are
+		  automatically set to match the positions.
 		
-		        Parameters
-		        ----------
-		        dataset : Array or a sequence of vectors.
-		          The input data.
+		vert : bool, default = True.
+		  If true, creates a vertical violin plot.
+		  Otherwise, creates a horizontal violin plot.
 		
-		        positions : array-like, default = [1, 2, ..., n]
-		          Sets the positions of the violins. The ticks and limits are
-		          automatically set to match the positions.
+		widths : array-like, default = 0.5
+		  Either a scalar or a vector that sets the maximal width of
+		  each violin. The default is 0.5, which uses about half of the
+		  available horizontal space.
 		
-		        vert : bool, default = True.
-		          If true, creates a vertical violin plot.
-		          Otherwise, creates a horizontal violin plot.
+		showmeans : bool, default = False
+		  If `True`, will toggle rendering of the means.
 		
-		        widths : array-like, default = 0.5
-		          Either a scalar or a vector that sets the maximal width of
-		          each violin. The default is 0.5, which uses about half of the
-		          available horizontal space.
+		showextrema : bool, default = True
+		  If `True`, will toggle rendering of the extrema.
 		
-		        showmeans : bool, default = False
-		          If `True`, will toggle rendering of the means.
+		showmedians : bool, default = False
+		  If `True`, will toggle rendering of the medians.
 		
-		        showextrema : bool, default = True
-		          If `True`, will toggle rendering of the extrema.
+		points : scalar, default = 100
+		  Defines the number of points to evaluate each of the
+		  gaussian kernel density estimations at.
 		
-		        showmedians : bool, default = False
-		          If `True`, will toggle rendering of the medians.
+		bw_method : str, scalar or callable, optional
+		  The method used to calculate the estimator bandwidth.  This can be
+		  'scott', 'silverman', a scalar constant or a callable.  If a
+		  scalar, this will be used directly as `kde.factor`.  If a
+		  callable, it should take a `GaussianKDE` instance as its only
+		  parameter and return a scalar. If None (default), 'scott' is used.
 		
-		        points : scalar, default = 100
-		          Defines the number of points to evaluate each of the
-		          gaussian kernel density estimations at.
+		Returns
+		-------
 		
-		        bw_method : str, scalar or callable, optional
-		          The method used to calculate the estimator bandwidth.  This can be
-		          'scott', 'silverman', a scalar constant or a callable.  If a
-		          scalar, this will be used directly as `kde.factor`.  If a
-		          callable, it should take a `GaussianKDE` instance as its only
-		          parameter and return a scalar. If None (default), 'scott' is used.
+		result : dict
+		  A dictionary mapping each component of the violinplot to a
+		  list of the corresponding collection instances created. The
+		  dictionary has the following keys:
 		
-		        Returns
-		        -------
+		    - ``bodies``: A list of the
+		      :class:`matplotlib.collections.PolyCollection` instances
+		      containing the filled area of each violin.
 		
-		        result : dict
-		          A dictionary mapping each component of the violinplot to a
-		          list of the corresponding collection instances created. The
-		          dictionary has the following keys:
+		    - ``cmeans``: A
+		      :class:`matplotlib.collections.LineCollection` instance
+		      created to identify the mean values of each of the
+		      violin's distribution.
 		
-		            - ``bodies``: A list of the
-		              :class:`matplotlib.collections.PolyCollection` instances
-		              containing the filled area of each violin.
+		    - ``cmins``: A
+		      :class:`matplotlib.collections.LineCollection` instance
+		      created to identify the bottom of each violin's
+		      distribution.
 		
-		            - ``cmeans``: A
-		              :class:`matplotlib.collections.LineCollection` instance
-		              created to identify the mean values of each of the
-		              violin's distribution.
+		    - ``cmaxes``: A
+		      :class:`matplotlib.collections.LineCollection` instance
+		      created to identify the top of each violin's
+		      distribution.
 		
-		            - ``cmins``: A
-		              :class:`matplotlib.collections.LineCollection` instance
-		              created to identify the bottom of each violin's
-		              distribution.
+		    - ``cbars``: A
+		      :class:`matplotlib.collections.LineCollection` instance
+		      created to identify the centers of each violin's
+		      distribution.
 		
-		            - ``cmaxes``: A
-		              :class:`matplotlib.collections.LineCollection` instance
-		              created to identify the top of each violin's
-		              distribution.
+		    - ``cmedians``: A
+		      :class:`matplotlib.collections.LineCollection` instance
+		      created to identify the median values of each of the
+		      violin's distribution.
 		
-		            - ``cbars``: A
-		              :class:`matplotlib.collections.LineCollection` instance
-		              created to identify the centers of each violin's
-		              distribution.
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		            - ``cmedians``: A
-		              :class:`matplotlib.collections.LineCollection` instance
-		              created to identify the median values of each of the
-		              violin's distribution.
-		        
-		
-		Notes
-		-----
-		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'dataset'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'dataset'.
 	**/
-	static public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
+	static public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic, ?hold:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		set the default colormap to viridis and apply to current image if any.
 		See help(colormaps) for more information
@@ -35346,22 +37286,15 @@ package matplotlib.pylab;
 		hlines : horizontal lines
 		
 		Examples
-		---------
+		--------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'ymax', 'colors', 'ymin'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'colors', 'x', 'ymax', 'ymin'.
 	**/
 	static public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -35379,24 +37312,25 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		mu : float
+		mu : float or array_like of floats
 		    Mode ("center") of the distribution.
-		kappa : float
+		kappa : float or array_like of floats
 		    Dispersion of the distribution, has to be >=0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mu`` and ``kappa`` are both scalars.
+		    Otherwise, ``np.broadcast(mu, kappa).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    The returned samples, which are in the interval [-pi, pi].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized von Mises distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.vonmises : probability density function,
-		    distribution, or cumulative density function, etc.
+		scipy.stats.vonmises : probability density function, distribution, or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -35492,6 +37426,10 @@ package matplotlib.pylab;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -35510,6 +37448,7 @@ package matplotlib.pylab;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -35536,10 +37475,6 @@ package matplotlib.pylab;
 	**/
 	static public function vstack(tup:Dynamic):Dynamic;
 	/**
-		Call signature::
-		
-		  waitforbuttonpress(self, timeout=-1)
-		
 		Blocking call to interact with the figure.
 		
 		This will return True is a key was pressed, False if a mouse
@@ -35565,19 +37500,20 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		mean : scalar
+		mean : float or array_like of floats
 		    Distribution mean, should be > 0.
-		scale : scalar
+		scale : float or array_like of floats
 		    Scale parameter, should be >= 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mean`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(mean, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Drawn sample, all greater than zero.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Wald distribution.
 		
 		Notes
 		-----
@@ -35627,22 +37563,24 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		a : float
-		    Shape of the distribution.
+		a : float or array_like of floats
+		    Shape of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Weibull distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.weibull_max
-		scipy.stats.distributions.weibull_min
-		scipy.stats.distributions.genextreme
+		scipy.stats.weibull_max
+		scipy.stats.weibull_min
+		scipy.stats.genextreme
 		gumbel
 		
 		Notes
@@ -35712,8 +37650,8 @@ package matplotlib.pylab;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -35760,7 +37698,7 @@ package matplotlib.pylab;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
@@ -35770,10 +37708,10 @@ package matplotlib.pylab;
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Print the Numpy arrays in the given dictionary.
+		Print the NumPy arrays in the given dictionary.
 		
 		If there is no dictionary passed in or `vardict` is None then returns
-		Numpy arrays in the globals() dictionary (all Numpy arrays in the
+		NumPy arrays in the globals() dictionary (all NumPy arrays in the
 		namespace).
 		
 		Parameters
@@ -35815,27 +37753,19 @@ package matplotlib.pylab;
 	/**
 		Return x times the hanning window of len(x).
 		
-		Call signature::
-		
-		    window_hanning(x)
-		
-		.. seealso::
-		
-		    :func:`window_none`
-		        :func:`window_none` is another window algorithm.
+		See Also
+		--------
+		:func:`window_none`
+		    :func:`window_none` is another window algorithm.
 	**/
 	static public function window_hanning(x:Dynamic):Dynamic;
 	/**
 		No window function; simply return x.
 		
-		Call signature::
-		
-		    window_none(x)
-		
-		.. seealso::
-		
-		    :func:`window_hanning`
-		        :func:`window_hanning` is another window algorithm.
+		See Also
+		--------
+		:func:`window_hanning`
+		    :func:`window_hanning` is another window algorithm.
 	**/
 	static public function window_none(x:Dynamic):Dynamic;
 	/**
@@ -35846,6 +37776,8 @@ package matplotlib.pylab;
 	/**
 		Plot the cross correlation between *x* and *y*.
 		
+		The correlation with lag k is defined as sum_n x[n+k] * conj(y[n]).
+		
 		Parameters
 		----------
 		
@@ -35853,15 +37785,14 @@ package matplotlib.pylab;
 		
 		y : sequence of scalars of length n
 		
-		hold : boolean, optional, default: True
+		hold : boolean, optional, *deprecated*, default: True
 		
 		detrend : callable, optional, default: `mlab.detrend_none`
 		    x is detrended by the `detrend` callable. Default is no
 		    normalization.
 		
 		normed : boolean, optional, default: True
-		    if True, normalize the data by the autocorrelation at the 0-th
-		    lag.
+		    if True, input vectors are normalised to unit length.
 		
 		usevlines : boolean, optional, default: True
 		    if True, Axes.vlines is used to plot the vertical lines from the
@@ -35882,7 +37813,7 @@ package matplotlib.pylab;
 		  - `b` is the x-axis (none, if plot is used).
 		
 		Other parameters
-		-----------------
+		----------------
 		linestyle : `~matplotlib.lines.Line2D` prop, optional, default: None
 		    Only used if usevlines is False.
 		
@@ -35893,19 +37824,12 @@ package matplotlib.pylab;
 		The cross correlation is performed with :func:`numpy.correlate` with
 		`mode` = 2.
 		
-		Notes
-		-----
+		.. note::
+		    In addition to the above described arguments, this function can take a
+		    **data** keyword argument. If such a **data** argument is given, the
+		    following arguments are replaced by **data[<arg>]**:
 		
-		In addition to the above described arguments, this function can take a
-		**data** keyword argument. If such a **data** argument is given, the
-		following arguments are replaced by **data[<arg>]**:
-		
-		* All arguments with the following names: 'x', 'y'.
-		
-		
-		
-		
-		Additional kwargs: hold = [True|False] overrides default hold state
+		    * All arguments with the following names: 'x', 'y'.
 	**/
 	static public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -36316,22 +38240,23 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		a : float > 1
-		    Distribution parameter.
+		a : float or array_like of floats
+		    Distribution parameter. Should be greater than 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar. Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    The returned samples are greater than or equal to one.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Zipf distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.zipf : probability density function,
-		    distribution, or cumulative density function, etc.
+		scipy.stats.zipf : probability density function, distribution, or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -36362,11 +38287,13 @@ package matplotlib.pylab;
 		the probability density function:
 		
 		>>> import matplotlib.pyplot as plt
-		>>> import scipy.special as sps
-		Truncate s values at 50 so plot is interesting
+		>>> from scipy import special
+		
+		Truncate s values at 50 so plot is interesting:
+		
 		>>> count, bins, ignored = plt.hist(s[s<50], 50, normed=True)
 		>>> x = np.arange(1., 50.)
-		>>> y = x**(-a)/sps.zetac(a)
+		>>> y = x**(-a) / special.zetac(a)
 		>>> plt.plot(x, y/max(y), linewidth=2, color='r')
 		>>> plt.show()
 	**/

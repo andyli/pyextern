@@ -41,17 +41,24 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 		Construct a DataSet.
 		one_hot arg is used only if fake_data is true.  `dtype` can be either
 		`uint8` to leave the input as `[0, 255]`, or `float32` to rescale into
-		`[0, 1]`.
+		`[0, 1]`.  Seed arg provides for convenient deterministic testing.
 	**/
 	@:native("__init__")
-	public function ___init__(images:Dynamic, labels:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic):Dynamic;
+	public function ___init__(images:Dynamic, labels:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Construct a DataSet.
 		one_hot arg is used only if fake_data is true.  `dtype` can be either
 		`uint8` to leave the input as `[0, 255]`, or `float32` to rescale into
-		`[0, 1]`.
+		`[0, 1]`.  Seed arg provides for convenient deterministic testing.
 	**/
-	public function new(images:Dynamic, labels:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic):Void;
+	public function new(images:Dynamic, labels:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic, ?seed:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -113,6 +120,6 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		Return the next `batch_size` examples from this data set.
 	**/
-	public function next_batch(batch_size:Dynamic, ?fake_data:Dynamic):Dynamic;
+	public function next_batch(batch_size:Dynamic, ?fake_data:Dynamic, ?shuffle:Dynamic):Dynamic;
 	public var num_examples : Dynamic;
 }

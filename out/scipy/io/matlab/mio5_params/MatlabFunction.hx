@@ -61,6 +61,7 @@ package scipy.io.matlab.mio5_params;
 		Array protocol: C-struct side.
 	**/
 	public var __array_struct__ : Dynamic;
+	public function __array_ufunc__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		a.__array_wrap__(obj) -> Object of same type as ndarray object a.
 	**/
@@ -70,6 +71,7 @@ package scipy.io.matlab.mio5_params;
 	**/
 	public function __bool__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __complex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -187,6 +189,13 @@ package scipy.io.matlab.mio5_params;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -1406,7 +1415,7 @@ package scipy.io.matlab.mio5_params;
 		Examples
 		--------
 		>>> a = np.array([3, 4, 2, 1])
-		>>> a.partition(a, 3)
+		>>> a.partition(3)
 		>>> a
 		array([2, 1, 3, 4])
 		
@@ -1525,6 +1534,9 @@ package scipy.io.matlab.mio5_params;
 		ValueError
 		    If `a` does not own its own data or references or views to it exist,
 		    and the data memory must be changed.
+		    PyPy only: will always raise if the data memory must be changed, since
+		    there is no reliable way to determine if references or views to it
+		    exist.
 		
 		SystemError
 		    If the `order` keyword argument is specified. This behaviour is a

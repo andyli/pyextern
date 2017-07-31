@@ -49,21 +49,20 @@ package matplotlib.legend;
 		================   ====================================================
 		Keyword            Description
 		================   ====================================================
-		loc                a location code
+		loc                Location code string, or tuple (see below).
 		prop               the font property
 		fontsize           the font size (used only if prop is not specified)
 		markerscale        the relative size of legend markers vs. original
-		markerfirst        If true, place legend marker to left of label
-		                   If false, place legend marker to right of label
+		markerfirst        If True (default), marker is to left of the label.
 		numpoints          the number of points in the legend for line
 		scatterpoints      the number of points in the legend for scatter plot
 		scatteryoffsets    a list of yoffsets for scatter symbols in legend
-		frameon            if True, draw a frame around the legend.
-		                   If None, use rc
-		fancybox           if True, draw a frame with a round fancybox.
-		                   If None, use rc
-		shadow             if True, draw a shadow behind legend
-		framealpha         If not None, alpha channel for the frame.
+		frameon            If True, draw the legend on a patch (frame).
+		fancybox           If True, draw the frame with a round fancybox.
+		shadow             If True, draw a shadow behind legend.
+		framealpha         Transparency of the frame.
+		edgecolor          Frame edgecolor.
+		facecolor          Frame facecolor.
 		ncol               number of columns
 		borderpad          the fractional whitespace inside the legend border
 		labelspacing       the vertical space between the legend entries
@@ -92,7 +91,7 @@ package matplotlib.legend;
 		in the normalized axes coordinate.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
+	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
 	/**
 		- *parent*: the artist that contains the legend
 		- *handles*: a list of artists (lines, patches) to be added to the
@@ -104,21 +103,20 @@ package matplotlib.legend;
 		================   ====================================================
 		Keyword            Description
 		================   ====================================================
-		loc                a location code
+		loc                Location code string, or tuple (see below).
 		prop               the font property
 		fontsize           the font size (used only if prop is not specified)
 		markerscale        the relative size of legend markers vs. original
-		markerfirst        If true, place legend marker to left of label
-		                   If false, place legend marker to right of label
+		markerfirst        If True (default), marker is to left of the label.
 		numpoints          the number of points in the legend for line
 		scatterpoints      the number of points in the legend for scatter plot
 		scatteryoffsets    a list of yoffsets for scatter symbols in legend
-		frameon            if True, draw a frame around the legend.
-		                   If None, use rc
-		fancybox           if True, draw a frame with a round fancybox.
-		                   If None, use rc
-		shadow             if True, draw a shadow behind legend
-		framealpha         If not None, alpha channel for the frame.
+		frameon            If True, draw the legend on a patch (frame).
+		fancybox           If True, draw the frame with a round fancybox.
+		shadow             If True, draw a shadow behind legend.
+		framealpha         Transparency of the frame.
+		edgecolor          Frame edgecolor.
+		facecolor          Frame facecolor.
 		ncol               number of columns
 		borderpad          the fractional whitespace inside the legend border
 		labelspacing       the vertical space between the legend entries
@@ -146,7 +144,14 @@ package matplotlib.legend;
 		2 floats, which is interpreted as the lower-left corner of the legend
 		in the normalized axes coordinate.
 	**/
-	public function new(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Void;
+	public function new(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -258,6 +263,7 @@ package matplotlib.legend;
 	**/
 	public function _init_legend_box(handles:Dynamic, labels:Dynamic, ?markerfirst:Dynamic):Dynamic;
 	public var _loc : Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		set the boilerplate props for artists added to axes
 	**/
@@ -551,9 +557,7 @@ package matplotlib.legend;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -592,9 +596,7 @@ package matplotlib.legend;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -826,6 +828,25 @@ package matplotlib.legend;
 		match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
+	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

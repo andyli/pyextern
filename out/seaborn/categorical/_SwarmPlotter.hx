@@ -41,11 +41,18 @@ package seaborn.categorical;
 		Initialize the plotter.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, dodge:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
 	/**
 		Initialize the plotter.
 	**/
-	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, dodge:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -140,6 +147,10 @@ package seaborn.categorical;
 	**/
 	public function establish_variables(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?orient:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?units:Dynamic):Dynamic;
 	/**
+		Remove candidates from the list if they overlap with the swarm.
+	**/
+	public function first_non_overlapping_candidate(candidates:Dynamic, neighbors:Dynamic, d:Dynamic):Dynamic;
+	/**
 		A list of center positions for plots when hue nesting is used.
 	**/
 	public var hue_offsets : Dynamic;
@@ -152,10 +163,6 @@ package seaborn.categorical;
 	**/
 	public var nested_width : Dynamic;
 	/**
-		Return True if two circles with the same diameter will overlap.
-	**/
-	public function overlap(xy_i:Dynamic, xy_j:Dynamic, d:Dynamic):Dynamic;
-	/**
 		Make the full plot.
 	**/
 	public function plot(ax:Dynamic, kws:Dynamic):Dynamic;
@@ -167,10 +174,6 @@ package seaborn.categorical;
 		Return a list of (x, y) coordinates that might be valid.
 	**/
 	public function position_candidates(xy_i:Dynamic, neighbors:Dynamic, d:Dynamic):Dynamic;
-	/**
-		Remove candidates from the list if they overlap with the swarm.
-	**/
-	public function prune_candidates(candidates:Dynamic, neighbors:Dynamic, d:Dynamic):Dynamic;
 	/**
 		Find new positions on the categorical axis for each point.
 	**/

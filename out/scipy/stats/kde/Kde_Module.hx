@@ -25,7 +25,7 @@ package scipy.stats.kde;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -62,7 +62,7 @@ package scipy.stats.kde;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -161,7 +161,7 @@ package scipy.stats.kde;
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -169,6 +169,17 @@ package scipy.stats.kde;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -213,18 +224,102 @@ package scipy.stats.kde;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		multivariate_normal(mean, cov[, size])
+		Compute the log of the sum of exponentials of input elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes over which the sum is taken. By default `axis` is None,
+		    and all elements are summed.
+		
+		    .. versionadded:: 0.11.0
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the original array.
+		
+		    .. versionadded:: 0.15.0
+		b : array-like, optional
+		    Scaling factor for exp(`a`) must be of the same shape as `a` or
+		    broadcastable to `a`. These values may be negative in order to
+		    implement subtraction.
+		
+		    .. versionadded:: 0.12.0
+		return_sign : bool, optional
+		    If this is set to True, the result will be a pair containing sign
+		    information; if False, results that are negative will be returned
+		    as NaN. Default is False (no sign information).
+		
+		    .. versionadded:: 0.16.0
+		Returns
+		-------
+		res : ndarray
+		    The result, ``np.log(np.sum(np.exp(a)))`` calculated in a numerically
+		    more stable way. If `b` is given then ``np.log(np.sum(b*np.exp(a)))``
+		    is returned.
+		sgn : ndarray
+		    If return_sign is True, this will be an array of floating-point
+		    numbers matching res and +1, 0, or -1 depending on the sign
+		    of the result. If False, only one result is returned.
+		
+		See Also
+		--------
+		numpy.logaddexp, numpy.logaddexp2
+		
+		Notes
+		-----
+		Numpy has a logaddexp function which is very similar to `logsumexp`, but
+		only handles two arguments. `logaddexp.reduce` is similar to this
+		function, but may be less stable.
+		
+		Examples
+		--------
+		>>> from scipy.special import logsumexp
+		>>> a = np.arange(10)
+		>>> np.log(np.sum(np.exp(a)))
+		9.4586297444267107
+		>>> logsumexp(a)
+		9.4586297444267107
+		
+		With weights
+		
+		>>> a = np.arange(10)
+		>>> b = np.arange(10, 0, -1)
+		>>> logsumexp(a, b=b)
+		9.9170178533034665
+		>>> np.log(np.sum(b*np.exp(a)))
+		9.9170178533034647
+		
+		Returning a sign flag
+		
+		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
+		(1.5413248546129181, -1.0)
+		
+		Notice that `logsumexp` does not directly support masked arrays. To use it
+		on a masked array, convert the mask into zero weights:
+		
+		>>> a = np.ma.array([np.log(2), 2, np.log(3)],
+		...                  mask=[False, True, False])
+		>>> b = (~a.mask).astype(int)
+		>>> logsumexp(a.data, b=b), np.log(5)
+		1.6094379124341005, 1.6094379124341005
+	**/
+	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
+	/**
+		multivariate_normal(mean, cov[, size, check_valid, tol])
 		
 		Draw random samples from a multivariate normal distribution.
 		
@@ -247,6 +342,10 @@ package scipy.stats.kde;
 		    generated, and packed in an `m`-by-`n`-by-`k` arrangement.  Because
 		    each sample is `N`-dimensional, the output shape is ``(m,n,k,N)``.
 		    If no shape is specified, a single (`N`-D) sample is returned.
+		check_valid : { 'warn', 'raise', 'ignore' }, optional
+		    Behavior when the covariance matrix is not positive semidefinite.
+		tol : float, optional
+		    Tolerance when checking the singular values in covariance matrix.
 		
 		Returns
 		-------
@@ -274,8 +373,8 @@ package scipy.stats.kde;
 		Instead of specifying the full covariance matrix, popular
 		approximations include:
 		
-		  - Spherical covariance (*cov* is a multiple of the identity matrix)
-		  - Diagonal covariance (*cov* has non-negative elements, and only on
+		  - Spherical covariance (`cov` is a multiple of the identity matrix)
+		  - Diagonal covariance (`cov` has non-negative elements, and only on
 		    the diagonal)
 		
 		This geometrical property can be seen in two dimensions by plotting
@@ -321,12 +420,13 @@ package scipy.stats.kde;
 	static public var newaxis : Dynamic;
 	static public var pi : Dynamic;
 	/**
-		power(x1, x2[, out])
+		power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		First array elements raised to powers from second array, element-wise.
 		
 		Raise each base in `x1` to the positionally-corresponding power in
-		`x2`.  `x1` and `x2` must be broadcastable to the same shape.
+		`x2`.  `x1` and `x2` must be broadcastable to the same shape. Note that an
+		integer type raised to a negative integer power will raise a ValueError.
 		
 		Parameters
 		----------
@@ -334,11 +434,26 @@ package scipy.stats.kde;
 		    The bases.
 		x2 : array_like
 		    The exponents.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		
+		See Also
+		--------
+		float_power : power function that promotes integers to float
 		
 		Examples
 		--------
@@ -381,8 +496,8 @@ package scipy.stats.kde;
 		----------
 		low : int
 		    Lowest (signed) integer to be drawn from the distribution (unless
-		    ``high=None``, in which case this parameter is the *highest* such
-		    integer).
+		    ``high=None``, in which case this parameter is one above the
+		    *highest* such integer).
 		high : int, optional
 		    If provided, one above the largest (signed) integer to be drawn
 		    from the distribution (see above for behavior if ``high=None``).
@@ -536,20 +651,21 @@ package scipy.stats.kde;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -620,7 +736,7 @@ package scipy.stats.kde;
 	**/
 	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -628,9 +744,17 @@ package scipy.stats.kde;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -687,6 +811,16 @@ package scipy.stats.kde;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -694,7 +828,13 @@ package scipy.stats.kde;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
@@ -730,7 +870,7 @@ package scipy.stats.kde;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of

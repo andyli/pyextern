@@ -62,6 +62,13 @@ package matplotlib.transforms;
 	**/
 	public function new(points:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -276,15 +283,14 @@ package matplotlib.transforms;
 	public var height : Dynamic;
 	/**
 		Set whether the existing bounds of the box should be ignored
-		by subsequent calls to :meth:`update_from_data` or
-		:meth:`update_from_data_xy`.
+		by subsequent calls to :meth:`update_from_data_xy`.
 		
 		*value*:
 		
-		   - When True, subsequent calls to :meth:`update_from_data`
+		   - When True, subsequent calls to :meth:`update_from_data_xy`
 		     will ignore the existing bounds of the :class:`Bbox`.
 		
-		   - When False, subsequent calls to :meth:`update_from_data`
+		   - When False, subsequent calls to :meth:`update_from_data_xy`
 		     will include the existing bounds of the :class:`Bbox`.
 	**/
 	public function ignore(value:Dynamic):Dynamic;
@@ -442,6 +448,9 @@ package matplotlib.transforms;
 	**/
 	static public function unit():Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The update_from_data function was deprecated in version 2.0. Use update_from_data_xy instead.
+		
 		Update the bounds of the :class:`Bbox` based on the passed in
 		data.  After updating, the bounds will have positive *width*
 		and *height*; *x0* and *y0* will be the minimal values.

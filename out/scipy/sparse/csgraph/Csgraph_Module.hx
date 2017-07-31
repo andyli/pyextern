@@ -49,7 +49,7 @@ package scipy.sparse.csgraph;
 		>>> olduint(6)
 		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
 		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning)
+		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
 		6
 	**/
 	static public function _deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
@@ -844,6 +844,8 @@ package scipy.sparse.csgraph;
 	**/
 	static public function laplacian(csgraph:Dynamic, ?normed:Dynamic, ?return_diag:Dynamic, ?use_out_degree:Dynamic):Dynamic;
 	/**
+		maximum_bipartite_matching(graph, perm_type='row')
+		
 		Returns an array of row or column permutations that makes
 		the diagonal of a nonsingular square CSC sparse matrix zero free.  
 		
@@ -977,6 +979,8 @@ package scipy.sparse.csgraph;
 	**/
 	static public function reconstruct_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		reverse_cuthill_mckee(graph, symmetric_mode=False)
+		
 		Returns the permutation array that orders a sparse CSR or CSC matrix
 		in Reverse-Cuthill McKee ordering.  
 		
@@ -1097,6 +1101,37 @@ package scipy.sparse.csgraph;
 	**/
 	static public function shortest_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		structural_rank(graph)
+		
+		Compute the structural rank of a graph (matrix) with a given 
+		sparsity pattern.
+		
+		The structural rank of a matrix is the number of entries in the maximum 
+		transversal of the corresponding bipartite graph, and is an upper bound 
+		on the numerical rank of the matrix. A graph has full structural rank 
+		if it is possible to permute the elements to make the diagonal zero-free.
+		
+		Parameters
+		----------
+		graph : sparse matrix
+		    Input sparse matrix.
+		
+		Returns
+		-------
+		rank : int
+		    The structural rank of the sparse graph.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] I. S. Duff, "Computing the Structural Index", SIAM J. Alg. Disc. 
+		        Meth., Vol. 7, 594 (1986).
+		
+		.. [2] http://www.cise.ufl.edu/research/sparse/matrices/legend.html
+	**/
+	static public function structural_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Run tests for module using nose.
 		
 		Parameters
@@ -1121,12 +1156,14 @@ package scipy.sparse.csgraph;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

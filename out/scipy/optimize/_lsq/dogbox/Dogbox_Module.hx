@@ -269,8 +269,9 @@ package scipy.optimize._lsq.dogbox;
 		    of `b`.
 		rcond : float, optional
 		    Cut-off ratio for small singular values of `a`.
-		    Singular values are set to zero if they are smaller than `rcond`
-		    times the largest singular value of `a`.
+		    For the purposes of rank determination, singular values are treated
+		    as zero if they are smaller than `rcond` times the largest singular
+		    value of `a`.
 		
 		Returns
 		-------

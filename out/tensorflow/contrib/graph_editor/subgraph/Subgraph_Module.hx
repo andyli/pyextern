@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.graph_editor.subgraph;
 @:pythonImport("tensorflow.contrib.graph_editor.subgraph") extern class Subgraph_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -39,6 +40,14 @@ package tensorflow.contrib.graph_editor.subgraph;
 		    the mapping has some repetition.
 	**/
 	static public function _check_within_range(mapping:Dynamic, n:Dynamic, repetition:Dynamic):Dynamic;
+	/**
+		Returns index as is or return index of tensor in `ts`.
+	**/
+	static public function _finalize_index(index_or_t:Dynamic, ts:Dynamic):Dynamic;
+	/**
+		Returns index in `indices` as is or replace with tensor's index.
+	**/
+	static public function _finalize_indices(list_of_index_or_t:Dynamic, ts:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -50,16 +59,16 @@ package tensorflow.contrib.graph_editor.subgraph;
 		
 		Args:
 		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
-		    tf.Operation 3) (array of) tf.Tensor. Those objects will be converted
+		    `tf.Operation` 3) (array of) `tf.Tensor`. Those objects will be converted
 		    into a list of operations and a list of candidate for passthrough tensors.
 		  **kwargs: keyword graph is used 1) to check that the ops and ts are from
 		    the correct graph 2) for regular expression query
 		Returns:
 		  A subgraph view.
 		Raises:
-		  TypeError: if the optional keyword argument graph is not a tf.Graph
-		    or if an argument in args is not an (array of) tf.Tensor
-		    or an (array of) tf.Operation or a string or a regular expression.
+		  TypeError: if the optional keyword argument graph is not a `tf.Graph`
+		    or if an argument in args is not an (array of) `tf.Tensor`
+		    or an (array of) `tf.Operation` or a string or a regular expression.
 		  ValueError: if one of the keyword arguments is unexpected.
 	**/
 	static public function make_view(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -68,7 +77,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 		
 		Args:
 		  scope: the name of the scope.
-		  graph: the tf.Graph.
+		  graph: the `tf.Graph`.
 		Returns:
 		  A subgraph view representing the given scope.
 	**/

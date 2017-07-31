@@ -11,15 +11,6 @@ package matplotlib.backends.backend_mixed;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
-	/**
-		frombuffer(buffer, width, height, isoutput)
-		
-		Load the image from a character buffer
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling.
-	**/
-	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		This need to be called when figure dpi changes during the drawing

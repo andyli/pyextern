@@ -2,7 +2,12 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "FixedFormatter") extern class FixedFormatter {
 	/**
-		Return the format for tick val *x* at position *pos*
+		Returns the label that matches the position regardless of the
+		value.
+		
+		For positions ``pos < len(seq)``, return `seq[i]` regardless of
+		`x`. Otherwise return empty string. `seq` is the sequence of
+		strings that this object was initialized with.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -42,16 +47,21 @@ package matplotlib.ticker;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*seq* is a sequence of strings.  For positions ``i < len(seq)`` return
-		*seq[i]* regardless of *x*.  Otherwise return ''
+		Set the sequence of strings that will be used for labels.
 	**/
 	@:native("__init__")
 	public function ___init__(seq:Dynamic):Dynamic;
 	/**
-		*seq* is a sequence of strings.  For positions ``i < len(seq)`` return
-		*seq[i]* regardless of *x*.  Otherwise return ''
+		Set the sequence of strings that will be used for labels.
 	**/
 	public function new(seq:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,9 +133,15 @@ package matplotlib.ticker;
 		explicit :meth:`format_data_short` method
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
+	/**
+		Returns the full string representation of the value with the
+		position unspecified.
+	**/
 	public function format_data(value:Dynamic):Dynamic;
 	/**
-		return a short string version
+		Return a short string version of the tick value.
+		
+		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	public function get_offset():Dynamic;

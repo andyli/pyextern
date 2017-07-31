@@ -1,8 +1,10 @@
 /* This file is generated, do not edit! */
 package scipy.spatial.distance;
 @:pythonImport("scipy.spatial.distance") extern class Distance_Module {
+	static public var _METRICS_NAMES : Dynamic;
 	static public var _SIMPLE_CDIST : Dynamic;
 	static public var _SIMPLE_PDIST : Dynamic;
+	static public var _TEST_METRICS : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -19,10 +21,15 @@ package scipy.spatial.distance;
 	**/
 	static public function _copy_array_if_base_present(a:Dynamic):Dynamic;
 	static public function _cosine_cdist(XA:Dynamic, XB:Dynamic, dm:Dynamic):Dynamic;
+	static public function _filter_deprecated_kwargs(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _nbool_correspond_all(u:Dynamic, v:Dynamic):Dynamic;
 	static public function _nbool_correspond_ft_tf(u:Dynamic, v:Dynamic):Dynamic;
 	static public function _row_norms(X:Dynamic):Dynamic;
+	static public function _validate_mahalanobis_args(X:Dynamic, m:Dynamic, n:Dynamic, VI:Dynamic):Dynamic;
+	static public function _validate_minkowski_args(p:Dynamic):Dynamic;
+	static public function _validate_seuclidean_args(X:Dynamic, n:Dynamic, V:Dynamic):Dynamic;
 	static public function _validate_vector(u:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function _validate_wminkowski_args(p:Dynamic, w:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Computes the Bray-Curtis distance between two 1-D arrays.
@@ -81,6 +88,54 @@ package scipy.spatial.distance;
 	/**
 		Computes distance between each pair of the two collections of inputs.
 		
+		See Notes for common calling conventions.
+		
+		Parameters
+		----------
+		XA : ndarray
+		    An :math:`m_A` by :math:`n` array of :math:`m_A`
+		    original observations in an :math:`n`-dimensional space.
+		    Inputs are converted to float type.
+		XB : ndarray
+		    An :math:`m_B` by :math:`n` array of :math:`m_B`
+		    original observations in an :math:`n`-dimensional space.
+		    Inputs are converted to float type.
+		metric : str or callable, optional
+		    The distance metric to use.  If a string, the distance function can be
+		    'braycurtis', 'canberra', 'chebyshev', 'cityblock', 'correlation',
+		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'kulsinski',
+		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
+		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
+		    'wminkowski', 'yule'.
+		p : double, optional
+		    The p-norm to apply
+		    Only for Minkowski, weighted and unweighted. Default: 2.
+		w : ndarray, optional
+		    The weight vector.
+		    Only for weighted Minkowski. Mandatory
+		V : ndarray, optional
+		    The variance vector
+		    Only for standardized Euclidean. Default: var(vstack([XA, XB]), axis=0, ddof=1)
+		VI : ndarray, optional
+		    The inverse of the covariance matrix
+		    Only for Mahalanobis. Default: inv(cov(vstack([XA, XB]).T)).T
+		
+		Returns
+		-------
+		Y : ndarray
+		    A :math:`m_A` by :math:`m_B` distance matrix is returned.
+		    For each :math:`i` and :math:`j`, the metric
+		    ``dist(u=XA[i], v=XB[j])`` is computed and stored in the
+		    :math:`ij` th entry.
+		
+		Raises
+		------
+		ValueError
+		    An exception is thrown if `XA` and `XB` do not have
+		    the same number of columns.
+		
+		Notes
+		-----
 		The following are common calling conventions:
 		
 		1. ``Y = cdist(XA, XB, 'euclidean')``
@@ -186,8 +241,8 @@ package scipy.spatial.distance;
 		
 		   .. math::
 		
-		        d(u,v) = \frac{\sum_i (u_i-v_i)}
-		                      {\sum_i (u_i+v_i)}
+		        d(u,v) = \frac{\sum_i (|u_i-v_i|)}
+		                      {\sum_i (|u_i+v_i|)}
 		
 		13. ``Y = cdist(XA, XB, 'mahalanobis', VI=None)``
 		
@@ -263,46 +318,6 @@ package scipy.spatial.distance;
 		   efficient, and we call it using the following syntax::
 		
 		     dm = cdist(XA, XB, 'sokalsneath')
-		
-		Parameters
-		----------
-		XA : ndarray
-		    An :math:`m_A` by :math:`n` array of :math:`m_A`
-		    original observations in an :math:`n`-dimensional space.
-		    Inputs are converted to float type.
-		XB : ndarray
-		    An :math:`m_B` by :math:`n` array of :math:`m_B`
-		    original observations in an :math:`n`-dimensional space.
-		    Inputs are converted to float type.
-		metric : str or callable, optional
-		    The distance metric to use.  If a string, the distance function can be
-		    'braycurtis', 'canberra', 'chebyshev', 'cityblock', 'correlation',
-		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'kulsinski',
-		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
-		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
-		    'wminkowski', 'yule'.
-		w : ndarray, optional
-		    The weight vector (for weighted Minkowski).
-		p : scalar, optional
-		    The p-norm to apply (for Minkowski, weighted and unweighted)
-		V : ndarray, optional
-		    The variance vector (for standardized Euclidean).
-		VI : ndarray, optional
-		    The inverse of the covariance matrix (for Mahalanobis).
-		
-		Returns
-		-------
-		Y : ndarray
-		    A :math:`m_A` by :math:`m_B` distance matrix is returned.
-		    For each :math:`i` and :math:`j`, the metric
-		    ``dist(u=XA[i], v=XB[j])`` is computed and stored in the
-		    :math:`ij` th entry.
-		
-		Raises
-		------
-		ValueError
-		    An exception is thrown if `XA` and `XB` do not have
-		    the same number of columns.
 		
 		Examples
 		--------
@@ -390,6 +405,7 @@ package scipy.spatial.distance;
 		    The City Block (Manhattan) distance between vectors `u` and `v`.
 	**/
 	static public function cityblock(u:Dynamic, v:Dynamic):Dynamic;
+	static public function converter(X:Dynamic):Dynamic;
 	/**
 		Computes the correlation distance between two 1-D arrays.
 		
@@ -470,6 +486,90 @@ package scipy.spatial.distance;
 		    The Dice dissimilarity between 1-D arrays `u` and `v`.
 	**/
 	static public function dice(u:Dynamic, v:Dynamic):Dynamic;
+	/**
+		Computes the directed Hausdorff distance between two N-D arrays.
+		
+		Distances between pairs are calculated using a Euclidean metric.
+		
+		Parameters
+		----------
+		u : (M,N) ndarray
+		    Input array.
+		v : (O,N) ndarray
+		    Input array.
+		seed : int or None
+		    Local `np.random.RandomState` seed. Default is 0, a random shuffling of
+		    u and v that guarantees reproducibility.
+		
+		Returns
+		-------
+		d : double
+		    The directed Hausdorff distance between arrays `u` and `v`,
+		
+		index_1 : int
+		    index of point contributing to Hausdorff pair in `u`
+		
+		index_2 : int
+		    index of point contributing to Hausdorff pair in `v`
+		
+		Notes
+		-----
+		Uses the early break technique and the random sampling approach
+		described by [1]_. Although worst-case performance is ``O(m * o)``
+		(as with the brute force algorithm), this is unlikely in practice
+		as the input data would have to require the algorithm to explore
+		every single point interaction, and after the algorithm shuffles
+		the input points at that. The best case performance is O(m), which
+		is satisfied by selecting an inner loop distance that is less than
+		cmax and leads to an early break as often as possible. The authors
+		have formally shown that the average runtime is closer to O(m).
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] A. A. Taha and A. Hanbury, "An efficient algorithm for
+		       calculating the exact Hausdorff distance." IEEE Transactions On
+		       Pattern Analysis And Machine Intelligence, vol. 37 pp. 2153-63,
+		       2015.
+		
+		See Also
+		--------
+		scipy.spatial.procrustes : Another similarity test for two data sets
+		
+		Examples
+		--------
+		Find the directed Hausdorff distance between two 2-D arrays of
+		coordinates:
+		
+		>>> from scipy.spatial.distance import directed_hausdorff
+		>>> u = np.array([(1.0, 0.0),
+		...               (0.0, 1.0),
+		...               (-1.0, 0.0),
+		...               (0.0, -1.0)])
+		>>> v = np.array([(2.0, 0.0),
+		...               (0.0, 2.0),
+		...               (-2.0, 0.0),
+		...               (0.0, -4.0)])
+		
+		>>> directed_hausdorff(u, v)[0]
+		2.23606797749979
+		>>> directed_hausdorff(v, u)[0]
+		3.0
+		
+		Find the general (symmetric) Hausdorff distance between two 2-D
+		arrays of coordinates:
+		
+		>>> max(directed_hausdorff(u, v)[0], directed_hausdorff(v, u)[0])
+		3.0
+		
+		Find the indices of the points that generate the Hausdorff distance
+		(the Hausdorff pair):
+		
+		>>> directed_hausdorff(v, u)[1:]
+		(3, 3)
+	**/
+	static public function directed_hausdorff(u:Dynamic, v:Dynamic, ?seed:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Computes the Euclidean distance between two 1-D arrays.
@@ -493,6 +593,7 @@ package scipy.spatial.distance;
 		    The Euclidean distance between vectors `u` and `v`.
 	**/
 	static public function euclidean(u:Dynamic, v:Dynamic):Dynamic;
+	static public var fn_name : Dynamic;
 	/**
 		Computes the Hamming distance between two 1-D arrays.
 		
@@ -524,8 +625,8 @@ package scipy.spatial.distance;
 	/**
 		Returns True if input array is a valid distance matrix.
 		
-		Distance matrices must be 2-dimensional numpy arrays containing
-		doubles. They must have a zero-diagonal, and they must be symmetric.
+		Distance matrices must be 2-dimensional numpy arrays.
+		They must have a zero-diagonal, and they must be symmetric.
 		
 		Parameters
 		----------
@@ -560,9 +661,9 @@ package scipy.spatial.distance;
 	/**
 		Returns True if the input array is a valid condensed distance matrix.
 		
-		Condensed distance matrices must be 1-dimensional
-		numpy arrays containing doubles. Their length must be a binomial
-		coefficient :math:`{n \choose 2}` for some positive integer n.
+		Condensed distance matrices must be 1-dimensional numpy arrays.
+		Their length must be a binomial coefficient :math:`{n \choose 2}`
+		for some positive integer n.
 		
 		Parameters
 		----------
@@ -846,6 +947,52 @@ package scipy.spatial.distance;
 	/**
 		Pairwise distances between observations in n-dimensional space.
 		
+		See Notes for common calling conventions.
+		
+		Parameters
+		----------
+		X : ndarray
+		    An m by n array of m original observations in an
+		    n-dimensional space.
+		metric : str or function, optional
+		    The distance metric to use. The distance function can
+		    be 'braycurtis', 'canberra', 'chebyshev', 'cityblock',
+		    'correlation', 'cosine', 'dice', 'euclidean', 'hamming',
+		    'jaccard', 'kulsinski', 'mahalanobis', 'matching',
+		    'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',
+		    'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule'.
+		p : double, optional
+		    The p-norm to apply
+		    Only for Minkowski, weighted and unweighted. Default: 2.
+		w : ndarray, optional
+		    The weight vector.
+		    Only for weighted Minkowski. Mandatory
+		V : ndarray, optional
+		    The variance vector
+		    Only for standardized Euclidean. Default: var(X, axis=0, ddof=1)
+		VI : ndarray, optional
+		    The inverse of the covariance matrix
+		    Only for Mahalanobis. Default: inv(cov(X.T)).T
+		
+		Returns
+		-------
+		Y : ndarray
+		    Returns a condensed distance matrix Y.  For
+		    each :math:`i` and :math:`j` (where :math:`i<j<m`),where m is the number
+		    of original observations. The metric ``dist(u=X[i], v=X[j])``
+		    is computed and stored in entry ``ij``.
+		
+		See Also
+		--------
+		squareform : converts between condensed distance matrices and
+		             square distance matrices.
+		
+		Notes
+		-----
+		See ``squareform`` for information on how to calculate the index of
+		this entry or to convert the condensed distance matrix to a
+		redundant square matrix.
+		
 		The following are common calling conventions.
 		
 		1. ``Y = pdist(X, 'euclidean')``
@@ -951,14 +1098,14 @@ package scipy.spatial.distance;
 		
 		   .. math::
 		
-		        d(u,v) = \frac{\sum_i {u_i-v_i}}
-		                      {\sum_i {u_i+v_i}}
+		        d(u,v) = \frac{\sum_i {|u_i-v_i|}}
+		                       {\sum_i {|u_i+v_i|}}
 		
 		13. ``Y = pdist(X, 'mahalanobis', VI=None)``
 		
 		   Computes the Mahalanobis distance between the points. The
 		   Mahalanobis distance between two points ``u`` and ``v`` is
-		   :math:`(u-v)(1/V)(u-v)^T` where :math:`(1/V)` (the ``VI``
+		   :math:`\sqrt{(u-v)(1/V)(u-v)^T}` where :math:`(1/V)` (the ``VI``
 		   variable) is the inverse covariance. If ``VI`` is not None,
 		   ``VI`` will be used as the inverse covariance matrix.
 		
@@ -1027,45 +1174,6 @@ package scipy.spatial.distance;
 		   efficient, and we call it using the following syntax.::
 		
 		     dm = pdist(X, 'sokalsneath')
-		
-		Parameters
-		----------
-		X : ndarray
-		    An m by n array of m original observations in an
-		    n-dimensional space.
-		metric : str or function, optional
-		    The distance metric to use. The distance function can
-		    be 'braycurtis', 'canberra', 'chebyshev', 'cityblock',
-		    'correlation', 'cosine', 'dice', 'euclidean', 'hamming',
-		    'jaccard', 'kulsinski', 'mahalanobis', 'matching',
-		    'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',
-		    'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule'.
-		w : ndarray, optional
-		    The weight vector (for weighted Minkowski).
-		p : double, optional
-		    The p-norm to apply (for Minkowski, weighted and unweighted)
-		V : ndarray, optional
-		    The variance vector (for standardized Euclidean).
-		VI : ndarray, optional
-		    The inverse of the covariance matrix (for Mahalanobis).
-		
-		Returns
-		-------
-		Y : ndarray
-		    Returns a condensed distance matrix Y.  For
-		    each :math:`i` and :math:`j` (where :math:`i<j<n`), the
-		    metric ``dist(u=X[i], v=X[j])`` is computed and stored in entry ``ij``.
-		
-		See Also
-		--------
-		squareform : converts between condensed distance matrices and
-		             square distance matrices.
-		
-		Notes
-		-----
-		See ``squareform`` for information on how to calculate the index of
-		this entry or to convert the condensed distance matrix to a
-		redundant square matrix.
 	**/
 	static public function pdist(X:Dynamic, ?metric:Dynamic, ?p:Dynamic, ?w:Dynamic, ?V:Dynamic, ?VI:Dynamic):Dynamic;
 	static public function pdist_fn(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1235,11 +1343,11 @@ package scipy.spatial.distance;
 		X : ndarray
 		    Either a condensed or redundant distance matrix.
 		force : str, optional
-		    As with MATLAB(TM), if force is equal to 'tovector' or 'tomatrix',
-		    the input will be treated as a distance matrix or distance vector
-		    respectively.
+		    As with MATLAB(TM), if force is equal to ``'tovector'`` or
+		    ``'tomatrix'``, the input will be treated as a distance matrix or
+		    distance vector respectively.
 		checks : bool, optional
-		    If `checks` is set to False, no checks will be made for matrix
+		    If set to False, no checks will be made for matrix
 		    symmetry nor zero diagonals. This is useful if it is known that
 		    ``X - X.T1`` is small and ``diag(X)`` is close to zero.
 		    These values are ignored any way so they do not disrupt the
@@ -1254,27 +1362,30 @@ package scipy.spatial.distance;
 		
 		Notes
 		-----
-		
 		1. v = squareform(X)
 		
 		   Given a square d-by-d symmetric distance matrix X,
-		   ``v=squareform(X)`` returns a ``d * (d-1) / 2`` (or
-		   `${n \choose 2}$`) sized vector v.
+		   ``v = squareform(X)`` returns a ``d * (d-1) / 2`` (or
+		   :math:`{n \choose 2}`) sized vector v.
 		
-		  v[{n \choose 2}-{n-i \choose 2} + (j-i-1)] is the distance
+		  :math:`v[{n \choose 2}-{n-i \choose 2} + (j-i-1)]` is the distance
 		  between points i and j. If X is non-square or asymmetric, an error
 		  is returned.
 		
 		2. X = squareform(v)
 		
-		  Given a d*(d-1)/2 sized v for some integer d>=2 encoding distances
-		  as described, X=squareform(v) returns a d by d distance matrix X. The
-		  X[i, j] and X[j, i] values are set to
-		  v[{n \choose 2}-{n-i \choose 2} + (j-i-1)] and all
+		  Given a ``d*(d-1)/2`` sized v for some integer ``d >= 2`` encoding
+		  distances as described, ``X = squareform(v)`` returns a d by d distance
+		  matrix X.  The ``X[i, j]`` and ``X[j, i]`` values are set to
+		  :math:`v[{n \choose 2}-{n-i \choose 2} + (j-i-1)]` and all
 		  diagonal elements are zero.
+		
+		In Scipy 0.19.0, ``squareform`` stopped casting all input types to
+		float64, and started returning arrays of the same dtype as the input.
 	**/
 	static public function squareform(X:Dynamic, ?force:Dynamic, ?checks:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
+	static public var typ : Dynamic;
 	/**
 		Computes the weighted Minkowski distance between two 1-D arrays.
 		

@@ -47,6 +47,13 @@ package scipy.io.harwell_boeing.hb;
 	**/
 	public function new(title:Dynamic, key:Dynamic, total_nlines:Dynamic, pointer_nlines:Dynamic, indices_nlines:Dynamic, values_nlines:Dynamic, mxtype:Dynamic, nrows:Dynamic, ncols:Dynamic, nnon_zeros:Dynamic, pointer_format_str:Dynamic, indices_format_str:Dynamic, values_format_str:Dynamic, ?right_hand_sides_nlines:Dynamic, ?nelementals:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

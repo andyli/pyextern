@@ -9,6 +9,7 @@ package matplotlib.patches;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _patch_alias_map : Dynamic;
 	/**
 		find a point along a line connecting (x0, y0) -- (x1, y1) whose
 		distance from (x0, y0) is d.

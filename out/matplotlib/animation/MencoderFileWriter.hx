@@ -38,54 +38,27 @@ package matplotlib.animation;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct a new MovieWriter object.
+		.. deprecated:: 2.0
+		    Support for mencoder is only partially functional, and will be removed entirely in 2.2. Please use ffmpeg instead.
 		
-		fps: int
-		    Framerate for movie.
-		codec: string or None, optional
-		    The codec to use. If None (the default) the setting in the
-		    rcParam `animation.codec` is used.
-		bitrate: int or None, optional
-		    The bitrate for the saved movie file, which is one way to control
-		    the output file size and quality. The default value is None,
-		    which uses the value stored in the rcParam `animation.bitrate`.
-		    A value of -1 implies that the bitrate should be determined
-		    automatically by the underlying utility.
-		extra_args: list of strings or None
-		    A list of extra string arguments to be passed to the underlying
-		    movie utility. The default is None, which passes the additional
-		    arguments in the 'animation.extra_args' rcParam.
-		metadata: dict of string:string or None
-		    A dictionary of keys and values for metadata to include in the
-		    output file. Some keys that may be of use include:
-		    title, artist, genre, subject, copyright, srcform, comment.
+		\ 
 	**/
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Construct a new MovieWriter object.
+		.. deprecated:: 2.0
+		    Support for mencoder is only partially functional, and will be removed entirely in 2.2. Please use ffmpeg instead.
 		
-		fps: int
-		    Framerate for movie.
-		codec: string or None, optional
-		    The codec to use. If None (the default) the setting in the
-		    rcParam `animation.codec` is used.
-		bitrate: int or None, optional
-		    The bitrate for the saved movie file, which is one way to control
-		    the output file size and quality. The default value is None,
-		    which uses the value stored in the rcParam `animation.bitrate`.
-		    A value of -1 implies that the bitrate should be determined
-		    automatically by the underlying utility.
-		extra_args: list of strings or None
-		    A list of extra string arguments to be passed to the underlying
-		    movie utility. The default is None, which passes the additional
-		    arguments in the 'animation.extra_args' rcParam.
-		metadata: dict of string:string or None
-		    A dictionary of keys and values for metadata to include in the
-		    output file. Some keys that may be of use include:
-		    title, artist, genre, subject, copyright, srcform, comment.
+		\ 
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,6 +114,7 @@ package matplotlib.animation;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _adjust_frame_size():Dynamic;
 	/**
 		Assemble list of utility-specific command-line arguments.
 	**/
@@ -150,6 +124,7 @@ package matplotlib.animation;
 		Returns the place to which frames should be written.
 	**/
 	public function _frame_sink():Dynamic;
+	static public function _handle_subprocess(process:Dynamic):Dynamic;
 	public function _remap_metadata():Dynamic;
 	public function _run():Dynamic;
 	static public var allowed_metadata : Dynamic;
@@ -178,7 +153,6 @@ package matplotlib.animation;
 		A tuple (width,height) in pixels of a movie frame.
 	**/
 	public var frame_size : Dynamic;
-	static public var frame_size_can_vary : Dynamic;
 	/**
 		Grab the image information from the figure and save as a movie frame.
 		All keyword arguments in savefig_kwargs are passed on to the 'savefig'
@@ -194,25 +168,28 @@ package matplotlib.animation;
 	/**
 		Context manager to facilitate writing the movie file.
 		
-		``*args`` are any parameters that should be passed to `setup`.
+		``*args, **kw`` are any parameters that should be passed to `setup`.
 	**/
-	public function saving(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function saving(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Perform setup for writing the movie file.
 		
-		fig: `matplotlib.Figure` instance
-		    The figure object that contains the information for frames
-		outfile: string
-		    The filename of the resulting movie file
-		dpi: int
-		    The DPI (or resolution) for the file.  This controls the size
-		    in pixels of the resulting movie file.
-		frame_prefix: string, optional
-		    The filename prefix to use for the temporary files. Defaults
-		    to '_tmp'
-		clear_temp: bool
-		    Specifies whether the temporary files should be deleted after
-		    the movie is written. (Useful for debugging.) Defaults to True.
+		Parameters
+		----------
+		fig : matplotlib.figure.Figure
+		    The figure to grab the rendered frames from.
+		outfile : str
+		    The filename of the resulting movie file.
+		dpi : number
+		    The dpi of the output file. This, with the figure size,
+		    controls the size in pixels of the resulting movie file.
+		frame_prefix : str, optional
+		    The filename prefix to use for temporary files.  Defaults to
+		    '_tmp'.
+		clear_temp : bool, optional
+		    If the temporary files should be deleted after stitching
+		    the final result.  Setting this to `False` can be useful for
+		    debugging.  Defaults to `True`.
 	**/
 	public function setup(fig:Dynamic, outfile:Dynamic, dpi:Dynamic, ?frame_prefix:Dynamic, ?clear_temp:Dynamic):Dynamic;
 	static public var supported_formats : Dynamic;

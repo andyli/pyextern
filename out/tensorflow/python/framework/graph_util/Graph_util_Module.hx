@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.graph_util;
 @:pythonImport("tensorflow.python.framework.graph_util") extern class Graph_util_Module {
-	static public var _VARIABLE_OPS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,12 +9,7 @@ package tensorflow.python.framework.graph_util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Returns true if 'op' refers to a Variable node.
-	**/
-	static public function _is_variable_op(op:Dynamic):Dynamic;
-	static public function _node_name(n:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Replaces all the variables in a graph with constants of the same values.
 		
@@ -30,12 +24,13 @@ package tensorflow.python.framework.graph_util;
 		  output_node_names: List of name strings for the result nodes of the graph.
 		  variable_names_whitelist: The set of variable names to convert (by default,
 		                            all variables are converted).
+		  variable_names_blacklist: The set of variable names to omit converting
+		                            to constants.
 		
 		Returns:
 		  GraphDef containing a simplified version of the original.
 	**/
-	static public function convert_variables_to_constants(sess:Dynamic, input_graph_def:Dynamic, output_node_names:Dynamic, ?variable_names_whitelist:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	static public function convert_variables_to_constants(sess:Dynamic, input_graph_def:Dynamic, output_node_names:Dynamic, ?variable_names_whitelist:Dynamic, ?variable_names_blacklist:Dynamic):Dynamic;
 	/**
 		Extract the subgraph that can reach any of the nodes in 'dest_nodes'.
 		
@@ -62,19 +57,23 @@ package tensorflow.python.framework.graph_util;
 		  True if the given node must run on CPU, otherwise False.
 	**/
 	static public function must_run_on_cpu(node:Dynamic, ?pin_variables_on_cpu:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Creates a new device string based on `device_string' but using /CPU:0.
+		Prunes out nodes that aren't needed for inference.
 		
-		If the device is already on /CPU:0, this is a no-op.
+		There are nodes like Identity and CheckNumerics that are only useful
+		during training, and can be removed in graphs that will be used for
+		nothing but inference. Here we identify and remove them, returning an
+		equivalent graph. To be specific, CheckNumerics nodes are always removed, and
+		Identity nodes that aren't involved in control edges are spliced out so that
+		their input and outputs are directly connected.
 		
 		Args:
-		  device_string: A device string.
+		  input_graph: Model to analyze and prune.
 		
 		Returns:
-		  A device string.
+		  A list of nodes with the unnecessary ones removed.
 	**/
-	static public function set_cpu0(device_string:Dynamic):Dynamic;
+	static public function remove_training_nodes(input_graph:Dynamic):Dynamic;
 	/**
 		Convenience function to get a shape from a NodeDef's input string.
 	**/

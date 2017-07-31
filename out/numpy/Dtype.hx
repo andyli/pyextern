@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package numpy;
 @:pythonImport("numpy", "dtype") extern class Dtype {
+	/**
+		self != 0
+	**/
+	public function __bool__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -49,6 +53,13 @@ package numpy;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -165,10 +176,13 @@ package numpy;
 	**/
 	public var char : Dynamic;
 	/**
-		Array-interface compliant full description of the data-type.
+		PEP3118 interface description of the data-type.
 		
 		The format is that required by the 'descr' key in the
-		`__array_interface__` attribute.
+		PEP3118 `__array_interface__` attribute.
+		
+		Warning: This attribute exists specifically for PEP3118 compliance, and
+		is not a datatype description compatible with `np.dtype`.
 	**/
 	public var descr : Dynamic;
 	/**
@@ -235,7 +249,7 @@ package numpy;
 		2  if the dtype is for a user-defined numpy type
 		   A user-defined type uses the numpy C-API machinery to extend
 		   numpy to handle a new array type. See
-		   :ref:`user.user-defined-data-types` in the Numpy manual.
+		   :ref:`user.user-defined-data-types` in the NumPy manual.
 		=  ========================================================================
 		
 		Examples
@@ -301,6 +315,13 @@ package numpy;
 		('name', 'grades')
 	**/
 	public var names : Dynamic;
+	/**
+		Number of dimensions of the sub-array if this data type describes a
+		sub-array, and ``0`` otherwise.
+		
+		.. versionadded:: 1.13.0
+	**/
+	public var ndim : Dynamic;
 	/**
 		newbyteorder(new_order='S')
 		

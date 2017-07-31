@@ -54,13 +54,16 @@ package tensorflow.python.training.learning_rate_decay;
 		    Must be positive.  See the decay computation above.
 		  decay_rate: A scalar `float32` or `float64` `Tensor` or a
 		    Python number.  The decay rate.
-		  staircase: Boolean.  It `True` decay the learning rate at discrete intervals
-		  name: String.  Optional name of the operation.  Defaults to 
-		    'ExponentialDecay'
+		  staircase: Boolean.  If `True` decay the learning rate at discrete intervals
+		  name: String.  Optional name of the operation.  Defaults to
+		    'ExponentialDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function exponential_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -99,15 +102,19 @@ package tensorflow.python.training.learning_rate_decay;
 		    Python number.  The initial learning rate.
 		  global_step: A Python number.
 		    Global step to use for the decay computation.  Must not be negative.
+		  decay_steps: How often to apply decay.
 		  decay_rate: A Python number.  The decay rate.
+		  staircase: Whether to apply decay in a discrete staircase, as opposed to
+		    continuous, fashion.
 		  name: String.  Optional name of the operation.  Defaults to
-		    'InverseTimeDecay'
+		    'InverseTimeDecay'.
 		
-		with ops.op_scope([learning_rate, global_step, decay_rate],
-		                  name, "InverseTimeDecay") as name:
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function inverse_time_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -125,7 +132,7 @@ package tensorflow.python.training.learning_rate_decay;
 		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)
 		```
 		
-		Example: decay exponetially with a base of 0.96:
+		Example: decay exponentially with a base of 0.96:
 		
 		```python
 		...
@@ -146,13 +153,19 @@ package tensorflow.python.training.learning_rate_decay;
 		    Python number.  The initial learning rate.
 		  global_step: A Python number.
 		    Global step to use for the decay computation.  Must not be negative.
+		  decay_steps: How often to apply decay.
 		  decay_rate: A Python number.  The decay rate.
+		  staircase: Whether to apply decay in a discrete staircase, as opposed to
+		    continuous, fashion.
 		  name: String.  Optional name of the operation.  Defaults to
-		    'ExponentialTimeDecay'
+		    'ExponentialTimeDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function natural_exp_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -185,6 +198,10 @@ package tensorflow.python.training.learning_rate_decay;
 		  A 0-D Tensor. Its value is `values[0]` when `x <= boundaries[0]`,
 		  `values[1]` when `x > boundaries[0]` and `x <= boundaries[1]`, ...,
 		  and values[-1] when `x > boundaries[-1]`.
+		
+		Raises:
+		  ValueError: if types of `x` and `buondaries` do not match, or types of all
+		      `values` do not match.
 	**/
 	static public function piecewise_constant(x:Dynamic, boundaries:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -247,13 +264,17 @@ package tensorflow.python.training.learning_rate_decay;
 		  end_learning_rate: A scalar `float32` or `float64` `Tensor` or a
 		    Python number.  The minimal end learning rate.
 		  power: A scalar `float32` or `float64` `Tensor` or a
-		    Python number.  The power of the polynomial. Defaults to sqrt, i.e. 0.5.
+		    Python number.  The power of the polynomial. Defaults to linear, 1.0.
 		  cycle: A boolean, whether or not it should cycle beyond decay_steps.
-		  name: String.  Optional name of the operation. Defaults to 'PolynomialDecay'
+		  name: String.  Optional name of the operation. Defaults to
+		    'PolynomialDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function polynomial_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?end_learning_rate:Dynamic, ?power:Dynamic, ?cycle:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

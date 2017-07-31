@@ -10,4 +10,5 @@ package docutils.parsers.rst.directives.tables;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function align(argument:Dynamic):Dynamic;
 }

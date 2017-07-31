@@ -12,9 +12,6 @@ package tensorflow.python.ops.gen_parsing_ops;
 	static public var __parse_example_outputs : Dynamic;
 	static public var __parse_single_sequence_example_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _decode_csv_outputs : Dynamic;
-	static public var _decode_json_example_outputs : Dynamic;
-	static public var _decode_raw_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Transforms a vector of brain.Example protos (as strings) into typed tensors.
@@ -29,10 +26,10 @@ package tensorflow.python.ops.gen_parsing_ops;
 		    purposes, and the presence of values here has no effect on the output.
 		    May also be an empty vector if no names are available.
 		    If non-empty, this vector must be the same length as "serialized".
-		  sparse_keys: A list of `Tensor` objects of type `string`.
+		  sparse_keys: A list of `Tensor` objects with type `string`.
 		    A list of Nsparse string Tensors (scalars).
 		    The keys expected in the Examples' features associated with sparse values.
-		  dense_keys: A list of `Tensor` objects of type `string`.
+		  dense_keys: A list of `Tensor` objects with type `string`.
 		    A list of Ndense string Tensors (scalars).
 		    The keys expected in the Examples' features associated with dense values.
 		  dense_defaults: A list of `Tensor` objects with types from: `float32`, `int64`, `string`.
@@ -41,7 +38,11 @@ package tensorflow.python.ops.gen_parsing_ops;
 		    when the example's feature_map lacks dense_key[j].  If an empty Tensor is
 		    provided for dense_defaults[j], then the Feature dense_keys[j] is required.
 		    The input type is inferred from dense_defaults[j], even when it's empty.
-		    If dense_defaults[j] is not empty, its shape must match dense_shapes[j].
+		    If dense_defaults[j] is not empty, and dense_shapes[j] is fully defined,
+		    then the shape of dense_defaults[j] must match that of dense_shapes[j].
+		    If dense_shapes[j] has an undefined major dimension (variable strides dense
+		    feature), dense_defaults[j] must contain a single element:
+		    the padding element.
 		  sparse_types: A list of `tf.DTypes` from: `tf.float32, tf.int64, tf.string`.
 		    A list of Nsparse types; the data types of data in each Feature
 		    given in sparse_keys.
@@ -55,13 +56,21 @@ package tensorflow.python.ops.gen_parsing_ops;
 		    If dense_shapes[j] == (D0, D1, ..., DN) then the shape of output
 		    Tensor dense_values[j] will be (|serialized|, D0, D1, ..., DN):
 		    The dense outputs are just the inputs row-stacked by batch.
+		    This works for dense_shapes[j] = (-1, D1, ..., DN).  In this case
+		    the shape of the output Tensor dense_values[j] will be
+		    (|serialized|, M, D1, .., DN), where M is the maximum number of blocks
+		    of elements of length D1 * .... * DN, across all minibatch entries
+		    in the input.  Any minibatch entry with less than M blocks of elements of
+		    length D1 * ... * DN will be padded with the corresponding default_value
+		    scalar element along the second dimension.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (sparse_indices, sparse_values, sparse_shapes, dense_values).
-		  sparse_indices: A list with the same number of `Tensor` objects as `sparse_keys` of `Tensor` objects of type `int64`.
+		
+		  sparse_indices: A list with the same length as `sparse_keys` of `Tensor` objects with type `int64`.
 		  sparse_values: A list of `Tensor` objects of type `sparse_types`.
-		  sparse_shapes: A list with the same number of `Tensor` objects as `sparse_keys` of `Tensor` objects of type `int64`.
+		  sparse_shapes: A list with the same length as `sparse_keys` of `Tensor` objects with type `int64`.
 		  dense_values: A list of `Tensor` objects. Has the same type as `dense_defaults`.
 	**/
 	static public function _parse_example(serialized:Dynamic, names:Dynamic, sparse_keys:Dynamic, dense_keys:Dynamic, dense_defaults:Dynamic, sparse_types:Dynamic, dense_shapes:Dynamic, ?name:Dynamic):Dynamic;
@@ -76,19 +85,19 @@ package tensorflow.python.ops.gen_parsing_ops;
 		    FeatureList keys which may be missing from the SequenceExample.  If the
 		    associated FeatureList is missing, it is treated as empty.  By default,
 		    any FeatureList not listed in this vector must exist in the SequenceExample.
-		  context_sparse_keys: A list of `Tensor` objects of type `string`.
+		  context_sparse_keys: A list of `Tensor` objects with type `string`.
 		    A list of Ncontext_sparse string Tensors (scalars).
 		    The keys expected in the Examples' features associated with context_sparse
 		    values.
-		  context_dense_keys: A list of `Tensor` objects of type `string`.
+		  context_dense_keys: A list of `Tensor` objects with type `string`.
 		    A list of Ncontext_dense string Tensors (scalars).
 		    The keys expected in the SequenceExamples' context features associated with
 		    dense values.
-		  feature_list_sparse_keys: A list of `Tensor` objects of type `string`.
+		  feature_list_sparse_keys: A list of `Tensor` objects with type `string`.
 		    A list of Nfeature_list_sparse string Tensors
 		    (scalars).  The keys expected in the FeatureLists associated with sparse
 		    values.
-		  feature_list_dense_keys: A list of `Tensor` objects of type `string`.
+		  feature_list_dense_keys: A list of `Tensor` objects with type `string`.
 		    A list of Nfeature_list_dense string Tensors (scalars).
 		    The keys expected in the SequenceExamples' feature_lists associated
 		    with lists of dense values.
@@ -134,17 +143,17 @@ package tensorflow.python.ops.gen_parsing_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (context_sparse_indices, context_sparse_values, context_sparse_shapes, context_dense_values, feature_list_sparse_indices, feature_list_sparse_values, feature_list_sparse_shapes, feature_list_dense_values).
-		  context_sparse_indices: A list with the same number of `Tensor` objects as `context_sparse_keys` of `Tensor` objects of type `int64`.
+		
+		  context_sparse_indices: A list with the same length as `context_sparse_keys` of `Tensor` objects with type `int64`.
 		  context_sparse_values: A list of `Tensor` objects of type `context_sparse_types`.
-		  context_sparse_shapes: A list with the same number of `Tensor` objects as `context_sparse_keys` of `Tensor` objects of type `int64`.
+		  context_sparse_shapes: A list with the same length as `context_sparse_keys` of `Tensor` objects with type `int64`.
 		  context_dense_values: A list of `Tensor` objects. Has the same type as `context_dense_defaults`.
-		  feature_list_sparse_indices: A list with the same number of `Tensor` objects as `feature_list_sparse_keys` of `Tensor` objects of type `int64`.
+		  feature_list_sparse_indices: A list with the same length as `feature_list_sparse_keys` of `Tensor` objects with type `int64`.
 		  feature_list_sparse_values: A list of `Tensor` objects of type `feature_list_sparse_types`.
-		  feature_list_sparse_shapes: A list with the same number of `Tensor` objects as `feature_list_sparse_keys` of `Tensor` objects of type `int64`.
+		  feature_list_sparse_shapes: A list with the same length as `feature_list_sparse_keys` of `Tensor` objects with type `int64`.
 		  feature_list_dense_values: A list of `Tensor` objects of type `feature_list_dense_types`.
 	**/
 	static public function _parse_single_sequence_example(serialized:Dynamic, feature_list_dense_missing_assumed_empty:Dynamic, context_sparse_keys:Dynamic, context_dense_keys:Dynamic, feature_list_sparse_keys:Dynamic, feature_list_dense_keys:Dynamic, context_dense_defaults:Dynamic, debug_name:Dynamic, ?context_sparse_types:Dynamic, ?feature_list_dense_types:Dynamic, ?context_dense_shapes:Dynamic, ?feature_list_sparse_types:Dynamic, ?feature_list_dense_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _string_to_number_outputs : Dynamic;
 	/**
 		Convert CSV records to tensors. Each column maps to one tensor.
 		
@@ -196,7 +205,7 @@ package tensorflow.python.ops.gen_parsing_ops;
 		Args:
 		  bytes: A `Tensor` of type `string`.
 		    All the elements must have the same length.
-		  out_type: A `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
+		  out_type: A `tf.DType` from: `tf.half, tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
 		  little_endian: An optional `bool`. Defaults to `True`.
 		    Whether the input `bytes` are in little-endian order.
 		    Ignored for `out_type` values that are stored in a single byte like
@@ -211,6 +220,21 @@ package tensorflow.python.ops.gen_parsing_ops;
 	**/
 	static public function decode_raw(bytes:Dynamic, out_type:Dynamic, ?little_endian:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Transforms a serialized tensorflow.TensorProto proto into a Tensor.
+		
+		Args:
+		  serialized: A `Tensor` of type `string`.
+		    A scalar string containing a serialized TensorProto proto.
+		  out_type: A `tf.DType`.
+		    The type of the serialized tensor.  The provided type must match the
+		    type of the serialized tensor and no implicit conversion will take place.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `out_type`. A Tensor of type `out_type`.
+	**/
+	static public function parse_tensor(serialized:Dynamic, out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Converts each string in the input Tensor to the specified numeric type.
 		
 		(Note that int32 overflow results in an error while float overflow
@@ -218,8 +242,8 @@ package tensorflow.python.ops.gen_parsing_ops;
 		
 		Args:
 		  string_tensor: A `Tensor` of type `string`.
-		  out_type: An optional `tf.DType` from: `tf.float32, tf.int32`. Defaults to `tf.float32`.
-		    The numeric type to interpret each string in string_tensor as.
+		  out_type: An optional `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.int64`. Defaults to `tf.float32`.
+		    The numeric type to interpret each string in `string_tensor` as.
 		  name: A name for the operation (optional).
 		
 		Returns:

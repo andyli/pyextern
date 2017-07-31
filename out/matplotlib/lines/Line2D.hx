@@ -146,6 +146,13 @@ package matplotlib.lines;
 	**/
 	public function new(xdata:Dynamic, ydata:Dynamic, ?linewidth:Dynamic, ?linestyle:Dynamic, ?color:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?markeredgewidth:Dynamic, ?markeredgecolor:Dynamic, ?markerfacecolor:Dynamic, ?markerfacecoloralt:Dynamic, ?fillstyle:Dynamic, ?antialiased:Dynamic, ?dash_capstyle:Dynamic, ?solid_capstyle:Dynamic, ?dash_joinstyle:Dynamic, ?solid_joinstyle:Dynamic, ?pickradius:Dynamic, ?drawstyle:Dynamic, ?markevery:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -211,7 +218,6 @@ package matplotlib.lines;
 	public function _draw_steps_post(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
 	public function _draw_steps_pre(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
 	public function _get_markerfacecolor(?alt:Dynamic):Dynamic;
-	public function _get_rgb_face(?alt:Dynamic):Dynamic;
 	public function _get_rgba_face(?alt:Dynamic):Dynamic;
 	public function _get_rgba_ln_color(?alt:Dynamic):Dynamic;
 	/**
@@ -224,6 +230,7 @@ package matplotlib.lines;
 	**/
 	public function _is_sorted(x:Dynamic):Dynamic;
 	static public var _lineStyles : Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -599,9 +606,7 @@ package matplotlib.lines;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -642,9 +647,7 @@ package matplotlib.lines;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -870,7 +873,7 @@ package matplotlib.lines;
 		ACCEPTS: :mod:`A valid marker style <matplotlib.markers>`
 		
 		Parameters
-		-----------
+		----------
 		
 		marker: marker style
 		    See `~matplotlib.markers` for full description of possible
@@ -1090,6 +1093,25 @@ package matplotlib.lines;
 		match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
+	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

@@ -47,9 +47,9 @@ package pandas.tseries.offsets;
 		
 		These methods are represented by the constants:
 		
-		EASTER_JULIAN   = 1
-		EASTER_ORTHODOX = 2
-		EASTER_WESTERN  = 3
+		* ``EASTER_JULIAN   = 1``
+		* ``EASTER_ORTHODOX = 2``
+		* ``EASTER_WESTERN  = 3``
 		
 		The default method is method 3.
 		
@@ -103,7 +103,7 @@ package pandas.tseries.offsets;
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, Series
+		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
 		    .. versionadded: 0.18.1
 		
@@ -149,13 +149,27 @@ package pandas.tseries.offsets;
 		    - If False, allow the format to match anywhere in the target string.
 		
 		unit : string, default 'ns'
-		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
-		    (e.g. a unix timestamp), which is an integer/float number.
+		    unit of the arg (D,s,ms,us,ns) denote the unit, which is an
+		    integer or float number. This will be based off the origin.
+		    Example, with unit='ms' and origin='unix' (the default), this
+		    would calculate the number of milliseconds to the unix epoch start.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
 		    datetime strings, and if it can be inferred, switch to a faster
 		    method of parsing them. In some cases this can increase the parsing
 		    speed by ~5-10x.
+		origin : scalar, default is 'unix'
+		    Define the reference date. The numeric values would be parsed as number
+		    of units (defined by `unit`) since this reference date.
+		
+		    - If 'unix' (or POSIX) time; origin is set to 1970-01-01.
+		    - If 'julian', unit must be 'D', and origin is set to beginning of
+		      Julian Calendar. Julian day number 0 is assigned to the day starting
+		      at noon on January 1, 4713 BC.
+		    - If Timestamp convertible, origin is set to Timestamp identified by
+		      origin.
+		
+		    .. versionadded: 0.20.0
 		
 		Returns
 		-------
@@ -185,10 +199,15 @@ package pandas.tseries.offsets;
 		1   2016-03-05
 		dtype: datetime64[ns]
 		
-		If a date that does not meet timestamp limitations, passing errors='coerce'
-		will force to NaT. Furthermore this will force non-dates to NaT as well.
+		If a date does not meet the `timestamp limitations
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html
+		#timeseries-timestamp-limits>`_, passing errors='ignore'
+		will return the original input instead of raising any exception.
 		
-		>>> pd.to_datetime('13000101', format='%Y%m%d')
+		Passing errors='coerce' will force an out-of-bounds date to NaT,
+		in addition to forcing non-dates (or non-parseable dates) to NaT.
+		
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='ignore')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
@@ -211,6 +230,24 @@ package pandas.tseries.offsets;
 		
 		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
 		1 loop, best of 3: 471 ms per loop
+		
+		Using a unix epoch time
+		
+		>>> pd.to_datetime(1490195805, unit='s')
+		Timestamp('2017-03-22 15:16:45')
+		>>> pd.to_datetime(1490195805433502912, unit='ns')
+		Timestamp('2017-03-22 15:16:45.433502912')
+		
+		.. warning:: For float arg, precision rounding might happen. To prevent
+		    unexpected behavior use a fixed-width exact type.
+		
+		Using a non-unix epoch origin
+		
+		>>> pd.to_datetime([1, 2, 3], unit='D',
+		                   origin=pd.Timestamp('1960-01-01'))
+		0    1960-01-02
+		1    1960-01-03
+		2    1960-01-04
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
 }

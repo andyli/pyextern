@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package tensorflow;
-typedef SparseTensorValue = tensorflow.python.framework.ops.SparseTensorValue;
+typedef SparseTensorValue = tensorflow.python.framework.sparse_tensor.SparseTensorValue;

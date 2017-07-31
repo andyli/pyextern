@@ -41,33 +41,52 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		Initializes LinearComposableModel objects.
 		
 		Args:
-		  num_label_columns: The number of label/target columns.
+		  num_label_columns: The number of label columns.
 		  optimizer: An instance of `tf.Optimizer` used to apply gradients to
 		    the model. If `None`, will use a FTRL optimizer.
+		  _joint_weights: If True use a single (possibly partitioned) variable
+		    to store all weights in this model. Faster, but requires that all
+		    feature columns are sparse and have the 'sum' combiner.
 		  gradient_clip_norm: A float > 0. If provided, gradients are clipped
 		    to their global norm with this clipping ratio. See
 		    tf.clip_by_global_norm for more details.
 		  num_ps_replicas: The number of parameter server replicas.
 		  scope: Optional scope for variables created in this model. If scope
 		    is not supplied, it will default to 'linear'.
+		  trainable: True if this model contains variables that can be trained.
+		    False otherwise (in cases where the variables are used strictly for
+		    transforming input labels for training).
 	**/
 	@:native("__init__")
-	public function ___init__(num_label_columns:Dynamic, ?optimizer:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic):Dynamic;
+	public function ___init__(num_label_columns:Dynamic, ?optimizer:Dynamic, ?_joint_weights:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
 		Initializes LinearComposableModel objects.
 		
 		Args:
-		  num_label_columns: The number of label/target columns.
+		  num_label_columns: The number of label columns.
 		  optimizer: An instance of `tf.Optimizer` used to apply gradients to
 		    the model. If `None`, will use a FTRL optimizer.
+		  _joint_weights: If True use a single (possibly partitioned) variable
+		    to store all weights in this model. Faster, but requires that all
+		    feature columns are sparse and have the 'sum' combiner.
 		  gradient_clip_norm: A float > 0. If provided, gradients are clipped
 		    to their global norm with this clipping ratio. See
 		    tf.clip_by_global_norm for more details.
 		  num_ps_replicas: The number of parameter server replicas.
 		  scope: Optional scope for variables created in this model. If scope
 		    is not supplied, it will default to 'linear'.
+		  trainable: True if this model contains variables that can be trained.
+		    False otherwise (in cases where the variables are used strictly for
+		    transforming input labels for training).
 	**/
-	public function new(num_label_columns:Dynamic, ?optimizer:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic):Void;
+	public function new(num_label_columns:Dynamic, ?optimizer:Dynamic, ?_joint_weights:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic, ?trainable:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

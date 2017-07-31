@@ -11,10 +11,7 @@ package numpy.matrixlib.defmatrix;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _convert_from_string(data:Dynamic):Dynamic;
-	static public function _eval(astr:Dynamic):Dynamic;
 	static public function _from_string(str:Dynamic, gdict:Dynamic, ldict:Dynamic):Dynamic;
-	static public var _numchars : Dynamic;
-	static public var _table : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
@@ -114,8 +111,18 @@ package numpy.matrixlib.defmatrix;
 		num : int
 		    Only an integer decimal number can be used.
 		width : int, optional
-		    The length of the returned string if `num` is positive, the length of
-		    the two's complement if `num` is negative.
+		    The length of the returned string if `num` is positive, or the length
+		    of the two's complement if `num` is negative, provided that `width` is
+		    at least a sufficient number of bits for `num` to be represented in the
+		    designated form.
+		
+		    If the `width` value is insufficient, it will be ignored, and `num` will
+		    be returned in binary (`num` > 0) or two's complement (`num` < 0) form
+		    with its width equal to the minimum number of bits needed to represent
+		    the number in the designated form. This behavior is deprecated and will
+		    later raise an error.
+		
+		    .. deprecated:: 1.12.0
 		
 		Returns
 		-------
@@ -126,6 +133,7 @@ package numpy.matrixlib.defmatrix;
 		--------
 		base_repr: Return a string representation of a number in the given base
 		           system.
+		bin: Python's built-in binary representation generator of an integer.
 		
 		Notes
 		-----
@@ -149,8 +157,10 @@ package numpy.matrixlib.defmatrix;
 		The two's complement is returned when the input number is negative and
 		width is specified:
 		
-		>>> np.binary_repr(-3, width=4)
-		'1101'
+		>>> np.binary_repr(-3, width=3)
+		'101'
+		>>> np.binary_repr(-3, width=5)
+		'11101'
 	**/
 	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
@@ -159,8 +169,8 @@ package numpy.matrixlib.defmatrix;
 		Parameters
 		----------
 		obj : str or array_like
-		    Input data.  Names of variables in the current scope may be
-		    referenced, even if `obj` is a string.
+		    Input data. If a string, variables in the current scope may be
+		    referenced by name.
 		ldict : dict, optional
 		    A dictionary that replaces local operands in current frame.
 		    Ignored if `obj` is not a string or `gdict` is `None`.
@@ -175,7 +185,9 @@ package numpy.matrixlib.defmatrix;
 		
 		See Also
 		--------
-		matrix
+		block :
+		    A generalization of this function for N-d arrays, that returns normal
+		    ndarrays.
 		
 		Examples
 		--------
@@ -441,7 +453,7 @@ package numpy.matrixlib.defmatrix;
 		>>> q = np.zeros((4, 4))
 		>>> q[0:2, 0:2] = -i
 		>>> q[2:4, 2:4] = i
-		>>> q # one of the three quarternion units not equal to 1
+		>>> q # one of the three quaternion units not equal to 1
 		array([[ 0., -1.,  0.,  0.],
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],

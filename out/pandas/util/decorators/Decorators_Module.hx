@@ -39,7 +39,7 @@ package pandas.util.decorators;
 		old_arg_name : str
 		    Name of argument in function to deprecate
 		new_arg_name : str
-		    Name of prefered argument in function
+		    Name of preferred argument in function
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -73,35 +73,6 @@ package pandas.util.decorators;
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function indent(text:Dynamic, ?indents:Dynamic):Dynamic;
 	/**
-		Make function raise KnownFailureTest exception if given condition is true.
-		
-		If the condition is a callable, it is used at runtime to dynamically
-		make the decision. This is useful for tests that may require costly
-		imports, to delay the cost until the test suite is actually executed.
-		
-		Parameters
-		----------
-		fail_condition : bool or callable
-		    Flag to determine whether to mark the decorated test as a known
-		    failure (if True) or not (if False).
-		msg : str, optional
-		    Message to give on raising a KnownFailureTest exception.
-		    Default is None.
-		
-		Returns
-		-------
-		decorator : function
-		    Decorator, which, when applied to a function, causes SkipTest
-		    to be raised when `skip_condition` is True, and the function
-		    to be called normally otherwise.
-		
-		Notes
-		-----
-		The decorator itself is decorated with the ``nose.tools.make_decorator``
-		function in order to transmit function name, and various other metadata.
-	**/
-	static public function knownfailureif(fail_condition:Dynamic, ?msg:Dynamic):haxe.Constraints.Function;
-	/**
 		Returns a string repr of the arg list of a func call, with any defaults
 		
 		Examples
@@ -114,7 +85,19 @@ package pandas.util.decorators;
 	**/
 	static public function make_signature(func:Dynamic):Dynamic;
 	static public function signature(f:Dynamic):Dynamic;
-	static public function suppress_stdout(f:Dynamic):Dynamic;
+	/**
+		Update a wrapper function to look like the wrapped function
+		
+		wrapper is the function to be updated
+		wrapped is the original function
+		assigned is a tuple naming the attributes assigned directly
+		from the wrapped function to the wrapper function (defaults to
+		functools.WRAPPER_ASSIGNMENTS)
+		updated is a tuple naming the attributes of the wrapper that
+		are updated with the corresponding attribute from the wrapped
+		function (defaults to functools.WRAPPER_UPDATES)
+	**/
+	static public function update_wrapper(wrapper:Dynamic, wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

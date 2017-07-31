@@ -62,6 +62,13 @@ package scipy.interpolate.interpolate;
 	**/
 	public function new(x:Dynamic, y:Dynamic, ?kind:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic, ?assume_sorted:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -119,6 +126,7 @@ package scipy.interpolate.interpolate;
 	public var __weakref__ : Dynamic;
 	public function _call_linear(x_new:Dynamic):Dynamic;
 	public function _call_linear_np(x_new:Dynamic):Dynamic;
+	public function _call_nan_spline(x_new:Dynamic):Dynamic;
 	/**
 		Find nearest neighbour interpolated y_new = f(x_new).
 	**/

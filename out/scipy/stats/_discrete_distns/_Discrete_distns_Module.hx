@@ -40,17 +40,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -131,6 +131,16 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function bernoulli(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		betaln(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		betaln(a, b)
+		
+		Natural logarithm of absolute value of beta function.
+		
+		Computes ``ln(abs(beta(a, b)))``.
+	**/
+	static public function betaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		A binomial discrete random variable.
 		
 		As an instance of the `rv_discrete` class, `binom` object inherits from it
@@ -141,17 +151,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -241,17 +251,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(lambda_, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, N, loc=0)``
+		``pmf(k, lambda_, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, N, loc=0)``
+		``logpmf(k, lambda_, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, N, loc=0)``
+		``cdf(k, lambda_, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, N, loc=0)``
+		``logcdf(k, lambda_, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, N, loc=0)``
+		``sf(k, lambda_, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, N, loc=0)``
+		``logsf(k, lambda_, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -370,7 +380,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	/**
-		ceil(x[, out])
+		ceil(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the ceiling of the input, element-wise.
 		
@@ -381,6 +391,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -399,7 +420,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosh(x[, out])
+		cosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic cosine, element-wise.
 		
@@ -409,6 +430,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -440,17 +472,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -530,7 +562,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function dlaplace(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		entr(x[, out])
+		entr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		entr(x)
 		
@@ -560,7 +592,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -568,6 +600,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -612,18 +655,18 @@ package scipy.stats._discrete_distns;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expm1(x[, out])
+		expm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate ``exp(x) - 1`` for all elements in the array.
 		
@@ -631,6 +674,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		   Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -660,7 +714,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor(x[, out])
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -671,6 +725,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -737,17 +802,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -850,8 +915,8 @@ package scipy.stats._discrete_distns;
 		A hypergeometric discrete random variable.
 		
 		The hypergeometric distribution models drawing objects from a bin.
-		M is the total number of objects, n is total number of Type I objects.
-		The random variate represents the number of Type I objects in N drawn
+		`M` is the total number of objects, `n` is total number of Type I objects.
+		The random variate represents the number of Type I objects in `N` drawn
 		without replacement from the total population.
 		
 		As an instance of the `rv_discrete` class, `hypergeom` object inherits from it
@@ -862,17 +927,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(M, n, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, M, n, N, loc=0)``
+		``pmf(k, M, n, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, M, n, N, loc=0)``
+		``logpmf(k, M, n, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, M, n, N, loc=0)``
+		``cdf(k, M, n, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, M, n, N, loc=0)``
+		``logcdf(k, M, n, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, M, n, N, loc=0)``
+		``sf(k, M, n, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, M, n, N, loc=0)``
+		``logsf(k, M, n, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, M, n, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -897,10 +962,18 @@ package scipy.stats._discrete_distns;
 		
 		Notes
 		-----
-		The probability mass function is defined as::
+		The symbols used to denote the shape parameters (`M`, `n`, and `N`) are not
+		universally accepted.  See the Examples for a clarification of the
+		definitions used here.
 		
-		    pmf(k, M, n, N) = choose(n, k) * choose(M - n, N - k) / choose(M, N),
-		                                   for max(0, N - (M-n)) <= k <= min(n, N)
+		The probability mass function is defined as,
+		
+		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}{\binom{M}{N}}
+		
+		for :math:`k \in [\max(0, N - M + n), \min(n, N)]`, where the binomial
+		coefficients are defined as,
+		
+		.. math:: \binom{n}{k} \equiv \frac{n!}{k! (n - k)!}.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -942,7 +1015,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function hypergeom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -954,6 +1027,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -992,7 +1076,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log1p(x[, out])
+		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the natural logarithm of one plus the input array, element-wise.
 		
@@ -1002,6 +1086,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1055,17 +1150,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1153,8 +1248,7 @@ package scipy.stats._discrete_distns;
 		    Input array.
 		axis : None or int or tuple of ints, optional
 		    Axis or axes over which the sum is taken. By default `axis` is None,
-		    and all elements are summed. Tuple of ints is not accepted if NumPy
-		    version is lower than 1.7.0.
+		    and all elements are summed.
 		
 		    .. versionadded:: 0.11.0
 		keepdims : bool, optional
@@ -1198,7 +1292,7 @@ package scipy.stats._discrete_distns;
 		
 		Examples
 		--------
-		>>> from scipy.misc import logsumexp
+		>>> from scipy.special import logsumexp
 		>>> a = np.arange(10)
 		>>> np.log(np.sum(np.exp(a)))
 		9.4586297444267107
@@ -1240,17 +1334,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1275,13 +1369,17 @@ package scipy.stats._discrete_distns;
 		
 		Notes
 		-----
-		The probability mass function for `nbinom` is::
+		Negative binomial distribution describes a sequence of i.i.d. Bernoulli 
+		trials, repeated until a predefined, non-random number of successes occurs.
 		
-		     nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
+		The probability mass function of the number of failures for `nbinom` is::
+		
+		   nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
 		
 		for ``k >= 0``.
 		
-		`nbinom` takes ``n`` and ``p`` as shape parameters.
+		`nbinom` takes ``n`` and ``p`` as shape parameters where n is the number of
+		successes, whereas p is the probability of a single success.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1341,17 +1439,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(lambda_, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, loc=0)``
+		``pmf(k, lambda_, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, loc=0)``
+		``logpmf(k, lambda_, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, loc=0)``
+		``cdf(k, lambda_, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, loc=0)``
+		``logcdf(k, lambda_, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, loc=0)``
+		``sf(k, lambda_, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, loc=0)``
+		``logsf(k, lambda_, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1441,17 +1539,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(mu, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu, loc=0)``
+		``pmf(k, mu, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu, loc=0)``
+		``logpmf(k, mu, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu, loc=0)``
+		``cdf(k, mu, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu, loc=0)``
+		``logcdf(k, mu, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu, loc=0)``
+		``sf(k, mu, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu, loc=0)``
+		``logsf(k, mu, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1542,17 +1640,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(low, high, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, low, high, loc=0)``
+		``pmf(k, low, high, loc=0)``
 		    Probability mass function.
-		``logpmf(x, low, high, loc=0)``
+		``logpmf(k, low, high, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, low, high, loc=0)``
+		``cdf(k, low, high, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, low, high, loc=0)``
+		``logcdf(k, low, high, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, low, high, loc=0)``
+		``sf(k, low, high, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, low, high, loc=0)``
+		``logsf(k, low, high, loc=0)``
 		    Log of the survival function.
 		``ppf(q, low, high, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1632,7 +1730,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function randint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sinh(x[, out])
+		sinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic sine, element-wise.
 		
@@ -1643,18 +1741,22 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -1699,17 +1801,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(mu1, mu2, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu1, mu2, loc=0)``
+		``pmf(k, mu1, mu2, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu1, mu2, loc=0)``
+		``logpmf(k, mu1, mu2, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu1, mu2, loc=0)``
+		``cdf(k, mu1, mu2, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu1, mu2, loc=0)``
+		``logcdf(k, mu1, mu2, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu1, mu2, loc=0)``
+		``sf(k, mu1, mu2, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu1, mu2, loc=0)``
+		``logsf(k, mu1, mu2, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu1, mu2, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1797,7 +1899,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function skellam(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -1805,9 +1907,17 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1844,7 +1954,7 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tanh(x[, out])
+		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute hyperbolic tangent element-wise.
 		
@@ -1854,18 +1964,22 @@ package scipy.stats._discrete_distns;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -1910,17 +2024,17 @@ package scipy.stats._discrete_distns;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).

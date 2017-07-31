@@ -12,6 +12,10 @@ package numpy.core.memmap;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Check whether obj is a pathlib.Path object.
+	**/
+	static public function is_pathlib_path(obj:Dynamic):Dynamic;
 	static public var mode_equivalents : Dynamic;
 	static public var print_function : Dynamic;
 	static public var valid_filemodes : Dynamic;

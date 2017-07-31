@@ -41,11 +41,18 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		Create a new sdca optimizer.
 	**/
 	@:native("__init__")
-	public function ___init__(container:Dynamic, examples:Dynamic, variables:Dynamic, options:Dynamic, ?num_table_shards:Dynamic):Dynamic;
+	public function ___init__(examples:Dynamic, variables:Dynamic, options:Dynamic):Dynamic;
 	/**
 		Create a new sdca optimizer.
 	**/
-	public function new(container:Dynamic, examples:Dynamic, variables:Dynamic, options:Dynamic, ?num_table_shards:Dynamic):Void;
+	public function new(examples:Dynamic, variables:Dynamic, options:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,6 +127,9 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		Returns predictions of the form w*x.
 	**/
 	public function _linear_predictions(examples:Dynamic):Dynamic;
+	public function _num_loss_partitions():Dynamic;
+	public function _num_table_shards():Dynamic;
+	public function _symmetric_l1_regularization():Dynamic;
 	public function _symmetric_l2_regularization():Dynamic;
 	/**
 		Add operations to compute the approximate duality gap.
@@ -184,4 +194,18 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		  ValueError: if examples are not well defined.
 	**/
 	public function unregularized_loss(examples:Dynamic):Dynamic;
+	/**
+		Updates the model weights.
+		
+		This function must be called on at least one worker after `minimize`.
+		In distributed training this call can be omitted on non-chief workers to
+		speed up training.
+		
+		Args:
+		  train_op: The operation returned by the `minimize` call.
+		
+		Returns:
+		  An Operation that updates the model weights.
+	**/
+	public function update_weights(train_op:Dynamic):Dynamic;
 }

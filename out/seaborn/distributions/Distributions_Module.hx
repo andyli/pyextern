@@ -13,7 +13,7 @@ package seaborn.distributions;
 	/**
 		Plot a joint KDE estimate as a bivariate contour plot.
 	**/
-	static public function _bivariate_kdeplot(x:Dynamic, y:Dynamic, filled:Dynamic, fill_lowest:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, axlabel:Dynamic, ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _bivariate_kdeplot(x:Dynamic, y:Dynamic, filled:Dynamic, fill_lowest:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, axlabel:Dynamic, cbar:Dynamic, cbar_ax:Dynamic, cbar_kws:Dynamic, ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate number of hist bins using Freedman-Diaconis rule.
 	**/
@@ -66,7 +66,7 @@ package seaborn.distributions;
 	/**
 		Return a list of colors defining a color palette.
 		
-		Availible seaborn palette names:
+		Available seaborn palette names:
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
@@ -75,7 +75,7 @@ package seaborn.distributions;
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
-		Matplotlib paletes can be specified as reversed palettes by appending
+		Matplotlib palettes can be specified as reversed palettes by appending
 		"_r" to the name or as dark palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
@@ -222,7 +222,7 @@ package seaborn.distributions;
 		    :context: close-figs
 		
 		    >>> import seaborn as sns, numpy as np
-		    >>> sns.set(rc={"figure.figsize": (8, 4)}); np.random.seed(0)
+		    >>> sns.set(); np.random.seed(0)
 		    >>> x = np.random.randn(100)
 		    >>> ax = sns.distplot(x)
 		
@@ -283,139 +283,6 @@ package seaborn.distributions;
 	**/
 	static public function iqr(a:Dynamic):Dynamic;
 	/**
-		Draw a plot of two variables with bivariate and univariate graphs.
-		
-		This function provides a convenient interface to the :class:`JointGrid`
-		class, with several canned plot kinds. This is intended to be a fairly
-		lightweight wrapper; if you need more flexibility, you should use
-		:class:`JointGrid` directly.
-		
-		Parameters
-		----------
-		x, y : strings or vectors
-		    Data or names of variables in ``data``.
-		data : DataFrame, optional
-		    DataFrame when ``x`` and ``y`` are variable names.
-		kind : { "scatter" | "reg" | "resid" | "kde" | "hex" }, optional
-		    Kind of plot to draw.
-		stat_func : callable or None, optional
-		    Function used to calculate a statistic about the relationship and
-		    annotate the plot. Should map `x` and `y` either to a single value
-		    or to a (value, p) tuple. Set to ``None`` if you don't want to
-		    annotate the plot.
-		color : matplotlib color, optional
-		    Color used for the plot elements.
-		size : numeric, optional
-		    Size of the figure (it will be square).
-		ratio : numeric, optional
-		    Ratio of joint axes size to marginal axes height.
-		space : numeric, optional
-		    Space between the joint and marginal axes
-		dropna : bool, optional
-		    If True, remove observations that are missing from ``x`` and ``y``.
-		{x, y}lim : two-tuples, optional
-		    Axis limits to set before plotting.
-		{joint, marginal, annot}_kws : dicts, optional
-		    Additional keyword arguments for the plot components.
-		kwargs : key, value pairings
-		    Additional keyword arguments are passed to the function used to
-		    draw the plot on the joint Axes, superseding items in the
-		    ``joint_kws`` dictionary.
-		
-		Returns
-		-------
-		grid : :class:`JointGrid`
-		    :class:`JointGrid` object with the plot on it.
-		
-		See Also
-		--------
-		JointGrid : The Grid class used for drawing this plot. Use it directly if
-		            you need more flexibility.
-		
-		Examples
-		--------
-		
-		Draw a scatterplot with marginal histograms:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> import numpy as np, pandas as pd; np.random.seed(0)
-		    >>> import seaborn as sns; sns.set(style="white", color_codes=True)
-		    >>> tips = sns.load_dataset("tips")
-		    >>> g = sns.jointplot(x="total_bill", y="tip", data=tips)
-		
-		Add regression and kernel density fits:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.jointplot("total_bill", "tip", data=tips, kind="reg")
-		
-		Replace the scatterplot with a joint histogram using hexagonal bins:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.jointplot("total_bill", "tip", data=tips, kind="hex")
-		
-		Replace the scatterplots and histograms with density estimates and align
-		the marginal Axes tightly with the joint Axes:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> iris = sns.load_dataset("iris")
-		    >>> g = sns.jointplot("sepal_width", "petal_length", data=iris,
-		    ...                   kind="kde", space=0, color="g")
-		
-		Use a different statistic for the annotation:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> from scipy.stats import spearmanr
-		    >>> g = sns.jointplot("size", "total_bill", data=tips,
-		    ...                   stat_func=spearmanr, color="m")
-		
-		Draw a scatterplot, then add a joint density estimate:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = (sns.jointplot("sepal_length", "sepal_width",
-		    ...                    data=iris, color="k")
-		    ...         .plot_joint(sns.kdeplot, zorder=0, n_levels=6))
-		
-		Pass vectors in directly without using Pandas, then name the axes:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> x, y = np.random.randn(2, 300)
-		    >>> g = (sns.jointplot(x, y, kind="hex", stat_func=None)
-		    ...         .set_axis_labels("x", "y"))
-		
-		Draw a smaller figure with more space devoted to the marginal plots:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.jointplot("total_bill", "tip", data=tips,
-		    ...                   size=5, ratio=3, color="g")
-		
-		Pass keyword arguments down to the underlying plots:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.jointplot("petal_length", "sepal_length", data=iris,
-		    ...                   marginal_kws=dict(bins=15, rug=True),
-		    ...                   annot_kws=dict(stat="r"),
-		    ...                   s=40, edgecolor="w", linewidth=1)
-	**/
-	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Fit and plot a univariate or bivariate kernel density estimate.
 		
 		Parameters
@@ -451,8 +318,15 @@ package seaborn.distributions;
 		    relevant when drawing a univariate plot or when ``shade=False``.
 		    Setting this to ``False`` can be useful when you want multiple
 		    densities on the same Axes.
-		ax : matplotlib axis, optional
-		    Axis to plot on, otherwise uses current axis.
+		cbar : bool, optional
+		    If True and drawing a bivariate KDE plot, add a colorbar.
+		cbar_ax : matplotlib axes, optional
+		    Existing axes to draw the colorbar onto, otherwise space is taken
+		    from the main axes.
+		cbar_kws : dict, optional
+		    Keyword arguments for ``fig.colorbar()``.
+		ax : matplotlib axes, optional
+		    Axes to plot on, otherwise uses current axes.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to ``plt.plot()`` or
 		    ``plt.contour{f}`` depending on whether a univariate or bivariate
@@ -531,6 +405,13 @@ package seaborn.distributions;
 		
 		    >>> ax = sns.kdeplot(x, cut=0)
 		
+		Add a colorbar for the contours:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.kdeplot(x, y, cbar=True)
+		
 		Plot two shaded bivariate densities:
 		
 		.. plot::
@@ -544,7 +425,7 @@ package seaborn.distributions;
 		    >>> ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
 		    ...                  cmap="Blues", shade=True, shade_lowest=False)
 	**/
-	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?cbar:Dynamic, ?cbar_ax:Dynamic, ?cbar_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot datapoints in an array as sticks on an axis.
 		
@@ -567,21 +448,5 @@ package seaborn.distributions;
 		    The Axes object with the plot on it.
 	**/
 	static public function rugplot(a:Dynamic, ?height:Dynamic, ?axis:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Independently manipulate the h, l, or s channels of a color.
-		
-		Parameters
-		----------
-		color : matplotlib color
-		    hex, rgb-tuple, or html color name
-		h, l, s : floats between 0 and 1, or None
-		    new values for each channel in hls space
-		
-		Returns
-		-------
-		new_color : rgb tuple
-		    new color code in RGB tuple representation
-	**/
-	static public function set_hls_values(color:Dynamic, ?h:Dynamic, ?l:Dynamic, ?s:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 }

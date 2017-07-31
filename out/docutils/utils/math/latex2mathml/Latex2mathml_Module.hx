@@ -28,4 +28,10 @@ package docutils.utils.math.latex2mathml;
 	static public function parse_latex_math(string:Dynamic, ?_inline:Dynamic):Dynamic;
 	static public var special : Dynamic;
 	static public var sumintprod : Dynamic;
+	/**
+		Return string with MathML code corresponding to `tex_math`. 
+		
+		`inline`=True is for inline math and `inline`=False for displayed math.
+	**/
+	static public function tex2mathml(tex_math:Dynamic, ?_inline:Dynamic):Dynamic;
 }

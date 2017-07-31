@@ -80,7 +80,7 @@ package numpy.f2py.crackfortran;
 	/**
 		reset=-1  --- initialize
 		reset=0   --- crack the line
-		reset=1   --- final check if mismatch of blocks occured
+		reset=1   --- final check if mismatch of blocks occurred
 		
 		Cracked data is saved in grouplist[0].
 	**/

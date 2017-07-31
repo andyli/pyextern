@@ -75,7 +75,7 @@ package pandas.io.excel;
 		----------
 		row : list
 		    List of items in a single row.
-		constrol_row : list of boolean
+		control_row : list of boolean
 		    Helps to determine if particular column is in same parent index as the
 		    previous value. Used to stop propagation of empty cells between
 		    different indexes.
@@ -104,7 +104,65 @@ package pandas.io.excel;
 	static public function _pop_header_name(row:Dynamic, index_col:Dynamic):Dynamic;
 	static public var _read_excel_doc : Dynamic;
 	static public function _trim_excel_header(row:Dynamic):Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function _urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
+	static public function _validate_freeze_panes(freeze_panes:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	static public var _writer_extensions : Dynamic;
 	static public var _writers : Dynamic;
@@ -123,8 +181,8 @@ package pandas.io.excel;
 	**/
 	static public function fill(text:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------
@@ -141,7 +199,37 @@ package pandas.io.excel;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
@@ -211,7 +299,9 @@ package pandas.io.excel;
 		index_col : int, list of ints, default None
 		    Column (0-indexed) to use as the row labels of the DataFrame.
 		    Pass None if there is no such column.  If a list is passed,
-		    those columns will be combined into a ``MultiIndex``
+		    those columns will be combined into a ``MultiIndex``.  If a
+		    subset of data is selected with ``parse_cols``, index_col
+		    is based on the subset.
 		names : array-like, default None
 		    List of column names to use. If file contains no header row,
 		    then you should explicitly pass header=None
@@ -220,6 +310,14 @@ package pandas.io.excel;
 		    either be integers or column labels, values are functions that take one
 		    input argument, the Excel cell content, and return the transformed
 		    content.
+		dtype : Type name or dict of column -> type, default None
+		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
+		    Use `object` to preserve data as stored in Excel and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
+		
+		    .. versionadded:: 0.20.0
+		
 		true_values : list, default None
 		    Values to consider as True
 		
@@ -234,8 +332,9 @@ package pandas.io.excel;
 		    * If None then parse all columns,
 		    * If int then indicates last column to be parsed
 		    * If list of ints then indicates list of column numbers to be parsed
-		    * If string then indicates comma separated list of column names and
-		      column ranges (e.g. "A:E" or "A,C,E:F")
+		    * If string then indicates comma separated list of Excel column letters and
+		      column ranges (e.g. "A:E" or "A,C,E:F").  Ranges are inclusive of
+		      both sides.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		na_values : scalar, str, list-like, or dict, default None
@@ -271,7 +370,7 @@ package pandas.io.excel;
 		    DataFrame from the passed in Excel file.  See notes in sheetname
 		    argument for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?dtype:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

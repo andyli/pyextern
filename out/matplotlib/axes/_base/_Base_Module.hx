@@ -14,6 +14,7 @@ package matplotlib.axes._base;
 		dimension; leaves everything else untouched.
 	**/
 	static public function _check_1d(x:Dynamic):Dynamic;
+	static public var _hold_msg : Dynamic;
 	/**
 		Process a MATLAB style color/line style format string.  Return a
 		(*linestyle*, *color*) tuple as a result of the processing.  Default
@@ -22,6 +23,7 @@ package matplotlib.axes._base;
 		* 'ko': black circles
 		* '.b': blue dots
 		* 'r--': red dashed lines
+		* 'C2--': the third color in the color cycle, dashed lines
 		
 		.. seealso::
 		
@@ -44,9 +46,9 @@ package matplotlib.axes._base;
 		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.
 		
-		cyl(arg)
-		cyl(label, itr)
-		cyl(label1=itr1[, label2=itr2[, ...]])
+		cycler(arg)
+		cycler(label, itr)
+		cycler(label1=itr1[, label2=itr2[, ...]])
 		
 		Form 1 simply copies a given `Cycler` object.
 		
@@ -114,4 +116,5 @@ package matplotlib.axes._base;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	static public var unicode_literals : Dynamic;
+	static public function validate_axisbelow(s:Dynamic):Dynamic;
 }

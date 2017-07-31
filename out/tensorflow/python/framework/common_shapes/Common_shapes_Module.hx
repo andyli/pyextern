@@ -9,6 +9,10 @@ package tensorflow.python.framework.common_shapes;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Core implementaton of call_cpp_shape_fn.
+	**/
+	static public function _call_cpp_shape_fn_impl(op:Dynamic, input_tensors_needed:Dynamic, input_tensors_as_shapes_needed:Dynamic, debug_python_shape_fn:Dynamic, require_shape_fn:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Shape function for an AvgPool op.
@@ -33,13 +37,53 @@ package tensorflow.python.framework.common_shapes;
 	**/
 	static public function avg_pool_shape(op:Dynamic):Dynamic;
 	/**
-		Shape function for a BiasAddGrad op.
+		Returns the broadcasted shape between `shape_x` and `shape_y`.
+		
+		Args:
+		  shape_x: A `TensorShape`
+		  shape_y: A `TensorShape`
+		
+		Returns:
+		  A `TensorShape` representing the broadcasted shape.
+		
+		Raises:
+		  ValueError: If the two shapes can not be broadcasted.
 	**/
-	static public function bias_add_grad_shape(op:Dynamic):Dynamic;
+	static public function broadcast_shape(shape_x:Dynamic, shape_y:Dynamic):Dynamic;
 	/**
-		Shape function for a BiasAdd op.
+		A shape function that delegates to the registered C++ shape function.
+		
+		Args:
+		  op: the node in the graph for which to compute output shapes.
+		  input_tensors_needed: a list of input tensor indices for which to compute
+		    the input tensor's value and pass to the C++ shape function.
+		  input_tensors_as_shapes_needed: a list of input tensor indices for which to
+		    compute the constant_value_as_shape and pass to the C++ shape function.
+		  debug_python_shape_fn: For testing only during migration to using
+		    call_cpp_shape_fn. Do not submit calls that set this,
+		    as the comparison is slow. If non-None, the python shape function;
+		    this function will be called and its output compared to that of
+		    the C++ shape function.
+		  require_shape_fn: If true, and the C++ shape function is not registered
+		    in the current binary then an exception is raised; otherwise, if the
+		    C++ shape function is not registered then unknown_shape is used.
+		
+		Returns:
+		  A dictionary with the following keys:
+		    shapes: A TensorShape list of the output shapes of the op, as computed
+		      using the C++ shape inference function registered for the op.
+		    handle_shapes: A TensorShape list of the shapes for handle outputs, if
+		       any.
+		    handle_dtypes: A list of DataType enums for the handle outputs, if any.
+		
+		Raises:
+		  ValueError: If the C++ shape function returned an error (e.g. because the
+		    shapes of the inputs are of the wrong rank or otherwise incompatible
+		    according to the shape function).
+		  RuntimeError: If the C++ shape function is not registered and
+		    <require_shape_fn> is True.
 	**/
-	static public function bias_add_shape(op:Dynamic):Dynamic;
+	static public function call_cpp_shape_fn(op:Dynamic, ?input_tensors_needed:Dynamic, ?input_tensors_as_shapes_needed:Dynamic, ?debug_python_shape_fn:Dynamic, ?require_shape_fn:Dynamic):Dynamic;
 	/**
 		Shape function for a Conv2D op.
 		

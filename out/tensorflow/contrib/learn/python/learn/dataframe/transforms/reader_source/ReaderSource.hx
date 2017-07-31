@@ -55,8 +55,8 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.reader_source
 		Initializes a ReaderSource.
 		
 		Args:
-		  reader_cls: A subclass of `tesorflow.ReaderBase` that will be used to read
-		    from `work_units`.
+		  reader_cls: A subclass of `tensorflow.ReaderBase` that will be used to
+		    read from `work_units`.
 		  work_units: A list that describes the source(s) of data to read.
 		    Typically, this is a list of filenames.
 		  reader_kwargs: A dictionary of kwargs to be passed to `reader_cls` when it
@@ -79,8 +79,8 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.reader_source
 		Initializes a ReaderSource.
 		
 		Args:
-		  reader_cls: A subclass of `tesorflow.ReaderBase` that will be used to read
-		    from `work_units`.
+		  reader_cls: A subclass of `tensorflow.ReaderBase` that will be used to
+		    read from `work_units`.
 		  work_units: A list that describes the source(s) of data to read.
 		    Typically, this is a list of filenames.
 		  reader_kwargs: A dictionary of kwargs to be passed to `reader_cls` when it
@@ -98,6 +98,13 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.reader_source
 		  seed: A seed used for shuffling. Only used if `shuffle` is true.
 	**/
 	public function new(reader_cls:Dynamic, work_units:Dynamic, ?reader_kwargs:Dynamic, ?enqueue_size:Dynamic, ?batch_size:Dynamic, ?queue_capacity:Dynamic, ?shuffle:Dynamic, ?min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +126,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.reader_source
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -199,6 +206,17 @@ package tensorflow.contrib.learn.python.learn.dataframe.transforms.reader_source
 		  Names of outputs provided by this Transform, as a string, tuple, or list.
 	**/
 	public var _output_names : Dynamic;
+	/**
+		Apply this `Transform` to the provided `Series`, producing `Series`.
+		
+		Args:
+		  input_series: None, a `Series`, or a list of input `Series`, acting as
+		     positional arguments.
+		
+		Returns:
+		  A namedtuple of the output `Series`.
+	**/
+	public function _produce_output_series(?input_series:Dynamic):Dynamic;
 	public var batch_size : Dynamic;
 	/**
 		Apply this `Transform` to the provided `Series`, producing 'Tensor's.

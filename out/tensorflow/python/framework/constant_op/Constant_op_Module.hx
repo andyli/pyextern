@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.constant_op;
 @:pythonImport("tensorflow.python.framework.constant_op") extern class Constant_op_Module {
-	static public function _ConstantShape(op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -46,18 +45,20 @@ package tensorflow.python.framework.constant_op;
 		 ```
 		
 		Args:
-		  value:     A constant value (or list) of output type `dtype`.
+		  value:          A constant value (or list) of output type `dtype`.
 		
-		  dtype:     The type of the elements of the resulting tensor.
+		  dtype:          The type of the elements of the resulting tensor.
 		
-		  shape:     Optional dimensions of resulting tensor.
+		  shape:          Optional dimensions of resulting tensor.
 		
-		  name:      Optional name for the tensor.
+		  name:           Optional name for the tensor.
+		
+		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
 		  A Constant Tensor.
 	**/
-	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

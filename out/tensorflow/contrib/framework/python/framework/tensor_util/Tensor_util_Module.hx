@@ -12,22 +12,6 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 	static public var __spec__ : Dynamic;
 	static public function _all_equal(tensor0:Dynamic, tensor1:Dynamic):Dynamic;
 	/**
-		Asserts all items are of the same base type.
-		
-		Args:
-		  items: List of graph items (e.g., `Variable`, `Tensor`, `SparseTensor`,
-		      `Operation`, or `IndexedSlices`). Can include `None` elements, which
-		      will be ignored.
-		  expected_type: Expected type. If not specified, assert all items are
-		      of the same base type.
-		Returns:
-		  Validated type, or none if neither expected_type nor items provided.
-		
-		Raises:
-		  ValueError: If any types do not match.
-	**/
-	static public function _assert_same_base_type(items:Dynamic, ?expected_type:Dynamic):Dynamic;
-	/**
 		Asserts actual_tensor's shape is expected_shape.
 		
 		Args:
@@ -66,8 +50,8 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		For ops such as matrix multiplication, inputs and weights must be of the
 		same float type. This function validates that all `tensors` are the same type,
 		validates that type is `dtype` (if supplied), and returns the type. Type must
-		be `dtypes.float32` or `dtypes.float64`. If neither `tensors` nor
-		`dtype` is supplied, default to `dtypes.float32`.
+		be a floating point type. If neither `tensors` nor `dtype` is supplied,
+		the function will return `dtypes.float32`.
 		
 		Args:
 		  tensors: Tensors of input values. Can include `None` elements, which will be
@@ -77,20 +61,22 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  Validated type.
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
-		      float.
+		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert `tensor` is 0-D, of type `tf.int32` or `tf.int64`.
 		
 		Args:
-		  tensor: Tensor to test.
+		  tensor: `Tensor` to test.
+		  name: Name of the op and of the new `Tensor` if one is created.
 		Returns:
 		  `tensor`, for chaining.
 		Raises:
-		  ValueError: if `tensor` is not 0-D, of type `tf.int32` or `tf.int64`.
+		  ValueError: if `tensor` is not 0-D, of integer type.
 	**/
-	static public function assert_scalar_int(tensor:Dynamic):Dynamic;
+	static public function assert_scalar_int(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Converts value to a `SparseTensor` or `Tensor`.
 		
@@ -100,8 +86,6 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  dtype: Optional element type for the returned tensor. If missing, the
 		    type is inferred from the type of `value`.
 		  name: Optional name to use if a new `Tensor` is created.
-		  as_ref: True if we want the result as a ref tensor. Only used if a new
-		    `Tensor` is created.
 		
 		Returns:
 		  A `SparseTensor` or `Tensor` based on `value`.
@@ -109,10 +93,11 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		Raises:
 		  RuntimeError: If result type is incompatible with `dtype`.
 	**/
-	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Check for tensor types.
+		Check whether `x` is of tensor type.
+		
 		Check whether an object is a tensor. Equivalent to
 		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
 		
@@ -141,6 +126,21 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  ValueError: if `losses` is missing or empty.
 	**/
 	static public function reduce_sum_n(tensors:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Squeeze last dim if ranks of `predictions` and `labels` differ by 1.
+		
+		This will use static shape if available. Otherwise, it will add graph
+		operations, which could result in a performance hit.
+		
+		Args:
+		  predictions: Predicted values, a `Tensor` of arbitrary dimensions.
+		  labels: Label values, a `Tensor` whose dimensions match `predictions`.
+		  name: Name of the op.
+		
+		Returns:
+		  Tuple of `predictions` and `labels`, possibly with last dim squeezed.
+	**/
+	static public function remove_squeezable_dimensions(predictions:Dynamic, labels:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert tensors are the same shape, from the same graph.
 		

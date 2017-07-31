@@ -56,6 +56,13 @@ package numpy.ctypeslib;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -121,7 +128,7 @@ package numpy.ctypeslib;
 	public var _b_needsfree_ : Dynamic;
 	/**
 		This method is called when this class is used as the .restype
-		asttribute for a shared-library function.   It constructs a numpy
+		attribute for a shared-library function.   It constructs a numpy
 		array from a void pointer.
 	**/
 	public function _check_retval_():Dynamic;

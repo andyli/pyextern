@@ -332,6 +332,124 @@ package scipy.stats.distributions;
 	**/
 	static public function arcsine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Argus distribution
+		
+		As an instance of the `rv_continuous` class, `argus` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(chi, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, chi, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, chi, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, chi, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, chi, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, chi, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, chi, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, chi, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, chi, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, chi, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(chi, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(chi, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, chi, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(chi,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(chi, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(chi, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(chi, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(chi, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, chi, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `argus` is::
+		
+		    argus.pdf(x, chi) = chi**3 / (sqrt(2*pi) * Psi(chi)) * x * sqrt(1-x**2) * exp(- 0.5 * chi**2 * (1 - x**2))
+		
+		    where:
+		             Psi(chi) = Phi(chi) - chi * phi(chi) - 1/2
+		             with Phi and phi being the CDF and PDF of a standard normal distribution, respectively.
+		
+		`argus` takes ``chi`` as shape a parameter.
+		
+		References
+		----------
+		
+		.. [1] "ARGUS distribution",
+		       https://en.wikipedia.org/wiki/ARGUS_distribution
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``argus.pdf(x, chi, loc, scale)`` is identically
+		equivalent to ``argus.pdf(y, chi) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.stats import argus
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> chi = 1
+		>>> mean, var, skew, kurt = argus.stats(chi, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(argus.ppf(0.01, chi),
+		...                 argus.ppf(0.99, chi), 100)
+		>>> ax.plot(x, argus.pdf(x, chi),
+		...        'r-', lw=5, alpha=0.6, label='argus pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = argus(chi)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = argus.ppf([0.001, 0.5, 0.999], chi)
+		>>> np.allclose([0.001, 0.5, 0.999], argus.cdf(vals, chi))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = argus.rvs(chi, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function argus(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		A Bernoulli discrete random variable.
 		
 		As an instance of the `rv_discrete` class, `bernoulli` object inherits from it
@@ -342,17 +460,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -663,17 +781,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -763,17 +881,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(lambda_, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, N, loc=0)``
+		``pmf(k, lambda_, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, N, loc=0)``
+		``logpmf(k, lambda_, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, N, loc=0)``
+		``cdf(k, lambda_, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, N, loc=0)``
+		``logcdf(k, lambda_, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, N, loc=0)``
+		``sf(k, lambda_, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, N, loc=0)``
+		``logsf(k, lambda_, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -1758,17 +1876,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -2205,7 +2323,8 @@ package scipy.stats.distributions;
 		-----
 		The probability density function for `exponnorm` is::
 		
-		    exponnorm.pdf(x, K) = 1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc(-(x - 1/K) / sqrt(2))
+		    exponnorm.pdf(x, K) =
+		        1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc-(x - 1/K) / sqrt(2))
 		
 		where the shape parameter ``K > 0``.
 		
@@ -3567,8 +3686,8 @@ package scipy.stats.distributions;
 		H.K. Ryu, "An Extension of Marshall and Olkin's Bivariate Exponential
 		Distribution", Journal of the American Statistical Association, 1993.
 		
-		 N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
-		 Applications", Asit P. Basu.
+		N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
+		Applications", Asit P. Basu.
 		
 		Examples
 		--------
@@ -3890,7 +4009,8 @@ package scipy.stats.distributions;
 		-----
 		The probability density function for `genhalflogistic` is::
 		
-		    genhalflogistic.pdf(x, c) = 2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
+		    genhalflogistic.pdf(x, c) =
+		        2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
 		
 		for ``0 <= x <= 1/c``, and ``c > 0``.
 		
@@ -4299,17 +4419,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -5267,8 +5387,8 @@ package scipy.stats.distributions;
 		A hypergeometric discrete random variable.
 		
 		The hypergeometric distribution models drawing objects from a bin.
-		M is the total number of objects, n is total number of Type I objects.
-		The random variate represents the number of Type I objects in N drawn
+		`M` is the total number of objects, `n` is total number of Type I objects.
+		The random variate represents the number of Type I objects in `N` drawn
 		without replacement from the total population.
 		
 		As an instance of the `rv_discrete` class, `hypergeom` object inherits from it
@@ -5279,17 +5399,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(M, n, N, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, M, n, N, loc=0)``
+		``pmf(k, M, n, N, loc=0)``
 		    Probability mass function.
-		``logpmf(x, M, n, N, loc=0)``
+		``logpmf(k, M, n, N, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, M, n, N, loc=0)``
+		``cdf(k, M, n, N, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, M, n, N, loc=0)``
+		``logcdf(k, M, n, N, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, M, n, N, loc=0)``
+		``sf(k, M, n, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, M, n, N, loc=0)``
+		``logsf(k, M, n, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, M, n, N, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -5314,10 +5434,18 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability mass function is defined as::
+		The symbols used to denote the shape parameters (`M`, `n`, and `N`) are not
+		universally accepted.  See the Examples for a clarification of the
+		definitions used here.
 		
-		    pmf(k, M, n, N) = choose(n, k) * choose(M - n, N - k) / choose(M, N),
-		                                   for max(0, N - (M-n)) <= k <= min(n, N)
+		The probability mass function is defined as,
+		
+		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}{\binom{M}{N}}
+		
+		for :math:`k \in [\max(0, N - M + n), \min(n, N)]`, where the binomial
+		coefficients are defined as,
+		
+		.. math:: \binom{n}{k} \equiv \frac{n!}{k! (n - k)!}.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -7390,17 +7518,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, p, loc=0)``
+		``pmf(k, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, p, loc=0)``
+		``logpmf(k, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, p, loc=0)``
+		``cdf(k, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, p, loc=0)``
+		``logcdf(k, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, p, loc=0)``
+		``sf(k, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, p, loc=0)``
+		``logsf(k, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -7932,17 +8060,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -7967,13 +8095,17 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability mass function for `nbinom` is::
+		Negative binomial distribution describes a sequence of i.i.d. Bernoulli 
+		trials, repeated until a predefined, non-random number of successes occurs.
 		
-		     nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
+		The probability mass function of the number of failures for `nbinom` is::
+		
+		   nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
 		
 		for ``k >= 0``.
 		
-		`nbinom` takes ``n`` and ``p`` as shape parameters.
+		`nbinom` takes ``n`` and ``p`` as shape parameters where n is the number of
+		successes, whereas p is the probability of a single success.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -8709,17 +8841,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(lambda_, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, lambda_, loc=0)``
+		``pmf(k, lambda_, loc=0)``
 		    Probability mass function.
-		``logpmf(x, lambda_, loc=0)``
+		``logpmf(k, lambda_, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, lambda_, loc=0)``
+		``cdf(k, lambda_, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, lambda_, loc=0)``
+		``logcdf(k, lambda_, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, lambda_, loc=0)``
+		``sf(k, lambda_, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lambda_, loc=0)``
+		``logsf(k, lambda_, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -8809,17 +8941,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(mu, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu, loc=0)``
+		``pmf(k, mu, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu, loc=0)``
+		``logpmf(k, mu, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu, loc=0)``
+		``cdf(k, mu, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu, loc=0)``
+		``logcdf(k, mu, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu, loc=0)``
+		``sf(k, mu, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu, loc=0)``
+		``logsf(k, mu, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -9239,17 +9371,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(low, high, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, low, high, loc=0)``
+		``pmf(k, low, high, loc=0)``
 		    Probability mass function.
-		``logpmf(x, low, high, loc=0)``
+		``logpmf(k, low, high, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, low, high, loc=0)``
+		``cdf(k, low, high, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, low, high, loc=0)``
+		``logcdf(k, low, high, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, low, high, loc=0)``
+		``sf(k, low, high, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, low, high, loc=0)``
+		``logsf(k, low, high, loc=0)``
 		    Log of the survival function.
 		``ppf(q, low, high, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -9991,17 +10123,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(mu1, mu2, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, mu1, mu2, loc=0)``
+		``pmf(k, mu1, mu2, loc=0)``
 		    Probability mass function.
-		``logpmf(x, mu1, mu2, loc=0)``
+		``logpmf(k, mu1, mu2, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, mu1, mu2, loc=0)``
+		``cdf(k, mu1, mu2, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, mu1, mu2, loc=0)``
+		``logcdf(k, mu1, mu2, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, mu1, mu2, loc=0)``
+		``sf(k, mu1, mu2, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu1, mu2, loc=0)``
+		``logsf(k, mu1, mu2, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu1, mu2, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).
@@ -11642,17 +11774,17 @@ package scipy.stats.distributions;
 		-------
 		``rvs(a, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, a, loc=0)``
+		``pmf(k, a, loc=0)``
 		    Probability mass function.
-		``logpmf(x, a, loc=0)``
+		``logpmf(k, a, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, a, loc=0)``
+		``cdf(k, a, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0)``
+		``logcdf(k, a, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0)``
+		``sf(k, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0)``
+		``logsf(k, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).

@@ -3,6 +3,7 @@ package pandas.compat.numpy._function;
 @:pythonImport("pandas.compat.numpy.function") extern class _Function_Module {
 	static public var ARGMINMAX_DEFAULTS : Dynamic;
 	static public var ARGSORT_DEFAULTS : Dynamic;
+	static public var ARGSORT_DEFAULTS_KIND : Dynamic;
 	static public var CLIP_DEFAULTS : Dynamic;
 	static public var COMPRESS_DEFAULTS : Dynamic;
 	static public var CUM_FUNC_DEFAULTS : Dynamic;
@@ -13,7 +14,6 @@ package pandas.compat.numpy._function;
 	static public var RESHAPE_DEFAULTS : Dynamic;
 	static public var ROUND_DEFAULTS : Dynamic;
 	static public var SORT_DEFAULTS : Dynamic;
-	static public var SQUEEZE_DEFAULTS : Dynamic;
 	static public var STAT_DDOF_FUNC_DEFAULTS : Dynamic;
 	static public var STAT_FUNC_DEFAULTS : Dynamic;
 	static public var TAKE_DEFAULTS : Dynamic;
@@ -120,6 +120,7 @@ package pandas.compat.numpy._function;
 	**/
 	static public function validate_args_and_kwargs(fname:Dynamic, args:Dynamic, kwargs:Dynamic, max_fname_arg_count:Dynamic, compat_args:Dynamic):Dynamic;
 	static public function validate_argsort(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	static public function validate_argsort_kind(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	/**
 		If 'Categorical.argsort' is called via the 'numpy' library, the
 		first parameter in its signature is 'axis', which takes either
@@ -148,11 +149,12 @@ package pandas.compat.numpy._function;
 	static public function validate_cumsum(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_expanding_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		'args' and 'kwargs' should be empty because all of
+		'args' and 'kwargs' should be empty, except for allowed
+		kwargs because all of
 		their necessary parameters are explicitly listed in
 		the function signature
 	**/
-	static public function validate_groupby_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function validate_groupby_func(name:Dynamic, args:Dynamic, kwargs:Dynamic, ?allowed:Dynamic):Dynamic;
 	/**
 		Checks whether parameters passed to the **kwargs argument in a
 		function `fname` are valid parameters as specified in `*compat_args`
@@ -192,7 +194,6 @@ package pandas.compat.numpy._function;
 	static public function validate_rolling_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function validate_round(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_sort(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
-	static public function validate_squeeze(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_stat_ddof_func(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_stat_func(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_sum(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;

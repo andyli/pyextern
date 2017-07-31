@@ -330,7 +330,6 @@ package matplotlib.finance;
 		    added and patches is a list of the rectangle patches added
 	**/
 	static public function candlestick_ohlc(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
-	static public var colorConverter : Dynamic;
 	/**
 		*d* is either a :class:`datetime` instance or a sequence of datetimes.
 		
@@ -697,6 +696,63 @@ package matplotlib.finance;
 	static public var stock_dt_ochl : Dynamic;
 	static public var stock_dt_ohlc : Dynamic;
 	static public var unicode_literals : Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public var verbose : Dynamic;
 	/**
@@ -787,4 +843,53 @@ package matplotlib.finance;
 		    The `barrCollection` added to the axes
 	**/
 	static public function volume_overlay3(ax:Dynamic, quotes:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?width:Dynamic, ?alpha:Dynamic):Dynamic;
+	/**
+		Used to display deprecation warning in a standard way.
+		
+		Parameters
+		----------
+		since : str
+		    The release at which this API became deprecated.
+		
+		message : str, optional
+		    Override the default deprecation message.  The format
+		    specifier `%(func)s` may be used for the name of the function,
+		    and `%(alternative)s` may be used in the deprecation message
+		    to insert the name of an alternative to the deprecated
+		    function.  `%(obj_type)` may be used to insert a friendly name
+		    for the type of object being deprecated.
+		
+		name : str, optional
+		    The name of the deprecated function; if not provided the name
+		    is automatically determined from the passed in function,
+		    though this is useful in the case of renamed functions, where
+		    the new function is just assigned to the name of the
+		    deprecated function.  For example::
+		
+		        def new_function():
+		            ...
+		        oldFunction = new_function
+		
+		alternative : str, optional
+		    An alternative function that the user may use in place of the
+		    deprecated function.  The deprecation warning will tell the user about
+		    this alternative if provided.
+		
+		pending : bool, optional
+		    If True, uses a PendingDeprecationWarning instead of a
+		    DeprecationWarning.
+		
+		obj_type : str, optional
+		    The object type being deprecated.
+		
+		Examples
+		--------
+		
+		    Basic example::
+		
+		        # To warn of the deprecation of "matplotlib.name_of_module"
+		        warn_deprecated('1.4.0', name='matplotlib.name_of_module',
+		                        obj_type='module')
+	**/
+	static public function warn_deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
 }

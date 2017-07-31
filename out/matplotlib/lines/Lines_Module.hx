@@ -2,9 +2,13 @@
 package matplotlib.lines;
 @:pythonImport("matplotlib.lines") extern class Lines_Module {
 	static public var CARETDOWN : Dynamic;
+	static public var CARETDOWNBASE : Dynamic;
 	static public var CARETLEFT : Dynamic;
+	static public var CARETLEFTBASE : Dynamic;
 	static public var CARETRIGHT : Dynamic;
+	static public var CARETRIGHTBASE : Dynamic;
 	static public var CARETUP : Dynamic;
+	static public var CARETUPBASE : Dynamic;
 	static public var TICKDOWN : Dynamic;
 	static public var TICKLEFT : Dynamic;
 	static public var TICKRIGHT : Dynamic;
@@ -18,6 +22,12 @@ package matplotlib.lines;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Convert linestyle -> dash pattern
+		
+		    
+	**/
+	static public function _get_dash_pattern(style:Dynamic):Dynamic;
+	/**
 		Helper function that sorts out how to deal the input
 		`markevery` and returns the points where markers should be drawn.
 		
@@ -25,6 +35,7 @@ package matplotlib.lines;
 		sub-sampled path.
 	**/
 	static public function _mark_every_path(markevery:Dynamic, tpath:Dynamic, affine:Dynamic, ax_transform:Dynamic):Dynamic;
+	static public function _scale_dashes(offset:Dynamic, dashes:Dynamic, lw:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
@@ -34,10 +45,13 @@ package matplotlib.lines;
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	static public var colorConverter : Dynamic;
 	static public var division : Dynamic;
 	static public var drawStyles : Dynamic;
 	static public var fillStyles : Dynamic;
+	/**
+		Returns true if *obj* can be hashed
+	**/
+	static public function is_hashable(obj:Dynamic):Dynamic;
 	/**
 		return true if *obj* looks like a number
 	**/
@@ -52,6 +66,7 @@ package matplotlib.lines;
 	static public function iterable(obj:Dynamic):Dynamic;
 	static public var lineMarkers : Dynamic;
 	static public var lineStyles : Dynamic;
+	static public var ls_mapper : Dynamic;
 	static public var ls_mapper_r : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -149,5 +164,4 @@ package matplotlib.lines;
 	**/
 	static public function segment_hits(cx:Dynamic, cy:Dynamic, x:Dynamic, y:Dynamic, radius:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
-	static public var verbose : Dynamic;
 }

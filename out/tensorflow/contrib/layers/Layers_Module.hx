@@ -2,8 +2,7 @@
 package tensorflow.contrib.layers;
 @:pythonImport("tensorflow.contrib.layers") extern class Layers_Module {
 	static public var OPTIMIZER_CLS_NAMES : Dynamic;
-	static public var OPTIMIZER_SUMMARIES : Dynamic;
-	static public var __all__ : Dynamic;
+	static public var SPARSE_FEATURE_CROSS_DEFAULT_HASH_KEY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,7 +12,7 @@ package tensorflow.contrib.layers;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Returns the summed penalty by applying `regularizer` to the `weights_list`.
 		
@@ -37,14 +36,15 @@ package tensorflow.contrib.layers;
 		      no weights.
 	**/
 	static public function apply_regularization(regularizer:Dynamic, ?weights_list:Dynamic):Dynamic;
-	static public function assert_summary_tag_unique(tag:Dynamic):Dynamic;
 	/**
 		Adds a 2D average pooling op.
 		
 		It is assumed that the pooling is done per image but not in batch or channels.
 		
 		Args:
-		  inputs: A `Tensor` of size [batch_size, height, width, channels].
+		  inputs: A 4-D tensor of shape `[batch_size, height, width, channels]` if
+		    `data_format` is `NHWC`, and `[batch_size, channels, height, width]` if
+		    `data_format` is `NCHW`.
 		  kernel_size: A list of length 2: [kernel_height, kernel_width] of the
 		    pooling kernel over which the op is computed. Can be an int if both
 		    values are the same.
@@ -52,13 +52,17 @@ package tensorflow.contrib.layers;
 		    Can be an int if both strides are the same. Note that presently
 		    both strides must have the same value.
 		  padding: The padding method, either 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
 		  outputs_collections: The collections to which the outputs are added.
-		  scope: Optional scope for op_scope.
+		  scope: Optional scope for name_scope.
 		
 		Returns:
 		  A `Tensor` representing the results of the pooling operation.
+		
+		Raises:
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
 	**/
-	static public function avg_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function avg_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds a Batch Normalization layer from http://arxiv.org/abs/1502.03167.
 		
@@ -69,103 +73,158 @@ package tensorflow.contrib.layers;
 		
 		Can be used as a normalizer function for conv2d and fully_connected.
 		
+		Note: when training, the moving_mean and moving_variance need to be updated.
+		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
+		need to be added as a dependency to the `train_op`. For example:
+		
+		```python
+		  update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+		  with tf.control_dependencies(update_ops):
+		    train_op = optimizer.minimize(loss)
+		```
+		
+		One can set updates_collections=None to force the updates in place, but that
+		can have a speed penalty, especially in distributed settings.
+		
 		Args:
-		  inputs: a tensor of size `[batch_size, height, width, channels]`
-		          or `[batch_size, channels]`.
-		  decay: decay for the moving average.
-		  center: If True, subtract `beta`. If False, `beta` is ignored.
+		  inputs: A tensor with 2 or more dimensions, where the first dimension has
+		    `batch_size`. The normalization is over all but the last dimension if
+		    `data_format` is `NHWC` and the second dimension if `data_format` is
+		    `NCHW`.
+		  decay: Decay for the moving average. Reasonable values for `decay` are close
+		    to 1.0, typically in the multiple-nines range: 0.999, 0.99, 0.9, etc.
+		    Lower `decay` value (recommend trying `decay`=0.9) if model experiences
+		    reasonably good training performance but poor validation and/or test
+		    performance. Try zero_debias_moving_mean=True for improved stability.
+		  center: If True, add offset of `beta` to normalized tensor. If False, `beta`
+		    is ignored.
 		  scale: If True, multiply by `gamma`. If False, `gamma` is
 		    not used. When the next layer is linear (also e.g. `nn.relu`), this can be
 		    disabled since the scaling can be done by the next layer.
-		  epsilon: small float added to variance to avoid dividing by zero.
-		  activation_fn: Optional activation function.
-		  updates_collections: collections to collect the update ops for computation.
+		  epsilon: Small float added to variance to avoid dividing by zero.
+		  activation_fn: Activation function, default set to None to skip it and
+		    maintain a linear activation.
+		  param_initializers: Optional initializers for beta, gamma, moving mean and
+		    moving variance.
+		  param_regularizers: Optional regularizer for beta and gamma.
+		  updates_collections: Collections to collect the update ops for computation.
+		    The updates_ops need to be executed with the train_op.
 		    If None, a control dependency would be added to make sure the updates are
-		    computed.
-		  is_training: whether or not the layer is in training mode. In training mode
+		    computed in place.
+		  is_training: Whether or not the layer is in training mode. In training mode
 		    it would accumulate the statistics of the moments into `moving_mean` and
 		    `moving_variance` using an exponential moving average with the given
 		    `decay`. When it is not in training mode then it would use the values of
 		    the `moving_mean` and the `moving_variance`.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional collections for the variables.
-		  outputs_collections: collections to add the outputs.
+		  variables_collections: Optional collections for the variables.
+		  outputs_collections: Collections to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for `variable_op_scope`.
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  batch_weights: An optional tensor of shape `[batch_size]`,
+		    containing a frequency weight for each batch item. If present,
+		    then the batch normalization uses weighted mean and
+		    variance. (This can be used to correct for bias in training
+		    example selection.)
+		  fused:  Use nn.fused_batch_norm if True, nn.batch_normalization otherwise.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
+		  zero_debias_moving_mean: Use zero_debias for moving_mean. It creates a new
+		    pair of variables 'moving_mean/biased' and 'moving_mean/local_step'.
+		  scope: Optional scope for `variable_scope`.
+		  renorm: Whether to use Batch Renormalization
+		    (https://arxiv.org/abs/1702.03275). This adds extra variables during
+		    training. The inference is the same for either value of this parameter.
+		  renorm_clipping: A dictionary that may map keys 'rmax', 'rmin', 'dmax' to
+		    scalar `Tensors` used to clip the renorm correction. The correction
+		    `(r, d)` is used as `corrected_value = normalized_value * r + d`, with
+		    `r` clipped to [rmin, rmax], and `d` to [-dmax, dmax]. Missing rmax, rmin,
+		    dmax are set to inf, 0, inf, respectively.
+		  renorm_decay: Momentum used to update the moving means and standard
+		    deviations with renorm. Unlike `momentum`, this affects training
+		    and should be neither too small (which would add noise) nor too large
+		    (which would give stale estimates). Note that `decay` is still applied
+		    to get the means and variances for inference.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
 		
 		Raises:
-		  ValueError: if rank or last dimension of `inputs` is undefined.
+		  ValueError: If `batch_weights` is not None and `fused` is True.
+		  ValueError: If `param_regularizers` is not None and `fused` is True.
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
+		  ValueError: If the rank of `inputs` is undefined.
+		  ValueError: If rank or channels dimension of `inputs` is undefined.
 	**/
-	static public function batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?param_initializers:Dynamic, ?param_regularizers:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?batch_weights:Dynamic, ?fused:Dynamic, ?data_format:Dynamic, ?zero_debias_moving_mean:Dynamic, ?scope:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_decay:Dynamic):Dynamic;
 	/**
 		Adds a bias to the inputs.
 		
 		Can be used as a normalizer function for conv2d and fully_connected.
 		
 		Args:
-		  inputs: a tensor of with at least rank 2 and value for the last dimension,
+		  inputs: A tensor of with at least rank 2 and value for the last dimension,
 		    e.g. `[batch_size, depth]`, `[None, None, None, depth]`.
-		  activation_fn: Optional activation function.
+		  activation_fn: Activation function, default set to None to skip it and
+		    maintain a linear activation.
 		  initializer: An initializer for the bias, defaults to 0.
 		  regularizer: A regularizer like the result of
 		    `l1_regularizer` or `l2_regularizer`.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional collections for the variables.
-		  outputs_collections: collections to add the outputs.
+		  variables_collections: Optional collections for the variables.
+		  outputs_collections: Collections to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for variable_op_scope.
+		  data_format: A string. 'NHWC' and 'NCHW' are supported.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  a tensor representing the result of adding biases to the inputs.
-	**/
-	static public function bias_add(inputs:Dynamic, ?activation_fn:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Creates a _TargetColumn for binary classification with SVMs.
-		
-		The target column uses binary hinge loss.
-		
-		Args:
-		  label_name: String, name of the key in label dict. Can be null if label
-		    is a tensor (single headed models).
-		  weight_column_name: A string defining feature column name representing
-		    weights. It is used to down weight or boost examples during training. It
-		    will be multiplied by the loss of the example.
-		
-		Returns:
-		  An instance of _TargetColumn.
-	**/
-	static public function binary_svm_target(?label_name:Dynamic, ?weight_column_name:Dynamic):Dynamic;
-	/**
-		Bucketizes input_tensor by given boundaries.
-		
-		See bucketize_op.cc for more details.
-		
-		Args:
-		  input_tensor: A `Tensor` which will be bucketize.
-		  boundaries: A list of floats gives the boundaries. It has to be sorted.
-		  name: A name prefix for the returned tensors (optional).
-		
-		Returns:
-		  A `Tensor` with type int32 which indicates the corresponding bucket for
-		    each value in `input_tensor`.
+		  A tensor representing the result of adding biases to the inputs.
 		
 		Raises:
-		  TypeError: If boundaries is not a list.
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
+		  ValueError: If `data_format` is `NCHW` and rank of `inputs` is not 4.
+		  ValueError: If the rank of `inputs` is undefined.
+		  ValueError: If rank or `C` dimension of `inputs` is undefined.
 	**/
-	static public function bucketize(input_tensor:Dynamic, boundaries:Dynamic, ?name:Dynamic):Dynamic;
+	static public function bias_add(inputs:Dynamic, ?activation_fn:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?data_format:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a _BucketizedColumn.
+		Maps a sequence of symbols to a vector per example by averaging embeddings.
+		
+		Args:
+		  ids: `[batch_size, doc_length]` `Tensor` or `SparseTensor` of type
+		    `int32` or `int64` with symbol ids.
+		  vocab_size: Integer number of symbols in vocabulary.
+		  embed_dim: Integer number of dimensions for embedding matrix.
+		  sparse_lookup: `bool`, if `True`, converts ids to a `SparseTensor`
+		      and performs a sparse embedding lookup. This is usually faster,
+		      but not desirable if padding tokens should have an embedding. Empty rows
+		      are assigned a special embedding.
+		  initializer: An initializer for the embeddings, if `None` default for
+		      current scope is used.
+		  regularizer: Optional regularizer for the embeddings.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional string specifying the variable scope for the op, required
+		      if `reuse=True`.
+		  reuse: If `True`, variables inside the op will be reused.
+		
+		Returns:
+		  Encoding `Tensor` `[batch_size, embed_dim]` produced by
+		  averaging embeddings.
+		
+		Raises:
+		  ValueError: If `embed_dim` or `vocab_size` are not specified.
+	**/
+	static public function bow_encoder(ids:Dynamic, vocab_size:Dynamic, embed_dim:Dynamic, ?sparse_lookup:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?scope:Dynamic, ?reuse:Dynamic):Dynamic;
+	/**
+		Creates a _BucketizedColumn for discretizing dense input.
 		
 		Args:
 		  source_column: A _RealValuedColumn defining dense column.
-		  boundaries: A list of floats specifying the boundaries. It has to be sorted.
+		  boundaries: A list or tuple of floats specifying the boundaries. It has to
+		    be sorted.
 		
 		Returns:
 		  A _BucketizedColumn.
@@ -178,63 +237,83 @@ package tensorflow.contrib.layers;
 		Checks the validity of the set of FeatureColumns.
 		
 		Args:
-		  feature_columns: A set of instances or subclasses of FeatureColumn.
+		  feature_columns: An iterable of instances or subclasses of FeatureColumn.
 		
 		Raises:
+		  ValueError: If `feature_columns` is a dict.
 		  ValueError: If there are duplicate feature column keys.
 	**/
 	static public function check_feature_columns(feature_columns:Dynamic):Dynamic;
 	/**
-		Adds a 2D convolution followed by an optional batch_norm layer.
+		Adds an N-D convolution followed by an optional batch_norm layer.
 		
-		`convolution2d` creates a variable called `weights`, representing the
-		convolutional kernel, that is convolved with the `inputs` to produce a
-		`Tensor` of activations. If a `normalizer_fn` is provided (such as
-		`batch_norm`), it is then applied. Otherwise, if `normalizer_fn` is
-		None and a `biases_initializer` is provided then a `biases` variable would be
-		created and added the activations. Finally, if `activation_fn` is not `None`,
-		it is applied to the activations as well.
+		It is required that 1 <= N <= 3.
 		
-		Performs a'trous convolution with input stride equal to rate if rate is
-		greater than one.
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
 		
 		Args:
-		  inputs: a 4-D tensor  `[batch_size, height, width, channels]`.
-		  num_outputs: integer, the number of output filters.
-		  kernel_size: a list of length 2 `[kernel_height, kernel_width]` of
-		    of the filters. Can be an int if both values are the same.
-		  stride: a list of length 2 `[stride_height, stride_width]`.
-		    Can be an int if both strides are the same. Note that presently
-		    both strides must have the same value.
-		  padding: one of `VALID` or `SAME`.
-		  rate: integer. If less than or equal to 1, a standard convolution is used.
-		    If greater than 1, than the a'trous convolution is applied and `stride`
-		    must be set to 1.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for `variable_op_scope`.
+		  scope: Optional scope for `variable_scope`.
 		
 		Returns:
-		  a tensor representing the output of the operation.
+		  A tensor representing the output of the operation.
 		
 		Raises:
-		  ValueError: if both 'rate' and `stride` are larger than one.
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
 	**/
-	static public function conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Performs the same in-plane convolution to each channel independently.
 		
@@ -250,30 +329,32 @@ package tensorflow.contrib.layers;
 		                                          kernel_size=[1, 2])
 		
 		Args:
-		  inputs: a 4-D tensor with dimensions [batch_size, height, width, channels].
-		  kernel_size: a list of length 2 holding the [kernel_height, kernel_width] of
+		  inputs: A 4-D tensor with dimensions [batch_size, height, width, channels].
+		  kernel_size: A list of length 2 holding the [kernel_height, kernel_width] of
 		    of the pooling. Can be an int if both values are the same.
-		  stride: a list of length 2 `[stride_height, stride_width]`.
+		  stride: A list of length 2 `[stride_height, stride_width]`.
 		    Can be an int if both strides are the same. Note that presently
 		    both strides must have the same value.
-		  padding: the padding type to use, either 'SAME' or 'VALID'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: The padding type to use, either 'SAME' or 'VALID'.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for `variable_op_scope`.
+		  scope: Optional scope for `variable_scope`.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
@@ -283,93 +364,119 @@ package tensorflow.contrib.layers;
 		Adds a convolution2d_transpose with an optional batch normalization layer.
 		
 		The function creates a variable called `weights`, representing the
-		kernel, that is convolved with the input. If `batch_norm_params` is `None`, a
+		kernel, that is convolved with the input. If `normalizer_fn` is `None`, a
 		second variable called 'biases' is added to the result of the operation.
 		
 		Args:
-		  inputs: a tensor of size [batch_size, height, width, channels].
-		  num_outputs: integer, the number of output filters.
-		  kernel_size: a list of length 2 holding the [kernel_height, kernel_width] of
+		  inputs: A 4-D `Tensor` of type `float` and shape
+		    `[batch, height, width, in_channels]` for `NHWC` data format or
+		    `[batch, in_channels, height, width]` for `NCHW` data format.
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A list of length 2 holding the [kernel_height, kernel_width] of
 		    of the filters. Can be an int if both values are the same.
-		  stride: a list of length 2: [stride_height, stride_width].
+		  stride: A list of length 2: [stride_height, stride_width].
 		    Can be an int if both strides are the same.  Note that presently
 		    both strides must have the same value.
-		  padding: one of 'VALID' or 'SAME'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
-		  trainable: whether or not the variables should be trainable or not.
-		  scope: Optional scope for variable_op_scope.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  a tensor representing the output of the operation.
+		  A tensor representing the output of the operation.
 		
 		Raises:
-		  ValueError: if 'kernel_size' is not a list of length 2.
+		  ValueError: If 'kernel_size' is not a list of length 2.
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
+		  ValueError: If `C` dimension of `inputs` is None.
 	**/
-	static public function conv2d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function conv2d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Adds a 2D convolution followed by an optional batch_norm layer.
+		Adds an N-D convolution followed by an optional batch_norm layer.
 		
-		`convolution2d` creates a variable called `weights`, representing the
-		convolutional kernel, that is convolved with the `inputs` to produce a
-		`Tensor` of activations. If a `normalizer_fn` is provided (such as
-		`batch_norm`), it is then applied. Otherwise, if `normalizer_fn` is
-		None and a `biases_initializer` is provided then a `biases` variable would be
-		created and added the activations. Finally, if `activation_fn` is not `None`,
-		it is applied to the activations as well.
+		It is required that 1 <= N <= 3.
 		
-		Performs a'trous convolution with input stride equal to rate if rate is
-		greater than one.
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
 		
 		Args:
-		  inputs: a 4-D tensor  `[batch_size, height, width, channels]`.
-		  num_outputs: integer, the number of output filters.
-		  kernel_size: a list of length 2 `[kernel_height, kernel_width]` of
-		    of the filters. Can be an int if both values are the same.
-		  stride: a list of length 2 `[stride_height, stride_width]`.
-		    Can be an int if both strides are the same. Note that presently
-		    both strides must have the same value.
-		  padding: one of `VALID` or `SAME`.
-		  rate: integer. If less than or equal to 1, a standard convolution is used.
-		    If greater than 1, than the a'trous convolution is applied and `stride`
-		    must be set to 1.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for `variable_op_scope`.
+		  scope: Optional scope for `variable_scope`.
 		
 		Returns:
-		  a tensor representing the output of the operation.
+		  A tensor representing the output of the operation.
 		
 		Raises:
-		  ValueError: if both 'rate' and `stride` are larger than one.
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
 	**/
-	static public function convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Performs the same in-plane convolution to each channel independently.
 		
@@ -385,30 +492,32 @@ package tensorflow.contrib.layers;
 		                                          kernel_size=[1, 2])
 		
 		Args:
-		  inputs: a 4-D tensor with dimensions [batch_size, height, width, channels].
-		  kernel_size: a list of length 2 holding the [kernel_height, kernel_width] of
+		  inputs: A 4-D tensor with dimensions [batch_size, height, width, channels].
+		  kernel_size: A list of length 2 holding the [kernel_height, kernel_width] of
 		    of the pooling. Can be an int if both values are the same.
-		  stride: a list of length 2 `[stride_height, stride_width]`.
+		  stride: A list of length 2 `[stride_height, stride_width]`.
 		    Can be an int if both strides are the same. Note that presently
 		    both strides must have the same value.
-		  padding: the padding type to use, either 'SAME' or 'VALID'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: The padding type to use, either 'SAME' or 'VALID'.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for `variable_op_scope`.
+		  scope: Optional scope for `variable_scope`.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
@@ -418,42 +527,49 @@ package tensorflow.contrib.layers;
 		Adds a convolution2d_transpose with an optional batch normalization layer.
 		
 		The function creates a variable called `weights`, representing the
-		kernel, that is convolved with the input. If `batch_norm_params` is `None`, a
+		kernel, that is convolved with the input. If `normalizer_fn` is `None`, a
 		second variable called 'biases' is added to the result of the operation.
 		
 		Args:
-		  inputs: a tensor of size [batch_size, height, width, channels].
-		  num_outputs: integer, the number of output filters.
-		  kernel_size: a list of length 2 holding the [kernel_height, kernel_width] of
+		  inputs: A 4-D `Tensor` of type `float` and shape
+		    `[batch, height, width, in_channels]` for `NHWC` data format or
+		    `[batch, in_channels, height, width]` for `NCHW` data format.
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A list of length 2 holding the [kernel_height, kernel_width] of
 		    of the filters. Can be an int if both values are the same.
-		  stride: a list of length 2: [stride_height, stride_width].
+		  stride: A list of length 2: [stride_height, stride_width].
 		    Can be an int if both strides are the same.  Note that presently
 		    both strides must have the same value.
-		  padding: one of 'VALID' or 'SAME'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
-		  trainable: whether or not the variables should be trainable or not.
-		  scope: Optional scope for variable_op_scope.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  a tensor representing the output of the operation.
+		  A tensor representing the output of the operation.
 		
 		Raises:
-		  ValueError: if 'kernel_size' is not a list of length 2.
+		  ValueError: If 'kernel_size' is not a list of length 2.
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
+		  ValueError: If `C` dimension of `inputs` is None.
 	**/
-	static public function convolution2d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function convolution2d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Helper that prepares features config from input feature_columns.
 		
@@ -463,44 +579,60 @@ package tensorflow.contrib.layers;
 		
 		```python
 		# Define features and transformations
-		country = sparse_column_with_vocabulary_file("country", VOCAB_FILE)
-		age = real_valued_column("age")
-		click_bucket = bucketized_column(real_valued_column("historical_click_ratio"),
-		                                 boundaries=[i/10. for i in range(10)])
-		country_x_click = crossed_column([country, click_bucket], 10)
+		feature_a = sparse_column_with_vocabulary_file(...)
+		feature_b = real_valued_column(...)
+		feature_c_bucketized = bucketized_column(real_valued_column("feature_c"), ...)
+		feature_a_x_feature_c = crossed_column(
+		  columns=[feature_a, feature_c_bucketized], ...)
 		
-		feature_columns = set([age, click_bucket, country_x_click])
+		feature_columns = set(
+		  [feature_b, feature_c_bucketized, feature_a_x_feature_c])
 		batch_examples = tf.parse_example(
-		    serialized_examples,
-		    create_feature_spec_for_parsing(feature_columns))
+		    serialized=serialized_examples,
+		    features=create_feature_spec_for_parsing(feature_columns))
 		```
 		
 		For the above example, create_feature_spec_for_parsing would return the dict:
-		{"age": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
-		 "historical_click_ratio": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
-		 "country": parsing_ops.VarLenFeature(tf.string)}
+		{
+		  "feature_a": parsing_ops.VarLenFeature(tf.string),
+		  "feature_b": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
+		  "feature_c": parsing_ops.FixedLenFeature([1], dtype=tf.float32)
+		}
 		
 		Args:
 		  feature_columns: An iterable containing all the feature columns. All items
-		    should be instances of classes derived from _FeatureColumn.
+		    should be instances of classes derived from _FeatureColumn, unless
+		    feature_columns is a dict -- in which case, this should be true of all
+		    values in the dict.
 		Returns:
 		  A dict mapping feature keys to FixedLenFeature or VarLenFeature values.
 	**/
 	static public function create_feature_spec_for_parsing(feature_columns:Dynamic):Dynamic;
 	/**
-		Creates a _CrossedColumn.
+		Creates a _CrossedColumn for performing feature crosses.
 		
 		Args:
 		  columns: An iterable of _FeatureColumn. Items can be an instance of
 		    _SparseColumn, _CrossedColumn, or _BucketizedColumn.
 		  hash_bucket_size: An int that is > 1. The number of buckets.
-		  combiner: A combiner string, supports sum, mean, sqrtn.
+		  combiner: A string specifying how to reduce if there are multiple entries
+		    in a single row. Currently "mean", "sqrtn" and "sum" are supported, with
+		    "sum" the default. "sqrtn" often achieves good accuracy, in particular
+		    with bag-of-words columns. Each of this can be thought as example level
+		    normalizations on the column::
+		      * "sum": do not normalize
+		      * "mean": do l1 normalization
+		      * "sqrtn": do l2 normalization
+		    For more information: `tf.embedding_lookup_sparse`.
 		  ckpt_to_load_from: (Optional). String representing checkpoint name/pattern
 		    to restore the column weights. Required if `tensor_name_in_ckpt` is not
 		    None.
 		  tensor_name_in_ckpt: (Optional). Name of the `Tensor` in the provided
 		    checkpoint from which to restore the column weights. Required if
 		    `ckpt_to_load_from` is not None.
+		  hash_key: Specify the hash_key that will be used by the `FingerprintCat64`
+		    function to combine the crosses fingerprints on SparseFeatureCrossOp
+		    (optional).
 		
 		Returns:
 		  A _CrossedColumn.
@@ -512,8 +644,7 @@ package tensorflow.contrib.layers;
 		  ValueError: if hash_bucket_size is not > 1 or
 		    len(columns) is not > 1.
 	**/
-	static public function crossed_column(columns:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	static public function crossed_column(columns:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?hash_key:Dynamic):Dynamic;
 	/**
 		Returns a dropout op applied to the input.
 		
@@ -522,7 +653,7 @@ package tensorflow.contrib.layers;
 		sum is unchanged.
 		
 		Args:
-		  inputs: the tensor to pass to the nn.dropout op.
+		  inputs: The tensor to pass to the nn.dropout op.
 		  keep_prob: A scalar `Tensor` with the same type as x. The probability
 		    that each element is kept.
 		  noise_shape: A 1-D `Tensor` of type `int32`, representing the
@@ -530,24 +661,56 @@ package tensorflow.contrib.layers;
 		  is_training: A bool `Tensor` indicating whether or not the model
 		    is in training mode. If so, dropout is applied and values scaled.
 		    Otherwise, inputs is returned.
-		  outputs_collections: collection to add the outputs.
-		  scope: Optional scope for op_scope.
+		  outputs_collections: Collection to add the outputs.
+		  scope: Optional scope for name_scope.
 		
 		Returns:
-		  a tensor representing the output of the operation.
+		  A tensor representing the output of the operation.
 	**/
 	static public function dropout(inputs:Dynamic, ?keep_prob:Dynamic, ?noise_shape:Dynamic, ?is_training:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function elu(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates an _EmbeddingColumn.
+		Maps a sequence of symbols to a sequence of embeddings.
+		
+		Typical use case would be reusing embeddings between an encoder and decoder.
 		
 		Args:
-		  sparse_id_column: A _SparseColumn which is created by `sparse_column_with_*`
-		    or crossed_column functions. Note that `combiner` defined in
-		    `sparse_id_column` is ignored.
+		  ids: `[batch_size, doc_length]` `Tensor` of type `int32` or `int64`
+		    with symbol ids.
+		  vocab_size: Integer number of symbols in vocabulary.
+		  embed_dim: Integer number of dimensions for embedding matrix.
+		  unique: If `True`, will first compute the unique set of indices, and then
+		       lookup each embedding once, repeating them in the output as needed.
+		  initializer: An initializer for the embeddings, if `None` default for
+		      current scope is used.
+		  regularizer: Optional regularizer for the embeddings.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  scope: Optional string specifying the variable scope for the op, required
+		      if `reuse=True`.
+		  reuse: If `True`, variables inside the op will be reused.
+		
+		Returns:
+		  `Tensor` of `[batch_size, doc_length, embed_dim]` with embedded sequences.
+		
+		Raises:
+		  ValueError: if `embed_dim` or `vocab_size` are not specified when
+		    `reuse` is `None` or `False`.
+	**/
+	static public function embed_sequence(ids:Dynamic, ?vocab_size:Dynamic, ?embed_dim:Dynamic, ?unique:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?scope:Dynamic, ?reuse:Dynamic):Dynamic;
+	/**
+		Creates an `_EmbeddingColumn` for feeding sparse data into a DNN.
+		
+		Args:
+		  sparse_id_column: A `_SparseColumn` which is created by for example
+		    `sparse_column_with_*` or crossed_column functions. Note that `combiner`
+		    defined in `sparse_id_column` is ignored.
 		  dimension: An integer specifying dimension of the embedding.
 		  combiner: A string specifying how to reduce if there are multiple entries
-		    in a single row. Currently "mean", "sqrtn" and "sum" are supported. Each
-		    of this can be thought as example level normalizations on the column:
+		    in a single row. Currently "mean", "sqrtn" and "sum" are supported, with
+		    "mean" the default. "sqrtn" often achieves good accuracy, in particular
+		    with bag-of-words columns. Each of this can be thought as example level
+		    normalizations on the column:
 		      * "sum": do not normalize
 		      * "mean": do l1 normalization
 		      * "sqrtn": do l2 normalization
@@ -562,25 +725,50 @@ package tensorflow.contrib.layers;
 		  tensor_name_in_ckpt: (Optional). Name of the `Tensor` in the provided
 		    checkpoint from which to restore the column weights. Required if
 		    `ckpt_to_load_from` is not None.
+		  max_norm: (Optional). If not None, embedding values are l2-normalized to
+		    the value of max_norm.
+		  trainable: (Optional). Should the embedding be trainable. Default is True
 		
 		Returns:
-		  An _EmbeddingColumn.
+		  An `_EmbeddingColumn`.
 	**/
-	static public function embedding_column(sparse_id_column:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic):Dynamic;
+	static public function embedding_column(sparse_id_column:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?max_norm:Dynamic, ?trainable:Dynamic):Dynamic;
+	/**
+		Version of embedding_lookup that avoids duplicate lookups.
+		
+		This can save communication in the case of repeated ids.
+		Same interface as embedding_lookup. Except it supports multi-dimensional `ids`
+		which allows to not reshape input/output to fit gather.
+		
+		Args:
+		  params: A list of tensors with the same shape and type, or a
+		    `PartitionedVariable`. Shape `[index, d1, d2, ...]`.
+		  ids: A one-dimensional `Tensor` with type `int32` or `int64` containing
+		    the ids to be looked up in `params`. Shape `[ids1, ids2, ...]`.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  A `Tensor` with the same type as the tensors in `params` and dimension of
+		  `[ids1, ids2, d1, d2, ...]`.
+		
+		Raises:
+		  ValueError: If `params` is empty.
+	**/
+	static public function embedding_lookup_unique(params:Dynamic, ids:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Flattens the input while maintaining the batch_size.
 		
 		  Assumes that the first dimension represents the batch.
 		
 		Args:
-		  inputs: a tensor of size [batch_size, ...].
-		  outputs_collections: collection to add the outputs.
-		  scope: Optional scope for op_scope.
+		  inputs: A tensor of size [batch_size, ...].
+		  outputs_collections: Collection to add the outputs.
+		  scope: Optional scope for name_scope.
 		
 		Returns:
-		  a flattened tensor with shape [batch_size, k].
+		  A flattened tensor with shape [batch_size, k].
 		Raises:
-		  ValueError: if inputs.shape is wrong.
+		  ValueError: If inputs rank is unknown or less than 2.
 	**/
 	static public function flatten(inputs:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
@@ -598,131 +786,39 @@ package tensorflow.contrib.layers;
 		prior to the initial matrix multiply by `weights`.
 		
 		Args:
-		  inputs: A tensor of with at least rank 2 and value for the last dimension,
+		  inputs: A tensor of at least rank 2 and static value for the last dimension;
 		    i.e. `[batch_size, depth]`, `[None, None, None, channels]`.
-		  num_outputs: Integer, the number of output units in the layer.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  num_outputs: Integer or long, the number of output units in the layer.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
 		  variables_collections: Optional list of collections for all the variables or
 		    a dictionary containing a different list of collections per variable.
-		  outputs_collections: collection to add the outputs.
+		  outputs_collections: Collection to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for variable_op_scope.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		   the tensor variable representing the result of the series of operations.
+		   The tensor variable representing the result of the series of operations.
 		
 		Raises:
-		  ValueError: if x has rank less than 2 or if its last dimension is not set.
+		  ValueError: If x has rank less than 2 or if its last dimension is not set.
 	**/
 	static public function fully_connected(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Creates an embedding column of a sparse feature using parameter hashing.
-		
-		The i-th embedding component of a value v is found by retrieving an
-		embedding weight whose index is a fingerprint of the pair (v,i).
-		
-		Args:
-		  column_name: A string defining sparse column name.
-		  size: An integer specifying the number of parameters in the embedding layer.
-		  dimension: An integer specifying dimension of the embedding.
-		  combiner: A string specifying how to reduce if there are multiple entries
-		    in a single row. Currently "mean", "sqrtn" and "sum" are supported. Each
-		    of this can be thought as example level normalizations on the column:
-		      * "sum": do not normalize features in the column
-		      * "mean": do l1 normalization on features in the column
-		      * "sqrtn": do l2 normalization on features in the column
-		    For more information: `tf.embedding_lookup_sparse`.
-		  initializer: A variable initializer function to be used in embedding
-		    variable initialization. If not specified, defaults to
-		    `tf.truncated_normal_initializer` with mean 0 and standard deviation 0.1.
-		
-		Returns:
-		  A _HashedEmbeddingColumn.
-		
-		Raises:
-		  ValueError: if dimension or size is not a positive integer; or if combiner
-		    is not supported.
-	**/
-	static public function hashed_embedding_column(column_name:Dynamic, size:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic):Dynamic;
-	/**
-		Looks up embeddings using parameter hashing for each value in `values`.
-		
-		The i-th embedding component of a value v in `values` is found by retrieving
-		the weight whose index is a fingerprint of the pair (v,i).
-		The concept is explored as "feature hashing" for model compression in this
-		paper: http://arxiv.org/pdf/1504.04788.pdf
-		
-		Feature hashing has the pleasant effect of allowing us to compute an embedding
-		without needing a pre-determined vocabulary, relieving some amount of process
-		complexity. It also allows for us to maintain embeddings for possibly
-		trillions of features with a fixed amount of memory.
-		
-		Note that this is superior to out-of-vocabulary shared "hash buckets" in that
-		the embedding is extremely likely to be unique for each token as opposed to
-		being shared across probably-colliding tokens. The price is that we must
-		compute a hash once for each scalar in the token's embedding as opposed to
-		once per token.
-		
-		If `params` is a list, it represents a partition of the embedding parameters.
-		Each tensor in the list should have the same length, except for the first ones
-		which may have an additional element. For instance 10 parameters can be
-		partitioned in 4 tensors with length `[3, 3, 2, 2]`.
-		
-		Args:
-		  params: A `Tensor` or `list` of `Tensors`.
-		    Each tensor must be of rank 1 with fully-defined shape.
-		  values: `Tensor` of values to be embedded.
-		  dimension: Embedding dimension
-		  name: An optional name for this op.
-		
-		Returns:
-		  A tensor with shape [d0, ..., dn, dimension]
-		    with shape(values) = [d0, ..., dn]
-		
-		Raises:
-		  ValueError: if dimension is not positive or the partition size is invalid.
-	**/
-	static public function hashed_embedding_lookup(params:Dynamic, values:Dynamic, dimension:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Looks up embeddings of a sparse feature using parameter hashing.
-		
-		See `tf.contrib.layers.hashed_embedding_lookup` for embedding with hashing.
-		
-		Args:
-		  params: A `Tensor` or `list` of `Tensors`.
-		    Each tensor must be of rank 1 with fully-defined shape.
-		  sparse_values: A 2-D `SparseTensor` containing the values to be embedded.
-		    Some rows may be empty.
-		  dimension: Embedding dimension
-		  combiner: A string specifying how to combine embedding results for each
-		      entry. Currently "mean", "sqrtn" and "sum" are supported, with "mean"
-		      the default.
-		  default_value: The value to use for an entry with no features.
-		  name: An optional name for this op.
-		
-		Returns:
-		   Dense tensor with shape [N, dimension] with N the number of rows in
-		     sparse_values.
-		
-		Raises:
-		  TypeError: If sparse_values is not a SparseTensor.
-		  ValueError: If combiner is not one of {"mean", "sqrtn", "sum"}.
-	**/
-	static public function hashed_embedding_lookup_sparse(params:Dynamic, sparse_values:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?default_value:Dynamic, ?name:Dynamic):Dynamic;
 	static public function infer_real_valued_columns(features:Dynamic):Dynamic;
 	/**
-		A tf.contrib.layer style input layer builder based on FeatureColumns.
+		A tf.contrib.layers style input layer builder based on FeatureColumns.
 		
 		Generally a single example in training data is described with feature columns.
 		At the first layer of the model, this column oriented data should be converted
@@ -730,42 +826,42 @@ package tensorflow.contrib.layers;
 		during this conversion. For example sparse features need a totally different
 		handling than continuous features.
 		
-		An example usage of input_from_feature_columns is as follows:
+		Example:
 		
+		```python
 		  # Building model for training
 		  columns_to_tensor = tf.parse_example(...)
 		  first_layer = input_from_feature_columns(
 		      columns_to_tensors=columns_to_tensor,
 		      feature_columns=feature_columns)
-		  second_layer = fully_connected(first_layer, ...)
+		  second_layer = fully_connected(inputs=first_layer, ...)
 		  ...
+		```
 		
-		  where feature_columns can be defined as follows:
+		where feature_columns can be defined as follows:
 		
-		  occupation = sparse_column_with_hash_bucket(column_name="occupation",
-		                                            hash_bucket_size=1000)
-		  occupation_emb = embedding_column(sparse_id_column=occupation, dimension=16,
-		                                   combiner="sum")
-		  age = real_valued_column("age")
-		  age_buckets = bucketized_column(
-		      source_column=age,
-		      boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
-		  occupation_x_age = crossed_column(columns=[occupation, age_buckets],
-		                                    hash_bucket_size=10000)
+		```python
+		  sparse_feature = sparse_column_with_hash_bucket(
+		      column_name="sparse_col", ...)
+		  sparse_feature_emb = embedding_column(sparse_id_column=sparse_feature, ...)
+		  real_valued_feature = real_valued_column(...)
+		  real_valued_buckets = bucketized_column(
+		      source_column=real_valued_feature, ...)
 		
-		  feature_columns=[occupation_emb, occupation_x_age]
+		  feature_columns=[sparse_feature_emb, real_valued_buckets]
+		```
 		
 		Args:
 		  columns_to_tensors: A mapping from feature column to tensors. 'string' key
 		    means a base feature (not-transformed). It can have FeatureColumn as a
 		    key too. That means that FeatureColumn is already transformed by input
-		    pipeline. For example, `inflow` may have handled transformations.
+		    pipeline.
 		  feature_columns: A set containing all the feature columns. All items in the
 		    set should be instances of classes derived by FeatureColumn.
 		  weight_collections: List of graph collections to which weights are added.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope for variable_op_scope.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
 		  A Tensor which can be consumed by hidden layers in the neural network.
@@ -775,31 +871,35 @@ package tensorflow.contrib.layers;
 	**/
 	static public function input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Checks if a summary tag is unique.
+		A restricted linear prediction builder based on FeatureColumns.
+		
+		As long as all feature columns are unweighted sparse columns this computes the
+		prediction of a linear model which stores all weights in a single variable.
 		
 		Args:
-		  tag: The tag to use
+		  columns_to_tensors: A mapping from feature column to tensors. 'string' key
+		    means a base feature (not-transformed). It can have FeatureColumn as a
+		    key too. That means that FeatureColumn is already transformed by input
+		    pipeline. For example, `inflow` may have handled transformations.
+		  feature_columns: A set containing all the feature columns. All items in the
+		    set should be instances of classes derived from FeatureColumn.
+		  num_outputs: An integer specifying number of outputs. Default value is 1.
+		  weight_collections: List of graph collections to which weights are added.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  True if the summary tag is unique.
-	**/
-	static public function is_summary_tag_unique(tag:Dynamic):Dynamic;
-	/**
-		Returns a function that can be used to apply L1 L2 regularizations.
+		  A tuple containing:
 		
-		Args:
-		  scale_l1: A scalar multiplier `Tensor` for L1 regularization.
-		  scale_l2: A scalar multiplier `Tensor` for L2 regularization.
-		  scope: An optional op_scope name.
-		
-		Returns:
-		  A function with signature `l1_l2(weights)` that applies a weighted sum of
-		  L1 L2  regularization.
+		  * A Tensor which represents predictions of a linear model.
+		  * A list of Variables storing the weights.
+		  * A Variable which is used for bias.
 		
 		Raises:
-		  ValueError: If scale is negative or if scale is not a float.
+		  ValueError: if FeatureColumn cannot be used for linear predictions.
 	**/
-	static public function l1_l2_regularizer(?scale_l1:Dynamic, ?scale_l2:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function joint_weighted_sum_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, num_outputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Returns a function that can be used to apply L1 regularization to weights.
 		
@@ -807,7 +907,7 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  scale: A scalar multiplier `Tensor`. 0.0 disables the regularizer.
-		  scope: An optional op_scope name.
+		  scope: An optional scope name.
 		
 		Returns:
 		  A function with signature `l1(weights)` that apply L1 regularization.
@@ -823,7 +923,7 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  scale: A scalar multiplier `Tensor`. 0.0 disables the regularizer.
-		  scope: An optional op_scope name.
+		  scope: An optional scope name.
 		
 		Returns:
 		  A function with signature `l2(weights)` that applies L2 regularization.
@@ -832,6 +932,40 @@ package tensorflow.contrib.layers;
 		  ValueError: If scale is negative or if scale is not a float.
 	**/
 	static public function l2_regularizer(scale:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a Layer Normalization layer from https://arxiv.org/abs/1607.06450.
+		
+		  "Layer Normalization"
+		
+		  Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
+		
+		Can be used as a normalizer function for conv2d and fully_connected.
+		
+		Args:
+		  inputs: A tensor with 2 or more dimensions. The normalization
+		          occurs over all but the first dimension.
+		  center: If True, add offset of `beta` to normalized tensor. If False, `beta`
+		    is ignored.
+		  scale: If True, multiply by `gamma`. If False, `gamma` is
+		    not used. When the next layer is linear (also e.g. `nn.relu`), this can be
+		    disabled since the scaling can be done by the next layer.
+		  activation_fn: Activation function, default set to None to skip it and
+		    maintain a linear activation.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional collections for the variables.
+		  outputs_collections: Collections to add the outputs.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for `variable_scope`.
+		
+		Returns:
+		  A `Tensor` representing the output of the operation.
+		
+		Raises:
+		  ValueError: If rank or last dimension of `inputs` is undefined.
+	**/
+	static public function layer_norm(inputs:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?activation_fn:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds the parameters for a fully connected layer and returns the output.
 		
@@ -873,8 +1007,8 @@ package tensorflow.contrib.layers;
 		Args:
 		  x: The input `Tensor`.
 		  num_output_units: The size of the output.
-		  activation_fn: A function that requires a single Tensor that is applied as a
-		    non-linearity. If None is used, do not apply any activation.
+		  activation_fn: Activation function, default set to None to skip it and
+		    maintain a linear activation.
 		  weight_init: An optional weight initialization, defaults to
 		    `xavier_initializer`.
 		  bias_init: An initializer for the bias, defaults to 0. Set to `None` in
@@ -882,7 +1016,7 @@ package tensorflow.contrib.layers;
 		  name: The name for this operation is used to name operations and to find
 		    variables. If specified it must be unique for this scope, otherwise a
 		    unique name starting with "fully_connected" will be created.  See
-		    `tf.variable_op_scope` for details.
+		    `tf.variable_scope` for details.
 		  weight_collections: List of graph collections to which weights are added.
 		  bias_collections: List of graph collections to which biases are added.
 		  output_collections: List of graph collections to which outputs are added.
@@ -897,30 +1031,12 @@ package tensorflow.contrib.layers;
 		  The output of the fully connected layer.
 		
 		Raises:
-		  ValueError: if x has rank less than 2 or if its last dimension is not set.
+		  ValueError: If x has rank less than 2 or if its last dimension is not set.
 	**/
 	static public function legacy_fully_connected(x:Dynamic, num_output_units:Dynamic, ?activation_fn:Dynamic, ?weight_init:Dynamic, ?bias_init:Dynamic, ?name:Dynamic, ?weight_collections:Dynamic, ?bias_collections:Dynamic, ?output_collections:Dynamic, ?trainable:Dynamic, ?weight_regularizer:Dynamic, ?bias_regularizer:Dynamic):Dynamic;
 	static public function legacy_linear(x:Dynamic, num_output_units:Dynamic, ?activation_fn:Dynamic, ?weight_init:Dynamic, ?bias_init:Dynamic, ?name:Dynamic, ?weight_collections:Dynamic, ?bias_collections:Dynamic, ?output_collections:Dynamic, ?trainable:Dynamic, ?weight_regularizer:Dynamic, ?bias_regularizer:Dynamic):Dynamic;
 	static public function legacy_relu(x:Dynamic, num_output_units:Dynamic, ?activation_fn:Dynamic, ?weight_init:Dynamic, ?bias_init:Dynamic, ?name:Dynamic, ?weight_collections:Dynamic, ?bias_collections:Dynamic, ?output_collections:Dynamic, ?trainable:Dynamic, ?weight_regularizer:Dynamic, ?bias_regularizer:Dynamic):Dynamic;
 	static public function linear(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Generate `__all__` from the docstring of one or more modules.
-		
-		Usage: `make_all(__name__)` or
-		`make_all(__name__, [sys.modules(__name__), other_module])`. The doc string
-		modules must each a docstring, and `__all__` will contain all symbols with
-		`@@` references, where that symbol currently exists in the module named
-		`module_name`.
-		
-		Args:
-		  module_name: The name of the module (usually `__name__`).
-		  doc_string_modules: a list of modules from which to take docstring.
-		  If None, then a list containing only the module named `module_name` is used.
-		
-		Returns:
-		  A list suitable for use as `__all__`.
-	**/
-	static public function make_all(module_name:Dynamic, ?doc_string_modules:Dynamic):Dynamic;
 	/**
 		Returns placeholder tensors for inference.
 		
@@ -938,7 +1054,9 @@ package tensorflow.contrib.layers;
 		It is assumed that the pooling is done per image but not in batch or channels.
 		
 		Args:
-		  inputs: A `Tensor` of size [batch_size, height, width, channels].
+		  inputs: A 4-D tensor of shape `[batch_size, height, width, channels]` if
+		    `data_format` is `NHWC`, and `[batch_size, channels, height, width]` if
+		    `data_format` is `NCHW`.
 		  kernel_size: A list of length 2: [kernel_height, kernel_width] of the
 		    pooling kernel over which the op is computed. Can be an int if both
 		    values are the same.
@@ -946,18 +1064,24 @@ package tensorflow.contrib.layers;
 		    Can be an int if both strides are the same. Note that presently
 		    both strides must have the same value.
 		  padding: The padding method, either 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
 		  outputs_collections: The collections to which the outputs are added.
-		  scope: Optional scope for op_scope.
+		  scope: Optional scope for name_scope.
 		
 		Returns:
 		  A `Tensor` representing the results of the pooling operation.
 		
 		Raises:
+		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
 		  ValueError: If 'kernel_size' is not a 2-D list
 	**/
-	static public function max_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function max_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a _TargetColumn for multi class single label classification.
+		Creates a _TargetColumn for multi class single label classification. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Instructions for updating:
+		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
 		The target column uses softmax cross entropy loss.
 		
@@ -977,67 +1101,123 @@ package tensorflow.contrib.layers;
 	**/
 	static public function multi_class_target(n_classes:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic):Dynamic;
 	/**
-		Transform numeric labels into onehot_labels using tf.one_hot.
+		Creates an `_OneHotColumn` for a one-hot or multi-hot repr in a DNN.
+		
+		Args:
+		    sparse_id_column: A _SparseColumn which is created by
+		      `sparse_column_with_*`
+		      or crossed_column functions. Note that `combiner` defined in
+		      `sparse_id_column` is ignored.
+		
+		Returns:
+		  An _OneHotColumn.
+	**/
+	static public function one_hot_column(sparse_id_column:Dynamic):Dynamic;
+	/**
+		Transform numeric labels into onehot_labels using `tf.one_hot`.
 		
 		Args:
 		  labels: [batch_size] target labels.
-		  num_classes: total number of classes.
+		  num_classes: Total number of classes.
 		  on_value: A scalar defining the on-value.
 		  off_value: A scalar defining the off-value.
-		  outputs_collections: collection to add the outputs.
-		  scope: Optional scope for op_scope.
+		  outputs_collections: Collection to add the outputs.
+		  scope: Optional scope for name_scope.
 		
 		Returns:
-		  one hot encoding of the labels.
+		  One-hot encoding of the labels.
 	**/
 	static public function one_hot_encoding(labels:Dynamic, num_classes:Dynamic, ?on_value:Dynamic, ?off_value:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Given loss and parameters for optimizer, returns a training op.
 		
+		Various ways of passing optimizers, include:
+		
+		- string, name of the optimizer like 'SGD', 'Adam', see OPTIMIZER_CLS_NAMES
+		    for full list. E.g. `optimize_loss(..., optimizer='Adam')`.
+		- function, takes learning rate `Tensor` as argument and must return
+		    `Optimizer` instance. E.g. `optimize_loss(...,
+		    optimizer=lambda lr: tf.train.MomentumOptimizer(lr, momentum=0.5))`.
+		  Alternatively, if `learning_rate` is `None`, the function takes no
+		  arguments. E.g. `optimize_loss(..., learning_rate=None,
+		    optimizer=lambda: tf.train.MomentumOptimizer(0.5, momentum=0.5))`.
+		- class, subclass of `Optimizer` that takes only one required argument -
+		    learning rate, such as AdamOptimizer, AdagradOptimizer.
+		    E.g. `optimize_loss(..., optimizer=tf.train.AdagradOptimizer)`.
+		- object, instance of subclass of `Optimizer`.
+		    E.g., `optimizer_loss(..., optimizer=tf.train.AdagradOptimizer(0.5))`.
+		
 		Args:
-		  loss: Tensor, 0 dimensional.
-		  global_step: Tensor, step counter for each update.
-		  learning_rate: float or Tensor, magnitude of update per each training step.
+		  loss: Scalar `Tensor`.
+		  global_step: Scalar int `Tensor`, step counter to update on each step
+		               unless `increment_global_step` is `False`. If not supplied,
+		               it will be fetched from the default graph (see
+		               `tf.train.get_global_step` for details). If it's
+		               not been created, no step will be incremented with each weight
+		               update. `learning_rate_decay_fn` requires `global_step`.
+		  learning_rate: float or `Tensor`, magnitude of update per each training
+		                 step. Can be `None`.
 		  optimizer: string, class or optimizer instance, used as trainer.
 		             string should be name of optimizer, like 'SGD',
 		               'Adam', 'Adagrad'. Full list in OPTIMIZER_CLS_NAMES constant.
-		             class should be sub-class of tf.Optimizer that implements
+		             class should be sub-class of `tf.Optimizer` that implements
 		               `compute_gradients` and `apply_gradients` functions.
-		             optimizer instance should be instantion of tf.Optimizer sub-class
-		               and have `compute_gradients` and `apply_gradients` functions.
+		             optimizer instance should be instantiation of `tf.Optimizer`
+		               sub-class and have `compute_gradients` and `apply_gradients`
+		               functions.
 		  gradient_noise_scale: float or None, adds 0-mean normal noise scaled by this
 		                        value.
 		  gradient_multipliers: dict of variables or variable names to floats.
 		                        If present, gradients for specified
 		                        variables will be multiplied by given constant.
-		  clip_gradients: float or `None`, clips gradients by this value.
-		  moving_average_decay: Deprecated. float or None, takes into account previous
-		                        loss to make learning smoother due to outliers.
+		  clip_gradients: float, callable or `None`. If float, is provided, a global
+		    clipping is applied to prevent the norm of the gradient to exceed this
+		    value. Alternatively, a callable can be provided e.g.: adaptive_clipping.
+		    This callable takes a `list` of `(gradients, variables)` `tuple`s and
+		    returns the same thing with the gradients modified.
 		  learning_rate_decay_fn: function, takes `learning_rate` and `global_step`
 		                          `Tensor`s, returns `Tensor`.
 		                          Can be used to implement any learning rate decay
 		                          functions.
-		                          For example: tf.train.exponential_decay.
+		                          For example: `tf.train.exponential_decay`.
+		                          Ignored if `learning_rate` is not supplied.
 		  update_ops: list of update `Operation`s to execute at each step. If `None`,
-		              uses elements of UPDATE_OPS collection.
+		              uses elements of UPDATE_OPS collection. The order of execution
+		              between `update_ops` and `loss` is non-deterministic.
 		  variables: list of variables to optimize or
 		             `None` to use all trainable variables.
 		  name: The name for this operation is used to scope operations and summaries.
 		  summaries: List of internal quantities to visualize on tensorboard. If not
 		             set only the loss and the learning rate will be reported. The
 		             complete list is in OPTIMIZER_SUMMARIES.
+		  colocate_gradients_with_ops: If True, try colocating gradients with the
+		                               corresponding op.
+		  increment_global_step: Whether to increment `global_step`. If your model
+		    calls `optimize_loss` multiple times per training step (e.g. to optimize
+		    different parts of the model), use this arg to avoid incrementing
+		    `global_step` more times than necessary.
 		
 		Returns:
 		  Training op.
 		
 		Raises:
-		  ValueError: if optimizer is wrong type.
+		  ValueError: if:
+		      * `loss` is an invalid type or shape.
+		      * `global_step` is an invalid type or shape.
+		      * `learning_rate` is an invalid type or value.
+		      * `optimizer` is wrong type.
+		      * `clip_gradients` is not float or callable.
+		      * `learning_rate` and `learning_rate_decay_fn` are supplied, but no
+		        `global_step` is available.
+		      * `gradients` is empty
 	**/
-	static public function optimize_loss(loss:Dynamic, global_step:Dynamic, learning_rate:Dynamic, optimizer:Dynamic, ?gradient_noise_scale:Dynamic, ?gradient_multipliers:Dynamic, ?clip_gradients:Dynamic, ?moving_average_decay:Dynamic, ?learning_rate_decay_fn:Dynamic, ?update_ops:Dynamic, ?variables:Dynamic, ?name:Dynamic, ?summaries:Dynamic):Dynamic;
+	static public function optimize_loss(loss:Dynamic, global_step:Dynamic, learning_rate:Dynamic, optimizer:Dynamic, ?gradient_noise_scale:Dynamic, ?gradient_multipliers:Dynamic, ?clip_gradients:Dynamic, ?learning_rate_decay_fn:Dynamic, ?update_ops:Dynamic, ?variables:Dynamic, ?name:Dynamic, ?summaries:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?increment_global_step:Dynamic):Dynamic;
 	/**
 		Parses tf.Examples to extract tensors for given feature_columns.
 		
-		This is a wrapper of 'tf.parse_example'. A typical usage is as follows:
+		This is a wrapper of 'tf.parse_example'.
+		
+		Example:
 		
 		```python
 		columns_to_tensor = parse_feature_columns_from_examples(
@@ -1046,22 +1226,26 @@ package tensorflow.contrib.layers;
 		
 		# Where my_features are:
 		# Define features and transformations
-		country = sparse_column_with_keys(column_name="native_country",
-		                                  keys=["US", "BRA", ...])
-		country_emb = embedding_column(sparse_id_column=country, dimension=3,
-		                               combiner="sum")
-		occupation = sparse_column_with_hash_bucket(column_name="occupation",
-		                                            hash_bucket_size=1000)
-		occupation_emb = embedding_column(sparse_id_column=occupation, dimension=16,
-		                                 combiner="sum")
-		occupation_x_country = crossed_column(columns=[occupation, country],
-		                                      hash_bucket_size=10000)
-		age = real_valued_column("age")
-		age_buckets = bucketized_column(
-		    source_column=age,
-		    boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+		sparse_feature_a = sparse_column_with_keys(
+		    column_name="sparse_feature_a", keys=["AB", "CD", ...])
 		
-		my_features = [occupation_emb, age_buckets, country_emb]
+		embedding_feature_a = embedding_column(
+		    sparse_id_column=sparse_feature_a, dimension=3, combiner="sum")
+		
+		sparse_feature_b = sparse_column_with_hash_bucket(
+		    column_name="sparse_feature_b", hash_bucket_size=1000)
+		
+		embedding_feature_b = embedding_column(
+		    sparse_id_column=sparse_feature_b, dimension=16, combiner="sum")
+		
+		crossed_feature_a_x_b = crossed_column(
+		    columns=[sparse_feature_a, sparse_feature_b], hash_bucket_size=10000)
+		
+		real_feature = real_valued_column("real_feature")
+		real_feature_buckets = bucketized_column(
+		    source_column=real_feature, boundaries=[...])
+		
+		my_features = [embedding_feature_b, real_feature_buckets, embedding_feature_a]
 		```
 		
 		Args:
@@ -1077,23 +1261,53 @@ package tensorflow.contrib.layers;
 		  A `dict` mapping FeatureColumn to `Tensor` and `SparseTensor` values.
 	**/
 	static public function parse_feature_columns_from_examples(serialized:Dynamic, feature_columns:Dynamic, ?name:Dynamic, ?example_names:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Creates a _RealValuedColumn.
+		Parses tf.SequenceExamples to extract tensors for given `FeatureColumn`s.
+		
+		Args:
+		  serialized: A scalar (0-D Tensor) of type string, a single serialized
+		    `SequenceExample` proto.
+		  context_feature_columns: An iterable containing the feature columns for
+		    context features. All items should be instances of classes derived from
+		    `_FeatureColumn`. Can be `None`.
+		  sequence_feature_columns: An iterable containing the feature columns for
+		    sequence features. All items should be instances of classes derived from
+		    `_FeatureColumn`. Can be `None`.
+		  name: A name for this operation (optional).
+		  example_name: A scalar (0-D Tensor) of type string (optional), the names of
+		    the serialized proto.
+		
+		Returns:
+		  A tuple consisting of:
+		  context_features: a dict mapping `FeatureColumns` from
+		    `context_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
+		  sequence_features: a dict mapping `FeatureColumns` from
+		    `sequence_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
+	**/
+	static public function parse_feature_columns_from_sequence_examples(serialized:Dynamic, context_feature_columns:Dynamic, sequence_feature_columns:Dynamic, ?name:Dynamic, ?example_name:Dynamic):Dynamic;
+	/**
+		Creates a `_RealValuedColumn` for dense numeric data.
 		
 		Args:
 		  column_name: A string defining real valued column name.
 		  dimension: An integer specifying dimension of the real valued column.
-		    The default is 1. The Tensor representing the _RealValuedColumn
-		    will have the shape of [batch_size, dimension].
+		    The default is 1.
 		  default_value: A single value compatible with dtype or a list of values
-		    compatible with dtype which the column takes on if data is missing. If
-		    None, then tf.parse_example will fail if an example does not contain
-		    this column. If a single value is provided, the same value will be
-		    applied as the default value for every dimension. If a list of values
-		    is provided, the length of the list should be equal to the value of
-		    `dimension`.
-		  dtype: defines the type of values. Default value is tf.float32.
+		    compatible with dtype which the column takes on during tf.Example parsing
+		    if data is missing. When dimension is not None, a default value of None
+		    will cause tf.parse_example to fail if an example does not contain this
+		    column. If a single value is provided, the same value will be applied as
+		    the default value for every dimension. If a list of values is provided,
+		    the length of the list should be equal to the value of `dimension`.
+		    Only scalar default value is supported in case dimension is not specified.
+		  dtype: defines the type of values. Default value is tf.float32. Must be a
+		    non-quantized, real integer or floating point type.
+		  normalizer: If not None, a function that can be used to normalize the value
+		    of the real valued column after default_value is applied for parsing.
+		    Normalizer function takes the input tensor as its argument, and returns
+		    the output tensor. (e.g. lambda x: (x - 3.0) / 4.2). Note that for
+		    variable length columns, the normalizer should expect an input_tensor of
+		    type `SparseTensor`.
 		Returns:
 		  A _RealValuedColumn.
 		Raises:
@@ -1102,11 +1316,15 @@ package tensorflow.contrib.layers;
 		  TypeError: if default_value is a list but its length is not equal to the
 		    value of `dimension`.
 		  TypeError: if default_value is not compatible with dtype.
-		  ValueError: if dtype is not convertable to tf.float32.
+		  ValueError: if dtype is not convertible to tf.float32.
 	**/
-	static public function real_valued_column(column_name:Dynamic, ?dimension:Dynamic, ?default_value:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function real_valued_column(column_name:Dynamic, ?dimension:Dynamic, ?default_value:Dynamic, ?dtype:Dynamic, ?normalizer:Dynamic):Dynamic;
 	/**
-		Creates a _TargetColumn for linear regression.
+		Creates a _TargetColumn for linear regression. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Instructions for updating:
+		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
 		Args:
 		  label_name: String, name of the key in label dict. Can be null if label
@@ -1114,12 +1332,12 @@ package tensorflow.contrib.layers;
 		  weight_column_name: A string defining feature column name representing
 		    weights. It is used to down weight or boost examples during training. It
 		    will be multiplied by the loss of the example.
-		  target_dimension: dimension of the target for multilabels.
+		  label_dimension: dimension of the target for multilabels.
 		
 		Returns:
 		  An instance of _TargetColumn
 	**/
-	static public function regression_target(?label_name:Dynamic, ?weight_column_name:Dynamic, ?target_dimension:Dynamic):Dynamic;
+	static public function regression_target(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic):Dynamic;
 	static public function relu(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	static public function relu6(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
@@ -1147,9 +1365,9 @@ package tensorflow.contrib.layers;
 		  **kwargs: Extra kwargs for the layer.
 		
 		Returns:
-		  a tensor result of applying the layer, repetitions times.
+		  A tensor result of applying the layer, repetitions times.
 		Raises:
-		  ValueError: if the op is unknown or wrong.
+		  ValueError: If the op is unknown or wrong.
 	**/
 	static public function repeat(inputs:Dynamic, repetitions:Dynamic, layer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1157,7 +1375,9 @@ package tensorflow.contrib.layers;
 		
 		The partitioned embedding in `embedding_weights` must all be the same shape
 		except for the first dimension. The first dimension is allowed to vary as the
-		vocabulary size is not necessarily a multiple of `P`.
+		vocabulary size is not necessarily a multiple of `P`.  `embedding_weights`
+		may be a `PartitionedVariable` as returned by using `tf.get_variable()` with a
+		partitioner.
 		
 		Invalid IDs (< 0) are pruned from input IDs and weights, as well as any IDs
 		with non-positive weight. For an entry with no features, the embedding vector
@@ -1168,9 +1388,10 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  embedding_weights:  A list of `P` float tensors or values representing
-		      partitioned embedding tensors.  The total unpartitioned shape should be
-		      `[e_0, e_1, ..., e_m]`, where `e_0` represents the vocab size and
-		      `e_1, ..., e_m` are the embedding dimensions.
+		      partitioned embedding tensors.  Alternatively, a `PartitionedVariable`,
+		      created by partitioning along dimension 0.  The total unpartitioned
+		      shape should be `[e_0, e_1, ..., e_m]`, where `e_0` represents the
+		      vocab size and `e_1, ..., e_m` are the embedding dimensions.
 		  sparse_ids: `SparseTensor` of shape `[d_0, d_1, ..., d_n]` containing the
 		      ids. `d_0` is typically batch size.
 		  sparse_weights: `SparseTensor` of same shape as `sparse_ids`, containing
@@ -1183,6 +1404,8 @@ package tensorflow.contrib.layers;
 		  name: A name for this operation (optional).
 		  partition_strategy: A string specifying the partitioning strategy.
 		      Currently `"div"` and `"mod"` are supported. Default is `"div"`.
+		  max_norm: If not None, all embeddings are l2-normalized to max_norm before
+		      combining.
 		
 		
 		Returns:
@@ -1191,95 +1414,236 @@ package tensorflow.contrib.layers;
 		Raises:
 		  ValueError: if `embedding_weights` is empty.
 	**/
-	static public function safe_embedding_lookup_sparse(embedding_weights:Dynamic, sparse_ids:Dynamic, ?sparse_weights:Dynamic, ?combiner:Dynamic, ?default_id:Dynamic, ?name:Dynamic, ?partition_strategy:Dynamic):Dynamic;
+	static public function safe_embedding_lookup_sparse(embedding_weights:Dynamic, sparse_ids:Dynamic, ?sparse_weights:Dynamic, ?combiner:Dynamic, ?default_id:Dynamic, ?name:Dynamic, ?partition_strategy:Dynamic, ?max_norm:Dynamic):Dynamic;
+	static public function scale_gradient(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Creates an embedding column of a sparse feature using parameter hashing.
+		
+		This is a useful shorthand when you have a sparse feature you want to use an
+		embedding for, but also want to hash the embedding's values in each dimension
+		to a variable based on a different hash.
+		
+		Specifically, the i-th embedding component of a value v is found by retrieving
+		an embedding weight whose index is a fingerprint of the pair (v,i).
+		
+		An embedding column with sparse_column_with_hash_bucket such as
+		
+		    embedding_column(
+		      sparse_column_with_hash_bucket(column_name, bucket_size),
+		      dimension)
+		
+		could be replaced by
+		
+		    scattered_embedding_column(
+		      column_name,
+		      size=bucket_size * dimension,
+		      dimension=dimension,
+		      hash_key=tf.contrib.layers.SPARSE_FEATURE_CROSS_DEFAULT_HASH_KEY)
+		
+		for the same number of embedding parameters. This should hopefully reduce the
+		impact of collisions, but adds the cost of slowing down training.
+		
+		Args:
+		  column_name: A string defining sparse column name.
+		  size: An integer specifying the number of parameters in the embedding layer.
+		  dimension: An integer specifying dimension of the embedding.
+		  hash_key: Specify the hash_key that will be used by the `FingerprintCat64`
+		    function to combine the crosses fingerprints on SparseFeatureCrossOp.
+		  combiner: A string specifying how to reduce if there are multiple entries
+		    in a single row. Currently "mean", "sqrtn" and "sum" are supported, with
+		    "mean" the default. "sqrtn" often achieves good accuracy, in particular
+		    with bag-of-words columns. Each of this can be thought as example level
+		    normalizations on the column:
+		      * "sum": do not normalize features in the column
+		      * "mean": do l1 normalization on features in the column
+		      * "sqrtn": do l2 normalization on features in the column
+		    For more information: `tf.embedding_lookup_sparse`.
+		  initializer: A variable initializer function to be used in embedding
+		    variable initialization. If not specified, defaults to
+		    `tf.truncated_normal_initializer` with mean 0 and standard deviation 0.1.
+		
+		Returns:
+		  A _ScatteredEmbeddingColumn.
+		
+		Raises:
+		  ValueError: if dimension or size is not a positive integer; or if combiner
+		    is not supported.
+	**/
+	static public function scattered_embedding_column(column_name:Dynamic, size:Dynamic, dimension:Dynamic, hash_key:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic):Dynamic;
 	/**
 		Adds a depth-separable 2D convolution with optional batch_norm layer.
 		
 		This op first performs a depthwise convolution that acts separately on
 		channels, creating a variable called `depthwise_weights`. If `num_outputs`
 		is not None, it adds a pointwise convolution that mixes channels, creating a
-		variable called `pointwise_weights`. Then, if `batch_norm_params` is None,
-		it adds bias to the result, creating a variable called 'biases', otherwise
-		it adds a batch normalization layer. It finally applies an activation function
+		variable called `pointwise_weights`. Then, if `normalizer_fn` is None,
+		it adds bias to the result, creating a variable called 'biases', otherwise,
+		the `normalizer_fn` is applied. It finally applies an activation function
 		to produce the end result.
 		
 		Args:
-		  inputs: a tensor of size [batch_size, height, width, channels].
-		  num_outputs: the number of pointwise convolution output filters. If is
+		  inputs: A tensor of size [batch_size, height, width, channels].
+		  num_outputs: The number of pointwise convolution output filters. If is
 		    None, then we skip the pointwise convolution stage.
-		  kernel_size: a list of length 2: [kernel_height, kernel_width] of
+		  kernel_size: A list of length 2: [kernel_height, kernel_width] of
 		    of the filters. Can be an int if both values are the same.
-		  depth_multiplier: the number of depthwise convolution output channels for
+		  depth_multiplier: The number of depthwise convolution output channels for
 		    each input channel. The total number of depthwise convolution output
 		    channels will be equal to `num_filters_in * depth_multiplier`.
-		  stride: a list of length 2: [stride_height, stride_width], specifying the
+		  stride: A list of length 2: [stride_height, stride_width], specifying the
 		    depthwise convolution stride. Can be an int if both strides are the same.
-		  padding: one of 'VALID' or 'SAME'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: One of 'VALID' or 'SAME'.
+		  rate: A list of length 2: [rate_height, rate_width], specifying the dilation
+		    rates for atrous convolution. Can be an int if both rates are the same.
+		    If any value is larger than one, then both stride values need to be one.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
-		  trainable: whether or not the variables should be trainable or not.
-		  scope: Optional scope for variable_op_scope.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
 	**/
-	static public function separable_conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function separable_conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds a depth-separable 2D convolution with optional batch_norm layer.
 		
 		This op first performs a depthwise convolution that acts separately on
 		channels, creating a variable called `depthwise_weights`. If `num_outputs`
 		is not None, it adds a pointwise convolution that mixes channels, creating a
-		variable called `pointwise_weights`. Then, if `batch_norm_params` is None,
-		it adds bias to the result, creating a variable called 'biases', otherwise
-		it adds a batch normalization layer. It finally applies an activation function
+		variable called `pointwise_weights`. Then, if `normalizer_fn` is None,
+		it adds bias to the result, creating a variable called 'biases', otherwise,
+		the `normalizer_fn` is applied. It finally applies an activation function
 		to produce the end result.
 		
 		Args:
-		  inputs: a tensor of size [batch_size, height, width, channels].
-		  num_outputs: the number of pointwise convolution output filters. If is
+		  inputs: A tensor of size [batch_size, height, width, channels].
+		  num_outputs: The number of pointwise convolution output filters. If is
 		    None, then we skip the pointwise convolution stage.
-		  kernel_size: a list of length 2: [kernel_height, kernel_width] of
+		  kernel_size: A list of length 2: [kernel_height, kernel_width] of
 		    of the filters. Can be an int if both values are the same.
-		  depth_multiplier: the number of depthwise convolution output channels for
+		  depth_multiplier: The number of depthwise convolution output channels for
 		    each input channel. The total number of depthwise convolution output
 		    channels will be equal to `num_filters_in * depth_multiplier`.
-		  stride: a list of length 2: [stride_height, stride_width], specifying the
+		  stride: A list of length 2: [stride_height, stride_width], specifying the
 		    depthwise convolution stride. Can be an int if both strides are the same.
-		  padding: one of 'VALID' or 'SAME'.
-		  activation_fn: activation function.
-		  normalizer_fn: normalization function to use instead of `biases`. If
-		    `normalize_fn` is provided then `biases_initializer` and
+		  padding: One of 'VALID' or 'SAME'.
+		  rate: A list of length 2: [rate_height, rate_width], specifying the dilation
+		    rates for atrous convolution. Can be an int if both rates are the same.
+		    If any value is larger than one, then both stride values need to be one.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
-		  normalizer_params: normalization function parameters.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
 		  weights_initializer: An initializer for the weights.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
-		  reuse: whether or not the layer and its variables should be reused. To be
+		  reuse: Whether or not the layer and its variables should be reused. To be
 		    able to reuse the layer scope must be given.
-		  variables_collections: optional list of collections for all the variables or
-		    a dictionay containing a different list of collection per variable.
-		  outputs_collections: collection to add the outputs.
-		  trainable: whether or not the variables should be trainable or not.
-		  scope: Optional scope for variable_op_scope.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
 	**/
-	static public function separable_convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function separable_convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Builds inputs for sequence models from `FeatureColumn`s. (experimental)
+		
+		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		
+		
+		See documentation for `input_from_feature_columns`. The following types of
+		`FeatureColumn` are permitted in `feature_columns`: `_OneHotColumn`,
+		`_EmbeddingColumn`, `_ScatteredEmbeddingColumn`, `_RealValuedColumn`,
+		`_DataFrameColumn`. In addition, columns in `feature_columns` may not be
+		constructed using any of the following: `ScatteredEmbeddingColumn`,
+		`BucketizedColumn`, `CrossedColumn`.
+		
+		Args:
+		  columns_to_tensors: A mapping from feature column to tensors. 'string' key
+		    means a base feature (not-transformed). It can have FeatureColumn as a
+		    key too. That means that FeatureColumn is already transformed by input
+		    pipeline.
+		  feature_columns: A set containing all the feature columns. All items in the
+		    set should be instances of classes derived by FeatureColumn.
+		  weight_collections: List of graph collections to which weights are added.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for variable_scope.
+		
+		Returns:
+		  A Tensor which can be consumed by hidden layers in the neural network.
+		
+		Raises:
+		  ValueError: if FeatureColumn cannot be consumed by a neural network.
+	**/
+	static public function sequence_input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Creates a list of `_EmbeddingColumn` sharing the same embedding.
+		
+		Args:
+		  sparse_id_columns: An iterable of `_SparseColumn`, such as those created by
+		    `sparse_column_with_*` or crossed_column functions. Note that `combiner`
+		    defined in each sparse_id_column is ignored.
+		  dimension: An integer specifying dimension of the embedding.
+		  combiner: A string specifying how to reduce if there are multiple entries
+		    in a single row. Currently "mean", "sqrtn" and "sum" are supported, with
+		    "mean" the default. "sqrtn" often achieves good accuracy, in particular
+		    with bag-of-words columns. Each of this can be thought as example level
+		    normalizations on the column:
+		      * "sum": do not normalize
+		      * "mean": do l1 normalization
+		      * "sqrtn": do l2 normalization
+		    For more information: `tf.embedding_lookup_sparse`.
+		  shared_embedding_name: (Optional). A string specifying the name of shared
+		    embedding weights. This will be needed if you want to reference the shared
+		    embedding separately from the generated `_EmbeddingColumn`.
+		  initializer: A variable initializer function to be used in embedding
+		    variable initialization. If not specified, defaults to
+		    `tf.truncated_normal_initializer` with mean 0.0 and standard deviation
+		    1/sqrt(sparse_id_columns[0].length).
+		  ckpt_to_load_from: (Optional). String representing checkpoint name/pattern
+		    to restore the column weights. Required if `tensor_name_in_ckpt` is not
+		    None.
+		  tensor_name_in_ckpt: (Optional). Name of the `Tensor` in the provided
+		    checkpoint from which to restore the column weights. Required if
+		    `ckpt_to_load_from` is not None.
+		  max_norm: (Optional). If not None, embedding values are l2-normalized to
+		    the value of max_norm.
+		  trainable: (Optional). Should the embedding be trainable. Default is True
+		
+		Returns:
+		  A tuple of `_EmbeddingColumn` with shared embedding space.
+		
+		Raises:
+		  ValueError: if sparse_id_columns is empty, or its elements are not
+		    compatible with each other.
+		  TypeError: if `sparse_id_columns` is not a sequence or is a string. If at
+		    least one element of `sparse_id_columns` is not a `SparseTensor`.
+	**/
+	static public function shared_embedding_columns(sparse_id_columns:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?shared_embedding_name:Dynamic, ?initializer:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?max_norm:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
 		Performs softmax on Nth dimension of N-dimensional logit tensor.
 		
@@ -1288,42 +1652,53 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  logits: N-dimensional `Tensor` with logits, where N > 1.
-		  scope: Optional scope for variable_op_scope.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  a `Tensor` with same shape and type as logits.
+		  A `Tensor` with same shape and type as logits.
 	**/
 	static public function softmax(logits:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Creates a _SparseColumn with hashed bucket configuration.
 		
-		Use this when your sparse features are in string format, but you don't have a
-		vocab file that maps each string to an integer ID.
+		Use this when your sparse features are in string or integer format, but you
+		don't have a vocab file that maps each value to an integer ID.
 		output_id = Hash(input_feature_string) % bucket_size
 		
 		Args:
 		  column_name: A string defining sparse column name.
 		  hash_bucket_size: An int that is > 1. The number of buckets.
 		  combiner: A string specifying how to reduce if the sparse column is
-		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with
-		    "sum" the default:
+		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with "sum"
+		    the default. "sqrtn" often achieves good accuracy, in particular with
+		    bag-of-words columns.
 		      * "sum": do not normalize features in the column
 		      * "mean": do l1 normalization on features in the column
 		      * "sqrtn": do l2 normalization on features in the column
 		    For more information: `tf.embedding_lookup_sparse`.
+		  dtype: The type of features. Only string and integer types are supported.
 		
 		Returns:
 		  A _SparseColumn with hashed bucket configuration
 		
 		Raises:
 		  ValueError: hash_bucket_size is not greater than 2.
+		  ValueError: dtype is neither string nor integer.
 	**/
-	static public function sparse_column_with_hash_bucket(column_name:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic):Dynamic;
+	static public function sparse_column_with_hash_bucket(column_name:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Creates an integerized _SparseColumn.
 		
-		Use this when your features are already pre-integerized into int64 IDs.
-		output_id = input_feature
+		Use this when your features are already pre-integerized into int64 IDs, that
+		is, when the set of values to output is already coming in as what's desired in
+		the output. Integerized means we can use the feature value itself as id.
+		
+		Typically this is used for reading contiguous ranges of integers indexes, but
+		it doesn't have to be. The output value is simply copied from the
+		input_feature, whatever it is. Just be aware, however, that if you have large
+		gaps of unused integers it might affect what you feed those in (for instance,
+		if you make up a one-hot tensor from these, the unused integers will appear as
+		values in the tensor which are always zero.)
 		
 		Args:
 		  column_name: A string defining sparse column name.
@@ -1331,8 +1706,9 @@ package tensorflow.contrib.layers;
 		    than maximum feature. In other words features in this column should be an
 		    int64 in range [0, bucket_size)
 		  combiner: A string specifying how to reduce if the sparse column is
-		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with
-		    "sum" the default:
+		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with "sum"
+		    the default. "sqrtn" often achieves good accuracy, in particular with
+		    bag-of-words columns.
 		      * "sum": do not normalize features in the column
 		      * "mean": do l1 normalization on features in the column
 		      * "sqrtn": do l2 normalization on features in the column
@@ -1356,42 +1732,23 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  column_name: A string defining sparse column name.
-		  keys: a string list defining vocabulary.
+		  keys: A list or tuple defining vocabulary. Must be castable to `dtype`.
 		  default_value: The value to use for out-of-vocabulary feature values.
 		    Default is -1.
 		  combiner: A string specifying how to reduce if the sparse column is
-		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with
-		    "sum" the default:
+		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with "sum"
+		    the default. "sqrtn" often achieves good accuracy, in particular with
+		    bag-of-words columns.
 		      * "sum": do not normalize features in the column
 		      * "mean": do l1 normalization on features in the column
 		      * "sqrtn": do l2 normalization on features in the column
 		    For more information: `tf.embedding_lookup_sparse`.
+		  dtype: Type of features. Only integer and string are supported.
 		
 		Returns:
 		  A _SparseColumnKeys with keys configuration.
 	**/
-	static public function sparse_column_with_keys(column_name:Dynamic, keys:Dynamic, ?default_value:Dynamic, ?combiner:Dynamic):Dynamic;
-	/**
-		Crosses a list of Tensor or SparseTensor objects.
-		
-		See sparse_feature_cross_kernel.cc for more details.
-		
-		Args:
-		  inputs: List of `SparseTensor` or `Tensor` to be crossed.
-		  hashed_output: If true, returns the hash of the cross instead of the string.
-		    This will allow us avoiding string manipulations.
-		  num_buckets: It is used if hashed_output is true.
-		    output = hashed_value%num_buckets if num_buckets > 0 else hashed_value.
-		  name: A name prefix for the returned tensors (optional).
-		
-		Returns:
-		  A `SparseTensor` with the crossed features.
-		  Return type is string if hashed_output=False, int64 otherwise.
-		
-		Raises:
-		  TypeError: If the inputs aren't either SparseTensor or Tensor.
-	**/
-	static public function sparse_feature_cross(inputs:Dynamic, ?hashed_output:Dynamic, ?num_buckets:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_column_with_keys(column_name:Dynamic, keys:Dynamic, ?default_value:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Builds a stack of layers by applying layer repeatedly using stack_args.
 		
@@ -1420,10 +1777,10 @@ package tensorflow.contrib.layers;
 		  **kwargs: Extra kwargs for the layer.
 		
 		Returns:
-		  a `Tensor` result of applying the stacked layers.
+		  A `Tensor` result of applying the stacked layers.
 		
 		Raises:
-		  ValueError: if the op is unknown or wrong.
+		  ValueError: If the op is unknown or wrong.
 	**/
 	static public function stack(inputs:Dynamic, layer:Dynamic, stack_args:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1431,7 +1788,7 @@ package tensorflow.contrib.layers;
 		
 		Args:
 		  regularizer_list: A list of regularizers to apply.
-		  scope: An optional op_scope name
+		  scope: An optional scope name
 		
 		Returns:
 		  A function with signature `sum_reg(weights)` that applies the
@@ -1454,7 +1811,6 @@ package tensorflow.contrib.layers;
 		Summarize activations, using `summarize_activation` to summarize.
 	**/
 	static public function summarize_activations(?name_filter:Dynamic, ?summarizer:Dynamic):Dynamic;
-	static public function summarize_biases(?name_filter:Dynamic, ?summarizer:Dynamic):Dynamic;
 	/**
 		Summarize a graph collection of tensors, possibly filtered by name.
 	**/
@@ -1478,8 +1834,50 @@ package tensorflow.contrib.layers;
 		Summarize a set of tensors.
 	**/
 	static public function summarize_tensors(tensors:Dynamic, ?summarizer:Dynamic):Dynamic;
-	static public function summarize_variables(?name_filter:Dynamic, ?summarizer:Dynamic):Dynamic;
-	static public function summarize_weights(?name_filter:Dynamic, ?summarizer:Dynamic):Dynamic;
+	/**
+		Returns transformed features based on features columns passed in.
+		
+		Example:
+		
+		```python
+		columns_to_tensor = transform_features(features=features,
+		                                       feature_columns=feature_columns)
+		
+		# Where my_features are:
+		# Define features and transformations
+		sparse_feature_a = sparse_column_with_keys(
+		    column_name="sparse_feature_a", keys=["AB", "CD", ...])
+		
+		embedding_feature_a = embedding_column(
+		    sparse_id_column=sparse_feature_a, dimension=3, combiner="sum")
+		
+		sparse_feature_b = sparse_column_with_hash_bucket(
+		    column_name="sparse_feature_b", hash_bucket_size=1000)
+		
+		embedding_feature_b = embedding_column(
+		    sparse_id_column=sparse_feature_b, dimension=16, combiner="sum")
+		
+		crossed_feature_a_x_b = crossed_column(
+		    columns=[sparse_feature_a, sparse_feature_b], hash_bucket_size=10000)
+		
+		real_feature = real_valued_column("real_feature")
+		real_feature_buckets = bucketized_column(
+		    source_column=real_feature, boundaries=[...])
+		
+		feature_columns = [embedding_feature_b,
+		                   real_feature_buckets,
+		                   embedding_feature_a]
+		```
+		
+		Args:
+		  features: A dictionary of features.
+		  feature_columns: An iterable containing all the feature columns. All items
+		    should be instances of classes derived from _FeatureColumn.
+		
+		Returns:
+		  A `dict` mapping FeatureColumn to `Tensor` and `SparseTensor` values.
+	**/
+	static public function transform_features(features:Dynamic, feature_columns:Dynamic):Dynamic;
 	/**
 		Normalizes the given input across the specified dimension to unit length.
 		
@@ -1489,7 +1887,7 @@ package tensorflow.contrib.layers;
 		  inputs: A `Tensor` of arbitrary size.
 		  dim: The dimension along which the input is normalized.
 		  epsilon: A small value to add to the inputs to avoid dividing by zero.
-		  scope: Optional scope for variable_op_scope.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
 		  The normalized `Tensor`.
@@ -1504,6 +1902,8 @@ package tensorflow.contrib.layers;
 		When initializing a deep network, it is in principle advantageous to keep
 		the scale of the input variance constant, so it does not explode or diminish
 		by reaching the final layer. This initializer use the following formula:
+		
+		```python
 		  if mode='FAN_IN': # Count only number of input connections.
 		    n = fan_in
 		  elif mode='FAN_OUT': # Count only number of output connections.
@@ -1512,24 +1912,28 @@ package tensorflow.contrib.layers;
 		    n = (fan_in + fan_out)/2.0
 		
 		    truncated_normal(shape, 0.0, stddev=sqrt(factor / n))
+		```
 		
-		To get http://arxiv.org/pdf/1502.01852v1.pdf use (Default):
-		  - factor=2.0 mode='FAN_IN' uniform=False
-		To get http://arxiv.org/abs/1408.5093 use:
-		  - factor=1.0 mode='FAN_IN' uniform=True
-		To get http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf use:
-		  - factor=1.0 mode='FAN_AVG' uniform=True.
-		To get xavier_initializer use either:
-		  - factor=1.0 mode='FAN_AVG' uniform=True.
-		  - factor=1.0 mode='FAN_AVG' uniform=False.
+		* To get [Delving Deep into Rectifiers](
+		   http://arxiv.org/pdf/1502.01852v1.pdf), use (Default):<br/>
+		  `factor=2.0 mode='FAN_IN' uniform=False`
+		* To get [Convolutional Architecture for Fast Feature Embedding](
+		   http://arxiv.org/abs/1408.5093), use:<br/>
+		  `factor=1.0 mode='FAN_IN' uniform=True`
+		* To get [Understanding the difficulty of training deep feedforward neural
+		  networks](http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf),
+		  use:<br/>
+		  `factor=1.0 mode='FAN_AVG' uniform=True.`
+		* To get `xavier_initializer` use either:<br/>
+		  `factor=1.0 mode='FAN_AVG' uniform=True`, or<br/>
+		  `factor=1.0 mode='FAN_AVG' uniform=False`.
 		
 		Args:
 		  factor: Float.  A multiplicative factor.
 		  mode: String.  'FAN_IN', 'FAN_OUT', 'FAN_AVG'.
 		  uniform: Whether to use uniform or normal distributed random initialization.
 		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
+		        @{tf.set_random_seed} for behavior.
 		  dtype: The data type. Only floating point types are supported.
 		
 		Returns:
@@ -1543,66 +1947,65 @@ package tensorflow.contrib.layers;
 	/**
 		Creates a _SparseColumn by combining sparse_id_column with a weight column.
 		
-		Args:
-		  sparse_id_column: A _SparseColumn which is created by `sparse_column_with_*`
-		    functions.
-		  weight_column_name: A string defining a sparse column name which represents
-		    weight or value of the corresponding sparse id feature.
-		  dtype: Type of weights, such as `tf.float32`
-		Returns:
-		  A _WeightedSparseColumn composed of two sparse features: one represents id,
-		  the other represents weight (value) of the id feature in that example.
-		Raises:
-		  ValueError: if dtype is not convertible to float.
+		Example:
 		
-		An example usage:
 		  ```python
-		  words = sparse_column_with_hash_bucket("words", 1000)
-		  tfidf_weighted_words = weighted_sparse_column(words, "tfidf_score")
+		  sparse_feature = sparse_column_with_hash_bucket(column_name="sparse_col",
+		                                                  hash_bucket_size=1000)
+		  weighted_feature = weighted_sparse_column(sparse_id_column=sparse_feature,
+		                                            weight_column_name="weights_col")
 		  ```
 		
 		  This configuration assumes that input dictionary of model contains the
 		  following two items:
-		    * (key="words", value=word_tensor) where word_tensor is a SparseTensor.
-		    * (key="tfidf_score", value=tfidf_score_tensor) where tfidf_score_tensor
+		    * (key="sparse_col", value=sparse_tensor) where sparse_tensor is
+		      a SparseTensor.
+		    * (key="weights_col", value=weights_tensor) where weights_tensor
 		      is a SparseTensor.
 		   Following are assumed to be true:
-		     * word_tensor.indices = tfidf_score_tensor.indices
-		     * word_tensor.shape = tfidf_score_tensor.shape
+		     * sparse_tensor.indices = weights_tensor.indices
+		     * sparse_tensor.dense_shape = weights_tensor.dense_shape
+		
+		Args:
+		  sparse_id_column: A `_SparseColumn` which is created by
+		    `sparse_column_with_*` functions.
+		  weight_column_name: A string defining a sparse column name which represents
+		    weight or value of the corresponding sparse id feature.
+		  dtype: Type of weights, such as `tf.float32`. Only floating and integer
+		    weights are supported.
+		
+		Returns:
+		  A _WeightedSparseColumn composed of two sparse features: one represents id,
+		  the other represents weight (value) of the id feature in that example.
+		
+		Raises:
+		  ValueError: if dtype is not convertible to float.
 	**/
 	static public function weighted_sparse_column(sparse_id_column:Dynamic, weight_column_name:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		A tf.contrib.layer style linear prediction builder based on FeatureColumns.
+		A tf.contrib.layers style linear prediction builder based on FeatureColumn.
 		
 		Generally a single example in training data is described with feature columns.
 		This function generates weighted sum for each num_outputs. Weighted sum refers
 		to logits in classification problems. It refers to prediction itself for
 		linear regression problems.
 		
-		An example usage of weighted_sum_from_feature_columns is as follows:
+		Example:
 		
+		  ```
 		  # Building model for training
+		  feature_columns = (
+		      real_valued_column("my_feature1"),
+		      ...
+		  )
 		  columns_to_tensor = tf.parse_example(...)
 		  logits = weighted_sum_from_feature_columns(
 		      columns_to_tensors=columns_to_tensor,
 		      feature_columns=feature_columns,
 		      num_outputs=1)
-		  loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, labels)
-		
-		  where feature_columns can be defined as follows:
-		
-		  occupation = sparse_column_with_hash_bucket(column_name="occupation",
-		                                            hash_bucket_size=1000)
-		  occupation_emb = embedding_column(sparse_id_column=occupation, dimension=16,
-		                                   combiner="sum")
-		  age = real_valued_column("age")
-		  age_buckets = bucketized_column(
-		      source_column=age,
-		      boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
-		  occupation_x_age = crossed_column(columns=[occupation, age_buckets],
-		                                    hash_bucket_size=10000)
-		
-		  feature_columns=[occupation_emb, occupation_x_age]
+		  loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=labels,
+		                                                 logits=logits)
+		  ```
 		
 		Args:
 		  columns_to_tensors: A mapping from feature column to tensors. 'string' key
@@ -1615,10 +2018,11 @@ package tensorflow.contrib.layers;
 		  weight_collections: List of graph collections to which weights are added.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
-		  scope: Optional scope fpor variable_op_scope.
+		  scope: Optional scope for variable_scope.
 		
 		Returns:
-		  A tuple of followings:
+		  A tuple containing:
+		
 		    * A Tensor which represents predictions of a linear model.
 		    * A dictionary which maps feature_column to corresponding Variable.
 		    * A Variable which is used for bias.
@@ -1633,9 +2037,10 @@ package tensorflow.contrib.layers;
 		This function implements the weight initialization from:
 		
 		Xavier Glorot and Yoshua Bengio (2010):
-		         Understanding the difficulty of training deep feedforward neural
+		         [Understanding the difficulty of training deep feedforward neural
 		         networks. International conference on artificial intelligence and
-		         statistics.
+		         statistics.](
+		         http://www.jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)
 		
 		This initializer is designed to keep the scale of the gradients roughly the
 		same in all layers. In uniform distribution this ends up being the range:
@@ -1645,8 +2050,7 @@ package tensorflow.contrib.layers;
 		Args:
 		  uniform: Whether to use uniform or normal distributed random initialization.
 		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
+		        @{tf.set_random_seed} for behavior.
 		  dtype: The data type. Only floating point types are supported.
 		
 		Returns:
@@ -1659,9 +2063,10 @@ package tensorflow.contrib.layers;
 		This function implements the weight initialization from:
 		
 		Xavier Glorot and Yoshua Bengio (2010):
-		         Understanding the difficulty of training deep feedforward neural
+		         [Understanding the difficulty of training deep feedforward neural
 		         networks. International conference on artificial intelligence and
-		         statistics.
+		         statistics.](
+		         http://www.jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)
 		
 		This initializer is designed to keep the scale of the gradients roughly the
 		same in all layers. In uniform distribution this ends up being the range:
@@ -1671,8 +2076,7 @@ package tensorflow.contrib.layers;
 		Args:
 		  uniform: Whether to use uniform or normal distributed random initialization.
 		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
+		        @{tf.set_random_seed} for behavior.
 		  dtype: The data type. Only floating point types are supported.
 		
 		Returns:

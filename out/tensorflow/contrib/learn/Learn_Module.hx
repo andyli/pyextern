@@ -1,9 +1,48 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn;
 @:pythonImport("tensorflow.contrib.learn") extern class Learn_Module {
-	static public var HAS_DASK : Dynamic;
-	static public var HAS_PANDAS : Dynamic;
-	static public var __all__ : Dynamic;
+	/**
+		Builds a logistic regression Estimator for binary classification.
+		
+		This method provides a basic Estimator with some additional metrics for custom
+		binary classification models, including AUC, precision/recall and accuracy.
+		
+		Example:
+		
+		```python
+		  # See tf.contrib.learn.Estimator(...) for details on model_fn structure
+		  def my_model_fn(...):
+		    pass
+		
+		  estimator = LogisticRegressor(model_fn=my_model_fn)
+		
+		  # Input builders
+		  def input_fn_train:
+		    pass
+		
+		  estimator.fit(input_fn=input_fn_train)
+		  estimator.predict(x=x)
+		```
+		
+		Args:
+		  model_fn: Model function with the signature:
+		    `(features, labels, mode) -> (predictions, loss, train_op)`.
+		    Expects the returned predictions to be probabilities in [0.0, 1.0].
+		  thresholds: List of floating point thresholds to use for accuracy,
+		    precision, and recall metrics. If `None`, defaults to `[0.5]`.
+		  model_dir: Directory to save model parameters, graphs, etc. This can also
+		    be used to load checkpoints from the directory into a estimator to
+		    continue training a previously saved model.
+		  config: A RunConfig configuration object.
+		  feature_engineering_fn: Feature engineering function. Takes features and
+		                    labels which are the output of `input_fn` and
+		                    returns features and labels which will be fed
+		                    into the model.
+		
+		Returns:
+		  A `tf.contrib.learn.Estimator` instance.
+	**/
+	static public function LogisticRegressor(model_fn:Dynamic, ?thresholds:Dynamic, ?model_dir:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,10 +52,53 @@ package tensorflow.contrib.learn;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
-		Evaluate a model loaded from a checkpoint.
+		Creates a `Head` for binary classification with SVMs.
+		
+		The head uses binary hinge loss.
+		
+		Args:
+		  label_name: String, name of the key in label dict. Can be null if label
+		    is a tensor (single headed models).
+		  weight_column_name: A string defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  enable_centered_bias: A bool. If True, estimator will learn a centered
+		    bias variable for each class. Rest of the model structure learns the
+		    residual after centered bias.
+		  head_name: name of the head. If provided, predictions, summary and metrics
+		    keys will be suffixed by `"/" + head_name` and the default variable scope
+		    will be `head_name`.
+		  thresholds: thresholds for eval metrics, defaults to [.5]
+		
+		Returns:
+		  An instance of `Head` for binary classification with SVM.
+	**/
+	static public function binary_svm_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic):Dynamic;
+	/**
+		Build an input_fn appropriate for serving, expecting fed tf.Examples.
+		
+		Creates an input_fn that expects a serialized tf.Example fed into a string
+		placeholder.  The function parses the tf.Example according to the provided
+		feature_spec, and returns all parsed Tensors as features.  This input_fn is
+		for use at serving time, so the labels return value is always None.
+		
+		Args:
+		  feature_spec: a dict of string to `VarLenFeature`/`FixedLenFeature`.
+		  default_batch_size: the number of query examples expected per batch.
+		      Leave unset for variable batch size (recommended).
+		
+		Returns:
+		  An input_fn suitable for use in serving.
+	**/
+	static public function build_parsing_serving_input_fn(feature_spec:Dynamic, ?default_batch_size:Dynamic):Dynamic;
+	/**
+		Evaluate a model loaded from a checkpoint. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Given `graph`, a directory to write summaries to (`output_dir`), a checkpoint
 		to restore variables from, and a `dict` of `Tensor`s to evaluate, run an eval
@@ -39,7 +121,7 @@ package tensorflow.contrib.learn;
 		    evaluated in every logging step. The result of the final evaluation is
 		    returned. If `update_op` is None, then it's evaluated in every step. If
 		    `max_steps` is `None`, this should depend on a reader that will raise an
-		    end-of-inupt exception when the inputs are exhausted.
+		    end-of-input exception when the inputs are exhausted.
 		  update_op: A `Tensor` which is run in every step.
 		  global_step_tensor: A `Variable` containing the global step. If `None`,
 		    one is extracted from the graph using the same logic as in `Supervisor`.
@@ -64,10 +146,40 @@ package tensorflow.contrib.learn;
 	static public function evaluate(graph:Dynamic, output_dir:Dynamic, checkpoint_path:Dynamic, eval_dict:Dynamic, ?update_op:Dynamic, ?global_step_tensor:Dynamic, ?supervisor_master:Dynamic, ?log_every_steps:Dynamic, ?feed_fn:Dynamic, ?max_steps:Dynamic):Dynamic;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors.
+		
+		Given a distributed dask.DataFrame or dask.Series containing columns or names
+		for one or more predictors, this operation returns a single dask.DataFrame or
+		dask.Series that can be iterated over.
+		
+		Args:
+		  data: A distributed dask.DataFrame or dask.Series.
+		
+		Returns:
+		  A dask.DataFrame or dask.Series that can be iterated over.
+		  If the supplied argument is neither a dask.DataFrame nor a dask.Series this
+		  operation returns it without modification.
 	**/
 	static public function extract_dask_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from dask.Series for labels.
+		Extract data from dask.Series or dask.DataFrame for labels.
+		
+		Given a distributed dask.DataFrame or dask.Series containing exactly one
+		column or name, this operation returns a single dask.DataFrame or dask.Series
+		that can be iterated over.
+		
+		Args:
+		  labels: A distributed dask.DataFrame or dask.Series with exactly one
+		          column or name.
+		
+		Returns:
+		  A dask.DataFrame or dask.Series that can be iterated over.
+		  If the supplied argument is neither a dask.DataFrame nor a dask.Series this
+		  operation returns it without modification.
+		
+		Raises:
+		  ValueError: If the supplied dask.DataFrame contains more than one
+		              column or the supplied dask.Series contains more than
+		              one name.
 	**/
 	static public function extract_dask_labels(labels:Dynamic):Dynamic;
 	/**
@@ -112,7 +224,11 @@ package tensorflow.contrib.learn;
 	**/
 	static public function extract_pandas_matrix(data:Dynamic):Dynamic;
 	/**
-		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors.
+		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		If `restore_checkpoint_path` is supplied, restore from checkpoint. Otherwise,
 		init all variables.
@@ -154,43 +270,159 @@ package tensorflow.contrib.learn;
 		it.
 		
 		Args:
-		  input_fn: Function returning a tuple of input and target `Tensor` objects.
+		  input_fn: Input function returning a tuple of:
+		      features - Dictionary of string feature name to `Tensor` or `Tensor`.
+		      labels - `Tensor` of label values.
 		
 		Returns:
 		  List of `FeatureColumn` objects.
 	**/
 	static public function infer_real_valued_columns_from_input_fn(input_fn:Dynamic):Dynamic;
 	/**
-		Generate `__all__` from the docstring of one or more modules.
-		
-		Usage: `make_all(__name__)` or
-		`make_all(__name__, [sys.modules(__name__), other_module])`. The doc string
-		modules must each a docstring, and `__all__` will contain all symbols with
-		`@@` references, where that symbol currently exists in the module named
-		`module_name`.
+		Create an ExportStrategy for use with Experiment.
 		
 		Args:
-		  module_name: The name of the module (usually `__name__`).
-		  doc_string_modules: a list of modules from which to take docstring.
-		  If None, then a list containing only the module named `module_name` is used.
+		  serving_input_fn: A function that takes no arguments and returns an
+		    `InputFnOps`.
+		  default_output_alternative_key: the name of the head to serve when an
+		    incoming serving request does not explicitly request a specific head.
+		    Must be `None` if the estimator inherits from ${tf.estimator.Estimator}
+		    or for single-headed models.
+		  assets_extra: A dict specifying how to populate the assets.extra directory
+		    within the exported SavedModel.  Each key should give the destination
+		    path (including the filename) relative to the assets.extra directory.
+		    The corresponding value gives the full path of the source file to be
+		    copied.  For example, the simple case of copying a single file without
+		    renaming it is specified as
+		    `{'my_asset_file.txt': '/path/to/my_asset_file.txt'}`.
+		  as_text: whether to write the SavedModel proto in text format.
+		  exports_to_keep: Number of exports to keep.  Older exports will be
+		    garbage-collected.  Defaults to 5.  Set to None to disable garbage
+		    collection.
 		
 		Returns:
-		  A list suitable for use as `__all__`.
+		  An ExportStrategy that can be passed to the Experiment constructor.
 	**/
-	static public function make_all(module_name:Dynamic, ?doc_string_modules:Dynamic):Dynamic;
+	static public function make_export_strategy(serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?exports_to_keep:Dynamic):Dynamic;
 	/**
-		Tag functions annotated with `@parameter` for later retrieval.
+		Creates a `Head` for multi class single label classification.
 		
-		Note that all `@parameter`s are automatically `@property`s as well.
+		The Head uses softmax cross entropy loss.
+		
+		This head expects to be fed integer labels specifying the class index. But
+		if `label_keys` is specified, then labels must be strings from this
+		vocabulary, and the predicted classes will be strings from the same
+		vocabulary.
 		
 		Args:
-		  func: the getter function to tag and wrap
+		  n_classes: Integer, number of classes, must be >= 2
+		  label_name: String, name of the key in label dict. Can be null if label
+		      is a tensor (single headed models).
+		  weight_column_name: A string defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  enable_centered_bias: A bool. If True, estimator will learn a centered
+		    bias variable for each class. Rest of the model structure learns the
+		    residual after centered bias.
+		  head_name: name of the head. If provided, predictions, summary and metrics
+		    keys will be suffixed by `"/" + head_name` and the default variable scope
+		    will be `head_name`.
+		  thresholds: thresholds for eval metrics, defaults to [.5]
+		  metric_class_ids: List of class IDs for which we should report per-class
+		    metrics. Must all be in the range `[0, n_classes)`. Invalid if
+		    `n_classes` is 2.
+		  loss_fn: Optional function that takes (`labels`, `logits`, `weights`) as
+		    parameter and returns a weighted scalar loss. `weights` should be
+		    optional. See `tf.losses`
+		  label_keys: Optional list of strings with size `[n_classes]` defining the
+		    label vocabulary. Only supported for `n_classes` > 2.
 		
 		Returns:
-		  A `@property` whose getter function is marked with is_parameter = True
+		  An instance of `Head` for multi class classification.
+		
+		Raises:
+		  ValueError: if `n_classes` is < 2.
+		  ValueError: If `metric_class_ids` is provided when `n_classes` is 2.
+		  ValueError: If `len(label_keys) != n_classes`.
 	**/
-	static public function parameter(func:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
+	static public function multi_class_head(n_classes:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic, ?metric_class_ids:Dynamic, ?loss_fn:Dynamic, ?label_keys:Dynamic):Dynamic;
+	/**
+		Creates a MultiHead stemming from same logits/hidden layer.
+		
+		Args:
+		  heads: list of Head objects.
+		  loss_weights: optional list of weights to be used to merge losses from
+		      each head. All losses are weighted equally if not provided.
+		
+		Returns:
+		  A instance of `Head` that merges multiple heads.
+		
+		Raises:
+		  ValueError: if heads and loss_weights have different size.
+	**/
+	static public function multi_head(heads:Dynamic, ?loss_weights:Dynamic):Dynamic;
+	/**
+		Creates a Head for multi label classification.
+		
+		Multi-label classification handles the case where each example may have zero
+		or more associated labels, from a discrete set.  This is distinct from
+		`multi_class_head` which has exactly one label from a discrete set.
+		
+		This head by default uses sigmoid cross entropy loss, which expects as input
+		a multi-hot tensor of shape `(batch_size, num_classes)`.
+		
+		Args:
+		  n_classes: Integer, number of classes, must be >= 2
+		  label_name: String, name of the key in label dict. Can be null if label
+		      is a tensor (single headed models).
+		  weight_column_name: A string defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  enable_centered_bias: A bool. If True, estimator will learn a centered
+		    bias variable for each class. Rest of the model structure learns the
+		    residual after centered bias.
+		  head_name: name of the head. If provided, predictions, summary and metrics
+		    keys will be suffixed by `"/" + head_name` and the default variable scope
+		    will be `head_name`.
+		  thresholds: thresholds for eval metrics, defaults to [.5]
+		  metric_class_ids: List of class IDs for which we should report per-class
+		    metrics. Must all be in the range `[0, n_classes)`.
+		  loss_fn: Optional function that takes (`labels`, `logits`, `weights`) as
+		    parameter and returns a weighted scalar loss. `weights` should be
+		    optional. See `tf.losses`
+		
+		Returns:
+		  An instance of `Head` for multi label classification.
+		
+		Raises:
+		  ValueError: If n_classes is < 2
+		  ValueError: If loss_fn does not have expected signature.
+	**/
+	static public function multi_label_head(n_classes:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic, ?metric_class_ids:Dynamic, ?loss_fn:Dynamic):Dynamic;
+	static public function no_op_train_fn(loss:Dynamic):Dynamic;
+	/**
+		Creates a `Head` for poisson regression.
+		
+		Args:
+		  label_name: String, name of the key in label dict. Can be null if label
+		      is a tensor (single headed models).
+		  weight_column_name: A string defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  label_dimension: Number of regression labels per example. This is the size
+		    of the last dimension of the labels `Tensor` (typically, this has shape
+		    `[batch_size, label_dimension]`).
+		  enable_centered_bias: A bool. If True, estimator will learn a centered
+		    bias variable for each class. Rest of the model structure learns the
+		    residual after centered bias.
+		  head_name: name of the head. If provided, predictions, summary and metrics
+		    keys will be suffixed by `"/" + head_name` and the default variable scope
+		    will be `head_name`.
+		
+		Returns:
+		  An instance of `Head` for poisson regression.
+	**/
+	static public function poisson_regression_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
 	/**
 		Adds operations to read, queue, batch `Example` protos.
 		
@@ -206,7 +438,7 @@ package tensorflow.contrib.learn;
 		Use `parse_fn` if you need to do parsing / processing on single examples.
 		
 		Args:
-		  file_pattern: List of files or pattern of file paths containing
+		  file_pattern: List of files or patterns of file paths containing
 		      `Example` records. See `tf.gfile.Glob` for pattern rules.
 		  batch_size: An int or scalar `Tensor` specifying the batch size to use.
 		  reader: A function or class that returns an object with
@@ -215,23 +447,25 @@ package tensorflow.contrib.learn;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If `None`, cycles through the dataset forever.
 		    NOTE - If specified, creates a variable that must be initialized, so call
-		    `tf.initialize_all_variables()` as shown in the tests.
+		    `tf.global_variables_initializer()` and run the op in a session.
 		  queue_capacity: Capacity for input queue.
-		  num_threads: The number of threads enqueuing examples.
+		  num_threads: The number of threads enqueuing examples. In order to have
+		    predicted and repeatable order of reading and enqueueing, such as in
+		    prediction and evaluation mode, `num_threads` should be 1.
 		  read_batch_size: An int or scalar `Tensor` specifying the number of
 		    records to read at once
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
+		  seed: An integer (optional). Seed used if randomize_input == True.
 		
 		Returns:
-		  String `Tensor` of batched `Example` proto. If `keep_keys` is True, then
-		  returns tuple of string `Tensor`s, where first value is the key.
+		  String `Tensor` of batched `Example` proto.
 		
 		Raises:
 		  ValueError: for invalid inputs.
 	**/
-	static public function read_batch_examples(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic):Dynamic;
+	static public function read_batch_examples(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos.
 		
@@ -246,7 +480,7 @@ package tensorflow.contrib.learn;
 		All ops are added to the default graph.
 		
 		Args:
-		  file_pattern: List of files or pattern of file paths containing
+		  file_pattern: List of files or patterns of file paths containing
 		      `Example` records. See `tf.gfile.Glob` for pattern rules.
 		  batch_size: An int or scalar `Tensor` specifying the batch size to use.
 		  features: A `dict` mapping feature keys to `FixedLenFeature` or
@@ -257,28 +491,31 @@ package tensorflow.contrib.learn;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If None, cycles through the dataset forever. NOTE - If specified,
 		    creates a variable that must be initialized, so call
-		    tf.initialize_local_variables() as shown in the tests.
+		    tf.local_variables_initializer() and run the op in a session.
 		  queue_capacity: Capacity for input queue.
-		  reader_num_threads: The number of threads to read examples.
-		  parser_num_threads: The number of threads to parse examples.
-		    records to read at once
+		  feature_queue_capacity: Capacity of the parsed features queue. Set this
+		    value to a small number, for example 5 if the parsed features are large.
+		  reader_num_threads: The number of threads to read examples. In order to have
+		    predicted and repeatable order of reading and enqueueing, such as in
+		    prediction and evaluation mode, `reader_num_threads` should be 1.
+		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
+		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
 		
 		Returns:
 		  A dict of `Tensor` or `SparseTensor` objects for each in `features`.
-		  If `keep_keys` is `True`, returns tuple of string `Tensor` and above dict.
 		
 		Raises:
 		  ValueError: for invalid inputs.
 	**/
-	static public function read_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?parser_num_threads:Dynamic, ?name:Dynamic):Dynamic;
+	static public function read_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?feature_queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Reads TFRecord, queues, batches and parses `Example` proto.
 		
 		See more detailed description in `read_examples`.
 		
 		Args:
-		  file_pattern: List of files or pattern of file paths containing
+		  file_pattern: List of files or patterns of file paths containing
 		      `Example` records. See `tf.gfile.Glob` for pattern rules.
 		  batch_size: An int or scalar `Tensor` specifying the batch size to use.
 		  features: A `dict` mapping feature keys to `FixedLenFeature` or
@@ -287,10 +524,11 @@ package tensorflow.contrib.learn;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If None, cycles through the dataset forever. NOTE - If specified,
 		    creates a variable that must be initialized, so call
-		    tf.initialize_local_variables() as shown in the tests.
+		    tf.local_variables_initializer() and run the op in a session.
 		  queue_capacity: Capacity for input queue.
-		  reader_num_threads: The number of threads to read examples.
-		  parser_num_threads: The number of threads to parse examples.
+		  reader_num_threads: The number of threads to read examples. In order to have
+		    predicted and repeatable order of reading and enqueueing, such as in
+		    prediction and evaluation mode, `reader_num_threads` should be 1.
 		  name: Name of resulting op.
 		
 		Returns:
@@ -299,98 +537,44 @@ package tensorflow.contrib.learn;
 		Raises:
 		  ValueError: for invalid inputs.
 	**/
-	static public function read_batch_record_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?parser_num_threads:Dynamic, ?name:Dynamic):Dynamic;
+	static public function read_batch_record_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch `Example` protos.
-		
-		Given file pattern (or list of files), will setup a queue for file names,
-		read `Example` proto using provided `reader`, use batch queue to create
-		batches of examples of size `batch_size`.
-		
-		All queue runners are added to the queue runners collection, and may be
-		started via `start_queue_runners`.
-		
-		All ops are added to the default graph.
-		
-		Use `parse_fn` if you need to do parsing / processing on single examples.
+		Creates a `Head` for linear regression.
 		
 		Args:
-		  file_pattern: List of files or pattern of file paths containing
-		      `Example` records. See `tf.gfile.Glob` for pattern rules.
-		  batch_size: An int or scalar `Tensor` specifying the batch size to use.
-		  reader: A function or class that returns an object with
-		    `read` method, (filename tensor) -> (example tensor).
-		  randomize_input: Whether the input should be randomized.
-		  num_epochs: Integer specifying the number of times to read through the
-		    dataset. If `None`, cycles through the dataset forever.
-		    NOTE - If specified, creates a variable that must be initialized, so call
-		    `tf.initialize_all_variables()` as shown in the tests.
-		  queue_capacity: Capacity for input queue.
-		  num_threads: The number of threads enqueuing examples.
-		  read_batch_size: An int or scalar `Tensor` specifying the number of
-		    records to read at once
-		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
-		    representation. If `None`, no parsing is done.
-		  name: Name of resulting op.
+		  label_name: String, name of the key in label dict. Can be null if label
+		      is a tensor (single headed models).
+		  weight_column_name: A string defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  label_dimension: Number of regression labels per example. This is the size
+		    of the last dimension of the labels `Tensor` (typically, this has shape
+		    `[batch_size, label_dimension]`).
+		  enable_centered_bias: A bool. If True, estimator will learn a centered
+		    bias variable for each class. Rest of the model structure learns the
+		    residual after centered bias.
+		  head_name: name of the head. If provided, predictions, summary and metrics
+		    keys will be suffixed by `"/" + head_name` and the default variable scope
+		    will be `head_name`.
 		
 		Returns:
-		  String `Tensor` of batched `Example` proto. If `keep_keys` is True, then
-		  returns tuple of string `Tensor`s, where first value is the key.
-		
-		Raises:
-		  ValueError: for invalid inputs.
+		  An instance of `Head` for linear regression.
 	**/
-	static public function read_keyed_batch_examples(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic):Dynamic;
+	static public function regression_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch and parse `Example` protos.
+		See run_feeds_iter(). Returns a `list` instead of an iterator. (deprecated)
 		
-		Given file pattern (or list of files), will setup a queue for file names,
-		read `Example` proto using provided `reader`, use batch queue to create
-		batches of examples of size `batch_size` and parse example given `features`
-		specification.
-		
-		All queue runners are added to the queue runners collection, and may be
-		started via `start_queue_runners`.
-		
-		All ops are added to the default graph.
-		
-		Args:
-		  file_pattern: List of files or pattern of file paths containing
-		      `Example` records. See `tf.gfile.Glob` for pattern rules.
-		  batch_size: An int or scalar `Tensor` specifying the batch size to use.
-		  features: A `dict` mapping feature keys to `FixedLenFeature` or
-		    `VarLenFeature` values.
-		  reader: A function or class that returns an object with
-		    `read` method, (filename tensor) -> (example tensor).
-		  randomize_input: Whether the input should be randomized.
-		  num_epochs: Integer specifying the number of times to read through the
-		    dataset. If None, cycles through the dataset forever. NOTE - If specified,
-		    creates a variable that must be initialized, so call
-		    tf.initialize_local_variables() as shown in the tests.
-		  queue_capacity: Capacity for input queue.
-		  reader_num_threads: The number of threads to read examples.
-		  feature_queue_capacity: Capacity of the parsed features queue.
-		  num_queue_runners: Number of queue runners to start for the feature queue,
-		    Adding multiple queue runners for the parsed example queue helps maintain
-		    a full queue when the subsequent computations overall are cheaper than
-		    parsing.
-		  parser_num_threads: (Deprecated) The number of threads to parse examples.
-		  name: Name of resulting op.
-		
-		Returns:
-		  A dict of `Tensor` or `SparseTensor` objects for each in `features`.
-		  If `keep_keys` is `True`, returns tuple of string `Tensor` and above dict.
-		
-		Raises:
-		  ValueError: for invalid inputs.
-	**/
-	static public function read_keyed_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?feature_queue_capacity:Dynamic, ?num_queue_runners:Dynamic, ?parser_num_threads:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		See run_feeds_iter(). Returns a `list` instead of an iterator.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
 	static public function run_feeds(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Run `output_dict` tensors `n` times, with the same `feed_dict` each run.
+		Run `output_dict` tensors `n` times, with the same `feed_dict` each run. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Args:
 		  output_dict: A `dict` mapping string names to tensors to run. Must all be
@@ -406,7 +590,11 @@ package tensorflow.contrib.learn;
 	**/
 	static public function run_n(output_dict:Dynamic, ?feed_dict:Dynamic, ?restore_checkpoint_path:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Train a model.
+		Train a model. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Instructions for updating:
+		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
 		Given `graph`, a directory to write outputs to (`output_dir`), and some ops,
 		run a training loop. The given `train_op` performs one step of training on the
@@ -444,7 +632,7 @@ package tensorflow.contrib.learn;
 		  keep_checkpoint_max: The maximum number of recent checkpoint files to
 		    keep. As new files are created, older files are deleted. If None or 0,
 		    all checkpoint files are kept. This is simply passed as the max_to_keep
-		    arg to tf.Saver constructor.
+		    arg to tf.train.Saver constructor.
 		  supervisor_save_summaries_steps: Save summaries every
 		    `supervisor_save_summaries_steps` seconds when training.
 		  feed_fn: A function that is called every iteration to produce a `feed_dict`

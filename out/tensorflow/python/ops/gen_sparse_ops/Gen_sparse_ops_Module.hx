@@ -10,18 +10,100 @@ package tensorflow.python.ops.gen_sparse_ops;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __serialize_many_sparse_outputs : Dynamic;
-	static public var __serialize_sparse_outputs : Dynamic;
 	static public var __sparse_add_grad_outputs : Dynamic;
 	static public var __sparse_add_outputs : Dynamic;
 	static public var __sparse_concat_outputs : Dynamic;
+	static public var __sparse_cross_outputs : Dynamic;
 	static public var __sparse_reorder_outputs : Dynamic;
 	static public var __sparse_reshape_outputs : Dynamic;
 	static public var __sparse_split_outputs : Dynamic;
-	static public var __sparse_tensor_dense_add_outputs : Dynamic;
-	static public var __sparse_tensor_dense_mat_mul_outputs : Dynamic;
-	static public var __sparse_to_dense_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __take_many_sparse_from_tensors_map_outputs : Dynamic;
+	/**
+		Add an `N`-minibatch `SparseTensor` to a `SparseTensorsMap`, return `N` handles.
+		
+		A `SparseTensor` of rank `R` is represented by three tensors: `sparse_indices`,
+		`sparse_values`, and `sparse_shape`, where
+		
+		```sparse_indices.shape[1] == sparse_shape.shape[0] == R```
+		
+		An `N`-minibatch of `SparseTensor` objects is represented as a `SparseTensor`
+		having a first `sparse_indices` column taking values between `[0, N)`, where
+		the minibatch size `N == sparse_shape[0]`.
+		
+		The input `SparseTensor` must have rank `R` greater than 1, and the first
+		dimension is treated as the minibatch dimension.  Elements of the `SparseTensor`
+		must be sorted in increasing order of this first dimension.  The stored
+		`SparseTensor` objects pointed to by each row of the output `sparse_handles`
+		will have rank `R-1`.
+		
+		The `SparseTensor` values can then be read out as part of a minibatch by passing
+		the given keys as vector elements to `TakeManySparseFromTensorsMap`.  To ensure
+		the correct `SparseTensorsMap` is accessed, ensure that the same
+		`container` and `shared_name` are passed to that Op.  If no `shared_name`
+		is provided here, instead use the *name* of the Operation created by calling
+		`AddManySparseToTensorsMap` as the `shared_name` passed to
+		`TakeManySparseFromTensorsMap`.  Ensure the Operations are colocated.
+		
+		Args:
+		  sparse_indices: A `Tensor` of type `int64`.
+		    2-D.  The `indices` of the minibatch `SparseTensor`.
+		    `sparse_indices[:, 0]` must be ordered values in `[0, N)`.
+		  sparse_values: A `Tensor`.
+		    1-D.  The `values` of the minibatch `SparseTensor`.
+		  sparse_shape: A `Tensor` of type `int64`.
+		    1-D.  The `shape` of the minibatch `SparseTensor`.
+		    The minibatch size `N == sparse_shape[0]`.
+		  container: An optional `string`. Defaults to `""`.
+		    The container name for the `SparseTensorsMap` created by this op.
+		  shared_name: An optional `string`. Defaults to `""`.
+		    The shared name for the `SparseTensorsMap` created by this op.
+		    If blank, the new Operation's unique name is used.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `int64`.
+		  1-D.  The handles of the `SparseTensor` now stored in the
+		  `SparseTensorsMap`.  Shape: `[N]`.
+	**/
+	static public function _add_many_sparse_to_tensors_map(sparse_indices:Dynamic, sparse_values:Dynamic, sparse_shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Add a `SparseTensor` to a `SparseTensorsMap` return its handle.
+		
+		A `SparseTensor` is represented by three tensors: `sparse_indices`,
+		`sparse_values`, and `sparse_shape`.
+		
+		This operator takes the given `SparseTensor` and adds it to a container
+		object (a `SparseTensorsMap`).  A unique key within this container is generated
+		in the form of an `int64`, and this is the value that is returned.
+		
+		The `SparseTensor` can then be read out as part of a minibatch by passing
+		the key as a vector element to `TakeManySparseFromTensorsMap`.  To ensure
+		the correct `SparseTensorsMap` is accessed, ensure that the same
+		`container` and `shared_name` are passed to that Op.  If no `shared_name`
+		is provided here, instead use the *name* of the Operation created by calling
+		`AddSparseToTensorsMap` as the `shared_name` passed to
+		`TakeManySparseFromTensorsMap`.  Ensure the Operations are colocated.
+		
+		Args:
+		  sparse_indices: A `Tensor` of type `int64`.
+		    2-D.  The `indices` of the `SparseTensor`.
+		  sparse_values: A `Tensor`. 1-D.  The `values` of the `SparseTensor`.
+		  sparse_shape: A `Tensor` of type `int64`.
+		    1-D.  The `shape` of the `SparseTensor`.
+		  container: An optional `string`. Defaults to `""`.
+		    The container name for the `SparseTensorsMap` created by this op.
+		  shared_name: An optional `string`. Defaults to `""`.
+		    The shared name for the `SparseTensorsMap` created by this op.
+		    If blank, the new Operation's unique name is used.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `int64`.
+		  0-D.  The handle of the `SparseTensor` now stored in the
+		  `SparseTensorsMap`.
+	**/
+	static public function _add_sparse_to_tensors_map(sparse_indices:Dynamic, sparse_values:Dynamic, sparse_shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Deserialize and concatenate `SparseTensors` from a serialized minibatch.
 		
@@ -76,6 +158,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sparse_indices, sparse_values, sparse_shape).
+		
 		  sparse_indices: A `Tensor` of type `int64`.
 		  sparse_values: A `Tensor` of type `dtype`.
 		  sparse_shape: A `Tensor` of type `int64`.
@@ -158,6 +241,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sum_indices, sum_values, sum_shape).
+		
 		  sum_indices: A `Tensor` of type `int64`.
 		  sum_values: A `Tensor`. Has the same type as `a_values`.
 		  sum_shape: A `Tensor` of type `int64`.
@@ -186,6 +270,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (a_val_grad, b_val_grad).
+		
 		  a_val_grad: A `Tensor`. Has the same type as `backprop_val_grad`. 1-D with shape `[nnz(A)]`. The gradient with respect to the
 		    non-empty values of A.
 		  b_val_grad: A `Tensor`. Has the same type as `backprop_val_grad`. 1-D with shape `[nnz(B)]`. The gradient with respect to the
@@ -238,26 +323,96 @@ package tensorflow.python.ops.gen_sparse_ops;
 		    [b c  ]        [       ]   [b c          ]
 		
 		Args:
-		  indices: A list of at least 2 `Tensor` objects of type `int64`.
+		  indices: A list of at least 2 `Tensor` objects with type `int64`.
 		    2-D.  Indices of each input `SparseTensor`.
-		  values: A list with the same number of `Tensor` objects as `indices` of `Tensor` objects of the same type.
+		  values: A list with the same length as `indices` of `Tensor` objects with the same type.
 		    1-D.  Non-empty values of each `SparseTensor`.
-		  shapes: A list with the same number of `Tensor` objects as `indices` of `Tensor` objects of type `int64`.
+		  shapes: A list with the same length as `indices` of `Tensor` objects with type `int64`.
 		    1-D.  Shapes of each `SparseTensor`.
-		  concat_dim: An `int` that is `>= 0`. Dimension to concatenate along.
+		  concat_dim: An `int`.
+		    Dimension to concatenate along. Must be in range [-rank, rank),
+		    where rank is the number of dimensions in each input `SparseTensor`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_values, output_shape).
+		
 		  output_indices: A `Tensor` of type `int64`. 2-D.  Indices of the concatenated `SparseTensor`.
 		  output_values: A `Tensor`. Has the same type as `values`. 1-D.  Non-empty values of the concatenated `SparseTensor`.
 		  output_shape: A `Tensor` of type `int64`. 1-D.  Shape of the concatenated `SparseTensor`.
 	**/
 	static public function _sparse_concat(indices:Dynamic, values:Dynamic, shapes:Dynamic, concat_dim:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _sparse_dense_cwise_add_outputs : Dynamic;
-	static public var _sparse_dense_cwise_div_outputs : Dynamic;
-	static public var _sparse_dense_cwise_mul_outputs : Dynamic;
-	static public var _sparse_reduce_sum_outputs : Dynamic;
+	/**
+		Generates sparse cross from a list of sparse and dense tensors.
+		
+		The op takes two lists, one of 2D `SparseTensor` and one of 2D `Tensor`, each
+		representing features of one feature column. It outputs a 2D `SparseTensor` with
+		the batchwise crosses of these features.
+		
+		For example, if the inputs are
+		
+		    inputs[0]: SparseTensor with shape = [2, 2]
+		    [0, 0]: "a"
+		    [1, 0]: "b"
+		    [1, 1]: "c"
+		
+		    inputs[1]: SparseTensor with shape = [2, 1]
+		    [0, 0]: "d"
+		    [1, 0]: "e"
+		
+		    inputs[2]: Tensor [["f"], ["g"]]
+		
+		then the output will be
+		
+		    shape = [2, 2]
+		    [0, 0]: "a_X_d_X_f"
+		    [1, 0]: "b_X_e_X_g"
+		    [1, 1]: "c_X_e_X_g"
+		
+		if hashed_output=true then the output will be
+		
+		    shape = [2, 2]
+		    [0, 0]: FingerprintCat64(
+		                Fingerprint64("f"), FingerprintCat64(
+		                    Fingerprint64("d"), Fingerprint64("a")))
+		    [1, 0]: FingerprintCat64(
+		                Fingerprint64("g"), FingerprintCat64(
+		                    Fingerprint64("e"), Fingerprint64("b")))
+		    [1, 1]: FingerprintCat64(
+		                Fingerprint64("g"), FingerprintCat64(
+		                    Fingerprint64("e"), Fingerprint64("c")))
+		
+		Args:
+		  indices: A list of `Tensor` objects with type `int64`.
+		    2-D.  Indices of each input `SparseTensor`.
+		  values: A list of `Tensor` objects with types from: `int64`, `string`.
+		    1-D.   values of each `SparseTensor`.
+		  shapes: A list with the same length as `indices` of `Tensor` objects with type `int64`.
+		    1-D.   Shapes of each `SparseTensor`.
+		  dense_inputs: A list of `Tensor` objects with types from: `int64`, `string`.
+		    2-D.    Columns represented by dense `Tensor`.
+		  hashed_output: A `bool`.
+		    If true, returns the hash of the cross instead of the string.
+		    This will allow us avoiding string manipulations.
+		  num_buckets: An `int` that is `>= 0`. It is used if hashed_output is true.
+		    output = hashed_value%num_buckets if num_buckets > 0 else hashed_value.
+		  hash_key: An `int`.
+		    Specify the hash_key that will be used by the `FingerprintCat64`
+		    function to combine the crosses fingerprints.
+		  out_type: A `tf.DType` from: `tf.int64, tf.string`.
+		  internal_type: A `tf.DType` from: `tf.int64, tf.string`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output_indices, output_values, output_shape).
+		
+		  output_indices: A `Tensor` of type `int64`. 2-D.  Indices of the concatenated `SparseTensor`.
+		  output_values: A `Tensor` of type `out_type`. 1-D.  Non-empty values of the concatenated or hashed
+		    `SparseTensor`.
+		  output_shape: A `Tensor` of type `int64`. 1-D.  Shape of the concatenated `SparseTensor`.
+	**/
+	static public function _sparse_cross(indices:Dynamic, values:Dynamic, shapes:Dynamic, dense_inputs:Dynamic, hashed_output:Dynamic, num_buckets:Dynamic, hash_key:Dynamic, out_type:Dynamic, internal_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public var _sparse_reduce_sum_sparse_outputs : Dynamic;
 	/**
 		Reorders a SparseTensor into the canonical, row-major ordering.
 		
@@ -282,6 +437,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_values).
+		
 		  output_indices: A `Tensor` of type `int64`. 2-D.  `N x R` matrix with the same indices as input_indices, but
 		    in canonical row-major ordering.
 		  output_values: A `Tensor`. Has the same type as `input_values`. 1-D.  `N` non-empty values corresponding to `output_indices`.
@@ -318,6 +474,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_shape).
+		
 		  output_indices: A `Tensor` of type `int64`. 2-D.  `N x R_out` matrix with the updated indices of non-empty
 		    values in the output SparseTensor.
 		  output_shape: A `Tensor` of type `int64`. 1-D.  `R_out` vector with the full dense shape of the output
@@ -325,7 +482,6 @@ package tensorflow.python.ops.gen_sparse_ops;
 		    filled in.
 	**/
 	static public function _sparse_reshape(input_indices:Dynamic, input_shape:Dynamic, new_shape:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _sparse_softmax_outputs : Dynamic;
 	static public var _sparse_sparse_maximum_outputs : Dynamic;
 	static public var _sparse_sparse_minimum_outputs : Dynamic;
 	/**
@@ -365,10 +521,11 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_values, output_shape).
-		  output_indices: A list of `num_split` `Tensor` objects of type `int64`.
-		  output_values: A list of `num_split` `Tensor` objects of the same type as values. A list of 1-D tensors represents the values of the output sparse
+		
+		  output_indices: A list of `num_split` `Tensor` objects with type `int64`.
+		  output_values: A list of `num_split` `Tensor` objects with the same type as `values`. A list of 1-D tensors represents the values of the output sparse
 		    tensors.
-		  output_shape: A list of `num_split` `Tensor` objects of type `int64`. A list of 1-D tensors represents the shape of the output sparse
+		  output_shape: A list of `num_split` `Tensor` objects with type `int64`. A list of 1-D tensors represents the shape of the output sparse
 		    tensors.
 	**/
 	static public function _sparse_split(split_dim:Dynamic, indices:Dynamic, values:Dynamic, shape:Dynamic, num_split:Dynamic, ?name:Dynamic):Dynamic;
@@ -406,7 +563,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		  order instead of "row major" order).
 		
 		Args:
-		  a_indices: A `Tensor` of type `int64`.
+		  a_indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2-D.  The `indices` of the `SparseTensor`, size `[nnz, 2]` Matrix.
 		  a_values: A `Tensor`.
 		    1-D.  The `values` of the `SparseTensor`, size `[nnz]` Vector.
@@ -471,6 +628,81 @@ package tensorflow.python.ops.gen_sparse_ops;
 		  Dense output tensor of shape `output_shape`.
 	**/
 	static public function _sparse_to_dense(sparse_indices:Dynamic, output_shape:Dynamic, sparse_values:Dynamic, default_value:Dynamic, ?validate_indices:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Read `SparseTensors` from a `SparseTensorsMap` and concatenate them.
+		
+		The input `sparse_handles` must be an `int64` matrix of shape `[N, 1]` where
+		`N` is the minibatch size and the rows correspond to the output handles of
+		`AddSparseToTensorsMap` or `AddManySparseToTensorsMap`.  The ranks of the
+		original `SparseTensor` objects that went into the given input ops must all
+		match.  When the final `SparseTensor` is created, it has rank one
+		higher than the ranks of the incoming `SparseTensor` objects
+		(they have been concatenated along a new row dimension on the left).
+		
+		The output `SparseTensor` object's shape values for all dimensions but the
+		first are the max across the input `SparseTensor` objects' shape values
+		for the corresponding dimensions.  Its first shape value is `N`, the minibatch
+		size.
+		
+		The input `SparseTensor` objects' indices are assumed ordered in
+		standard lexicographic order.  If this is not the case, after this
+		step run `SparseReorder` to restore index ordering.
+		
+		For example, if the handles represent an input, which is a `[2, 3]` matrix
+		representing two original `SparseTensor` objects:
+		
+		```
+		    index = [ 0]
+		            [10]
+		            [20]
+		    values = [1, 2, 3]
+		    shape = [50]
+		```
+		
+		and
+		
+		```
+		    index = [ 2]
+		            [10]
+		    values = [4, 5]
+		    shape = [30]
+		```
+		
+		then the final `SparseTensor` will be:
+		
+		```
+		    index = [0  0]
+		            [0 10]
+		            [0 20]
+		            [1  2]
+		            [1 10]
+		    values = [1, 2, 3, 4, 5]
+		    shape = [2 50]
+		```
+		
+		Args:
+		  sparse_handles: A `Tensor` of type `int64`.
+		    1-D, The `N` serialized `SparseTensor` objects.
+		    Shape: `[N]`.
+		  dtype: A `tf.DType`.
+		    The `dtype` of the `SparseTensor` objects stored in the
+		    `SparseTensorsMap`.
+		  container: An optional `string`. Defaults to `""`.
+		    The container name for the `SparseTensorsMap` read by this op.
+		  shared_name: An optional `string`. Defaults to `""`.
+		    The shared name for the `SparseTensorsMap` read by this op.
+		    It should not be blank; rather the `shared_name` or unique Operation name
+		    of the Op that created the original `SparseTensorsMap` should be used.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (sparse_indices, sparse_values, sparse_shape).
+		
+		  sparse_indices: A `Tensor` of type `int64`. 2-D.  The `indices` of the minibatch `SparseTensor`.
+		  sparse_values: A `Tensor` of type `dtype`. 1-D.  The `values` of the minibatch `SparseTensor`.
+		  sparse_shape: A `Tensor` of type `int64`. 1-D.  The `shape` of the minibatch `SparseTensor`.
+	**/
+	static public function _take_many_sparse_from_tensors_map(sparse_handles:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Adds up a SparseTensor and a dense Tensor, using these special rules:
 		
@@ -586,6 +818,44 @@ package tensorflow.python.ops.gen_sparse_ops;
 	**/
 	static public function sparse_reduce_sum(input_indices:Dynamic, input_values:Dynamic, input_shape:Dynamic, reduction_axes:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the sum of elements across dimensions of a SparseTensor.
+		
+		This Op takes a SparseTensor and is the sparse counterpart to
+		`tf.reduce_sum()`.  In contrast to SparseReduceSum, this Op returns a
+		SparseTensor.
+		
+		Reduces `sp_input` along the dimensions given in `reduction_axes`.  Unless
+		`keep_dims` is true, the rank of the tensor is reduced by 1 for each entry in
+		`reduction_axes`. If `keep_dims` is true, the reduced dimensions are retained
+		with length 1.
+		
+		If `reduction_axes` has no entries, all dimensions are reduced, and a tensor
+		with a single element is returned.  Additionally, the axes can be negative,
+		which are interpreted according to the indexing rules in Python.
+		
+		Args:
+		  input_indices: A `Tensor` of type `int64`.
+		    2-D.  `N x R` matrix with the indices of non-empty values in a
+		    SparseTensor, possibly not in canonical ordering.
+		  input_values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		    1-D.  `N` non-empty values corresponding to `input_indices`.
+		  input_shape: A `Tensor` of type `int64`.
+		    1-D.  Shape of the input SparseTensor.
+		  reduction_axes: A `Tensor` of type `int32`.
+		    1-D.  Length-`K` vector containing the reduction axes.
+		  keep_dims: An optional `bool`. Defaults to `False`.
+		    If true, retain reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output_indices, output_values, output_shape).
+		
+		  output_indices: A `Tensor` of type `int64`.
+		  output_values: A `Tensor`. Has the same type as `input_values`.
+		  output_shape: A `Tensor` of type `int64`.
+	**/
+	static public function sparse_reduce_sum_sparse(input_indices:Dynamic, input_values:Dynamic, input_shape:Dynamic, reduction_axes:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Applies softmax to a batched N-D `SparseTensor`.
 		
 		The inputs represent an N-D SparseTensor  with logical shape `[..., B, C]`
@@ -642,6 +912,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_values).
+		
 		  output_indices: A `Tensor` of type `int64`. 2-D.  The indices of the output SparseTensor.
 		  output_values: A `Tensor`. Has the same type as `a_values`. 1-D.  The values of the output SparseTensor.
 	**/
@@ -669,6 +940,7 @@ package tensorflow.python.ops.gen_sparse_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output_indices, output_values).
+		
 		  output_indices: A `Tensor` of type `int64`. 2-D.  The indices of the output SparseTensor.
 		  output_values: A `Tensor`. Has the same type as `a_values`. 1-D.  The values of the output SparseTensor.
 	**/

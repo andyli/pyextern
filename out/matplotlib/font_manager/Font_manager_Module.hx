@@ -18,9 +18,15 @@ package matplotlib.font_manager;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Cache and list the font filenames known to `fc-list`.
+		    
+	**/
+	static public function _call_fc_list():Dynamic;
 	static public var _fmcache : Dynamic;
 	static public var _is_opentype_cff_font_cache : Dynamic;
 	static public var _lookup_cache : Dynamic;
+	static public function _normalize_font_family(family:Dynamic):Dynamic;
 	static public function _rebuild():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -63,10 +69,36 @@ package matplotlib.font_manager;
 	**/
 	static public function get_cachedir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Grab a list of all the fonts that are being tracked by fontconfig
-		by making a system call to ``fc-list``.  This is an easy way to
-		grab all of the fonts the user wants to be made available to
-		applications, without needing knowing where all of them reside.
+		FT2Font(ttffile)
+		
+		Create a new FT2Font object
+		The following global font attributes are defined:
+		  num_faces              number of faces in file
+		  face_flags             face flags  (int type); see the ft2font constants
+		  style_flags            style flags  (int type); see the ft2font constants
+		  num_glyphs             number of glyphs in the face
+		  family_name            face family name
+		  style_name             face syle name
+		  num_fixed_sizes        number of bitmap in the face
+		  scalable               face is scalable
+		
+		The following are available, if scalable is true:
+		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
+		  units_per_EM           number of font units covered by the EM
+		  ascender               ascender in 26.6 units
+		  descender              descender in 26.6 units
+		  height                 height in 26.6 units; used to compute a default
+		                         line spacing (baseline-to-baseline distance)
+		  max_advance_width      maximum horizontal cursor advance for all glyphs
+		  max_advance_height     same for vertical layout
+		  underline_position     vertical position of the underline bar
+		  underline_thickness    vertical thickness of the underline
+		  postscript_name        PostScript name of the font
+	**/
+	static public function get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		List the font filenames known to `fc-list` having the given extension.
+		    
 	**/
 	static public function get_fontconfig_fonts(?fontext:Dynamic):Dynamic;
 	/**
@@ -90,6 +122,25 @@ package matplotlib.font_manager;
 		possibly upper-cased, found recursively under the directory.
 	**/
 	static public function list_fonts(directory:Dynamic, extensions:Dynamic):Dynamic;
+	/**
+		Least-recently-used cache decorator.
+		
+		If *maxsize* is set to None, the LRU features are disabled and the cache
+		can grow without bound.
+		
+		If *typed* is True, arguments of different types will be cached separately.
+		For example, f(3.0) and f(3) will be treated as distinct calls with
+		distinct results.
+		
+		Arguments to the cached function must be hashable.
+		
+		View the cache statistics named tuple (hits, misses, maxsize, currsize)
+		with f.cache_info().  Clear the cache and statistics with f.cache_clear().
+		Access the underlying function with f.__wrapped__.
+		
+		See:  http://en.wikipedia.org/wiki/Cache_algorithms#Least_Recently_Used
+	**/
+	static public function lru_cache(?maxsize:Dynamic, ?typed:Dynamic):Dynamic;
 	/**
 		Parse the given fontconfig *pattern* and return a dictionary
 		of key/value pairs useful for initializing a

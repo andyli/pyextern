@@ -37,13 +37,14 @@ package tensorflow.python.ops.gen_ctc_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (decoded_indices, decoded_values, decoded_shape, log_probability).
-		  decoded_indices: A list of `top_paths` `Tensor` objects of type `int64`. A list (length: top_paths) of indices matrices.  Matrix j,
+		
+		  decoded_indices: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of indices matrices.  Matrix j,
 		    size `(total_decoded_outputs[j] x 2)`, has indices of a
 		    `SparseTensor<int64, 2>`.  The rows store: [batch, time].
-		  decoded_values: A list of `top_paths` `Tensor` objects of type `int64`. A list (length: top_paths) of values vectors.  Vector j,
+		  decoded_values: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of values vectors.  Vector j,
 		    size `(length total_decoded_outputs[j])`, has the values of a
 		    `SparseTensor<int64, 2>`.  The vector stores the decoded classes for beam j.
-		  decoded_shape: A list of `top_paths` `Tensor` objects of type `int64`. A list (length: top_paths) of shape vector.  Vector j,
+		  decoded_shape: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of shape vector.  Vector j,
 		    size `(2)`, stores the shape of the decoded `SparseTensor[j]`.
 		    Its values are: `[batch_size, max_decoded_length[j]]`.
 		  log_probability: A `Tensor` of type `float32`. A matrix, shaped: `(batch_size x top_paths)`.  The
@@ -56,7 +57,7 @@ package tensorflow.python.ops.gen_ctc_ops;
 		A note about the attribute merge_repeated: if enabled, when
 		consecutive logits' maximum indices are the same, only the first of
 		these is emitted.  Labeling the blank '*', the sequence "A B B * B B"
-		becomes "A B" if merge_repeated = True and "A B B B B" if
+		becomes "A B B" if merge_repeated = True and "A B B B B" if
 		merge_repeated = False.
 		
 		Regardless of the value of merge_repeated, if the maximum index of a given
@@ -74,6 +75,7 @@ package tensorflow.python.ops.gen_ctc_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (decoded_indices, decoded_values, decoded_shape, log_probability).
+		
 		  decoded_indices: A `Tensor` of type `int64`. Indices matrix, size `(total_decoded_outputs x 2)`,
 		    of a `SparseTensor<int64, 2>`.  The rows store: [batch, time].
 		  decoded_values: A `Tensor` of type `int64`. Values vector, size: `(total_decoded_outputs)`,
@@ -108,14 +110,19 @@ package tensorflow.python.ops.gen_ctc_ops;
 		    Scalar.  If set to false, *during* CTC calculation
 		    repeated non-blank labels will not be merged and are interpreted as
 		    individual labels.  This is a simplified version of CTC.
+		  ignore_longer_outputs_than_inputs: An optional `bool`. Defaults to `False`.
+		    Scalar. If set to true, during CTC
+		    calculation items have longer input sequences than output sequences
+		    are ignored by returning zero-gradient for those items.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (loss, gradient).
+		
 		  loss: A `Tensor` of type `float32`. A vector (batch) containing log-probabilities.
 		  gradient: A `Tensor` of type `float32`. The gradient of `loss`.  3-D, shape:
 		    `(max_time x batch_size x num_classes)`.
 	**/
-	static public function _ctc_loss(inputs:Dynamic, labels_indices:Dynamic, labels_values:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _ctc_loss(inputs:Dynamic, labels_indices:Dynamic, labels_values:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?name:Dynamic):Dynamic;
 	static public var _op_def_lib : Dynamic;
 }

@@ -1,14 +1,9 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.device_attributes_pb2;
 @:pythonImport("tensorflow.core.framework.device_attributes_pb2") extern class Device_attributes_pb2_Module {
-	static public var BUS_0 : Dynamic;
-	static public var BUS_1 : Dynamic;
-	static public var BUS_ANY : Dynamic;
-	static public var BUS_NUM_ADJACENCIES : Dynamic;
-	static public var BusAdjacency : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var _BUSADJACENCY : Dynamic;
 	static public var _DEVICEATTRIBUTES : Dynamic;
+	static public var _DEVICELOCALITY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

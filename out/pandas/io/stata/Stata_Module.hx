@@ -2,6 +2,7 @@
 package pandas.io.stata;
 @:pythonImport("pandas.io.stata") extern class Stata_Module {
 	static public var NaT : Dynamic;
+	static public var VALID_ENCODINGS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -153,8 +154,8 @@ package pandas.io.stata;
 	static public var _version_error : Dynamic;
 	static public var excessive_string_length_error : Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------
@@ -168,11 +169,144 @@ package pandas.io.stata;
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	/**
-		we are coercing to an ndarray here
+		Effeciently infer the type of a passed val, or list-like
+		array of values. Return a string describing the type.
+		
+		Parameters
+		----------
+		value : scalar, list, ndarray, or pandas type
+		
+		Returns
+		-------
+		string describing the common type of the input data.
+		Results can include:
+		
+		- string
+		- unicode
+		- bytes
+		- floating
+		- integer
+		- mixed-integer
+		- mixed-integer-float
+		- complex
+		- categorical
+		- boolean
+		- datetime64
+		- datetime
+		- date
+		- timedelta64
+		- timedelta
+		- time
+		- period
+		- mixed
+		
+		Raises
+		------
+		TypeError if ndarray-like but cannot infer the dtype
+		
+		Notes
+		-----
+		- 'mixed' is the catchall for anything that is not otherwise
+		  specialized
+		- 'mixed-integer-float' are floats and integers
+		- 'mixed-integer' are integers mixed with non-integers
+		
+		Examples
+		--------
+		>>> infer_dtype(['foo', 'bar'])
+		'string'
+		
+		>>> infer_dtype([b'foo', b'bar'])
+		'bytes'
+		
+		>>> infer_dtype([1, 2, 3])
+		'integer'
+		
+		>>> infer_dtype([1, 2, 3.5])
+		'mixed-integer-float'
+		
+		>>> infer_dtype([1.0, 2.0, 3.5])
+		'floating'
+		
+		>>> infer_dtype(['a', 1])
+		'mixed-integer'
+		
+		>>> infer_dtype([True, False])
+		'boolean'
+		
+		>>> infer_dtype([True, False, np.nan])
+		'mixed'
+		
+		>>> infer_dtype([pd.Timestamp('20130101')])
+		'datetime'
+		
+		>>> infer_dtype([datetime.date(2013, 1, 1)])
+		'date'
+		
+		>>> infer_dtype([np.datetime64('2013-01-01')])
+		'datetime64'
+		
+		>>> infer_dtype([datetime.timedelta(0, 1, 1)])
+		'timedelta'
+		
+		>>> infer_dtype(pd.Series(list('aabc')).astype('category'))
+		'categorical'
 	**/
 	static public function infer_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var invalid_name_doc : Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_dtype(object)
+		False
+		>>> is_datetime64_dtype(np.datetime64)
+		True
+		>>> is_datetime64_dtype(np.array([], dtype=int))
+		False
+		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
@@ -213,7 +347,7 @@ package pandas.io.stata;
 		convert_categoricals : boolean, defaults to True
 		    Read value labels and convert columns to Categorical/Factor variables
 		encoding : string, None or encoding
-		    Encoding used to parse the files. None defaults to iso-8859-1.
+		    Encoding used to parse the files. None defaults to latin-1.
 		index : identifier of index column
 		    identifier of column that should be used as index of the DataFrame
 		convert_missing : boolean, defaults to False
@@ -260,7 +394,7 @@ package pandas.io.stata;
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, Series
+		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
 		    .. versionadded: 0.18.1
 		
@@ -306,13 +440,27 @@ package pandas.io.stata;
 		    - If False, allow the format to match anywhere in the target string.
 		
 		unit : string, default 'ns'
-		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
-		    (e.g. a unix timestamp), which is an integer/float number.
+		    unit of the arg (D,s,ms,us,ns) denote the unit, which is an
+		    integer or float number. This will be based off the origin.
+		    Example, with unit='ms' and origin='unix' (the default), this
+		    would calculate the number of milliseconds to the unix epoch start.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
 		    datetime strings, and if it can be inferred, switch to a faster
 		    method of parsing them. In some cases this can increase the parsing
 		    speed by ~5-10x.
+		origin : scalar, default is 'unix'
+		    Define the reference date. The numeric values would be parsed as number
+		    of units (defined by `unit`) since this reference date.
+		
+		    - If 'unix' (or POSIX) time; origin is set to 1970-01-01.
+		    - If 'julian', unit must be 'D', and origin is set to beginning of
+		      Julian Calendar. Julian day number 0 is assigned to the day starting
+		      at noon on January 1, 4713 BC.
+		    - If Timestamp convertible, origin is set to Timestamp identified by
+		      origin.
+		
+		    .. versionadded: 0.20.0
 		
 		Returns
 		-------
@@ -342,10 +490,15 @@ package pandas.io.stata;
 		1   2016-03-05
 		dtype: datetime64[ns]
 		
-		If a date that does not meet timestamp limitations, passing errors='coerce'
-		will force to NaT. Furthermore this will force non-dates to NaT as well.
+		If a date does not meet the `timestamp limitations
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html
+		#timeseries-timestamp-limits>`_, passing errors='ignore'
+		will return the original input instead of raising any exception.
 		
-		>>> pd.to_datetime('13000101', format='%Y%m%d')
+		Passing errors='coerce' will force an out-of-bounds date to NaT,
+		in addition to forcing non-dates (or non-parseable dates) to NaT.
+		
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='ignore')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
@@ -368,8 +521,26 @@ package pandas.io.stata;
 		
 		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
 		1 loop, best of 3: 471 ms per loop
+		
+		Using a unix epoch time
+		
+		>>> pd.to_datetime(1490195805, unit='s')
+		Timestamp('2017-03-22 15:16:45')
+		>>> pd.to_datetime(1490195805433502912, unit='ns')
+		Timestamp('2017-03-22 15:16:45.433502912')
+		
+		.. warning:: For float arg, precision rounding might happen. To prevent
+		    unexpected behavior use a fixed-width exact type.
+		
+		Using a non-unix epoch origin
+		
+		>>> pd.to_datetime([1, 2, 3], unit='D',
+		                   origin=pd.Timestamp('1960-01-01'))
+		0    1960-01-02
+		1    1960-01-03
+		2    1960-01-04
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
 		Convert argument to timedelta
 		
@@ -417,6 +588,6 @@ package pandas.io.stata;
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
 	**/
-	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
+	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var value_label_mismatch_doc : Dynamic;
 }

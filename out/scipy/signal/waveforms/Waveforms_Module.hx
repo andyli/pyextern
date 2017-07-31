@@ -43,8 +43,8 @@ package scipy.signal.waveforms;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -176,7 +176,7 @@ package scipy.signal.waveforms;
 	**/
 	static public function chirp(t:Dynamic, f0:Dynamic, t1:Dynamic, f1:Dynamic, ?method:Dynamic, ?phi:Dynamic, ?vertex_zero:Dynamic):Dynamic;
 	/**
-		cos(x[, out])
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -184,18 +184,22 @@ package scipy.signal.waveforms;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -226,7 +230,7 @@ package scipy.signal.waveforms;
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -234,6 +238,17 @@ package scipy.signal.waveforms;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -278,12 +293,12 @@ package scipy.signal.waveforms;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
@@ -393,7 +408,7 @@ package scipy.signal.waveforms;
 	**/
 	static public function gausspulse(t:Dynamic, ?fc:Dynamic, ?bw:Dynamic, ?bwr:Dynamic, ?tpr:Dynamic, ?retquad:Dynamic, ?retenv:Dynamic):Dynamic;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -405,6 +420,17 @@ package scipy.signal.waveforms;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -443,7 +469,7 @@ package scipy.signal.waveforms;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		remainder(x1, x2[, out])
+		remainder(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return element-wise remainder of division.
 		
@@ -458,9 +484,17 @@ package scipy.signal.waveforms;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -471,6 +505,7 @@ package scipy.signal.waveforms;
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
+		divmod : Simultaneous floor division and remainder.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -508,7 +543,8 @@ package scipy.signal.waveforms;
 		vals : 1-D sequence
 		    Values to put into `a`. Only the first N elements are used, where
 		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
+		    than N, it will be repeated, and if elements of `a` are to be masked,
+		    this sequence must be non-empty.
 		
 		See Also
 		--------
@@ -686,7 +722,7 @@ package scipy.signal.waveforms;
 	**/
 	static public function sawtooth(t:Dynamic, ?width:Dynamic):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -694,6 +730,17 @@ package scipy.signal.waveforms;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -742,7 +789,7 @@ package scipy.signal.waveforms;
 	**/
 	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -750,9 +797,17 @@ package scipy.signal.waveforms;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -835,6 +890,7 @@ package scipy.signal.waveforms;
 		>>> plt.ylim(-1.5, 1.5)
 	**/
 	static public function square(t:Dynamic, ?duty:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
 	/**
 		Frequency-swept cosine generator, with a time-dependent frequency.
 		
@@ -897,6 +953,78 @@ package scipy.signal.waveforms;
 		``f(t)`` as defined above.
 	**/
 	static public function sweep_poly(t:Dynamic, poly:Dynamic, ?phi:Dynamic):Dynamic;
+	/**
+		Unit impulse signal (discrete delta function) or unit basis vector.
+		
+		Parameters
+		----------
+		shape : int or tuple of int
+		    Number of samples in the output (1-D), or a tuple that represents the
+		    shape of the output (N-D).
+		idx : None or int or tuple of int or 'mid', optional
+		    Index at which the value is 1.  If None, defaults to the 0th element.
+		    If ``idx='mid'``, the impulse will be centered at ``shape // 2`` in
+		    all dimensions.  If an int, the impulse will be at `idx` in all
+		    dimensions.
+		dtype : data-type, optional
+		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
+		    `numpy.float64`.
+		
+		Returns
+		-------
+		y : ndarray
+		    Output array containing an impulse signal.
+		
+		Notes
+		-----
+		The 1D case is also known as the Kronecker delta.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		An impulse at the 0th element (:math:`\delta[n]`):
+		
+		>>> from scipy import signal
+		>>> signal.unit_impulse(8)
+		array([ 1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.])
+		
+		Impulse offset by 2 samples (:math:`\delta[n-2]`):
+		
+		>>> signal.unit_impulse(7, 2)
+		array([ 0.,  0.,  1.,  0.,  0.,  0.,  0.])
+		
+		2-dimensional impulse, centered:
+		
+		>>> signal.unit_impulse((3, 3), 'mid')
+		array([[ 0.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  0.]])
+		
+		Impulse at (2, 2), using broadcasting:
+		
+		>>> signal.unit_impulse((4, 4), 2)
+		array([[ 0.,  0.,  0.,  0.],
+		       [ 0.,  0.,  0.,  0.],
+		       [ 0.,  0.,  1.,  0.],
+		       [ 0.,  0.,  0.,  0.]])
+		
+		Plot the impulse response of a 4th-order Butterworth lowpass filter:
+		
+		>>> imp = signal.unit_impulse(100, 'mid')
+		>>> b, a = signal.butter(4, 0.2)
+		>>> response = signal.lfilter(b, a, imp)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(np.arange(-50, 50), imp)
+		>>> plt.plot(np.arange(-50, 50), response)
+		>>> plt.margins(0.1, 0.1)
+		>>> plt.xlabel('Time [samples]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.grid(True)
+		>>> plt.show()
+	**/
+	static public function unit_impulse(shape:Dynamic, ?idx:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

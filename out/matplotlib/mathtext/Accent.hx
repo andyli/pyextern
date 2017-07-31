@@ -41,11 +41,18 @@ package matplotlib.mathtext;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(c:Dynamic, state:Dynamic):Dynamic;
+	public function ___init__(c:Dynamic, state:Dynamic, ?math:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(c:Dynamic, state:Dynamic):Void;
+	public function new(c:Dynamic, state:Dynamic, ?math:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __internal_repr__():Dynamic;
 	/**
 		Return self<=value.

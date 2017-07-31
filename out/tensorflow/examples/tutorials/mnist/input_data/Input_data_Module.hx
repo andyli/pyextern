@@ -12,5 +12,5 @@ package tensorflow.examples.tutorials.mnist.input_data;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
-	static public function read_data_sets(train_dir:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic):Dynamic;
+	static public function read_data_sets(train_dir:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic, ?validation_size:Dynamic, ?seed:Dynamic):Dynamic;
 }

@@ -2,9 +2,13 @@
 package matplotlib.markers;
 @:pythonImport("matplotlib.markers") extern class Markers_Module {
 	static public var CARETDOWN : Dynamic;
+	static public var CARETDOWNBASE : Dynamic;
 	static public var CARETLEFT : Dynamic;
+	static public var CARETLEFTBASE : Dynamic;
 	static public var CARETRIGHT : Dynamic;
+	static public var CARETRIGHTBASE : Dynamic;
 	static public var CARETUP : Dynamic;
+	static public var CARETUPBASE : Dynamic;
 	static public var TICKDOWN : Dynamic;
 	static public var TICKLEFT : Dynamic;
 	static public var TICKRIGHT : Dynamic;

@@ -51,6 +51,13 @@ package docutils.parsers.rst.states;
 	**/
 	public function new(state_machine:Dynamic, ?debug:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -146,7 +153,7 @@ package docutils.parsers.rst.states;
 		Called at beginning of file.
 	**/
 	public function bof(context:Dynamic):Dynamic;
-	public function build_table(tabledata:Dynamic, tableline:Dynamic, ?stub_columns:Dynamic):Dynamic;
+	public function build_table(tabledata:Dynamic, tableline:Dynamic, ?stub_columns:Dynamic, ?widths:Dynamic):Dynamic;
 	public function build_table_row(rowdata:Dynamic, tableline:Dynamic):Dynamic;
 	/**
 		Bullet list item.

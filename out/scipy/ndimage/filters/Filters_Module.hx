@@ -18,6 +18,7 @@ package scipy.ndimage.filters;
 	static public var _input_doc : Dynamic;
 	static public function _min_or_max_filter(input:Dynamic, size:Dynamic, footprint:Dynamic, structure:Dynamic, output:Dynamic, mode:Dynamic, cval:Dynamic, origin:Dynamic, minimum:Dynamic):Dynamic;
 	static public var _mode_doc : Dynamic;
+	static public var _mode_multiple_doc : Dynamic;
 	static public var _origin_doc : Dynamic;
 	static public var _output_doc : Dynamic;
 	static public function _rank_filter(input:Dynamic, rank:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic, ?operation:Dynamic):Dynamic;
@@ -36,7 +37,8 @@ package scipy.ndimage.filters;
 		    Array of weights, same number of dimensions as input
 		output : ndarray, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as
+		    compared to input array to avoid aliasing errors.  
 		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
 		    the `mode` parameter determines how the array borders are
 		    handled. For 'constant' mode, values beyond borders are set to be
@@ -147,7 +149,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -178,7 +181,8 @@ package scipy.ndimage.filters;
 		    array of weights, same number of dimensions as input
 		output : array, optional
 		    The ``output`` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as
+		    compared to input array to avoid aliasing errors.
 		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
 		    The ``mode`` parameter determines how the array borders are
 		    handled, where ``cval`` is the value when mode is equal to
@@ -211,7 +215,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -248,11 +253,15 @@ package scipy.ndimage.filters;
 		    implemented
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -290,6 +299,18 @@ package scipy.ndimage.filters;
 		       [20, 22, 24, 25, 27],
 		       [29, 31, 33, 34, 36],
 		       [35, 37, 39, 40, 42]])
+		
+		>>> from scipy import misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = gaussian_filter(ascent, sigma=5)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function gaussian_filter(input:Dynamic, sigma:Dynamic, ?order:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?truncate:Dynamic):Dynamic;
 	/**
@@ -310,7 +331,8 @@ package scipy.ndimage.filters;
 		    order derivatives are not implemented
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -340,15 +362,38 @@ package scipy.ndimage.filters;
 		    it is equal for all axes..
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		Extra keyword arguments will be passed to gaussian_filter().
+		
+		Returns
+		-------
+		gaussian_gradient_magnitude : ndarray
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.gaussian_gradient_magnitude(ascent, sigma=5)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function gaussian_gradient_magnitude(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -364,11 +409,15 @@ package scipy.ndimage.filters;
 		    it is equal for all axes.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -404,7 +453,7 @@ package scipy.ndimage.filters;
 		----------
 		input : array_like
 		    Input array to filter.
-		function : callable
+		function : {callable, scipy.LowLevelCallable}
 		    Function to apply at each element.
 		size : scalar or tuple, optional
 		    See footprint, below
@@ -421,7 +470,8 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -436,6 +486,36 @@ package scipy.ndimage.filters;
 		    Sequence of extra positional arguments to pass to passed function
 		extra_keywords : dict, optional
 		    dict of extra keyword arguments to pass to passed function
+		
+		Notes
+		-----
+		This function also accepts low-level callback functions with one of
+		the following signatures and wrapped in `scipy.LowLevelCallable`:
+		
+		.. code:: c
+		
+		   int callback(double *buffer, npy_intp filter_size, 
+		                double *return_value, void *user_data)
+		   int callback(double *buffer, intptr_t filter_size, 
+		                double *return_value, void *user_data)
+		
+		The calling function iterates over the elements of the input and
+		output arrays, calling the callback function at each element. The
+		elements within the footprint of the filter at the current element are
+		passed through the ``buffer`` parameter, and the number of elements
+		within the footprint through ``filter_size``. The calculated value is
+		returned in ``return_value``. ``user_data`` is the data pointer provided 
+		to `scipy.LowLevelCallable` as-is.
+		
+		The callback function must return an integer error status that is zero 
+		if something went wrong and one otherwise. If an error occurs, you should
+		normally set the python error status with an informative message
+		before returning, otherwise a default error message is set by the
+		calling function.
+		
+		In addition, some other low-level function pointer specifications 
+		are accepted, but these are for backward compatibility only and should
+		not be used in new code.
 	**/
 	static public function generic_filter(input:Dynamic, _function:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic, ?extra_arguments:Dynamic, ?extra_keywords:Dynamic):Dynamic;
 	/**
@@ -452,7 +532,7 @@ package scipy.ndimage.filters;
 		----------
 		input : array_like
 		    Input array to filter.
-		function : callable
+		function : {callable, scipy.LowLevelCallable}
 		    Function to apply along given axis.
 		filter_size : scalar
 		    Length of the filter.
@@ -460,7 +540,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -475,6 +556,41 @@ package scipy.ndimage.filters;
 		    Sequence of extra positional arguments to pass to passed function
 		extra_keywords : dict, optional
 		    dict of extra keyword arguments to pass to passed function
+		
+		Notes
+		-----
+		This function also accepts low-level callback functions with one of
+		the following signatures and wrapped in `scipy.LowLevelCallable`:
+		
+		.. code:: c
+		
+		   int function(double *input_line, npy_intp input_length, 
+		                double *output_line, npy_intp output_length, 
+		                void *user_data)
+		   int function(double *input_line, intptr_t input_length, 
+		                double *output_line, intptr_t output_length, 
+		                void *user_data)
+		
+		The calling function iterates over the lines of the input and output
+		arrays, calling the callback function at each line. The current line
+		is extended according to the border conditions set by the calling
+		function, and the result is copied into the array that is passed
+		through ``input_line``. The length of the input line (after extension)
+		is passed through ``input_length``. The callback function should apply
+		the filter and store the result in the array passed through
+		``output_line``. The length of the output line is passed through
+		``output_length``. ``user_data`` is the data pointer provided 
+		to `scipy.LowLevelCallable` as-is.
+		
+		The callback function must return an integer error status that is zero 
+		if something went wrong and one otherwise. If an error occurs, you should
+		normally set the python error status with an informative message
+		before returning, otherwise a default error message is set by the
+		calling function.
+		
+		In addition, some other low-level function pointer specifications 
+		are accepted, but these are for backward compatibility only and should
+		not be used in new code.
 	**/
 	static public function generic_filter1d(input:Dynamic, _function:Dynamic, filter_size:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic, ?extra_arguments:Dynamic, ?extra_keywords:Dynamic):Dynamic;
 	/**
@@ -496,11 +612,15 @@ package scipy.ndimage.filters;
 		    be careful to copy important inputs before returning them.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -526,11 +646,15 @@ package scipy.ndimage.filters;
 		    See `extra_arguments`, `extra_keywords` below.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -549,11 +673,15 @@ package scipy.ndimage.filters;
 		    Input array to filter.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -562,10 +690,15 @@ package scipy.ndimage.filters;
 		--------
 		>>> from scipy import ndimage, misc
 		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
 		>>> ascent = misc.ascent()
 		>>> result = ndimage.laplace(ascent)
-		>>> plt.gray()  # show the filtered result in grayscale
-		>>> plt.imshow(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function laplace(input:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	/**
@@ -590,17 +723,40 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		origin : scalar, optional
 		    The `origin` parameter controls the placement of the filter.
 		    Default 0.0.
+		
+		Returns
+		-------
+		maximum_filter : ndarray
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.maximum_filter(ascent, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function maximum_filter(input:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -619,7 +775,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -671,7 +828,8 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -686,7 +844,21 @@ package scipy.ndimage.filters;
 		Returns
 		-------
 		median_filter : ndarray
-		    Return of same shape as `input`.
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.median_filter(ascent, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function median_filter(input:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -711,17 +883,40 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		origin : scalar, optional
 		    The `origin` parameter controls the placement of the filter.
 		    Default 0.0.
+		
+		Returns
+		-------
+		minimum_filter : ndarray
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.minimum_filter(ascent, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function minimum_filter(input:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -740,7 +935,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -789,7 +985,8 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -800,6 +997,25 @@ package scipy.ndimage.filters;
 		origin : scalar, optional
 		    The `origin` parameter controls the placement of the filter.
 		    Default 0.0.
+		
+		Returns
+		-------
+		percentile_filter : ndarray
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.percentile_filter(ascent, percentile=20, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function percentile_filter(input:Dynamic, percentile:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -813,11 +1029,15 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -826,10 +1046,15 @@ package scipy.ndimage.filters;
 		--------
 		>>> from scipy import ndimage, misc
 		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
 		>>> ascent = misc.ascent()
 		>>> result = ndimage.prewitt(ascent)
-		>>> plt.gray()  # show the filtered result in grayscale
-		>>> plt.imshow(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function prewitt(input:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -858,7 +1083,8 @@ package scipy.ndimage.filters;
 		    (2,2,2).
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -869,6 +1095,25 @@ package scipy.ndimage.filters;
 		origin : scalar, optional
 		    The `origin` parameter controls the placement of the filter.
 		    Default 0.0.
+		
+		Returns
+		-------
+		rank_filter : ndarray
+		    Filtered array. Has the same shape as `input`.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.rank_filter(ascent, rank=42, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function rank_filter(input:Dynamic, rank:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -882,11 +1127,15 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
@@ -895,10 +1144,15 @@ package scipy.ndimage.filters;
 		--------
 		>>> from scipy import ndimage, misc
 		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
 		>>> ascent = misc.ascent()
 		>>> result = ndimage.sobel(ascent)
-		>>> plt.gray()  # show the filtered result in grayscale
-		>>> plt.imshow(result)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function sobel(input:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	/**
@@ -914,17 +1168,26 @@ package scipy.ndimage.filters;
 		    equal for all axes.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
+		mode : str or sequence, optional
 		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    handled. Valid modes are {'reflect', 'constant', 'nearest',
+		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
+		    'constant'. A list of modes with length equal to the number of
+		    axes can be provided to specify different modes for different
+		    axes. Default is 'reflect'
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		origin : scalar, optional
 		    The `origin` parameter controls the placement of the filter.
 		    Default 0.0.
+		
+		Returns
+		-------
+		uniform_filter : ndarray
+		    Filtered array. Has the same shape as `input`.
 		
 		Notes
 		-----
@@ -933,6 +1196,20 @@ package scipy.ndimage.filters;
 		in the same data type as the output. Therefore, for output types
 		with a limited precision, the results may be imprecise because
 		intermediate results may be stored with insufficient precision.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.gray()  # show the filtered result in grayscale
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.uniform_filter(ascent, size=20)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
 	**/
 	static public function uniform_filter(input:Dynamic, ?size:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -951,7 +1228,8 @@ package scipy.ndimage.filters;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to

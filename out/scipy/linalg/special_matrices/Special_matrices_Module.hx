@@ -38,7 +38,8 @@ package scipy.linalg.special_matrices;
 		If all the input arrays are square, the output is known as a
 		block diagonal matrix.
 		
-		Empty sequences (i.e., array-likes of zero size) are ignored.
+		Empty sequences (i.e., array-likes of zero size) will not be ignored.
+		Noteworthy, both [] and [[]] are treated as matrices with shape ``(1,0)``.
 		
 		Examples
 		--------
@@ -48,9 +49,18 @@ package scipy.linalg.special_matrices;
 		>>> B = [[3, 4, 5],
 		...      [6, 7, 8]]
 		>>> C = [[7]]
+		>>> P = np.zeros((2, 0), dtype='int32')
 		>>> block_diag(A, B, C)
 		array([[1, 0, 0, 0, 0, 0],
 		       [0, 1, 0, 0, 0, 0],
+		       [0, 0, 3, 4, 5, 0],
+		       [0, 0, 6, 7, 8, 0],
+		       [0, 0, 0, 0, 0, 7]])
+		>>> block_diag(A, P, B, C)
+		array([[1, 0, 0, 0, 0, 0],
+		       [0, 1, 0, 0, 0, 0],
+		       [0, 0, 0, 0, 0, 0],
+		       [0, 0, 0, 0, 0, 0],
 		       [0, 0, 3, 4, 5, 0],
 		       [0, 0, 6, 7, 8, 0],
 		       [0, 0, 0, 0, 0, 7]])

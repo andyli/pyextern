@@ -40,7 +40,6 @@ package numpy.lib.user_array;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	public function __getitem__(index:Dynamic):Dynamic;
-	public function __getslice__(i:Dynamic, j:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -62,6 +61,13 @@ package numpy.lib.user_array;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ior__(other:Dynamic):Dynamic;
@@ -126,7 +132,6 @@ package numpy.lib.user_array;
 	**/
 	public function __setattr__(attr:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(index:Dynamic, value:Dynamic):Dynamic;
-	public function __setslice__(i:Dynamic, j:Dynamic, value:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes

@@ -47,6 +47,13 @@ package matplotlib.font_manager;
 	**/
 	public function new(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic, ?_init:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -119,7 +126,7 @@ package matplotlib.font_manager;
 		specified with fontconfig's ``fc-match`` utility.
 		
 		See the documentation on `fontconfig patterns
-		<http://www.fontconfig.org/fontconfig-user.html>`_.
+		<https://www.freedesktop.org/software/fontconfig/fontconfig-user.html>`_.
 		
 		This support does not require fontconfig to be installed or
 		support for it to be enabled.  We are merely borrowing its
@@ -181,7 +188,7 @@ package matplotlib.font_manager;
 		Set the properties by parsing a fontconfig *pattern*.
 		
 		See the documentation on `fontconfig patterns
-		<http://www.fontconfig.org/fontconfig-user.html>`_.
+		<https://www.freedesktop.org/software/fontconfig/fontconfig-user.html>`_.
 		
 		This support does not require fontconfig to be installed or
 		support for it to be enabled.  We are merely borrowing its

@@ -2,6 +2,7 @@
 package tensorflow.core.protobuf.meta_graph_pb2;
 @:pythonImport("tensorflow.core.protobuf.meta_graph_pb2") extern class Meta_graph_pb2_Module {
 	static public var DESCRIPTOR : Dynamic;
+	static public var _ASSETFILEDEF : Dynamic;
 	static public var _COLLECTIONDEF : Dynamic;
 	static public var _COLLECTIONDEF_ANYLIST : Dynamic;
 	static public var _COLLECTIONDEF_BYTESLIST : Dynamic;

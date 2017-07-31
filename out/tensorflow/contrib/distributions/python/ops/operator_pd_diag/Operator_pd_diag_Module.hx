@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 @:pythonImport("tensorflow.contrib.distributions.python.ops.operator_pd_diag") extern class Operator_pd_diag_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

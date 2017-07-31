@@ -47,6 +47,13 @@ package docutils.writers.docutils_xml;
 	**/
 	public function new(document:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -222,6 +229,7 @@ package docutils.writers.docutils_xml;
 	static public var doctype : Dynamic;
 	static public var generator : Dynamic;
 	static public var optional : Dynamic;
+	static public var simple_nodes : Dynamic;
 	/**
 		Called before exiting unknown `Node` types.
 		

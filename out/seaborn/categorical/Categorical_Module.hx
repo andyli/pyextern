@@ -58,10 +58,11 @@ package seaborn.categorical;
 		    inferred from the data objects.        
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -94,6 +95,9 @@ package seaborn.categorical;
 		capsize : float, optional
 		    Width of the "caps" on error bars.
 		
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		kwargs : key, value mappings
 		    Other keyword arguments are passed through to ``plt.bar`` at draw
 		    time.
@@ -160,6 +164,13 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci=68)
 		
+		Show standard deviation of observations instead of a confidence interval:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci="sd")
+		
 		Add "caps" to the error bars:
 		
 		.. plot::
@@ -174,6 +185,15 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.barplot("size", y="total_bill", data=tips,
 		    ...                  palette="Blues_d")
+		
+		Use ``hue`` without changing bar position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.barplot(x="day", y="total_bill", hue="weekend",
+		    ...                  data=tips, dodge=False)
 		
 		Plot all bars in a single color:
 		
@@ -191,8 +211,21 @@ package seaborn.categorical;
 		    >>> ax = sns.barplot("day", "total_bill", data=tips,
 		    ...                  linewidth=2.5, facecolor=(1, 1, 1, 0),
 		    ...                  errcolor=".2", edgecolor=".2")
+		
+		Use :func:`factorplot` to combine a :func:`barplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="bar",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?dodge:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Resample one or more arrays with replacement and store aggregate values.
 		
@@ -278,6 +311,9 @@ package seaborn.categorical;
 		width : float, optional
 		    Width of a full element when not using hue nesting, or width of all the
 		    elements for one level of the major grouping variable.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		fliersize : float, optional
 		    Size of the markers used to indicate outlier observations.
 		linewidth : float, optional
@@ -362,6 +398,15 @@ package seaborn.categorical;
 		    >>> iris = sns.load_dataset("iris")
 		    >>> ax = sns.boxplot(data=iris, orient="h", palette="Set2")
 		
+		Use ``hue`` without changing box position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.boxplot(x="day", y="total_bill", hue="weekend",
+		    ...                  data=tips, dodge=False)
+		
 		Use :func:`swarmplot` to show the datapoints on top of the boxes:
 		
 		.. plot::
@@ -370,19 +415,20 @@ package seaborn.categorical;
 		    >>> ax = sns.boxplot(x="day", y="total_bill", data=tips)
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips, color=".25")
 		
-		Draw a box plot on to a :class:`FacetGrid` to group within an additional
-		categorical variable:
+		Use :func:`factorplot` to combine a :func:`boxplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.boxplot, "sex", "total_bill", "smoker")
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="box",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?dodge:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of unique data values.
 		
@@ -405,7 +451,7 @@ package seaborn.categorical;
 	/**
 		Return a list of colors defining a color palette.
 		
-		Availible seaborn palette names:
+		Available seaborn palette names:
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
@@ -414,7 +460,7 @@ package seaborn.categorical;
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
-		Matplotlib paletes can be specified as reversed palettes by appending
+		Matplotlib palettes can be specified as reversed palettes by appending
 		"_r" to the name or as dark palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
@@ -544,6 +590,9 @@ package seaborn.categorical;
 		    often look better with slightly desaturated colors, but set this to
 		    ``1`` if you want the plot colors to perfectly match the input color
 		    spec.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
 		kwargs : key, value mappings
@@ -602,8 +651,20 @@ package seaborn.categorical;
 		    ...                    facecolor=(0, 0, 0, 0),
 		    ...                    linewidth=5,
 		    ...                    edgecolor=sns.color_palette("dark", 3))
+		
+		Use :func:`factorplot` to combine a :func:`countplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="class", hue="who", col="survived",
+		    ...                    data=titanic, kind="count",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?dodge:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove any common leading whitespace from every line in `text`.
 		
@@ -663,10 +724,11 @@ package seaborn.categorical;
 		    span multiple rows. Incompatible with a ``row`` facet.    
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -779,7 +841,7 @@ package seaborn.categorical;
 		    ...                    hue="sex", row="class",
 		    ...                    data=titanic[titanic.embark_town.notnull()],
 		    ...                    orient="h", size=2, aspect=3.5, palette="Set3",
-		    ...                    kind="violin", split=True, cut=0, bw=.2)
+		    ...                    kind="violin", dodge=True, cut=0, bw=.2)
 		
 		Use methods on the returned :class:`FacetGrid` to tweak the presentation:
 		
@@ -938,7 +1000,7 @@ package seaborn.categorical;
 	**/
 	static public function light_palette(color:Dynamic, ?n_colors:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
 	/**
-		Create a letter value plot
+		Draw a letter value plot to show distributions of large datasets.
 		
 		Letter value (LV) plots are non-parametric estimates of the distribution of
 		a dataset, similar to boxplots. LV plots are also similar to violin plots
@@ -994,6 +1056,9 @@ package seaborn.categorical;
 		width : float, optional
 		    Width of a full element when not using hue nesting, or width of all the
 		    elements for one level of the major grouping variable.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		k_depth : "proportion" | "tukey" | "trustworthy", optional
 		    The number of boxes, and by extension number of percentiles, to draw.
 		    All methods are detailed in Wickham's paper. Each makes different
@@ -1085,21 +1150,22 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.lvplot(x="day", y="total_bill", data=tips)
 		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
-		    ...                    size=4, jitter=True, edgecolor="gray")
+		    ...                    size=4, jitter=True, color="gray")
 		
-		Draw a letter value plot on to a :class:`FacetGrid` to group within an
-		additional categorical variable:
+		Use :func:`factorplot` to combine a :func:`lvplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.lvplot, "sex", "total_bill", "smoker")
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="lv",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?dodge:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Show point estimates and confidence intervals using scatter plot glyphs.
 		
@@ -1148,10 +1214,11 @@ package seaborn.categorical;
 		    inferred from the data objects.        
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -1182,6 +1249,11 @@ package seaborn.categorical;
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
+		errwidth : float, optional
+		    Thickness of error bar lines (and caps).         
+		capsize : float, optional
+		    Width of the "caps" on error bars.
+		
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
 		
@@ -1287,14 +1359,35 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci=68)
 		
+		Show standard deviation of observations instead of a confidence interval:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci="sd")
+		
 		Add "caps" to the error bars:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, capsize=.2)
+		
+		Use :func:`factorplot` to combine a :func:`barplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="point",
+		    ...                    dodge=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return series containing only true/non-NaN values, possibly empty.
 	**/
@@ -1445,7 +1538,7 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.stripplot(x="day", y="total_bill", hue="smoker",
 		    ...                    data=tips, jitter=True,
-		    ...                    palette="Set2", split=True)
+		    ...                    palette="Set2", dodge=True)
 		
 		Control strip order by passing an explicit order:
 		
@@ -1481,8 +1574,22 @@ package seaborn.categorical;
 		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips,
 		    ...                     inner=None, color=".8")
 		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips, jitter=True)
+		
+		Use :func:`factorplot` to combine a :func:`stripplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="strip",
+		    ...                    jitter=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a categorical scatterplot with non-overlapping points.
 		
@@ -1609,7 +1716,7 @@ package seaborn.categorical;
 		    :context: close-figs
 		
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", hue="smoker",
-		    ...                    data=tips, palette="Set2", split=True)
+		    ...                    data=tips, palette="Set2", dodge=True)
 		
 		Control swarm order by passing an explicit order:
 		
@@ -1626,14 +1733,13 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.swarmplot(x="time", y="tip", data=tips, size=6)
 		
-		
 		Draw swarms of observations on top of a box plot:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> ax = sns.boxplot(x="tip", y="day", data=tips, whis=np.inf)
-		    >>> ax = sns.swarmplot(x="tip", y="day", data=tips)
+		    >>> ax = sns.swarmplot(x="tip", y="day", data=tips, color=".2")
 		
 		Draw swarms of observations on top of a violin plot:
 		
@@ -1643,8 +1749,21 @@ package seaborn.categorical;
 		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips, inner=None)
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips,
 		    ...                    color="white", edgecolor="gray")
+		
+		Use :func:`factorplot` to combine a :func:`swarmplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="swarm",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a combination of boxplot and kernel density estimate.
 		
@@ -1719,6 +1838,9 @@ package seaborn.categorical;
 		    When using hue nesting with a variable that takes two levels, setting
 		    ``split`` to True will draw half of a violin for each level. This can
 		    make it easier to directly compare the distributions.
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		orient : "v" | "h", optional
 		    Orientation of the plot (vertical or horizontal). This is usually
 		    inferred from the dtype of the input variables, but can be used to
@@ -1854,17 +1976,36 @@ package seaborn.categorical;
 		    ...                     data=planets[planets.orbital_period < 1000],
 		    ...                     scale="width", palette="Set3")
 		
-		Draw a violin plot on to a :class:`FacetGrid` to group within an additional
-		categorical variable:
+		Don't let density extend past extreme values in the data:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.violinplot, "sex", "total_bill", "smoker", split=True)
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  # doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> ax = sns.violinplot(x="orbital_period", y="method",
+		    ...                     data=planets[planets.orbital_period < 1000],
+		    ...                     cut=0, scale="width", palette="Set3")
+		
+		Use ``hue`` without changing violin position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.violinplot(x="day", y="total_bill", hue="weekend",
+		    ...                     data=tips, dodge=False)
+		
+		Use :func:`factorplot` to combine a :func:`violinplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="violin", split=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

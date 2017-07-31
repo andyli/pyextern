@@ -45,6 +45,13 @@ package matplotlib.dviread;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(filename:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -9,6 +9,7 @@ package seaborn.apionly;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	/**
 		Return a parameter dict for the aesthetic style of the plots.
 		
@@ -91,10 +92,11 @@ package seaborn.apionly;
 		    inferred from the data objects.        
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -127,6 +129,9 @@ package seaborn.apionly;
 		capsize : float, optional
 		    Width of the "caps" on error bars.
 		
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		kwargs : key, value mappings
 		    Other keyword arguments are passed through to ``plt.bar`` at draw
 		    time.
@@ -193,6 +198,13 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci=68)
 		
+		Show standard deviation of observations instead of a confidence interval:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci="sd")
+		
 		Add "caps" to the error bars:
 		
 		.. plot::
@@ -207,6 +219,15 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.barplot("size", y="total_bill", data=tips,
 		    ...                  palette="Blues_d")
+		
+		Use ``hue`` without changing bar position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.barplot(x="day", y="total_bill", hue="weekend",
+		    ...                  data=tips, dodge=False)
 		
 		Plot all bars in a single color:
 		
@@ -224,8 +245,21 @@ package seaborn.apionly;
 		    >>> ax = sns.barplot("day", "total_bill", data=tips,
 		    ...                  linewidth=2.5, facecolor=(1, 1, 1, 0),
 		    ...                  errcolor=".2", edgecolor=".2")
+		
+		Use :func:`factorplot` to combine a :func:`barplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="bar",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?dodge:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette that blends between a list of colors.
 		
@@ -300,6 +334,9 @@ package seaborn.apionly;
 		width : float, optional
 		    Width of a full element when not using hue nesting, or width of all the
 		    elements for one level of the major grouping variable.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		fliersize : float, optional
 		    Size of the markers used to indicate outlier observations.
 		linewidth : float, optional
@@ -384,6 +421,15 @@ package seaborn.apionly;
 		    >>> iris = sns.load_dataset("iris")
 		    >>> ax = sns.boxplot(data=iris, orient="h", palette="Set2")
 		
+		Use ``hue`` without changing box position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.boxplot(x="day", y="total_bill", hue="weekend",
+		    ...                  data=tips, dodge=False)
+		
 		Use :func:`swarmplot` to show the datapoints on top of the boxes:
 		
 		.. plot::
@@ -392,19 +438,20 @@ package seaborn.apionly;
 		    >>> ax = sns.boxplot(x="day", y="total_bill", data=tips)
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips, color=".25")
 		
-		Draw a box plot on to a :class:`FacetGrid` to group within an additional
-		categorical variable:
+		Use :func:`factorplot` to combine a :func:`boxplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.boxplot, "sex", "total_bill", "smoker")
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="box",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?dodge:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Select a palette from the ColorBrewer set.
 		
@@ -555,11 +602,11 @@ package seaborn.apionly;
 	**/
 	static public function choose_light_palette(?input:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	/**
-		Plot a hierarchically clustered heatmap of a pandas DataFrame
+		Plot a matrix dataset as a hierarchically-clustered heatmap.
 		
 		Parameters
 		----------
-		data: pandas.DataFrame
+		data: 2D array-like
 		    Rectangular data for clustering. Cannot contain NAs.
 		pivot_kws : dict, optional
 		    If `data` is a tidy dataframe, can provide keyword arguments for
@@ -631,89 +678,74 @@ package seaborn.apionly;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> import seaborn as sns; sns.set()
-		    >>> flights = sns.load_dataset("flights")
-		    >>> flights = flights.pivot("month", "year", "passengers")
-		    >>> g = sns.clustermap(flights)
+		    >>> import seaborn as sns; sns.set(color_codes=True)
+		    >>> iris = sns.load_dataset("iris")
+		    >>> species = iris.pop("species")
+		    >>> g = sns.clustermap(iris)
 		
-		Don't cluster one of the axes:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, col_cluster=False)
-		
-		Use a different colormap and add lines to separate the cells:
+		Use a different similarity metric:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> cmap = sns.cubehelix_palette(as_cmap=True, rot=-.3, light=1)
-		    >>> g = sns.clustermap(flights, cmap=cmap, linewidths=.5)
-		
-		Use a different figure size:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, cmap=cmap, figsize=(7, 5))
-		
-		Standardize the data across the columns:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, standard_scale=1)
-		
-		Normalize the data across the rows:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> g = sns.clustermap(flights, z_score=0)
+		    >>> g = sns.clustermap(iris, metric="correlation")
 		
 		Use a different clustering method:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.clustermap(flights, method="single", metric="cosine")
+		    >>> g = sns.clustermap(iris, method="single")
 		
-		Add colored labels on one of the axes:
+		Use a different colormap and ignore outliers in colormap limits:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> season_colors = (sns.color_palette("BuPu", 3) +
-		    ...                  sns.color_palette("RdPu", 3) +
-		    ...                  sns.color_palette("YlGn", 3) +
-		    ...                  sns.color_palette("OrRd", 3))
-		    >>> g = sns.clustermap(flights, row_colors=season_colors)
+		    >>> g = sns.clustermap(iris, cmap="mako", robust=True)
+		
+		Change the size of the figure:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, figsize=(6, 7))
+		
+		Plot one of the axes in its original organization:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, col_cluster=False)
+		
+		Add colored labels:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> lut = dict(zip(species.unique(), "rbg"))
+		    >>> row_colors = species.map(lut)
+		    >>> g = sns.clustermap(iris, row_colors=row_colors)
+		
+		Standardize the data within the columns:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, standard_scale=1)
+		
+		Normalize the data within the rows:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.clustermap(iris, z_score=0)
 	**/
 	static public function clustermap(data:Dynamic, ?pivot_kws:Dynamic, ?method:Dynamic, ?metric:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?cbar_kws:Dynamic, ?row_cluster:Dynamic, ?col_cluster:Dynamic, ?row_linkage:Dynamic, ?col_linkage:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Plot the coefficients from a linear model.
-		
-		Parameters
-		----------
-		formula : string
-		    patsy formula for ols model
-		data : dataframe
-		    data for the plot; formula terms must appear in columns
-		groupby : grouping object, optional
-		    object to group data with to fit conditional models
-		intercept : bool, optional
-		    if False, strips the intercept term before plotting
-		ci : float, optional
-		    size of confidence intervals
-		palette : seaborn color palette, optional
-		    palette for the horizonal plots
-	**/
-	static public function coefplot(formula:Dynamic, data:Dynamic, ?groupby:Dynamic, ?intercept:Dynamic, ?ci:Dynamic, ?palette:Dynamic):Dynamic;
-	/**
 		Return a list of colors defining a color palette.
 		
-		Availible seaborn palette names:
+		Available seaborn palette names:
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
@@ -722,7 +754,7 @@ package seaborn.apionly;
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
-		Matplotlib paletes can be specified as reversed palettes by appending
+		Matplotlib palettes can be specified as reversed palettes by appending
 		"_r" to the name or as dark palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
@@ -852,6 +884,9 @@ package seaborn.apionly;
 		    often look better with slightly desaturated colors, but set this to
 		    ``1`` if you want the plot colors to perfectly match the input color
 		    spec.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
 		kwargs : key, value mappings
@@ -910,8 +945,20 @@ package seaborn.apionly;
 		    ...                    facecolor=(0, 0, 0, 0),
 		    ...                    linewidth=5,
 		    ...                    edgecolor=sns.color_palette("dark", 3))
+		
+		Use :func:`factorplot` to combine a :func:`countplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="class", hue="who", col="survived",
+		    ...                    data=titanic, kind="count",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?dodge:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette with color names from Crayola crayons.
 		
@@ -943,7 +990,7 @@ package seaborn.apionly;
 		This produces a colormap with linearly-decreasing (or increasing)
 		brightness. That means that information will be preserved if printed to
 		black and white or viewed by someone who is colorblind.  "cubehelix" is
-		also availible as a matplotlib-based palette, but this function gives the
+		also available as a matplotlib-based palette, but this function gives the
 		user more control over the look of the palette and has a different set of
 		defaults.
 		
@@ -1141,11 +1188,13 @@ package seaborn.apionly;
 		    Specific axes object to despine.
 		top, right, left, bottom : boolean, optional
 		    If True, remove that spine.
-		offset : int or None  (default), optional
+		offset : int or dict, optional
 		    Absolute distance, in points, spines should be moved away
-		    from the axes (negative values move spines inward).
+		    from the axes (negative values move spines inward). A single value
+		    applies to all spines; a dict can be used to set offset values per
+		    side.
 		trim : bool, optional
-		    If true, limit spines to the smallest and largest major tick
+		    If True, limit spines to the smallest and largest major tick
 		    on each non-despined axis.
 		
 		Returns
@@ -1218,7 +1267,7 @@ package seaborn.apionly;
 		    :context: close-figs
 		
 		    >>> import seaborn as sns, numpy as np
-		    >>> sns.set(rc={"figure.figsize": (8, 4)}); np.random.seed(0)
+		    >>> sns.set(); np.random.seed(0)
 		    >>> x = np.random.randn(100)
 		    >>> ax = sns.distplot(x)
 		
@@ -1344,7 +1393,6 @@ package seaborn.apionly;
 		    >>> ax = sns.heatmap(x, cmap=cmap)
 	**/
 	static public function diverging_palette(h_neg:Dynamic, h_pos:Dynamic, ?s:Dynamic, ?l:Dynamic, ?sep:Dynamic, ?n:Dynamic, ?center:Dynamic, ?as_cmap:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Draw a categorical plot onto a FacetGrid.
 		
@@ -1389,10 +1437,11 @@ package seaborn.apionly;
 		    span multiple rows. Incompatible with a ``row`` facet.    
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -1505,7 +1554,7 @@ package seaborn.apionly;
 		    ...                    hue="sex", row="class",
 		    ...                    data=titanic[titanic.embark_town.notnull()],
 		    ...                    orient="h", size=2, aspect=3.5, palette="Set3",
-		    ...                    kind="violin", split=True, cut=0, bw=.2)
+		    ...                    kind="violin", dodge=True, cut=0, bw=.2)
 		
 		Use methods on the returned :class:`FacetGrid` to tweak the presentation:
 		
@@ -1530,10 +1579,6 @@ package seaborn.apionly;
 	/**
 		Plot rectangular data as a color-encoded matrix.
 		
-		This function tries to infer a good colormap to use from the data, but
-		this is not guaranteed to work, so take care to make sure the kind of
-		colormap (sequential or diverging) and its limits are appropriate.
-		
 		This is an Axes-level function and will draw the heatmap into the
 		currently-active Axes if none is provided to the ``ax`` argument.  Part of
 		this Axes space will be taken and used to plot a colormap, unless ``cbar``
@@ -1547,15 +1592,14 @@ package seaborn.apionly;
 		    columns and rows.
 		vmin, vmax : floats, optional
 		    Values to anchor the colormap, otherwise they are inferred from the
-		    data and other keyword arguments. When a diverging dataset is inferred,
-		    one of these values may be ignored.
-		cmap : matplotlib colormap name or object, optional
-		    The mapping from data values to color space. If not provided, this
-		    will be either a cubehelix map (if the function infers a sequential
-		    dataset) or ``RdBu_r`` (if the function infers a diverging dataset).
+		    data and other keyword arguments.
+		cmap : matplotlib colormap name or object, or list of colors, optional
+		    The mapping from data values to color space. If not provided, the
+		    default will depend on whether ``center`` is set.
 		center : float, optional
-		    The value at which to center the colormap. Passing this value implies
-		    use of a diverging colormap.
+		    The value at which to center the colormap when plotting divergant data.
+		    Using this parameter will change the default ``cmap`` if none is
+		    specified.
 		robust : bool, optional
 		    If True and ``vmin`` or ``vmax`` are absent, the colormap range is
 		    computed with robust quantiles instead of the extreme values.
@@ -1581,22 +1625,17 @@ package seaborn.apionly;
 		square : boolean, optional
 		    If True, set the Axes aspect to "equal" so each cell will be
 		    square-shaped.
-		ax : matplotlib Axes, optional
-		    Axes in which to draw the plot, otherwise use the currently-active
-		    Axes.
-		xticklabels : list-like, int, or bool, optional
+		xticklabels, yticklabels : "auto", bool, list-like, or int, optional
 		    If True, plot the column names of the dataframe. If False, don't plot
 		    the column names. If list-like, plot these alternate labels as the
 		    xticklabels. If an integer, use the column names but plot only every
-		    n label.
-		yticklabels : list-like, int, or bool, optional
-		    If True, plot the row names of the dataframe. If False, don't plot
-		    the row names. If list-like, plot these alternate labels as the
-		    yticklabels. If an integer, use the index names but plot only every
-		    n label.
+		    n label. If "auto", try to densely plot non-overlapping labels.
 		mask : boolean array or DataFrame, optional
 		    If passed, data will not be shown in cells where ``mask`` is True.
 		    Cells with missing values are automatically masked.
+		ax : matplotlib Axes, optional
+		    Axes in which to draw the plot, otherwise use the currently-active
+		    Axes.
 		kwargs : other keyword arguments
 		    All other keyword arguments are passed to ``ax.pcolormesh``.
 		
@@ -1604,6 +1643,11 @@ package seaborn.apionly;
 		-------
 		ax : matplotlib Axes
 		    Axes object with the heatmap.
+		
+		See also
+		--------
+		clustermap : Plot a matrix using hierachical clustering to arrange the
+		             rows and columns.
 		
 		Examples
 		--------
@@ -1625,13 +1669,13 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.heatmap(uniform_data, vmin=0, vmax=1)
 		
-		Plot a heatmap for data centered on 0:
+		Plot a heatmap for data centered on 0 with a diverging colormap:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> normal_data = np.random.randn(10, 12)
-		    >>> ax = sns.heatmap(normal_data)
+		    >>> ax = sns.heatmap(normal_data, center=0)
 		
 		Plot a dataframe with meaningful row and column labels:
 		
@@ -1707,7 +1751,7 @@ package seaborn.apionly;
 		    >>> with sns.axes_style("white"):
 		    ...     ax = sns.heatmap(corr, mask=mask, vmax=.3, square=True)
 	**/
-	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?ax:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a set of evenly spaced colors in HLS hue space.
 		
@@ -1828,39 +1872,6 @@ package seaborn.apionly;
 		    >>> sns.palplot(sns.husl_palette(10, s=.4))
 	**/
 	static public function husl_palette(?n_colors:Dynamic, ?h:Dynamic, ?s:Dynamic, ?l:Dynamic):Dynamic;
-	/**
-		Visualize a continuous two-way interaction with a contour plot.
-		
-		Parameters
-		----------
-		x1, x2, y, strings or array-like
-		    Either the two independent variables and the dependent variable,
-		    or keys to extract them from `data`
-		data : DataFrame
-		    Pandas DataFrame with the data in the columns.
-		filled : bool
-		    Whether to plot with filled or unfilled contours
-		cmap : matplotlib colormap
-		    Colormap to represent yhat in the countour plot.
-		colorbar : bool
-		    Whether to draw the colorbar for interpreting the color values.
-		levels : int or sequence
-		    Number or position of contour plot levels.
-		logistic : bool
-		    Fit a logistic regression model instead of linear regression.
-		contour_kws : dictionary
-		    Keyword arguments for contour[f]().
-		scatter_kws : dictionary
-		    Keyword arguments for plot().
-		ax : matplotlib axis
-		    Axis to draw plot in.
-		
-		Returns
-		-------
-		ax : Matplotlib axis
-		    Axis with the contour plot.
-	**/
-	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a plot of two variables with bivariate and univariate graphs.
 		
@@ -2030,8 +2041,15 @@ package seaborn.apionly;
 		    relevant when drawing a univariate plot or when ``shade=False``.
 		    Setting this to ``False`` can be useful when you want multiple
 		    densities on the same Axes.
-		ax : matplotlib axis, optional
-		    Axis to plot on, otherwise uses current axis.
+		cbar : bool, optional
+		    If True and drawing a bivariate KDE plot, add a colorbar.
+		cbar_ax : matplotlib axes, optional
+		    Existing axes to draw the colorbar onto, otherwise space is taken
+		    from the main axes.
+		cbar_kws : dict, optional
+		    Keyword arguments for ``fig.colorbar()``.
+		ax : matplotlib axes, optional
+		    Axes to plot on, otherwise uses current axes.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to ``plt.plot()`` or
 		    ``plt.contour{f}`` depending on whether a univariate or bivariate
@@ -2110,6 +2128,13 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.kdeplot(x, cut=0)
 		
+		Add a colorbar for the contours:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.kdeplot(x, y, cbar=True)
+		
 		Plot two shaded bivariate densities:
 		
 		.. plot::
@@ -2123,7 +2148,7 @@ package seaborn.apionly;
 		    >>> ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
 		    ...                  cmap="Blues", shade=True, shade_lowest=False)
 	**/
-	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?cbar:Dynamic, ?cbar_ax:Dynamic, ?cbar_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a sequential palette that blends from light to ``color``.
 		
@@ -2262,7 +2287,7 @@ package seaborn.apionly;
 		x_estimator : callable that maps vector -> scalar, optional
 		    Apply this function to each unique value of ``x`` and plot the
 		    resulting estimate. This is useful when ``x`` is a discrete variable.
-		    If ``x_ci`` is not ``None``, this estimate will be bootstrapped and a
+		    If ``x_ci`` is given, this estimate will be bootstrapped and a
 		    confidence interval will be drawn.    
 		x_bins : int or vector, optional
 		    Bin the ``x`` variable into discrete bins and then estimate the central
@@ -2272,10 +2297,11 @@ package seaborn.apionly;
 		    evenly-sized (not necessary spaced) bins or the positions of the bin
 		    centers. When this parameter is used, it implies that the default of
 		    ``x_estimator`` is ``numpy.mean``.    
-		x_ci : "ci", int in [0, 100] or None, optional
+		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
-		    for discrete values of ``x``. If "ci", defer to the value of the``ci``
-		    parameter.    
+		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
+		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
+		    deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -2467,13 +2493,13 @@ package seaborn.apionly;
 		cache : boolean, optional
 		    If True, then cache data locally and use the cache on subsequent calls
 		data_home : string, optional
-		    The directory in which to cache data. By default, uses ~/seaborn_data/
+		    The directory in which to cache data. By default, uses ~/seaborn-data/
 		kws : dict, optional
 		    Passed to pandas.read_csv
 	**/
 	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create a letter value plot
+		Draw a letter value plot to show distributions of large datasets.
 		
 		Letter value (LV) plots are non-parametric estimates of the distribution of
 		a dataset, similar to boxplots. LV plots are also similar to violin plots
@@ -2529,6 +2555,9 @@ package seaborn.apionly;
 		width : float, optional
 		    Width of a full element when not using hue nesting, or width of all the
 		    elements for one level of the major grouping variable.    
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		k_depth : "proportion" | "tukey" | "trustworthy", optional
 		    The number of boxes, and by extension number of percentiles, to draw.
 		    All methods are detailed in Wickham's paper. Each makes different
@@ -2620,21 +2649,22 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.lvplot(x="day", y="total_bill", data=tips)
 		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
-		    ...                    size=4, jitter=True, edgecolor="gray")
+		    ...                    size=4, jitter=True, color="gray")
 		
-		Draw a letter value plot on to a :class:`FacetGrid` to group within an
-		additional categorical variable:
+		Use :func:`factorplot` to combine a :func:`lvplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.lvplot, "sex", "total_bill", "smoker")
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="lv",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?dodge:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return discrete colors from a matplotlib palette.
 		
@@ -2695,6 +2725,7 @@ package seaborn.apionly;
 		    >>> sns.palplot(sns.mpl_palette("GnBu_d"))
 	**/
 	static public function mpl_palette(name:Dynamic, ?n_colors:Dynamic):Dynamic;
+	static public var msg : Dynamic;
 	/**
 		Plot pairwise relationships in a dataset.
 		
@@ -2944,10 +2975,11 @@ package seaborn.apionly;
 		    inferred from the data objects.        
 		estimator : callable that maps vector -> scalar, optional
 		    Statistical function to estimate within each categorical bin.
-		ci : float or None, optional
-		    Size of confidence intervals to draw around estimated values. If
-		    ``None``, no bootstrapping will be performed, and error bars will
-		    not be drawn.
+		ci : float or "sd" or None, optional
+		    Size of confidence intervals to draw around estimated values.  If
+		    "sd", skip bootstrapping and draw the standard deviation of the
+		    observerations. If ``None``, no bootstrapping will be performed, and
+		    error bars will not be drawn.
 		n_boot : int, optional
 		    Number of bootstrap iterations to use when computing confidence
 		    intervals.
@@ -2978,6 +3010,11 @@ package seaborn.apionly;
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
+		errwidth : float, optional
+		    Thickness of error bar lines (and caps).         
+		capsize : float, optional
+		    Width of the "caps" on error bars.
+		
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
 		
@@ -3083,18 +3120,35 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci=68)
 		
+		Show standard deviation of observations instead of a confidence interval:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci="sd")
+		
 		Add "caps" to the error bars:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, capsize=.2)
+		
+		Use :func:`factorplot` to combine a :func:`barplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="point",
+		    ...                    dodge=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Plot today's daily puppy. Only works in the IPython notebook.
-	**/
-	static public function puppyplot(?grown_up:Dynamic):Dynamic;
+	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot data and a linear regression model fit.
 		
@@ -3114,7 +3168,7 @@ package seaborn.apionly;
 		x_estimator : callable that maps vector -> scalar, optional
 		    Apply this function to each unique value of ``x`` and plot the
 		    resulting estimate. This is useful when ``x`` is a discrete variable.
-		    If ``x_ci`` is not ``None``, this estimate will be bootstrapped and a
+		    If ``x_ci`` is given, this estimate will be bootstrapped and a
 		    confidence interval will be drawn.    
 		x_bins : int or vector, optional
 		    Bin the ``x`` variable into discrete bins and then estimate the central
@@ -3124,10 +3178,11 @@ package seaborn.apionly;
 		    evenly-sized (not necessary spaced) bins or the positions of the bin
 		    centers. When this parameter is used, it implies that the default of
 		    ``x_estimator`` is ``numpy.mean``.    
-		x_ci : "ci", int in [0, 100] or None, optional
+		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
-		    for discrete values of ``x``. If "ci", defer to the value of the``ci``
-		    parameter.    
+		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
+		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
+		    deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -3213,7 +3268,6 @@ package seaborn.apionly;
 		pairplot : Combine :func:`regplot` and :class:`PairGrid` (when used with
 		           ``kind="reg"``).
 		residplot : Plot the residuals of a linear regression model.
-		interactplot : Plot a two-way interaction between continuous variables
 		
 		Notes
 		-----
@@ -3759,7 +3813,7 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.stripplot(x="day", y="total_bill", hue="smoker",
 		    ...                    data=tips, jitter=True,
-		    ...                    palette="Set2", split=True)
+		    ...                    palette="Set2", dodge=True)
 		
 		Control strip order by passing an explicit order:
 		
@@ -3795,8 +3849,22 @@ package seaborn.apionly;
 		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips,
 		    ...                     inner=None, color=".8")
 		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips, jitter=True)
+		
+		Use :func:`factorplot` to combine a :func:`stripplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="strip",
+		    ...                    jitter=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a categorical scatterplot with non-overlapping points.
 		
@@ -3923,7 +3991,7 @@ package seaborn.apionly;
 		    :context: close-figs
 		
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", hue="smoker",
-		    ...                    data=tips, palette="Set2", split=True)
+		    ...                    data=tips, palette="Set2", dodge=True)
 		
 		Control swarm order by passing an explicit order:
 		
@@ -3940,14 +4008,13 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.swarmplot(x="time", y="tip", data=tips, size=6)
 		
-		
 		Draw swarms of observations on top of a box plot:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> ax = sns.boxplot(x="tip", y="day", data=tips, whis=np.inf)
-		    >>> ax = sns.swarmplot(x="tip", y="day", data=tips)
+		    >>> ax = sns.swarmplot(x="tip", y="day", data=tips, color=".2")
 		
 		Draw swarms of observations on top of a violin plot:
 		
@@ -3957,8 +4024,21 @@ package seaborn.apionly;
 		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips, inner=None)
 		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips,
 		    ...                    color="white", edgecolor="gray")
+		
+		Use :func:`factorplot` to combine a :func:`swarmplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="swarm",
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot one or more timeseries with flexible representation of uncertainty.
 		
@@ -4001,10 +4081,11 @@ package seaborn.apionly;
 		    Names of ways to plot uncertainty across units from set of
 		    {ci_band, ci_bars, boot_traces, boot_kde, unit_traces, unit_points}.
 		    Can use one or more than one method.
-		ci : float or list of floats in [0, 100]
-		    Confidence interval size(s). If a list, it will stack the error
-		    plots for each confidence interval. Only relevant for error styles
-		    with "ci" in the name.
+		ci : float or list of floats in [0, 100] or "sd" or None
+		    Confidence interval size(s). If a list, it will stack the error plots
+		    for each confidence interval. If ``"sd"``, show standard deviation of
+		    the observations instead of boostrapped confidence intervals. Only
+		    relevant for error styles with "ci" in the name.
 		interpolate : boolean
 		    Whether to do a linear interpolation between each timepoint when
 		    plotting. The value of this parameter also determines the marker
@@ -4082,6 +4163,13 @@ package seaborn.apionly;
 		    :context: close-figs
 		
 		    >>> ax = sns.tsplot(data=data, ci=[68, 95], color="m")
+		
+		Show the standard deviation of the observations:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.tsplot(data=data, ci="sd")
 		
 		Use a different estimator:
 		
@@ -4180,6 +4268,9 @@ package seaborn.apionly;
 		    When using hue nesting with a variable that takes two levels, setting
 		    ``split`` to True will draw half of a violin for each level. This can
 		    make it easier to directly compare the distributions.
+		dodge : bool, optional
+		    When hue nesting is used, whether elements should be shifted along the
+		    categorical axis.    
 		orient : "v" | "h", optional
 		    Orientation of the plot (vertical or horizontal). This is usually
 		    inferred from the dtype of the input variables, but can be used to
@@ -4315,19 +4406,38 @@ package seaborn.apionly;
 		    ...                     data=planets[planets.orbital_period < 1000],
 		    ...                     scale="width", palette="Set3")
 		
-		Draw a violin plot on to a :class:`FacetGrid` to group within an additional
-		categorical variable:
+		Don't let density extend past extreme values in the data:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
-		    >>> (g.map(sns.violinplot, "sex", "total_bill", "smoker", split=True)
-		    ...   .despine(left=True)
-		    ...   .add_legend(title="smoker"))  # doctest: +ELLIPSIS
-		    <seaborn.axisgrid.FacetGrid object at 0x...>
+		    >>> ax = sns.violinplot(x="orbital_period", y="method",
+		    ...                     data=planets[planets.orbital_period < 1000],
+		    ...                     cut=0, scale="width", palette="Set3")
+		
+		Use ``hue`` without changing violin position or width:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> tips["weekend"] = tips["day"].isin(["Sat", "Sun"])
+		    >>> ax = sns.violinplot(x="day", y="total_bill", hue="weekend",
+		    ...                     data=tips, dodge=False)
+		
+		Use :func:`factorplot` to combine a :func:`violinplot` and a
+		:class:`FacetGrid`. This allows grouping within additional categorical
+		variables. Using :func:`factorplot` is safer than using :class:`FacetGrid`
+		directly, as it ensures synchronization of variable order across facets:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.factorplot(x="sex", y="total_bill",
+		    ...                    hue="smoker", col="time",
+		    ...                    data=tips, kind="violin", split=True,
+		    ...                    size=4, aspect=.7);
 	**/
-	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?dodge:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette with color names from the xkcd color survey.
 		

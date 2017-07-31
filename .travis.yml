@@ -1,7 +1,7 @@
 language: haxe
 
 haxe:
-  - "3.2.1"
+  - "3.4.2"
   - development
 
 env:
@@ -28,7 +28,7 @@ install:
   - conda update -q conda
   - conda install psutil
   - conda config --add channels conda-forge
-  - conda create -q --name pyextern --file $REQUIREMENTS python=3.5
+  - conda create -q --name pyextern --file $REQUIREMENTS python=3.6
   - source activate pyextern
   - conda env export
   # install haxelibs

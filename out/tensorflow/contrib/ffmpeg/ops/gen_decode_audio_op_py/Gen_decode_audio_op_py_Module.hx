@@ -10,7 +10,6 @@ package tensorflow.contrib.ffmpeg.ops.gen_decode_audio_op_py;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _decode_audio_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Processes the contents of an audio file into a tensor using FFmpeg to decode

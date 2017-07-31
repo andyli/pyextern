@@ -30,7 +30,6 @@ package numpy.ma.extras;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	public function __getitem__(key:Dynamic):Dynamic;
-	public function __getslice__(i:Dynamic, j:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -43,11 +42,18 @@ package numpy.ma.extras;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?axis:Dynamic):Dynamic;
+	public function ___init__(?axis:Dynamic, ?matrix:Dynamic, ?ndmin:Dynamic, ?trans1d:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?axis:Dynamic):Void;
+	public function new(?axis:Dynamic, ?matrix:Dynamic, ?ndmin:Dynamic, ?trans1d:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,5 +110,80 @@ package numpy.ma.extras;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _retval(res:Dynamic):Dynamic;
+	/**
+		Concatenate a sequence of arrays along the given axis.
+		
+		Parameters
+		----------
+		arrays : sequence of array_like
+		    The arrays must have the same shape, except in the dimension
+		    corresponding to `axis` (the first, by default).
+		axis : int, optional
+		    The axis along which the arrays will be joined. Default is 0.
+		
+		Returns
+		-------
+		result : MaskedArray
+		    The concatenated array with any masked entries preserved.
+		
+		See Also
+		--------
+		numpy.concatenate : Equivalent function in the top-level NumPy module.
+		
+		Examples
+		--------
+		>>> import numpy.ma as ma
+		>>> a = ma.arange(3)
+		>>> a[1] = ma.masked
+		>>> b = ma.arange(2, 5)
+		>>> a
+		masked_array(data = [0 -- 2],
+		             mask = [False  True False],
+		       fill_value = 999999)
+		>>> b
+		masked_array(data = [2 3 4],
+		             mask = False,
+		       fill_value = 999999)
+		>>> ma.concatenate([a, b])
+		masked_array(data = [0 -- 2 2 3 4],
+		             mask = [False  True False False False False],
+		       fill_value = 999999)
+	**/
+	static public function concatenate(arrays:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
+	/**
+		matrix(data, dtype=None, copy=True)
+		
+		Returns a matrix from an array-like object, or from a string of data.
+		A matrix is a specialized 2-D array that retains its 2-D nature
+		through operations.  It has certain special operators, such as ``*``
+		(matrix multiplication) and ``**`` (matrix power).
+		
+		Parameters
+		----------
+		data : array_like or string
+		   If `data` is a string, it is interpreted as a matrix with commas
+		   or spaces separating columns, and semicolons separating rows.
+		dtype : data-type
+		   Data-type of the output matrix.
+		copy : bool
+		   If `data` is already an `ndarray`, then this flag determines
+		   whether the data is copied (the default), or whether a view is
+		   constructed.
+		
+		See Also
+		--------
+		array
+		
+		Examples
+		--------
+		>>> a = np.matrix('1 2; 3 4')
+		>>> print(a)
+		[[1 2]
+		 [3 4]]
+		
+		>>> np.matrix([[1, 2], [3, 4]])
+		matrix([[1, 2],
+		        [3, 4]])
+	**/
+	static public function makemat(arr:Dynamic):Dynamic;
 }

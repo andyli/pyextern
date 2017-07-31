@@ -63,13 +63,14 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  vocab_size: The number of elements in the file, if known.
 		  delimiter: The delimiter to separate fields in a line.
 		  name: Optional name for the op.
+		  key_dtype: The `key` data type.
 		
 		Raises:
 		  TypeError: when the filename is empty, or when the table key and value
 		  data types do not match the expected data types.
 	**/
 	@:native("__init__")
-	public function ___init__(filename:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(filename:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic, ?key_dtype:Dynamic):Dynamic;
 	/**
 		Constructs an initializer for an string-to-id table from a text file.
 		
@@ -96,12 +97,20 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  vocab_size: The number of elements in the file, if known.
 		  delimiter: The delimiter to separate fields in a line.
 		  name: Optional name for the op.
+		  key_dtype: The `key` data type.
 		
 		Raises:
 		  TypeError: when the filename is empty, or when the table key and value
 		  data types do not match the expected data types.
 	**/
-	public function new(filename:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic):Void;
+	public function new(filename:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic, ?key_dtype:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

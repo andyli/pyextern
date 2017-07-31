@@ -19,7 +19,7 @@ package pandas.core.base;
 		old_arg_name : str
 		    Name of argument in function to deprecate
 		new_arg_name : str
-		    Name of prefered argument in function
+		    Name of preferred argument in function
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -51,7 +51,62 @@ package pandas.core.base;
 		yes!
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if given value is scalar.
@@ -64,6 +119,8 @@ package pandas.core.base;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -86,29 +143,7 @@ package pandas.core.base;
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
 	/**
-		This function is the sanctioned way of converting objects
-		to a unicode representation.
-		
-		properly handles nested sequences containing unicode strings
-		(unicode(object) does not)
-		
-		Parameters
-		----------
-		thing : anything to be formatted
-		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
-		    with pprint_sequence, this argument is used to keep track of the
-		    current nesting level, and limit it.
-		escape_chars : list or dict, optional
-		    Characters to escape. If a dict is passed the values are the
-		    replacements
-		default_escapes : bool, default False
-		    Whether the input escape characters replaces or adds to the defaults
-		max_seq_items : False, int, default None
-		    Pass thru to other pretty printers to limit sequence printing
-		
-		Returns
-		-------
-		result - unicode object on py2, str on py3. Always Unicode.
+		Ensures that argument passed in arg_name is of type bool. 
 	**/
-	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	static public function validate_bool_kwarg(value:Dynamic, arg_name:Dynamic):Dynamic;
 }

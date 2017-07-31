@@ -47,6 +47,13 @@ package docutils.writers.latex2e;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -101,6 +108,7 @@ package docutils.writers.latex2e;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var alltt : Dynamic;
 	static public var pifont : Dynamic;
 	static public var special : Dynamic;
 	static public var textcomp : Dynamic;

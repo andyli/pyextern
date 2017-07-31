@@ -60,42 +60,51 @@ package scipy.linalg.decomp;
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
 	static public var _double_precision : Dynamic;
-	static public function _geneig(a1:Dynamic, b1:Dynamic, left:Dynamic, right:Dynamic, overwrite_a:Dynamic, overwrite_b:Dynamic):Dynamic;
+	static public function _geneig(a1:Dynamic, b1:Dynamic, left:Dynamic, right:Dynamic, overwrite_a:Dynamic, overwrite_b:Dynamic, homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Produce complex-valued eigenvectors from LAPACK DGGEV real-valued output
 	**/
 	static public function _make_complex_eigvecs(w:Dynamic, vin:Dynamic, dtype:Dynamic):Dynamic;
+	static public function _make_eigvals(alpha:Dynamic, beta:Dynamic, homogeneous_eigvals:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -111,7 +120,13 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -159,7 +174,7 @@ package scipy.linalg.decomp;
 	@:native("cast")
 	static public var _cast : Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -170,6 +185,17 @@ package scipy.linalg.decomp;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -218,11 +244,20 @@ package scipy.linalg.decomp;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its
+		    multiplicity. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		vl : (M, M) double or complex ndarray
 		    The normalized left eigenvector corresponding to the eigenvalue
 		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
@@ -239,7 +274,7 @@ package scipy.linalg.decomp;
 		--------
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
 	**/
-	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve real symmetric or complex hermitian band matrix eigenvalue problem.
 		
@@ -419,13 +454,22 @@ package scipy.linalg.decomp;
 		check_finite : bool, optional
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    (crashes, non-termination) if the inputs do contain infinities
+		    or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity,
-		    but not in any specific order.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its multiplicity
+		    but not in any specific order. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		
 		Raises
 		------
@@ -438,7 +482,7 @@ package scipy.linalg.decomp;
 		eig : eigenvalues and right eigenvectors of general arrays.
 		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
 	**/
-	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve real symmetric or complex hermitian band matrix eigenvalue problem.
 		
@@ -717,7 +761,7 @@ package scipy.linalg.decomp;
 	**/
 	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
-		isfinite(x[, out])
+		isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for finiteness (not infinity or not Not a Number).
 		
@@ -727,9 +771,17 @@ package scipy.linalg.decomp;
 		----------
 		x : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -753,7 +805,7 @@ package scipy.linalg.decomp;
 		Not a Number, positive infinity and negative infinity are considered
 		to be non-finite.
 		
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Also that positive infinity is not equivalent to negative infinity. But
 		infinity is equivalent to positive infinity.  Errors result if the
@@ -823,13 +875,13 @@ package scipy.linalg.decomp;
 		
 		Examples
 		--------
-		>>> x = np.eye(3)
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
 		>>> x
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2]), array([0, 1, 2]))
+		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
 		
 		>>> x[np.nonzero(x)]
 		array([ 1.,  1.,  1.])

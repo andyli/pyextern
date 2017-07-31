@@ -39,6 +39,7 @@ package matplotlib.ft2font;
 	static public var VERTICAL : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
+	static public var __freetype_build_type__ : Dynamic;
 	static public var __freetype_version__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;

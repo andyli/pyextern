@@ -2,7 +2,9 @@
 package tensorflow.python.ops.nn_grad;
 @:pythonImport("tensorflow.python.ops.nn_grad") extern class Nn_grad_Module {
 	static public function _AvgPool3DGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _AvgPool3DGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _AvgPoolGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _AvgPoolGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Return the gradients for the 5 inputs of BatchNormWithGlobalNormalization.
 		
@@ -43,6 +45,18 @@ package tensorflow.python.ops.nn_grad;
 		  the second one for the "bias" input of the BiasOp.
 	**/
 	static public function _BiasAddGrad(op:Dynamic, received_grad:Dynamic):Dynamic;
+	/**
+		Gradient for the BiasAddGrad op.
+		
+		Args:
+		  op: BiasAddGrad op for which we are calculating gradients.
+		  received_grad: The gradients passed to the BiasAddGrad op.
+		
+		Returns:
+		  A single gradient Tensor for the input to BiasAddGrad (which
+		  is the gradient of the bias term in BiasAdd)
+	**/
+	static public function _BiasAddGradGrad(op:Dynamic, received_grad:Dynamic):Dynamic;
 	/**
 		Return the gradients for the 2 inputs of bias_op.
 		
@@ -92,6 +106,60 @@ package tensorflow.python.ops.nn_grad;
 	static public function _DepthwiseConv2dNativeGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _Dilation2DGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _EluGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _EluGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns gradient for FractionalAvgPool.
+		
+		Since FractionalAvgPool has three outputs, there are three gradients passed in
+		for each of the outputs. Only the first one is useful, the other two gradients
+		are empty.
+		
+		Args:
+		  op: The FractionalAvgPoolOp.
+		  grad_0: Gradient with respect to op.outputs[0]
+		  unused_grad_1: Gradient with respect to op.outputs[1]/row_seq. It is empty.
+		  unused_grad_2: Gradient with respect to op.outputs[2]/col_seq. It is empty.
+		
+		Returns:
+		  Input backprop for FractionalAvgPool op.
+	**/
+	static public function _FractionalAvgPoolGrad(op:Dynamic, grad_0:Dynamic, unused_grad_1:Dynamic, unused_grad_2:Dynamic):Dynamic;
+	/**
+		Returns gradient for FractionalMaxPool.
+		
+		Since FractionalMaxPool has three outputs, there are three gradients passed in
+		for each of the outputs. Only the first one is useful, the other two gradients
+		are empty.
+		
+		Args:
+		  op: The FractionalMaxPoolOp.
+		  grad_0: Gradient with respect to op.outputs[0]
+		  unused_grad_1: Gradient with respect to op.outputs[1]/row_seq. It is empty.
+		  unused_grad_2: Gradient with respect to op.outputs[2]/col_seq. It is empty.
+		
+		Returns:
+		  Input backprop for FractionalMaxPool op.
+	**/
+	static public function _FractionalMaxPoolGrad(op:Dynamic, grad_0:Dynamic, unused_grad_1:Dynamic, unused_grad_2:Dynamic):Dynamic;
+	/**
+		Return the gradients for the 3 inputs of BatchNorm.
+		
+		Args:
+		  op: The BatchNormOp for which we need to compute gradients.
+		  *grad: An argument list for tensors of gradients wrt the outputs
+		        with grad[0] as grad_y.
+		
+		Returns:
+		  grad_x: gradient for x, which is scale * rsqrt(variance + epsilon) *
+		          [grad_y - mean(grad_y) - (x - mean(x)) *
+		          mean(grad_y * (x - mean(x))) / (variance + epsilon)]
+		
+		  grad_scale: gradient for scale, which is sum(grad_y * (x - mean(x)) *
+		              rsqrt(variance + epsilon))
+		
+		  grad_offset: gradient for offset, which is sum(grad_y)
+	**/
+	static public function _FusedBatchNormGrad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the gradients for L2Loss.
 		
@@ -119,11 +187,19 @@ package tensorflow.python.ops.nn_grad;
 	**/
 	static public function _LogSoftmaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MaxPool3DGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPool3DGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPool3DGradGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MaxPoolGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPoolGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPoolGradGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPoolGradWithArgmax(op:Dynamic, grad:Dynamic, unused_argmax_grad:Dynamic):Dynamic;
 	static public function _Relu6Grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReluGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReluGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	static public function _SoftmaxCrossEntropyWithLogitsGrad(op:Dynamic, grad_0:Dynamic, _:Dynamic):Dynamic;
+	/**
+		Gradient function for SoftmaxCrossEntropyWithLogits.
+	**/
+	static public function _SoftmaxCrossEntropyWithLogitsGrad(op:Dynamic, grad_loss:Dynamic, grad_grad:Dynamic):Dynamic;
 	/**
 		The derivative of the softmax nonlinearity.
 		
@@ -144,7 +220,11 @@ package tensorflow.python.ops.nn_grad;
 	**/
 	static public function _SoftmaxGrad(op:Dynamic, grad_softmax:Dynamic):Dynamic;
 	static public function _SoftplusGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SoftplusGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SoftsignGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient function for SparseSoftmaxCrossEntropyWithLogits.
+	**/
 	static public function _SparseSoftmaxCrossEntropyWithLogitsGrad(op:Dynamic, grad_0:Dynamic, _:Dynamic):Dynamic;
 	/**
 		Return the gradients for TopK.

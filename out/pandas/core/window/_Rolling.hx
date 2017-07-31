@@ -50,11 +50,18 @@ package pandas.core.window;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?on:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?on:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?on:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?on:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +126,6 @@ package pandas.core.window;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -139,7 +145,7 @@ package pandas.core.window;
 		None if not required
 	**/
 	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	/**
 		Rolling statistical measure using supplied function. Designed to be
 		used with passed-in Cython array-based functions.
@@ -227,14 +233,26 @@ package pandas.core.window;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
-	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
+		return a name for myself; this would ideally be called
+		the 'name' property, but we cannot conflict with the
+		Series.name property which can be set
+	**/
+	public var _selection_name : Dynamic;
+	/**
 		return a new object with the replacement attributes 
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		if arg is a string, then try to operate on it:
+		- try to find a function (or attribute) on ourselves
+		- try to find a numpy function
+		- raise
+	**/
+	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
 		wrap a single result 
@@ -255,7 +273,6 @@ package pandas.core.window;
 	static public var exclusions : Dynamic;
 	public var is_datetimelike : Dynamic;
 	public var is_freq_type : Dynamic;
-	public var name : Dynamic;
 	static public var ndim : Dynamic;
 	public function validate():Dynamic;
 }

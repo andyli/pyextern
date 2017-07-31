@@ -58,6 +58,13 @@ package docutils.writers.odf_odt;
 	**/
 	public function new(tag:Dynamic, ?attrib:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -118,6 +125,10 @@ package docutils.writers.odf_odt;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function append(subelement:Dynamic):Dynamic;
+	/**
+		A dictionary containing the element's attributes
+	**/
+	public var attrib : Dynamic;
 	public function clear():Dynamic;
 	public function extend(elements:Dynamic):Dynamic;
 	public function find(path:Dynamic, ?namespaces:Dynamic):Dynamic;
@@ -141,4 +152,16 @@ package docutils.writers.odf_odt;
 	public function remove(subelement:Dynamic):Dynamic;
 	public function set(key:Dynamic, value:Dynamic):Dynamic;
 	public function setparent(parent:Dynamic):Dynamic;
+	/**
+		A string identifying what kind of data this element represents
+	**/
+	public var tag : Dynamic;
+	/**
+		A string of text directly after the end tag, or None
+	**/
+	public var tail : Dynamic;
+	/**
+		A string of text directly after the start tag, or None
+	**/
+	public var text : Dynamic;
 }

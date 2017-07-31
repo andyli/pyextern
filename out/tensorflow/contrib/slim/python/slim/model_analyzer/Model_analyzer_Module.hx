@@ -25,11 +25,11 @@ package tensorflow.contrib.slim.python.slim.model_analyzer;
 		Prints the names and shapes of the variables.
 		
 		Args:
-		  variables: list of variables, for example tf.all_variables().
+		  variables: list of variables, for example tf.global_variables().
 		  print_info: Optional, if true print variables and their shape.
 		
 		Returns:
-		  total size of the variables.
+		  (total size of the variables, total bytes of the variables)
 	**/
 	static public function analyze_vars(variables:Dynamic, ?print_info:Dynamic):Dynamic;
 	static public var division : Dynamic;

@@ -22,6 +22,8 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function PaintDeviceMetric(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var PdmDepth : Dynamic;
+	static public var PdmDevicePixelRatio : Dynamic;
+	static public var PdmDevicePixelRatioScaled : Dynamic;
 	static public var PdmDpiX : Dynamic;
 	static public var PdmDpiY : Dynamic;
 	static public var PdmHeight : Dynamic;
@@ -49,9 +51,9 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function RenderFlag(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.RenderFlags(QWidget.RenderFlags)
-		QWidget.RenderFlags(int)
 		QWidget.RenderFlags()
+		QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+		QWidget.RenderFlags(QWidget.RenderFlags)
 	**/
 	static public function RenderFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _FigureCanvasQTAggBase__draw_idle_agg(?args:python.VarArgs<Dynamic>):Dynamic;
@@ -104,6 +106,13 @@ package matplotlib.backends.backend_qt4agg;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(figure:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -159,6 +168,7 @@ package matplotlib.backends.backend_qt4agg;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var _dpi_ratio : Dynamic;
 	public function _get_key(event:Dynamic):Dynamic;
 	/**
 		Return a canvas that is suitable for saving figures to a specified
@@ -172,11 +182,11 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function acceptDrops(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		accessibleDescription(self) -> object
+		accessibleDescription(self) -> str
 	**/
 	static public function accessibleDescription(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		accessibleName(self) -> object
+		accessibleName(self) -> str
 	**/
 	static public function accessibleName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -184,7 +194,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function actionEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		actions(self) -> object
+		actions(self) -> List[QAction]
 	**/
 	static public function actions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -223,6 +233,16 @@ package matplotlib.backends.backend_qt4agg;
 		blockSignals(self, bool) -> bool
 	**/
 	static public function blockSignals(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Get the image as an RGBA byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function buffer_rgba():Dynamic;
 	/**
 		Backend derived classes should call this function on any mouse
@@ -303,13 +323,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function colorCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		connect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
-		connect(QObject, QT_SIGNAL, Callable[..., None], Qt.ConnectionType = Qt.AutoConnection) -> object
-		connect(self, QObject, QT_SIGNAL, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
-	**/
-	static public function connect(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		connectNotify(self, QT_SIGNAL)
+		connectNotify(self, QMetaMethod)
 	**/
 	static public function connectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -330,9 +344,13 @@ package matplotlib.backends.backend_qt4agg;
 	static public function contextMenuPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function copy_from_bbox(bbox:Dynamic):Dynamic;
 	/**
-		create(self, window: int = 0, initializeWindow: bool = True, destroyOldWindow: bool = True)
+		create(self, window: sip.voidptr = 0, initializeWindow: bool = True, destroyOldWindow: bool = True)
 	**/
 	static public function create(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		createWindowContainer(QWindow, parent: QWidget = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = 0) -> QWidget
+	**/
+	static public function createWindowContainer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cursor(self) -> QCursor
 	**/
@@ -359,7 +377,6 @@ package matplotlib.backends.backend_qt4agg;
 	static public function destroy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		destroyed(self, QObject = None) [signal]
-		destroyed(self) [signal]
 	**/
 	public function destroyed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -367,12 +384,23 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function devType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		disconnect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL) -> object
-		disconnect(QObject, QT_SIGNAL, Callable[..., None]) -> object
+		devicePixelRatio(self) -> int
+	**/
+	static public function devicePixelRatio(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		devicePixelRatioF(self) -> float
+	**/
+	static public function devicePixelRatioF(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		devicePixelRatioFScale() -> float
+	**/
+	static public function devicePixelRatioFScale(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		disconnect(self)
 	**/
 	static public function disconnect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		disconnectNotify(self, QT_SIGNAL)
+		disconnectNotify(self, QMetaMethod)
 	**/
 	static public function disconnectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -423,17 +451,9 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function dynamicPropertyNames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		effectiveWinId(self) -> int
+		effectiveWinId(self) -> sip.voidptr
 	**/
 	static public function effectiveWinId(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		emit(self, QT_SIGNAL, *)
-	**/
-	static public function emit(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		enabledChange(self, bool)
-	**/
-	static public function enabledChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ensurePolished(self)
 	**/
@@ -464,19 +484,21 @@ package matplotlib.backends.backend_qt4agg;
 	static public var events : Dynamic;
 	static public var filetypes : Dynamic;
 	/**
-		find(int) -> QWidget
+		find(sip.voidptr) -> QWidget
 	**/
 	static public function find(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		findChild(self, type, name: object = '') -> object
-		findChild(self, Tuple, name: object = '') -> object
+		findChild(self, type, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> QObject
+		findChild(self, Tuple, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> QObject
 	**/
 	static public function findChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		findChildren(self, type, name: object = '') -> List
-		findChildren(self, Tuple, name: object = '') -> List
-		findChildren(self, type, QRegExp) -> List
-		findChildren(self, Tuple, QRegExp) -> List
+		findChildren(self, type, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, name: str = '', options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
+		findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -> List[QObject]
 	**/
 	static public function findChildren(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var fixed_dpi : Dynamic;
@@ -521,10 +543,6 @@ package matplotlib.backends.backend_qt4agg;
 		font(self) -> QFont
 	**/
 	static public function font(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		fontChange(self, QFont)
-	**/
-	static public function fontChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		fontInfo(self) -> QFontInfo
 	**/
@@ -587,7 +605,11 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	public function get_window_title():Dynamic;
 	/**
-		grabGesture(self, Qt.GestureType, flags: Qt.GestureFlags = Qt.GestureFlags(0))
+		grab(self, rectangle: QRect = QRect(QPoint(0,0),QSize(-1,-1))) -> QPixmap
+	**/
+	static public function grab(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		grabGesture(self, Qt.GestureType, flags: Union[Qt.GestureFlags, Qt.GestureFlag] = Qt.GestureFlags())
 	**/
 	static public function grabGesture(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -596,11 +618,11 @@ package matplotlib.backends.backend_qt4agg;
 	static public function grabKeyboard(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		grabMouse(self)
-		grabMouse(self, QCursor)
+		grabMouse(self, Union[QCursor, Qt.CursorShape])
 	**/
 	static public function grabMouse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		grabShortcut(self, QKeySequence, context: Qt.ShortcutContext = Qt.WindowShortcut) -> int
+		grabShortcut(self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut) -> int
 	**/
 	static public function grabShortcut(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -619,13 +641,13 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function graphicsProxyWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		handle(self) -> int
-	**/
-	static public function handle(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		hasFocus(self) -> bool
 	**/
 	static public function hasFocus(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hasHeightForWidth(self) -> bool
+	**/
+	static public function hasHeightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		hasMouseTracking(self) -> bool
 	**/
@@ -659,9 +681,9 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function inherits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		inputContext(self) -> QInputContext
+		initPainter(self, QPainter)
 	**/
-	static public function inputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function initPainter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		inputMethodEvent(self, QInputMethodEvent)
 	**/
@@ -671,7 +693,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function inputMethodHints(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		inputMethodQuery(self, Qt.InputMethodQuery) -> object
+		inputMethodQuery(self, Qt.InputMethodQuery) -> Any
 	**/
 	static public function inputMethodQuery(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -679,7 +701,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function insertAction(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		insertActions(self, QAction, object)
+		insertActions(self, QAction, Iterable[QAction])
 	**/
 	static public function insertActions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -702,10 +724,6 @@ package matplotlib.backends.backend_qt4agg;
 		isEnabledTo(self, QWidget) -> bool
 	**/
 	static public function isEnabledTo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		isEnabledToTLW(self) -> bool
-	**/
-	static public function isEnabledToTLW(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		isFullScreen(self) -> bool
 	**/
@@ -735,9 +753,9 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function isRightToLeft(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		isTopLevel(self) -> bool
+		isSignalConnected(self, QMetaMethod) -> bool
 	**/
-	static public function isTopLevel(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function isSignalConnected(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		isVisible(self) -> bool
 	**/
@@ -758,6 +776,10 @@ package matplotlib.backends.backend_qt4agg;
 		isWindowModified(self) -> bool
 	**/
 	static public function isWindowModified(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		isWindowType(self) -> bool
+	**/
+	static public function isWindowType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns `True` when the renderer is in the process of saving
 		to a file, rather than rendering for an on-screen buffer.
@@ -789,10 +811,6 @@ package matplotlib.backends.backend_qt4agg;
 		killTimer(self, int)
 	**/
 	static public function killTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		languageChange(self)
-	**/
-	static public function languageChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		layout(self) -> QLayout
 	**/
@@ -917,6 +935,16 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	public function mouseDoubleClickEvent(event:Dynamic):Dynamic;
 	/**
+		Calculate mouse coordinates in physical pixels
+		
+		Qt5 use logical pixels, but the figure is scaled to physical
+		pixels for rendering.   Transform to physical pixels so that
+		all of the down-stream transforms work as expected.
+		
+		Also, the origin is different and needs to be corrected.
+	**/
+	public function mouseEventCoords(pos:Dynamic):Dynamic;
+	/**
 		mouseGrabber() -> QWidget
 	**/
 	static public function mouseGrabber(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -999,6 +1027,10 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	public function mpl_disconnect(cid:Dynamic):Dynamic;
 	/**
+		nativeEvent(self, Union[QByteArray, bytes, bytearray], sip.voidptr) -> Tuple[bool, int]
+	**/
+	static public function nativeEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		nativeParentWidget(self) -> QWidget
 	**/
 	static public function nativeParentWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1027,13 +1059,13 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function normalGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		numColors(self) -> int
-	**/
-	static public function numColors(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		objectName(self) -> object
+		objectName(self) -> str
 	**/
 	static public function objectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		objectNameChanged(self, str) [signal]
+	**/
+	public function objectNameChanged(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Mouse event processor which highlights the artists
 		under the cursor.  Connect this to the 'motion_notify_event'
@@ -1051,11 +1083,11 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	public function onRemove(ev:Dynamic):Dynamic;
 	/**
-		overrideWindowFlags(self, Qt.WindowFlags)
+		overrideWindowFlags(self, Union[Qt.WindowFlags, Qt.WindowType])
 	**/
 	static public function overrideWindowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		overrideWindowState(self, Qt.WindowStates)
+		overrideWindowState(self, Union[Qt.WindowStates, Qt.WindowState])
 	**/
 	static public function overrideWindowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1076,10 +1108,6 @@ package matplotlib.backends.backend_qt4agg;
 		palette(self) -> QPalette
 	**/
 	static public function palette(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		paletteChange(self, QPalette)
-	**/
-	static public function paletteChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		parent(self) -> QObject
 	**/
@@ -1116,7 +1144,7 @@ package matplotlib.backends.backend_qt4agg;
 	public function print_rgba(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_to_buffer():Dynamic;
 	/**
-		property(self, str) -> object
+		property(self, str) -> Any
 	**/
 	static public function property(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1134,7 +1162,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function raise_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		receivers(self, QT_SIGNAL) -> int
+		receivers(self, PYQT_SIGNAL) -> int
 	**/
 	static public function receivers(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1169,8 +1197,8 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function removeEventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		render(self, QPaintDevice, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: QWidget.RenderFlags = QWidget.DrawWindowBackground|QWidget.DrawChildren)
-		render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: QWidget.RenderFlags = QWidget.DrawWindowBackground|QWidget.DrawChildren)
+		render(self, QPaintDevice, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))
+		render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))
 	**/
 	static public function render(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1180,10 +1208,6 @@ package matplotlib.backends.backend_qt4agg;
 		repaint(self, QRegion)
 	**/
 	static public function repaint(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		resetInputContext(self)
-	**/
-	static public function resetInputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		resize(self, QSize)
 		resize(self, int, int)
@@ -1199,7 +1223,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	public function resize_event():Dynamic;
 	/**
-		restoreGeometry(self, QByteArray) -> bool
+		restoreGeometry(self, Union[QByteArray, bytes, bytearray]) -> bool
 	**/
 	static public function restoreGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function restore_region(region:Dynamic, ?bbox:Dynamic, ?xy:Dynamic):Dynamic;
@@ -1234,11 +1258,11 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setAcceptDrops(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setAccessibleDescription(self, object)
+		setAccessibleDescription(self, str)
 	**/
 	static public function setAccessibleDescription(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setAccessibleName(self, object)
+		setAccessibleName(self, str)
 	**/
 	static public function setAccessibleName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1268,7 +1292,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setContextMenuPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setCursor(self, QCursor)
+		setCursor(self, Union[QCursor, Qt.CursorShape])
 	**/
 	static public function setCursor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1327,11 +1351,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setHidden(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setInputContext(self, QInputContext)
-	**/
-	static public function setInputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		setInputMethodHints(self, Qt.InputMethodHints)
+		setInputMethodHints(self, Union[Qt.InputMethodHints, Qt.InputMethodHint])
 	**/
 	static public function setInputMethodHints(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1382,7 +1402,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setMouseTracking(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setObjectName(self, object)
+		setObjectName(self, str)
 	**/
 	static public function setObjectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1391,11 +1411,11 @@ package matplotlib.backends.backend_qt4agg;
 	static public function setPalette(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		setParent(self, QWidget)
-		setParent(self, QWidget, Qt.WindowFlags)
+		setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])
 	**/
 	static public function setParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setProperty(self, str, object) -> bool
+		setProperty(self, str, Any) -> bool
 	**/
 	static public function setProperty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1407,10 +1427,6 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setShortcutEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setShown(self, bool)
-	**/
-	static public function setShown(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		setSizeIncrement(self, int, int)
 		setSizeIncrement(self, QSize)
 	**/
@@ -1421,7 +1437,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setSizePolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setStatusTip(self, object)
+		setStatusTip(self, str)
 	**/
 	static public function setStatusTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1429,7 +1445,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setStyle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setStyleSheet(self, object)
+		setStyleSheet(self, str)
 	**/
 	static public function setStyleSheet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1437,9 +1453,13 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setTabOrder(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setToolTip(self, object)
+		setToolTip(self, str)
 	**/
 	static public function setToolTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		setToolTipDuration(self, int)
+	**/
+	static public function setToolTipDuration(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		setUpdatesEnabled(self, bool)
 	**/
@@ -1449,15 +1469,15 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setVisible(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWhatsThis(self, object)
+		setWhatsThis(self, str)
 	**/
 	static public function setWhatsThis(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowFilePath(self, object)
+		setWindowFilePath(self, str)
 	**/
 	static public function setWindowFilePath(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowFlags(self, Qt.WindowFlags)
+		setWindowFlags(self, Union[Qt.WindowFlags, Qt.WindowType])
 	**/
 	static public function setWindowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1465,7 +1485,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setWindowIcon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowIconText(self, object)
+		setWindowIconText(self, str)
 	**/
 	static public function setWindowIconText(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1481,15 +1501,15 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function setWindowOpacity(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowRole(self, object)
+		setWindowRole(self, str)
 	**/
 	static public function setWindowRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowState(self, Qt.WindowStates)
+		setWindowState(self, Union[Qt.WindowStates, Qt.WindowState])
 	**/
 	static public function setWindowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setWindowTitle(self, object)
+		setWindowTitle(self, str)
 	**/
 	static public function setWindowTitle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1497,6 +1517,10 @@ package matplotlib.backends.backend_qt4agg;
 		this has no effect if there is no window (e.g., a PS backend).
 	**/
 	public function set_window_title(title:Dynamic):Dynamic;
+	/**
+		sharedPainter(self) -> QPainter
+	**/
+	static public function sharedPainter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		show(self)
 	**/
@@ -1546,7 +1570,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function stackUnder(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		startTimer(self, int) -> int
+		startTimer(self, int, timerType: Qt.TimerType = Qt.CoarseTimer) -> int
 	**/
 	static public function startTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1560,10 +1584,6 @@ package matplotlib.backends.backend_qt4agg;
 		on time.sleep that is meant to be used until event loop
 		functions for each of the GUI backends can be written.  As
 		such, it throws a deprecated warning.
-		
-		Call signature::
-		
-		    start_event_loop_default(self,timeout=0)
 		
 		This call blocks until a callback function triggers
 		stop_event_loop() or *timeout* is reached.  If *timeout* is
@@ -1582,10 +1602,6 @@ package matplotlib.backends.backend_qt4agg;
 		functions for each of the GUI backends can be written.  As
 		such, it throws a deprecated warning.
 		
-		Call signature::
-		
-		    start_event_loop_default(self,timeout=0)
-		
 		This call blocks until a callback function triggers
 		stop_event_loop() or *timeout* is reached.  If *timeout* is
 		<=0, never timeout.
@@ -1593,27 +1609,19 @@ package matplotlib.backends.backend_qt4agg;
 	public function start_event_loop_default(?timeout:Dynamic):Dynamic;
 	static public var staticMetaObject : Dynamic;
 	/**
-		statusTip(self) -> object
+		statusTip(self) -> str
 	**/
 	static public function statusTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Stop an event loop.  This is used to stop a blocking event
 		loop so that interactive functions, such as ginput and
 		waitforbuttonpress, can wait for events.
-		
-		Call signature::
-		
-		  stop_event_loop_default(self)
 	**/
 	public function stop_event_loop():Dynamic;
 	/**
 		Stop an event loop.  This is used to stop a blocking event
 		loop so that interactive functions, such as ginput and
 		waitforbuttonpress, can wait for events.
-		
-		Call signature::
-		
-		  stop_event_loop_default(self)
 	**/
 	public function stop_event_loop_default():Dynamic;
 	/**
@@ -1621,7 +1629,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function style(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		styleSheet(self) -> object
+		styleSheet(self) -> str
 	**/
 	static public function styleSheet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var supports_blit : Dynamic;
@@ -1651,23 +1659,39 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function timerEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		toolTip(self) -> object
+		toolTip(self) -> str
 	**/
 	static public function toolTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		topLevelWidget(self) -> QWidget
+		toolTipDuration(self) -> int
 	**/
-	static public function topLevelWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function toolTipDuration(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Get the image as an ARGB byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function tostring_argb():Dynamic;
+	/**
+		Get the image as an RGB byte string
+		
+		`draw` must be called at least once before this function will work and
+		to update the renderer for any subsequent changes to the Figure.
+		
+		Returns
+		-------
+		bytes
+	**/
 	public function tostring_rgb():Dynamic;
 	/**
-		tr(self, object, disambiguation: str = None, n: int = -1) -> object
+		tr(self, str, disambiguation: str = None, n: int = -1) -> str
 	**/
 	static public function tr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		trUtf8(self, object, disambiguation: str = None, n: int = -1) -> object
-	**/
-	static public function trUtf8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		underMouse(self) -> bool
 	**/
@@ -1712,7 +1736,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function visibleRegion(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		whatsThis(self) -> object
+		whatsThis(self) -> str
 	**/
 	static public function whatsThis(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1728,7 +1752,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function widthMM(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		winId(self) -> int
+		winId(self) -> sip.voidptr
 	**/
 	static public function winId(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1736,11 +1760,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		windowActivationChange(self, bool)
-	**/
-	static public function windowActivationChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		windowFilePath(self) -> object
+		windowFilePath(self) -> str
 	**/
 	static public function windowFilePath(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1748,13 +1768,25 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function windowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		windowHandle(self) -> QWindow
+	**/
+	static public function windowHandle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		windowIcon(self) -> QIcon
 	**/
 	static public function windowIcon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		windowIconText(self) -> object
+		windowIconChanged(self, QIcon) [signal]
+	**/
+	public function windowIconChanged(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		windowIconText(self) -> str
 	**/
 	static public function windowIconText(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		windowIconTextChanged(self, str) [signal]
+	**/
+	public function windowIconTextChanged(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		windowModality(self) -> Qt.WindowModality
 	**/
@@ -1764,7 +1796,7 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function windowOpacity(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		windowRole(self) -> object
+		windowRole(self) -> str
 	**/
 	static public function windowRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1772,9 +1804,13 @@ package matplotlib.backends.backend_qt4agg;
 	**/
 	static public function windowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		windowTitle(self) -> object
+		windowTitle(self) -> str
 	**/
 	static public function windowTitle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		windowTitleChanged(self, str) [signal]
+	**/
+	public function windowTitleChanged(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		windowType(self) -> Qt.WindowType
 	**/
@@ -1783,14 +1819,6 @@ package matplotlib.backends.backend_qt4agg;
 		x(self) -> int
 	**/
 	static public function x(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		x11Info(self) -> QX11Info
-	**/
-	static public function x11Info(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		x11PictureHandle(self) -> int
-	**/
-	static public function x11PictureHandle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		y(self) -> int
 	**/

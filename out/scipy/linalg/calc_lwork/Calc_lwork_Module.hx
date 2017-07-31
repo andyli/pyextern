@@ -9,6 +9,7 @@ package scipy.linalg.calc_lwork;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	/**
 		`scipy.linalg.calc_lwork` is deprecated!
 		
@@ -57,7 +58,7 @@ package scipy.linalg.calc_lwork;
 		>>> olduint(6)
 		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
 		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning)
+		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
 		6
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;

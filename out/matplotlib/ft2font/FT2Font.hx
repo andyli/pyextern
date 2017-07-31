@@ -46,6 +46,13 @@ package matplotlib.ft2font;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -134,6 +141,12 @@ package matplotlib.ft2font;
 		Since matplotlib only supports left-to-right text, y is always 0.
 	**/
 	public function get_bitmap_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		get_char_index()
+		
+		Given a character code, returns a glyph index.
+	**/
+	public function get_char_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		get_charmap()
 		

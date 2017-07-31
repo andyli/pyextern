@@ -197,7 +197,7 @@ package scipy.optimize.optimize;
 		xtol : float
 		    Relative error in solution `xopt` acceptable for convergence.
 	**/
-	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var _status_message : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function approx_fhess_p(x0:Dynamic, p:Dynamic, fprime:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
@@ -328,8 +328,8 @@ package scipy.optimize.optimize;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -416,7 +416,7 @@ package scipy.optimize.optimize;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -1307,6 +1307,8 @@ package scipy.optimize.optimize;
 		    x tolerance stop criterion
 		full_output : bool, optional
 		    If True, return optional outputs.
+		maxiter : int
+		    Maximum number of iterations to perform.
 		
 		See also
 		--------
@@ -1318,7 +1320,7 @@ package scipy.optimize.optimize;
 		Uses analog of bisection method to decrease the bracketed
 		interval.
 	**/
-	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic):Dynamic;
+	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		Test whether `x` is either a scalar or an array scalar.
 		
@@ -1326,7 +1328,7 @@ package scipy.optimize.optimize;
 	**/
 	static public function is_array_scalar(x:Dynamic):Dynamic;
 	/**
-		isinf(x[, out])
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -1337,8 +1339,17 @@ package scipy.optimize.optimize;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1362,7 +1373,7 @@ package scipy.optimize.optimize;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first
@@ -1761,7 +1772,7 @@ package scipy.optimize.optimize;
 	**/
 	static public function show_options(?solver:Dynamic, ?method:Dynamic, ?disp:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -1769,9 +1780,17 @@ package scipy.optimize.optimize;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1828,6 +1847,16 @@ package scipy.optimize.optimize;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -1835,7 +1864,13 @@ package scipy.optimize.optimize;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;

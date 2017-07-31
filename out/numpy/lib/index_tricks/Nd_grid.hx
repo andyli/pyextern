@@ -30,7 +30,6 @@ package numpy.lib.index_tricks;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	public function __getitem__(key:Dynamic):Dynamic;
-	public function __getslice__(i:Dynamic, j:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -48,6 +47,13 @@ package numpy.lib.index_tricks;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?sparse:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

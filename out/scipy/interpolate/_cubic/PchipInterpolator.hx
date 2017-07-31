@@ -77,6 +77,13 @@ package scipy.interpolate._cubic;
 	**/
 	public function new(x:Dynamic, y:Dynamic, ?axis:Dynamic, ?extrapolate:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -218,7 +225,8 @@ package scipy.interpolate._cubic;
 		identically represented as a linear combination of polynomials of
 		a higher degree `k+d`:
 		
-		    .. math:: b_{a, k} = comb(k, a) \sum_{j=0}^{d} b_{a+j, k+d}                                 comb(d, j) / comb(k+d, a+j)
+		    .. math:: b_{a, k} = comb(k, a) \sum_{j=0}^{d} b_{a+j, k+d} \
+		                         comb(d, j) / comb(k+d, a+j)
 	**/
 	static public function _raise_degree(c:Dynamic, d:Dynamic):Dynamic;
 	/**
@@ -277,15 +285,17 @@ package scipy.interpolate._cubic;
 		Parameters
 		----------
 		c : ndarray, size (k, m, ...)
-		    Additional coefficients for polynomials in intervals
-		    ``self.x[-1] <= x < x_right[0]``, ``x_right[0] <= x < x_right[1]``,
-		    ..., ``x_right[m-2] <= x < x_right[m-1]``
+		    Additional coefficients for polynomials in intervals. Note that
+		    the first additional interval will be formed using one of the
+		    `self.x` end points.
 		x : ndarray, size (m,)
-		    Additional breakpoints. Must be sorted and either to
-		    the right or to the left of the current breakpoints.
-		right : bool, optional
-		    Whether the new intervals are to the right or to the left
-		    of the current intervals.
+		    Additional breakpoints. Must be sorted in the same order as
+		    `self.x` and either to the right or to the left of the current
+		    breakpoints.
+		right
+		    Deprecated argument. Has no effect.
+		
+		    .. deprecated:: 0.19
 	**/
 	public function extend(c:Dynamic, x:Dynamic, ?right:Dynamic):Dynamic;
 	public var extrapolate : Dynamic;

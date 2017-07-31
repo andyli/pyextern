@@ -22,6 +22,12 @@ package tensorflow.python.training.device_setter;
 		by a more inner context. Currently the fields are (job, task, cpu/gpu).
 		
 		If `cluster` is `None`, and `ps_tasks` is 0, the returned function is a no-op.
+		Otherwise, the value of `ps_tasks` is derived from `cluster`.
+		
+		By default, only Variable ops are placed on ps tasks, and the placement
+		strategy is round-robin over all ps tasks. A custom `ps_strategy` may be used
+		to do more intelligent placement, such as
+		`tf.contrib.training.GreedyLoadBalancingStrategy`.
 		
 		For example,
 		
@@ -31,7 +37,7 @@ package tensorflow.python.training.device_setter;
 		cluster_spec = {
 		    "ps": ["ps0:2222", "ps1:2222"],
 		    "worker": ["worker0:2222", "worker1:2222", "worker2:2222"]}
-		with tf.device(tf.replica_device_setter(cluster=cluster_spec)):
+		with tf.device(tf.train.replica_device_setter(cluster=cluster_spec)):
 		  # Build your graph
 		  v1 = tf.Variable(...)  # assigned to /job:ps/task:0
 		  v2 = tf.Variable(...)  # assigned to /job:ps/task:1
@@ -40,7 +46,8 @@ package tensorflow.python.training.device_setter;
 		```
 		
 		Args:
-		  ps_tasks: Number of tasks in the `ps` job.
+		  ps_tasks: Number of tasks in the `ps` job.  Ignored if `cluster` is
+		    provided.
 		  ps_device: String.  Device of the `ps` job.  If empty no `ps` job is used.
 		    Defaults to `ps`.
 		  worker_device: String.  Device of the `worker` job.  If empty no `worker`
@@ -49,13 +56,19 @@ package tensorflow.python.training.device_setter;
 		    device constraint is completely unset. merges device specification rather
 		    than overriding them.
 		  cluster: `ClusterDef` proto or `ClusterSpec`.
-		  ps_ops: List of `Operation` objects that need to be placed on `ps` devices.
+		  ps_ops: List of strings representing `Operation` types that need to be
+		    placed on `ps` devices.  If `None`, defaults to `["Variable"]`.
+		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
+		    `ps_ops`), that takes the `Operation` and returns the ps task index to
+		    use.  If `None`, defaults to a round-robin strategy across all `ps`
+		    devices.
 		
 		Returns:
 		  A function to pass to `tf.device()`.
 		
 		Raises:
-		  TypeError if `cluster` is not a dictionary or `ClusterDef` protocol buffer.
+		  TypeError if `cluster` is not a dictionary or `ClusterDef` protocol buffer,
+		  or if `ps_strategy` is provided but not a callable.
 	**/
-	static public function replica_device_setter(?ps_tasks:Dynamic, ?ps_device:Dynamic, ?worker_device:Dynamic, ?merge_devices:Dynamic, ?cluster:Dynamic, ?ps_ops:Dynamic):Dynamic;
+	static public function replica_device_setter(?ps_tasks:Dynamic, ?ps_device:Dynamic, ?worker_device:Dynamic, ?merge_devices:Dynamic, ?cluster:Dynamic, ?ps_ops:Dynamic, ?ps_strategy:Dynamic):Dynamic;
 }

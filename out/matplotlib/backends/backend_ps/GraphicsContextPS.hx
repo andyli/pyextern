@@ -47,6 +47,13 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -105,7 +112,6 @@ package matplotlib.backends.backend_ps;
 		Copy properties from gc to self
 	**/
 	public function copy_properties(gc:Dynamic):Dynamic;
-	static public var dashd : Dynamic;
 	/**
 		Return the alpha value used for blending - not supported on
 		all backends
@@ -137,7 +143,7 @@ package matplotlib.backends.backend_ps;
 		off in pixels.
 		
 		See p107 of to PostScript `BLUEBOOK
-		<http://www-cdf.fnal.gov/offline/PostScript/BLUEBOOK.PDF>`_
+		<https://www-cdf.fnal.gov/offline/PostScript/BLUEBOOK.PDF>`_
 		for more info.
 		
 		Default value is None
@@ -156,6 +162,14 @@ package matplotlib.backends.backend_ps;
 		Gets the current hatch style
 	**/
 	public function get_hatch():Dynamic;
+	/**
+		Gets the color to use for hatching.
+	**/
+	public function get_hatch_color():Dynamic;
+	/**
+		Gets the linewidth to use for hatching.
+	**/
+	public function get_hatch_linewidth():Dynamic;
 	/**
 		Returns a Path for the current hatch.
 	**/
@@ -274,18 +288,19 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function set_hatch(hatch:Dynamic):Dynamic;
 	/**
+		sets the color to use for hatching.
+	**/
+	public function set_hatch_color(hatch_color:Dynamic):Dynamic;
+	/**
 		Set the join style to be one of ('miter', 'round', 'bevel')
 	**/
 	public function set_joinstyle(js:Dynamic):Dynamic;
 	/**
 		Set the linestyle to be one of ('solid', 'dashed', 'dashdot',
-		'dotted'). One may specify customized dash styles by providing
-		a tuple of (offset, dash pairs). For example, the predefiend
-		linestyles have following values.:
-		
-		 'dashed'  : (0, (6.0, 6.0)),
-		 'dashdot' : (0, (3.0, 5.0, 1.0, 5.0)),
-		 'dotted'  : (0, (1.0, 3.0)),
+		'dotted'). These are defined in the rcParams
+		`lines.dashed_pattern`, `lines.dashdot_pattern` and
+		`lines.dotted_pattern`.  One may also specify customized dash
+		styles by providing a tuple of (offset, dash pairs).
 	**/
 	public function set_linestyle(style:Dynamic):Dynamic;
 	/**

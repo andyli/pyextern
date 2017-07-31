@@ -41,6 +41,10 @@ package scipy.stats._binned_statistic;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -186,6 +190,10 @@ package scipy.stats._binned_statistic;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -321,6 +329,10 @@ package scipy.stats._binned_statistic;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'min' : compute the minimum of values for points within each bin.
+		        Empty bins will be represented by NaN.
+		      * 'max' : compute the maximum of values for point within each bin.
+		        Empty bins will be represented by NaN.
 		      * function : a user-defined function which takes a 1D array of
 		        values, and outputs a single numerical statistic. This function
 		        will be called on the values in each bin.  Empty bins will be
@@ -411,6 +423,6 @@ package scipy.stats._binned_statistic;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

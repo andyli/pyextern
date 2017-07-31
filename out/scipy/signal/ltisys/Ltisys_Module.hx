@@ -125,8 +125,8 @@ package scipy.signal.ltisys;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -187,7 +187,7 @@ package scipy.signal.ltisys;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -224,7 +224,7 @@ package scipy.signal.ltisys;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -796,6 +796,64 @@ package scipy.signal.ltisys;
 	**/
 	static public function freqs(b:Dynamic, a:Dynamic, ?worN:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
+		Compute frequency response of analog filter.
+		
+		Given the zeros `z`, poles `p`, and gain `k` of a filter, compute its
+		frequency response::
+		
+		            (jw-z[0]) * (jw-z[1]) * ... * (jw-z[-1])
+		 H(w) = k * ----------------------------------------
+		            (jw-p[0]) * (jw-p[1]) * ... * (jw-p[-1])
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None, then compute at 200 frequencies around the interesting parts
+		    of the response curve (determined by pole-zero locations).  If a single
+		    integer, then compute at that many frequencies.  Otherwise, compute the
+		    response at the angular frequencies (e.g. rad/s) given in `worN`.
+		
+		Returns
+		-------
+		w : ndarray
+		    The angular frequencies at which `h` was computed.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqz : Compute the frequency response of a digital filter in TF form
+		freqz_zpk : Compute the frequency response of a digital filter in ZPK form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import freqs_zpk, iirfilter
+		
+		>>> z, p, k = iirfilter(4, [1, 10], 1, 60, analog=True, ftype='cheby1',
+		...                     output='zpk')
+		
+		>>> w, h = freqs_zpk(z, p, k, worN=np.logspace(-1, 2, 1000))
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.semilogx(w, 20 * np.log10(abs(h)))
+		>>> plt.xlabel('Frequency')
+		>>> plt.ylabel('Amplitude response [dB]')
+		>>> plt.grid()
+		>>> plt.show()
+	**/
+	static public function freqs_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic):Dynamic;
+	/**
 		Compute the frequency response of a digital filter.
 		
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
@@ -834,7 +892,11 @@ package scipy.signal.ltisys;
 		    The normalized frequencies at which `h` was computed, in
 		    radians/sample.
 		h : ndarray
-		    The frequency response.
+		    The frequency response, as complex numbers.
+		
+		See Also
+		--------
+		sosfreqz
 		
 		Notes
 		-----
@@ -866,6 +928,78 @@ package scipy.signal.ltisys;
 		>>> plt.show()
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	/**
+		Compute the frequency response of a digital filter in ZPK form.
+		
+		Given the Zeros, Poles and Gain of a digital filter, compute its frequency
+		response::
+		
+		:math:`H(z)=k \prod_i (z - Z[i]) / \prod_j (z - P[j])`
+		
+		where :math:`k` is the `gain`, :math:`Z` are the `zeros` and :math:`P` are
+		the `poles`.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqs_zpk : Compute the frequency response of an analog filter in ZPK form
+		freqz : Compute the frequency response of a digital filter in TF form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> z, p, k = signal.butter(4, 0.2, output='zpk')
+		>>> w, h = signal.freqz_zpk(z, p, k)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.title('Digital filter frequency response')
+		>>> ax1 = fig.add_subplot(111)
+		
+		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> plt.ylabel('Amplitude [dB]', color='b')
+		>>> plt.xlabel('Frequency [rad/sample]')
+		
+		>>> ax2 = ax1.twinx()
+		>>> angles = np.unwrap(np.angle(h))
+		>>> plt.plot(w, angles, 'g')
+		>>> plt.ylabel('Angle (radians)', color='g')
+		>>> plt.grid()
+		>>> plt.axis('tight')
+		>>> plt.show()
+	**/
+	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
 	/**
 		Impulse response of continuous-time system.
 		
@@ -1003,7 +1137,7 @@ package scipy.signal.ltisys;
 		    There are `num` equally spaced samples in the closed interval
 		    ``[start, stop]`` or the half-open interval ``[start, stop)``
 		    (depending on whether `endpoint` is True or False).
-		step : float
+		step : float, optional
 		    Only returned if `retstep` is True
 		
 		    Size of spacing between samples.
@@ -1018,11 +1152,11 @@ package scipy.signal.ltisys;
 		Examples
 		--------
 		>>> np.linspace(2.0, 3.0, num=5)
-		    array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
 		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
-		    array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
 		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
-		    (array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
 		
 		Graphical illustration:
 		
@@ -1160,6 +1294,13 @@ package scipy.signal.ltisys;
 		----------
 		x : array_like
 		    Input data.
+		copy : bool, optional
+		    Whether to create a copy of `x` (True) or to replace values
+		    in-place (False). The in-place operation only occurs if
+		    casting to an array does not require a copy.
+		    Default is True.
+		
+		    .. versionadded:: 1.13
 		
 		Returns
 		-------
@@ -1173,7 +1314,7 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
-		isinf : Shows which elements are negative or negative infinity.
+		isinf : Shows which elements are positive or negative infinity.
 		isneginf : Shows which elements are negative infinity.
 		isposinf : Shows which elements are positive infinity.
 		isnan : Shows which elements are Not a Number (NaN).
@@ -1181,7 +1322,7 @@ package scipy.signal.ltisys;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		
@@ -1193,12 +1334,34 @@ package scipy.signal.ltisys;
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
 	**/
-	static public function nan_to_num(x:Dynamic):Dynamic;
+	static public function nan_to_num(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Normalize polynomial representation of a transfer function.
+		Normalize numerator/denominator of a continuous-time transfer function.
 		
 		If values of `b` are too close to 0, they are removed. In that case, a
 		BadCoefficients warning is emitted.
+		
+		Parameters
+		----------
+		b: array_like
+		    Numerator of the transfer function. Can be a 2d array to normalize
+		    multiple transfer functions.
+		a: array_like
+		    Denominator of the transfer function. At most 1d.
+		
+		Returns
+		-------
+		num: array
+		    The numerator of the normalized transfer function. At least a 1d
+		    array. A 2d-array if the input `num` is a 2d array.
+		den: 1d-array
+		    The denominator of the normalized transfer function.
+		
+		Notes
+		-----
+		Coefficients for both the numerator and denominator should be specified in
+		descending exponent order (e.g., ``s^2 + 3s + 5`` would be represented as
+		``[1, 3, 5]``).
 	**/
 	static public function normalize(b:Dynamic, a:Dynamic):Dynamic;
 	/**
@@ -1422,7 +1585,7 @@ package scipy.signal.ltisys;
 	static public function place_poles(A:Dynamic, B:Dynamic, poles:Dynamic, ?method:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -1431,9 +1594,10 @@ package scipy.signal.ltisys;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -1450,6 +1614,8 @@ package scipy.signal.ltisys;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
@@ -1561,6 +1727,16 @@ package scipy.signal.ltisys;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -1568,7 +1744,13 @@ package scipy.signal.ltisys;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;

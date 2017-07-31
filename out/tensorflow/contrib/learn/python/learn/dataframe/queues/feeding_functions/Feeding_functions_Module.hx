@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.dataframe.queues.feeding_functions;
 @:pythonImport("tensorflow.contrib.learn.python.learn.dataframe.queues.feeding_functions") extern class Feeding_functions_Module {
-	static public var HAS_PANDAS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -15,14 +14,15 @@ package tensorflow.contrib.learn.python.learn.dataframe.queues.feeding_functions
 	/**
 		Creates a queue filled from a numpy array or pandas `DataFrame`.
 		
-		  Returns a queue filled with the rows of the given array or `DataFrame`. In
-		  the case of a pandas `DataFrame`, the first enqueued `Tensor` corresponds to
-		  the index of the `DataFrame`. For numpy arrays, the first enqueued `Tensor`
-		  contains the row number.
+		  Returns a queue filled with the rows of the given (`OrderedDict` of) array
+		  or `DataFrame`. In the case of a pandas `DataFrame`, the first enqueued
+		  `Tensor` corresponds to the index of the `DataFrame`. For (`OrderedDict` of)
+		  numpy arrays, the first enqueued `Tensor` contains the row number.
 		
 		Args:
-		  data: a numpy `ndarray or` pandas `DataFrame` that will be read into the
-		    queue.
+		  data: a numpy `ndarray`, `OrderedDict` of numpy arrays, or a generator
+		     yielding `dict`s of numpy arrays  or pandas `DataFrame` that will be read
+		     into the queue.
 		  capacity: the capacity of the queue.
 		  shuffle: whether or not to shuffle the rows of the array.
 		  min_after_dequeue: minimum number of elements that can remain in the queue
@@ -32,13 +32,16 @@ package tensorflow.contrib.learn.python.learn.dataframe.queues.feeding_functions
 		  seed: used to seed shuffling and reader starting points.
 		  name: a scope name identifying the data.
 		  enqueue_size: the number of rows to enqueue per step.
+		  num_epochs: limit enqueuing to a specified number of epochs, if provided.
 		
 		Returns:
-		  A queue filled with the rows of the given array or `DataFrame`.
+		  A queue filled with the rows of the given (`OrderedDict` of) array or
+		    `DataFrame`.
 		
 		Raises:
-		  TypeError: `data` is not a Pandas `DataFrame` or a numpy `ndarray`.
+		  TypeError: `data` is not a Pandas `DataFrame`, an `OrderedDict` of numpy
+		    arrays, a numpy `ndarray`, or a generator producing these.
 	**/
-	static public function enqueue_data(data:Dynamic, capacity:Dynamic, ?shuffle:Dynamic, ?min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?enqueue_size:Dynamic):Dynamic;
+	static public function enqueue_data(data:Dynamic, capacity:Dynamic, ?shuffle:Dynamic, ?min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?enqueue_size:Dynamic, ?num_epochs:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

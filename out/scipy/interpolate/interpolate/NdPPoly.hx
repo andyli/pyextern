@@ -75,6 +75,13 @@ package scipy.interpolate.interpolate;
 	**/
 	public function new(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -144,7 +151,7 @@ package scipy.interpolate.interpolate;
 	/**
 		Construct a new piecewise polynomial representing the antiderivative.
 		
-		Antiderivativative is also the indefinite integral of the function,
+		Antiderivative is also the indefinite integral of the function,
 		and derivative is its inverse operation.
 		
 		Parameters

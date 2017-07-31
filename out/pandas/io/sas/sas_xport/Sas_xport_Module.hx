@@ -45,8 +45,8 @@ package pandas.io.sas.sas_xport;
 	static public function _split_line(s:Dynamic, parts:Dynamic):Dynamic;
 	static public var _xport_reader_doc : Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------

@@ -3,6 +3,7 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 @:pythonImport("tensorflow.contrib.factorization.python.ops.gmm_ops", "GmmAlgorithm") extern class GmmAlgorithm {
 	static public var CLUSTERS_COVS_VARIABLE : Dynamic;
 	static public var CLUSTERS_VARIABLE : Dynamic;
+	static public var CLUSTERS_WEIGHT : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -76,6 +77,13 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		  Exception if covariance type is unknown.
 	**/
 	public function new(data:Dynamic, num_classes:Dynamic, ?initial_means:Dynamic, ?params:Dynamic, ?covariance_type:Dynamic, ?random_seed:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

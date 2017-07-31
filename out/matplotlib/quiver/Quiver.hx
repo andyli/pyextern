@@ -46,115 +46,24 @@ package matplotlib.quiver;
 		        
 		Plot a 2-D field of arrows.
 		
-		call signatures::
+		Call signatures::
 		
 		  quiver(U, V, **kw)
 		  quiver(U, V, C, **kw)
 		  quiver(X, Y, U, V, **kw)
 		  quiver(X, Y, U, V, C, **kw)
 		
-		Arguments:
+		*U* and *V* are the arrow data, *X* and *Y* set the locaiton of the
+		arrows, and *C* sets the color of the arrows. These arguments may be 1-D or
+		2-D arrays or sequences.
 		
-		  *X*, *Y*:
-		    The x and y coordinates of the arrow locations (default is tail of
-		    arrow; see *pivot* kwarg)
-		
-		  *U*, *V*:
-		    Give the x and y components of the arrow vectors
-		
-		  *C*:
-		    An optional array used to map colors to the arrows
-		
-		All arguments may be 1-D or 2-D arrays or sequences. If *X* and *Y*
-		are absent, they will be generated as a uniform grid.  If *U* and *V*
-		are 2-D arrays but *X* and *Y* are 1-D, and if ``len(X)`` and ``len(Y)``
-		match the column and row dimensions of *U*, then *X* and *Y* will be
+		If *X* and *Y* are absent, they will be generated as a uniform grid.
+		If *U* and *V* are 2-D arrays and *X* and *Y* are 1-D, and if ``len(X)`` and
+		``len(Y)`` match the column and row dimensions of *U*, then *X* and *Y* will be
 		expanded with :func:`numpy.meshgrid`.
 		
-		*U*, *V*, *C* may be masked arrays, but masked *X*, *Y* are not
-		supported at present.
-		
-		Keyword arguments:
-		
-		  *units*: [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
-		    Arrow units; the arrow dimensions *except for length* are in
-		    multiples of this unit.
-		
-		    * 'width' or 'height': the width or height of the axes
-		
-		    * 'dots' or 'inches': pixels or inches, based on the figure dpi
-		
-		    * 'x', 'y', or 'xy': *X*, *Y*, or sqrt(X^2+Y^2) data units
-		
-		    The arrows scale differently depending on the units.  For
-		    'x' or 'y', the arrows get larger as one zooms in; for other
-		    units, the arrow size is independent of the zoom state.  For
-		    'width or 'height', the arrow size increases with the width and
-		    height of the axes, respectively, when the window is resized;
-		    for 'dots' or 'inches', resizing does not change the arrows.
-		
-		
-		  *angles*: [ 'uv' | 'xy' | array ]
-		    With the default 'uv', the arrow axis aspect ratio is 1, so that
-		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
-		    CCW from the horizontal axis (positive to the right).
-		    With 'xy', the arrow points from (x,y) to (x+u, y+v).
-		    Use this for plotting a gradient field, for example.
-		    Alternatively, arbitrary angles may be specified as an array
-		    of values in degrees, CCW from the horizontal axis.
-		    Note: inverting a data axis will correspondingly invert the
-		    arrows *only* with `angles='xy'`.
-		
-		  *scale*: [ *None* | float ]
-		    Data units per arrow length unit, e.g., m/s per plot width; a smaller
-		    scale parameter makes the arrow longer.  If *None*, a simple
-		    autoscaling algorithm is used, based on the average vector length
-		    and the number of vectors.  The arrow length unit is given by
-		    the *scale_units* parameter
-		
-		  *scale_units*: *None*, or any of the *units* options.
-		    For example, if *scale_units* is 'inches', *scale* is 2.0, and
-		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
-		    If *scale_units* is 'width', then the vector will be half the width
-		    of the axes.
-		
-		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
-		    units.  To plot vectors in the x-y plane, with u and v having
-		    the same units as x and y, use
-		    "angles='xy', scale_units='xy', scale=1".
-		
-		  *width*:
-		    Shaft width in arrow units; default depends on choice of units,
-		    above, and number of vectors; a typical starting value is about
-		    0.005 times the width of the plot.
-		
-		  *headwidth*: scalar
-		    Head width as multiple of shaft width, default is 3
-		
-		  *headlength*: scalar
-		    Head length as multiple of shaft width, default is 5
-		
-		  *headaxislength*: scalar
-		    Head length at shaft intersection, default is 4.5
-		
-		  *minshaft*: scalar
-		    Length below which arrow scales, in units of head length. Do not
-		    set this to less than 1, or small arrows will look terrible!
-		    Default is 1
-		
-		  *minlength*: scalar
-		    Minimum length as a multiple of shaft width; if an arrow length
-		    is less than this, plot a dot (hexagon) of this diameter instead.
-		    Default is 1.
-		
-		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
-		    The part of the arrow that is at the grid point; the arrow rotates
-		    about this point, hence the name *pivot*.
-		
-		  *color*: [ color | color sequence ]
-		    This is a synonym for the
-		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
-		    If *C* has been set, *color* has no effect.
+		The default settings auto-scales the length of the arrows to a reasonable size.
+		To change this behavior see the *scale* and *scale_units* kwargs.
 		
 		The defaults give a slightly swept-back arrow; to make the head a
 		triangle, make *headaxislength* the same as *headlength*. To make the
@@ -163,8 +72,102 @@ package matplotlib.quiver;
 		scale down all the head parameters. You will probably do best to leave
 		minshaft alone.
 		
-		linewidths and edgecolors can be used to customize the arrow
-		outlines. Additional :class:`~matplotlib.collections.PolyCollection`
+		*linewidths* and *edgecolors* can be used to customize the arrow
+		outlines.
+		
+		Parameters
+		----------
+		X : 1D or 2D array, sequence, optional
+		    The x coordinates of the arrow locations
+		Y : 1D or 2D array, sequence, optional
+		    The y coordinates of the arrow locations
+		U : 1D or 2D array or masked array, sequence
+		    The x components of the arrow vectors
+		V : 1D or 2D array or masked array, sequence
+		    The y components of the arrow vectors
+		C : 1D or 2D array, sequence, optional
+		    The arrow colors
+		units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		    The arrow dimensions (except for *length*) are measured in multiples of
+		    this unit.
+		
+		    'width' or 'height': the width or height of the axis
+		
+		    'dots' or 'inches': pixels or inches, based on the figure dpi
+		
+		    'x', 'y', or 'xy': respectively *X*, *Y*, or :math:`\sqrt{X^2 + Y^2}`
+		    in data units
+		
+		    The arrows scale differently depending on the units.  For
+		    'x' or 'y', the arrows get larger as one zooms in; for other
+		    units, the arrow size is independent of the zoom state.  For
+		    'width or 'height', the arrow size increases with the width and
+		    height of the axes, respectively, when the window is resized;
+		    for 'dots' or 'inches', resizing does not change the arrows.
+		angles : [ 'uv' | 'xy' ], array, optional
+		    Method for determining the angle of the arrows. Default is 'uv'.
+		
+		    'uv': the arrow axis aspect ratio is 1 so that
+		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
+		    counter-clockwise from the horizontal axis (positive to the right).
+		
+		    'xy': arrows point from (x,y) to (x+u, y+v).
+		    Use this for plotting a gradient field, for example.
+		
+		    Alternatively, arbitrary angles may be specified as an array
+		    of values in degrees, counter-clockwise from the horizontal axis.
+		
+		    Note: inverting a data axis will correspondingly invert the
+		    arrows only with ``angles='xy'``.
+		scale : None, float, optional
+		    Number of data units per arrow length unit, e.g., m/s per plot width; a
+		    smaller scale parameter makes the arrow longer. Default is *None*.
+		
+		    If *None*, a simple autoscaling algorithm is used, based on the average
+		    vector length and the number of vectors. The arrow length unit is given by
+		    the *scale_units* parameter
+		scale_units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ], None, optional
+		    If the *scale* kwarg is *None*, the arrow length unit. Default is *None*.
+		
+		    e.g. *scale_units* is 'inches', *scale* is 2.0, and
+		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
+		
+		    If *scale_units* is 'width'/'height', then the vector will be half the
+		    width/height of the axes.
+		
+		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
+		    units. To plot vectors in the x-y plane, with u and v having
+		    the same units as x and y, use
+		    ``angles='xy', scale_units='xy', scale=1``.
+		width : scalar, optional
+		    Shaft width in arrow units; default depends on choice of units,
+		    above, and number of vectors; a typical starting value is about
+		    0.005 times the width of the plot.
+		headwidth : scalar, optional
+		    Head width as multiple of shaft width, default is 3
+		headlength : scalar, optional
+		    Head length as multiple of shaft width, default is 5
+		headaxislength : scalar, optional
+		    Head length at shaft intersection, default is 4.5
+		minshaft : scalar, optional
+		    Length below which arrow scales, in units of head length. Do not
+		    set this to less than 1, or small arrows will look terrible!
+		    Default is 1
+		minlength : scalar, optional
+		    Minimum length as a multiple of shaft width; if an arrow length
+		    is less than this, plot a dot (hexagon) of this diameter instead.
+		    Default is 1.
+		pivot : [ 'tail' | 'mid' | 'middle' | 'tip' ], optional
+		    The part of the arrow that is at the grid point; the arrow rotates
+		    about this point, hence the name *pivot*.
+		color : [ color | color sequence ], optional
+		    This is a synonym for the
+		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
+		    If *C* has been set, *color* has no effect.
+		
+		Notes
+		-----
+		Additional :class:`~matplotlib.collections.PolyCollection`
 		keyword arguments:
 		
 		  agg_filter: unknown
@@ -187,7 +190,7 @@ package matplotlib.quiver;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -202,6 +205,14 @@ package matplotlib.quiver;
 		  urls: unknown
 		  visible: [True | False] 
 		  zorder: any number 
+		
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/quiver_simple_demo.py
+		
+		See Also
+		--------
+		quiverkey : Add a key to a quiver plot
 		
 		        
 	**/
@@ -214,115 +225,24 @@ package matplotlib.quiver;
 		        
 		Plot a 2-D field of arrows.
 		
-		call signatures::
+		Call signatures::
 		
 		  quiver(U, V, **kw)
 		  quiver(U, V, C, **kw)
 		  quiver(X, Y, U, V, **kw)
 		  quiver(X, Y, U, V, C, **kw)
 		
-		Arguments:
+		*U* and *V* are the arrow data, *X* and *Y* set the locaiton of the
+		arrows, and *C* sets the color of the arrows. These arguments may be 1-D or
+		2-D arrays or sequences.
 		
-		  *X*, *Y*:
-		    The x and y coordinates of the arrow locations (default is tail of
-		    arrow; see *pivot* kwarg)
-		
-		  *U*, *V*:
-		    Give the x and y components of the arrow vectors
-		
-		  *C*:
-		    An optional array used to map colors to the arrows
-		
-		All arguments may be 1-D or 2-D arrays or sequences. If *X* and *Y*
-		are absent, they will be generated as a uniform grid.  If *U* and *V*
-		are 2-D arrays but *X* and *Y* are 1-D, and if ``len(X)`` and ``len(Y)``
-		match the column and row dimensions of *U*, then *X* and *Y* will be
+		If *X* and *Y* are absent, they will be generated as a uniform grid.
+		If *U* and *V* are 2-D arrays and *X* and *Y* are 1-D, and if ``len(X)`` and
+		``len(Y)`` match the column and row dimensions of *U*, then *X* and *Y* will be
 		expanded with :func:`numpy.meshgrid`.
 		
-		*U*, *V*, *C* may be masked arrays, but masked *X*, *Y* are not
-		supported at present.
-		
-		Keyword arguments:
-		
-		  *units*: [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
-		    Arrow units; the arrow dimensions *except for length* are in
-		    multiples of this unit.
-		
-		    * 'width' or 'height': the width or height of the axes
-		
-		    * 'dots' or 'inches': pixels or inches, based on the figure dpi
-		
-		    * 'x', 'y', or 'xy': *X*, *Y*, or sqrt(X^2+Y^2) data units
-		
-		    The arrows scale differently depending on the units.  For
-		    'x' or 'y', the arrows get larger as one zooms in; for other
-		    units, the arrow size is independent of the zoom state.  For
-		    'width or 'height', the arrow size increases with the width and
-		    height of the axes, respectively, when the window is resized;
-		    for 'dots' or 'inches', resizing does not change the arrows.
-		
-		
-		  *angles*: [ 'uv' | 'xy' | array ]
-		    With the default 'uv', the arrow axis aspect ratio is 1, so that
-		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
-		    CCW from the horizontal axis (positive to the right).
-		    With 'xy', the arrow points from (x,y) to (x+u, y+v).
-		    Use this for plotting a gradient field, for example.
-		    Alternatively, arbitrary angles may be specified as an array
-		    of values in degrees, CCW from the horizontal axis.
-		    Note: inverting a data axis will correspondingly invert the
-		    arrows *only* with `angles='xy'`.
-		
-		  *scale*: [ *None* | float ]
-		    Data units per arrow length unit, e.g., m/s per plot width; a smaller
-		    scale parameter makes the arrow longer.  If *None*, a simple
-		    autoscaling algorithm is used, based on the average vector length
-		    and the number of vectors.  The arrow length unit is given by
-		    the *scale_units* parameter
-		
-		  *scale_units*: *None*, or any of the *units* options.
-		    For example, if *scale_units* is 'inches', *scale* is 2.0, and
-		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
-		    If *scale_units* is 'width', then the vector will be half the width
-		    of the axes.
-		
-		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
-		    units.  To plot vectors in the x-y plane, with u and v having
-		    the same units as x and y, use
-		    "angles='xy', scale_units='xy', scale=1".
-		
-		  *width*:
-		    Shaft width in arrow units; default depends on choice of units,
-		    above, and number of vectors; a typical starting value is about
-		    0.005 times the width of the plot.
-		
-		  *headwidth*: scalar
-		    Head width as multiple of shaft width, default is 3
-		
-		  *headlength*: scalar
-		    Head length as multiple of shaft width, default is 5
-		
-		  *headaxislength*: scalar
-		    Head length at shaft intersection, default is 4.5
-		
-		  *minshaft*: scalar
-		    Length below which arrow scales, in units of head length. Do not
-		    set this to less than 1, or small arrows will look terrible!
-		    Default is 1
-		
-		  *minlength*: scalar
-		    Minimum length as a multiple of shaft width; if an arrow length
-		    is less than this, plot a dot (hexagon) of this diameter instead.
-		    Default is 1.
-		
-		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
-		    The part of the arrow that is at the grid point; the arrow rotates
-		    about this point, hence the name *pivot*.
-		
-		  *color*: [ color | color sequence ]
-		    This is a synonym for the
-		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
-		    If *C* has been set, *color* has no effect.
+		The default settings auto-scales the length of the arrows to a reasonable size.
+		To change this behavior see the *scale* and *scale_units* kwargs.
 		
 		The defaults give a slightly swept-back arrow; to make the head a
 		triangle, make *headaxislength* the same as *headlength*. To make the
@@ -331,8 +251,102 @@ package matplotlib.quiver;
 		scale down all the head parameters. You will probably do best to leave
 		minshaft alone.
 		
-		linewidths and edgecolors can be used to customize the arrow
-		outlines. Additional :class:`~matplotlib.collections.PolyCollection`
+		*linewidths* and *edgecolors* can be used to customize the arrow
+		outlines.
+		
+		Parameters
+		----------
+		X : 1D or 2D array, sequence, optional
+		    The x coordinates of the arrow locations
+		Y : 1D or 2D array, sequence, optional
+		    The y coordinates of the arrow locations
+		U : 1D or 2D array or masked array, sequence
+		    The x components of the arrow vectors
+		V : 1D or 2D array or masked array, sequence
+		    The y components of the arrow vectors
+		C : 1D or 2D array, sequence, optional
+		    The arrow colors
+		units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		    The arrow dimensions (except for *length*) are measured in multiples of
+		    this unit.
+		
+		    'width' or 'height': the width or height of the axis
+		
+		    'dots' or 'inches': pixels or inches, based on the figure dpi
+		
+		    'x', 'y', or 'xy': respectively *X*, *Y*, or :math:`\sqrt{X^2 + Y^2}`
+		    in data units
+		
+		    The arrows scale differently depending on the units.  For
+		    'x' or 'y', the arrows get larger as one zooms in; for other
+		    units, the arrow size is independent of the zoom state.  For
+		    'width or 'height', the arrow size increases with the width and
+		    height of the axes, respectively, when the window is resized;
+		    for 'dots' or 'inches', resizing does not change the arrows.
+		angles : [ 'uv' | 'xy' ], array, optional
+		    Method for determining the angle of the arrows. Default is 'uv'.
+		
+		    'uv': the arrow axis aspect ratio is 1 so that
+		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
+		    counter-clockwise from the horizontal axis (positive to the right).
+		
+		    'xy': arrows point from (x,y) to (x+u, y+v).
+		    Use this for plotting a gradient field, for example.
+		
+		    Alternatively, arbitrary angles may be specified as an array
+		    of values in degrees, counter-clockwise from the horizontal axis.
+		
+		    Note: inverting a data axis will correspondingly invert the
+		    arrows only with ``angles='xy'``.
+		scale : None, float, optional
+		    Number of data units per arrow length unit, e.g., m/s per plot width; a
+		    smaller scale parameter makes the arrow longer. Default is *None*.
+		
+		    If *None*, a simple autoscaling algorithm is used, based on the average
+		    vector length and the number of vectors. The arrow length unit is given by
+		    the *scale_units* parameter
+		scale_units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ], None, optional
+		    If the *scale* kwarg is *None*, the arrow length unit. Default is *None*.
+		
+		    e.g. *scale_units* is 'inches', *scale* is 2.0, and
+		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
+		
+		    If *scale_units* is 'width'/'height', then the vector will be half the
+		    width/height of the axes.
+		
+		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
+		    units. To plot vectors in the x-y plane, with u and v having
+		    the same units as x and y, use
+		    ``angles='xy', scale_units='xy', scale=1``.
+		width : scalar, optional
+		    Shaft width in arrow units; default depends on choice of units,
+		    above, and number of vectors; a typical starting value is about
+		    0.005 times the width of the plot.
+		headwidth : scalar, optional
+		    Head width as multiple of shaft width, default is 3
+		headlength : scalar, optional
+		    Head length as multiple of shaft width, default is 5
+		headaxislength : scalar, optional
+		    Head length at shaft intersection, default is 4.5
+		minshaft : scalar, optional
+		    Length below which arrow scales, in units of head length. Do not
+		    set this to less than 1, or small arrows will look terrible!
+		    Default is 1
+		minlength : scalar, optional
+		    Minimum length as a multiple of shaft width; if an arrow length
+		    is less than this, plot a dot (hexagon) of this diameter instead.
+		    Default is 1.
+		pivot : [ 'tail' | 'mid' | 'middle' | 'tip' ], optional
+		    The part of the arrow that is at the grid point; the arrow rotates
+		    about this point, hence the name *pivot*.
+		color : [ color | color sequence ], optional
+		    This is a synonym for the
+		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
+		    If *C* has been set, *color* has no effect.
+		
+		Notes
+		-----
+		Additional :class:`~matplotlib.collections.PolyCollection`
 		keyword arguments:
 		
 		  agg_filter: unknown
@@ -355,7 +369,7 @@ package matplotlib.quiver;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats 
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -371,9 +385,24 @@ package matplotlib.quiver;
 		  visible: [True | False] 
 		  zorder: any number 
 		
+		Examples
+		--------
+		.. plot:: mpl_examples/pylab_examples/quiver_simple_demo.py
+		
+		See Also
+		--------
+		quiverkey : Add a key to a quiver plot
+		
 		        
 	**/
 	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -431,9 +460,33 @@ package matplotlib.quiver;
 	public var __weakref__ : Dynamic;
 	public function _angles_lengths(U:Dynamic, V:Dynamic, ?eps:Dynamic):Dynamic;
 	/**
+		Internal helper function to broadcast + scale ls/lw
+		
+		In the collection drawing code the linewidth and linestyle are
+		cycled through as circular buffers (via v[i % len(v)]).  Thus,
+		if we are going to scale the dash pattern at set time (not
+		draw time) we need to do the broadcasting now and expand both
+		lists to be the same length.
+		
+		Parameters
+		----------
+		linewidths : list
+		    line widths of collection
+		
+		dashes : list
+		    dash specification (offset, (dash pattern tuple))
+		
+		Returns
+		-------
+		linewidths, dashes : list
+		     Will be the same length, dashes are scaled by paired linewidth
+	**/
+	static public function _bcast_lwls(linewidths:Dynamic, dashes:Dynamic):Array<Dynamic>;
+	/**
 		Return a scale factor for converting from units to pixels
 	**/
 	public function _dots_per_unit(units:Dynamic):Dynamic;
+	static public var _edge_default : Dynamic;
 	static public var _factor : Dynamic;
 	static public function _get_bool(val:Dynamic):Dynamic;
 	static public function _get_value(val:Dynamic):Dynamic;
@@ -452,6 +505,9 @@ package matplotlib.quiver;
 		Point prep for drawing and hit testing
 	**/
 	public function _prepare_points():Dynamic;
+	static public var _prop_order : Dynamic;
+	public function _set_edgecolor(c:Dynamic):Dynamic;
+	public function _set_facecolor(c:Dynamic):Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -765,9 +821,7 @@ package matplotlib.quiver;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -797,9 +851,7 @@ package matplotlib.quiver;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_UVC(U:Dynamic, V:Dynamic, ?C:Dynamic):Dynamic;
@@ -1210,6 +1262,25 @@ package matplotlib.quiver;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Return a normalized rgba array corresponding to *x*.
 		
 		In the normal case, *x* is a 1-D or 2-D sequence of scalars, and
@@ -1231,12 +1302,15 @@ package matplotlib.quiver;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

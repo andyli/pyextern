@@ -13,6 +13,56 @@ package numpy.polynomial.polynomial;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Add one polynomial to another.
 		
 		Returns the sum of two polynomials `c1` + `c2`.  The arguments are
@@ -178,7 +228,7 @@ package numpy.polynomial.polynomial;
 		deg : int or 1-D array_like
 		    Degree(s) of the fitting polynomials. If `deg` is a single integer
 		    all terms up to and including the `deg`'th term are included in the
-		    fit. For Numpy versions >= 1.11 a list of integers specifying the
+		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
 		rcond : float, optional
 		    Relative condition number of the fit.  Singular values smaller
@@ -935,6 +985,81 @@ package numpy.polynomial.polynomial;
 	**/
 	static public function polyval3d(x:Dynamic, y:Dynamic, z:Dynamic, c:Dynamic):Dynamic;
 	/**
+		Evaluate a polynomial specified by its roots at points x.
+		
+		If `r` is of length `N`, this function returns the value
+		
+		.. math:: p(x) = \prod_{n=1}^{N} (x - r_n)
+		
+		The parameter `x` is converted to an array only if it is a tuple or a
+		list, otherwise it is treated as a scalar. In either case, either `x`
+		or its elements must support multiplication and addition both with
+		themselves and with the elements of `r`.
+		
+		If `r` is a 1-D array, then `p(x)` will have the same shape as `x`.  If `r`
+		is multidimensional, then the shape of the result depends on the value of
+		`tensor`. If `tensor is ``True`` the shape will be r.shape[1:] + x.shape;
+		that is, each polynomial is evaluated at every value of `x`. If `tensor` is
+		``False``, the shape will be r.shape[1:]; that is, each polynomial is
+		evaluated only for the corresponding broadcast value of `x`. Note that
+		scalars have shape (,).
+		
+		.. versionadded:: 1.12
+		
+		Parameters
+		----------
+		x : array_like, compatible object
+		    If `x` is a list or tuple, it is converted to an ndarray, otherwise
+		    it is left unchanged and treated as a scalar. In either case, `x`
+		    or its elements must support addition and multiplication with
+		    with themselves and with the elements of `r`.
+		r : array_like
+		    Array of roots. If `r` is multidimensional the first index is the
+		    root index, while the remaining indices enumerate multiple
+		    polynomials. For instance, in the two dimensional case the roots
+		    of each polynomial may be thought of as stored in the columns of `r`.
+		tensor : boolean, optional
+		    If True, the shape of the roots array is extended with ones on the
+		    right, one for each dimension of `x`. Scalars have dimension 0 for this
+		    action. The result is that every column of coefficients in `r` is
+		    evaluated for every element of `x`. If False, `x` is broadcast over the
+		    columns of `r` for the evaluation.  This keyword is useful when `r` is
+		    multidimensional. The default value is True.
+		
+		Returns
+		-------
+		values : ndarray, compatible object
+		    The shape of the returned array is described above.
+		
+		See Also
+		--------
+		polyroots, polyfromroots, polyval
+		
+		Examples
+		--------
+		>>> from numpy.polynomial.polynomial import polyvalfromroots
+		>>> polyvalfromroots(1, [1,2,3])
+		0.0
+		>>> a = np.arange(4).reshape(2,2)
+		>>> a
+		array([[0, 1],
+		       [2, 3]])
+		>>> polyvalfromroots(a, [-1, 0, 1])
+		array([[ -0.,   0.],
+		       [  6.,  24.]])
+		>>> r = np.arange(-2, 2).reshape(2,2) # multidimensional coefficients
+		>>> r # each column of r defines one polynomial
+		array([[-2, -1],
+		       [ 0,  1]])
+		>>> b = [-2, 1]
+		>>> polyvalfromroots(b, r, tensor=True)
+		array([[-0.,  3.],
+		       [ 3., 0.]])
+		>>> polyvalfromroots(b, r, tensor=False)
+		array([-0.,  0.])
+	**/
+	static public function polyvalfromroots(x:Dynamic, r:Dynamic, ?tensor:Dynamic):Dynamic;
+	/**
 		Vandermonde matrix of given degree.
 		
 		Returns the Vandermonde matrix of degree `deg` and sample points
@@ -978,7 +1103,7 @@ package numpy.polynomial.polynomial;
 		Returns the pseudo-Vandermonde matrix of degrees `deg` and sample
 		points `(x, y)`. The pseudo-Vandermonde matrix is defined by
 		
-		.. math:: V[..., deg[1]*i + j] = x^i * y^j,
+		.. math:: V[..., (deg[1] + 1)*i + j] = x^i * y^j,
 		
 		where `0 <= i <= deg[0]` and `0 <= j <= deg[1]`. The leading indices of
 		`V` index the points `(x, y)` and the last index encodes the powers of

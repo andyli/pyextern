@@ -55,12 +55,10 @@ package tensorflow.python.platform.flags;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Registers 'flag_name' with 'default_value' and 'docstring'.
 	**/
 	static public function _define_helper(flag_name:Dynamic, default_value:Dynamic, docstring:Dynamic, flagtype:Dynamic):Dynamic;
 	static public var _global_parser : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 }

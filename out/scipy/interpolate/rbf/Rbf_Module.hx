@@ -17,7 +17,7 @@ package scipy.interpolate.rbf;
 	static public function get_method_function(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		xlogy(x1, x2[, out])
+		xlogy(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		xlogy(x, y)
 		

@@ -57,6 +57,13 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function new(figure:Dynamic, fh:Dynamic, ?dummy:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -226,23 +233,34 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function draw_gouraud_triangles(gc:Dynamic, triangles_array:Dynamic, colors_array:Dynamic, transform:Dynamic):Dynamic;
 	/**
-		Draw the image instance into the current axes;
+		Draw an RGBA image.
 		
 		*gc*
-		    a GraphicsContext containing clipping information
+		    a :class:`GraphicsContextBase` instance with clipping information.
 		
 		*x*
-		    is the distance in pixels from the left hand side of the canvas.
+		    the distance in physical units (i.e., dots or pixels) from the left
+		    hand side of the canvas.
 		
 		*y*
-		    the distance from the origin.  That is, if origin is
-		    upper, y is the distance from top.  If origin is lower, y
-		    is the distance from bottom
+		    the distance in physical units (i.e., dots or pixels) from the
+		    bottom side of the canvas.
 		
 		*im*
-		    the :class:`matplotlib._image.Image` instance
+		    An NxMx4 array of RGBA pixels (of dtype uint8).
+		
+		*transform*
+		    If and only if the concrete backend is written such that
+		    :meth:`option_scale_image` returns ``True``, an affine
+		    transformation *may* be passed to :meth:`draw_image`. It takes the
+		    form of a :class:`~matplotlib.transforms.Affine2DBase` instance.
+		    The translation vector of the transformation is given in physical
+		    units (i.e., dots or pixels). Note that the transformation does not
+		    override `x` and `y`, and has to be applied *before* translating
+		    the result by `x` and `y` (this can be accomplished by adding `x`
+		    and `y` to the translation vector defined by `transform`).
 	**/
-	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic):Dynamic;
+	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Draws a marker at each of the vertices in path.  This includes
 		all vertices, including control points on curves.  To avoid
@@ -374,13 +392,12 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		override this method for renderers that do not necessarily always
-		want to rescale and composite raster images. (like SVG, PDF, or PS)
+		return whether to generate a composite image from multiple images on
+		a set of axes
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**
-		override this method for renderers that support arbitrary
-		scaling of image (most of the vector backend).
+		pgf backend supports affine transform of image.
 	**/
 	public function option_scale_image():Dynamic;
 	/**

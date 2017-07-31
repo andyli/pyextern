@@ -16,13 +16,13 @@ package tensorflow.contrib.learn.python.learn.summary_writer_cache;
 	static public function clear_summary_writers():Dynamic;
 	static public var division : Dynamic;
 	/**
-		Returns the SummaryWriter for the specified directory.
+		Returns the FileWriter for the specified directory.
 		
 		Args:
 		  logdir: str, name of the directory.
 		
 		Returns:
-		  A `SummaryWriter`.
+		  A `FileWriter`.
 	**/
 	static public function get_summary_writer(logdir:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

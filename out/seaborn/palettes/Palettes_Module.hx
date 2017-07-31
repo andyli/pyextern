@@ -58,7 +58,7 @@ package seaborn.palettes;
 	/**
 		Return a list of colors defining a color palette.
 		
-		Availible seaborn palette names:
+		Available seaborn palette names:
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
@@ -67,7 +67,7 @@ package seaborn.palettes;
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
-		Matplotlib paletes can be specified as reversed palettes by appending
+		Matplotlib palettes can be specified as reversed palettes by appending
 		"_r" to the name or as dark palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
@@ -180,7 +180,7 @@ package seaborn.palettes;
 		This produces a colormap with linearly-decreasing (or increasing)
 		brightness. That means that information will be preserved if printed to
 		black and white or viewed by someone who is colorblind.  "cubehelix" is
-		also availible as a matplotlib-based palette, but this function gives the
+		also available as a matplotlib-based palette, but this function gives the
 		user more control over the look of the palette and has a different set of
 		defaults.
 		

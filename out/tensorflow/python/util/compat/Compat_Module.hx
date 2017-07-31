@@ -9,12 +9,13 @@ package tensorflow.python.util.compat;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Converts either bytes or unicode to `bytes`, using utf-8 encoding for text.
 		
 		Args:
 		  bytes_or_text: A `bytes`, `str`, or `unicode` object.
+		  encoding: A string indicating the charset for encoding unicode.
 		
 		Returns:
 		  A `bytes` object.
@@ -22,12 +23,13 @@ package tensorflow.python.util.compat;
 		Raises:
 		  TypeError: If `bytes_or_text` is not a binary or unicode string.
 	**/
-	static public function as_bytes(bytes_or_text:Dynamic):Dynamic;
+	static public function as_bytes(bytes_or_text:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Returns the given argument as a unicode string.
 		
 		Args:
 		  bytes_or_text: A `bytes`, `str, or `unicode` object.
+		  encoding: A string indicating the charset for decoding unicode.
 		
 		Returns:
 		  A `unicode` (Python 2) or `str` (Python 3) object.
@@ -35,7 +37,7 @@ package tensorflow.python.util.compat;
 		Raises:
 		  TypeError: If `bytes_or_text` is not a binary or unicode string.
 	**/
-	static public function as_str(bytes_or_text:Dynamic):Dynamic;
+	static public function as_str(bytes_or_text:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Converts to `str` as `str(value)`, but use `as_str` for `bytes`.
 		
@@ -51,6 +53,7 @@ package tensorflow.python.util.compat;
 		
 		Args:
 		  bytes_or_text: A `bytes`, `str, or `unicode` object.
+		  encoding: A string indicating the charset for decoding unicode.
 		
 		Returns:
 		  A `unicode` (Python 2) or `str` (Python 3) object.
@@ -58,11 +61,9 @@ package tensorflow.python.util.compat;
 		Raises:
 		  TypeError: If `bytes_or_text` is not a binary or unicode string.
 	**/
-	static public function as_text(bytes_or_text:Dynamic):Dynamic;
+	static public function as_text(bytes_or_text:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var bytes_or_text_types : Dynamic;
 	static public var complex_types : Dynamic;
-	static public var division : Dynamic;
 	static public var integral_types : Dynamic;
-	static public var print_function : Dynamic;
 	static public var real_types : Dynamic;
 }

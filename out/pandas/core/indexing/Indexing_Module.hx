@@ -21,6 +21,22 @@ package pandas.core.indexing;
 	**/
 	static public function _infer_fill_value(val:Dynamic):Dynamic;
 	/**
+		Check if the exception raised is an unorderable exception.
+		
+		The error message differs for 3 <= PY <= 3.5 and PY >= 3.6, so
+		we need to condition based on Python version.
+		
+		Parameters
+		----------
+		e : Exception or sub-class
+		    The exception object to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the exception raised is an unorderable exception.
+	**/
+	static public function _is_unorderable_exception(e:Dynamic):Dynamic;
+	/**
 		want nice defaults for background_gradient that don't break
 		with non-numeric data. But if slice_ is passed go with that.
 	**/
@@ -53,7 +69,6 @@ package pandas.core.indexing;
 	static public function convert_to_index_sliceable(obj:Dynamic, key:Dynamic):Dynamic;
 	static public function get_indexers_list():Dynamic;
 	static public function is_bool_indexer(key:Dynamic):Dynamic;
-	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		we have a full length slice 
@@ -61,9 +76,104 @@ package pandas.core.indexing;
 	static public function is_full_slice(obj:Dynamic, l:Dynamic):Dynamic;
 	static public function is_index_slice(obj:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is an iterator.
+		
+		For example, lists are considered iterators
+		but not strings or datetime objects.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_iter : bool
+		    Whether `obj` is an iterator.
+		
+		Examples
+		--------
+		>>> is_iterator([1, 2, 3])
+		True
+		>>> is_iterator(datetime(2017, 1, 1))
+		False
+		>>> is_iterator("foo")
+		False
+		>>> is_iterator(1)
+		False
+	**/
+	static public function is_iterator(obj:Dynamic):Bool;
 	static public function is_label_like(key:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
 	static public function is_list_like_indexer(key:Dynamic):Dynamic;
 	static public function is_nested_tuple(tup:Dynamic, labels:Dynamic):Dynamic;
 	/**
@@ -81,13 +191,62 @@ package pandas.core.indexing;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_sequence(x:Dynamic):Dynamic;
 	/**
-		return if we are a sparse array 
+		Check if the object is a sequence of objects.
+		String types are not included as sequences here.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_sequence : bool
+		    Whether `obj` is a sequence of objects.
+		
+		Examples
+		--------
+		>>> l = [1, 2, 3]
+		>>>
+		>>> is_sequence(l)
+		True
+		>>> is_sequence(iter(l))
+		False
 	**/
-	static public function is_sparse(array:Dynamic):Dynamic;
+	static public function is_sequence(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like is a pandas sparse array.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a pandas sparse array.
+		
+		Examples
+		--------
+		>>> is_sparse(np.array([1, 2, 3]))
+		False
+		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		True
+		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		True
+		
+		This function checks only for pandas sparse array instances, so
+		sparse arrays from other libraries will return False.
+		
+		>>> from scipy.sparse import bsr_matrix
+		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		False
+	**/
+	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		

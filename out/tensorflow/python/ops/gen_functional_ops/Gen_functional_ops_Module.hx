@@ -10,7 +10,6 @@ package tensorflow.python.ops.gen_functional_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __symbolic_gradient_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Computes the gradient function for function f via backpropagation.
@@ -19,7 +18,8 @@ package tensorflow.python.ops.gen_functional_ops;
 		  input: A list of `Tensor` objects. a list of input tensors of size N + M;
 		  Tout: A list of `tf.DTypes` that has length `>= 1`.
 		    the type list for the input list.
-		  f: . The function we want to compute the gradient for.
+		  f: A function decorated with @Defun.
+		    The function we want to compute the gradient for.
 		
 		    The function 'f' must be a numerical function which takes N inputs and
 		    produces M outputs. Its gradient function 'g', which is computed by

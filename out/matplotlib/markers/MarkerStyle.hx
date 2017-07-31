@@ -81,6 +81,13 @@ package matplotlib.markers;
 	**/
 	public function new(?marker:Dynamic, ?fillstyle:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -137,16 +144,23 @@ package matplotlib.markers;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _caret_path : Dynamic;
+	static public var _caret_path_base : Dynamic;
 	public function _half_fill():Dynamic;
 	static public var _half_fillstyles : Dynamic;
 	static public var _line_marker_path : Dynamic;
+	static public var _plus_filled_path : Dynamic;
+	static public var _plus_filled_path_t : Dynamic;
 	static public var _plus_path : Dynamic;
 	static public var _point_size_reduction : Dynamic;
 	public function _recache():Dynamic;
 	public function _set_caretdown():Dynamic;
+	public function _set_caretdownbase():Dynamic;
 	public function _set_caretleft():Dynamic;
+	public function _set_caretleftbase():Dynamic;
 	public function _set_caretright():Dynamic;
+	public function _set_caretrightbase():Dynamic;
 	public function _set_caretup():Dynamic;
+	public function _set_caretupbase():Dynamic;
 	public function _set_circle(?reduction:Dynamic):Dynamic;
 	public function _set_custom_marker(path:Dynamic):Dynamic;
 	public function _set_diamond():Dynamic;
@@ -165,6 +179,7 @@ package matplotlib.markers;
 	public function _set_pentagon():Dynamic;
 	public function _set_pixel():Dynamic;
 	public function _set_plus():Dynamic;
+	public function _set_plus_filled():Dynamic;
 	public function _set_point():Dynamic;
 	public function _set_square():Dynamic;
 	public function _set_star():Dynamic;
@@ -186,6 +201,7 @@ package matplotlib.markers;
 	public function _set_vertices():Dynamic;
 	public function _set_vline():Dynamic;
 	public function _set_x():Dynamic;
+	public function _set_x_filled():Dynamic;
 	static public var _tickhoriz_path : Dynamic;
 	static public var _tickvert_path : Dynamic;
 	static public var _tri_path : Dynamic;
@@ -194,6 +210,8 @@ package matplotlib.markers;
 	static public var _triangle_path_l : Dynamic;
 	static public var _triangle_path_r : Dynamic;
 	static public var _triangle_path_u : Dynamic;
+	static public var _x_filled_path : Dynamic;
+	static public var _x_filled_path_t : Dynamic;
 	static public var _x_path : Dynamic;
 	static public var filled_markers : Dynamic;
 	static public var fillstyles : Dynamic;

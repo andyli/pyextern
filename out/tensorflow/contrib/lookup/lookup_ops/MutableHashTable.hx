@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.lookup.lookup_ops;
 @:pythonImport("tensorflow.contrib.lookup.lookup_ops", "MutableHashTable") extern class MutableHashTable {
+	/**
+		SaveableObject implementation for MutableHashTable.
+	**/
+	static public function _Saveable(table:Dynamic, name:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -50,12 +54,18 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
 		  name: A name for the operation (optional).
+		  checkpoint: if True, the contents of the table are saved to and restored
+		    from checkpoints. If `shared_name` is empty for a checkpointed table, it
+		    is shared using the table node name.
 		
 		Returns:
 		  A `MutableHashTable` object.
+		
+		Raises:
+		  ValueError: If checkpoint is True and no name was specified.
 	**/
 	@:native("__init__")
-	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?checkpoint:Dynamic):Dynamic;
 	/**
 		Creates an empty `MutableHashTable` object.
 		
@@ -69,11 +79,24 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
 		  name: A name for the operation (optional).
+		  checkpoint: if True, the contents of the table are saved to and restored
+		    from checkpoints. If `shared_name` is empty for a checkpointed table, it
+		    is shared using the table node name.
 		
 		Returns:
 		  A `MutableHashTable` object.
+		
+		Raises:
+		  ValueError: If checkpoint is True and no name was specified.
 	**/
-	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Void;
+	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?checkpoint:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -140,7 +163,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  TypeError: when 'key_dtype' or 'value_dtype' doesn't match the table data
 		    types.
 	**/
-	public function _check_table_dtypes(key_dtype:Dynamic, value_dtype:Dynamic):Dynamic;
+	public function check_table_dtypes(key_dtype:Dynamic, value_dtype:Dynamic):Dynamic;
 	/**
 		Returns tensors of all keys and values in the table.
 		

@@ -47,6 +47,13 @@ package tensorflow.python.lib.io.tf_record;
 	**/
 	public function new(compression_type:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -101,4 +108,6 @@ package tensorflow.python.lib.io.tf_record;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var compression_type_map : Dynamic;
+	static public function get_compression_type_string(options:Dynamic):Dynamic;
 }

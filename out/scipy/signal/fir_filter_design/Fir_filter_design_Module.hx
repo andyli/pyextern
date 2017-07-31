@@ -10,6 +10,16 @@ package scipy.signal.fir_filter_design;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Compute the modified 1D discrete Hilbert transform
+		
+		Parameters
+		----------
+		mag : ndarray
+		    The magnitude spectrum. Should be 1D with an even length, and
+		    preferably a fast length for FFT/IFFT.
+	**/
+	static public function _dhtm(mag:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		ceil(x)
@@ -19,6 +29,91 @@ package scipy.signal.fir_filter_design;
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Compute the one-dimensional discrete Fourier Transform.
+		
+		This function computes the one-dimensional *n*-point discrete Fourier
+		Transform (DFT) with the efficient Fast Fourier Transform (FFT)
+		algorithm [CT].
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array, can be complex.
+		n : int, optional
+		    Length of the transformed axis of the output.
+		    If `n` is smaller than the length of the input, the input is cropped.
+		    If it is larger, the input is padded with zeros.  If `n` is not given,
+		    the length of the input along the axis specified by `axis` is used.
+		axis : int, optional
+		    Axis over which to compute the FFT.  If not given, the last axis is
+		    used.
+		norm : {None, "ortho"}, optional
+		    .. versionadded:: 1.10.0
+		
+		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		Returns
+		-------
+		out : complex ndarray
+		    The truncated or zero-padded input, transformed along the axis
+		    indicated by `axis`, or the last one if `axis` is not specified.
+		
+		Raises
+		------
+		IndexError
+		    if `axes` is larger than the last axis of `a`.
+		
+		See Also
+		--------
+		numpy.fft : for definition of the DFT and conventions used.
+		ifft : The inverse of `fft`.
+		fft2 : The two-dimensional FFT.
+		fftn : The *n*-dimensional FFT.
+		rfftn : The *n*-dimensional FFT of real input.
+		fftfreq : Frequency bins for given FFT parameters.
+		
+		Notes
+		-----
+		FFT (Fast Fourier Transform) refers to a way the discrete Fourier
+		Transform (DFT) can be calculated efficiently, by using symmetries in the
+		calculated terms.  The symmetry is highest when `n` is a power of 2, and
+		the transform is therefore most efficient for these sizes.
+		
+		The DFT is defined, with the conventions used in this implementation, in
+		the documentation for the `numpy.fft` module.
+		
+		References
+		----------
+		.. [CT] Cooley, James W., and John W. Tukey, 1965, "An algorithm for the
+		        machine calculation of complex Fourier series," *Math. Comput.*
+		        19: 297-301.
+		
+		Examples
+		--------
+		>>> np.fft.fft(np.exp(2j * np.pi * np.arange(8) / 8))
+		array([ -3.44505240e-16 +1.14383329e-17j,
+		         8.00000000e+00 -5.71092652e-15j,
+		         2.33482938e-16 +1.22460635e-16j,
+		         1.64863782e-15 +1.77635684e-15j,
+		         9.95839695e-17 +2.33482938e-16j,
+		         0.00000000e+00 +1.66837030e-15j,
+		         1.14383329e-17 +1.22460635e-16j,
+		         -1.64863782e-15 +1.77635684e-15j])
+		
+		In this example, real input has an FFT which is Hermitian, i.e., symmetric
+		in the real part and anti-symmetric in the imaginary part, as described in
+		the `numpy.fft` documentation:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> t = np.arange(256)
+		>>> sp = np.fft.fft(np.sin(t))
+		>>> freq = np.fft.fftfreq(t.shape[-1])
+		>>> plt.plot(freq, sp.real, freq, sp.imag)
+		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
+		>>> plt.show()
+	**/
+	static public function fft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		FIR filter design using least-squares error minimization.
 		
@@ -57,6 +152,8 @@ package scipy.signal.fir_filter_design;
 		--------
 		firwin
 		firwin2
+		minimum_phase
+		remez
 		
 		Notes
 		-----
@@ -185,6 +282,7 @@ package scipy.signal.fir_filter_design;
 		--------
 		firwin2
 		firls
+		minimum_phase
 		remez
 		
 		Examples
@@ -280,6 +378,7 @@ package scipy.signal.fir_filter_design;
 		--------
 		firls
 		firwin
+		minimum_phase
 		remez
 		
 		Notes
@@ -371,6 +470,89 @@ package scipy.signal.fir_filter_design;
 	**/
 	static public function hankel(c:Dynamic, ?r:Dynamic):Dynamic;
 	/**
+		Compute the one-dimensional inverse discrete Fourier Transform.
+		
+		This function computes the inverse of the one-dimensional *n*-point
+		discrete Fourier transform computed by `fft`.  In other words,
+		``ifft(fft(a)) == a`` to within numerical accuracy.
+		For a general description of the algorithm and definitions,
+		see `numpy.fft`.
+		
+		The input should be ordered in the same way as is returned by `fft`,
+		i.e.,
+		
+		* ``a[0]`` should contain the zero frequency term,
+		* ``a[1:n//2]`` should contain the positive-frequency terms,
+		* ``a[n//2 + 1:]`` should contain the negative-frequency terms, in
+		  increasing order starting from the most negative frequency.
+		
+		For an even number of input points, ``A[n//2]`` represents the sum of
+		the values at the positive and negative Nyquist frequencies, as the two
+		are aliased together. See `numpy.fft` for details.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array, can be complex.
+		n : int, optional
+		    Length of the transformed axis of the output.
+		    If `n` is smaller than the length of the input, the input is cropped.
+		    If it is larger, the input is padded with zeros.  If `n` is not given,
+		    the length of the input along the axis specified by `axis` is used.
+		    See notes about padding issues.
+		axis : int, optional
+		    Axis over which to compute the inverse DFT.  If not given, the last
+		    axis is used.
+		norm : {None, "ortho"}, optional
+		    .. versionadded:: 1.10.0
+		
+		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		Returns
+		-------
+		out : complex ndarray
+		    The truncated or zero-padded input, transformed along the axis
+		    indicated by `axis`, or the last one if `axis` is not specified.
+		
+		Raises
+		------
+		IndexError
+		    If `axes` is larger than the last axis of `a`.
+		
+		See Also
+		--------
+		numpy.fft : An introduction, with definitions and general explanations.
+		fft : The one-dimensional (forward) FFT, of which `ifft` is the inverse
+		ifft2 : The two-dimensional inverse FFT.
+		ifftn : The n-dimensional inverse FFT.
+		
+		Notes
+		-----
+		If the input parameter `n` is larger than the size of the input, the input
+		is padded by appending zeros at the end.  Even though this is the common
+		approach, it might lead to surprising results.  If a different padding is
+		desired, it must be performed before calling `ifft`.
+		
+		Examples
+		--------
+		>>> np.fft.ifft([0, 4, 0, 0])
+		array([ 1.+0.j,  0.+1.j, -1.+0.j,  0.-1.j])
+		
+		Create and plot a band-limited signal with random phases:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> t = np.arange(400)
+		>>> n = np.zeros((400,), dtype=complex)
+		>>> n[40:60] = np.exp(1j*np.random.uniform(0, 2*np.pi, (20,)))
+		>>> s = np.fft.ifft(n)
+		>>> plt.plot(t, s.real, 'b-', t, s.imag, 'r--')
+		...
+		>>> plt.legend(('real', 'imaginary'))
+		...
+		>>> plt.show()
+	**/
+	static public function ifft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
+	/**
 		Compute the inverse of the n-point DFT for real input.
 		
 		This function computes the inverse of the one-dimensional *n*-point
@@ -399,6 +581,7 @@ package scipy.signal.fir_filter_design;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -539,6 +722,129 @@ package scipy.signal.fir_filter_design;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Convert a linear-phase FIR filter to minimum phase
+		
+		Parameters
+		----------
+		h : array
+		    Linear-phase FIR filter coefficients.
+		method : {'hilbert', 'homomorphic'}
+		    The method to use:
+		
+		        'homomorphic' (default)
+		            This method [4]_ [5]_ works best with filters with an
+		            odd number of taps, and the resulting minimum phase filter
+		            will have a magnitude response that approximates the square
+		            root of the the original filter's magnitude response.
+		
+		        'hilbert'
+		            This method [1]_ is designed to be used with equiripple
+		            filters (e.g., from `remez`) with unity or zero gain
+		            regions.
+		
+		n_fft : int
+		    The number of points to use for the FFT. Should be at least a
+		    few times larger than the signal length (see Notes).
+		
+		Returns
+		-------
+		h_minimum : array
+		    The minimum-phase version of the filter, with length
+		    ``(length(h) + 1) // 2``.
+		
+		See Also
+		--------
+		firwin
+		firwin2
+		remez
+		
+		Notes
+		-----
+		Both the Hilbert [1]_ or homomorphic [4]_ [5]_ methods require selection
+		of an FFT length to estimate the complex cepstrum of the filter.
+		
+		In the case of the Hilbert method, the deviation from the ideal
+		spectrum ``epsilon`` is related to the number of stopband zeros
+		``n_stop`` and FFT length ``n_fft`` as::
+		
+		    epsilon = 2. * n_stop / n_fft
+		
+		For example, with 100 stopband zeros and a FFT length of 2048,
+		``epsilon = 0.0976``. If we conservatively assume that the number of
+		stopband zeros is one less than the filter length, we can take the FFT
+		length to be the next power of 2 that satisfies ``epsilon=0.01`` as::
+		
+		    n_fft = 2 ** int(np.ceil(np.log2(2 * (len(h) - 1) / 0.01)))
+		
+		This gives reasonable results for both the Hilbert and homomorphic
+		methods, and gives the value used when ``n_fft=None``.
+		
+		Alternative implementations exist for creating minimum-phase filters,
+		including zero inversion [2]_ and spectral factorization [3]_ [4]_.
+		For more information, see:
+		
+		    http://dspguru.com/dsp/howtos/how-to-design-minimum-phase-fir-filters
+		
+		Examples
+		--------
+		Create an optimal linear-phase filter, then convert it to minimum phase:
+		
+		>>> from scipy.signal import remez, minimum_phase, freqz, group_delay
+		>>> import matplotlib.pyplot as plt
+		>>> freq = [0, 0.2, 0.3, 1.0]
+		>>> desired = [1, 0]
+		>>> h_linear = remez(151, freq, desired, Hz=2.)
+		
+		Convert it to minimum phase:
+		
+		>>> h_min_hom = minimum_phase(h_linear, method='homomorphic')
+		>>> h_min_hil = minimum_phase(h_linear, method='hilbert')
+		
+		Compare the three filters:
+		
+		>>> fig, axs = plt.subplots(4, figsize=(4, 8))
+		>>> for h, style, color in zip((h_linear, h_min_hom, h_min_hil),
+		...                            ('-', '-', '--'), ('k', 'r', 'c')):
+		...     w, H = freqz(h)
+		...     w, gd = group_delay((h, 1))
+		...     w /= np.pi
+		...     axs[0].plot(h, color=color, linestyle=style)
+		...     axs[1].plot(w, np.abs(H), color=color, linestyle=style)
+		...     axs[2].plot(w, 20 * np.log10(np.abs(H)), color=color, linestyle=style)
+		...     axs[3].plot(w, gd, color=color, linestyle=style)
+		>>> for ax in axs:
+		...     ax.grid(True, color='0.5')
+		...     ax.fill_between(freq[1:3], *ax.get_ylim(), color='#ffeeaa', zorder=1)
+		>>> axs[0].set(xlim=[0, len(h_linear) - 1], ylabel='Amplitude', xlabel='Samples')
+		>>> axs[1].legend(['Linear', 'Min-Hom', 'Min-Hil'], title='Phase')
+		>>> for ax, ylim in zip(axs[1:], ([0, 1.1], [-150, 10], [-60, 60])):
+		...     ax.set(xlim=[0, 1], ylim=ylim, xlabel='Frequency')
+		>>> axs[1].set(ylabel='Magnitude')
+		>>> axs[2].set(ylabel='Magnitude (dB)')
+		>>> axs[3].set(ylabel='Group delay')
+		>>> plt.tight_layout()
+		
+		References
+		----------
+		.. [1] N. Damera-Venkata and B. L. Evans, "Optimal design of real and
+		       complex minimum phase digital FIR filters," Acoustics, Speech,
+		       and Signal Processing, 1999. Proceedings., 1999 IEEE International
+		       Conference on, Phoenix, AZ, 1999, pp. 1145-1148 vol.3.
+		       doi: 10.1109/ICASSP.1999.756179
+		.. [2] X. Chen and T. W. Parks, "Design of optimal minimum phase FIR
+		       filters by direct factorization," Signal Processing,
+		       vol. 10, no. 4, pp. 369–383, Jun. 1986.
+		.. [3] T. Saramaki, "Finite Impulse Response Filter Design," in
+		       Handbook for Digital Signal Processing, chapter 4,
+		       New York: Wiley-Interscience, 1993.
+		.. [4] J. S. Lim, Advanced Topics in Signal Processing.
+		       Englewood Cliffs, N.J.: Prentice Hall, 1988.
+		.. [5] A. V. Oppenheim, R. W. Schafer, and J. R. Buck,
+		       "Discrete-Time Signal Processing," 2nd edition.
+		       Upper Saddle River, N.J.: Prentice Hall, 1999.
+	**/
+	static public function minimum_phase(h:Dynamic, ?method:Dynamic, ?n_fft:Dynamic):Array<Dynamic>;
+	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
 		Calculate a generalized inverse of a matrix using a least-squares
@@ -633,10 +939,10 @@ package scipy.signal.fir_filter_design;
 		
 		See Also
 		--------
-		freqz
 		firls
 		firwin
 		firwin2
+		minimum_phase
 		
 		References
 		----------
@@ -740,6 +1046,7 @@ package scipy.signal.fir_filter_design;
 		<matplotlib.image.AxesImage object at 0x...>
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
 	/**
 		Construct a Toeplitz matrix.
 		

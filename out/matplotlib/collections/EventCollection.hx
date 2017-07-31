@@ -140,6 +140,13 @@ package matplotlib.collections;
 	**/
 	public function new(positions:Dynamic, ?orientation:Dynamic, ?lineoffset:Dynamic, ?linelength:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -195,6 +202,30 @@ package matplotlib.collections;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _add_offsets(segs:Dynamic):Dynamic;
+	/**
+		Internal helper function to broadcast + scale ls/lw
+		
+		In the collection drawing code the linewidth and linestyle are
+		cycled through as circular buffers (via v[i % len(v)]).  Thus,
+		if we are going to scale the dash pattern at set time (not
+		draw time) we need to do the broadcasting now and expand both
+		lists to be the same length.
+		
+		Parameters
+		----------
+		linewidths : list
+		    line widths of collection
+		
+		dashes : list
+		    dash specification (offset, (dash pattern tuple))
+		
+		Returns
+		-------
+		linewidths, dashes : list
+		     Will be the same length, dashes are scaled by paired linewidth
+	**/
+	static public function _bcast_lwls(linewidths:Dynamic, dashes:Dynamic):Array<Dynamic>;
+	static public var _edge_default : Dynamic;
 	static public function _get_bool(val:Dynamic):Dynamic;
 	static public function _get_value(val:Dynamic):Dynamic;
 	static public var _offsets : Dynamic;
@@ -202,6 +233,9 @@ package matplotlib.collections;
 		Point prep for drawing and hit testing
 	**/
 	public function _prepare_points():Dynamic;
+	static public var _prop_order : Dynamic;
+	public function _set_edgecolor(c:Dynamic):Dynamic;
+	public function _set_facecolor(c:Dynamic):Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -546,9 +580,7 @@ package matplotlib.collections;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -587,9 +619,7 @@ package matplotlib.collections;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -993,6 +1023,25 @@ package matplotlib.collections;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		switch the orientation of the event line, either from vertical to
 		horizontal or vice versus
 	**/
@@ -1019,12 +1068,15 @@ package matplotlib.collections;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

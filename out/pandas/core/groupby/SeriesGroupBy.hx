@@ -56,6 +56,13 @@ package pandas.core.groupby;
 	**/
 	public function new(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Groupby iterator
 		
 		Returns
@@ -132,6 +139,10 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		add numeric operations to the GroupBy generically 
+	**/
+	static public function _add_numeric_operations():Dynamic;
 	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
@@ -183,7 +194,7 @@ package pandas.core.groupby;
 		(though the default is sort=True) for groupby in general
 	**/
 	public function _cumcount_array(?ascending:Dynamic):Dynamic;
-	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_agg_general(how:Dynamic, ?alt:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _def_str : Dynamic;
@@ -247,10 +258,15 @@ package pandas.core.groupby;
 		each group regardless of whether a group selection was previously set.
 	**/
 	public function _reset_group_selection():Dynamic;
-	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
+	/**
+		since we are a series, we by definition only have
+		a single name, but may be the result of a selection or
+		the name of our object
+	**/
+	public var _selection_name : Dynamic;
 	/**
 		Create group based selection. Used when selection is not passed
 		directly but instead via a grouper.
@@ -267,10 +283,20 @@ package pandas.core.groupby;
 	**/
 	public function _transform_fast(func:Dynamic):Dynamic;
 	/**
+		if arg is a string, then try to operate on it:
+		- try to find a function (or attribute) on ourselves
+		- try to find a numpy function
+		- raise
+	**/
+	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		try to cast the result to our obj original type,
 		we may have roundtripped thru object in the mean-time
+		
+		if numeric_only is True, then only try to cast numerics
+		and not datetimelikes
 	**/
-	public function _try_cast(result:Dynamic, obj:Dynamic):Dynamic;
+	public function _try_cast(result:Dynamic, obj:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _wrap_aggregated_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	public function _wrap_applied_output(keys:Dynamic, values:Dynamic, ?not_indexed_same:Dynamic):Dynamic;
 	/**
@@ -279,107 +305,137 @@ package pandas.core.groupby;
 	public function _wrap_output(output:Dynamic, index:Dynamic, ?names:Dynamic):Dynamic;
 	public function _wrap_transformed_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	/**
-		Apply aggregation function or functions to groups, yielding most likely
-		Series but in some cases DataFrame depending on the output of the
-		aggregation function
+		Aggregate using callable, string, dict, or list of string/callables
+		
+		
 		
 		Parameters
 		----------
-		func_or_funcs : function or list / dict of functions
-		    List/dict of functions will produce DataFrame with column names
-		    determined by the function names themselves (list) or the keys in
-		    the dict
+		func : callable, string, dictionary, or list of string/callables
+		    Function to use for aggregating the data. If a function, must either
+		    work when passed a Series or when passed to Series.apply. For
+		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		
+		    Accepted Combinations are:
+		
+		    - string function name
+		    - function
+		    - list of functions
+		    - dict of column names -> functions (or list of functions)
 		
 		Notes
 		-----
+		Numpy functions mean/median/prod/sum/std/var are special cased so the
+		default behavior is applying the function along axis=0
+		(e.g., np.mean(arr_2d, axis=0)) as opposed to
+		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
+		
 		agg is an alias for aggregate. Use it.
-		
-		Examples
-		--------
-		>>> series
-		bar    1.0
-		baz    2.0
-		qot    3.0
-		qux    4.0
-		
-		>>> mapper = lambda x: x[0] # first letter
-		>>> grouped = series.groupby(mapper)
-		
-		>>> grouped.aggregate(np.sum)
-		b    3.0
-		q    7.0
-		
-		>>> grouped.aggregate([np.sum, np.mean, np.std])
-		   mean  std  sum
-		b  1.5   0.5  3
-		q  3.5   0.5  7
-		
-		>>> grouped.agg({'result' : lambda x: x.mean() / x.std(),
-		...              'total' : np.sum})
-		   result  total
-		b  2.121   3
-		q  4.95    7
-		
-		See also
-		--------
-		apply, transform
 		
 		Returns
 		-------
-		Series or DataFrame
+		aggregated : Series
+		
+		Examples
+		--------
+		
+		>>> s = Series([1, 2, 3, 4])
+		
+		>>> s
+		0    1
+		1    2
+		2    3
+		3    4
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).min()
+		1    1
+		2    3
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).agg('min')
+		1    1
+		2    3
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).agg(['min', 'max'])
+		   min  max
+		1    1    2
+		2    3    4
+		
+		See also
+		--------
+		pandas.Series.groupby.apply
+		pandas.Series.groupby.transform
+		pandas.Series.aggregate
 	**/
-	public function agg(func_or_funcs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function agg(func_or_funcs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
-		Apply aggregation function or functions to groups, yielding most likely
-		Series but in some cases DataFrame depending on the output of the
-		aggregation function
+		Aggregate using callable, string, dict, or list of string/callables
+		
+		
 		
 		Parameters
 		----------
-		func_or_funcs : function or list / dict of functions
-		    List/dict of functions will produce DataFrame with column names
-		    determined by the function names themselves (list) or the keys in
-		    the dict
+		func : callable, string, dictionary, or list of string/callables
+		    Function to use for aggregating the data. If a function, must either
+		    work when passed a Series or when passed to Series.apply. For
+		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		
+		    Accepted Combinations are:
+		
+		    - string function name
+		    - function
+		    - list of functions
+		    - dict of column names -> functions (or list of functions)
 		
 		Notes
 		-----
+		Numpy functions mean/median/prod/sum/std/var are special cased so the
+		default behavior is applying the function along axis=0
+		(e.g., np.mean(arr_2d, axis=0)) as opposed to
+		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
+		
 		agg is an alias for aggregate. Use it.
-		
-		Examples
-		--------
-		>>> series
-		bar    1.0
-		baz    2.0
-		qot    3.0
-		qux    4.0
-		
-		>>> mapper = lambda x: x[0] # first letter
-		>>> grouped = series.groupby(mapper)
-		
-		>>> grouped.aggregate(np.sum)
-		b    3.0
-		q    7.0
-		
-		>>> grouped.aggregate([np.sum, np.mean, np.std])
-		   mean  std  sum
-		b  1.5   0.5  3
-		q  3.5   0.5  7
-		
-		>>> grouped.agg({'result' : lambda x: x.mean() / x.std(),
-		...              'total' : np.sum})
-		   result  total
-		b  2.121   3
-		q  4.95    7
-		
-		See also
-		--------
-		apply, transform
 		
 		Returns
 		-------
-		Series or DataFrame
+		aggregated : Series
+		
+		Examples
+		--------
+		
+		>>> s = Series([1, 2, 3, 4])
+		
+		>>> s
+		0    1
+		1    2
+		2    3
+		3    4
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).min()
+		1    1
+		2    3
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).agg('min')
+		1    1
+		2    3
+		dtype: int64
+		
+		>>> s.groupby([1, 1, 2, 2]).agg(['min', 'max'])
+		   min  max
+		1    1    2
+		2    3    4
+		
+		See also
+		--------
+		pandas.Series.groupby.apply
+		pandas.Series.groupby.transform
+		pandas.Series.aggregate
 	**/
-	public function aggregate(func_or_funcs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function aggregate(func_or_funcs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		    
 		
@@ -593,6 +649,10 @@ package pandas.core.groupby;
 		5    0
 		dtype: int64
 		
+		See also
+		--------
+		.ngroup : Number the groups themselves.
+		
 		
 		See also
 		--------
@@ -602,39 +662,25 @@ package pandas.core.groupby;
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
-		    Return cumulative max over requested axis.
+		Cumulative max for each group
 		
-		Parameters
-		----------
-		axis : {index (0)}
-		skipna : boolean, default True
-		    Exclude NA/null values. If an entire row/column is NA, the result
-		    will be NA
-		
-		Returns
-		-------
-		cummax : scalar
-		
-		    
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
-	public var cummax : Dynamic;
+	public function cummax(?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		    Return cumulative minimum over requested axis.
+		Cumulative min for each group
 		
-		Parameters
-		----------
-		axis : {index (0)}
-		skipna : boolean, default True
-		    Exclude NA/null values. If an entire row/column is NA, the result
-		    will be NA
-		
-		Returns
-		-------
-		cummin : scalar
-		
-		    
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
-	public var cummin : Dynamic;
+	public function cummin(?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cumulative product for each group
 		
@@ -656,60 +702,217 @@ package pandas.core.groupby;
 	**/
 	public function cumsum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		    
-		Generate various summary statistics, excluding NaN values.
+		Generates descriptive statistics that summarize the central tendency,
+		dispersion and shape of a dataset's distribution, excluding
+		``NaN`` values.
+		
+		Analyzes both numeric and object series, as well
+		as ``DataFrame`` column sets of mixed data types. The output
+		will vary depending on what is provided. Refer to the notes
+		below for more detail.
 		
 		Parameters
 		----------
-		percentiles : array-like, optional
-		    The percentiles to include in the output. Should all
-		    be in the interval [0, 1]. By default `percentiles` is
-		    [.25, .5, .75], returning the 25th, 50th, and 75th percentiles.
-		include, exclude : list-like, 'all', or None (default)
-		    Specify the form of the returned result. Either:
+		percentiles : list-like of numbers, optional
+		    The percentiles to include in the output. All should
+		    fall between 0 and 1. The default is
+		    ``[.25, .5, .75]``, which returns the 25th, 50th, and
+		    75th percentiles.
+		include : 'all', list-like of dtypes or None (default), optional
+		    A white list of data types to include in the result. Ignored
+		    for ``Series``. Here are the options:
 		
-		    - None to both (default). The result will include only
-		      numeric-typed columns or, if none are, only categorical columns.
-		    - A list of dtypes or strings to be included/excluded.
-		      To select all numeric types use numpy numpy.number. To select
-		      categorical objects use type object. See also the select_dtypes
-		      documentation. eg. df.describe(include=['O'])
-		    - If include is the string 'all', the output column-set will
-		      match the input one.
+		    - 'all' : All columns of the input will be included in the output.
+		    - A list-like of dtypes : Limits the results to the
+		      provided data types.
+		      To limit the result to numeric types submit
+		      ``numpy.number``. To limit it instead to categorical
+		      objects submit the ``numpy.object`` data type. Strings
+		      can also be used in the style of
+		      ``select_dtypes`` (e.g. ``df.describe(include=['O'])``)
+		    - None (default) : The result will include all numeric columns.
+		exclude : list-like of dtypes or None (default), optional,
+		    A black list of data types to omit from the result. Ignored
+		    for ``Series``. Here are the options:
+		
+		    - A list-like of dtypes : Excludes the provided data types
+		      from the result. To select numeric types submit
+		      ``numpy.number``. To select categorical objects submit the data
+		      type ``numpy.object``. Strings can also be used in the style of
+		      ``select_dtypes`` (e.g. ``df.describe(include=['O'])``)
+		    - None (default) : The result will exclude nothing.
 		
 		Returns
 		-------
-		summary: NDFrame of summary statistics
+		summary:  Series/DataFrame of summary statistics
 		
 		Notes
 		-----
-		The output DataFrame index depends on the requested dtypes:
+		For numeric data, the result's index will include ``count``,
+		``mean``, ``std``, ``min``, ``max`` as well as lower, ``50`` and
+		upper percentiles. By default the lower percentile is ``25`` and the
+		upper percentile is ``75``. The ``50`` percentile is the
+		same as the median.
 		
-		For numeric dtypes, it will include: count, mean, std, min,
-		max, and lower, 50, and upper percentiles.
+		For object data (e.g. strings or timestamps), the result's index
+		will include ``count``, ``unique``, ``top``, and ``freq``. The ``top``
+		is the most common value. The ``freq`` is the most common value's
+		frequency. Timestamps also include the ``first`` and ``last`` items.
 		
-		For object dtypes (e.g. timestamps or strings), the index
-		will include the count, unique, most common, and frequency of the
-		most common. Timestamps also include the first and last items.
-		
-		For mixed dtypes, the index will be the union of the corresponding
-		output types. Non-applicable entries will be filled with NaN.
-		Note that mixed-dtype outputs can only be returned from mixed-dtype
-		inputs and appropriate use of the include/exclude arguments.
-		
-		If multiple values have the highest count, then the
-		`count` and `most common` pair will be arbitrarily chosen from
+		If multiple object values have the highest count, then the
+		``count`` and ``top`` results will be arbitrarily chosen from
 		among those with the highest count.
 		
-		The include, exclude arguments are ignored for Series.
+		For mixed data types provided via a ``DataFrame``, the default is to
+		return only an analysis of numeric columns. If ``include='all'``
+		is provided as an option, the result will include a union of
+		attributes of each type.
+		
+		The `include` and `exclude` parameters can be used to limit
+		which columns in a ``DataFrame`` are analyzed for the output.
+		The parameters are ignored when analyzing a ``Series``.
+		
+		Examples
+		--------
+		Describing a numeric ``Series``.
+		
+		>>> s = pd.Series([1, 2, 3])
+		>>> s.describe()
+		count    3.0
+		mean     2.0
+		std      1.0
+		min      1.0
+		25%      1.5
+		50%      2.0
+		75%      2.5
+		max      3.0
+		
+		Describing a categorical ``Series``.
+		
+		>>> s = pd.Series(['a', 'a', 'b', 'c'])
+		>>> s.describe()
+		count     4
+		unique    3
+		top       a
+		freq      2
+		dtype: object
+		
+		Describing a timestamp ``Series``.
+		
+		>>> s = pd.Series([
+		...   np.datetime64("2000-01-01"),
+		...   np.datetime64("2010-01-01"),
+		...   np.datetime64("2010-01-01")
+		... ])
+		>>> s.describe()
+		count                       3
+		unique                      2
+		top       2010-01-01 00:00:00
+		freq                        2
+		first     2000-01-01 00:00:00
+		last      2010-01-01 00:00:00
+		dtype: object
+		
+		Describing a ``DataFrame``. By default only numeric fields
+		are returned.
+		
+		>>> df = pd.DataFrame([[1, 'a'], [2, 'b'], [3, 'c']],
+		...                   columns=['numeric', 'object'])
+		>>> df.describe()
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
+		
+		Describing all columns of a ``DataFrame`` regardless of data type.
+		
+		>>> df.describe(include='all')
+		        numeric object
+		count       3.0      3
+		unique      NaN      3
+		top         NaN      b
+		freq        NaN      1
+		mean        2.0    NaN
+		std         1.0    NaN
+		min         1.0    NaN
+		25%         1.5    NaN
+		50%         2.0    NaN
+		75%         2.5    NaN
+		max         3.0    NaN
+		
+		Describing a column from a ``DataFrame`` by accessing it as
+		an attribute.
+		
+		>>> df.numeric.describe()
+		count    3.0
+		mean     2.0
+		std      1.0
+		min      1.0
+		25%      1.5
+		50%      2.0
+		75%      2.5
+		max      3.0
+		Name: numeric, dtype: float64
+		
+		Including only numeric columns in a ``DataFrame`` description.
+		
+		>>> df.describe(include=[np.number])
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
+		
+		Including only string columns in a ``DataFrame`` description.
+		
+		>>> df.describe(include=[np.object])
+		       object
+		count       3
+		unique      3
+		top         b
+		freq        1
+		
+		Excluding numeric columns from a ``DataFrame`` description.
+		
+		>>> df.describe(exclude=[np.number])
+		       object
+		count       3
+		unique      3
+		top         b
+		freq        1
+		
+		Excluding object columns from a ``DataFrame`` description.
+		
+		>>> df.describe(exclude=[np.object])
+		       numeric
+		count      3.0
+		mean       2.0
+		std        1.0
+		min        1.0
+		25%        1.5
+		50%        2.0
+		75%        2.5
+		max        3.0
 		
 		See Also
 		--------
+		DataFrame.count
+		DataFrame.max
+		DataFrame.min
+		DataFrame.mean
+		DataFrame.std
 		DataFrame.select_dtypes
-		
-		    
 	**/
-	public var describe : Dynamic;
+	public function describe(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		1st discrete difference of object
 		
@@ -788,7 +991,7 @@ package pandas.core.groupby;
 		    a gap with more than this number of consecutive NaNs, it will only
 		    be partially filled. If method is not specified, this is the
 		    maximum number of entries along the entire axis where NaNs will be
-		    filled.
+		    filled. Must be greater than 0 if not None.
 		downcast : dict, default is None
 		    a dict of item->dtype of what to downcast if possible,
 		    or the string 'infer' which will try to downcast to an appropriate
@@ -818,7 +1021,17 @@ package pandas.core.groupby;
 		
 		Examples
 		--------
-		>>> grouped.filter(lambda x: x.mean() > 0)
+		>>> import pandas as pd
+		>>> df = pd.DataFrame({'A' : ['foo', 'bar', 'foo', 'bar',
+		...                           'foo', 'bar'],
+		...                    'B' : [1, 2, 3, 4, 5, 6],
+		...                    'C' : [2.0, 5., 8., 1., 2., 9.]})
+		>>> grouped = df.groupby('A')
+		>>> df.groupby('A').B.filter(lambda x: x.mean() > 3.)
+		1    2
+		3    4
+		5    6
+		Name: B, dtype: int64
 		
 		Returns
 		-------
@@ -834,7 +1047,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function first():Dynamic;
+	public function first(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Constructs NDFrame from group with provided name
 		
@@ -964,10 +1177,6 @@ package pandas.core.groupby;
 	**/
 	public var indices : Dynamic;
 	/**
-		DEPRECATED. Use ``.nth(i)`` instead
-	**/
-	public function irow(i:Dynamic):Dynamic;
-	/**
 		Compute last of group values
 		
 		See also
@@ -976,7 +1185,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function last():Dynamic;
+	public function last(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		    
 		
@@ -1011,7 +1220,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function max():Dynamic;
+	public function max(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute mean of groups, excluding missing values
 		
@@ -1037,7 +1246,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function median():Dynamic;
+	public function median(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute min of group values
 		
@@ -1047,85 +1256,166 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function min():Dynamic;
-	/**
-		since we are a series, we by definition only have
-		a single name, but may be the result of a selection or
-		the name of our object
-	**/
-	public var name : Dynamic;
+	public function min(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var ndim : Dynamic;
+	/**
+		Number each group from 0 to the number of groups - 1.
+		
+		This is the enumerative complement of cumcount.  Note that the
+		numbers given to the groups match the order in which the groups
+		would be seen when iterating over the groupby object, not the
+		order they are first observed.
+		
+		.. versionadded:: 0.20.2
+		
+		Parameters
+		----------
+		ascending : bool, default True
+		    If False, number in reverse, from number of group - 1 to 0.
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame({"A": list("aaabba")})
+		>>> df
+		   A
+		0  a
+		1  a
+		2  a
+		3  b
+		4  b
+		5  a
+		>>> df.groupby('A').ngroup()
+		0    0
+		1    0
+		2    0
+		3    1
+		4    1
+		5    0
+		dtype: int64
+		>>> df.groupby('A').ngroup(ascending=False)
+		0    1
+		1    1
+		2    1
+		3    0
+		4    0
+		5    1
+		dtype: int64
+		>>> df.groupby(["A", [1,1,2,3,2,1]]).ngroup()
+		0    0
+		1    0
+		2    1
+		3    3
+		4    2
+		5    0
+		dtype: int64
+		
+		See also
+		--------
+		.cumcount : Number the rows in each group.
+		
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function ngroup(?ascending:Dynamic):Dynamic;
 	public var ngroups : Dynamic;
 	/**
 		Return the largest `n` elements.
 		
-		Parameters
-		----------
-		n : int
-		    Return this many descending sorted values
-		keep : {'first', 'last', False}, default 'first'
-		    Where there are duplicate values:
-		    - ``first`` : take the first occurrence.
-		    - ``last`` : take the last occurrence.
-		take_last : deprecated
+		    Parameters
+		    ----------
+		    n : int
+		        Return this many descending sorted values
+		    keep : {'first', 'last', False}, default 'first'
+		        Where there are duplicate values:
+		        - ``first`` : take the first occurrence.
+		        - ``last`` : take the last occurrence.
 		
-		Returns
-		-------
-		top_n : Series
-		    The n largest values in the Series, in sorted order
+		    Returns
+		    -------
+		    top_n : Series
+		        The n largest values in the Series, in sorted order
 		
-		Notes
-		-----
-		Faster than ``.sort_values(ascending=False).head(n)`` for small `n`
-		relative to the size of the ``Series`` object.
+		    Notes
+		    -----
+		    Faster than ``.sort_values(ascending=False).head(n)`` for small `n`
+		    relative to the size of the ``Series`` object.
 		
-		See Also
-		--------
-		Series.nsmallest
+		    See Also
+		    --------
+		    Series.nsmallest
 		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> import numpy as np
-		>>> s = pd.Series(np.random.randn(1e6))
-		>>> s.nlargest(10)  # only sorts up to the N requested
+		    Examples
+		    --------
+		    >>> import pandas as pd
+		    >>> import numpy as np
+		    >>> s = pd.Series(np.random.randn(10**6))
+		    >>> s.nlargest(10)  # only sorts up to the N requested
+		    219921    4.644710
+		    82124     4.608745
+		    421689    4.564644
+		    425277    4.447014
+		    718691    4.414137
+		    43154     4.403520
+		    283187    4.313922
+		    595519    4.273635
+		    503969    4.250236
+		    121637    4.240952
+		    dtype: float64
+		    
 	**/
-	public function nlargest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
+	public var nlargest : Dynamic;
 	/**
 		Return the smallest `n` elements.
 		
-		Parameters
-		----------
-		n : int
-		    Return this many ascending sorted values
-		keep : {'first', 'last', False}, default 'first'
-		    Where there are duplicate values:
-		    - ``first`` : take the first occurrence.
-		    - ``last`` : take the last occurrence.
-		take_last : deprecated
+		    Parameters
+		    ----------
+		    n : int
+		        Return this many ascending sorted values
+		    keep : {'first', 'last', False}, default 'first'
+		        Where there are duplicate values:
+		        - ``first`` : take the first occurrence.
+		        - ``last`` : take the last occurrence.
 		
-		Returns
-		-------
-		bottom_n : Series
-		    The n smallest values in the Series, in sorted order
+		    Returns
+		    -------
+		    bottom_n : Series
+		        The n smallest values in the Series, in sorted order
 		
-		Notes
-		-----
-		Faster than ``.sort_values().head(n)`` for small `n` relative to
-		the size of the ``Series`` object.
+		    Notes
+		    -----
+		    Faster than ``.sort_values().head(n)`` for small `n` relative to
+		    the size of the ``Series`` object.
 		
-		See Also
-		--------
-		Series.nlargest
+		    See Also
+		    --------
+		    Series.nlargest
 		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> import numpy as np
-		>>> s = pd.Series(np.random.randn(1e6))
-		>>> s.nsmallest(10)  # only sorts up to the N requested
+		    Examples
+		    --------
+		    >>> import pandas as pd
+		    >>> import numpy as np
+		    >>> s = pd.Series(np.random.randn(10**6))
+		    >>> s.nsmallest(10)  # only sorts up to the N requested
+		    288532   -4.954580
+		    732345   -4.835960
+		    64803    -4.812550
+		    446457   -4.609998
+		    501225   -4.483945
+		    669476   -4.472935
+		    973615   -4.401699
+		    621279   -4.355126
+		    773916   -4.347355
+		    359919   -4.331927
+		    dtype: float64
+		    
 	**/
-	public function nsmallest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
+	public var nsmallest : Dynamic;
 	/**
 		Take the nth row from each group if n is an int, or a subset of rows
 		if n is a list of ints.
@@ -1282,7 +1572,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function prod():Dynamic;
+	public function prod(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return value at the given quantile, a la numpy.percentile.
 		
@@ -1327,7 +1617,7 @@ package pandas.core.groupby;
 		
 		Parameters
 		----------
-		axis: {0 or 'index', 1 or 'columns'}, default 0
+		axis : {0 or 'index', 1 or 'columns'}, default 0
 		    index to direct ranking
 		method : {'average', 'min', 'max', 'first', 'dense'}
 		    * average: average rank of group
@@ -1476,7 +1766,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function sum():Dynamic;
+	public function sum(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns last n rows of each group
 		
@@ -1523,23 +1813,71 @@ package pandas.core.groupby;
 	**/
 	public var take : pandas.Series;
 	/**
-		Call function producing a like-indexed Series on each group and return
-		a Series with the transformed values
+		Call function producing a like-indexed Series on each group and
+		return a Series having the same indexes as the original object
+		filled with the transformed values
 		
 		Parameters
 		----------
-		func : function
-		    To apply to each group. Should return a Series with the same index
+		f : function
+		    Function to apply to each group
 		
-		Examples
-		--------
-		>>> grouped.transform(lambda x: (x - x.mean()) / x.std())
+		Notes
+		-----
+		Each group is endowed the attribute 'name' in case you need to know
+		which group you are working on.
+		
+		The current implementation imposes three requirements on f:
+		
+		* f must return a value that either has the same shape as the input
+		  subframe or can be broadcast to the shape of the input subframe.
+		  For example, f returns a scalar it will be broadcast to have the
+		  same shape as the input subframe.
+		* if this is a DataFrame, f must support application column-by-column
+		  in the subframe. If f also supports application to the entire subframe,
+		  then a fast path is used starting from the second chunk.
+		* f must not mutate groups. Mutation is not supported and may
+		  produce unexpected results.
 		
 		Returns
 		-------
-		transformed : Series
+		Series
+		
+		See also
+		--------
+		aggregate, transform
+		
+		Examples
+		--------
+		
+		# Same shape
+		>>> df = pd.DataFrame({'A' : ['foo', 'bar', 'foo', 'bar',
+		...                           'foo', 'bar'],
+		...                    'B' : ['one', 'one', 'two', 'three',
+		...                          'two', 'two'],
+		...                    'C' : [1, 5, 5, 2, 5, 5],
+		...                    'D' : [2.0, 5., 8., 1., 2., 9.]})
+		>>> grouped = df.groupby('A')
+		>>> grouped.transform(lambda x: (x - x.mean()) / x.std())
+		          C         D
+		0 -1.154701 -0.577350
+		1  0.577350  0.000000
+		2  0.577350  1.154701
+		3 -1.154701 -1.000000
+		4  0.577350 -0.577350
+		5  0.577350  1.000000
+		
+		# Broadcastable
+		>>> grouped.transform(lambda x: x.max() - x.min())
+		   C    D
+		0  4  6.0
+		1  3  8.0
+		2  4  6.0
+		3  3  8.0
+		4  4  6.0
+		5  3  8.0
 	**/
-	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
+	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Shift the time index, using the index's frequency if available.
 		
@@ -1565,13 +1903,25 @@ package pandas.core.groupby;
 	public var tshift : pandas.core.frame.NDFrame;
 	/**
 		    
-		Return np.ndarray of unique values in the object.
-		Significantly faster than numpy.unique. Includes NA values.
-		The order of the original is preserved.
+		Return unique values in the object. Uniques are returned in order
+		of appearance, this does NOT sort. Hash table-based unique.
+		
+		Parameters
+		----------
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques : np.ndarray
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		See Also
+		--------
+		unique
+		Index.unique
+		Series.unique
 		
 		    
 	**/

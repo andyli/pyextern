@@ -51,6 +51,13 @@ package pandas.core.indexing;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(obj:Dynamic, name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -148,7 +155,7 @@ package pandas.core.indexing;
 		ix[['foo', 'bar', 'baz']] -> [i, j, k] (indices of foo, bar, baz)
 		
 		Going by Zen of Python?
-		"In the face of ambiguity, refuse the temptation to guess."
+		'In the face of ambiguity, refuse the temptation to guess.'
 		raise AmbiguousIndexError with integer labels?
 		- No, prefer label-based indexing
 	**/
@@ -170,6 +177,7 @@ package pandas.core.indexing;
 	public function _getitem_iterable(key:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _getitem_lowerdim(tup:Dynamic):Dynamic;
 	public function _getitem_nested_tuple(tup:Dynamic):Dynamic;
+	public function _getitem_scalar(key:Dynamic):Dynamic;
 	public function _getitem_tuple(tup:Dynamic):Dynamic;
 	public function _handle_lowerdim_multi_index_axis0(tup:Dynamic):Dynamic;
 	/**
@@ -184,6 +192,7 @@ package pandas.core.indexing;
 	public function _has_valid_tuple(key:Dynamic):Dynamic;
 	public function _has_valid_type(k:Dynamic, axis:Dynamic):Dynamic;
 	public function _is_nested_tuple_indexer(tup:Dynamic):Dynamic;
+	public function _is_scalar_access(key:Dynamic):Dynamic;
 	/**
 		create the reindex map for our objects, raise the _exception if we
 		can't create the indexer

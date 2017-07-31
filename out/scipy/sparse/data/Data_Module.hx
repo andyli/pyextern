@@ -11,6 +11,7 @@ package scipy.sparse.data;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _create_method(op:Dynamic):Dynamic;
+	static public function _find_missing_index(ind:Dynamic, n:Dynamic):Dynamic;
 	static public var _ufuncs_with_fixed_point_at_zero : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
@@ -20,40 +21,46 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		expm1(x[, out])
+		rad2deg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Calculate ``exp(x) - 1`` for all elements in the array.
+		Convert angles from radians to degrees.
 		
 		Parameters
 		----------
 		x : array_like
-		   Input values.
+		    Angle in radians.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
-		out : ndarray
-		    Element-wise exponential minus one: ``out = exp(x) - 1``.
+		y : ndarray
+		    The corresponding angle in degrees.
 		
 		See Also
 		--------
-		log1p : ``log(1 + x)``, the inverse of expm1.
-		
+		deg2rad : Convert angles from degrees to radians.
+		unwrap : Remove large jumps in angle by wrapping.
 		
 		Notes
 		-----
-		This function provides greater precision than ``exp(x) - 1``
-		for small values of ``x``.
+		.. versionadded:: 1.3.0
+		
+		rad2deg(x) is ``180 * x / pi``.
 		
 		Examples
 		--------
-		The true value of ``exp(1e-10) - 1`` is ``1.00000000005e-10`` to
-		about 32 significant digits. This example shows the superiority of
-		expm1 in this case.
-		
-		>>> np.expm1(1e-10)
-		1.00000000005e-10
-		>>> np.exp(1e-10) - 1
-		1.000000082740371e-10
+		>>> np.rad2deg(np.pi/2)
+		90.0
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

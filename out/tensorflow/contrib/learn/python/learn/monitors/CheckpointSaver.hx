@@ -71,6 +71,13 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	**/
 	public function new(checkpoint_dir:Dynamic, ?save_secs:Dynamic, ?save_steps:Dynamic, ?saver:Dynamic, ?checkpoint_basename:Dynamic, ?scaffold:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -185,6 +192,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	public var run_on_all_workers : Dynamic;
 	/**
 		A setter called automatically by the target estimator.
+		
+		If the estimator is locked, this method does nothing.
 		
 		Args:
 		  estimator: the estimator that this monitor monitors.

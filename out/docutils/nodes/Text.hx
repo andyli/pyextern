@@ -71,6 +71,13 @@ package docutils.nodes;
 	**/
 	public function new(data:Dynamic, ?rawsource:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -254,7 +261,11 @@ package docutils.nodes;
 	/**
 		S.index(sub[, start[, end]]) -> int
 		
-		Like S.find() but raise ValueError when the substring is not found.
+		Return the lowest index in S where substring sub is found, 
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -423,7 +434,11 @@ package docutils.nodes;
 	/**
 		S.rindex(sub[, start[, end]]) -> int
 		
-		Like S.rfind() but raise ValueError when the substring is not found.
+		Return the highest index in S where substring sub is found,
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

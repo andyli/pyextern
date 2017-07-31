@@ -9,12 +9,13 @@ package tensorflow.contrib.graph_editor.reroute;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Make sure the shape and dtype of the two tensor's lists are compatible.
 		
 		Args:
-		  ts0: an object convertible to a list of tf.Tensor.
-		  ts1: an object convertible to a list of tf.Tensor.
+		  ts0: an object convertible to a list of `tf.Tensor`.
+		  ts1: an object convertible to a list of `tf.Tensor`.
 		Raises:
 		  ValueError: if any pair of tensors (same index in ts0 and ts1) have
 		    a dtype or a shape which is not compatible.
@@ -32,8 +33,9 @@ package tensorflow.contrib.graph_editor.reroute;
 		    subgraph using the same rules than the function subgraph.make_view.
 		  mode: reroute mode, see _reroute_ts(...).
 		Returns:
-		  Two new subgraph views with their outputs and inputs swapped.
-		    Note that sgv0 and sgv1 are also modified in place.
+		  A tuple `(sgv0, sgv1)` of subgraph views with their outputs and inputs
+		    swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
 		Raises:
 		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
 		    the same rules than the function subgraph.make_view.
@@ -51,8 +53,8 @@ package tensorflow.contrib.graph_editor.reroute;
 		    subgraph.make_view.
 		  mode: reroute mode, see _reroute_ts(...).
 		Returns:
-		  Two new subgraph views with their inputs swapped.
-		    Note that sgv0 and sgv1 are also modified in place.
+		  A tuple `(sgv0, sgv1)` of subgraph views with their inputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
 		Raises:
 		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
 		    the same rules than the function subgraph.make_view.
@@ -70,8 +72,8 @@ package tensorflow.contrib.graph_editor.reroute;
 		    subgraph.make_view.
 		  mode: reroute mode, see _reroute_ts(...).
 		Returns:
-		  Two new subgraph views with their outputs swapped.
-		    Note that sgv0 and sgv1 are also modified in place.
+		  A tuple `(sgv0, sgv1)` of subgraph views with their outputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
 		Raises:
 		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
 		    the same rules than the function subgraph.make_view.
@@ -94,7 +96,8 @@ package tensorflow.contrib.graph_editor.reroute;
 	/**
 		Reroute the end of the tensors (t0,t1).
 		
-		Warning: this function is directly manipulating the internals of the tf.Graph.
+		Warning: this function is directly manipulating the internals of the
+		`tf.Graph`.
 		
 		Args:
 		  t0: a tf.Tensor.
@@ -138,8 +141,8 @@ package tensorflow.contrib.graph_editor.reroute;
 		Warning: this function is directly manipulating the internals of the tf.Graph.
 		
 		Args:
-		  ts0: an object convertible to a list of tf.Tensor.
-		  ts1: an object convertible to a list of tf.Tensor.
+		  ts0: an object convertible to a list of `tf.Tensor`.
+		  ts1: an object convertible to a list of `tf.Tensor`.
 		  mode: what to do with those tensors: "a->b" or "b<->a" for swaping and
 		    "a->b" or "b->a" for one direction re-routing.
 		  can_modify: iterable of operations which can be modified. Any operation
@@ -150,52 +153,50 @@ package tensorflow.contrib.graph_editor.reroute;
 		Returns:
 		  The number of individual modifications made by the function.
 		Raises:
-		  TypeError: if ts0 or ts1 cannot be converted to a list of tf.Tensor.
-		  TypeError: if can_modify or cannot_modify is not None and cannot be
-		    converted to a list of tf.Operation.
+		  TypeError: if `ts0` or `ts1` cannot be converted to a list of `tf.Tensor`.
+		  TypeError: if `can_modify` or `cannot_modify` is not `None` and cannot be
+		    converted to a list of `tf.Operation`.
 	**/
 	static public function _reroute_ts(ts0:Dynamic, ts1:Dynamic, mode:Dynamic, ?can_modify:Dynamic, ?cannot_modify:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		Add the control inputs cops to co.
+		Add the control inputs cops to op.
 		
 		Warning: this function is directly manipulating the internals of the tf.Graph.
 		
 		Args:
 		  op: a tf.Operation to which the control inputs are added.
-		  cops: an object convertible to a list of tf.Operation.
+		  cops: an object convertible to a list of `tf.Operation`.
 		Raises:
 		  TypeError: if op is not a tf.Operation
 		  ValueError: if any cop in cops is already a control input of op.
 	**/
 	static public function add_control_inputs(op:Dynamic, cops:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Remove the control inputs cops from co.
 		
-		Warning: this function is directly manipulating the internals of the tf.Graph.
+		Warning: this function is directly manipulating the internals of the
+		`tf.Graph`.
 		
 		Args:
-		  op: a tf.Operation from which to remove the control inputs.
-		  cops: an object convertible to a list of tf.Operation.
+		  op: a `tf.Operation` from which to remove the control inputs.
+		  cops: an object convertible to a list of `tf.Operation`.
 		Raises:
-		  TypeError: if op is not a tf.Operation
+		  TypeError: if op is not a `tf.Operation`.
 		  ValueError: if any cop in cops is not a control input of op.
 	**/
 	static public function remove_control_inputs(op:Dynamic, cops:Dynamic):Dynamic;
 	/**
-		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute).
-	**/
-	static public function reroute_a2b(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
-	/**
 		Re-route all the inputs of sgv0 to sgv1 (see reroute_inputs).
 	**/
-	static public function reroute_a2b_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
+	static public function reroute_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
+	/**
+		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute).
+	**/
+	static public function reroute_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		Re-route all the outputs of sgv0 to sgv1 (see _reroute_outputs).
 	**/
-	static public function reroute_a2b_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
+	static public function reroute_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		For each tensor's pair, replace the end of t1 by the end of t0.
 		
@@ -206,65 +207,28 @@ package tensorflow.contrib.graph_editor.reroute;
 		The end of the tensors in ts1 are left dangling.
 		
 		Args:
-		  ts0: an object convertible to a list of tf.Tensor.
-		  ts1: an object convertible to a list of tf.Tensor.
+		  ts0: an object convertible to a list of `tf.Tensor`.
+		  ts1: an object convertible to a list of `tf.Tensor`.
 		  can_modify: iterable of operations which can be modified. Any operation
 		    outside within_ops will be left untouched by this function.
 		  cannot_modify: iterable of operations which cannot be modified. Any
 		    operation within cannot_modify will be left untouched by this function.
 		Returns:
-		  the number of individual modifications made by the function.
+		  The number of individual modifications made by the function.
 		Raises:
 		  TypeError: if ts0 or ts1 cannot be converted to a list of tf.Tensor.
 		  TypeError: if can_modify or cannot_modify is not None and cannot be
 		    converted to a list of tf.Operation.
 	**/
-	static public function reroute_a2b_ts(ts0:Dynamic, ts1:Dynamic, ?can_modify:Dynamic, ?cannot_modify:Dynamic):Dynamic;
-	/**
-		Re-route the inputs and outputs of sgv1 to sgv0 (see _reroute).
-	**/
-	static public function reroute_b2a(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
-	/**
-		Re-route all the inputs of sgv1 to sgv0 (see reroute_inputs).
-	**/
-	static public function reroute_b2a_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
-	/**
-		Re-route all the outputs of sgv1 to sgv0 (see _reroute_outputs).
-	**/
-	static public function reroute_b2a_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
-	/**
-		For each tensor's pair, replace the end of t0 by the end of t1.
-		
-		B0 B1     B0 B1
-		|  |    =>  \|
-		A0 A1     A0 A1
-		
-		The end of the tensors in ts0 are left dangling.
-		
-		Args:
-		  ts0: an object convertible to a list of tf.Tensor.
-		  ts1: an object convertible to a list of tf.Tensor.
-		  can_modify: iterable of operations which can be modified. Any operation
-		    outside within_ops will be left untouched by this function.
-		  cannot_modify: iterable of operations which cannot be modified.
-		    Any operation within cannot_modify will be left untouched by this
-		    function.
-		Returns:
-		  the number of individual modifications made by the function.
-		Raises:
-		  TypeError: if ts0 or ts1 cannot be converted to a list of tf.Tensor.
-		  TypeError: if can_modify or cannot_modify is not None and cannot be
-		    converted to a list of tf.Operation.
-	**/
-	static public function reroute_b2a_ts(ts0:Dynamic, ts1:Dynamic, ?can_modify:Dynamic, ?cannot_modify:Dynamic):Dynamic;
-	/**
-		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute).
-	**/
-	static public function swap(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
+	static public function reroute_ts(ts0:Dynamic, ts1:Dynamic, ?can_modify:Dynamic, ?cannot_modify:Dynamic):Dynamic;
 	/**
 		Swap all the inputs of sgv0 and sgv1 (see reroute_inputs).
 	**/
 	static public function swap_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
+	/**
+		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute).
+	**/
+	static public function swap_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		Swap all the outputs of sgv0 and sgv1 (see _reroute_outputs).
 	**/
@@ -277,15 +241,15 @@ package tensorflow.contrib.graph_editor.reroute;
 		A0 A1     A0 A1
 		
 		Args:
-		  ts0: an object convertible to a list of tf.Tensor.
-		  ts1: an object convertible to a list of tf.Tensor.
+		  ts0: an object convertible to a list of `tf.Tensor`.
+		  ts1: an object convertible to a list of `tf.Tensor`.
 		  can_modify: iterable of operations which can be modified. Any operation
 		    outside within_ops will be left untouched by this function.
 		  cannot_modify: iterable of operations which cannot be modified.
 		    Any operation within cannot_modify will be left untouched by this
 		    function.
 		Returns:
-		  the number of individual modifications made by the function.
+		  The number of individual modifications made by the function.
 		Raises:
 		  TypeError: if ts0 or ts1 cannot be converted to a list of tf.Tensor.
 		  TypeError: if can_modify or cannot_modify is not None and cannot be

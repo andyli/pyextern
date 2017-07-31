@@ -50,6 +50,13 @@ package numpy;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -101,7 +108,7 @@ package numpy;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		accumulate(array, axis=0, dtype=None, out=None)
+		accumulate(array, axis=0, dtype=None, out=None, keepdims=None)
 		
 		Accumulate the result of applying the operator to all elements.
 		
@@ -130,9 +137,16 @@ package numpy;
 		    The data-type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if such is provided, or the
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
+		keepdims : bool
+		    Has no effect. Deprecated, and will be removed in future.
 		
 		Returns
 		-------
@@ -330,7 +344,7 @@ package numpy;
 	**/
 	public var ntypes : Dynamic;
 	/**
-		outer(A, B)
+		outer(A, B, **kwargs)
 		
 		Apply the ufunc `op` to all pairs (a, b) with a in `A` and b in `B`.
 		
@@ -353,6 +367,8 @@ package numpy;
 		    First array
 		B : array_like
 		    Second array
+		kwargs : any
+		    Arguments to pass on to the ufunc. Typically `dtype` or `out`.
 		
 		Returns
 		-------
@@ -432,9 +448,14 @@ package numpy;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -507,9 +528,14 @@ package numpy;
 		    The type used to represent the intermediate results. Defaults
 		    to the data type of the output array if this is provided, or
 		    the data type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		
 		Returns
 		-------

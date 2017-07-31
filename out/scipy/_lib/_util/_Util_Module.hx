@@ -66,12 +66,12 @@ package scipy._lib._util;
 		array([  0,   1,   4,   0,  64, 125])
 		
 		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
-		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		array([   0.,    1.,    4.,   0.,   64.,  125.])
 		
 		>>> a = -np.ones_like(x)
 		>>> _lazyselect([x < 3, x > 3],
 		...             [lambda x, a: x**2, lambda x, a: a * x**3],
-		...             (x, a))
+		...             (x, a), default=np.nan)
 		array([   0.,    1.,    4.,   nan,  -64., -125.])
 	**/
 	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
@@ -89,6 +89,12 @@ package scipy._lib._util;
 		broadcasted together.
 	**/
 	static public function _lazywhere(cond:Dynamic, arrays:Dynamic, f:Dynamic, ?fillvalue:Dynamic, ?f2:Dynamic):Dynamic;
+	/**
+		Return an array equivalent to the input array. If the input
+		array is a view of a much larger array, copy its contents to a
+		newly allocated array. Otherwise, return the input unchaged.
+	**/
+	static public function _prune_array(array:Dynamic):Dynamic;
 	/**
 		Return an array of all value.
 		    
@@ -150,6 +156,6 @@ package scipy._lib._util;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

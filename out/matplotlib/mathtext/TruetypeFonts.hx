@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
 @:pythonImport("matplotlib.mathtext", "TruetypeFonts") extern class TruetypeFonts {
-	static public function CachedFont(font:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -60,6 +59,13 @@ package matplotlib.mathtext;
 	**/
 	public function new(default_font_prop:Dynamic, mathtext_backend:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -115,8 +121,8 @@ package matplotlib.mathtext;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_font(font:Dynamic):Dynamic;
-	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
-	public function _get_offset(cached_font:Dynamic, glyph:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
+	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic, ?math:Dynamic):Dynamic;
+	public function _get_offset(font:Dynamic, glyph:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
 	/**
 		Fix any cyclical references before the object is about
 		to be destroyed.
@@ -151,6 +157,8 @@ package matplotlib.mathtext;
 		
 		*dpi*: current dots-per-inch
 		
+		*math*: whether sym is a math character
+		
 		Returns an object with the following attributes:
 		
 		  - *advance*: The advance distance (in points) of the glyph.
@@ -165,7 +173,7 @@ package matplotlib.mathtext;
 		    the glyph.  This corresponds to TeX's definition of
 		    "height".
 	**/
-	public function get_metrics(font:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
+	public function get_metrics(font:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic, ?math:Dynamic):Dynamic;
 	/**
 		Get the data needed by the backend to render the math
 		expression.  The return value is backend-specific.
@@ -192,7 +200,7 @@ package matplotlib.mathtext;
 	/**
 		Get the xheight for the given *font* and *fontsize*.
 	**/
-	public function get_xheight(font:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
+	public function get_xheight(fontname:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
 	/**
 		Draw a glyph at
 		

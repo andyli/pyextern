@@ -35,8 +35,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    A batch_size * num_true matrix, in which each row contains the
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
-		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to produce per batch.
+		  num_sampled: An `int` that is `>= 1`. Number of candidates to produce.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -51,6 +50,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
@@ -86,6 +86,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (indices, ids, weights).
+		
 		  indices: A `Tensor` of type `int32`. A vector of indices corresponding to rows of true_candidates.
 		  ids: A `Tensor` of type `int64`. A vector of IDs of positions in sampled_candidates that match a true_label
 		    for the row with the corresponding index in indices.
@@ -117,7 +118,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
 		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to randomly sample per batch.
+		    Number of candidates to randomly sample.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -163,6 +164,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
@@ -193,7 +195,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
 		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to randomly sample per batch.
+		    Number of candidates to randomly sample.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -210,6 +212,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
@@ -240,7 +243,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
 		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to randomly sample per batch.
+		    Number of candidates to randomly sample.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -257,6 +260,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
@@ -288,7 +292,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
 		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to randomly sample per batch.
+		    Number of candidates to randomly sample.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -305,6 +309,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
@@ -335,7 +340,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		    IDs of the num_true target_classes in the corresponding original label.
 		  num_true: An `int` that is `>= 1`. Number of true labels per context.
 		  num_sampled: An `int` that is `>= 1`.
-		    Number of candidates to randomly sample per batch.
+		    Number of candidates to randomly sample.
 		  unique: A `bool`.
 		    If unique is true, we sample with rejection, so that all sampled
 		    candidates in a batch are unique. This requires some approximation to
@@ -352,6 +357,7 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
+		
 		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
 		    the ID of a sampled candidate.
 		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing

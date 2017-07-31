@@ -40,17 +40,24 @@ package matplotlib.image;
 	public function __hash__():Dynamic;
 	/**
 		kwargs are identical to those for AxesImage, except
-		that 'interpolation' defaults to 'nearest', and 'bilinear'
-		is the only alternative.
+		that 'nearest' and 'bilinear' are the only supported 'interpolation'
+		options.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		kwargs are identical to those for AxesImage, except
-		that 'interpolation' defaults to 'nearest', and 'bilinear'
-		is the only alternative.
+		that 'nearest' and 'bilinear' are the only supported 'interpolation'
+		options.
 	**/
 	public function new(ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,27 +122,34 @@ package matplotlib.image;
 		with scale parameter.
 	**/
 	public function _draw_unsampled_image(renderer:Dynamic, gc:Dynamic):Dynamic;
-	/**
-		Retuen a transform that does
-		 (x1, y1) -> (x1, y1)
-		 (x2, y2) -> (x2, y2)
-		 (x2, y1) -> (x3, y3)
-		
-		It was intended to derive a skew transform that preserve the
-		lower-left corner (x1, y1) and top-right corner(x2,y2), but
-		change the lower-right-corner(x2, y1) to a new position
-		(x3, y3).
-	**/
-	static public function _get_rotate_and_skew_transform(x1:Dynamic, y1:Dynamic, x2:Dynamic, y2:Dynamic, x3:Dynamic, y3:Dynamic):Dynamic;
-	/**
-		convert numpy array A with given extents ([x1, x2, y1, y2] in
-		data coordinate) into the Image, given the viewlim (should be a
-		bbox instance).  Image will be clipped if the extents is
-		significantly larger than the viewlim.
-	**/
-	public function _get_unsampled_image(A:Dynamic, image_extents:Dynamic, viewlim:Dynamic):Dynamic;
 	static public var _interpd : Dynamic;
 	static public var _interpdr : Dynamic;
+	/**
+		Normalize, rescale and color the image `A` from the given
+		in_bbox (in data space), to the given out_bbox (in pixel
+		space) clipped to the given clip_bbox (also in pixel space),
+		and magnified by the magnification factor.
+		
+		`A` may be a greyscale image (MxN) with a dtype of `float32`,
+		`float64`, `uint16` or `uint8`, or an RGBA image (MxNx4) with
+		a dtype of `float32`, `float64`, or `uint8`.
+		
+		If `unsampled` is True, the image will not be scaled, but an
+		appropriate affine transformation will be returned instead.
+		
+		If `round_to_pixel_border` is True, the output image size will
+		be rounded to the nearest pixel boundary.  This makes the
+		images align correctly with the axes.  It should not be used
+		in cases where you want exact scaling, however, such as
+		FigureImage.
+		
+		Returns the resulting (image, x, y, trans), where (x, y) is
+		the upper left corner of the result in pixel space, and
+		`trans` is the affine transformation from the image to pixel
+		space.
+	**/
+	public function _make_image(A:Dynamic, in_bbox:Dynamic, out_bbox:Dynamic, clip_bbox:Dynamic, ?magnification:Dynamic, ?unsampled:Dynamic, ?round_to_pixel_border:Dynamic):Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -169,6 +183,10 @@ package matplotlib.image;
 		resides in, or *None*.
 	**/
 	public var axes : Dynamic;
+	/**
+		Returns `True` if the image can be composited with its neighbors.
+	**/
+	public function can_composite():Dynamic;
 	/**
 		Call this whenever the mappable is changed so observers can
 		update state
@@ -415,7 +433,7 @@ package matplotlib.image;
 	**/
 	public function is_transform_set():Dynamic;
 	static public var iterpnames : Dynamic;
-	public function make_image(?magnification:Dynamic):Dynamic;
+	public function make_image(renderer:Dynamic, ?magnification:Dynamic, ?unsampled:Dynamic):Dynamic;
 	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -423,9 +441,7 @@ package matplotlib.image;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -464,9 +480,7 @@ package matplotlib.image;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -569,8 +583,8 @@ package matplotlib.image;
 	/**
 		Set the grid for the pixel centers, and the pixel values.
 		
-		  *x* and *y* are 1-D ndarrays of lengths N and M, respectively,
-		     specifying pixel centers
+		  *x* and *y* are monotonic 1-D ndarrays of lengths N and M,
+		     respectively, specifying pixel centers
 		
 		  *A* is an (M,N) ndarray or masked array of values to be
 		    colormapped, or a (M,N,3) RGB array, or a (M,N,4) RGBA
@@ -753,6 +767,25 @@ package matplotlib.image;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Return a normalized rgba array corresponding to *x*.
 		
 		In the normal case, *x* is a 1-D or 2-D sequence of scalars, and
@@ -774,12 +807,15 @@ package matplotlib.image;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.
@@ -792,6 +828,6 @@ package matplotlib.image;
 	/**
 		Write the image to png file with fname
 	**/
-	public function write_png(fname:Dynamic, ?noscale:Dynamic):Dynamic;
+	public function write_png(fname:Dynamic):Dynamic;
 	static public var zorder : Dynamic;
 }

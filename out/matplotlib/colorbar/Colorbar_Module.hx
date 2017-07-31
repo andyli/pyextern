@@ -23,9 +23,7 @@ package matplotlib.colorbar;
 	static public var division : Dynamic;
 	/**
 		Resize and reposition parent axes, and return a child
-		axes suitable for a colorbar::
-		
-		    cax, kw = make_axes(parent, **kw)
+		axes suitable for a colorbar.
 		
 		Keyword arguments may include the following (with defaults):
 		
@@ -80,9 +78,7 @@ package matplotlib.colorbar;
 		    of the parent with a new one.
 		
 		While this function is meant to be compatible with *make_axes*,
-		there could be some minor differences.::
-		
-		    cax, kw = make_axes_gridspec(parent, **kw)
+		there could be some minor differences.
 		
 		Keyword arguments may include the following (with defaults):
 		

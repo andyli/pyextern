@@ -41,11 +41,18 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(variables:Dynamic, params:Dynamic, t_ops:Dynamic, i_ops:Dynamic, tree_num:Dynamic):Dynamic;
+	public function ___init__(variables:Dynamic, params:Dynamic, tree_num:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(variables:Dynamic, params:Dynamic, t_ops:Dynamic, i_ops:Dynamic, tree_num:Dynamic):Void;
+	public function new(variables:Dynamic, params:Dynamic, tree_num:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -154,6 +161,7 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		  The last op in the graph.
 	**/
 	public function average_impurity():Dynamic;
+	public function feature_usage_counts():Dynamic;
 	/**
 		Perform any operations that should be done at the end of an iteration.
 		
@@ -169,14 +177,15 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Constructs a TF graph for evaluating a random tree.
 		
 		Args:
-		  input_data: A tensor or SparseTensor or placeholder for input data.
-		  data_spec: A list of tf.dtype values specifying the original types of
-		    each column.
+		  input_data: A tensor or placeholder for input data.
+		  data_spec: A TensorForestDataSpec proto specifying the original
+		    input columns.
+		  sparse_features: A tf.SparseTensor for sparse input data.
 		
 		Returns:
 		  The last op in the random tree inference graph.
 	**/
-	public function inference_graph(input_data:Dynamic, data_spec:Dynamic):Dynamic;
+	public function inference_graph(input_data:Dynamic, data_spec:Dynamic, ?sparse_features:Dynamic):Dynamic;
 	/**
 		Constructs a TF graph for evaluating the current number of nodes.
 		
@@ -188,18 +197,20 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Constructs a TF graph for training a random tree.
 		
 		Args:
-		  input_data: A tensor or SparseTensor or placeholder for input data.
+		  input_data: A tensor or placeholder for input data.
 		  input_labels: A tensor or placeholder for labels associated with
 		    input_data.
 		  random_seed: The random number generator seed to use for this tree.  0
 		    means use the current time as the seed.
-		  data_spec: A list of tf.dtype values specifying the original types of
-		    each column.
-		  epoch: A tensor or placeholder for the epoch the training data comes from.
+		  data_spec: A data_ops.TensorForestDataSpec object specifying the
+		    original feature/columns of the data.
+		  sparse_features: A tf.SparseTensor for sparse input data.
+		  input_weights: A float tensor or placeholder holding per-input weights,
+		    or None if all inputs are to be weighted equally.
 		
 		Returns:
 		  The last op in the random tree training graph.
 	**/
-	public function training_graph(input_data:Dynamic, input_labels:Dynamic, random_seed:Dynamic, data_spec:Dynamic, ?epoch:Dynamic):Dynamic;
+	public function training_graph(input_data:Dynamic, input_labels:Dynamic, random_seed:Dynamic, data_spec:Dynamic, ?sparse_features:Dynamic, ?input_weights:Dynamic):Dynamic;
 	public function tree_initialization():Dynamic;
 }

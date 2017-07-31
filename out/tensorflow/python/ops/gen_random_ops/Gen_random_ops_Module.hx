@@ -9,15 +9,7 @@ package tensorflow.python.ops.gen_random_ops;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __parameterized_truncated_normal_outputs : Dynamic;
-	static public var __random_gamma_outputs : Dynamic;
-	static public var __random_shuffle_outputs : Dynamic;
-	static public var __random_standard_normal_outputs : Dynamic;
-	static public var __random_uniform_int_outputs : Dynamic;
-	static public var __random_uniform_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __truncated_normal_outputs : Dynamic;
-	static public var _multinomial_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Outputs random values from a normal distribution. The parameters may each be a
@@ -80,6 +72,42 @@ package tensorflow.python.ops.gen_random_ops;
 		  `alpha[i0, i1, ...iN]`. The dtype of the output matches the dtype of alpha.
 	**/
 	static public function _random_gamma(shape:Dynamic, alpha:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Outputs random values from the Poisson distribution(s) described by rate.
+		
+		This op uses two algorithms, depending on rate. If rate >= 10, then
+		the algorithm by Hormann is used to acquire samples via
+		transformation-rejection.
+		See http://www.sciencedirect.com/science/article/pii/0167668793909974.
+		
+		Otherwise, Knuth's algorithm is used to acquire samples via multiplying uniform
+		random variables.
+		See Donald E. Knuth (1969). Seminumerical Algorithms. The Art of Computer
+		Programming, Volume 2. Addison Wesley
+		
+		Args:
+		  shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D integer tensor. Shape of independent samples to draw from each
+		    distribution described by the shape parameters given in rate.
+		  rate: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		    A tensor in which each scalar is a "rate" parameter describing the
+		    associated poisson distribution.
+		  seed: An optional `int`. Defaults to `0`.
+		    If either `seed` or `seed2` are set to be non-zero, the random number
+		    generator is seeded by the given seed.  Otherwise, it is seeded by a
+		    random seed.
+		  seed2: An optional `int`. Defaults to `0`.
+		    A second seed to avoid seed collision.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `rate`.
+		  A tensor with shape `shape + shape(rate)`. Each slice
+		  `[:, ..., :, i0, i1, ...iN]` contains the samples drawn for
+		  `rate[i0, i1, ...iN]`. The dtype of the output matches the dtype of
+		  rate.
+	**/
+	static public function _random_poisson(shape:Dynamic, rate:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Randomly shuffles a tensor along its first dimension.
 		

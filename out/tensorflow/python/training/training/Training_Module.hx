@@ -1,9 +1,50 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.training;
 @:pythonImport("tensorflow.python.training.training") extern class Training_Module {
-	static public var DESCRIPTOR : Dynamic;
+	/**
+		Creates a `MonitoredSession` for training.
+		
+		For a chief, this utility sets proper session initializer/restorer. It also
+		creates hooks related to checkpoint and summary saving. For workers, this
+		utility sets proper session creator which waits for the chief to
+		initialize/restore.
+		
+		
+		Args:
+		  master: `String` the TensorFlow master to use.
+		  is_chief: If `True`, it will take care of initialization and recovery the
+		    underlying TensorFlow session. If `False`, it will wait on a chief to
+		    initialize or recover the TensorFlow session.
+		  checkpoint_dir: A string.  Optional path to a directory where to restore
+		    variables.
+		  scaffold: A `Scaffold` used for gathering or building supportive ops. If
+		    not specified, a default one is created. It's used to finalize the graph.
+		  hooks: Optional list of `SessionRunHook` objects.
+		  chief_only_hooks: list of `SessionRunHook` objects. Activate these hooks if
+		    `is_chief==True`, ignore otherwise.
+		  save_checkpoint_secs: The frequency, in seconds, that a checkpoint is saved
+		    using a default checkpoint saver. If `save_checkpoint_secs` is set to
+		    `None`, then the default checkpoint saver isn't used.
+		  save_summaries_steps: The frequency, in number of global steps, that the
+		    summaries are written to disk using a default summary saver. If both
+		    `save_summaries_steps` and `save_summaries_secs` are set to `None`, then
+		    the default summary saver isn't used.
+		  save_summaries_secs: The frequency, in secs, that the summaries are written
+		    to disk using a default summary saver.  If both `save_summaries_steps` and
+		    `save_summaries_secs` are set to `None`, then the default summary saver
+		    isn't used.
+		  config: an instance of `tf.ConfigProto` proto used to configure the session.
+		    It's the `config` argument of constructor of `tf.Session`.
+		  stop_grace_period_secs: Number of seconds given to threads to stop after
+		    `close()` has been called.
+		  log_step_count_steps: The frequency, in number of global steps, that the
+		    global step/sec is logged.
+		
+		Returns:
+		  A `MonitoredSession` object.
+	**/
+	static public function MonitoredTrainingSession(?master:Dynamic, ?is_chief:Dynamic, ?checkpoint_dir:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?save_summaries_secs:Dynamic, ?config:Dynamic, ?stop_grace_period_secs:Dynamic, ?log_step_count_steps:Dynamic):Dynamic;
 	static public function NewCheckpointReader(filepattern:Dynamic):Dynamic;
-	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -12,7 +53,7 @@ package tensorflow.python.training.training;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Adds a `QueueRunner` to a collection in the graph.
 		
@@ -30,6 +71,13 @@ package tensorflow.python.training.training;
 	**/
 	static public function add_queue_runner(qr:Dynamic, ?collection:Dynamic):Dynamic;
 	/**
+		Asserts `global_step_tensor` is a scalar int `Variable` or `Tensor`.
+		
+		Args:
+		  global_step_tensor: `Tensor` to test.
+	**/
+	static public function assert_global_step(global_step_tensor:Dynamic):Dynamic;
+	/**
 		Basic loop to train a model.
 		
 		Calls `train_step_fn` in a loop to train a model.  The function is called as:
@@ -42,7 +90,7 @@ package tensorflow.python.training.training;
 		typically runs one training step in the session.
 		
 		Args:
-		  supervisor: `tf.Supervisor` to run the training services.
+		  supervisor: `tf.train.Supervisor` to run the training services.
 		  train_step_fn: Callable to execute one training step.  Called
 		    repeatedly as `train_step_fn(session, *args **kwargs)`.
 		  args: Optional positional arguments passed to `train_step_fn`.
@@ -67,7 +115,7 @@ package tensorflow.python.training.training;
 		
 		If `enqueue_many` is `True`, `tensors` is assumed to represent a batch of
 		examples, where the first dimension is indexed by example, and all members of
-		`tensor_list` should have the same size in the first dimension.  If an input
+		`tensors` should have the same size in the first dimension.  If an input
 		tensor has shape `[*, x, y, z]`, the output will have shape `[batch_size, x,
 		y, z]`.  The `capacity` argument controls the how long the prefetching is
 		allowed to grow the queues.
@@ -101,11 +149,12 @@ package tensorflow.python.training.training;
 		Args:
 		  tensors: The list or dictionary of tensors to enqueue.
 		  batch_size: The new batch size pulled from the queue.
-		  num_threads: The number of threads enqueuing `tensor_list`.
+		  num_threads: The number of threads enqueuing `tensors`.  The batching will
+		    be nondeterministic if `num_threads > 1`.
 		  capacity: An integer. The maximum number of elements in the queue.
-		  enqueue_many: Whether each tensor in `tensor_list` is a single example.
+		  enqueue_many: Whether each tensor in `tensors` is a single example.
 		  shapes: (Optional) The shapes for each example.  Defaults to the
-		    inferred shapes for `tensor_list`.
+		    inferred shapes for `tensors`.
 		  dynamic_pad: Boolean.  Allow variable dimensions in input shapes.
 		    The given dimensions are padded upon dequeue so that tensors within a
 		    batch have the same shapes.
@@ -116,7 +165,8 @@ package tensorflow.python.training.training;
 		  name: (Optional) A name for the operations.
 		
 		Returns:
-		  A list or dictionary of tensors with the same types as `tensors`.
+		  A list or dictionary of tensors with the same types as `tensors` (except if
+		  the input is a list of one element, then it returns a tensor, not a list).
 		
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
@@ -127,8 +177,11 @@ package tensorflow.python.training.training;
 		Runs a list of tensors to fill a queue to create batches of examples.
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
-		dictionaries of tensors.  Each element in the list is treated similarily
+		dictionaries of tensors.  Each element in the list is treated similarly
 		to the `tensors` argument of `tf.train.batch()`.
+		
+		WARNING: This function is nondeterministic, since it starts a separate thread
+		for each tensor.
 		
 		Enqueues a different list of tensors in different threads.
 		Implemented using a queue -- a `QueueRunner` for the queue
@@ -206,7 +259,35 @@ package tensorflow.python.training.training;
 		    inferred from the elements of `tensor_list_list`.
 	**/
 	static public function batch_join(tensors_list:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	/**
+		Checks whether a V1 or V2 checkpoint exists with the specified prefix.
+		
+		This is the recommended way to check if a checkpoint exists, since it takes
+		into account the naming difference between V1 and V2 formats.
+		
+		Args:
+		  checkpoint_prefix: the prefix of a V1 or V2 checkpoint, with V2 taking
+		    priority.  Typically the result of `Saver.save()` or that of
+		    `tf.train.latest_checkpoint()`, regardless of sharded/non-sharded or
+		    V1/V2.
+		Returns:
+		  A bool, true iff a checkpoint referred to by `checkpoint_prefix` exists.
+	**/
+	static public function checkpoint_exists(checkpoint_prefix:Dynamic):Dynamic;
+	/**
+		Create global step tensor in graph.
+		
+		Args:
+		  graph: The graph in which to create the global step tensor. If missing,
+		    use default graph.
+		
+		Returns:
+		  Global step tensor.
+		
+		Raises:
+		  ValueError: if global step tensor is already defined.
+	**/
+	static public function create_global_step(?graph:Dynamic):Dynamic;
 	static public function do_quantize_training_on_graphdef(input_graph:Dynamic, num_bits:Dynamic):Dynamic;
 	/**
 		Applies exponential decay to the learning rate.
@@ -251,20 +332,23 @@ package tensorflow.python.training.training;
 		    Must be positive.  See the decay computation above.
 		  decay_rate: A scalar `float32` or `float64` `Tensor` or a
 		    Python number.  The decay rate.
-		  staircase: Boolean.  It `True` decay the learning rate at discrete intervals
-		  name: String.  Optional name of the operation.  Defaults to 
-		    'ExponentialDecay'
+		  staircase: Boolean.  If `True` decay the learning rate at discrete intervals
+		  name: String.  Optional name of the operation.  Defaults to
+		    'ExponentialDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function exponential_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns `MetaGraphDef` proto. Optionally writes it to filename.
 		
 		This function exports the graph, saver, and collection objects into
-		`MetaGraphDef` protocol buffer with the intension of it being imported
+		`MetaGraphDef` protocol buffer with the intention of it being imported
 		at a later time or location to restart training, run inference, or be
 		a subgraph.
 		
@@ -276,11 +360,22 @@ package tensorflow.python.training.training;
 		  saver_def: `SaverDef` protocol buffer.
 		  collection_list: List of string keys to collect.
 		  as_text: If `True`, writes the `MetaGraphDef` as an ASCII proto.
+		  graph: The `Graph` to import into. If `None`, use the default graph.
+		  export_scope: Optional `string`. Name scope under which to extract
+		    the subgraph. The scope name will be striped from the node definitions
+		    for easy import later into new name scopes. If `None`, the whole graph
+		    is exported. graph_def and export_scope cannot both be specified.
+		  clear_devices: Whether or not to clear the device field for an `Operation`
+		    or `Tensor` during export.
+		  **kwargs: Optional keyed arguments.
 		
 		Returns:
 		  A `MetaGraphDef` proto.
+		
+		Raises:
+		  ValueError: When the `GraphDef` is larger than 2GB.
 	**/
-	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic):Dynamic;
+	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?graph:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates a checkpoint state proto.
 		
@@ -298,6 +393,24 @@ package tensorflow.python.training.training;
 		  relative paths to the current save_dir.
 	**/
 	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic):Dynamic;
+	/**
+		Returns the mtimes (modification timestamps) of the checkpoints.
+		
+		Globs for the checkpoints pointed to by `checkpoint_prefixes`.  If the files
+		exist, collect their mtime.  Both V2 and V1 checkpoints are considered, in
+		that priority.
+		
+		This is the recommended way to get the mtimes, since it takes into account
+		the naming difference between V1 and V2 formats.
+		
+		Args:
+		  checkpoint_prefixes: a list of checkpoint paths, typically the results of
+		    `Saver.save()` or those of `tf.train.latest_checkpoint()`, regardless of
+		    sharded/non-sharded or V1/V2.
+		Returns:
+		  A list of mtimes (in microseconds) of the found checkpoints.
+	**/
+	static public function get_checkpoint_mtimes(checkpoint_prefixes:Dynamic):Dynamic;
 	/**
 		Returns CheckpointState proto from the "checkpoint" file.
 		
@@ -318,6 +431,34 @@ package tensorflow.python.training.training;
 	**/
 	static public function get_checkpoint_state(checkpoint_dir:Dynamic, ?latest_filename:Dynamic):Dynamic;
 	/**
+		Get the global step tensor.
+		
+		The global step tensor must be an integer variable. We first try to find it
+		in the collection `GLOBAL_STEP`, or by name `global_step:0`.
+		
+		Args:
+		  graph: The graph to find the global step in. If missing, use default graph.
+		
+		Returns:
+		  The global step variable, or `None` if none was found.
+		
+		Raises:
+		  TypeError: If the global step tensor has a non-integer type, or if it is not
+		    a `Variable`.
+	**/
+	static public function get_global_step(?graph:Dynamic):Dynamic;
+	/**
+		Returns and create (if necessary) the global step tensor.
+		
+		Args:
+		  graph: The graph in which to create the global step tensor. If missing, use
+		    default graph.
+		
+		Returns:
+		  The global step tensor.
+	**/
+	static public function get_or_create_global_step(?graph:Dynamic):Dynamic;
+	/**
 		Small helper to get the global step.
 		
 		```python
@@ -326,7 +467,6 @@ package tensorflow.python.training.training;
 		# Creates a session.
 		sess = tf.Session()
 		# Initializes the variable.
-		sess.run(global_step_tensor.initializer)
 		print('global_step: %s' % tf.train.global_step(sess, global_step_tensor))
 		
 		global_step: 10
@@ -395,6 +535,11 @@ package tensorflow.python.training.training;
 		Args:
 		  meta_graph_or_file: `MetaGraphDef` protocol buffer or filename (including
 		    the path) containing a `MetaGraphDef`.
+		  clear_devices: Whether or not to clear the device field for an `Operation`
+		    or `Tensor` during import.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initializing from protocol buffer.
+		  **kwargs: Optional keyed arguments.
 		
 		Returns:
 		  A saver constructed from `saver_def` in `MetaGraphDef` or None.
@@ -402,9 +547,12 @@ package tensorflow.python.training.training;
 		  A None value is returned if no variables exist in the `MetaGraphDef`
 		  (i.e., there are no variables to restore).
 	**/
-	static public function import_meta_graph(meta_graph_or_file:Dynamic):Dynamic;
+	static public function import_meta_graph(meta_graph_or_file:Dynamic, ?clear_devices:Dynamic, ?import_scope:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Output the rows of `input_tensor` to a queue for an input pipeline.
+		
+		Note: if `num_epochs` is not `None`, this function creates local counter
+		`epochs`. Use `local_variables_initializer()` to initialize local variables.
 		
 		Args:
 		  input_tensor: A tensor with the rows to produce. Must be at least
@@ -417,7 +565,7 @@ package tensorflow.python.training.training;
 		    `OutOfRange` error. If not specified, `input_producer` can cycle through
 		    the rows of `input_tensor` an unlimited number of times.
 		  shuffle: (Optional.) A boolean. If true, the rows are randomly shuffled
-		    within each eopch.
+		    within each epoch.
 		  seed: (Optional.) An integer. The seed to use if `shuffle` is true.
 		  capacity: (Optional.) The capacity of the queue to be used for buffering
 		    the input.
@@ -426,6 +574,7 @@ package tensorflow.python.training.training;
 		  summary_name: (Optional.) If set, a scalar summary for the current queue
 		    size will be generated, using this name as part of the tag.
 		  name: (Optional.) A name for queue.
+		  cancel_op: (Optional.) Cancel op for the queue
 		
 		Returns:
 		  A queue with the output rows.  A `QueueRunner` for the queue is
@@ -435,7 +584,7 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the shape of the input cannot be inferred from the arguments.
 	**/
-	static public function input_producer(input_tensor:Dynamic, ?element_shape:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?summary_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function input_producer(input_tensor:Dynamic, ?element_shape:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?summary_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
 	/**
 		Applies inverse time decay to the initial learning rate.
 		
@@ -472,15 +621,19 @@ package tensorflow.python.training.training;
 		    Python number.  The initial learning rate.
 		  global_step: A Python number.
 		    Global step to use for the decay computation.  Must not be negative.
+		  decay_steps: How often to apply decay.
 		  decay_rate: A Python number.  The decay rate.
+		  staircase: Whether to apply decay in a discrete staircase, as opposed to
+		    continuous, fashion.
 		  name: String.  Optional name of the operation.  Defaults to
-		    'InverseTimeDecay'
+		    'InverseTimeDecay'.
 		
-		with ops.op_scope([learning_rate, global_step, decay_rate],
-		                  name, "InverseTimeDecay") as name:
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function inverse_time_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -499,6 +652,9 @@ package tensorflow.python.training.training;
 	/**
 		Returns tensor `num_epochs` times and then raises an `OutOfRange` error.
 		
+		Note: creates local counter `epochs`. Use `local_variables_initializer()` to
+		initialize local variables.
+		
 		Args:
 		  tensor: Any `Tensor`.
 		  num_epochs: A positive integer (optional).  If specified, limits the number
@@ -513,34 +669,163 @@ package tensorflow.python.training.training;
 	**/
 	static public function limit_epochs(tensor:Dynamic, ?num_epochs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Generate `__all__` from the docstring of one or more modules.
-		
-		Usage: `make_all(__name__)` or
-		`make_all(__name__, [sys.modules(__name__), other_module])`. The doc string
-		modules must each a docstring, and `__all__` will contain all symbols with
-		`@@` references, where that symbol currently exists in the module named
-		`module_name`.
-		
-		Args:
-		  module_name: The name of the module (usually `__name__`).
-		  doc_string_modules: a list of modules from which to take docstring.
-		  If None, then a list containing only the module named `module_name` is used.
-		
-		Returns:
-		  A list suitable for use as `__all__`.
-	**/
-	static public function make_all(module_name:Dynamic, ?doc_string_modules:Dynamic):Dynamic;
-	/**
 		Save the list of files matching pattern, so it is only computed once.
 		
 		Args:
-		  pattern: A file pattern (glob).
+		  pattern: A file pattern (glob), or 1D tensor of file patterns.
 		  name: A name for the operations (optional).
 		
 		Returns:
-		  A variable that is initialized to the list of files matching pattern.
+		  A variable that is initialized to the list of files matching the pattern(s).
 	**/
 	static public function match_filenames_once(pattern:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Conditionally creates batches of tensors based on `keep_input`.
+		
+		See docstring in `batch` for more details.
+		
+		Args:
+		  tensors: The list or dictionary of tensors to enqueue.
+		  keep_input: A `bool` Tensor.  This tensor controls whether the input is
+		    added to the queue or not.  If it is a scalar and evaluates `True`, then
+		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
+		    is `True`, then each example is added to the queue only if the
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
+		  batch_size: The new batch size pulled from the queue.
+		  num_threads: The number of threads enqueuing `tensors`.  The batching will
+		    be nondeterministic if `num_threads > 1`.
+		  capacity: An integer. The maximum number of elements in the queue.
+		  enqueue_many: Whether each tensor in `tensors` is a single example.
+		  shapes: (Optional) The shapes for each example.  Defaults to the
+		    inferred shapes for `tensors`.
+		  dynamic_pad: Boolean.  Allow variable dimensions in input shapes.
+		    The given dimensions are padded upon dequeue so that tensors within a
+		    batch have the same shapes.
+		  allow_smaller_final_batch: (Optional) Boolean. If `True`, allow the final
+		    batch to be smaller if there are insufficient items left in the queue.
+		  shared_name: (Optional). If set, this queue will be shared under the given
+		    name across multiple sessions.
+		  name: (Optional) A name for the operations.
+		
+		Returns:
+		  A list or dictionary of tensors with the same types as `tensors`.
+		
+		Raises:
+		  ValueError: If the `shapes` are not specified, and cannot be
+		    inferred from the elements of `tensors`.
+	**/
+	static public function maybe_batch(tensors:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?num_threads:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Runs a list of tensors to conditionally fill a queue to create batches.
+		
+		See docstring in `batch_join` for more details.
+		
+		Args:
+		  tensors_list: A list of tuples or dictionaries of tensors to enqueue.
+		  keep_input: A `bool` Tensor.  This tensor controls whether the input is
+		    added to the queue or not.  If it is a scalar and evaluates `True`, then
+		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
+		    is `True`, then each example is added to the queue only if the
+		    corresonding value in `keep_input` is `True`. This tensor essentially acts
+		    as a filtering mechanism.
+		  batch_size: An integer. The new batch size pulled from the queue.
+		  capacity: An integer. The maximum number of elements in the queue.
+		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
+		    example.
+		  shapes: (Optional) The shapes for each example.  Defaults to the
+		    inferred shapes for `tensor_list_list[i]`.
+		  dynamic_pad: Boolean.  Allow variable dimensions in input shapes.
+		    The given dimensions are padded upon dequeue so that tensors within a
+		    batch have the same shapes.
+		  allow_smaller_final_batch: (Optional) Boolean. If `True`, allow the final
+		    batch to be smaller if there are insufficient items left in the queue.
+		  shared_name: (Optional) If set, this queue will be shared under the given
+		    name across multiple sessions.
+		  name: (Optional) A name for the operations.
+		
+		Returns:
+		  A list or dictionary of tensors with the same number and types as
+		  `tensors_list[i]`.
+		
+		Raises:
+		  ValueError: If the `shapes` are not specified, and cannot be
+		    inferred from the elements of `tensor_list_list`.
+	**/
+	static public function maybe_batch_join(tensors_list:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Creates batches by randomly shuffling conditionally-enqueued tensors.
+		
+		See docstring in `shuffle_batch` for more details.
+		
+		Args:
+		  tensors: The list or dictionary of tensors to enqueue.
+		  batch_size: The new batch size pulled from the queue.
+		  capacity: An integer. The maximum number of elements in the queue.
+		  min_after_dequeue: Minimum number elements in the queue after a
+		    dequeue, used to ensure a level of mixing of elements.
+		  keep_input: A `bool` Tensor.  This tensor controls whether the input is
+		    added to the queue or not.  If it is a scalar and evaluates `True`, then
+		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
+		    is `True`, then each example is added to the queue only if the
+		    corresonding value in `keep_input` is `True`. This tensor essentially acts
+		    as a filtering mechanism.
+		  num_threads: The number of threads enqueuing `tensor_list`.
+		  seed: Seed for the random shuffling within the queue.
+		  enqueue_many: Whether each tensor in `tensor_list` is a single example.
+		  shapes: (Optional) The shapes for each example.  Defaults to the
+		    inferred shapes for `tensor_list`.
+		  allow_smaller_final_batch: (Optional) Boolean. If `True`, allow the final
+		    batch to be smaller if there are insufficient items left in the queue.
+		  shared_name: (Optional) If set, this queue will be shared under the given
+		    name across multiple sessions.
+		  name: (Optional) A name for the operations.
+		
+		Returns:
+		  A list or dictionary of tensors with the types as `tensors`.
+		
+		Raises:
+		  ValueError: If the `shapes` are not specified, and cannot be
+		    inferred from the elements of `tensors`.
+	**/
+	static public function maybe_shuffle_batch(tensors:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Create batches by randomly shuffling conditionally-enqueued tensors.
+		
+		See docstring in `shuffle_batch_join` for more details.
+		
+		Args:
+		  tensors_list: A list of tuples or dictionaries of tensors to enqueue.
+		  batch_size: An integer. The new batch size pulled from the queue.
+		  capacity: An integer. The maximum number of elements in the queue.
+		  min_after_dequeue: Minimum number elements in the queue after a
+		    dequeue, used to ensure a level of mixing of elements.
+		  keep_input: A `bool` Tensor.  This tensor controls whether the input is
+		    added to the queue or not.  If it is a scalar and evaluates `True`, then
+		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
+		    is `True`, then each example is added to the queue only if the
+		    corresonding value in `keep_input` is `True`. This tensor essentially acts
+		    as a filtering mechanism.
+		  seed: Seed for the random shuffling within the queue.
+		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
+		    example.
+		  shapes: (Optional) The shapes for each example.  Defaults to the
+		    inferred shapes for `tensors_list[i]`.
+		  allow_smaller_final_batch: (Optional) Boolean. If `True`, allow the final
+		    batch to be smaller if there are insufficient items left in the queue.
+		  shared_name: (optional). If set, this queue will be shared under the given
+		    name across multiple sessions.
+		  name: (Optional) A name for the operations.
+		
+		Returns:
+		  A list or dictionary of tensors with the same number and types as
+		  `tensors_list[i]`.
+		
+		Raises:
+		  ValueError: If the `shapes` are not specified, and cannot be
+		    inferred from the elements of `tensors_list`.
+	**/
+	static public function maybe_shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Applies natural exponential decay to the initial learning rate.
 		
@@ -556,7 +841,7 @@ package tensorflow.python.training.training;
 		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)
 		```
 		
-		Example: decay exponetially with a base of 0.96:
+		Example: decay exponentially with a base of 0.96:
 		
 		```python
 		...
@@ -577,13 +862,19 @@ package tensorflow.python.training.training;
 		    Python number.  The initial learning rate.
 		  global_step: A Python number.
 		    Global step to use for the decay computation.  Must not be negative.
+		  decay_steps: How often to apply decay.
 		  decay_rate: A Python number.  The decay rate.
+		  staircase: Whether to apply decay in a discrete staircase, as opposed to
+		    continuous, fashion.
 		  name: String.  Optional name of the operation.  Defaults to
-		    'ExponentialTimeDecay'
+		    'ExponentialTimeDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function natural_exp_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -616,6 +907,10 @@ package tensorflow.python.training.training;
 		  A 0-D Tensor. Its value is `values[0]` when `x <= boundaries[0]`,
 		  `values[1]` when `x > boundaries[0]` and `x <= boundaries[1]`, ...,
 		  and values[-1] when `x > boundaries[-1]`.
+		
+		Raises:
+		  ValueError: if types of `x` and `buondaries` do not match, or types of all
+		      `values` do not match.
 	**/
 	static public function piecewise_constant(x:Dynamic, boundaries:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -678,18 +973,24 @@ package tensorflow.python.training.training;
 		  end_learning_rate: A scalar `float32` or `float64` `Tensor` or a
 		    Python number.  The minimal end learning rate.
 		  power: A scalar `float32` or `float64` `Tensor` or a
-		    Python number.  The power of the polynomial. Defaults to sqrt, i.e. 0.5.
+		    Python number.  The power of the polynomial. Defaults to linear, 1.0.
 		  cycle: A boolean, whether or not it should cycle beyond decay_steps.
-		  name: String.  Optional name of the operation. Defaults to 'PolynomialDecay'
+		  name: String.  Optional name of the operation. Defaults to
+		    'PolynomialDecay'.
 		
 		Returns:
 		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
 		  learning rate.
+		
+		Raises:
+		  ValueError: if `global_step` is not supplied.
 	**/
 	static public function polynomial_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?end_learning_rate:Dynamic, ?power:Dynamic, ?cycle:Dynamic, ?name:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Produces the integers from 0 to limit-1 in a queue.
+		
+		Note: if `num_epochs` is not `None`, this function creates local counter
+		`epochs`. Use `local_variables_initializer()` to initialize local variables.
 		
 		Args:
 		  limit: An int32 scalar tensor.
@@ -720,6 +1021,12 @@ package tensorflow.python.training.training;
 		by a more inner context. Currently the fields are (job, task, cpu/gpu).
 		
 		If `cluster` is `None`, and `ps_tasks` is 0, the returned function is a no-op.
+		Otherwise, the value of `ps_tasks` is derived from `cluster`.
+		
+		By default, only Variable ops are placed on ps tasks, and the placement
+		strategy is round-robin over all ps tasks. A custom `ps_strategy` may be used
+		to do more intelligent placement, such as
+		`tf.contrib.training.GreedyLoadBalancingStrategy`.
 		
 		For example,
 		
@@ -729,7 +1036,7 @@ package tensorflow.python.training.training;
 		cluster_spec = {
 		    "ps": ["ps0:2222", "ps1:2222"],
 		    "worker": ["worker0:2222", "worker1:2222", "worker2:2222"]}
-		with tf.device(tf.replica_device_setter(cluster=cluster_spec)):
+		with tf.device(tf.train.replica_device_setter(cluster=cluster_spec)):
 		  # Build your graph
 		  v1 = tf.Variable(...)  # assigned to /job:ps/task:0
 		  v2 = tf.Variable(...)  # assigned to /job:ps/task:1
@@ -738,7 +1045,8 @@ package tensorflow.python.training.training;
 		```
 		
 		Args:
-		  ps_tasks: Number of tasks in the `ps` job.
+		  ps_tasks: Number of tasks in the `ps` job.  Ignored if `cluster` is
+		    provided.
 		  ps_device: String.  Device of the `ps` job.  If empty no `ps` job is used.
 		    Defaults to `ps`.
 		  worker_device: String.  Device of the `worker` job.  If empty no `worker`
@@ -747,15 +1055,124 @@ package tensorflow.python.training.training;
 		    device constraint is completely unset. merges device specification rather
 		    than overriding them.
 		  cluster: `ClusterDef` proto or `ClusterSpec`.
-		  ps_ops: List of `Operation` objects that need to be placed on `ps` devices.
+		  ps_ops: List of strings representing `Operation` types that need to be
+		    placed on `ps` devices.  If `None`, defaults to `["Variable"]`.
+		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
+		    `ps_ops`), that takes the `Operation` and returns the ps task index to
+		    use.  If `None`, defaults to a round-robin strategy across all `ps`
+		    devices.
 		
 		Returns:
 		  A function to pass to `tf.device()`.
 		
 		Raises:
-		  TypeError if `cluster` is not a dictionary or `ClusterDef` protocol buffer.
+		  TypeError if `cluster` is not a dictionary or `ClusterDef` protocol buffer,
+		  or if `ps_strategy` is provided but not a callable.
 	**/
-	static public function replica_device_setter(?ps_tasks:Dynamic, ?ps_device:Dynamic, ?worker_device:Dynamic, ?merge_devices:Dynamic, ?cluster:Dynamic, ?ps_ops:Dynamic):Dynamic;
+	static public function replica_device_setter(?ps_tasks:Dynamic, ?ps_device:Dynamic, ?worker_device:Dynamic, ?merge_devices:Dynamic, ?cluster:Dynamic, ?ps_ops:Dynamic, ?ps_strategy:Dynamic):Dynamic;
+	/**
+		Computes fingerprints of the input strings.
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    vector of strings to compute fingerprints on.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `int64`.
+		  a (N,2) shaped matrix where N is the number of elements in the input
+		  vector. Each row contains the low and high parts of the fingerprint.
+	**/
+	static public function sdca_fprint(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Distributed version of Stochastic Dual Coordinate Ascent (SDCA) optimizer for
+		
+		linear models with L1 + L2 regularization. As global optimization objective is
+		strongly-convex, the optimizer optimizes the dual objective at each step. The
+		optimizer applies each update one example at a time. Examples are sampled
+		uniformly, and the optimizer is learning rate free and enjoys linear convergence
+		rate.
+		
+		[Proximal Stochastic Dual Coordinate Ascent](http://arxiv.org/pdf/1211.2717v1.pdf).<br>
+		Shai Shalev-Shwartz, Tong Zhang. 2012
+		
+		$$Loss Objective = \sum f_{i} (wx_{i}) + (l2 / 2) * |w|^2 + l1 * |w|$$
+		
+		[Adding vs. Averaging in Distributed Primal-Dual Optimization](http://arxiv.org/abs/1502.03508).<br>
+		Chenxin Ma, Virginia Smith, Martin Jaggi, Michael I. Jordan,
+		Peter Richtarik, Martin Takac. 2015
+		
+		[Stochastic Dual Coordinate Ascent with Adaptive Probabilities](https://arxiv.org/abs/1502.08053).<br>
+		Dominik Csiba, Zheng Qu, Peter Richtarik. 2015
+		
+		Args:
+		  sparse_example_indices: A list of `Tensor` objects with type `int64`.
+		    a list of vectors which contain example indices.
+		  sparse_feature_indices: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `int64`.
+		    a list of vectors which contain feature indices.
+		  sparse_feature_values: A list of `Tensor` objects with type `float32`.
+		    a list of vectors which contains feature value
+		    associated with each feature group.
+		  dense_features: A list of `Tensor` objects with type `float32`.
+		    a list of matrices which contains the dense feature values.
+		  example_weights: A `Tensor` of type `float32`.
+		    a vector which contains the weight associated with each
+		    example.
+		  example_labels: A `Tensor` of type `float32`.
+		    a vector which contains the label/target associated with each
+		    example.
+		  sparse_indices: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `int64`.
+		    a list of vectors where each value is the indices which has
+		    corresponding weights in sparse_weights. This field maybe omitted for the
+		    dense approach.
+		  sparse_weights: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `float32`.
+		    a list of vectors where each value is the weight associated with
+		    a sparse feature group.
+		  dense_weights: A list with the same length as `dense_features` of `Tensor` objects with type `float32`.
+		    a list of vectors where the values are the weights associated
+		    with a dense feature group.
+		  example_state_data: A `Tensor` of type `float32`.
+		    a list of vectors containing the example state data.
+		  loss_type: A `string` from: `"logistic_loss", "squared_loss", "hinge_loss", "smooth_hinge_loss"`.
+		    Type of the primal loss. Currently SdcaSolver supports logistic,
+		    squared and hinge losses.
+		  l1: A `float`. Symmetric l1 regularization strength.
+		  l2: A `float`. Symmetric l2 regularization strength.
+		  num_loss_partitions: An `int` that is `>= 1`.
+		    Number of partitions of the global loss function.
+		  num_inner_iterations: An `int` that is `>= 1`.
+		    Number of iterations per mini-batch.
+		  adaptative: An optional `bool`. Defaults to `False`.
+		    Whether to use Adapative SDCA for the inner loop.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (out_example_state_data, out_delta_sparse_weights, out_delta_dense_weights).
+		
+		  out_example_state_data: A `Tensor` of type `float32`. a list of vectors containing the updated example state
+		    data.
+		  out_delta_sparse_weights: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `float32`. a list of vectors where each value is the delta
+		    weights associated with a sparse feature group.
+		  out_delta_dense_weights: A list with the same length as `dense_features` of `Tensor` objects with type `float32`. a list of vectors where the values are the delta
+		    weights associated with a dense feature group.
+	**/
+	static public function sdca_optimizer(sparse_example_indices:Dynamic, sparse_feature_indices:Dynamic, sparse_feature_values:Dynamic, dense_features:Dynamic, example_weights:Dynamic, example_labels:Dynamic, sparse_indices:Dynamic, sparse_weights:Dynamic, dense_weights:Dynamic, example_state_data:Dynamic, loss_type:Dynamic, l1:Dynamic, l2:Dynamic, num_loss_partitions:Dynamic, num_inner_iterations:Dynamic, ?adaptative:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies L1 regularization shrink step on the parameters.
+		
+		Args:
+		  weights: A list of `Tensor` objects with type mutable `float32`.
+		    a list of vectors where each value is the weight associated with a
+		    feature group.
+		  l1: A `float`. Symmetric l1 regularization strength.
+		  l2: A `float`.
+		    Symmetric l2 regularization strength. Should be a positive float.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function sdca_shrink_l1(weights:Dynamic, l1:Dynamic, l2:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Creates batches by randomly shuffling tensors.
 		
@@ -838,7 +1255,7 @@ package tensorflow.python.training.training;
 		Create batches by randomly shuffling tensors.
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
-		dictionaries of tensors.  Each element in the list is treated similarily
+		dictionaries of tensors.  Each element in the list is treated similarly
 		to the `tensors` argument of `tf.train.shuffle_batch()`.
 		
 		This version enqueues a different list of tensors in different threads.
@@ -953,12 +1370,19 @@ package tensorflow.python.training.training;
 		  collection: A `GraphKey` specifying the graph collection to
 		    get the queue runners from.  Defaults to `GraphKeys.QUEUE_RUNNERS`.
 		
+		Raises:
+		  ValueError: if `sess` is None and there isn't any default session.
+		  TypeError: if `sess` is not a `tf.Session` object.
+		
 		Returns:
 		  A list of threads.
 	**/
 	static public function start_queue_runners(?sess:Dynamic, ?coord:Dynamic, ?daemon:Dynamic, ?start:Dynamic, ?collection:Dynamic):Dynamic;
 	/**
 		Output strings (e.g. filenames) to a queue for an input pipeline.
+		
+		Note: if `num_epochs` is not `None`, this function creates local counter
+		`epochs`. Use `local_variables_initializer()` to initialize local variables.
 		
 		Args:
 		  string_tensor: A 1-D string tensor with the strings to produce.
@@ -972,8 +1396,12 @@ package tensorflow.python.training.training;
 		  seed: An integer (optional). Seed used if shuffle == True.
 		  capacity: An integer. Sets the queue capacity.
 		  shared_name: (optional). If set, this queue will be shared under the given
-		    name across multiple sessions.
+		    name across multiple sessions. All sessions open to the device which has
+		    this queue will be able to access it via the shared_name. Using this in
+		    a distributed setting means each name will only be seen by one of the
+		    sessions which has access to this operation.
 		  name: A name for the operations (optional).
+		  cancel_op: Cancel op for the queue (optional).
 		
 		Returns:
 		  A queue with the output strings.  A `QueueRunner` for the Queue
@@ -983,7 +1411,7 @@ package tensorflow.python.training.training;
 		  ValueError: If the string_tensor is a null Python list.  At runtime,
 		  will fail with an assertion if string_tensor becomes a null tensor.
 	**/
-	static public function string_input_producer(string_tensor:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function string_input_producer(string_tensor:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
 	/**
 		An iterator for reading `Event` protocol buffers from an event file.
 		
@@ -1003,7 +1431,7 @@ package tensorflow.python.training.training;
 		# This example supposes that the events file contains summaries with a
 		# summary value tag 'loss'.  These could have been added by calling
 		# `add_summary()`, passing the output of a scalar summary op created with
-		# with: `tf.scalar_summary(['loss'], loss_tensor)`.
+		# with: `tf.summary.scalar('loss', loss_tensor)`.
 		for e in tf.train.summary_iterator(path to events file):
 		    for v in e.summary.value:
 		        if v.tag == 'loss':
@@ -1040,7 +1468,8 @@ package tensorflow.python.training.training;
 		    'checkpoint'.
 		
 		Raises:
-		  RuntimeError: If the save paths conflict.
+		  RuntimeError: If any of the model checkpoint paths conflict with the file
+		    containing CheckpointSate.
 	**/
 	static public function update_checkpoint_state(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?latest_filename:Dynamic):Dynamic;
 	/**
@@ -1054,12 +1483,23 @@ package tensorflow.python.training.training;
 		tf.train.write_graph(sess.graph_def, '/tmp/my-model', 'train.pbtxt')
 		```
 		
+		or
+		
+		```python
+		v = tf.Variable(0, name='my_variable')
+		sess = tf.Session()
+		tf.train.write_graph(sess.graph, '/tmp/my-model', 'train.pbtxt')
+		```
+		
 		Args:
-		  graph_def: A `GraphDef` protocol buffer.
+		  graph_or_graph_def: A `Graph` or a `GraphDef` protocol buffer.
 		  logdir: Directory where to write the graph. This can refer to remote
 		    filesystems, such as Google Cloud Storage (GCS).
 		  name: Filename for the graph.
 		  as_text: If `True`, writes the graph as an ASCII proto.
+		
+		Returns:
+		  The path of the output proto file.
 	**/
-	static public function write_graph(graph_def:Dynamic, logdir:Dynamic, name:Dynamic, ?as_text:Dynamic):Dynamic;
+	static public function write_graph(graph_or_graph_def:Dynamic, logdir:Dynamic, name:Dynamic, ?as_text:Dynamic):Dynamic;
 }

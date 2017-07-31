@@ -14,6 +14,7 @@ package matplotlib.rcsetup;
 	static public var _prop_validators : Dynamic;
 	static public var _seq_err_msg : Dynamic;
 	static public var _str_err_msg : Dynamic;
+	static public function _validate_alignment(s:Dynamic):Dynamic;
 	static public function _validate_standard_backends(s:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var all_backends : Dynamic;
@@ -60,9 +61,9 @@ package matplotlib.rcsetup;
 		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.
 		
-		cyl(arg)
-		cyl(label, itr)
-		cyl(label1=itr1[, label2=itr2[, ...]])
+		cycler(arg)
+		cycler(label, itr)
+		cycler(label1=itr1[, label2=itr2[, ...]])
 		
 		Form 1 simply copies a given `Cycler` object.
 		
@@ -94,12 +95,15 @@ package matplotlib.rcsetup;
 	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var defaultParams : Dynamic;
 	static public function deprecate_axes_colorcycle(value:Dynamic):Dynamic;
+	static public function deprecate_axes_hold(value:Dynamic):Dynamic;
 	static public function deprecate_savefig_extension(value:Dynamic):Dynamic;
 	static public function deprecate_svg_embed_char_paths(value:Dynamic):Dynamic;
+	static public function deprecate_svg_image_noscale(value:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var interactive_bk : Dynamic;
 	/**
-		Return *True* if *c* can be converted to *RGB*
+		Return whether `c` can be interpreted as an RGB(A) color.
+		    
 	**/
 	static public function is_color_like(c:Dynamic):Dynamic;
 	static public var non_interactive_bk : Dynamic;
@@ -123,10 +127,12 @@ package matplotlib.rcsetup;
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 	static public function update_savefig_format(value:Dynamic):Dynamic;
+	static public function validate_animation_writer_path(p:Dynamic):Dynamic;
 	static public function validate_any(s:Dynamic):Dynamic;
 	static public function validate_anylist(s:Dynamic):Dynamic;
 	static public function validate_aspect(s:Dynamic):Dynamic;
 	static public function validate_axis_locator(s:Dynamic):Dynamic;
+	static public function validate_axisbelow(s:Dynamic):Dynamic;
 	static public function validate_backend(s:Dynamic):Dynamic;
 	static public function validate_bbox(s:Dynamic):Dynamic;
 	/**
@@ -143,6 +149,8 @@ package matplotlib.rcsetup;
 		return a valid color arg
 	**/
 	static public function validate_color(s:Dynamic):Dynamic;
+	static public function validate_color_for_prop_cycle(s:Dynamic):Dynamic;
+	static public function validate_color_or_auto(s:Dynamic):Dynamic;
 	/**
 		return a valid color arg
 	**/
@@ -156,6 +164,7 @@ package matplotlib.rcsetup;
 		return a Cycler object from a string repr or the object itself
 	**/
 	static public function validate_cycler(s:Dynamic):Dynamic;
+	static public function validate_dashlist(s:Dynamic):Dynamic;
 	/**
 		confirm s is string 'figure' or convert s to float or raise
 	**/
@@ -197,6 +206,7 @@ package matplotlib.rcsetup;
 	**/
 	static public function validate_hatchlist(s:Dynamic):Dynamic;
 	static public function validate_hinting(s:Dynamic):Dynamic;
+	static public function validate_hist_bins(s:Dynamic):Dynamic;
 	/**
 		convert s to int or raise
 	**/
@@ -226,6 +236,10 @@ package matplotlib.rcsetup;
 	static public function validate_qt4(s:Dynamic):Dynamic;
 	static public function validate_qt5(s:Dynamic):Dynamic;
 	static public function validate_sketch(s:Dynamic):Dynamic;
+	/**
+		convert s to string or raise
+	**/
+	static public function validate_string_or_None(s:Dynamic):Dynamic;
 	/**
 		return a list
 	**/

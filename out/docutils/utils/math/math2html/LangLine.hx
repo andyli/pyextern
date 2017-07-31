@@ -47,6 +47,13 @@ package docutils.utils.math.math2html;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -98,7 +105,7 @@ package docutils.utils.math.math2html;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Get a description
+		Return a printable representation.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -106,6 +113,14 @@ package docutils.utils.math.math2html;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var begin : Dynamic;
+	/**
+		Complete the tagged text and return it
+	**/
+	public function complete(contents:Dynamic, tag:Dynamic, ?breaklines:Dynamic):Dynamic;
+	/**
+		Complete the tagged text with a constant
+	**/
+	public function constant(text:Dynamic, tag:Dynamic, ?breaklines:Dynamic):Dynamic;
 	/**
 		Escape a line with replacements from elyxer.a map
 	**/
@@ -146,10 +161,11 @@ package docutils.utils.math.math2html;
 		Search for all embedded containers and process them
 	**/
 	public function locateprocess(locate:Dynamic, process:Dynamic):Dynamic;
+	static public var output : Dynamic;
 	static public var parent : Dynamic;
 	static public var partkey : Dynamic;
 	/**
-		Process contents
+		Only generate a span with lang info when the language is recognized.
 	**/
 	public function process():Dynamic;
 	/**

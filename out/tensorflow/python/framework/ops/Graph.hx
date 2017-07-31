@@ -51,6 +51,13 @@ package tensorflow.python.framework.ops;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -108,29 +115,18 @@ package tensorflow.python.framework.ops;
 	/**
 		Adds a function to the graph.
 		
-		The function is specified as a [`FunctionDef`]
-		(https://www.tensorflow.org/code/tensorflow/core/framework/function.proto)
-		protocol buffer.
-		
 		After the function has been added, you can call to the function by
 		passing the function name in place of an op name to
 		`Graph.create_op()`.
 		
 		Args:
-		  function_def: A `FunctionDef` protocol buffer.
-		  grad_function_name: If not None, this specifies the name of a function
-		                      that shall be used as the gradient function of
-		                      the function being added.
-		  python_grad_func: If not None, specifies the gradient function with the
-		                    same interface as expected by `tf.RegisterGradient`.
-		                    No more than one of {grad_function_name,
-		                    python_grad_func} may be specified.
+		  function: A `_DefinedFunction` object.
 		
 		
 		Raises:
 		  ValueError: if another function is defined with the same name.
 	**/
-	public function _add_function(function_def:Dynamic, ?grad_function_name:Dynamic, ?python_grad_func:Dynamic):Dynamic;
+	public function _add_function(_function:Dynamic):Dynamic;
 	/**
 		Adds 'op' to the graph.
 		
@@ -150,8 +146,8 @@ package tensorflow.python.framework.ops;
 		Returns a serialized `GraphDef` representation of this graph.
 		
 		The serialized `GraphDef` can be imported into another `Graph`
-		(using [`import_graph_def()`](#import_graph_def)) or used with the
-		[C++ Session API](../../api_docs/cc/index.md).
+		(using @{tf.import_graph_def}) or used with the
+		[C++ Session API](../../../../api_docs/cc/index.md).
 		
 		This method is thread-safe.
 		
@@ -176,6 +172,36 @@ package tensorflow.python.framework.ops;
 		See `Graph.as_graph_element()` for details.
 	**/
 	public function _as_graph_element_locked(obj:Dynamic, allow_tensor:Dynamic, allow_operation:Dynamic):Dynamic;
+	/**
+		EXPERIMENTAL: A context manager for setting attributes on operators.
+		
+		This context manager can be used to add additional
+		attributes to operators within the scope of the context.
+		
+		For example:
+		
+		   with ops.Graph().as_default() as g:
+		     f_1 = Foo()  # No extra attributes
+		     with g._attr_scope({"_a": tf.attr_value_pb2.AttrValue(b=False)}):
+		       f_2 = Foo()  # Additional attribute _a=False
+		       with g._attr_scope({"_a": tf.attr_value_pb2.AttrValue(b=True)}):
+		         f_3 = Foo()  # Additional attribute _a=False
+		         with g._attr_scope({"_a": None}):
+		           f_4 = Foo()  # No additional attributes.
+		
+		Args:
+		  attr_map: A dictionary mapping attr name strings to
+		    AttrValue protocol buffers or None.
+		
+		Returns:
+		  A context manager that sets the kernel label to be used for one or more
+		  ops created in that context.
+		
+		Raises:
+		  TypeError: If attr_map is not a dictionary mapping
+		    strings to AttrValue protobufs.
+	**/
+	public function _attr_scope(attr_map:Dynamic):Dynamic;
 	/**
 		Check if the graph is finalized.
 		
@@ -300,6 +326,15 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _set_control_flow_context(context:Dynamic):Dynamic;
 	/**
+		Opposite of `finalize`. Internal interface.
+		
+		NOTE: Unfinalizing a graph could have negative impact on performance,
+		especially in a multi-threaded environment.  Unfinalizing a graph
+		when it is in use by a Session may lead to undefined behavior. Ensure
+		that all sessions using a graph are closed before calling this method.
+	**/
+	public function _unsafe_unfinalize():Dynamic;
+	/**
 		Stores `value` in the collection with the given `name`.
 		
 		Note that collections are not sets, so it is possible to add a value to
@@ -366,7 +401,7 @@ package tensorflow.python.framework.ops;
 		Returns a serialized `GraphDef` representation of this graph.
 		
 		The serialized `GraphDef` can be imported into another `Graph`
-		(using [`import_graph_def()`](#import_graph_def)) or used with the
+		(using @{tf.import_graph_def}) or used with the
 		[C++ Session API](../../api_docs/cc/index.md).
 		
 		This method is thread-safe.
@@ -417,6 +452,18 @@ package tensorflow.python.framework.ops;
 	**/
 	public function as_graph_element(obj:Dynamic, ?allow_tensor:Dynamic, ?allow_operation:Dynamic):Dynamic;
 	/**
+		Returns True iff this graph represents a function.
+	**/
+	public var building_function : Dynamic;
+	/**
+		Clears all values in a collection.
+		
+		Args:
+		  name: The key for the collection. The `GraphKeys` class contains many
+		    standard names for collections.
+	**/
+	public function clear_collection(name:Dynamic):Dynamic;
+	/**
 		Returns a context manager that specifies an op to colocate with.
 		
 		Note: this function is not for public use, only for internal libraries.
@@ -433,14 +480,19 @@ package tensorflow.python.framework.ops;
 		`b` and `c` will always be colocated with `a`, no matter where `a`
 		is eventually placed.
 		
+		**NOTE** Using a colocation scope resets any existing device constraints.
+		
+		If `op` is `None` then `ignore_existing` must be `True` and the new
+		scope resets all colocation and device constraints.
+		
 		Args:
-		  op: The op to colocate all created ops with.
+		  op: The op to colocate all created ops with, or `None`.
 		  ignore_existing: If true, only applies colocation of this op within
 		    the context, rather than applying all colocation properties
-		    on the stack.
+		    on the stack.  If `op` is `None`, this value must be `True`.
 		
 		Raises:
-		  ValueError: if op is None.
+		  ValueError: if op is None but ignore_existing is False.
 		
 		Yields:
 		  A context manager that specifies the op with which to colocate
@@ -480,7 +532,7 @@ package tensorflow.python.framework.ops;
 		    q3 = tf.FIFOQueue(30, tf.float32)
 		
 		# Resets container "experiment0", after which the state of v1, v2, v4, q1
-		# will become undefined (such as unitialized).
+		# will become undefined (such as uninitialized).
 		tf.Session.reset(target, ["experiment0"])
 		```
 		
@@ -668,7 +720,7 @@ package tensorflow.python.framework.ops;
 		After calling `g.finalize()`, no new operations can be added to
 		`g`.  This method is used to ensure that no operations are added
 		to a graph when it is shared between multiple threads, for example
-		when using a [`QueueRunner`](../../api_docs/python/train.md#QueueRunner).
+		when using a @{tf.train.QueueRunner}.
 	**/
 	public function finalize():Dynamic;
 	/**
@@ -689,11 +741,11 @@ package tensorflow.python.framework.ops;
 		Args:
 		  name: The key for the collection. For example, the `GraphKeys` class
 		    contains many standard names for collections.
-		  scope: (Optional.) If supplied, the resulting list is filtered to include
-		    only items whose `name` attribute matches using `re.match`. Items
-		    without a `name` attribute are never returned if a scope is supplied and
-		    the choice or `re.match` means that a `scope` without special tokens
-		    filters by prefix.
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
 		
 		Returns:
 		  The list of values in the collection with the given `name`, or
@@ -721,6 +773,22 @@ package tensorflow.python.framework.ops;
 		  list if no value has been added to that collection.
 	**/
 	public function get_collection_ref(name:Dynamic):Dynamic;
+	/**
+		Returns the current name scope.
+		
+		For example:
+		
+		```python
+		with tf.name_scope('scope1'):
+		  with tf.name_scope('scope2'):
+		    print(tf.get_default_graph().get_name_scope())
+		```
+		would print the string `scope1/scope2`.
+		
+		Returns:
+		  A string representing the current name scope.
+	**/
+	public function get_name_scope():Dynamic;
 	/**
 		Returns the `Operation` with the given `name`.
 		
@@ -803,8 +871,8 @@ package tensorflow.python.framework.ops;
 	/**
 		The GraphDef version information of this graph.
 		
-		For details on the meaning of each version, see [`GraphDef`]
-		(https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto).
+		For details on the meaning of each version, see
+		[`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto).
 		
 		Returns:
 		  A `VersionDef`.
@@ -899,7 +967,8 @@ package tensorflow.python.framework.ops;
 		  A context manager that installs `name` as a new name scope.
 		
 		Raises:
-		  ValueError: If `name` is not a valid scope name. The rules are the
+		  ValueError: If `name` is not a valid scope name, according to the rules
+		    above.
 	**/
 	public function name_scope(name:Dynamic):Dynamic;
 	/**
@@ -946,7 +1015,7 @@ package tensorflow.python.framework.ops;
 		Returns a version number that increases as ops are added to the graph.
 		
 		Note that this is unrelated to the
-		[GraphDef version](#Graph.graph_def_version).
+		@{tf.Graph.graph_def_versions}.
 	**/
 	public var version : Dynamic;
 }

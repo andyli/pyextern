@@ -35,6 +35,10 @@ package pandas.tseries.offsets;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
+		Return a pickleable state
+	**/
+	public function __getstate__():Dynamic;
+	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
@@ -51,6 +55,13 @@ package pandas.tseries.offsets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?n:Dynamic, ?normalize:Dynamic, ?weekmask:Dynamic, ?holidays:Dynamic, ?calendar:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -89,6 +100,10 @@ package pandas.tseries.offsets;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Reconstruct an instance from a pickled state
+	**/
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes

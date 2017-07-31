@@ -71,10 +71,10 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('F') with bounds (ldab,*)
+		ab : input rank-2 array('F') with bounds (ldab,n)
 		kl : input int
 		ku : input int
-		b : input rank-2 array('F') with bounds (ldb,*)
+		b : input rank-2 array('F') with bounds (ldb,nrhs)
 		ipiv : input rank-1 array('i') with bounds (n)
 		
 		Other Parameters
@@ -92,7 +92,7 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		x : rank-2 array('F') with bounds (ldb,*) and b storage
+		x : rank-2 array('F') with bounds (ldb,nrhs) and b storage
 		info : int
 	**/
 	static public function cgbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -123,6 +123,27 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function cgebal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rcond,info = cgecon(a,anorm,[norm])
+		
+		Wrapper for ``cgecon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		norm : input string(len=1), optional
+		    Default: '1'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function cgecon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		t,sdim,w,vs,work,info = cgees(cselect,a,[compute_v,sort_t,lwork,cselect_extra_args,overwrite_a])
 		
@@ -667,6 +688,49 @@ package scipy.linalg._flapack;
 	**/
 	static public function cgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		as,lu,ipiv,equed,rs,cs,bs,x,rcond,ferr,berr,info = cgesvx(a,b,[fact,trans,af,ipiv,equed,r,c,overwrite_a,overwrite_b])
+		
+		Wrapper for ``cgesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('F') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		equed : input string(len=1), optional
+		    Default: 'B'
+		r : input rank-1 array('f') with bounds (n)
+		c : input rank-1 array('f') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		as : rank-2 array('F') with bounds (n,n) and a storage
+		lu : rank-2 array('F') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		equed : string(len=1)
+		rs : rank-1 array('f') with bounds (n) and r storage
+		cs : rank-1 array('f') with bounds (n) and c storage
+		bs : rank-2 array('F') with bounds (n,nrhs) and b storage
+		x : rank-2 array('F') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function cgesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = cgetrf(a,[overwrite_a])
 		
 		Wrapper for ``cgetrf``.
@@ -757,8 +821,8 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		cselect : call-back function
-		a : input rank-2 array('F') with bounds (lda,*)
-		b : input rank-2 array('F') with bounds (ldb,*)
+		a : input rank-2 array('F') with bounds (lda,n)
+		b : input rank-2 array('F') with bounds (ldb,n)
 		
 		Other Parameters
 		----------------
@@ -783,8 +847,8 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('F') with bounds (lda,*)
-		b : rank-2 array('F') with bounds (ldb,*)
+		a : rank-2 array('F') with bounds (lda,n)
+		b : rank-2 array('F') with bounds (ldb,n)
 		sdim : int
 		alpha : rank-1 array('F') with bounds (n)
 		beta : rank-1 array('F') with bounds (n)
@@ -846,9 +910,9 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		dl : input rank-1 array('F') with bounds (n - 1)
-		d : input rank-1 array('F') with bounds (*)
+		d : input rank-1 array('F') with bounds (n)
 		du : input rank-1 array('F') with bounds (n - 1)
-		b : input rank-2 array('F') with bounds (*,*)
+		b : input rank-2 array('F') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -864,9 +928,9 @@ package scipy.linalg._flapack;
 		Returns
 		-------
 		du2 : rank-1 array('F') with bounds (n - 1) and dl storage
-		d : rank-1 array('F') with bounds (*)
+		d : rank-1 array('F') with bounds (n)
 		du : rank-1 array('F') with bounds (n - 1)
-		x : rank-2 array('F') with bounds (*,*) and b storage
+		x : rank-2 array('F') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function cgtsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -877,7 +941,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('F') with bounds (ldab,*)
+		ab : input rank-2 array('F') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -908,7 +972,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('F') with bounds (ldab,*)
+		ab : input rank-2 array('F') with bounds (ldab,n)
 		vl : input float
 		vu : input float
 		il : input int
@@ -1126,6 +1190,111 @@ package scipy.linalg._flapack;
 	**/
 	static public function chegvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		uduh,ipiv,x,info = chesv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``chesv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		uduh : rank-2 array('F') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('F') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function chesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = chesv_lwork(n,[lower])
+		
+		Wrapper for ``chesv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function chesv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		uduh,ipiv,x,rcond,ferr,berr,info = chesvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``chesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('F') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 2*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		uduh : rank-2 array('F') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('F') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function chesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = chesvx_lwork(n,[lower])
+		
+		Wrapper for ``chesvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function chesvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		n2 = clange(norm,a)
 		
 		Wrapper for ``clange``.
@@ -1336,6 +1505,27 @@ package scipy.linalg._flapack;
 	**/
 	static public function cpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		rcond,info = cpocon(a,anorm,[uplo])
+		
+		Wrapper for ``cpocon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function cpocon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = cposv(a,b,[lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``cposv``.
@@ -1361,6 +1551,45 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function cposv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,lu,equed,s,b_s,x,rcond,ferr,berr,info = cposvx(a,b,[fact,af,equed,s,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``cposvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('F') with bounds (n,n)
+		equed : input string(len=1), optional
+		    Default: 'Y'
+		s : input rank-1 array('f') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('F') with bounds (n,n) and a storage
+		lu : rank-2 array('F') with bounds (n,n) and af storage
+		equed : string(len=1)
+		s : rank-1 array('f') with bounds (n)
+		b_s : rank-2 array('F') with bounds (n,nrhs) and b storage
+		x : rank-2 array('F') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function cposvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c,info = cpotrf(a,[lower,clean,overwrite_a])
 		
@@ -1437,9 +1666,9 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		d : input rank-1 array('f') with bounds (*)
+		d : input rank-1 array('f') with bounds (n)
 		e : input rank-1 array('F') with bounds (n - 1)
-		b : input rank-2 array('F') with bounds (*,*)
+		b : input rank-2 array('F') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -1452,9 +1681,9 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		d : rank-1 array('f') with bounds (*)
+		d : rank-1 array('f') with bounds (n)
 		du : rank-1 array('F') with bounds (n - 1) and e storage
-		x : rank-2 array('F') with bounds (*,*) and b storage
+		x : rank-2 array('F') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function cptsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1494,6 +1723,113 @@ package scipy.linalg._flapack;
 	**/
 	static public function crot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		udut,ipiv,x,info = csysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``csysv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		udut : rank-2 array('F') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('F') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function csysv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = csysv_lwork(n,[lower])
+		
+		Wrapper for ``csysv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function csysv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,udut,ipiv,b_s,x,rcond,ferr,berr,info = csysvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``csysvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		b : input rank-2 array('F') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('F') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 3*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('F') with bounds (n,n) and a storage
+		udut : rank-2 array('F') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		b_s : rank-2 array('F') with bounds (n,nrhs) and b storage
+		x : rank-2 array('F') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function csysvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = csysvx_lwork(n,[lower])
+		
+		Wrapper for ``csysvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function csysvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alpha,beta,q,z,m,pl,pr,dif,work,iwork,info = ctgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``ctgsen``.
@@ -1501,10 +1837,10 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		select : input rank-1 array('i') with bounds (n)
-		a : input rank-2 array('F') with bounds (lda,*)
-		b : input rank-2 array('F') with bounds (ldb,*)
-		q : input rank-2 array('F') with bounds (ldq,*)
-		z : input rank-2 array('F') with bounds (ldz,*)
+		a : input rank-2 array('F') with bounds (lda,n)
+		b : input rank-2 array('F') with bounds (ldb,n)
+		q : input rank-2 array('F') with bounds (ldq,n)
+		z : input rank-2 array('F') with bounds (ldz,n)
 		
 		Other Parameters
 		----------------
@@ -1523,12 +1859,12 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('F') with bounds (lda,*)
-		b : rank-2 array('F') with bounds (ldb,*)
+		a : rank-2 array('F') with bounds (lda,n)
+		b : rank-2 array('F') with bounds (ldb,n)
 		alpha : rank-1 array('F') with bounds (n)
 		beta : rank-1 array('F') with bounds (n)
-		q : rank-2 array('F') with bounds (ldq,*)
-		z : rank-2 array('F') with bounds (ldz,*)
+		q : rank-2 array('F') with bounds (ldq,n)
+		z : rank-2 array('F') with bounds (ldz,n)
 		m : int
 		pl : float
 		pr : float
@@ -1806,10 +2142,10 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('d') with bounds (ldab,*)
+		ab : input rank-2 array('d') with bounds (ldab,n)
 		kl : input int
 		ku : input int
-		b : input rank-2 array('d') with bounds (ldb,*)
+		b : input rank-2 array('d') with bounds (ldb,nrhs)
 		ipiv : input rank-1 array('i') with bounds (n)
 		
 		Other Parameters
@@ -1827,7 +2163,7 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		x : rank-2 array('d') with bounds (ldb,*) and b storage
+		x : rank-2 array('d') with bounds (ldb,nrhs) and b storage
 		info : int
 	**/
 	static public function dgbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1858,6 +2194,27 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function dgebal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rcond,info = dgecon(a,anorm,[norm])
+		
+		Wrapper for ``dgecon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		norm : input string(len=1), optional
+		    Default: '1'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function dgecon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		t,sdim,wr,wi,vs,work,info = dgees(dselect,a,[compute_v,sort_t,lwork,dselect_extra_args,overwrite_a])
 		
@@ -2404,6 +2761,49 @@ package scipy.linalg._flapack;
 	**/
 	static public function dgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		as,lu,ipiv,equed,rs,cs,bs,x,rcond,ferr,berr,info = dgesvx(a,b,[fact,trans,af,ipiv,equed,r,c,overwrite_a,overwrite_b])
+		
+		Wrapper for ``dgesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		b : input rank-2 array('d') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('d') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		equed : input string(len=1), optional
+		    Default: 'B'
+		r : input rank-1 array('d') with bounds (n)
+		c : input rank-1 array('d') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		as : rank-2 array('d') with bounds (n,n) and a storage
+		lu : rank-2 array('d') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		equed : string(len=1)
+		rs : rank-1 array('d') with bounds (n) and r storage
+		cs : rank-1 array('d') with bounds (n) and c storage
+		bs : rank-2 array('d') with bounds (n,nrhs) and b storage
+		x : rank-2 array('d') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function dgesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = dgetrf(a,[overwrite_a])
 		
 		Wrapper for ``dgetrf``.
@@ -2494,8 +2894,8 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		dselect : call-back function
-		a : input rank-2 array('d') with bounds (lda,*)
-		b : input rank-2 array('d') with bounds (ldb,*)
+		a : input rank-2 array('d') with bounds (lda,n)
+		b : input rank-2 array('d') with bounds (ldb,n)
 		
 		Other Parameters
 		----------------
@@ -2520,8 +2920,8 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('d') with bounds (lda,*)
-		b : rank-2 array('d') with bounds (ldb,*)
+		a : rank-2 array('d') with bounds (lda,n)
+		b : rank-2 array('d') with bounds (ldb,n)
 		sdim : int
 		alphar : rank-1 array('d') with bounds (n)
 		alphai : rank-1 array('d') with bounds (n)
@@ -2586,9 +2986,9 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		dl : input rank-1 array('d') with bounds (n - 1)
-		d : input rank-1 array('d') with bounds (*)
+		d : input rank-1 array('d') with bounds (n)
 		du : input rank-1 array('d') with bounds (n - 1)
-		b : input rank-2 array('d') with bounds (*,*)
+		b : input rank-2 array('d') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -2604,9 +3004,9 @@ package scipy.linalg._flapack;
 		Returns
 		-------
 		du2 : rank-1 array('d') with bounds (n - 1) and dl storage
-		d : rank-1 array('d') with bounds (*)
+		d : rank-1 array('d') with bounds (n)
 		du : rank-1 array('d') with bounds (n - 1)
-		x : rank-2 array('d') with bounds (*,*) and b storage
+		x : rank-2 array('d') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function dgtsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -2982,6 +3382,27 @@ package scipy.linalg._flapack;
 	**/
 	static public function dpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		rcond,info = dpocon(a,anorm,[uplo])
+		
+		Wrapper for ``dpocon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function dpocon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = dposv(a,b,[lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``dposv``.
@@ -3007,6 +3428,45 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function dposv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,lu,equed,s,b_s,x,rcond,ferr,berr,info = dposvx(a,b,[fact,af,equed,s,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``dposvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		b : input rank-2 array('d') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('d') with bounds (n,n)
+		equed : input string(len=1), optional
+		    Default: 'Y'
+		s : input rank-1 array('d') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('d') with bounds (n,n) and a storage
+		lu : rank-2 array('d') with bounds (n,n) and af storage
+		equed : string(len=1)
+		s : rank-1 array('d') with bounds (n)
+		b_s : rank-2 array('d') with bounds (n,nrhs) and b storage
+		x : rank-2 array('d') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function dposvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c,info = dpotrf(a,[lower,clean,overwrite_a])
 		
@@ -3083,9 +3543,9 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		d : input rank-1 array('d') with bounds (*)
+		d : input rank-1 array('d') with bounds (n)
 		e : input rank-1 array('d') with bounds (n - 1)
-		b : input rank-2 array('d') with bounds (*,*)
+		b : input rank-2 array('d') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -3098,9 +3558,9 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		d : rank-1 array('d') with bounds (*)
+		d : rank-1 array('d') with bounds (n)
 		du : rank-1 array('d') with bounds (n - 1) and e storage
-		x : rank-2 array('d') with bounds (*,*) and b storage
+		x : rank-2 array('d') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function dptsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3111,7 +3571,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('d') with bounds (ldab,*)
+		ab : input rank-2 array('d') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -3138,7 +3598,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('d') with bounds (ldab,*)
+		ab : input rank-2 array('d') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -3167,7 +3627,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('d') with bounds (ldab,*)
+		ab : input rank-2 array('d') with bounds (ldab,n)
 		vl : input float
 		vu : input float
 		il : input int
@@ -3385,6 +3845,113 @@ package scipy.linalg._flapack;
 	**/
 	static public function dsygvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		udut,ipiv,x,info = dsysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``dsysv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		b : input rank-2 array('d') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		udut : rank-2 array('d') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('d') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function dsysv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = dsysv_lwork(n,[lower])
+		
+		Wrapper for ``dsysv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function dsysv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,udut,ipiv,b_s,x,rcond,ferr,berr,info = dsysvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``dsysvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		b : input rank-2 array('d') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('d') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 3*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('d') with bounds (n,n) and a storage
+		udut : rank-2 array('d') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		b_s : rank-2 array('d') with bounds (n,nrhs) and b storage
+		x : rank-2 array('d') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function dsysvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = dsysvx_lwork(n,[lower])
+		
+		Wrapper for ``dsysvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function dsysvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alphar,alphai,beta,q,z,m,pl,pr,dif,work,iwork,info = dtgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``dtgsen``.
@@ -3392,10 +3959,10 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		select : input rank-1 array('i') with bounds (n)
-		a : input rank-2 array('d') with bounds (lda,*)
-		b : input rank-2 array('d') with bounds (ldb,*)
-		q : input rank-2 array('d') with bounds (ldq,*)
-		z : input rank-2 array('d') with bounds (ldz,*)
+		a : input rank-2 array('d') with bounds (lda,n)
+		b : input rank-2 array('d') with bounds (ldb,n)
+		q : input rank-2 array('d') with bounds (ldq,n)
+		z : input rank-2 array('d') with bounds (ldz,n)
 		
 		Other Parameters
 		----------------
@@ -3414,13 +3981,13 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('d') with bounds (lda,*)
-		b : rank-2 array('d') with bounds (ldb,*)
+		a : rank-2 array('d') with bounds (lda,n)
+		b : rank-2 array('d') with bounds (ldb,n)
 		alphar : rank-1 array('d') with bounds (n)
 		alphai : rank-1 array('d') with bounds (n)
 		beta : rank-1 array('d') with bounds (n)
-		q : rank-2 array('d') with bounds (ldq,*)
-		z : rank-2 array('d') with bounds (ldz,*)
+		q : rank-2 array('d') with bounds (ldq,n)
+		z : rank-2 array('d') with bounds (ldz,n)
 		m : int
 		pl : float
 		pr : float
@@ -3587,10 +4154,10 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('f') with bounds (ldab,*)
+		ab : input rank-2 array('f') with bounds (ldab,n)
 		kl : input int
 		ku : input int
-		b : input rank-2 array('f') with bounds (ldb,*)
+		b : input rank-2 array('f') with bounds (ldb,nrhs)
 		ipiv : input rank-1 array('i') with bounds (n)
 		
 		Other Parameters
@@ -3608,7 +4175,7 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		x : rank-2 array('f') with bounds (ldb,*) and b storage
+		x : rank-2 array('f') with bounds (ldb,nrhs) and b storage
 		info : int
 	**/
 	static public function sgbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3639,6 +4206,27 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function sgebal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rcond,info = sgecon(a,anorm,[norm])
+		
+		Wrapper for ``sgecon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		norm : input string(len=1), optional
+		    Default: '1'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function sgecon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		t,sdim,wr,wi,vs,work,info = sgees(sselect,a,[compute_v,sort_t,lwork,sselect_extra_args,overwrite_a])
 		
@@ -4185,6 +4773,49 @@ package scipy.linalg._flapack;
 	**/
 	static public function sgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		as,lu,ipiv,equed,rs,cs,bs,x,rcond,ferr,berr,info = sgesvx(a,b,[fact,trans,af,ipiv,equed,r,c,overwrite_a,overwrite_b])
+		
+		Wrapper for ``sgesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		b : input rank-2 array('f') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('f') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		equed : input string(len=1), optional
+		    Default: 'B'
+		r : input rank-1 array('f') with bounds (n)
+		c : input rank-1 array('f') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		as : rank-2 array('f') with bounds (n,n) and a storage
+		lu : rank-2 array('f') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		equed : string(len=1)
+		rs : rank-1 array('f') with bounds (n) and r storage
+		cs : rank-1 array('f') with bounds (n) and c storage
+		bs : rank-2 array('f') with bounds (n,nrhs) and b storage
+		x : rank-2 array('f') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function sgesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = sgetrf(a,[overwrite_a])
 		
 		Wrapper for ``sgetrf``.
@@ -4275,8 +4906,8 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		sselect : call-back function
-		a : input rank-2 array('f') with bounds (lda,*)
-		b : input rank-2 array('f') with bounds (ldb,*)
+		a : input rank-2 array('f') with bounds (lda,n)
+		b : input rank-2 array('f') with bounds (ldb,n)
 		
 		Other Parameters
 		----------------
@@ -4301,8 +4932,8 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('f') with bounds (lda,*)
-		b : rank-2 array('f') with bounds (ldb,*)
+		a : rank-2 array('f') with bounds (lda,n)
+		b : rank-2 array('f') with bounds (ldb,n)
 		sdim : int
 		alphar : rank-1 array('f') with bounds (n)
 		alphai : rank-1 array('f') with bounds (n)
@@ -4367,9 +4998,9 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		dl : input rank-1 array('f') with bounds (n - 1)
-		d : input rank-1 array('f') with bounds (*)
+		d : input rank-1 array('f') with bounds (n)
 		du : input rank-1 array('f') with bounds (n - 1)
-		b : input rank-2 array('f') with bounds (*,*)
+		b : input rank-2 array('f') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -4385,9 +5016,9 @@ package scipy.linalg._flapack;
 		Returns
 		-------
 		du2 : rank-1 array('f') with bounds (n - 1) and dl storage
-		d : rank-1 array('f') with bounds (*)
+		d : rank-1 array('f') with bounds (n)
 		du : rank-1 array('f') with bounds (n - 1)
-		x : rank-2 array('f') with bounds (*,*) and b storage
+		x : rank-2 array('f') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function sgtsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -4763,6 +5394,27 @@ package scipy.linalg._flapack;
 	**/
 	static public function spbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		rcond,info = spocon(a,anorm,[uplo])
+		
+		Wrapper for ``spocon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function spocon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = sposv(a,b,[lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``sposv``.
@@ -4788,6 +5440,45 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function sposv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,lu,equed,s,b_s,x,rcond,ferr,berr,info = sposvx(a,b,[fact,af,equed,s,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``sposvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		b : input rank-2 array('f') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('f') with bounds (n,n)
+		equed : input string(len=1), optional
+		    Default: 'Y'
+		s : input rank-1 array('f') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('f') with bounds (n,n) and a storage
+		lu : rank-2 array('f') with bounds (n,n) and af storage
+		equed : string(len=1)
+		s : rank-1 array('f') with bounds (n)
+		b_s : rank-2 array('f') with bounds (n,nrhs) and b storage
+		x : rank-2 array('f') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function sposvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c,info = spotrf(a,[lower,clean,overwrite_a])
 		
@@ -4864,9 +5555,9 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		d : input rank-1 array('f') with bounds (*)
+		d : input rank-1 array('f') with bounds (n)
 		e : input rank-1 array('f') with bounds (n - 1)
-		b : input rank-2 array('f') with bounds (*,*)
+		b : input rank-2 array('f') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -4879,9 +5570,9 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		d : rank-1 array('f') with bounds (*)
+		d : rank-1 array('f') with bounds (n)
 		du : rank-1 array('f') with bounds (n - 1) and e storage
-		x : rank-2 array('f') with bounds (*,*) and b storage
+		x : rank-2 array('f') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function sptsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -4892,7 +5583,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('f') with bounds (ldab,*)
+		ab : input rank-2 array('f') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -4919,7 +5610,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('f') with bounds (ldab,*)
+		ab : input rank-2 array('f') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -4948,7 +5639,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('f') with bounds (ldab,*)
+		ab : input rank-2 array('f') with bounds (ldab,n)
 		vl : input float
 		vu : input float
 		il : input int
@@ -5166,6 +5857,113 @@ package scipy.linalg._flapack;
 	**/
 	static public function ssygvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		udut,ipiv,x,info = ssysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``ssysv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		b : input rank-2 array('f') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		udut : rank-2 array('f') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('f') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function ssysv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = ssysv_lwork(n,[lower])
+		
+		Wrapper for ``ssysv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function ssysv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,udut,ipiv,b_s,x,rcond,ferr,berr,info = ssysvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``ssysvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		b : input rank-2 array('f') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('f') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 3*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('f') with bounds (n,n) and a storage
+		udut : rank-2 array('f') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		b_s : rank-2 array('f') with bounds (n,nrhs) and b storage
+		x : rank-2 array('f') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('f') with bounds (nrhs)
+		berr : rank-1 array('f') with bounds (nrhs)
+		info : int
+	**/
+	static public function ssysvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = ssysvx_lwork(n,[lower])
+		
+		Wrapper for ``ssysvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function ssysvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alphar,alphai,beta,q,z,m,pl,pr,dif,work,iwork,info = stgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``stgsen``.
@@ -5173,10 +5971,10 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		select : input rank-1 array('i') with bounds (n)
-		a : input rank-2 array('f') with bounds (lda,*)
-		b : input rank-2 array('f') with bounds (ldb,*)
-		q : input rank-2 array('f') with bounds (ldq,*)
-		z : input rank-2 array('f') with bounds (ldz,*)
+		a : input rank-2 array('f') with bounds (lda,n)
+		b : input rank-2 array('f') with bounds (ldb,n)
+		q : input rank-2 array('f') with bounds (ldq,n)
+		z : input rank-2 array('f') with bounds (ldz,n)
 		
 		Other Parameters
 		----------------
@@ -5195,13 +5993,13 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('f') with bounds (lda,*)
-		b : rank-2 array('f') with bounds (ldb,*)
+		a : rank-2 array('f') with bounds (lda,n)
+		b : rank-2 array('f') with bounds (ldb,n)
 		alphar : rank-1 array('f') with bounds (n)
 		alphai : rank-1 array('f') with bounds (n)
 		beta : rank-1 array('f') with bounds (n)
-		q : rank-2 array('f') with bounds (ldq,*)
-		z : rank-2 array('f') with bounds (ldz,*)
+		q : rank-2 array('f') with bounds (ldq,n)
+		z : rank-2 array('f') with bounds (ldz,n)
 		m : int
 		pl : float
 		pr : float
@@ -5356,10 +6154,10 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('D') with bounds (ldab,*)
+		ab : input rank-2 array('D') with bounds (ldab,n)
 		kl : input int
 		ku : input int
-		b : input rank-2 array('D') with bounds (ldb,*)
+		b : input rank-2 array('D') with bounds (ldb,nrhs)
 		ipiv : input rank-1 array('i') with bounds (n)
 		
 		Other Parameters
@@ -5377,7 +6175,7 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		x : rank-2 array('D') with bounds (ldb,*) and b storage
+		x : rank-2 array('D') with bounds (ldb,nrhs) and b storage
 		info : int
 	**/
 	static public function zgbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -5408,6 +6206,27 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function zgebal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rcond,info = zgecon(a,anorm,[norm])
+		
+		Wrapper for ``zgecon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		norm : input string(len=1), optional
+		    Default: '1'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function zgecon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		t,sdim,w,vs,work,info = zgees(zselect,a,[compute_v,sort_t,lwork,zselect_extra_args,overwrite_a])
 		
@@ -5952,6 +6771,49 @@ package scipy.linalg._flapack;
 	**/
 	static public function zgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		as,lu,ipiv,equed,rs,cs,bs,x,rcond,ferr,berr,info = zgesvx(a,b,[fact,trans,af,ipiv,equed,r,c,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zgesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('D') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		equed : input string(len=1), optional
+		    Default: 'B'
+		r : input rank-1 array('d') with bounds (n)
+		c : input rank-1 array('d') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		as : rank-2 array('D') with bounds (n,n) and a storage
+		lu : rank-2 array('D') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		equed : string(len=1)
+		rs : rank-1 array('d') with bounds (n) and r storage
+		cs : rank-1 array('d') with bounds (n) and c storage
+		bs : rank-2 array('D') with bounds (n,nrhs) and b storage
+		x : rank-2 array('D') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function zgesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = zgetrf(a,[overwrite_a])
 		
 		Wrapper for ``zgetrf``.
@@ -6042,8 +6904,8 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		zselect : call-back function
-		a : input rank-2 array('D') with bounds (lda,*)
-		b : input rank-2 array('D') with bounds (ldb,*)
+		a : input rank-2 array('D') with bounds (lda,n)
+		b : input rank-2 array('D') with bounds (ldb,n)
 		
 		Other Parameters
 		----------------
@@ -6068,8 +6930,8 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('D') with bounds (lda,*)
-		b : rank-2 array('D') with bounds (ldb,*)
+		a : rank-2 array('D') with bounds (lda,n)
+		b : rank-2 array('D') with bounds (ldb,n)
 		sdim : int
 		alpha : rank-1 array('D') with bounds (n)
 		beta : rank-1 array('D') with bounds (n)
@@ -6131,9 +6993,9 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		dl : input rank-1 array('D') with bounds (n - 1)
-		d : input rank-1 array('D') with bounds (*)
+		d : input rank-1 array('D') with bounds (n)
 		du : input rank-1 array('D') with bounds (n - 1)
-		b : input rank-2 array('D') with bounds (*,*)
+		b : input rank-2 array('D') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -6149,9 +7011,9 @@ package scipy.linalg._flapack;
 		Returns
 		-------
 		du2 : rank-1 array('D') with bounds (n - 1) and dl storage
-		d : rank-1 array('D') with bounds (*)
+		d : rank-1 array('D') with bounds (n)
 		du : rank-1 array('D') with bounds (n - 1)
-		x : rank-2 array('D') with bounds (*,*) and b storage
+		x : rank-2 array('D') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function zgtsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -6162,7 +7024,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('D') with bounds (ldab,*)
+		ab : input rank-2 array('D') with bounds (ldab,n)
 		
 		Other Parameters
 		----------------
@@ -6193,7 +7055,7 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		ab : input rank-2 array('D') with bounds (ldab,*)
+		ab : input rank-2 array('D') with bounds (ldab,n)
 		vl : input float
 		vu : input float
 		il : input int
@@ -6411,6 +7273,111 @@ package scipy.linalg._flapack;
 	**/
 	static public function zhegvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		uduh,ipiv,x,info = zhesv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zhesv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		uduh : rank-2 array('D') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('D') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function zhesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zhesv_lwork(n,[lower])
+		
+		Wrapper for ``zhesv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zhesv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		uduh,ipiv,x,rcond,ferr,berr,info = zhesvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zhesvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('D') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 2*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		uduh : rank-2 array('D') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('D') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function zhesvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zhesvx_lwork(n,[lower])
+		
+		Wrapper for ``zhesvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zhesvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		n2 = zlange(norm,a)
 		
 		Wrapper for ``zlange``.
@@ -6621,6 +7588,27 @@ package scipy.linalg._flapack;
 	**/
 	static public function zpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		rcond,info = zpocon(a,anorm,[uplo])
+		
+		Wrapper for ``zpocon``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		anorm : input float
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		rcond : float
+		info : int
+	**/
+	static public function zpocon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = zposv(a,b,[lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``zposv``.
@@ -6646,6 +7634,45 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function zposv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,lu,equed,s,b_s,x,rcond,ferr,berr,info = zposvx(a,b,[fact,af,equed,s,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zposvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		fact : input string(len=1), optional
+		    Default: 'E'
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('D') with bounds (n,n)
+		equed : input string(len=1), optional
+		    Default: 'Y'
+		s : input rank-1 array('d') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('D') with bounds (n,n) and a storage
+		lu : rank-2 array('D') with bounds (n,n) and af storage
+		equed : string(len=1)
+		s : rank-1 array('d') with bounds (n)
+		b_s : rank-2 array('D') with bounds (n,nrhs) and b storage
+		x : rank-2 array('D') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function zposvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c,info = zpotrf(a,[lower,clean,overwrite_a])
 		
@@ -6722,9 +7749,9 @@ package scipy.linalg._flapack;
 		
 		Parameters
 		----------
-		d : input rank-1 array('d') with bounds (*)
+		d : input rank-1 array('d') with bounds (n)
 		e : input rank-1 array('D') with bounds (n - 1)
-		b : input rank-2 array('D') with bounds (*,*)
+		b : input rank-2 array('D') with bounds (n,nrhs)
 		
 		Other Parameters
 		----------------
@@ -6737,9 +7764,9 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		d : rank-1 array('d') with bounds (*)
+		d : rank-1 array('d') with bounds (n)
 		du : rank-1 array('D') with bounds (n - 1) and e storage
-		x : rank-2 array('D') with bounds (*,*) and b storage
+		x : rank-2 array('D') with bounds (n,nrhs) and b storage
 		info : int
 	**/
 	static public function zptsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -6779,6 +7806,113 @@ package scipy.linalg._flapack;
 	**/
 	static public function zrot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		udut,ipiv,x,info = zsysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zsysv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: n
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		udut : rank-2 array('D') with bounds (n,n) and a storage
+		ipiv : rank-1 array('i') with bounds (n)
+		x : rank-2 array('D') with bounds (n,nrhs) and b storage
+		info : int
+	**/
+	static public function zsysv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zsysv_lwork(n,[lower])
+		
+		Wrapper for ``zsysv_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zsysv_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a_s,udut,ipiv,b_s,x,rcond,ferr,berr,info = zsysvx(a,b,[af,ipiv,lwork,factored,lower,overwrite_a,overwrite_b])
+		
+		Wrapper for ``zsysvx``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		b : input rank-2 array('D') with bounds (n,nrhs)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		af : input rank-2 array('D') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		overwrite_b : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: 3*n
+		factored : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a_s : rank-2 array('D') with bounds (n,n) and a storage
+		udut : rank-2 array('D') with bounds (n,n) and af storage
+		ipiv : rank-1 array('i') with bounds (n)
+		b_s : rank-2 array('D') with bounds (n,nrhs) and b storage
+		x : rank-2 array('D') with bounds (n,nrhs)
+		rcond : float
+		ferr : rank-1 array('d') with bounds (nrhs)
+		berr : rank-1 array('d') with bounds (nrhs)
+		info : int
+	**/
+	static public function zsysvx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zsysvx_lwork(n,[lower])
+		
+		Wrapper for ``zsysvx_lwork``.
+		
+		Parameters
+		----------
+		n : input int
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zsysvx_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alpha,beta,q,z,m,pl,pr,dif,work,iwork,info = ztgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``ztgsen``.
@@ -6786,10 +7920,10 @@ package scipy.linalg._flapack;
 		Parameters
 		----------
 		select : input rank-1 array('i') with bounds (n)
-		a : input rank-2 array('D') with bounds (lda,*)
-		b : input rank-2 array('D') with bounds (ldb,*)
-		q : input rank-2 array('D') with bounds (ldq,*)
-		z : input rank-2 array('D') with bounds (ldz,*)
+		a : input rank-2 array('D') with bounds (lda,n)
+		b : input rank-2 array('D') with bounds (ldb,n)
+		q : input rank-2 array('D') with bounds (ldq,n)
+		z : input rank-2 array('D') with bounds (ldz,n)
 		
 		Other Parameters
 		----------------
@@ -6808,12 +7942,12 @@ package scipy.linalg._flapack;
 		
 		Returns
 		-------
-		a : rank-2 array('D') with bounds (lda,*)
-		b : rank-2 array('D') with bounds (ldb,*)
+		a : rank-2 array('D') with bounds (lda,n)
+		b : rank-2 array('D') with bounds (ldb,n)
 		alpha : rank-1 array('D') with bounds (n)
 		beta : rank-1 array('D') with bounds (n)
-		q : rank-2 array('D') with bounds (ldq,*)
-		z : rank-2 array('D') with bounds (ldz,*)
+		q : rank-2 array('D') with bounds (ldq,n)
+		z : rank-2 array('D') with bounds (ldz,n)
 		m : int
 		pl : float
 		pr : float

@@ -38,8 +38,10 @@ package matplotlib.animation;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct a new MovieWriter object.
+		MovieWriter
 		
+		Parameters
+		----------
 		fps: int
 		    Framerate for movie.
 		codec: string or None, optional
@@ -63,8 +65,10 @@ package matplotlib.animation;
 	@:native("__init__")
 	public function ___init__(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Dynamic;
 	/**
-		Construct a new MovieWriter object.
+		MovieWriter
 		
+		Parameters
+		----------
 		fps: int
 		    Framerate for movie.
 		codec: string or None, optional
@@ -86,6 +90,13 @@ package matplotlib.animation;
 		    title, artist, genre, subject, copyright, srcform, comment.
 	**/
 	public function new(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,6 +152,7 @@ package matplotlib.animation;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _adjust_frame_size():Dynamic;
 	/**
 		Assemble list of utility-specific command-line arguments.
 	**/
@@ -149,6 +161,7 @@ package matplotlib.animation;
 		Returns the place to which frames should be written.
 	**/
 	public function _frame_sink():Dynamic;
+	static public function _handle_subprocess(process:Dynamic):Dynamic;
 	public function _run():Dynamic;
 	static public var args_key : Dynamic;
 	/**
@@ -170,9 +183,9 @@ package matplotlib.animation;
 		A tuple (width,height) in pixels of a movie frame.
 	**/
 	public var frame_size : Dynamic;
-	static public var frame_size_can_vary : Dynamic;
 	/**
 		Grab the image information from the figure and save as a movie frame.
+		
 		All keyword arguments in savefig_kwargs are passed on to the 'savefig'
 		command that saves the figure.
 	**/
@@ -186,19 +199,22 @@ package matplotlib.animation;
 	/**
 		Context manager to facilitate writing the movie file.
 		
-		``*args`` are any parameters that should be passed to `setup`.
+		``*args, **kw`` are any parameters that should be passed to `setup`.
 	**/
-	public function saving(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function saving(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Perform setup for writing the movie file.
 		
-		fig: `matplotlib.Figure` instance
+		Parameters
+		----------
+		
+		fig : `matplotlib.Figure` instance
 		    The figure object that contains the information for frames
-		outfile: string
+		outfile : string
 		    The filename of the resulting movie file
-		dpi: int
+		dpi : int
 		    The DPI (or resolution) for the file.  This controls the size
 		    in pixels of the resulting movie file.
 	**/
-	public function setup(fig:Dynamic, outfile:Dynamic, dpi:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function setup(fig:Dynamic, outfile:Dynamic, dpi:Dynamic):Dynamic;
 }

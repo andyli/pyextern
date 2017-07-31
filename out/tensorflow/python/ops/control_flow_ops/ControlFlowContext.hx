@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.control_flow_ops;
 @:pythonImport("tensorflow.python.ops.control_flow_ops", "ControlFlowContext") extern class ControlFlowContext {
+	/**
+		Notifies a scope about an operator added to an inner scope.
+	**/
+	public function AddInnerOp(op:Dynamic):Dynamic;
 	public function AddName(name:Dynamic):Dynamic;
 	/**
 		Enter this control flow context.
@@ -15,20 +19,18 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function ExitResult(result:Dynamic):Dynamic;
 	/**
+		Returns the pivot node for this context, or None.
+	**/
+	public function GetControlPivot():Dynamic;
+	/**
 		Return the while context containing this context.
 	**/
 	public function GetWhileContext():Dynamic;
+	public function _IsInOuterContext(op:Dynamic):Dynamic;
 	/**
-		Add a control dependency to the containing WhileContext.
-		
-		The added control dependency ensures that the outputs of this op
-		belong to the WhileContext. Do nothing if the op is not contained
-		in a WhileContext.
-		
-		Args:
-		  op: An operation.
+		Remove any external control dependency on this op.
 	**/
-	public function MaybeAddToWhileContext(op:Dynamic):Dynamic;
+	public function _RemoveExternalControlEdges(op:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -69,11 +71,18 @@ package tensorflow.python.ops.control_flow_ops;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?values_def:Dynamic, ?import_scope:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,6 +138,28 @@ package tensorflow.python.ops.control_flow_ops;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Returns a `ControlFlowContext` created from `values_def`.
+	**/
+	static public function _from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Initializes values and external_values from `ValuesDef` protocol buffer.
+		
+		Args:
+		  values_def: `ValuesDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+	**/
+	public function _init_values_from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Converts the values to a `ValuesDef` protocol buffer.
+		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  A `ValuesDef` protocol buffer.
+	**/
+	public function _to_proto(?export_scope:Dynamic):Dynamic;
 	public var back_prop : Dynamic;
 	public var grad_state : Dynamic;
 	/**

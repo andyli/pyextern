@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.candidate_sampling_ops;
 @:pythonImport("tensorflow.python.ops.candidate_sampling_ops") extern class Candidate_sampling_ops_Module {
-	static public function _CandidateSamplerShape(op:Dynamic):Dynamic;
-	static public function _ComputeAccidentalHitsShape(op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -111,7 +109,7 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
 		    num_true]`. The target classes.
 		  num_true: An `int`.  The number of target classes per training example.
-		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_sampled: An `int`.  The number of classes to randomly sample.
 		  unique: A `bool`. Determines whether all sampled classes in a batch are
 		    unique.
 		  range_max: An `int`. The number of possible classes.
@@ -185,7 +183,7 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
 		    num_true]`. The target classes.
 		  num_true: An `int`.  The number of target classes per training example.
-		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_sampled: An `int`.  The number of classes to randomly sample.
 		  unique: A `bool`. Determines whether all sampled classes in a batch are
 		    unique.
 		  range_max: An `int`. The number of possible classes.
@@ -237,7 +235,7 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
 		    num_true]`. The target classes.
 		  num_true: An `int`.  The number of target classes per training example.
-		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_sampled: An `int`.  The number of classes to randomly sample.
 		  unique: A `bool`. Determines whether all sampled classes in a batch are
 		    unique.
 		  range_max: An `int`. The number of possible classes.
@@ -283,7 +281,9 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
 		    num_true]`. The target classes.
 		  num_true: An `int`.  The number of target classes per training example.
-		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_sampled: An `int`.  The number of classes to randomly sample. The
+		    `sampled_candidates` return value will have shape `[num_sampled]`. If
+		    `unique=True`, `num_sampled` must be less than or equal to `range_max`.
 		  unique: A `bool`. Determines whether all sampled classes in a batch are
 		    unique.
 		  range_max: An `int`. The number of possible classes.
@@ -291,8 +291,10 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  sampled_candidates: A tensor of type `int64` and shape `[num_sampled]`.
-		    The sampled classes.
+		  sampled_candidates: A tensor of type `int64` and shape `[num_sampled]`.  The
+		    sampled classes, either with possible duplicates (`unique=False`) or all
+		    unique (`unique=True`). In either case, `sampled_candidates` is
+		    independent of the true classes.
 		  true_expected_count: A tensor of type `float`.  Same shape as
 		    `true_classes`. The expected counts under the sampling distribution
 		    of each of `true_classes`.

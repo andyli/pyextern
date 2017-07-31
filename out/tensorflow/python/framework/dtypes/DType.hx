@@ -67,6 +67,14 @@ package tensorflow.python.framework.dtypes;
 	**/
 	public function new(type_enum:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __int__():Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -122,6 +130,14 @@ package tensorflow.python.framework.dtypes;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Returns a reference `DType` based on this `DType`.
+	**/
+	public var _as_ref : Dynamic;
+	/**
+		Returns `True` if this `DType` represents a reference type.
+	**/
+	public var _is_ref_dtype : Dynamic;
+	/**
 		Returns a `types_pb2.DataType` enum value based on this `DType`.
 	**/
 	public var as_datatype_enum : Dynamic;
@@ -130,19 +146,19 @@ package tensorflow.python.framework.dtypes;
 	**/
 	public var as_numpy_dtype : Dynamic;
 	/**
-		Returns a reference `DType` based on this `DType`.
-	**/
-	public var as_ref : Dynamic;
-	/**
 		Returns a non-reference `DType` based on this `DType`.
 	**/
 	public var base_dtype : Dynamic;
+	/**
+		Returns whether this is a boolean data type
+	**/
+	public var is_bool : Dynamic;
 	/**
 		Returns True if the `other` DType will be converted to this DType.
 		
 		The conversion rules are as follows:
 		
-		```
+		```python
 		DType(T)       .is_compatible_with(DType(T))        == True
 		DType(T)       .is_compatible_with(DType(T).as_ref) == True
 		DType(T).as_ref.is_compatible_with(DType(T))        == False
@@ -162,21 +178,18 @@ package tensorflow.python.framework.dtypes;
 	**/
 	public var is_complex : Dynamic;
 	/**
-		Returns whether this is a (real) floating point type.
+		Returns whether this is a (non-quantized, real) floating point type.
 	**/
 	public var is_floating : Dynamic;
 	/**
 		Returns whether this is a (non-quantized) integer type.
 	**/
 	public var is_integer : Dynamic;
+	public var is_numpy_compatible : Dynamic;
 	/**
 		Returns whether this is a quantized data type.
 	**/
 	public var is_quantized : Dynamic;
-	/**
-		Returns `True` if this `DType` represents a reference type.
-	**/
-	public var is_ref_dtype : Dynamic;
 	/**
 		Returns whether this type is unsigned.
 		
@@ -187,6 +200,17 @@ package tensorflow.python.framework.dtypes;
 		  Whether a `DType` is unsigned.
 	**/
 	public var is_unsigned : Dynamic;
+	/**
+		Return intensity limits, i.e. (min, max) tuple, of the dtype.
+		Args:
+		  clip_negative : bool, optional
+		      If True, clip the negative range (i.e. return 0 for min intensity)
+		      even if the image dtype allows negative values.
+		Returns
+		  min, max : tuple
+		    Lower and upper intensity limits.
+	**/
+	public var limits : Dynamic;
 	/**
 		Returns the maximum representable value in this data type.
 		

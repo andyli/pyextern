@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.datasets.base;
 @:pythonImport("tensorflow.contrib.learn.python.learn.datasets.base") extern class Base_Module {
+	static public var _RETRIABLE_ERRNOS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,6 +10,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _is_retriable(e:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for marking functions or methods deprecated.
@@ -20,6 +22,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		  Instructions for updating:
 		  <instructions>
 		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
 		<function> will include the class name if it is a method.
 		
 		It also edits the docstring of the function: ' (deprecated)' is appended
@@ -27,8 +30,8 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		to the rest of the docstring.
 		
 		Args:
-		  date: String. The date the function is scheduled to be removed. Must be
-		    ISO 8601 (YYYY-MM-DD).
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
 		
@@ -36,7 +39,8 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		  Decorated function or method.
 		
 		Raises:
-		  ValueError: If date is not in ISO 8601 format, or instructions are empty.
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
 	**/
 	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -50,14 +54,6 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		  Dataset object containing data in-memory.
 	**/
 	static public function load_boston(?data_path:Dynamic):Dynamic;
-	/**
-		Load dataset from CSV file. (deprecated)
-		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-15.
-		Instructions for updating:
-		Please use load_csv_{with|without}_header instead.
-	**/
-	static public function load_csv(filename:Dynamic, target_dtype:Dynamic, ?target_column:Dynamic, ?has_header:Dynamic):Dynamic;
 	/**
 		Load dataset from CSV file with a header row.
 	**/
@@ -90,7 +86,27 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	static public function maybe_download(filename:Dynamic, work_directory:Dynamic, source_url:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		Simple decorator for wrapping retriable functions.
+		
+		Args:
+		  initial_delay: the initial delay.
+		  factor: each subsequent retry, the delay is multiplied by this value.
+		      (must be >= 1).
+		  jitter: to avoid lockstep, the returned delay is multiplied by a random
+		      number between (1-jitter) and (1+jitter). To add a 20% jitter, set
+		      jitter = 0.2. Must be < 1.
+		  max_delay: the maximum delay allowed (actual max is
+		      max_delay * (1 + jitter).
+		  is_retriable: (optional) a function that takes an Exception as an argument
+		      and returns true if retry should be applied.
+	**/
+	static public function retry(initial_delay:Dynamic, max_delay:Dynamic, ?factor:Dynamic, ?jitter:Dynamic, ?is_retriable:Dynamic):Dynamic;
+	/**
 		Create a smaller dataset of only 1/ratio of original data.
 	**/
 	static public function shrink_csv(filename:Dynamic, ratio:Dynamic):Dynamic;
+	/**
+		The actual wrapper function that applies the retry logic.
+	**/
+	static public function urlretrieve_with_retry(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

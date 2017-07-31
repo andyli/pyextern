@@ -20,9 +20,9 @@ package tensorflow.python.ops.histogram_ops;
 		
 		Args:
 		  values:  Numeric `Tensor`.
-		  value_range:  Shape [2] `Tensor`.  new_values <= value_range[0] will be
-		    mapped to hist[0], values >= value_range[1] will be mapped to hist[-1].
-		    Must be same dtype as new_values.
+		  value_range:  Shape [2] `Tensor` of same `dtype` as `values`.
+		    values <= value_range[0] will be mapped to hist[0],
+		    values >= value_range[1] will be mapped to hist[-1].
 		  nbins:  Scalar `int32 Tensor`.  Number of histogram bins.
 		  dtype:  dtype for returned histogram.
 		  name:  A name for this operation (defaults to 'histogram_fixed_width').
@@ -40,7 +40,7 @@ package tensorflow.python.ops.histogram_ops;
 		
 		with tf.default_session() as sess:
 		  hist = tf.histogram_fixed_width(new_values, value_range, nbins=5)
-		  variables.initialize_all_variables().run()
+		  variables.global_variables_initializer().run()
 		  sess.run(hist) => [2, 1, 1, 0, 2]
 		```
 	**/

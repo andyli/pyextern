@@ -32,7 +32,6 @@ package scipy.special.orthogonal;
 		Return self>=value.
 	**/
 	public function __ge__(value:Dynamic):Dynamic;
-	public function __getattr__(key:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -52,6 +51,13 @@ package scipy.special.orthogonal;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(roots:Dynamic, ?weights:Dynamic, ?hn:Dynamic, ?kn:Dynamic, ?wfunc:Dynamic, ?limits:Dynamic, ?monic:Dynamic, ?eval_func:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -95,7 +101,7 @@ package scipy.special.orthogonal;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(key:Dynamic, val:Dynamic):Dynamic;
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(key:Dynamic, val:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
@@ -121,8 +127,24 @@ package scipy.special.orthogonal;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var _coeffs : Dynamic;
 	public function _scale(p:Dynamic):Dynamic;
-	static public var coeffs : Dynamic;
+	/**
+		A copy of the polynomial coefficients 
+	**/
+	public var c : Dynamic;
+	/**
+		A copy of the polynomial coefficients 
+	**/
+	public var coef : Dynamic;
+	/**
+		A copy of the polynomial coefficients 
+	**/
+	public var coefficients : Dynamic;
+	/**
+		A copy of the polynomial coefficients 
+	**/
+	public var coeffs : Dynamic;
 	/**
 		Return a derivative of this polynomial.
 		
@@ -143,6 +165,24 @@ package scipy.special.orthogonal;
 		polyint : equivalent function
 	**/
 	public function integ(?m:Dynamic, ?k:Dynamic):Dynamic;
-	static public var order : Dynamic;
-	static public var variable : Dynamic;
+	/**
+		The order or degree of the polynomial 
+	**/
+	public var o : Dynamic;
+	/**
+		The order or degree of the polynomial 
+	**/
+	public var order : Dynamic;
+	/**
+		The roots of the polynomial, where self(x) == 0 
+	**/
+	public var r : Dynamic;
+	/**
+		The roots of the polynomial, where self(x) == 0 
+	**/
+	public var roots : Dynamic;
+	/**
+		The name of the polynomial variable 
+	**/
+	public var variable : Dynamic;
 }

@@ -91,6 +91,10 @@ package scipy.stats._multivariate;
 	static public var _matnorm_doc_default_callparams : Dynamic;
 	static public var _matnorm_doc_frozen_callparams : Dynamic;
 	static public var _matnorm_doc_frozen_callparams_note : Dynamic;
+	static public var _multinomial_doc_callparams_note : Dynamic;
+	static public var _multinomial_doc_default_callparams : Dynamic;
+	static public var _multinomial_doc_frozen_callparams : Dynamic;
+	static public var _multinomial_doc_frozen_callparams_note : Dynamic;
 	static public var _mvn_doc_callparams_note : Dynamic;
 	static public var _mvn_doc_default_callparams : Dynamic;
 	static public var _mvn_doc_frozen_callparams : Dynamic;
@@ -141,8 +145,8 @@ package scipy.stats._multivariate;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -250,6 +254,106 @@ package scipy.stats._multivariate;
 	**/
 	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
+		A binomial discrete random variable.
+		
+		As an instance of the `rv_discrete` class, `binom` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(n, p, loc=0, size=1, random_state=None)``
+		    Random variates.
+		``pmf(k, n, p, loc=0)``
+		    Probability mass function.
+		``logpmf(k, n, p, loc=0)``
+		    Log of the probability mass function.
+		``cdf(k, n, p, loc=0)``
+		    Cumulative distribution function.
+		``logcdf(k, n, p, loc=0)``
+		    Log of the cumulative distribution function.
+		``sf(k, n, p, loc=0)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(k, n, p, loc=0)``
+		    Log of the survival function.
+		``ppf(q, n, p, loc=0)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, n, p, loc=0)``
+		    Inverse survival function (inverse of ``sf``).
+		``stats(n, p, loc=0, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(n, p, loc=0)``
+		    (Differential) entropy of the RV.
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(n, p, loc=0)``
+		    Median of the distribution.
+		``mean(n, p, loc=0)``
+		    Mean of the distribution.
+		``var(n, p, loc=0)``
+		    Variance of the distribution.
+		``std(n, p, loc=0)``
+		    Standard deviation of the distribution.
+		``interval(alpha, n, p, loc=0)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability mass function for `binom` is::
+		
+		   binom.pmf(k) = choose(n, k) * p**k * (1-p)**(n-k)
+		
+		for ``k`` in ``{0, 1,..., n}``.
+		
+		`binom` takes ``n`` and ``p`` as shape parameters.
+		
+		The probability mass function above is defined in the "standardized" form.
+		To shift distribution use the ``loc`` parameter.
+		Specifically, ``binom.pmf(k, n, p, loc)`` is identically
+		equivalent to ``binom.pmf(k - loc, n, p)``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import binom
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> n, p = 5, 0.4
+		>>> mean, var, skew, kurt = binom.stats(n, p, moments='mvsk')
+		
+		Display the probability mass function (``pmf``):
+		
+		>>> x = np.arange(binom.ppf(0.01, n, p),
+		...               binom.ppf(0.99, n, p))
+		>>> ax.plot(x, binom.pmf(x, n, p), 'bo', ms=8, label='binom pmf')
+		>>> ax.vlines(x, 0, binom.pmf(x, n, p), colors='b', lw=5, alpha=0.5)
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pmf``:
+		
+		>>> rv = binom(n, p)
+		>>> ax.vlines(x, 0, rv.pmf(x), colors='k', linestyles='-', lw=1,
+		...         label='frozen pmf')
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> prob = binom.cdf(x, n, p)
+		>>> np.allclose(x, binom.ppf(prob, n, p))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = binom.rvs(n, p, size=1000)
+	**/
+	static public function binom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Turn seed into a np.random.RandomState instance
 		
 		If seed is None (or np.random), return the RandomState singleton used
@@ -280,7 +384,7 @@ package scipy.stats._multivariate;
 		``var(alpha)``
 		    The variance of the Dirichlet distribution
 		``entropy(alpha)``
-		    Compute the differential entropy of the multivariate normal.
+		    Compute the differential entropy of the Dirichlet distribution.
 		
 		Parameters
 		----------
@@ -371,6 +475,36 @@ package scipy.stats._multivariate;
 		y : rank-1 array('d') with bounds (*)
 	**/
 	static public function drot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		entr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		entr(x)
+		
+		Elementwise function for computing entropy.
+		
+		.. math:: \text{entr}(x) = \begin{cases} - x \log(x) & x > 0  \\ 0 & x = 0 \\ -\infty & \text{otherwise} \end{cases}
+		
+		Parameters
+		----------
+		x : ndarray
+		    Input array.
+		
+		Returns
+		-------
+		res : ndarray
+		    The value of the elementwise entropy function at the given points `x`.
+		
+		See Also
+		--------
+		kl_div, rel_entr
+		
+		Notes
+		-----
+		This function is concave.
+		
+		.. versionadded:: 0.15.0
+	**/
+	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Logarithm of the absolute value of the Gamma function for real inputs.
 		
@@ -664,15 +798,14 @@ package scipy.stats._multivariate;
 	**/
 	static public function matrix_normal(?mean:Dynamic, ?rowcov:Dynamic, ?colcov:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Draw random samples from an inverse Wishart distribution.
+		Draw random samples from a Multinomial distribution.
 		
 		Parameters
 		----------
-		df : int
-		    Degrees of freedom, must be greater than or equal to dimension of the
-		    scale matrix
-		scale : array_like
-		    Symmetric positive definite scale matrix of the distribution
+		n : int
+		    Number of trials
+		p : array_like
+		    Probability of a trial falling into each category; should sum to 1
 		size : integer or iterable of integers, optional
 		    Number of samples to draw (default 1).
 		random_state : None or int or np.random.RandomState instance, optional
@@ -682,16 +815,19 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		rvs : ndarray
-		    Random variates of shape (`size`) + (`dim`, `dim), where `dim` is
-		    the dimension of the scale matrix.
+		rvs : ndarray or scalar
+		    Random variates of shape (`size`, `len(p)`)
 		
 		Notes
 		-----
+		`n` should be a positive integer. Each element of `p` should be in the
+		interval :math:`[0,1]` and the elements should sum to 1. If they do not sum to
+		1, the last element of the `p` array is not used and is replaced with the
+		remaining probability left over from the earlier elements.
 	**/
-	static public function method(self:Dynamic, df:Dynamic, scale:Dynamic, ?size:Dynamic, ?random_state:Dynamic):Dynamic;
+	static public function method(self:Dynamic, n:Dynamic, p:Dynamic, ?size:Dynamic, ?random_state:Dynamic):Dynamic;
 	/**
-		Draw random samples from an inverse Wishart distribution.
+		Draw random samples from a Multinomial distribution.
 		
 		Parameters
 		----------
@@ -705,9 +841,8 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		rvs : ndarray
-		    Random variates of shape (`size`) + (`dim`, `dim), where `dim` is
-		    the dimension of the scale matrix.
+		rvs : ndarray or scalar
+		    Random variates of shape (`size`, `len(p)`)
 		
 		Notes
 		-----
@@ -756,6 +891,118 @@ package scipy.stats._multivariate;
 		probability and mathematical statistics).
 	**/
 	static public function multigammaln(a:Dynamic, d:Dynamic):Dynamic;
+	/**
+		A multinomial random variable.
+		
+		Methods
+		-------
+		``pmf(x, n, p)``
+		    Probability mass function.
+		``logpmf(x, n, p)``
+		    Log of the probability mass function.
+		``rvs(n, p, size=1, random_state=None)``
+		    Draw random samples from a multinomial distribution.
+		``entropy(n, p)``
+		    Compute the entropy of the multinomial distribution.
+		``cov(n, p)``
+		    Compute the covariance matrix of the multinomial distribution.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		n : int
+		    Number of trials
+		p : array_like
+		    Probability of a trial falling into each category; should sum to 1
+		random_state : None or int or np.random.RandomState instance, optional
+		    If int or RandomState, use it for drawing the random variates.
+		    If None (or np.random), the global np.random state is used.
+		    Default is None.
+		
+		Notes
+		-----
+		`n` should be a positive integer. Each element of `p` should be in the
+		interval :math:`[0,1]` and the elements should sum to 1. If they do not sum to
+		1, the last element of the `p` array is not used and is replaced with the
+		remaining probability left over from the earlier elements.
+		
+		Alternatively, the object may be called (as a function) to fix the `n` and
+		`p` parameters, returning a "frozen" multinomial random variable:
+		
+		The probability mass function for `multinomial` is
+		
+		.. math::
+		
+		    f(x) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k},
+		
+		supported on :math:`x=(x_1, \ldots, x_k)` where each :math:`x_i` is a
+		nonnegative integer and their sum is :math:`n`.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		
+		>>> from scipy.stats import multinomial
+		>>> rv = multinomial(8, [0.3, 0.2, 0.5])
+		>>> rv.pmf([1, 3, 4])
+		0.042000000000000072
+		
+		The multinomial distribution for :math:`k=2` is identical to the
+		corresponding binomial distribution (tiny numerical differences
+		notwithstanding):
+		
+		>>> from scipy.stats import binom
+		>>> multinomial.pmf([3, 4], n=7, p=[0.4, 0.6])
+		0.29030399999999973
+		>>> binom.pmf(3, 7, 0.4)
+		0.29030400000000012
+		
+		The functions ``pmf``, ``logpmf``, ``entropy``, and ``cov`` support
+		broadcasting, under the convention that the vector parameters (``x`` and
+		``p``) are interpreted as if each row along the last axis is a single
+		object. For instance:
+		
+		>>> multinomial.pmf([[3, 4], [3, 5]], n=[7, 8], p=[.3, .7])
+		array([0.2268945,  0.25412184])
+		
+		Here, ``x.shape == (2, 2)``, ``n.shape == (2,)``, and ``p.shape == (2,)``,
+		but following the rules mentioned above they behave as if the rows
+		``[3, 4]`` and ``[3, 5]`` in ``x`` and ``[.3, .7]`` in ``p`` were a single
+		object, and as if we had ``x.shape = (2,)``, ``n.shape = (2,)``, and
+		``p.shape = ()``. To obtain the individual elements without broadcasting,
+		we would do this:
+		
+		>>> multinomial.pmf([3, 4], n=7, p=[.3, .7])
+		0.2268945
+		>>> multinomial.pmf([3, 5], 8, p=[.3, .7])
+		0.25412184
+		
+		This broadcasting also works for ``cov``, where the output objects are
+		square matrices of size ``p.shape[-1]``. For example:
+		
+		>>> multinomial.cov([4, 5], [[.3, .7], [.4, .6]])
+		array([[[ 0.84, -0.84],
+		        [-0.84,  0.84]],
+		       [[ 1.2 , -1.2 ],
+		        [-1.2 ,  1.2 ]]])
+		
+		In this example, ``n.shape == (2,)`` and ``p.shape == (2, 2)``, and
+		following the rules above, these broadcast as if ``p.shape == (2,)``.
+		Thus the result should also be of shape ``(2,)``, but since each output is
+		a :math:`2 \times 2` matrix, the result in fact has shape ``(2, 2, 2)``,
+		where ``result[0]`` is equal to ``multinomial.cov(n=4, p=[.3, .7])`` and
+		``result[1]`` is equal to ``multinomial.cov(n=5, p=[.4, .6])``.
+		
+		See also
+		--------
+		scipy.stats.binom : The binomial distribution.
+		numpy.random.multinomial : Sampling from the multinomial distribution.
+	**/
+	static public function multinomial(n:Dynamic, p:Dynamic, ?seed:Dynamic):Dynamic;
+	static public var multinomial_docdict_noparams : Dynamic;
+	static public var multinomial_docdict_params : Dynamic;
 	/**
 		A multivariate normal random variable.
 		
@@ -854,7 +1101,7 @@ package scipy.stats._multivariate;
 	static public var ortho_group : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		psi(x[, out])
+		psi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		psi(z, out=None)
 		
@@ -1007,4 +1254,29 @@ package scipy.stats._multivariate;
 	static public function wishart(?df:Dynamic, ?scale:Dynamic, ?seed:Dynamic):Dynamic;
 	static public var wishart_docdict_noparams : Dynamic;
 	static public var wishart_docdict_params : Dynamic;
+	/**
+		xlogy(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		xlogy(x, y)
+		
+		Compute ``x*log(y)`` so that the result is 0 if ``x = 0``.
+		
+		Parameters
+		----------
+		x : array_like
+		    Multiplier
+		y : array_like
+		    Argument
+		
+		Returns
+		-------
+		z : array_like
+		    Computed x*log(y)
+		
+		Notes
+		-----
+		
+		.. versionadded:: 0.13.0
+	**/
+	static public function xlogy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

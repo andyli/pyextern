@@ -63,6 +63,13 @@ package matplotlib.colorbar;
 	**/
 	public function new(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?alpha:Dynamic, ?values:Dynamic, ?boundaries:Dynamic, ?orientation:Dynamic, ?ticklocation:Dynamic, ?extend:Dynamic, ?spacing:Dynamic, ?ticks:Dynamic, ?format:Dynamic, ?drawedges:Dynamic, ?filled:Dynamic, ?extendfrac:Dynamic, ?extendrect:Dynamic, ?label:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -318,12 +325,15 @@ package matplotlib.colorbar;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Force the update of the ticks and ticklabels. This must be
 		called whenever the tick locator and/or tick formatter changes.

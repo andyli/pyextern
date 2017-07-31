@@ -9,6 +9,10 @@ package tensorflow.contrib.factorization.python.ops.gmm;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Create a sum metric and update op.
+	**/
+	static public function _streaming_sum(scalar_tensor:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
@@ -22,10 +26,10 @@ package tensorflow.contrib.factorization.python.ops.gmm;
 		no guarantee that `output_tensor` will be evaluated after any `dependencies`
 		have run.
 		
-		See also `tuple` and `group`.
+		See also @{tf.tuple$tuple} and @{tf.group$group}.
 		
 		Args:
-		  dependencies: A list of operations to run before this op finishes.
+		  dependencies: Iterable of operations to run before this op finishes.
 		  output_tensor: A `Tensor` or `IndexedSlices` that will be returned.
 		  name: (Optional) A name for this operation.
 		

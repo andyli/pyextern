@@ -22,11 +22,25 @@ package scipy.signal.filter_design;
 	**/
 	static public function _aberth(f:Dynamic, fp:Dynamic, x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
+		Aligns the shapes of multiple numerators.
+		
 		Given an array of numerator coefficient arrays [[a_1, a_2,...,
 		a_n],..., [b_1, b_2,..., b_m]], this function pads shorter numerator
 		arrays with zero's so that all numerators have the same length. Such
 		alignment is necessary for functions like 'tf2ss', which needs the
 		alignment when dealing with SIMO transfer functions.
+		
+		Parameters
+		----------
+		nums: array_like
+		    Numerator or list of numerators. Not necessarily with same length.
+		
+		Returns
+		-------
+		nums: array
+		    The numerator. If `nums` input was a list of numerators then a 2d
+		    array with padded zeros for shorter numerators is returned. Otherwise
+		    returns ``np.asarray(nums)``.
 	**/
 	static public function _align_nums(nums:Dynamic):Dynamic;
 	/**
@@ -48,11 +62,11 @@ package scipy.signal.filter_design;
 		Sequence is http://oeis.org/A001498 , and output can be confirmed to
 		match http://oeis.org/A001498/b001498.txt :
 		
-		i = 0
-		for n in range(51):
-		    for x in bessel_poly(n, reverse=True):
-		        print i, x
-		        i += 1
+		>>> i = 0
+		>>> for n in range(51):
+		...     for x in _bessel_poly(n, reverse=True):
+		...         print(i, x)
+		...         i += 1
 	**/
 	static public function _bessel_poly(n:Dynamic, ?reverse:Dynamic):Dynamic;
 	/**
@@ -165,6 +179,50 @@ package scipy.signal.filter_design;
 		[ 1.  3.  4.]
 	**/
 	static public function _cplxreal(z:Dynamic, ?tol:Dynamic):Dynamic;
+	/**
+		Design notch or peak digital filter.
+		
+		Parameters
+		----------
+		w0 : float
+		    Normalized frequency to remove from a signal. It is a
+		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1``
+		    corresponding to half of the sampling frequency.
+		Q : float
+		    Quality factor. Dimensionless parameter that characterizes
+		    notch filter -3 dB bandwidth ``bw`` relative to its center
+		    frequency, ``Q = w0/bw``.
+		ftype : str
+		    The type of IIR filter to design:
+		
+		        - notch filter : ``notch``
+		        - peak filter  : ``peak``
+		
+		Returns
+		-------
+		b, a : ndarray, ndarray
+		    Numerator (``b``) and denominator (``a``) polynomials
+		    of the IIR filter.
+	**/
+	static public function _design_notch_peak_filter(w0:Dynamic, Q:Dynamic, ftype:Dynamic):Dynamic;
+	/**
+		Return the factorial of `x` to the `n` falling.
+		
+		This is defined as:
+		
+		.. math::   x^\underline n = (x)_n = x (x-1) \cdots (x-n+1)
+		
+		This can more efficiently calculate ratios of factorials, since:
+		
+		n!/m! == falling_factorial(n, n-m)
+		
+		where n >= m
+		
+		skipping the factors that cancel out
+		
+		the usual factorial n! == ff(n, n)
+	**/
+	static public function _falling_factorial(x:Dynamic, n:Dynamic):Dynamic;
 	static public function _kratio(m:Dynamic, k_ratio:Dynamic):Dynamic;
 	/**
 		Get the next closest real or complex element based on distance
@@ -174,16 +232,21 @@ package scipy.signal.filter_design;
 		Numerically find frequency shift to apply to delay-normalized filter such
 		that -3 dB point is at 1 rad/sec.
 		
-		`a` is an array_like of polynomial coefficients
+		`p` is an array_like of polynomial poles
+		`k` is a float gain
 		
 		First 10 values are listed in "Bessel Scale Factors" table,
 		"Bessel Filters Polynomials, Poles and Circuit Elements 2003, C. Bond."
 	**/
-	static public function _norm_factor(a:Dynamic):Dynamic;
+	static public function _norm_factor(p:Dynamic, k:Dynamic):Dynamic;
 	/**
 		Return relative degree of transfer function from zeros and poles
 	**/
 	static public function _relative_degree(z:Dynamic, p:Dynamic):Dynamic;
+	/**
+		Helper to validate a SOS input
+	**/
+	static public function _validate_sos(sos:Dynamic):Dynamic;
 	static public function _vratio(u:Dynamic, ineps:Dynamic, mp:Dynamic):Dynamic;
 	/**
 		Return a digital filter from an analog one using a bilinear transform.
@@ -370,7 +433,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function _zpklp2lp(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -378,6 +441,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -405,12 +479,12 @@ package scipy.signal.filter_design;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -418,6 +492,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -445,72 +530,11 @@ package scipy.signal.filter_design;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Returns True if two arrays are element-wise equal within a tolerance.
-		
-		The tolerance values are positive, typically very small numbers.  The
-		relative difference (`rtol` * abs(`b`)) and the absolute difference
-		`atol` are added together to compare against the absolute difference
-		between `a` and `b`.
-		
-		If either array contains one or more NaNs, False is returned.
-		Infs are treated as equal if they are in the same place and of the same
-		sign in both arrays.
-		
-		Parameters
-		----------
-		a, b : array_like
-		    Input arrays to compare.
-		rtol : float
-		    The relative tolerance parameter (see Notes).
-		atol : float
-		    The absolute tolerance parameter (see Notes).
-		equal_nan : bool
-		    Whether to compare NaN's as equal.  If True, NaN's in `a` will be
-		    considered equal to NaN's in `b` in the output array.
-		
-		    .. versionadded:: 1.10.0
-		
-		Returns
-		-------
-		allclose : bool
-		    Returns True if the two arrays are equal within the given
-		    tolerance; False otherwise.
-		
-		See Also
-		--------
-		isclose, all, any
-		
-		Notes
-		-----
-		If the following equation is element-wise True, then allclose returns
-		True.
-		
-		 absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))
-		
-		The above equation is not symmetric in `a` and `b`, so that
-		`allclose(a, b)` might be different from `allclose(b, a)` in
-		some rare cases.
-		
-		Examples
-		--------
-		>>> np.allclose([1e10,1e-7], [1.00001e10,1e-8])
-		False
-		>>> np.allclose([1e10,1e-8], [1.00001e10,1e-9])
-		True
-		>>> np.allclose([1e10,1e-8], [1.0001e10,1e-9])
-		False
-		>>> np.allclose([1.0, np.nan], [1.0, np.nan])
-		False
-		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
-		True
-	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Append values to the end of an array.
 		
@@ -557,7 +581,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function append(arr:Dynamic, values:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		arccosh(x[, out])
+		arccosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic cosine, element-wise.
 		
@@ -565,10 +589,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array of the same shape as `x`, to store results in.
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -610,7 +641,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function arccosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arcsinh(x[, out])
+		arcsinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic sine element-wise.
 		
@@ -618,9 +649,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -657,7 +696,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function arcsinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan(x[, out])
+		arctan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse tangent, element-wise.
 		
@@ -666,7 +705,17 @@ package scipy.signal.filter_design;
 		Parameters
 		----------
 		x : array_like
-		    Input values.  `arctan` is applied to each element of `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -723,35 +772,43 @@ package scipy.signal.filter_design;
 	**/
 	static public function arctan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -767,7 +824,13 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -832,8 +895,8 @@ package scipy.signal.filter_design;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -894,7 +957,7 @@ package scipy.signal.filter_design;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -1157,8 +1220,7 @@ package scipy.signal.filter_design;
 		.. [1] C.R. Bond, "Bessel Filter Constants",
 		       http://www.crbond.com/papers/bsf.pdf
 		.. [2] Campos and Calderon, "Approximate closed-form formulas for the
-		       zeros of the Bessel Polynomials", arXiv:1105.0957 [math-ph],
-		       http://arxiv.org/abs/1105.0957
+		       zeros of the Bessel Polynomials", :arXiv:`1105.0957`.
 		.. [3] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
 		       Characteristics", Proceedings of the Institution of Electrical
 		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
@@ -1167,7 +1229,7 @@ package scipy.signal.filter_design;
 		       April 1973
 		.. [5] Ehrlich, "A modified Newton method for polynomials", Communications
 		       of the ACM, Vol. 10, Issue 2, pp. 107-108, Feb. 1967,
-		       DOI:10.1145/363067.363115
+		       :DOI:`10.1145/363067.363115`
 		.. [6] Miller and Bohn, "A Bessel Filter Crossover, and Its Relation to
 		       Others", RaneNote 147, 1998, http://www.rane.com/note147.html
 	**/
@@ -1329,7 +1391,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
-		ceil(x[, out])
+		ceil(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the ceiling of the input, element-wise.
 		
@@ -1340,6 +1402,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1703,6 +1776,10 @@ package scipy.signal.filter_design;
 		val : int, ndarray
 		    The total number of combinations.
 		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
+		
 		Notes
 		-----
 		- Array arguments accepted only for exact=False case.
@@ -1795,7 +1872,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -1806,6 +1883,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1824,7 +1912,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function conjugate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosh(x[, out])
+		cosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic cosine, element-wise.
 		
@@ -1834,6 +1922,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1957,8 +2056,8 @@ package scipy.signal.filter_design;
 		
 		References
 		----------
-		Lutova, Tosic, and Evans, "Filter Design for Signal Processing", Chapters 5
-		and 12.
+		.. [1] Lutova, Tosic, and Evans, "Filter Design for Signal Processing",
+		       Chapters 5 and 12.
 	**/
 	static public function ellipap(N:Dynamic, rp:Dynamic, rs:Dynamic):Dynamic;
 	/**
@@ -2031,7 +2130,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -2039,6 +2138,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2083,12 +2193,12 @@ package scipy.signal.filter_design;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
@@ -2147,10 +2257,14 @@ package scipy.signal.filter_design;
 		----------
 		num, den : array_like, 1-D
 		    The polynomial coefficients of the numerator and denominator of the
-		    transfer function of the filter or LTI system.  The coefficients are
-		    ordered from highest to lowest degree.
+		    transfer function of the filter or LTI system, where the coefficients
+		    are ordered from highest to lowest degree. Or, the roots  of the
+		    transfer function numerator and denominator (i.e. zeroes and poles).
 		N : int
 		    The length of the array to be computed.
+		kind : str {'ba', 'zp'}, optional
+		    Specifies whether the numerator and denominator are specified by their
+		    polynomial coefficients ('ba'), or their roots ('zp').
 		
 		Returns
 		-------
@@ -2170,7 +2284,7 @@ package scipy.signal.filter_design;
 		         3.16227766e-01,   1.00000000e+00,   3.16227766e+00,
 		         1.00000000e+01,   3.16227766e+01,   1.00000000e+02])
 	**/
-	static public function findfreqs(num:Dynamic, den:Dynamic, N:Dynamic):Dynamic;
+	static public function findfreqs(num:Dynamic, den:Dynamic, N:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
 		Compute frequency response of analog filter.
 		
@@ -2231,6 +2345,64 @@ package scipy.signal.filter_design;
 	**/
 	static public function freqs(b:Dynamic, a:Dynamic, ?worN:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
+		Compute frequency response of analog filter.
+		
+		Given the zeros `z`, poles `p`, and gain `k` of a filter, compute its
+		frequency response::
+		
+		            (jw-z[0]) * (jw-z[1]) * ... * (jw-z[-1])
+		 H(w) = k * ----------------------------------------
+		            (jw-p[0]) * (jw-p[1]) * ... * (jw-p[-1])
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None, then compute at 200 frequencies around the interesting parts
+		    of the response curve (determined by pole-zero locations).  If a single
+		    integer, then compute at that many frequencies.  Otherwise, compute the
+		    response at the angular frequencies (e.g. rad/s) given in `worN`.
+		
+		Returns
+		-------
+		w : ndarray
+		    The angular frequencies at which `h` was computed.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqz : Compute the frequency response of a digital filter in TF form
+		freqz_zpk : Compute the frequency response of a digital filter in ZPK form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import freqs_zpk, iirfilter
+		
+		>>> z, p, k = iirfilter(4, [1, 10], 1, 60, analog=True, ftype='cheby1',
+		...                     output='zpk')
+		
+		>>> w, h = freqs_zpk(z, p, k, worN=np.logspace(-1, 2, 1000))
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.semilogx(w, 20 * np.log10(abs(h)))
+		>>> plt.xlabel('Frequency')
+		>>> plt.ylabel('Amplitude response [dB]')
+		>>> plt.grid()
+		>>> plt.show()
+	**/
+	static public function freqs_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic):Dynamic;
+	/**
 		Compute the frequency response of a digital filter.
 		
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
@@ -2269,7 +2441,11 @@ package scipy.signal.filter_design;
 		    The normalized frequencies at which `h` was computed, in
 		    radians/sample.
 		h : ndarray
-		    The frequency response.
+		    The frequency response, as complex numbers.
+		
+		See Also
+		--------
+		sosfreqz
 		
 		Notes
 		-----
@@ -2301,6 +2477,78 @@ package scipy.signal.filter_design;
 		>>> plt.show()
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	/**
+		Compute the frequency response of a digital filter in ZPK form.
+		
+		Given the Zeros, Poles and Gain of a digital filter, compute its frequency
+		response::
+		
+		:math:`H(z)=k \prod_i (z - Z[i]) / \prod_j (z - P[j])`
+		
+		where :math:`k` is the `gain`, :math:`Z` are the `zeros` and :math:`P` are
+		the `poles`.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeroes of a linear filter
+		p : array_like
+		    Poles of a linear filter
+		k : scalar
+		    Gain of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response.
+		
+		See Also
+		--------
+		freqs : Compute the frequency response of an analog filter in TF form
+		freqs_zpk : Compute the frequency response of an analog filter in ZPK form
+		freqz : Compute the frequency response of a digital filter in TF form
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> z, p, k = signal.butter(4, 0.2, output='zpk')
+		>>> w, h = signal.freqz_zpk(z, p, k)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.title('Digital filter frequency response')
+		>>> ax1 = fig.add_subplot(111)
+		
+		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> plt.ylabel('Amplitude [dB]', color='b')
+		>>> plt.xlabel('Frequency [rad/sample]')
+		
+		>>> ax2 = ax1.twinx()
+		>>> angles = np.unwrap(np.angle(h))
+		>>> plt.plot(w, angles, 'g')
+		>>> plt.ylabel('Angle (radians)', color='g')
+		>>> plt.grid()
+		>>> plt.axis('tight')
+		>>> plt.show()
+	**/
+	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
 	/**
 		Compute the group delay of a digital filter.
 		
@@ -2526,7 +2774,157 @@ package scipy.signal.filter_design;
 	**/
 	static public function iirfilter(N:Dynamic, Wn:Dynamic, ?rp:Dynamic, ?rs:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		log10(x[, out])
+		Design second-order IIR notch digital filter.
+		
+		A notch filter is a band-stop filter with a narrow bandwidth
+		(high quality factor). It rejects a narrow frequency band and
+		leaves the rest of the spectrum little changed.
+		
+		Parameters
+		----------
+		w0 : float
+		    Normalized frequency to remove from a signal. It is a
+		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1``
+		    corresponding to half of the sampling frequency.
+		Q : float
+		    Quality factor. Dimensionless parameter that characterizes
+		    notch filter -3 dB bandwidth ``bw`` relative to its center
+		    frequency, ``Q = w0/bw``.
+		
+		Returns
+		-------
+		b, a : ndarray, ndarray
+		    Numerator (``b``) and denominator (``a``) polynomials
+		    of the IIR filter.
+		
+		See Also
+		--------
+		iirpeak
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		References
+		----------
+		.. [1] Sophocles J. Orfanidis, "Introduction To Signal Processing",
+		       Prentice-Hall, 1996
+		
+		Examples
+		--------
+		Design and plot filter to remove the 60Hz component from a
+		signal sampled at 200Hz, using a quality factor Q = 30
+		
+		>>> from scipy import signal
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 200.0  # Sample frequency (Hz)
+		>>> f0 = 60.0  # Frequency to be removed from signal (Hz)
+		>>> Q = 30.0  # Quality factor
+		>>> w0 = f0/(fs/2)  # Normalized Frequency
+		>>> # Design notch filter
+		>>> b, a = signal.iirnotch(w0, Q)
+		
+		>>> # Frequency response
+		>>> w, h = signal.freqz(b, a)
+		>>> # Generate frequency axis
+		>>> freq = w*fs/(2*np.pi)
+		>>> # Plot
+		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
+		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
+		>>> ax[0].set_title("Frequency Response")
+		>>> ax[0].set_ylabel("Amplitude (dB)", color='blue')
+		>>> ax[0].set_xlim([0, 100])
+		>>> ax[0].set_ylim([-25, 10])
+		>>> ax[0].grid()
+		>>> ax[1].plot(freq, np.unwrap(np.angle(h))*180/np.pi, color='green')
+		>>> ax[1].set_ylabel("Angle (degrees)", color='green')
+		>>> ax[1].set_xlabel("Frequency (Hz)")
+		>>> ax[1].set_xlim([0, 100])
+		>>> ax[1].set_yticks([-90, -60, -30, 0, 30, 60, 90])
+		>>> ax[1].set_ylim([-90, 90])
+		>>> ax[1].grid()
+		>>> plt.show()
+	**/
+	static public function iirnotch(w0:Dynamic, Q:Dynamic):Dynamic;
+	/**
+		Design second-order IIR peak (resonant) digital filter.
+		
+		A peak filter is a band-pass filter with a narrow bandwidth
+		(high quality factor). It rejects components outside a narrow
+		frequency band.
+		
+		Parameters
+		----------
+		w0 : float
+		    Normalized frequency to be retained in a signal. It is a
+		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1`` corresponding
+		    to half of the sampling frequency.
+		Q : float
+		    Quality factor. Dimensionless parameter that characterizes
+		    peak filter -3 dB bandwidth ``bw`` relative to its center
+		    frequency, ``Q = w0/bw``.
+		
+		Returns
+		-------
+		b, a : ndarray, ndarray
+		    Numerator (``b``) and denominator (``a``) polynomials
+		    of the IIR filter.
+		
+		See Also
+		--------
+		iirnotch
+		
+		Notes
+		-----
+		.. versionadded: 0.19.0
+		
+		References
+		----------
+		.. [1] Sophocles J. Orfanidis, "Introduction To Signal Processing",
+		       Prentice-Hall, 1996
+		
+		Examples
+		--------
+		Design and plot filter to remove the frequencies other than the 300Hz
+		component from a signal sampled at 1000Hz, using a quality factor Q = 30
+		
+		>>> from scipy import signal
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 1000.0  # Sample frequency (Hz)
+		>>> f0 = 300.0  # Frequency to be retained (Hz)
+		>>> Q = 30.0  # Quality factor
+		>>> w0 = f0/(fs/2)  # Normalized Frequency
+		>>> # Design peak filter
+		>>> b, a = signal.iirpeak(w0, Q)
+		
+		>>> # Frequency response
+		>>> w, h = signal.freqz(b, a)
+		>>> # Generate frequency axis
+		>>> freq = w*fs/(2*np.pi)
+		>>> # Plot
+		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
+		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
+		>>> ax[0].set_title("Frequency Response")
+		>>> ax[0].set_ylabel("Amplitude (dB)", color='blue')
+		>>> ax[0].set_xlim([0, 500])
+		>>> ax[0].set_ylim([-50, 10])
+		>>> ax[0].grid()
+		>>> ax[1].plot(freq, np.unwrap(np.angle(h))*180/np.pi, color='green')
+		>>> ax[1].set_ylabel("Angle (degrees)", color='green')
+		>>> ax[1].set_xlabel("Frequency (Hz)")
+		>>> ax[1].set_xlim([0, 500])
+		>>> ax[1].set_yticks([-90, -60, -30, 0, 30, 60, 90])
+		>>> ax[1].set_ylim([-90, 90])
+		>>> ax[1].grid()
+		>>> plt.show()
+	**/
+	static public function iirpeak(w0:Dynamic, Q:Dynamic):Dynamic;
+	/**
+		log10(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the base 10 logarithm of the input array, element-wise.
 		
@@ -2534,6 +2932,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2587,7 +2996,7 @@ package scipy.signal.filter_design;
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
-		    length ``num``) are returned.
+		    length `num`) are returned.
 		num : integer, optional
 		    Number of samples to generate.  Default is 50.
 		endpoint : boolean, optional
@@ -2613,6 +3022,7 @@ package scipy.signal.filter_design;
 		         endpoint may or may not be included.
 		linspace : Similar to logspace, but with the samples uniformly distributed
 		           in linear space, instead of log space.
+		geomspace : Similar to logspace, but with endpoints specified directly.
 		
 		Notes
 		-----
@@ -2626,11 +3036,11 @@ package scipy.signal.filter_design;
 		Examples
 		--------
 		>>> np.logspace(2.0, 3.0, num=4)
-		    array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
+		array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
 		>>> np.logspace(2.0, 3.0, num=4, endpoint=False)
-		    array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
+		array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
 		>>> np.logspace(2.0, 3.0, num=4, base=2.0)
-		    array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
+		array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
 		
 		Graphical illustration:
 		
@@ -2724,10 +3134,32 @@ package scipy.signal.filter_design;
 	**/
 	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
-		Normalize polynomial representation of a transfer function.
+		Normalize numerator/denominator of a continuous-time transfer function.
 		
 		If values of `b` are too close to 0, they are removed. In that case, a
 		BadCoefficients warning is emitted.
+		
+		Parameters
+		----------
+		b: array_like
+		    Numerator of the transfer function. Can be a 2d array to normalize
+		    multiple transfer functions.
+		a: array_like
+		    Denominator of the transfer function. At most 1d.
+		
+		Returns
+		-------
+		num: array
+		    The numerator of the normalized transfer function. At least a 1d
+		    array. A 2d-array if the input `num` is a 2d array.
+		den: 1d-array
+		    The denominator of the normalized transfer function.
+		
+		Notes
+		-----
+		Coefficients for both the numerator and denominator should be specified in
+		descending exponent order (e.g., ``s^2 + 3s + 5`` would be represented as
+		``[1, 3, 5]``).
 	**/
 	static public function normalize(b:Dynamic, a:Dynamic):Dynamic;
 	/**
@@ -3001,6 +3433,81 @@ package scipy.signal.filter_design;
 		poly1d([ 76.])
 	**/
 	static public function polyval(p:Dynamic, x:Dynamic):Dynamic;
+	/**
+		Evaluate a polynomial specified by its roots at points x.
+		
+		If `r` is of length `N`, this function returns the value
+		
+		.. math:: p(x) = \prod_{n=1}^{N} (x - r_n)
+		
+		The parameter `x` is converted to an array only if it is a tuple or a
+		list, otherwise it is treated as a scalar. In either case, either `x`
+		or its elements must support multiplication and addition both with
+		themselves and with the elements of `r`.
+		
+		If `r` is a 1-D array, then `p(x)` will have the same shape as `x`.  If `r`
+		is multidimensional, then the shape of the result depends on the value of
+		`tensor`. If `tensor is ``True`` the shape will be r.shape[1:] + x.shape;
+		that is, each polynomial is evaluated at every value of `x`. If `tensor` is
+		``False``, the shape will be r.shape[1:]; that is, each polynomial is
+		evaluated only for the corresponding broadcast value of `x`. Note that
+		scalars have shape (,).
+		
+		.. versionadded:: 1.12
+		
+		Parameters
+		----------
+		x : array_like, compatible object
+		    If `x` is a list or tuple, it is converted to an ndarray, otherwise
+		    it is left unchanged and treated as a scalar. In either case, `x`
+		    or its elements must support addition and multiplication with
+		    with themselves and with the elements of `r`.
+		r : array_like
+		    Array of roots. If `r` is multidimensional the first index is the
+		    root index, while the remaining indices enumerate multiple
+		    polynomials. For instance, in the two dimensional case the roots
+		    of each polynomial may be thought of as stored in the columns of `r`.
+		tensor : boolean, optional
+		    If True, the shape of the roots array is extended with ones on the
+		    right, one for each dimension of `x`. Scalars have dimension 0 for this
+		    action. The result is that every column of coefficients in `r` is
+		    evaluated for every element of `x`. If False, `x` is broadcast over the
+		    columns of `r` for the evaluation.  This keyword is useful when `r` is
+		    multidimensional. The default value is True.
+		
+		Returns
+		-------
+		values : ndarray, compatible object
+		    The shape of the returned array is described above.
+		
+		See Also
+		--------
+		polyroots, polyfromroots, polyval
+		
+		Examples
+		--------
+		>>> from numpy.polynomial.polynomial import polyvalfromroots
+		>>> polyvalfromroots(1, [1,2,3])
+		0.0
+		>>> a = np.arange(4).reshape(2,2)
+		>>> a
+		array([[0, 1],
+		       [2, 3]])
+		>>> polyvalfromroots(a, [-1, 0, 1])
+		array([[ -0.,   0.],
+		       [  6.,  24.]])
+		>>> r = np.arange(-2, 2).reshape(2,2) # multidimensional coefficients
+		>>> r # each column of r defines one polynomial
+		array([[-2, -1],
+		       [ 0,  1]])
+		>>> b = [-2, 1]
+		>>> polyvalfromroots(b, r, tensor=True)
+		array([[-0.,  3.],
+		       [ 3., 0.]])
+		>>> polyvalfromroots(b, r, tensor=False)
+		array([-0.,  0.])
+	**/
+	static public function polyvalfromroots(x:Dynamic, r:Dynamic, ?tensor:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return the product of array elements over a given axis.
@@ -3101,7 +3608,7 @@ package scipy.signal.filter_design;
 	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var r_ : Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -3110,9 +3617,10 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -3129,6 +3637,8 @@ package scipy.signal.filter_design;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
@@ -3187,7 +3697,7 @@ package scipy.signal.filter_design;
 		Returns
 		-------
 		out : ndarray
-		    An array containing the complex roots of the polynomial.
+		    An array containing the roots of the polynomial.
 		
 		Raises
 		------
@@ -3220,7 +3730,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function roots(p:Dynamic):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -3228,6 +3738,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3276,7 +3797,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sinh(x[, out])
+		sinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic sine, element-wise.
 		
@@ -3287,18 +3808,22 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -3379,7 +3904,102 @@ package scipy.signal.filter_design;
 	**/
 	static public function sos2zpk(sos:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		Compute the frequency response of a digital filter in SOS format.
+		
+		Given `sos`, an array with shape (n, 6) of second order sections of
+		a digital filter, compute the frequency response of the system function::
+		
+		           B0(z)   B1(z)         B{n-1}(z)
+		    H(z) = ----- * ----- * ... * ---------
+		           A0(z)   A1(z)         A{n-1}(z)
+		
+		for z = exp(omega*1j), where B{k}(z) and A{k}(z) are numerator and
+		denominator of the transfer function of the k-th second order section.
+		
+		Parameters
+		----------
+		sos : array_like
+		    Array of second-order filter coefficients, must have shape
+		    ``(n_sections, 6)``. Each row corresponds to a second-order
+		    section, with the first three columns providing the numerator
+		    coefficients and the last three providing the denominator
+		    coefficients.
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response, as complex numbers.
+		
+		See Also
+		--------
+		freqz, sosfilt
+		
+		Notes
+		-----
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		Design a 15th-order bandpass filter in SOS format.
+		
+		>>> from scipy import signal
+		>>> sos = signal.ellip(15, 0.5, 60, (0.2, 0.4), btype='bandpass',
+		...                    output='sos')
+		
+		Compute the frequency response at 1500 points from DC to Nyquist.
+		
+		>>> w, h = signal.sosfreqz(sos, worN=1500)
+		
+		Plot the response.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.subplot(2, 1, 1)
+		>>> db = 20*np.log10(np.abs(h))
+		>>> plt.plot(w/np.pi, db)
+		>>> plt.ylim(-75, 5)
+		>>> plt.grid(True)
+		>>> plt.yticks([0, -20, -40, -60])
+		>>> plt.ylabel('Gain [dB]')
+		>>> plt.title('Frequency Response')
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(w/np.pi, np.angle(h))
+		>>> plt.grid(True)
+		>>> plt.yticks([-np.pi, -0.5*np.pi, 0, 0.5*np.pi, np.pi],
+		...            [r'$-\pi$', r'$-\pi/2$', '0', r'$\pi/2$', r'$\pi$'])
+		>>> plt.ylabel('Phase [rad]')
+		>>> plt.xlabel('Normalized frequency (1.0 = Nyquist)')
+		>>> plt.show()
+		
+		If the same filter is implemented as a single transfer function,
+		numerical error corrupts the frequency response:
+		
+		>>> b, a = signal.ellip(15, 0.5, 60, (0.2, 0.4), btype='bandpass',
+		...                    output='ba')
+		>>> w, h = signal.freqz(b, a, worN=1500)
+		>>> plt.subplot(2, 1, 1)
+		>>> db = 20*np.log10(np.abs(h))
+		>>> plt.plot(w/np.pi, db)
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(w/np.pi, np.angle(h))
+		>>> plt.show()
+	**/
+	static public function sosfreqz(sos:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
+	/**
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -3387,9 +4007,17 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3426,7 +4054,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tan(x[, out])
+		tan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute tangent element-wise.
 		
@@ -3436,18 +4064,22 @@ package scipy.signal.filter_design;
 		----------
 		x : array_like
 		  Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		  The corresponding tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----

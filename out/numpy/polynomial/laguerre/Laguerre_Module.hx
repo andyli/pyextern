@@ -231,7 +231,7 @@ package numpy.polynomial.laguerre;
 		deg : int or 1-D array_like
 		    Degree(s) of the fitting polynomials. If `deg` is a single integer
 		    all terms up to and including the `deg`'th term are included in the
-		    fit. For Numpy versions >= 1.11 a list of integers specifying the
+		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
 		rcond : float, optional
 		    Relative condition number of the fit. Singular values smaller than
@@ -1066,7 +1066,7 @@ package numpy.polynomial.laguerre;
 		Returns the pseudo-Vandermonde matrix of degrees `deg` and sample
 		points `(x, y)`. The pseudo-Vandermonde matrix is defined by
 		
-		.. math:: V[..., deg[1]*i + j] = L_i(x) * L_j(y),
+		.. math:: V[..., (deg[1] + 1)*i + j] = L_i(x) * L_j(y),
 		
 		where `0 <= i <= deg[0]` and `0 <= j <= deg[1]`. The leading indices of
 		`V` index the points `(x, y)` and the last index encodes the degrees of
@@ -1186,6 +1186,56 @@ package numpy.polynomial.laguerre;
 	static public function lagweight(x:Dynamic):numpy.Ndarray;
 	static public var lagx : Dynamic;
 	static public var lagzero : Dynamic;
+	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		poly2lag(pol)
 		

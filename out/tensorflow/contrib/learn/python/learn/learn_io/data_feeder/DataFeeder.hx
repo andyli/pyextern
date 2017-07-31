@@ -41,28 +41,32 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		Initializes a DataFeeder instance.
 		
 		Args:
-		  x: Feature Nd numpy matrix of shape `[n_samples, n_features, ...]`.
-		  y: Target vector, either floats for regression or class id for
-		    classification. If matrix, will consider as a sequence
-		    of targets. Can be `None` for unsupervised setting.
+		  x: One feature sample which can either Nd numpy matrix of shape
+		    `[n_samples, n_features, ...]` or dictionary of Nd numpy matrix.
+		  y: label vector, either floats for regression or class id for
+		    classification. If matrix, will consider as a sequence of labels.
+		    Can be `None` for unsupervised setting. Also supports dictionary of
+		    labels.
 		  n_classes: Number of classes, 0 and 1 are considered regression, `None`
-		    will pass through the input labels without one-hot conversion.
-		  batch_size: Mini-batch size to accumulate.
+		    will pass through the input labels without one-hot conversion. Also, if
+		    `y` is `dict`, then `n_classes` must be `dict` such that
+		    `n_classes[key] = n_classes for label y[key]`, `None` otherwise.
+		  batch_size: Mini-batch size to accumulate samples in one mini batch.
 		  shuffle: Whether to shuffle `x`.
 		  random_state: Numpy `RandomState` object to reproduce sampling.
 		  epochs: Number of times to iterate over input data before raising
 		    `StopIteration` exception.
 		
 		Attributes:
-		  x: Input features.
-		  y: Input target.
+		  x: Input features (ndarray or dictionary of ndarrays).
+		  y: Input label (ndarray or dictionary of ndarrays).
 		  n_classes: Number of classes (if `None`, pass through indices without
 		    one-hot conversion).
 		  batch_size: Mini-batch size to accumulate.
-		  input_shape: Shape of the input.
-		  output_shape: Shape of the output.
-		  input_dtype: DType of input.
-		  output_dtype: DType of output.
+		  input_shape: Shape of the input (or dictionary of shapes).
+		  output_shape: Shape of the output (or dictionary of shapes).
+		  input_dtype: DType of input (or dictionary of shapes).
+		  output_dtype: DType of output (or dictionary of shapes.
 	**/
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, n_classes:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?random_state:Dynamic, ?epochs:Dynamic):Dynamic;
@@ -70,30 +74,41 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		Initializes a DataFeeder instance.
 		
 		Args:
-		  x: Feature Nd numpy matrix of shape `[n_samples, n_features, ...]`.
-		  y: Target vector, either floats for regression or class id for
-		    classification. If matrix, will consider as a sequence
-		    of targets. Can be `None` for unsupervised setting.
+		  x: One feature sample which can either Nd numpy matrix of shape
+		    `[n_samples, n_features, ...]` or dictionary of Nd numpy matrix.
+		  y: label vector, either floats for regression or class id for
+		    classification. If matrix, will consider as a sequence of labels.
+		    Can be `None` for unsupervised setting. Also supports dictionary of
+		    labels.
 		  n_classes: Number of classes, 0 and 1 are considered regression, `None`
-		    will pass through the input labels without one-hot conversion.
-		  batch_size: Mini-batch size to accumulate.
+		    will pass through the input labels without one-hot conversion. Also, if
+		    `y` is `dict`, then `n_classes` must be `dict` such that
+		    `n_classes[key] = n_classes for label y[key]`, `None` otherwise.
+		  batch_size: Mini-batch size to accumulate samples in one mini batch.
 		  shuffle: Whether to shuffle `x`.
 		  random_state: Numpy `RandomState` object to reproduce sampling.
 		  epochs: Number of times to iterate over input data before raising
 		    `StopIteration` exception.
 		
 		Attributes:
-		  x: Input features.
-		  y: Input target.
+		  x: Input features (ndarray or dictionary of ndarrays).
+		  y: Input label (ndarray or dictionary of ndarrays).
 		  n_classes: Number of classes (if `None`, pass through indices without
 		    one-hot conversion).
 		  batch_size: Mini-batch size to accumulate.
-		  input_shape: Shape of the input.
-		  output_shape: Shape of the output.
-		  input_dtype: DType of input.
-		  output_dtype: DType of output.
+		  input_shape: Shape of the input (or dictionary of shapes).
+		  output_shape: Shape of the output (or dictionary of shapes).
+		  input_dtype: DType of input (or dictionary of shapes).
+		  output_dtype: DType of output (or dictionary of shapes.
 	**/
 	public function new(x:Dynamic, y:Dynamic, n_classes:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?random_state:Dynamic, ?epochs:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,14 +170,14 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		
 		Returns:
 		  A function that when called samples a random subset of batch size
-		  from x and y.
+		  from `x` and `y`.
 	**/
 	public function get_feed_dict_fn():Dynamic;
 	/**
-		Function returns a dict with data feed params while training.
+		Function returns a `dict` with data feed params while training.
 		
 		Returns:
-		  A dict with data feed params while training.
+		  A `dict` with data feed params while training.
 	**/
 	public function get_feed_params():Dynamic;
 	/**
@@ -188,7 +203,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		  input_placeholder: Placeholder for `x` variable. Should match shape
 		    of the examples in the x dataset.
 		  output_placeholder: Placeholder for `y` variable. Should match
-		    shape of the examples in the y dataset. Can be None.
+		    shape of the examples in the y dataset. Can be `None`.
 	**/
 	public function set_placeholders(input_placeholder:Dynamic, output_placeholder:Dynamic):Dynamic;
 	public var shuffle : Dynamic;

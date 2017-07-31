@@ -107,6 +107,13 @@ package tensorflow.contrib.lookup.lookup_ops;
 	**/
 	public function new(filename:Dynamic, key_dtype:Dynamic, key_index:Dynamic, value_dtype:Dynamic, value_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

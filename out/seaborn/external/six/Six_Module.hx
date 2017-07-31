@@ -4,6 +4,7 @@ package seaborn.external.six;
 	static public var MAXSIZE : Dynamic;
 	static public var PY2 : Dynamic;
 	static public var PY3 : Dynamic;
+	static public var PY34 : Dynamic;
 	static public var __author__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -12,12 +13,16 @@ package seaborn.external.six;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
 		Add documentation to a function.
 	**/
 	static public function _add_doc(func:Dynamic, doc:Dynamic):Dynamic;
+	static public var _assertCountEqual : Dynamic;
+	static public var _assertRaisesRegex : Dynamic;
+	static public var _assertRegex : Dynamic;
 	static public var _func_closure : Dynamic;
 	static public var _func_code : Dynamic;
 	static public var _func_defaults : Dynamic;
@@ -26,10 +31,7 @@ package seaborn.external.six;
 		Import module, returning the module after the last dot.
 	**/
 	static public function _import_module(name:Dynamic):Dynamic;
-	static public var _iteritems : Dynamic;
-	static public var _iterkeys : Dynamic;
-	static public var _iterlists : Dynamic;
-	static public var _itervalues : Dynamic;
+	static public var _importer : Dynamic;
 	static public var _meth_func : Dynamic;
 	static public var _meth_self : Dynamic;
 	static public var _moved_attributes : Dynamic;
@@ -38,6 +40,7 @@ package seaborn.external.six;
 	static public var _urllib_request_moved_attributes : Dynamic;
 	static public var _urllib_response_moved_attributes : Dynamic;
 	static public var _urllib_robotparser_moved_attributes : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Class decorator for creating a class with a metaclass.
 	**/
@@ -53,6 +56,9 @@ package seaborn.external.six;
 		is exhausted, it is returned instead of raising StopIteration.
 	**/
 	static public function advance_iterator(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function assertCountEqual(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function assertRaisesRegex(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function assertRegex(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Byte literal
 	**/
@@ -66,6 +72,7 @@ package seaborn.external.six;
 	**/
 	static public function callable(obj:Dynamic):Dynamic;
 	static public var class_types : Dynamic;
+	static public function create_unbound_method(func:Dynamic, cls:Dynamic):Dynamic;
 	/**
 		Execute the given source in the context of globals and locals.
 		
@@ -90,6 +97,13 @@ package seaborn.external.six;
 		getitem(a, b) -- Same as a[b].
 	**/
 	static public function indexbytes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		S.pack(v1, v2, ...) -> bytes
+		
+		Return a bytes object containing values v1, v2, ... packed according
+		to the format string S.format.  See help(struct) for more on format
+		strings.
+	**/
 	static public function int2byte(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
@@ -136,6 +150,15 @@ package seaborn.external.six;
 	**/
 	static public function print_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		A decorator that defines __unicode__ and __str__ methods under Python 2.
+		Under Python 3 it does nothing.
+		
+		To support Python 2 and 3 with a single code base, define a __str__ method
+		returning text and apply this decorator to the class.
+	**/
+	static public function python_2_unicode_compatible(klass:Dynamic):Dynamic;
+	static public function raise_from(value:Dynamic, from_value:Dynamic):Dynamic;
+	/**
 		Remove item from six.moves.
 	**/
 	static public function remove_move(name:Dynamic):Dynamic;
@@ -152,8 +175,21 @@ package seaborn.external.six;
 		Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.
 	**/
 	static public function unichr(i:Dynamic):Dynamic;
+	static public function viewitems(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function viewkeys(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function viewvalues(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Create a base class with a metaclass.
 	**/
 	static public function with_metaclass(meta:Dynamic, ?bases:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Decorator factory to apply update_wrapper() to a wrapper function
+		
+		Returns a decorator that invokes update_wrapper() with the decorated
+		function as the wrapper argument and the arguments to wraps() as the
+		remaining arguments. Default arguments are as for update_wrapper().
+		This is a convenience function to simplify applying partial() to
+		update_wrapper().
+	**/
+	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 }

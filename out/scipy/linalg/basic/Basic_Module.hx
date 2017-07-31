@@ -61,6 +61,80 @@ package scipy.linalg.basic;
 	static public function _get_axis_len(aname:Dynamic, a:Dynamic, axis:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Convert inputs to arrays with at least one dimension.
+		
+		Scalar inputs are converted to 1-dimensional arrays, whilst
+		higher-dimensional inputs are preserved.
+		
+		Parameters
+		----------
+		arys1, arys2, ... : array_like
+		    One or more input arrays.
+		
+		Returns
+		-------
+		ret : ndarray
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
+		    Copies are made only if necessary.
+		
+		See Also
+		--------
+		atleast_2d, atleast_3d
+		
+		Examples
+		--------
+		>>> np.atleast_1d(1.0)
+		array([ 1.])
+		
+		>>> x = np.arange(9.0).reshape(3,3)
+		>>> np.atleast_1d(x)
+		array([[ 0.,  1.,  2.],
+		       [ 3.,  4.,  5.],
+		       [ 6.,  7.,  8.]])
+		>>> np.atleast_1d(x) is x
+		True
+		
+		>>> np.atleast_1d(1, [3, 4])
+		[array([1]), array([3, 4])]
+	**/
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		View inputs as arrays with at least two dimensions.
+		
+		Parameters
+		----------
+		arys1, arys2, ... : array_like
+		    One or more array-like sequences.  Non-array inputs are converted
+		    to arrays.  Arrays that already have two or more dimensions are
+		    preserved.
+		
+		Returns
+		-------
+		res, res2, ... : ndarray
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
+		    Copies are avoided where possible, and views with two or more
+		    dimensions are returned.
+		
+		See Also
+		--------
+		atleast_1d, atleast_3d
+		
+		Examples
+		--------
+		>>> np.atleast_2d(3.0)
+		array([[ 3.]])
+		
+		>>> x = np.arange(3.0)
+		>>> np.atleast_2d(x)
+		array([[ 0.,  1.,  2.]])
+		>>> np.atleast_2d(x).base is x
+		True
+		
+		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
+		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
+	**/
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	/**
 		Compute the determinant of a matrix
 		
 		The determinant of a square matrix is a value derived arithmetically
@@ -282,6 +356,105 @@ package scipy.linalg.basic;
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
+		Compute a diagonal similarity transformation for row/column balancing.
+		
+		The balancing tries to equalize the row and column 1-norms by applying
+		a similarity transformation such that the magnitude variation of the
+		matrix entries is reflected to the scaling matrices.
+		
+		Moreover, if enabled, the matrix is first permuted to isolate the upper
+		triangular parts of the matrix and, again if scaling is also enabled,
+		only the remaining subblocks are subjected to scaling.
+		
+		The balanced matrix satisfies the following equality
+		
+		.. math::
+		
+		                    B = T^{-1} A T
+		
+		The scaling coefficients are approximated to the nearest power of 2
+		to avoid round-off errors.
+		
+		Parameters
+		----------
+		A : (n, n) array_like
+		    Square data matrix for the balancing.
+		permute : bool, optional
+		    The selector to define whether permutation of A is also performed
+		    prior to scaling.
+		scale : bool, optional
+		    The selector to turn on and off the scaling. If False, the matrix
+		    will not be scaled.
+		separate : bool, optional
+		    This switches from returning a full matrix of the transformation
+		    to a tuple of two separate 1D permutation and scaling arrays.
+		overwrite_a : bool, optional
+		    This is passed to xGEBAL directly. Essentially, overwrites the result
+		    to the data. It might increase the space efficiency. See LAPACK manual
+		    for details. This is False by default.
+		
+		Returns
+		-------
+		B : (n, n) ndarray
+		    Balanced matrix
+		T : (n, n) ndarray
+		    A possibly permuted diagonal matrix whose nonzero entries are
+		    integer powers of 2 to avoid numerical truncation errors.
+		scale, perm : (n,) ndarray
+		    If ``separate`` keyword is set to True then instead of the array
+		    ``T`` above, the scaling and the permutation vectors are given
+		    separately as a tuple without allocating the full array ``T``.
+		
+		.. versionadded:: 0.19.0
+		
+		Notes
+		-----
+		
+		This algorithm is particularly useful for eigenvalue and matrix
+		decompositions and in many cases it is already called by various
+		LAPACK routines.
+		
+		The algorithm is based on the well-known technique of [1]_ and has
+		been modified to account for special cases. See [2]_ for details
+		which have been implemented since LAPACK v3.5.0. Before this version
+		there are corner cases where balancing can actually worsen the
+		conditioning. See [3]_ for such examples.
+		
+		The code is a wrapper around LAPACK's xGEBAL routine family for matrix
+		balancing.
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> x = np.array([[1,2,0], [9,1,0.01], [1,2,10*np.pi]])
+		
+		>>> y, permscale = linalg.matrix_balance(x)
+		>>> np.abs(x).sum(axis=0) / np.abs(x).sum(axis=1)
+		array([ 3.66666667,  0.4995005 ,  0.91312162])
+		
+		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1) # 1-norms approx. equal
+		array([ 1.10625   ,  0.90547703,  1.00011878])
+		
+		>>> permscale  # only powers of 2 (0.5 == 2^(-1))
+		array([[  0.5,   0. ,   0. ],
+		       [  0. ,   1. ,   0. ],
+		       [  0. ,   0. ,  16. ]])
+		
+		References
+		----------
+		.. [1] : B.N. Parlett and C. Reinsch, "Balancing a Matrix for
+		   Calculation of Eigenvalues and Eigenvectors", Numerische Mathematik,
+		   Vol.13(4), 1969, DOI:10.1007/BF02165404
+		
+		.. [2] : R. James, J. Langou, B.R. Lowery, "On matrix balancing and
+		   eigenvector computation", 2014, Available online:
+		   http://arxiv.org/abs/1401.5766
+		
+		.. [3] :  D.S. Watkins. A case where balancing is harmful.
+		   Electron. Trans. Numer. Anal, Vol.23, 2006.
+	**/
+	static public function matrix_balance(A:Dynamic, ?permute:Dynamic, ?scale:Dynamic, ?separate:Dynamic, ?overwrite_a:Dynamic):Dynamic;
+	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
 		Calculate a generalized inverse of a matrix using a least-squares
@@ -424,19 +597,40 @@ package scipy.linalg.basic;
 	static public function pinvh(a:Dynamic, ?cond:Dynamic, ?rcond:Dynamic, ?lower:Dynamic, ?return_rank:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Solve the equation ``a x = b`` for ``x``.
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix.
-		b : (M,) or (M, N) array_like
-		    Right-hand side matrix in ``a x = b``.
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
 		sym_pos : bool, optional
-		    Assume `a` is symmetric and positive definite.
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
 		lower : bool, optional
-		    Use only data contained in the lower triangle of `a`, if `sym_pos` is
-		    true.  Default is to use upper triangle.
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
 		overwrite_a : bool, optional
 		    Allow overwriting data in `a` (may enhance performance).
 		    Default is False.
@@ -447,19 +641,25 @@ package scipy.linalg.basic;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
+		    solved (only taken into account for ``'gen'``).
 		
 		Returns
 		-------
-		x : (M,) or (M, N) ndarray
-		    Solution to the system ``a x = b``.  Shape of the return matches the
-		    shape of `b`.
+		x : (N, NRHS) ndarray
+		    The solution array.
 		
 		Raises
 		------
-		LinAlgError
-		    If `a` is singular.
 		ValueError
-		    If `a` is not square
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		RuntimeWarning
+		    If an ill-conditioned input a is detected.
 		
 		Examples
 		--------
@@ -473,8 +673,19 @@ package scipy.linalg.basic;
 		array([ 2., -2.,  9.])
 		>>> np.dot(a, x) == b
 		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		LAPACK respectively.
 	**/
-	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Solve the equation a x = b for x, assuming a is banded matrix.
 		

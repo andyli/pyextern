@@ -74,7 +74,7 @@ package numpy.core.defchararray;
 		   in :mod:`numpy.char <numpy.core.defchararray>` for fast
 		   vectorized string operations instead.
 		
-		Versus a regular Numpy array of type `str` or `unicode`, this
+		Versus a regular NumPy array of type `str` or `unicode`, this
 		class adds the following functionality:
 		
 		  1) values automatically have whitespace removed from the end
@@ -130,7 +130,7 @@ package numpy.core.defchararray;
 		Convert the input to a `chararray`, copying the data only if
 		necessary.
 		
-		Versus a regular Numpy array of type `str` or `unicode`, this
+		Versus a regular NumPy array of type `str` or `unicode`, this
 		class adds the following functionality:
 		
 		  1) values automatically have whitespace removed from the end
@@ -960,35 +960,43 @@ package numpy.core.defchararray;
 	**/
 	static public function multiply(a:Dynamic, i:Dynamic):numpy.Ndarray;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -1004,7 +1012,13 @@ package numpy.core.defchararray;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -1307,7 +1321,7 @@ package numpy.core.defchararray;
 		For each element in `a`, return a list of the words in the
 		string, using `sep` as the delimiter string.
 		
-		Calls `str.rsplit` element-wise.
+		Calls `str.split` element-wise.
 		
 		Parameters
 		----------
@@ -1401,7 +1415,7 @@ package numpy.core.defchararray;
 		For each element in `a`, return a copy with the leading and
 		trailing characters removed.
 		
-		Calls `str.rstrip` element-wise.
+		Calls `str.strip` element-wise.
 		
 		Parameters
 		----------

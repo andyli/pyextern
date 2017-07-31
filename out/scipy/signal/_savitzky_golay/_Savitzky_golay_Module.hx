@@ -85,7 +85,8 @@ package scipy.signal._savitzky_golay;
 		    The axis of `input` along which to calculate. Default is -1.
 		output : array, optional
 		    The `output` parameter passes an array in which to store the
-		    filter output.
+		    filter output. Output array should have different name as compared
+		    to input array to avoid aliasing errors.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to

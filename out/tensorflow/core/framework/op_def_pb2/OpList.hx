@@ -1,98 +1,127 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.op_def_pb2;
 @:pythonImport("tensorflow.core.framework.op_def_pb2", "OpList") extern class OpList {
-	public function ByteSize():Dynamic;
-	public function Clear():Dynamic;
-	public function ClearExtension(extension_handle:Dynamic):Dynamic;
-	public function ClearField(field_name:Dynamic):Dynamic;
 	/**
-		Copies the content of the specified message into the current message.
-		
-		The method clears the current message and then merges the specified
-		message using MergeFrom.
-		
-		Args:
-		  other_msg: Message to copy into the current one.
+		Returns the size of the message in bytes.
 	**/
-	public function CopyFrom(other_msg:Dynamic):Dynamic;
+	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Clears the message.
+	**/
+	public function Clear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Clears a message field.
+	**/
+	public function ClearExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Clears a message field.
+	**/
+	public function ClearField(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Copies a protocol message into the current message.
+	**/
+	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
-		Finds required fields which are not initialized.
-		
-		Returns:
-		  A list of strings.  Each string is a path to an uninitialized field from
-		  the top-level message, e.g. "foo.bar[5].baz".
+		Discards the unknown fields.
 	**/
-	public function FindInitializationErrors():Dynamic;
-	static public function FromString(s:Dynamic):Dynamic;
-	public function HasExtension(extension_handle:Dynamic):Dynamic;
-	public function HasField(field_name:Dynamic):Dynamic;
+	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Checks if all required fields of a message are set.
-		
-		Args:
-		  errors:  A list which, if provided, will be populated with the field
-		           paths of all missing required fields.
-		
-		Returns:
-		  True iff the specified message has all required fields set.
+		Extension dict
 	**/
-	public function IsInitialized(?errors:Dynamic):Dynamic;
-	public function ListFields():Dynamic;
-	public function MergeFrom(msg:Dynamic):Dynamic;
-	public function MergeFromString(serialized:Dynamic):Dynamic;
+	public var Extensions : Dynamic;
+	/**
+		Finds unset required fields.
+	**/
+	public function FindInitializationErrors(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Creates new method instance from given serialized data.
+	**/
+	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Checks if a message field is set.
+	**/
+	public function HasExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Checks if a message field is set.
+	**/
+	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Checks if all required fields of a protocol message are set.
+	**/
+	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Lists all set fields of a message.
+	**/
+	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Merges a protocol message into the current message.
+	**/
+	public function MergeFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Merges a serialized message into the current message.
+	**/
+	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var OP_FIELD_NUMBER : Dynamic;
 	/**
-		Parse serialized protocol buffer data into this message.
+		Parses a serialized message into the current message.
+	**/
+	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Registers an extension with the current message.
+	**/
+	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Serializes the message to a string, even if it isn't initialized.
+	**/
+	public function SerializePartialToString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Serializes the message to a string, only for initialized messages.
+	**/
+	public function SerializeToString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the has bit of the given field in its parent message.
+	**/
+	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns the name of the field set inside a oneof, or None if no field is set.
+	**/
+	public function WhichOneof(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Raises TypeError if the caller is not in a _pb2.py file.
+	**/
+	static public function _CheckCalledFromGeneratedFile(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Internal method used by the protocol message implementation.
+		Clients should not call this directly.
 		
-		Like MergeFromString(), except we clear the object first and
-		do not return the value that MergeFromString returns.
-	**/
-	public function ParseFromString(serialized:Dynamic):Dynamic;
-	static public function RegisterExtension(extension_handle:Dynamic):Dynamic;
-	public function SerializePartialToString():Dynamic;
-	public function SerializeToString():Dynamic;
-	/**
-		Sets the _cached_byte_size_dirty bit to true,
-		and propagates this to our listener iff this was a state change.
-	**/
-	public function SetInParent():Dynamic;
-	/**
-		Returns the name of the currently set field inside a oneof, or None.
-	**/
-	public function WhichOneof(oneof_name:Dynamic):Dynamic;
-	public function _InternalParse(buffer:Dynamic, pos:Dynamic, end:Dynamic):Dynamic;
-	public function _InternalSerialize(write_bytes:Dynamic):Dynamic;
-	/**
-		Sets the _cached_byte_size_dirty bit to true,
-		and propagates this to our listener iff this was a state change.
-	**/
-	public function _Modified():Dynamic;
-	public function _SetListener(listener:Dynamic):Dynamic;
-	/**
-		Sets field as the active field in its containing oneof.
+		Sets a listener that this message will call on certain state transitions.
 		
-		Will also delete currently active field in the oneof, if it is different
-		from the argument. Does not mark the message as modified.
+		The purpose of this method is to register back-edges from children to
+		parents at runtime, for the purpose of setting "has" bits and
+		byte-size-dirty bits in the parent and ancestor objects whenever a child or
+		descendant object is modified.
+		
+		If the client wants to disconnect this Message from the object tree, she
+		explicitly sets callback to None.
+		
+		If message_listener is None, unregisters any existing listener.  Otherwise,
+		message_listener must implement the MessageListener interface in
+		internal/message_listener.py, and we discard any listener registered
+		via a previous _SetListener() call.
 	**/
-	public function _UpdateOneofState(field:Dynamic):Dynamic;
+	public function _SetListener(message_listener:Dynamic):Dynamic;
 	/**
 		Metaclass for protocol message classes created at runtime from Descriptors.
-		
-		We add implementations for all methods described in the Message class.  We
-		also create properties to allow getting/setting all fields in the protocol
-		message.  Finally, we create slots to prevent users from accidentally
-		"setting" nonexistent fields in the protocol message, which then wouldn't get
-		serialized / deserialized properly.
 		
 		The protocol compiler currently uses this metaclass to create protocol
 		message classes at runtime.  Clients can also manually create their own
 		classes at runtime, as in this example:
 		
 		mydescriptor = Descriptor(.....)
-		class MyProtoClass(Message):
-		  __metaclass__ = GeneratedProtocolMessageType
-		  DESCRIPTOR = mydescriptor
+		factory = symbol_database.Default()
+		factory.pool.AddDescriptor(mydescriptor)
+		MyProtoClass = factory.GetPrototype(mydescriptor)
 		myproto_instance = MyProtoClass()
 		myproto.foo_field = 23
 		...
@@ -101,8 +130,11 @@ package tensorflow.core.framework.op_def_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, dictionary:Dynamic):Dynamic;
-	public function __deepcopy__(?memo:Dynamic):Dynamic;
+	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Makes a deep copy of the class.
+	**/
+	public function __deepcopy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -113,7 +145,10 @@ package tensorflow.core.framework.op_def_pb2;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __eq__(other:Dynamic):Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -134,13 +169,23 @@ package tensorflow.core.framework.op_def_pb2;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
+	static public var __hash__ : Dynamic;
 	/**
-		Return hash(self).
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __hash__():Dynamic;
 	@:native("__init__")
-	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -153,34 +198,40 @@ package tensorflow.core.framework.op_def_pb2;
 	/**
 		Return self!=value.
 	**/
-	public function __ne__(other_msg:Dynamic):Dynamic;
+	public function __ne__(value:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Outputs picklable representation of the message.
 	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
 	public function __repr__():Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Support the pickle protocol.
+		Inputs picklable representation of the message.
 	**/
-	public function __setstate__(state:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __slots__ : Dynamic;
+	/**
+		Return str(self).
+	**/
 	public function __str__():Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
@@ -191,24 +242,10 @@ package tensorflow.core.framework.op_def_pb2;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __unicode__():Dynamic;
 	/**
-		list of weak references to the object (if defined)
+		Outputs a unicode representation of the message.
 	**/
-	public var __weakref__ : Dynamic;
-	public var _cached_byte_size : Dynamic;
-	public var _cached_byte_size_dirty : Dynamic;
-	static public var _decoders_by_tag : Dynamic;
+	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
-	public var _fields : Dynamic;
-	public var _is_present_in_parent : Dynamic;
-	public var _listener : Dynamic;
-	public var _listener_for_children : Dynamic;
-	public var _oneofs : Dynamic;
-	public var _unknown_fields : Dynamic;
-	/**
-		Magic attribute generated for "op" proto field.
-	**/
-	public var op : Dynamic;
 }

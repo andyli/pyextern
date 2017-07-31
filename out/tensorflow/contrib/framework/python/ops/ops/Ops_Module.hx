@@ -39,5 +39,21 @@ package tensorflow.contrib.framework.python.ops.ops;
 		  The appropriate graph to use for the given inputs.
 	**/
 	static public function get_graph_from_inputs(op_input_list:Dynamic, ?graph:Dynamic):Dynamic;
+	/**
+		Returns the current name scope of the default graph.
+		
+		For example:
+		
+		  ```python
+		  with tf.name_scope('scope1'):
+		    with tf.name_scope('scope2'):
+		      print(tf.contrib.framework.get_name_scope())
+		  ```
+		  would print the string `scope1/scope2`.
+		
+		Returns:
+		  A string represnting the current name scope.
+	**/
+	static public function get_name_scope():Dynamic;
 	static public var print_function : Dynamic;
 }

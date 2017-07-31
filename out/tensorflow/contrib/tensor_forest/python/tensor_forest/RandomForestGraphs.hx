@@ -41,11 +41,18 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic, ?t_ops:Dynamic, ?i_ops:Dynamic):Dynamic;
+	public function ___init__(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic, ?t_ops:Dynamic, ?i_ops:Dynamic):Void;
+	public function new(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -116,35 +123,41 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		  The average number of nodes over the trees.
 	**/
 	public function average_size():Dynamic;
+	public function feature_importances():Dynamic;
 	public function get_stats(session:Dynamic):Dynamic;
 	/**
 		Constructs a TF graph for evaluating a random forest.
 		
 		Args:
-		  input_data: A tensor or SparseTensor or placeholder for input data.
-		  data_spec: A list of tf.dtype values specifying the original types of
-		    each column.
+		  input_data: A tensor or dict of string->Tensor for input data.
+		  **inference_args: Keyword arguments to pass through to each tree.
 		
 		Returns:
 		  The last op in the random forest inference graph.
+		
+		Raises:
+		  NotImplementedError: If trying to use feature bagging with sparse
+		    features.
 	**/
-	public function inference_graph(input_data:Dynamic, ?data_spec:Dynamic):Dynamic;
+	public function inference_graph(input_data:Dynamic, ?inference_args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Constructs a TF graph for training a random forest.
 		
 		Args:
-		  input_data: A tensor or SparseTensor or placeholder for input data.
+		  input_data: A tensor or dict of string->Tensor for input data.
 		  input_labels: A tensor or placeholder for labels associated with
 		    input_data.
-		  data_spec: A list of tf.dtype values specifying the original types of
-		    each column.
-		  epoch: A tensor or placeholder for the epoch the training data comes from.
+		  num_trainers: Number of parallel trainers to split trees among.
+		  trainer_id: Which trainer this instance is.
 		  **tree_kwargs: Keyword arguments passed to each tree's training_graph.
 		
 		Returns:
 		  The last op in the random forest training graph.
+		
+		Raises:
+		  NotImplementedError: If trying to use bagging with sparse features.
 	**/
-	public function training_graph(input_data:Dynamic, input_labels:Dynamic, ?data_spec:Dynamic, ?epoch:Dynamic, ?tree_kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function training_loss(features:Dynamic, labels:Dynamic):Dynamic;
+	public function training_graph(input_data:Dynamic, input_labels:Dynamic, ?num_trainers:Dynamic, ?trainer_id:Dynamic, ?tree_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function training_loss(features:Dynamic, labels:Dynamic, ?name:Dynamic):Dynamic;
 	public function validation_loss(features:Dynamic, labels:Dynamic):Dynamic;
 }

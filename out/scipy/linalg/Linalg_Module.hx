@@ -14,60 +14,6 @@ package scipy.linalg;
 	static public var __version__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
 		Create a block diagonal matrix from provided arrays.
 		
 		Given the inputs `A`, `B` and `C`, the output will have these
@@ -94,7 +40,8 @@ package scipy.linalg;
 		If all the input arrays are square, the output is known as a
 		block diagonal matrix.
 		
-		Empty sequences (i.e., array-likes of zero size) are ignored.
+		Empty sequences (i.e., array-likes of zero size) will not be ignored.
+		Noteworthy, both [] and [[]] are treated as matrices with shape ``(1,0)``.
 		
 		Examples
 		--------
@@ -104,9 +51,18 @@ package scipy.linalg;
 		>>> B = [[3, 4, 5],
 		...      [6, 7, 8]]
 		>>> C = [[7]]
+		>>> P = np.zeros((2, 0), dtype='int32')
 		>>> block_diag(A, B, C)
 		array([[1, 0, 0, 0, 0, 0],
 		       [0, 1, 0, 0, 0, 0],
+		       [0, 0, 3, 4, 5, 0],
+		       [0, 0, 6, 7, 8, 0],
+		       [0, 0, 0, 0, 0, 7]])
+		>>> block_diag(A, P, B, C)
+		array([[1, 0, 0, 0, 0, 0],
+		       [0, 1, 0, 0, 0, 0],
+		       [0, 0, 0, 0, 0, 0],
+		       [0, 0, 0, 0, 0, 0],
 		       [0, 0, 3, 4, 5, 0],
 		       [0, 0, 6, 7, 8, 0],
 		       [0, 0, 0, 0, 0, 7]])
@@ -587,11 +543,20 @@ package scipy.linalg;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its
+		    multiplicity. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		vl : (M, M) double or complex ndarray
 		    The normalized left eigenvector corresponding to the eigenvalue
 		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
@@ -608,7 +573,7 @@ package scipy.linalg;
 		--------
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
 	**/
-	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve real symmetric or complex hermitian band matrix eigenvalue problem.
 		
@@ -788,13 +753,22 @@ package scipy.linalg;
 		check_finite : bool, optional
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    (crashes, non-termination) if the inputs do contain infinities
+		    or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity,
-		    but not in any specific order.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its multiplicity
+		    but not in any specific order. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		
 		Raises
 		------
@@ -807,7 +781,7 @@ package scipy.linalg;
 		eig : eigenvalues and right eigenvectors of general arrays.
 		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
 	**/
-	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve real symmetric or complex hermitian band matrix eigenvalue problem.
 		
@@ -1992,6 +1966,105 @@ package scipy.linalg;
 	**/
 	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
+		Compute a diagonal similarity transformation for row/column balancing.
+		
+		The balancing tries to equalize the row and column 1-norms by applying
+		a similarity transformation such that the magnitude variation of the
+		matrix entries is reflected to the scaling matrices.
+		
+		Moreover, if enabled, the matrix is first permuted to isolate the upper
+		triangular parts of the matrix and, again if scaling is also enabled,
+		only the remaining subblocks are subjected to scaling.
+		
+		The balanced matrix satisfies the following equality
+		
+		.. math::
+		
+		                    B = T^{-1} A T
+		
+		The scaling coefficients are approximated to the nearest power of 2
+		to avoid round-off errors.
+		
+		Parameters
+		----------
+		A : (n, n) array_like
+		    Square data matrix for the balancing.
+		permute : bool, optional
+		    The selector to define whether permutation of A is also performed
+		    prior to scaling.
+		scale : bool, optional
+		    The selector to turn on and off the scaling. If False, the matrix
+		    will not be scaled.
+		separate : bool, optional
+		    This switches from returning a full matrix of the transformation
+		    to a tuple of two separate 1D permutation and scaling arrays.
+		overwrite_a : bool, optional
+		    This is passed to xGEBAL directly. Essentially, overwrites the result
+		    to the data. It might increase the space efficiency. See LAPACK manual
+		    for details. This is False by default.
+		
+		Returns
+		-------
+		B : (n, n) ndarray
+		    Balanced matrix
+		T : (n, n) ndarray
+		    A possibly permuted diagonal matrix whose nonzero entries are
+		    integer powers of 2 to avoid numerical truncation errors.
+		scale, perm : (n,) ndarray
+		    If ``separate`` keyword is set to True then instead of the array
+		    ``T`` above, the scaling and the permutation vectors are given
+		    separately as a tuple without allocating the full array ``T``.
+		
+		.. versionadded:: 0.19.0
+		
+		Notes
+		-----
+		
+		This algorithm is particularly useful for eigenvalue and matrix
+		decompositions and in many cases it is already called by various
+		LAPACK routines.
+		
+		The algorithm is based on the well-known technique of [1]_ and has
+		been modified to account for special cases. See [2]_ for details
+		which have been implemented since LAPACK v3.5.0. Before this version
+		there are corner cases where balancing can actually worsen the
+		conditioning. See [3]_ for such examples.
+		
+		The code is a wrapper around LAPACK's xGEBAL routine family for matrix
+		balancing.
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> x = np.array([[1,2,0], [9,1,0.01], [1,2,10*np.pi]])
+		
+		>>> y, permscale = linalg.matrix_balance(x)
+		>>> np.abs(x).sum(axis=0) / np.abs(x).sum(axis=1)
+		array([ 3.66666667,  0.4995005 ,  0.91312162])
+		
+		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1) # 1-norms approx. equal
+		array([ 1.10625   ,  0.90547703,  1.00011878])
+		
+		>>> permscale  # only powers of 2 (0.5 == 2^(-1))
+		array([[  0.5,   0. ,   0. ],
+		       [  0. ,   1. ,   0. ],
+		       [  0. ,   0. ,  16. ]])
+		
+		References
+		----------
+		.. [1] : B.N. Parlett and C. Reinsch, "Balancing a Matrix for
+		   Calculation of Eigenvalues and Eigenvectors", Numerische Mathematik,
+		   Vol.13(4), 1969, DOI:10.1007/BF02165404
+		
+		.. [2] : R. James, J. Langou, B.R. Lowery, "On matrix balancing and
+		   eigenvector computation", 2014, Available online:
+		   http://arxiv.org/abs/1401.5766
+		
+		.. [3] :  D.S. Watkins. A case where balancing is harmful.
+		   Electron. Trans. Numer. Anal, Vol.23, 2006.
+	**/
+	static public function matrix_balance(A:Dynamic, ?permute:Dynamic, ?scale:Dynamic, ?separate:Dynamic, ?overwrite_a:Dynamic):Dynamic;
+	/**
 		Matrix or vector norm.
 		
 		This function is able to return one of seven different matrix norms,
@@ -2119,20 +2192,27 @@ package scipy.linalg;
 		B : (N, N) array_like
 		    2d array to decompose
 		sort : {callable, 'lhp', 'rhp', 'iuc', 'ouc'}, optional
-		    Specifies whether the upper eigenvalues should be sorted.  A callable
-		    may be passed that, given a eigenvalue, returns a boolean denoting
-		    whether the eigenvalue should be sorted to the top-left (True). For
-		    real matrix pairs, the sort function takes three real arguments
-		    (alphar, alphai, beta). The eigenvalue
-		    ``x = (alphar + alphai*1j)/beta``.  For complex matrix pairs or
-		    output='complex', the sort function takes two complex arguments
-		    (alpha, beta). The eigenvalue ``x = (alpha/beta)``.
-		    Alternatively, string parameters may be used:
+		    Specifies whether the upper eigenvalues should be sorted. A
+		    callable may be passed that, given an ordered pair ``(alpha,
+		    beta)`` representing the eigenvalue ``x = (alpha/beta)``,
+		    returns a boolean denoting whether the eigenvalue should be
+		    sorted to the top-left (True). For the real matrix pairs
+		    ``beta`` is real while ``alpha`` can be complex, and for
+		    complex matrix pairs both ``alpha`` and ``beta`` can be
+		    complex. The callable must be able to accept a numpy
+		    array. Alternatively, string parameters may be used:
 		
 		        - 'lhp'   Left-hand plane (x.real < 0.0)
 		        - 'rhp'   Right-hand plane (x.real > 0.0)
 		        - 'iuc'   Inside the unit circle (x*x.conjugate() < 1.0)
 		        - 'ouc'   Outside the unit circle (x*x.conjugate() > 1.0)
+		
+		    With the predefined sorting functions, an infinite eigenvalue
+		    (i.e. ``alpha != 0`` and ``beta = 0``) is considered to lie in
+		    neither the left-hand nor the right-hand plane, but it is
+		    considered to lie outside the unit circle. For the eigenvalue
+		    ``(alpha, beta) = (0, 0)`` the predefined sorting functions
+		    all return `False`.
 		
 		output : str {'real','complex'}, optional
 		    Construct the real or complex QZ decomposition for real matrices.
@@ -3410,7 +3490,7 @@ package scipy.linalg;
 		Returns
 		-------
 		sinm : (N, N) ndarray
-		    Matrix cosine of `A`
+		    Matrix sine of `A`
 		
 		Examples
 		--------
@@ -3429,19 +3509,40 @@ package scipy.linalg;
 	**/
 	static public function sinm(A:Dynamic):Dynamic;
 	/**
-		Solve the equation ``a x = b`` for ``x``.
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix.
-		b : (M,) or (M, N) array_like
-		    Right-hand side matrix in ``a x = b``.
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
 		sym_pos : bool, optional
-		    Assume `a` is symmetric and positive definite.
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
 		lower : bool, optional
-		    Use only data contained in the lower triangle of `a`, if `sym_pos` is
-		    true.  Default is to use upper triangle.
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
 		overwrite_a : bool, optional
 		    Allow overwriting data in `a` (may enhance performance).
 		    Default is False.
@@ -3452,19 +3553,25 @@ package scipy.linalg;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
+		    solved (only taken into account for ``'gen'``).
 		
 		Returns
 		-------
-		x : (M,) or (M, N) ndarray
-		    Solution to the system ``a x = b``.  Shape of the return matches the
-		    shape of `b`.
+		x : (N, NRHS) ndarray
+		    The solution array.
 		
 		Raises
 		------
-		LinAlgError
-		    If `a` is singular.
 		ValueError
-		    If `a` is not square
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		RuntimeWarning
+		    If an ill-conditioned input a is detected.
 		
 		Examples
 		--------
@@ -3478,8 +3585,19 @@ package scipy.linalg;
 		array([ 2., -2.,  9.])
 		>>> np.dot(a, x) == b
 		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		LAPACK respectively.
 	**/
-	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Solve the equation a x = b for x, assuming a is banded matrix.
 		
@@ -3666,71 +3784,160 @@ package scipy.linalg;
 	**/
 	static public function solve_circulant(c:Dynamic, b:Dynamic, ?singular:Dynamic, ?tol:Dynamic, ?caxis:Dynamic, ?baxis:Dynamic, ?outaxis:Dynamic):Dynamic;
 	/**
-		Solves the continuous algebraic Riccati equation (CARE).
+		Solves the continuous-time algebraic Riccati equation (CARE).
 		
 		The CARE is defined as
 		
 		.. math::
-		    (A'X + XA - XBR^-1B'X+Q=0)
 		
-		It is solved directly using a Schur decomposition method.
+		      X A + A^H X - X B R^{-1} B^H X + Q = 0
+		
+		The limitations for a solution to exist are :
+		
+		    * All eigenvalues of :math:`A` on the right half plane, should be
+		      controllable.
+		
+		    * The associated hamiltonian pencil (See Notes), should have
+		      eigenvalues sufficiently away from the imaginary axis.
+		
+		Moreover, if ``e`` or ``s`` is not precisely ``None``, then the
+		generalized version of CARE
+		
+		.. math::
+		
+		      E^HXA + A^HXE - (E^HXB + S) R^{-1} (B^HXE + S^H) + Q = 0
+		
+		is solved. When omitted, ``e`` is assumed to be the identity and ``s``
+		is assumed to be the zero matrix with sizes compatible with ``a`` and
+		``b`` respectively.
 		
 		Parameters
 		----------
 		a : (M, M) array_like
-		    Input
+		    Square matrix
 		b : (M, N) array_like
 		    Input
 		q : (M, M) array_like
 		    Input
 		r : (N, N) array_like
-		    Non-singular, square matrix
+		    Nonsingular square matrix
+		e : (M, M) array_like, optional
+		    Nonsingular square matrix
+		s : (M, N) array_like, optional
+		    Input
+		balanced : bool, optional
+		    The boolean that indicates whether a balancing step is performed
+		    on the data. The default is set to True.
 		
 		Returns
 		-------
 		x : (M, M) ndarray
-		    Solution to the continuous algebraic Riccati equation
+		    Solution to the continuous-time algebraic Riccati equation.
+		
+		Raises
+		------
+		LinAlgError
+		    For cases where the stable subspace of the pencil could not be
+		    isolated. See Notes section and the references for details.
 		
 		See Also
 		--------
-		solve_discrete_are : Solves the discrete algebraic Riccati equation
+		solve_discrete_are : Solves the discrete-time algebraic Riccati equation
 		
 		Notes
 		-----
-		Method taken from:
-		Laub, "A Schur Method for Solving Algebraic Riccati Equations."
-		U.S. Energy Research and Development Agency under contract
-		ERDA-E(49-18)-2087.
-		http://dspace.mit.edu/bitstream/handle/1721.1/1301/R-0859-05666488.pdf
+		The equation is solved by forming the extended hamiltonian matrix pencil,
+		as described in [1]_, :math:`H - \lambda J` given by the block matrices ::
+		
+		    [ A    0    B ]             [ E   0    0 ]
+		    [-Q  -A^H  -S ] - \lambda * [ 0  E^H   0 ]
+		    [ S^H B^H   R ]             [ 0   0    0 ]
+		
+		and using a QZ decomposition method.
+		
+		In this algorithm, the fail conditions are linked to the symmetry
+		of the product :math:`U_2 U_1^{-1}` and condition number of
+		:math:`U_1`. Here, :math:`U` is the 2m-by-m matrix that holds the
+		eigenvectors spanning the stable subspace with 2m rows and partitioned
+		into two m-row matrices. See [1]_ and [2]_ for more details.
+		
+		In order to improve the QZ decomposition accuracy, the pencil goes
+		through a balancing step where the sum of absolute values of
+		:math:`H` and :math:`J` entries (after removing the diagonal entries of
+		the sum) is balanced following the recipe given in [3]_.
 		
 		.. versionadded:: 0.11.0
+		
+		References
+		----------
+		.. [1]  P. van Dooren , "A Generalized Eigenvalue Approach For Solving
+		   Riccati Equations.", SIAM Journal on Scientific and Statistical
+		   Computing, Vol.2(2), DOI: 10.1137/0902010
+		
+		.. [2] A.J. Laub, "A Schur Method for Solving Algebraic Riccati
+		   Equations.", Massachusetts Institute of Technology. Laboratory for
+		   Information and Decision Systems. LIDS-R ; 859. Available online :
+		   http://hdl.handle.net/1721.1/1301
+		
+		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
+		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
 	**/
-	static public function solve_continuous_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
+	static public function solve_continuous_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
 	/**
-		Solves the discrete algebraic Riccati equation (DARE).
+		Solves the discrete-time algebraic Riccati equation (DARE).
 		
 		The DARE is defined as
 		
 		.. math::
-		    X = A'XA-(A'XB)(R+B'XB)^-1(B'XA)+Q
 		
-		It is solved directly using a Schur decomposition method.
+		      A^HXA - X - (A^HXB) (R + B^HXB)^{-1} (B^HXA) + Q = 0
+		
+		The limitations for a solution to exist are :
+		
+		    * All eigenvalues of :math:`A` outside the unit disc, should be
+		      controllable.
+		
+		    * The associated symplectic pencil (See Notes), should have
+		      eigenvalues sufficiently away from the unit circle.
+		
+		Moreover, if ``e`` and ``s`` are not both precisely ``None``, then the
+		generalized version of DARE
+		
+		.. math::
+		
+		      A^HXA - E^HXE - (A^HXB+S) (R+B^HXB)^{-1} (B^HXA+S^H) + Q = 0
+		
+		is solved. When omitted, ``e`` is assumed to be the identity and ``s``
+		is assumed to be the zero matrix.
 		
 		Parameters
 		----------
 		a : (M, M) array_like
-		    Non-singular, square matrix
+		    Square matrix
 		b : (M, N) array_like
 		    Input
 		q : (M, M) array_like
 		    Input
 		r : (N, N) array_like
-		    Non-singular, square matrix
+		    Square matrix
+		e : (M, M) array_like, optional
+		    Nonsingular square matrix
+		s : (M, N) array_like, optional
+		    Input
+		balanced : bool
+		    The boolean that indicates whether a balancing step is performed
+		    on the data. The default is set to True.
 		
 		Returns
 		-------
-		x : ndarray
-		    Solution to the continuous Lyapunov equation
+		x : (M, M) ndarray
+		    Solution to the discrete algebraic Riccati equation.
+		
+		Raises
+		------
+		LinAlgError
+		    For cases where the stable subspace of the pencil could not be
+		    isolated. See Notes section and the references for details.
 		
 		See Also
 		--------
@@ -3738,15 +3945,45 @@ package scipy.linalg;
 		
 		Notes
 		-----
-		Method taken from:
-		Laub, "A Schur Method for Solving Algebraic Riccati Equations."
-		U.S. Energy Research and Development Agency under contract
-		ERDA-E(49-18)-2087.
-		http://dspace.mit.edu/bitstream/handle/1721.1/1301/R-0859-05666488.pdf
+		The equation is solved by forming the extended symplectic matrix pencil,
+		as described in [1]_, :math:`H - \lambda J` given by the block matrices ::
+		
+		       [  A   0   B ]             [ E   0   B ]
+		       [ -Q  E^H -S ] - \lambda * [ 0  A^H  0 ]
+		       [ S^H  0   R ]             [ 0 -B^H  0 ]
+		
+		and using a QZ decomposition method.
+		
+		In this algorithm, the fail conditions are linked to the symmetry
+		of the product :math:`U_2 U_1^{-1}` and condition number of
+		:math:`U_1`. Here, :math:`U` is the 2m-by-m matrix that holds the
+		eigenvectors spanning the stable subspace with 2m rows and partitioned
+		into two m-row matrices. See [1]_ and [2]_ for more details.
+		
+		In order to improve the QZ decomposition accuracy, the pencil goes
+		through a balancing step where the sum of absolute values of
+		:math:`H` and :math:`J` rows/cols (after removing the diagonal entries)
+		is balanced following the recipe given in [3]_. If the data has small
+		numerical noise, balancing may amplify their effects and some clean up
+		is required.
 		
 		.. versionadded:: 0.11.0
+		
+		References
+		----------
+		.. [1]  P. van Dooren , "A Generalized Eigenvalue Approach For Solving
+		   Riccati Equations.", SIAM Journal on Scientific and Statistical
+		   Computing, Vol.2(2), DOI: 10.1137/0902010
+		
+		.. [2] A.J. Laub, "A Schur Method for Solving Algebraic Riccati
+		   Equations.", Massachusetts Institute of Technology. Laboratory for
+		   Information and Decision Systems. LIDS-R ; 859. Available online :
+		   http://hdl.handle.net/1721.1/1301
+		
+		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
+		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
 	**/
-	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
+	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
 	/**
 		Solves the discrete Lyapunov equation :math:`AXA^H - X + Q = 0`.
 		
@@ -4250,12 +4487,14 @@ package scipy.linalg;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

@@ -49,6 +49,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  every_n_steps: Check for new checkpoints to evaluate every N steps. If a
 		      new checkpoint is found, it is evaluated. See `EveryN`.
 		  metrics: See `BaseEstimator.evaluate`.
+		  hooks: A list of `SessionRunHook` hooks to pass to the
+		    `Estimator`'s `evaluate` function.
 		  early_stopping_rounds: `int`. If the metric indicated by
 		      `early_stopping_metric` does not change according to
 		      `early_stopping_metric_minimize` for this many steps, then training
@@ -67,7 +69,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  ValueError: If both x and input_fn are provided.
 	**/
 	@:native("__init__")
-	public function ___init__(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Initializes a ValidationMonitor.
 		
@@ -80,6 +82,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  every_n_steps: Check for new checkpoints to evaluate every N steps. If a
 		      new checkpoint is found, it is evaluated. See `EveryN`.
 		  metrics: See `BaseEstimator.evaluate`.
+		  hooks: A list of `SessionRunHook` hooks to pass to the
+		    `Estimator`'s `evaluate` function.
 		  early_stopping_rounds: `int`. If the metric indicated by
 		      `early_stopping_metric` does not change according to
 		      `early_stopping_metric_minimize` for this many steps, then training
@@ -97,7 +101,14 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		Raises:
 		  ValueError: If both x and input_fn are provided.
 	**/
-	public function new(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Void;
+	public function new(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -153,6 +164,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _evaluate_estimator():Dynamic;
 	/**
 		Called at the beginning of training.
 		
@@ -259,6 +271,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	public var run_on_all_workers : Dynamic;
 	/**
 		A setter called automatically by the target estimator.
+		
+		If the estimator is locked, this method does nothing.
 		
 		Args:
 		  estimator: the estimator that this monitor monitors.

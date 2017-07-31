@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.parsers;
 @:pythonImport("pandas.io.parsers") extern class Parsers_Module {
+	static public var PY3 : Dynamic;
 	/**
 		Converts lists of lists/tuples into DataFrames with proper type inference
 		and optional (e.g. string to datetime) conversion. Also enables iterating
@@ -74,17 +75,68 @@ package pandas.io.parsers;
 	static public var _deprecated_args : Dynamic;
 	static public var _engine_doc : Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether or not the 'usecols' parameter
+		is a callable.  If so, enumerates the 'names'
+		parameter and returns a set of indices for
+		each entry in 'names' that evaluates to True.
+		If not a callable, returns 'usecols'.
+	**/
+	static public function _evaluate_usecols(usecols:Dynamic, names:Dynamic):Dynamic;
 	static public function _floatify_na_values(na_values:Dynamic):Dynamic;
 	static public var _fwf_defaults : Dynamic;
 	static public var _fwf_widths : Dynamic;
 	static public function _get_col_names(colspec:Dynamic, columns:Dynamic):Dynamic;
 	static public function _get_empty_meta(columns:Dynamic, index_col:Dynamic, index_names:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Gets file handle for given path and mode.
-		    
+		Get file handle for given path/buffer and mode.
+		
+		Parameters
+		----------
+		path_or_buf :
+		    a path (str) or buffer
+		mode : str
+		    mode to open path_or_buf with
+		encoding : str or None
+		compression : str or None
+		    Supported compression protocols are gzip, bz2, zip, and xz
+		memory_map : boolean, default False
+		    See parsers._parser_params for more information.
+		is_text : boolean, default True
+		    whether file/buffer is in text format (csv, json, etc.), or in binary
+		    mode (pickle, etc.)
+		Returns
+		-------
+		f : file-like
+		    A file-like object
+		handles : list of file-like objects
+		    A list of file-like object that were openned in this function.
 	**/
-	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic):Dynamic;
+	static public function _get_handle(path_or_buf:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic, ?is_text:Dynamic):Dynamic;
 	static public function _get_na_values(col:Dynamic, na_values:Dynamic, na_fvalues:Dynamic):Dynamic;
+	/**
+		Get the compression method for filepath_or_buffer. If compression='infer',
+		the inferred compression method is returned. Otherwise, the input
+		compression method is returned unchanged, unless it's invalid, in which
+		case an error is raised.
+		
+		Parameters
+		----------
+		filepath_or_buf :
+		    a path (str) or buffer
+		compression : str or None
+		    the compression method including None for no compression and 'infer'
+		
+		Returns
+		-------
+		string or None :
+		    compression method
+		
+		Raises
+		------
+		ValueError on invalid compression specified
+	**/
+	static public function _infer_compression(filepath_or_buffer:Dynamic, compression:Dynamic):Dynamic;
 	static public function _is_index_col(col:Dynamic):Dynamic;
 	static public function _make_date_converter(?date_parser:Dynamic, ?dayfirst:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
 	static public function _make_parser_function(name:Dynamic, ?sep:Dynamic):Dynamic;
@@ -107,12 +159,21 @@ package pandas.io.parsers;
 	static public function _try_convert_dates(parser:Dynamic, colspec:Dynamic, data_dict:Dynamic, columns:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	/**
-		Checks whether the 'nrows' parameter for parsing is either
+		Checks whether the 'name' parameter for parsing is either
 		an integer OR float that can SAFELY be cast to an integer
 		without losing accuracy. Raises a ValueError if that is
 		not the case.
+		
+		Parameters
+		----------
+		name : string
+		    Parameter name (used for error reporting)
+		val : int or float
+		    The value to check
+		min_val : int
+		    Minimum allowed value (val < min_val will result in a ValueError)
 	**/
-	static public function _validate_nrows(nrows:Dynamic):Dynamic;
+	static public function _validate_integer(name:Dynamic, val:Dynamic, ?min_val:Dynamic):Dynamic;
 	/**
 		Check whether or not the 'parse_dates' parameter
 		is a non-boolean scalar. Raises a ValueError if
@@ -120,19 +181,56 @@ package pandas.io.parsers;
 	**/
 	static public function _validate_parse_dates_arg(parse_dates:Dynamic):Dynamic;
 	/**
-		Check whether or not the 'usecols' parameter
-		contains all integers (column selection by index)
-		or strings (column by name). Raises a ValueError
-		if that is not the case.
+		Validate the 'skipfooter' parameter.
+		
+		Checks whether 'skipfooter' is a non-negative integer.
+		Raises a ValueError if that is not the case.
+		
+		Parameters
+		----------
+		skipfooter : non-negative integer
+		    The number of rows to skip at the end of the file.
+		
+		Returns
+		-------
+		validated_skipfooter : non-negative integer
+		    The original input if the validation succeeds.
+		
+		Raises
+		------
+		ValueError : 'skipfooter' was not a non-negative integer.
 	**/
-	static public function _validate_usecols_arg(usecols:Dynamic):Dynamic;
+	static public function _validate_skipfooter_arg(skipfooter:Dynamic):Dynamic;
 	/**
-		wraps compressed fileobject in a decompressing fileobject
-		NOTE: For all files in Python 3.2 and for bzip'd files under all Python
-		versions, this means reading in the entire file and then re-wrapping it in
-		StringIO.
+		Validate the 'usecols' parameter.
+		
+		Checks whether or not the 'usecols' parameter contains all integers
+		(column selection by index), strings (column by name) or is a callable.
+		Raises a ValueError if that is not the case.
+		
+		Parameters
+		----------
+		usecols : array-like, callable, or None
+		    List of columns to use when parsing or a callable that can be used
+		    to filter a list of table columns.
+		
+		Returns
+		-------
+		usecols_tuple : tuple
+		    A tuple of (verified_usecols, usecols_dtype).
+		
+		    'verified_usecols' is either a set if an array-like is passed in or
+		    'usecols' if a callable or None is passed in.
+		
+		    'usecols_dtype` is the inferred dtype of 'usecols' if an array-like
+		    is passed in or None if a callable or None is passed in.
 	**/
-	static public function _wrap_compressed(f:Dynamic, compression:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function _validate_usecols_arg(usecols:Dynamic):python.Tuple<Dynamic>;
+	/**
+		return a view if copy is False, but
+		need to be very careful as the result shape could change! 
+	**/
+	static public function astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function count_empty_vals(vals:Dynamic):Dynamic;
 	/**
 		Fill a single paragraph of text, returning a new string.
@@ -146,8 +244,8 @@ package pandas.io.parsers;
 	static public function fill(text:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function generic_parser(parse_func:Dynamic, ?cols:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------
@@ -161,283 +259,186 @@ package pandas.io.parsers;
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	/**
-		get_option(pat)
-		
-		Retrieves the value of the specified option.
-		
-		Available options:
-		
-		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
-		- display.unicode.[ambiguous_as_wide, east_asian_width]
-		- display.[width]
-		- html.[border]
-		- io.excel.xls.[writer]
-		- io.excel.xlsm.[writer]
-		- io.excel.xlsx.[writer]
-		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		Check whether an array-like or dtype is of the Categorical dtype.
 		
 		Parameters
 		----------
-		pat : str
-		    Regexp which should match a single option.
-		    Note: partial matches are supported for convenience, but unless you use the
-		    full option name (e.g. x.y.z.option_name), your code may break in future
-		    versions if new options with similar names are introduced.
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
 		
 		Returns
 		-------
-		result : the value of the option
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
 		
-		Raises
-		------
-		OptionError : if no such option exists
-		
-		Notes
-		-----
-		The available options with its descriptions:
-		
-		display.chop_threshold : float or None
-		    if set to a float value, all float values smaller then the given threshold
-		    will be displayed as exactly 0 by repr and friends.
-		    [default: None] [currently: None]
-		
-		display.colheader_justify : 'left'/'right'
-		    Controls the justification of column headers. used by DataFrameFormatter.
-		    [default: right] [currently: right]
-		
-		display.column_space No description available.
-		    [default: 12] [currently: 12]
-		
-		display.date_dayfirst : boolean
-		    When True, prints and parses dates with the day first, eg 20/01/2005
-		    [default: False] [currently: False]
-		
-		display.date_yearfirst : boolean
-		    When True, prints and parses dates with the year first, eg 2005/01/20
-		    [default: False] [currently: False]
-		
-		display.encoding : str/unicode
-		    Defaults to the detected encoding of the console.
-		    Specifies the encoding to be used for strings returned by to_string,
-		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
-		
-		display.expand_frame_repr : boolean
-		    Whether to print out the full DataFrame repr for wide DataFrames across
-		    multiple lines, `max_columns` is still respected, but the output will
-		    wrap-around across multiple "pages" if its width exceeds `display.width`.
-		    [default: True] [currently: True]
-		
-		display.float_format : callable
-		    The callable should accept a floating point number and return
-		    a string with the desired format of the number. This is used
-		    in some places like SeriesFormatter.
-		    See formats.format.EngFormatter for an example.
-		    [default: None] [currently: None]
-		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
-		
-		display.large_repr : 'truncate'/'info'
-		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
-		    show a truncated table (the default from 0.13), or switch to the view from
-		    df.info() (the behaviour in earlier versions of pandas).
-		    [default: truncate] [currently: truncate]
-		
-		display.latex.escape : bool
-		    This specifies if the to_latex method of a Dataframe uses escapes special
-		    characters.
-		    method. Valid values: False,True
-		    [default: True] [currently: True]
-		
-		display.latex.longtable :bool
-		    This specifies if the to_latex method of a Dataframe uses the longtable
-		    format.
-		    method. Valid values: False,True
-		    [default: False] [currently: False]
-		
-		display.latex.repr : boolean
-		    Whether to produce a latex DataFrame representation for jupyter
-		    environments that support it.
-		    (default: False)
-		    [default: False] [currently: False]
-		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
-		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when
-		    printing out a `Categorical` or a Series of dtype "category".
-		    [default: 8] [currently: 8]
-		
-		display.max_columns : int
-		    If max_cols is exceeded, switch to truncate view. Depending on
-		    `large_repr`, objects are either centrally truncated or printed as
-		    a summary view. 'None' value means unlimited.
-		
-		    In case python/IPython is running in a terminal and `large_repr`
-		    equals 'truncate' this can be set to 0 and pandas will auto-detect
-		    the width of the terminal and print a truncated object which fits
-		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
-		    do not run in a terminal and hence it is not possible to do
-		    correct auto-detection.
-		    [default: 20] [currently: 20]
-		
-		display.max_colwidth : int
-		    The maximum width in characters of a column in the repr of
-		    a pandas data structure. When the column overflows, a "..."
-		    placeholder is embedded in the output.
-		    [default: 50] [currently: 50]
-		
-		display.max_info_columns : int
-		    max_info_columns is used in DataFrame.info method to decide if
-		    per column information will be printed.
-		    [default: 100] [currently: 100]
-		
-		display.max_info_rows : int or None
-		    df.info() will usually show null-counts for each column.
-		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions than
-		    specified.
-		    [default: 1690785] [currently: 1690785]
-		
-		display.max_rows : int
-		    If max_rows is exceeded, switch to truncate view. Depending on
-		    `large_repr`, objects are either centrally truncated or printed as
-		    a summary view. 'None' value means unlimited.
-		
-		    In case python/IPython is running in a terminal and `large_repr`
-		    equals 'truncate' this can be set to 0 and pandas will auto-detect
-		    the height of the terminal and print a truncated object which fits
-		    the screen height. The IPython notebook, IPython qtconsole, or
-		    IDLE do not run in a terminal and hence it is not possible to do
-		    correct auto-detection.
-		    [default: 60] [currently: 60]
-		
-		display.max_seq_items : int or None
-		    when pretty-printing a long sequence, no more then `max_seq_items`
-		    will be printed. If items are omitted, they will be denoted by the
-		    addition of "..." to the resulting string.
-		
-		    If set to None, the number of items to be printed is unlimited.
-		    [default: 100] [currently: 100]
-		
-		display.memory_usage : bool, string or None
-		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called. Valid values True,False,'deep'
-		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
-		
-		display.multi_sparse : boolean
-		    "sparsify" MultiIndex display (don't display repeated
-		    elements in outer levels within groups)
-		    [default: True] [currently: True]
-		
-		display.notebook_repr_html : boolean
-		    When True, IPython notebook will use html representation for
-		    pandas objects (if it is available).
-		    [default: True] [currently: True]
-		
-		display.pprint_nest_depth : int
-		    Controls the number of nested levels to process when pretty-printing
-		    [default: 3] [currently: 3]
-		
-		display.precision : int
-		    Floating point output precision (number of significant digits). This is
-		    only a suggestion
-		    [default: 6] [currently: 6]
-		
-		display.show_dimensions : boolean or 'truncate'
-		    Whether to print out dimensions at the end of DataFrame repr.
-		    If 'truncate' is specified, only print out the dimensions if the
-		    frame is truncated (e.g. not display all rows and/or columns)
-		    [default: truncate] [currently: truncate]
-		
-		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text
-		    width.
-		    Enabling this may affect to the performance (default: False)
-		    [default: False] [currently: False]
-		
-		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text
-		    width.
-		    Enabling this may affect to the performance (default: False)
-		    [default: False] [currently: False]
-		
-		display.width : int
-		    Width of the display in characters. In case python/IPython is running in
-		    a terminal this can be set to None and pandas will correctly auto-detect
-		    the width.
-		    Note that the IPython notebook, IPython qtconsole, or IDLE do not run in a
-		    terminal and hence it is not possible to correctly detect the width.
-		    [default: 80] [currently: 80]
-		
-		html.border : int
-		    A ``border=value`` attribute is inserted in the ``<table>`` tag
-		    for the DataFrame HTML repr.
-		    [default: 1] [currently: 1]
-		
-		io.excel.xls.writer : string
-		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
-		
-		io.excel.xlsm.writer : string
-		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
-		
-		io.excel.xlsx.writer : string
-		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
-		
-		io.hdf.default_format : format
-		    default format writing format, if None, then
-		    put will default to 'fixed' and append will default to 'table'
-		    [default: None] [currently: None]
-		
-		io.hdf.dropna_table : boolean
-		    drop ALL nan rows when appending to a table
-		    [default: False] [currently: False]
-		
-		mode.chained_assignment : string
-		    Raise an exception, warn, or no action if trying to use chained assignment,
-		    The default is warn
-		    [default: warn] [currently: warn]
-		
-		mode.sim_interactive : boolean
-		    Whether to simulate interactive mode for purposes of testing
-		    [default: False] [currently: False]
-		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
-		    (new way).
-		    [default: False] [currently: False]
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
 	**/
-	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if two dtypes are equal.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		Examples
+		--------
+		>>> is_dtype_equal(int, float)
+		False
+		>>> is_dtype_equal("int", int)
+		True
+		>>> is_dtype_equal(object, "category")
+		False
+		>>> is_dtype_equal(CategoricalDtype(), "category")
+		True
+		>>> is_dtype_equal(DatetimeTZDtype(), "datetime64")
+		False
+	**/
+	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check if the object is a file-like object.
+		
+		For objects to be considered file-like, they must
+		be an iterator AND have either a `read` and/or `write`
+		method as an attribute.
+		
+		Note: file-like objects must be iterable, but
+		iterable objects need not be file-like.
+		
+		.. versionadded:: 0.20.0
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_file_like : bool
+		    Whether `obj` has file-like properties.
+		
+		Examples
+		--------
+		>>> buffer(StringIO("data"))
+		>>> is_file_like(buffer)
+		True
+		>>> is_file_like([1, 2, 3])
+		False
+	**/
+	static public function is_file_like(obj:Dynamic):Bool;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if given value is scalar.
 		
@@ -449,8 +450,56 @@ package pandas.io.parsers;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of the string dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the string dtype.
+		
+		Examples
+		--------
+		>>> is_string_dtype(str)
+		True
+		>>> is_string_dtype(object)
+		True
+		>>> is_string_dtype(int)
+		False
+		>>>
+		>>> is_string_dtype(np.array(['a', 'b']))
+		True
+		>>> is_string_dtype(pd.Series([1, 2]))
+		False
+	**/
+	static public function is_string_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
@@ -470,10 +519,12 @@ package pandas.io.parsers;
 		    file. For file URLs, a host is expected. For instance, a local file could
 		    be file ://localhost/path/to/table.csv
 		sep : str, default ','
-		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from ``'\s+'`` will
-		    be interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
+		    Delimiter to use. If sep is None, the C engine cannot automatically detect
+		    the separator, but the Python parsing engine can, meaning the latter will
+		    be used automatically. In addition, separators longer than 1 character and
+		    different from ``'\s+'`` will be interpreted as regular expressions and
+		    will also force the use of the Python parsing engine. Note that regex
+		    delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
@@ -503,13 +554,18 @@ package pandas.io.parsers;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -528,8 +584,9 @@ package pandas.io.parsers;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		engine : {'c', 'python'}, optional
 		    Parser engine to use. The C engine is faster while the python engine is
 		    currently more feature-complete.
@@ -542,9 +599,13 @@ package pandas.io.parsers;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -555,7 +616,7 @@ package pandas.io.parsers;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -573,16 +634,20 @@ package pandas.io.parsers;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -601,10 +666,10 @@ package pandas.io.parsers;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -650,8 +715,11 @@ package pandas.io.parsers;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -659,10 +727,10 @@ package pandas.io.parsers;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed
@@ -716,7 +784,7 @@ package pandas.io.parsers;
 		    fields of each line as half-open intervals (i.e.,  [from, to[ ).
 		    String value 'infer' can be used to instruct the parser to try
 		    detecting the column specifications from the first 100 rows of
-		    the data (default='infer').
+		    the data which are not being skipped via skiprows (default='infer').
 		widths : list of ints. optional
 		    A list of field widths which can be used instead of 'colspecs' if
 		    the intervals are contiguous.
@@ -750,13 +818,18 @@ package pandas.io.parsers;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -775,8 +848,9 @@ package pandas.io.parsers;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		
 		converters : dict, default None
 		    Dict of functions for converting values in certain columns. Keys can either
@@ -787,9 +861,13 @@ package pandas.io.parsers;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -800,7 +878,7 @@ package pandas.io.parsers;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -818,16 +896,20 @@ package pandas.io.parsers;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -846,10 +928,10 @@ package pandas.io.parsers;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -895,8 +977,11 @@ package pandas.io.parsers;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -904,10 +989,10 @@ package pandas.io.parsers;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed
@@ -961,10 +1046,12 @@ package pandas.io.parsers;
 		    file. For file URLs, a host is expected. For instance, a local file could
 		    be file ://localhost/path/to/table.csv
 		sep : str, default \t (tab-stop)
-		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from ``'\s+'`` will
-		    be interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
+		    Delimiter to use. If sep is None, the C engine cannot automatically detect
+		    the separator, but the Python parsing engine can, meaning the latter will
+		    be used automatically. In addition, separators longer than 1 character and
+		    different from ``'\s+'`` will be interpreted as regular expressions and
+		    will also force the use of the Python parsing engine. Note that regex
+		    delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
@@ -994,13 +1081,18 @@ package pandas.io.parsers;
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
-		usecols : array-like, default None
-		    Return a subset of the columns. All elements in this array must either
+		usecols : array-like or callable, default None
+		    Return a subset of the columns. If array-like, all elements must either
 		    be positional (i.e. integer indices into the document columns) or strings
 		    that correspond to column names provided either by the user in `names` or
-		    inferred from the document header row(s). For example, a valid `usecols`
-		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
-		    results in much faster parsing time and lower memory usage.
+		    inferred from the document header row(s). For example, a valid array-like
+		    `usecols` parameter would be [0, 1, 2] or ['foo', 'bar', 'baz'].
+		
+		    If callable, the callable function will be evaluated against the column
+		    names, returning names where the callable function evaluates to True. An
+		    example of a valid callable argument would be ``lambda x: x.upper() in
+		    ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
+		    parsing time and lower memory usage.
 		as_recarray : boolean, default False
 		    DEPRECATED: this argument will be removed in a future version. Please call
 		    `pd.read_csv(...).to_records()` instead.
@@ -1019,8 +1111,9 @@ package pandas.io.parsers;
 		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
-		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
-		    not interpret dtype.
+		    Use `str` or `object` to preserve and not interpret dtype.
+		    If converters are specified, they will be applied INSTEAD
+		    of dtype conversion.
 		engine : {'c', 'python'}, optional
 		    Parser engine to use. The C engine is faster while the python engine is
 		    currently more feature-complete.
@@ -1033,9 +1126,13 @@ package pandas.io.parsers;
 		    Values to consider as False
 		skipinitialspace : boolean, default False
 		    Skip spaces after delimiter.
-		skiprows : list-like or integer, default None
+		skiprows : list-like or integer or callable, default None
 		    Line numbers to skip (0-indexed) or number of lines to skip (int)
-		    at the start of the file
+		    at the start of the file.
+		
+		    If callable, the callable function will be evaluated against the row
+		    indices, returning True if the row should be skipped and False otherwise.
+		    An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		skip_footer : int, default 0
@@ -1046,7 +1143,7 @@ package pandas.io.parsers;
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
 		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -1064,16 +1161,20 @@ package pandas.io.parsers;
 		    * list of ints or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3
 		      each as a separate date column.
 		    * list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as
-		        a single date column.
+		      a single date column.
 		    * dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result
 		      'foo'
+		
+		    If a column or index contains an unparseable date, the entire column or
+		    index will be returned unaltered as an object data type. For non-standard
+		    datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
 		    If True and parse_dates is enabled, pandas will attempt to infer the format
 		    of the datetime strings in the columns, and if it can be inferred, switch
 		    to a faster method of parsing them. In some cases this can increase the
-		    parsing speed by ~5-10x.
+		    parsing speed by 5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -1092,10 +1193,10 @@ package pandas.io.parsers;
 		    Return TextFileReader object for iteration or getting chunks with
 		    ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration. `See IO Tools docs for more
-		    information
-		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
-		    ``iterator`` and ``chunksize``.
+		    Return TextFileReader object for iteration.
+		    See the `IO Tools docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_
+		    for more information on ``iterator`` and ``chunksize``.
 		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
 		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
 		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
@@ -1141,8 +1242,11 @@ package pandas.io.parsers;
 		    standard encodings
 		    <https://docs.python.org/3/library/codecs.html#standard-encodings>`_
 		dialect : str or csv.Dialect instance, default None
-		    If None defaults to Excel dialect. Ignored if sep longer than 1 char
-		    See csv.Dialect documentation for more details
+		    If provided, this parameter will override values (default or not) for the
+		    following parameters: `delimiter`, `doublequote`, `escapechar`,
+		    `skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to
+		    override values, a ParserWarning will be issued. See csv.Dialect
+		    documentation for more details.
 		tupleize_cols : boolean, default False
 		    Leave a list of tuples on columns as is (default is to convert to
 		    a Multi Index on the columns)
@@ -1150,10 +1254,10 @@ package pandas.io.parsers;
 		    Lines with too many fields (e.g. a csv line with too many commas) will by
 		    default cause an exception to be raised, and no DataFrame will be returned.
 		    If False, then these "bad lines" will dropped from the DataFrame that is
-		    returned. (Only valid with C parser)
+		    returned.
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
-		    "bad line" will be output. (Only valid with C parser).
+		    "bad line" will be output.
 		low_memory : boolean, default True
 		    Internally process the file in chunks, resulting in lower memory use
 		    while parsing, but possibly mixed type inference.  To ensure no mixed

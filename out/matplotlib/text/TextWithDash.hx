@@ -54,7 +54,7 @@ package matplotlib.text;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -104,7 +104,7 @@ package matplotlib.text;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -137,6 +137,13 @@ package matplotlib.text;
 		  zorder: any number 
 	**/
 	public function new(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?dashlength:Dynamic, ?dashdirection:Dynamic, ?dashrotation:Dynamic, ?dashpad:Dynamic, ?dashpush:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -229,6 +236,7 @@ package matplotlib.text;
 		get the (possibly unit converted) transformed x, y in display coords
 	**/
 	public function _get_xy_display():Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -451,7 +459,7 @@ package matplotlib.text;
 		want to cache derived information about text (e.g., layouts) and
 		need to know if the text has changed.
 	**/
-	public function get_prop_tup():Dynamic;
+	public function get_prop_tup(?renderer:Dynamic):Dynamic;
 	/**
 		return True if the artist is to be rasterized
 	**/
@@ -603,7 +611,7 @@ package matplotlib.text;
 		is present, the cleaned string has its dollar signs unescaped.
 		If usetex is on, the flag always has the value "TeX".
 	**/
-	static public function is_math_text(s:Dynamic):Dynamic;
+	static public function is_math_text(s:Dynamic, ?usetex:Dynamic):Dynamic;
 	/**
 		Returns *True* if :class:`Artist` has a transform explicitly
 		set.
@@ -616,9 +624,7 @@ package matplotlib.text;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -657,9 +663,7 @@ package matplotlib.text;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1110,6 +1114,25 @@ package matplotlib.text;
 		match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
+	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
 	/**
 		Update properties from a dictionary.
 	**/

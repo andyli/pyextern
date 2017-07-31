@@ -195,6 +195,13 @@ package matplotlib.sankey;
 	**/
 	public function new(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -348,7 +355,7 @@ package matplotlib.sankey;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 

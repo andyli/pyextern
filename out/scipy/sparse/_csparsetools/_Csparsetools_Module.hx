@@ -6,6 +6,7 @@ package scipy.sparse._csparsetools;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function _lil_fancy_get_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;

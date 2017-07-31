@@ -11,7 +11,11 @@ package tensorflow.contrib.session_bundle.exporter;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates a classification signature.
+		Creates a classification signature. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  input_tensor: Tensor specifying the input to a graph.
@@ -22,9 +26,44 @@ package tensorflow.contrib.session_bundle.exporter;
 		  A Signature message.
 	**/
 	static public function classification_signature(input_tensor:Dynamic, ?classes_tensor:Dynamic, ?scores_tensor:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Creates a generic signature of name to Tensor name.
+		Creates a generic signature of name to Tensor name. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  name_tensor_map: Map from logical name to Tensor.
@@ -34,7 +73,11 @@ package tensorflow.contrib.session_bundle.exporter;
 	**/
 	static public function generic_signature(name_tensor_map:Dynamic):Dynamic;
 	/**
-		Callback to copy files using `gfile.Copy` to an export directory.
+		Callback to copy files using `gfile.Copy` to an export directory. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		This method is used as the default `assets_callback` in `Exporter.init` to
 		copy assets from the `assets_collection`. It can also be invoked directly to
@@ -49,7 +92,11 @@ package tensorflow.contrib.session_bundle.exporter;
 	static public function gfile_copy_callback(files_to_copy:Dynamic, export_dir_path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Creates a regression signature.
+		Creates a regression signature. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  input_tensor: Tensor specifying the input to a graph.

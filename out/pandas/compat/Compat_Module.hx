@@ -4,6 +4,7 @@ package pandas.compat;
 	static public var PY2 : Dynamic;
 	static public var PY3 : Dynamic;
 	static public var PY35 : Dynamic;
+	static public var PY36 : Dynamic;
 	static public var _EAW_MAP : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -59,6 +60,15 @@ package pandas.compat;
 	**/
 	static public function import_lzma():Dynamic;
 	static public var integer_types : Dynamic;
+	/**
+		intern(string) -> string
+		
+		``Intern'' the given string.  This enters the string in the (global)
+		table of interned strings whose purpose is to speed up dictionary lookups.
+		Return the string itself or the previously interned string object with the
+		same value.
+	**/
+	static public function intern(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_platform_32bit():Dynamic;
 	static public function is_platform_linux():Dynamic;
 	/**
@@ -97,7 +107,7 @@ package pandas.compat;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		next(iterator[, default])
 		
@@ -181,7 +191,7 @@ package pandas.compat;
 		
 		        >>> from dateutil.parser import parse
 		        >>> parse("Today is January 1, 2047 at 8:21:00AM", fuzzy_with_tokens=True)
-		        (datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))
+		        (datetime.datetime(2047, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))
 		
 		:return:
 		    Returns a :class:`datetime.datetime` object or, if the

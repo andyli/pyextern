@@ -41,11 +41,18 @@ package tensorflow.python.ops.variable_scope;
 		Creates a new VariableScope with the given properties.
 	**/
 	@:native("__init__")
-	public function ___init__(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic):Dynamic;
+	public function ___init__(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Dynamic;
 	/**
 		Creates a new VariableScope with the given properties.
 	**/
-	public function new(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic):Void;
+	public function new(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,14 +111,22 @@ package tensorflow.python.ops.variable_scope;
 	/**
 		Gets an existing variable with this name or create a new one.
 	**/
-	public function _get_partitioned_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic):Dynamic;
+	public function _get_partitioned_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
 	public var caching_device : Dynamic;
 	public var custom_getter : Dynamic;
 	public var dtype : Dynamic;
 	/**
+		Get this scope's variables.
+	**/
+	public function get_collection(name:Dynamic):Dynamic;
+	/**
 		Gets an existing variable with this name or create a new one.
 	**/
-	public function get_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	public function get_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	/**
+		Get this scope's global variables.
+	**/
+	public function global_variables():Dynamic;
 	public var initializer : Dynamic;
 	public var name : Dynamic;
 	public var original_name_scope : Dynamic;
@@ -146,4 +161,13 @@ package tensorflow.python.ops.variable_scope;
 		Set regularizer for this scope.
 	**/
 	public function set_regularizer(regularizer:Dynamic):Dynamic;
+	/**
+		Sets whether to use ResourceVariables for this scope.
+	**/
+	public function set_use_resource(use_resource:Dynamic):Dynamic;
+	/**
+		Get this scope's trainable variables.
+	**/
+	public function trainable_variables():Dynamic;
+	public var use_resource : Dynamic;
 }

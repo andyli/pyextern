@@ -10,7 +10,6 @@ package numpy.lib.utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _dictlist : Dynamic;
 	static public var _function_signature_re : Dynamic;
 	static public function _getmembers(item:Dynamic):Dynamic;
@@ -19,9 +18,9 @@ package numpy.lib.utils;
 		
 		Parameters
 		----------
-		obj: ndarray
+		obj : ndarray
 		    Must be ndarray, not checked.
-		output:
+		output
 		    Where printed output goes.
 		
 		Notes
@@ -53,6 +52,26 @@ package numpy.lib.utils;
 	**/
 	static public function _lookfor_generate_cache(module:Dynamic, import_modules:Dynamic, regenerate:Dynamic):Dynamic;
 	static public function _makenamedict(?module:Dynamic):Dynamic;
+	/**
+		Utility function to check median result from data for NaN values at the end
+		and return NaN in that case. Input result can also be a MaskedArray.
+		
+		Parameters
+		----------
+		data : array
+		    Input data to median function
+		result : Array or MaskedArray
+		    Result of median function
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the median was computed.
+		out : ndarray, optional
+		    Output array in which to place the result.
+		Returns
+		-------
+		median : scalar or ndarray
+		    Median or NaN in axes which contained NaN in the input.
+	**/
+	static public function _median_nancheck(data:Dynamic, result:Dynamic, axis:Dynamic, out:Dynamic):Dynamic;
 	static public var _namedict : Dynamic;
 	static public function _set_function_name(func:Dynamic, name:Dynamic):Dynamic;
 	static public function _split_line(name:Dynamic, arguments:Dynamic, width:Dynamic):Dynamic;
@@ -77,8 +96,8 @@ package numpy.lib.utils;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -193,7 +212,7 @@ package numpy.lib.utils;
 		>>> olduint(6)
 		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
 		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning)
+		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
 		6
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
@@ -455,7 +474,7 @@ package numpy.lib.utils;
 	**/
 	static public function safe_eval(source:Dynamic):Dynamic;
 	/**
-		Print or write to a file the source code for a Numpy object.
+		Print or write to a file the source code for a NumPy object.
 		
 		The source code is only returned for objects written in Python. Many
 		functions and classes are defined in C and will therefore not return
@@ -493,10 +512,10 @@ package numpy.lib.utils;
 	**/
 	static public function source(object:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		Print the Numpy arrays in the given dictionary.
+		Print the NumPy arrays in the given dictionary.
 		
 		If there is no dictionary passed in or `vardict` is None then returns
-		Numpy arrays in the globals() dictionary (all Numpy arrays in the
+		NumPy arrays in the globals() dictionary (all NumPy arrays in the
 		namespace).
 		
 		Parameters

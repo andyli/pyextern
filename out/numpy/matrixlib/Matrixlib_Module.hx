@@ -104,8 +104,8 @@ package numpy.matrixlib;
 		Parameters
 		----------
 		obj : str or array_like
-		    Input data.  Names of variables in the current scope may be
-		    referenced, even if `obj` is a string.
+		    Input data. If a string, variables in the current scope may be
+		    referenced by name.
 		ldict : dict, optional
 		    A dictionary that replaces local operands in current frame.
 		    Ignored if `obj` is not a string or `gdict` is `None`.
@@ -120,7 +120,9 @@ package numpy.matrixlib;
 		
 		See Also
 		--------
-		matrix
+		block :
+		    A generalization of this function for N-d arrays, that returns normal
+		    ndarrays.
 		
 		Examples
 		--------
@@ -206,12 +208,14 @@ package numpy.matrixlib;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

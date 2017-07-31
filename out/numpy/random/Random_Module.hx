@@ -109,20 +109,20 @@ package numpy.random;
 		
 		Parameters
 		----------
-		a : float
+		a : float or array_like of floats
 		    Alpha, non-negative.
-		b : float
+		b : float or array_like of floats
 		    Beta, non-negative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` and ``b`` are both scalars.
+		    Otherwise, ``np.broadcast(a, b).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of the given shape, containing values drawn from a
-		    Beta distribution.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized beta distribution.
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -137,24 +137,27 @@ package numpy.random;
 		
 		Parameters
 		----------
-		n : float (but truncated to an integer)
-		        parameter, >= 0.
-		p : float
-		        parameter, >= 0 and <=1.
+		n : int or array_like of ints
+		    Parameter of the distribution, >= 0. Floats are also accepted,
+		    but they will be truncated to integers.
+		p : float or array_like of floats
+		    Parameter of the distribution, >= 0 and <=1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``n`` and ``p`` are both scalars.
+		    Otherwise, ``np.broadcast(n, p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized binomial distribution, where
+		    each sample is equal to the number of successes over the n trials.
 		
 		See Also
 		--------
-		scipy.stats.distributions.binom : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.binom : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -184,7 +187,7 @@ package numpy.random;
 		.. [4] Weisstein, Eric W. "Binomial Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/BinomialDistribution.html
-		.. [5] Wikipedia, "Binomial-distribution",
+		.. [5] Wikipedia, "Binomial distribution",
 		       http://en.wikipedia.org/wiki/Binomial_distribution
 		
 		Examples
@@ -239,18 +242,18 @@ package numpy.random;
 		
 		Parameters
 		----------
-		df : int
+		df : int or array_like of ints
 		     Number of degrees of freedom.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` is a scalar.  Otherwise,
+		    ``np.array(df).size`` samples are drawn.
 		
 		Returns
 		-------
-		output : ndarray
-		    Samples drawn from the distribution, packed in a `size`-shaped
-		    array.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized chi-square distribution.
 		
 		Raises
 		------
@@ -300,7 +303,7 @@ package numpy.random;
 		-----------
 		a : 1-D array-like or int
 		    If an ndarray, a random sample is generated from its elements.
-		    If an int, the random sample is generated as if a was np.arange(n)
+		    If an int, the random sample is generated as if a were np.arange(a)
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
@@ -314,7 +317,7 @@ package numpy.random;
 		
 		Returns
 		--------
-		samples : 1-D ndarray, shape (size,)
+		samples : single item or ndarray
 		    The generated random samples
 		
 		Raises
@@ -446,20 +449,26 @@ package numpy.random;
 		
 		Parameters
 		----------
-		scale : float
+		scale : float or array_like of floats
 		    The scale parameter, :math:`\beta = 1/\lambda`.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``scale`` is a scalar.  Otherwise,
+		    ``np.array(scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized exponential distribution.
 		
 		References
 		----------
 		.. [1] Peyton Z. Peebles Jr., "Probability, Random Variables and
 		       Random Signal Principles", 4th ed, 2001, p. 57.
-		.. [2] "Poisson Process", Wikipedia,
+		.. [2] Wikipedia, "Poisson process",
 		       http://en.wikipedia.org/wiki/Poisson_process
-		.. [3] "Exponential Distribution, Wikipedia,
+		.. [3] Wikipedia, "Exponential distribution",
 		       http://en.wikipedia.org/wiki/Exponential_distribution
 	**/
 	static public function exponential(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -480,24 +489,25 @@ package numpy.random;
 		
 		Parameters
 		----------
-		dfnum : float
+		dfnum : int or array_like of ints
 		    Degrees of freedom in numerator. Should be greater than zero.
-		dfden : float
+		dfden : int or array_like of ints
 		    Degrees of freedom in denominator. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``dfnum`` and ``dfden`` are both scalars.
+		    Otherwise, ``np.broadcast(dfnum, dfden).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Samples from the Fisher distribution.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Fisher distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.f : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.f : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -555,24 +565,26 @@ package numpy.random;
 		
 		Parameters
 		----------
-		shape : scalar > 0
-		    The shape of the gamma distribution.
-		scale : scalar > 0, optional
-		    The scale of the gamma distribution.  Default is equal to 1.
+		shape : float or array_like of floats
+		    The shape of the gamma distribution. Should be greater than zero.
+		scale : float or array_like of floats, optional
+		    The scale of the gamma distribution. Should be greater than zero.
+		    Default is equal to 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``shape`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(shape, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray, float
-		    Returns one sample unless `size` parameter is specified.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized gamma distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.gamma : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.gamma : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -592,14 +604,14 @@ package numpy.random;
 		.. [1] Weisstein, Eric W. "Gamma Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
-		.. [2] Wikipedia, "Gamma-distribution",
-		       http://en.wikipedia.org/wiki/Gamma-distribution
+		.. [2] Wikipedia, "Gamma distribution",
+		       http://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
 		Draw samples from the distribution:
 		
-		>>> shape, scale = 2., 2. # mean and dispersion
+		>>> shape, scale = 2., 2.  # mean=4, std=2*sqrt(2)
 		>>> s = np.random.gamma(shape, scale, 1000)
 		
 		Display the histogram of the samples, along with
@@ -633,18 +645,18 @@ package numpy.random;
 		
 		Parameters
 		----------
-		p : float
+		p : float or array_like of floats
 		    The probability of success of an individual trial.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``p`` is a scalar.  Otherwise,
+		    ``np.array(p).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Samples from the geometric distribution, shaped according to
-		    `size`.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized geometric distribution.
 		
 		Examples
 		--------
@@ -699,18 +711,20 @@ package numpy.random;
 		
 		Parameters
 		----------
-		loc : float
-		    The location of the mode of the distribution.
-		scale : float
-		    The scale parameter of the distribution.
+		loc : float or array_like of floats, optional
+		    The location of the mode of the distribution. Default is 0.
+		scale : float or array_like of floats, optional
+		    The scale parameter of the distribution. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Gumbel distribution.
 		
 		See Also
 		--------
@@ -809,27 +823,29 @@ package numpy.random;
 		
 		Parameters
 		----------
-		ngood : int or array_like
+		ngood : int or array_like of ints
 		    Number of ways to make a good selection.  Must be nonnegative.
-		nbad : int or array_like
+		nbad : int or array_like of ints
 		    Number of ways to make a bad selection.  Must be nonnegative.
-		nsample : int or array_like
+		nsample : int or array_like of ints
 		    Number of items sampled.  Must be at least 1 and at most
 		    ``ngood + nbad``.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``ngood``, ``nbad``, and ``nsample``
+		    are all scalars.  Otherwise, ``np.broadcast(ngood, nbad, nsample).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized hypergeometric distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.hypergeom : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.hypergeom : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -860,7 +876,7 @@ package numpy.random;
 		.. [2] Weisstein, Eric W. "Hypergeometric Distribution." From
 		       MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/HypergeometricDistribution.html
-		.. [3] Wikipedia, "Hypergeometric-distribution",
+		.. [3] Wikipedia, "Hypergeometric distribution",
 		       http://en.wikipedia.org/wiki/Hypergeometric_distribution
 		
 		Examples
@@ -895,18 +911,20 @@ package numpy.random;
 		
 		Parameters
 		----------
-		loc : float, optional
-		    The position, :math:`\mu`, of the distribution peak.
-		scale : float, optional
-		    :math:`\lambda`, the exponential decay.
+		loc : float or array_like of floats, optional
+		    The position, :math:`\mu`, of the distribution peak. Default is 0.
+		scale : float or array_like of floats, optional
+		    :math:`\lambda`, the exponential decay. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or float
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Laplace distribution.
 		
 		Notes
 		-----
@@ -932,7 +950,7 @@ package numpy.random;
 		.. [3] Weisstein, Eric W. "Laplace Distribution."
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/LaplaceDistribution.html
-		.. [4] Wikipedia, "Laplace Distribution",
+		.. [4] Wikipedia, "Laplace distribution",
 		       http://en.wikipedia.org/wiki/Laplace_distribution
 		
 		Examples
@@ -968,24 +986,26 @@ package numpy.random;
 		
 		Parameters
 		----------
-		loc : float
-		
-		scale : float > 0.
-		
+		loc : float or array_like of floats, optional
+		    Parameter of the distribution. Default is 0.
+		scale : float or array_like of floats, optional
+		    Parameter of the distribution. Should be greater than zero.
+		    Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized logistic distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.logistic : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.logistic : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -1041,20 +1061,21 @@ package numpy.random;
 		
 		Parameters
 		----------
-		mean : float
-		    Mean value of the underlying normal distribution
-		sigma : float, > 0.
-		    Standard deviation of the underlying normal distribution
+		mean : float or array_like of floats, optional
+		    Mean value of the underlying normal distribution. Default is 0.
+		sigma : float or array_like of floats, optional
+		    Standard deviation of the underlying normal distribution. Should
+		    be greater than zero. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mean`` and ``sigma`` are both scalars.
+		    Otherwise, ``np.broadcast(mean, sigma).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or float
-		    The desired samples. An array of the same shape as `size` if given,
-		    if `size` is None a float is returned.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized log-normal distribution.
 		
 		See Also
 		--------
@@ -1142,24 +1163,23 @@ package numpy.random;
 		
 		Parameters
 		----------
-		loc : float
-		
-		scale : float > 0.
-		
+		p : float or array_like of floats
+		    Shape parameter for the distribution.  Must be in the range (0, 1).
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``p`` is a scalar.  Otherwise,
+		    ``np.array(p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		          where the values are all integers in  [0, n].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized logarithmic series distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.logser : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.logser : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -1186,8 +1206,8 @@ package numpy.random;
 		       Journal of Animal Ecology, 12:42-58.
 		.. [3] D. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small
 		       Data Sets, CRC Press, 1994.
-		.. [4] Wikipedia, "Logarithmic-distribution",
-		       http://en.wikipedia.org/wiki/Logarithmic-distribution
+		.. [4] Wikipedia, "Logarithmic distribution",
+		       http://en.wikipedia.org/wiki/Logarithmic_distribution
 		
 		Examples
 		--------
@@ -1281,7 +1301,7 @@ package numpy.random;
 	**/
 	static public function multinomial(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		multivariate_normal(mean, cov[, size])
+		multivariate_normal(mean, cov[, size, check_valid, tol])
 		
 		Draw random samples from a multivariate normal distribution.
 		
@@ -1304,6 +1324,10 @@ package numpy.random;
 		    generated, and packed in an `m`-by-`n`-by-`k` arrangement.  Because
 		    each sample is `N`-dimensional, the output shape is ``(m,n,k,N)``.
 		    If no shape is specified, a single (`N`-D) sample is returned.
+		check_valid : { 'warn', 'raise', 'ignore' }, optional
+		    Behavior when the covariance matrix is not positive semidefinite.
+		tol : float, optional
+		    Tolerance when checking the singular values in covariance matrix.
 		
 		Returns
 		-------
@@ -1331,8 +1355,8 @@ package numpy.random;
 		Instead of specifying the full covariance matrix, popular
 		approximations include:
 		
-		  - Spherical covariance (*cov* is a multiple of the identity matrix)
-		  - Diagonal covariance (*cov* has non-negative elements, and only on
+		  - Spherical covariance (`cov` is a multiple of the identity matrix)
+		  - Diagonal covariance (`cov` has non-negative elements, and only on
 		    the diagonal)
 		
 		This geometrical property can be seen in two dimensions by plotting
@@ -1386,19 +1410,24 @@ package numpy.random;
 		
 		Parameters
 		----------
-		n : int
-		    Parameter, > 0.
-		p : float
-		    Parameter, >= 0 and <=1.
+		n : int or array_like of ints
+		    Parameter of the distribution, > 0. Floats are also accepted,
+		    but they will be truncated to integers.
+		p : float or array_like of floats
+		    Parameter of the distribution, >= 0 and <=1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``n`` and ``p`` are both scalars.
+		    Otherwise, ``np.broadcast(n, p).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : int or ndarray of ints
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized negative binomial distribution,
+		    where each sample is equal to N, the number of trials it took to
+		    achieve n - 1 successes, N - (n - 1) failures, and a success on the,
+		    (N + n)th trial.
 		
 		Notes
 		-----
@@ -1450,15 +1479,21 @@ package numpy.random;
 		
 		Parameters
 		----------
-		df : int
-		    Degrees of freedom, should be > 0 as of Numpy 1.10,
+		df : int or array_like of ints
+		    Degrees of freedom, should be > 0 as of NumPy 1.10.0,
 		    should be > 1 for earlier versions.
-		nonc : float
+		nonc : float or array_like of floats
 		    Non-centrality, should be non-negative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` and ``nonc`` are both scalars.
+		    Otherwise, ``np.broadcast(df, nonc).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized noncentral chi-square distribution.
 		
 		Notes
 		-----
@@ -1525,21 +1560,23 @@ package numpy.random;
 		
 		Parameters
 		----------
-		dfnum : int
+		dfnum : int or array_like of ints
 		    Parameter, should be > 1.
-		dfden : int
+		dfden : int or array_like of ints
 		    Parameter, should be > 1.
-		nonc : float
+		nonc : float or array_like of floats
 		    Parameter, should be >= 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``dfnum``, ``dfden``, and ``nonc``
+		    are all scalars.  Otherwise, ``np.broadcast(dfnum, dfden, nonc).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized noncentral Fisher distribution.
 		
 		Notes
 		-----
@@ -1554,7 +1591,7 @@ package numpy.random;
 		.. [1] Weisstein, Eric W. "Noncentral F-Distribution."
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/NoncentralF-Distribution.html
-		.. [2] Wikipedia, "Noncentral F distribution",
+		.. [2] Wikipedia, "Noncentral F-distribution",
 		       http://en.wikipedia.org/wiki/Noncentral_F-distribution
 		
 		Examples
@@ -1594,19 +1631,25 @@ package numpy.random;
 		
 		Parameters
 		----------
-		loc : float
+		loc : float or array_like of floats
 		    Mean ("centre") of the distribution.
-		scale : float
+		scale : float or array_like of floats
 		    Standard deviation (spread or "width") of the distribution.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``loc`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(loc, scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized normal distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.norm : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.norm : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -1684,19 +1727,25 @@ package numpy.random;
 		
 		Parameters
 		----------
-		shape : float, > 0.
-		    Shape of the distribution.
+		a : float or array_like of floats
+		    Shape of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Pareto distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.lomax.pdf : probability density function,
-		    distribution or cumulative density function, etc.
-		scipy.stats.distributions.genpareto.pdf : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.lomax : probability density function, distribution or
+		    cumulative density function, etc.
+		scipy.stats.genpareto : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -1790,18 +1839,19 @@ package numpy.random;
 		
 		Parameters
 		----------
-		lam : float or sequence of float
+		lam : float or array_like of floats
 		    Expectation of interval, should be >= 0. A sequence of expectation
 		    intervals must be broadcastable over the requested size.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``lam`` is a scalar. Otherwise,
+		    ``np.array(lam).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The drawn samples, of shape *size*, if it was provided.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Poisson distribution.
 		
 		Notes
 		-----
@@ -1854,17 +1904,18 @@ package numpy.random;
 		
 		Parameters
 		----------
-		a : float
-		    parameter, > 0
+		a : float or array_like of floats
+		    Parameter of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The returned samples lie in [0, 1].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized power distribution.
 		
 		Raises
 		------
@@ -1989,8 +2040,8 @@ package numpy.random;
 		----------
 		low : int
 		    Lowest (signed) integer to be drawn from the distribution (unless
-		    ``high=None``, in which case this parameter is the *highest* such
-		    integer).
+		    ``high=None``, in which case this parameter is one above the
+		    *highest* such integer).
 		high : int, optional
 		    If provided, one above the largest (signed) integer to be drawn
 		    from the distribution (see above for behavior if ``high=None``).
@@ -2179,7 +2230,7 @@ package numpy.random;
 		4
 		>>> type(np.random.random_integers(5))
 		<type 'int'>
-		>>> np.random.random_integers(5, size=(3.,2.))
+		>>> np.random.random_integers(5, size=(3,2))
 		array([[5, 4],
 		       [3, 3],
 		       [4, 5]])
@@ -2296,12 +2347,18 @@ package numpy.random;
 		
 		Parameters
 		----------
-		scale : scalar
-		    Scale, also equals the mode. Should be >= 0.
+		scale : float or array_like of floats, optional
+		    Scale, also equals the mode. Should be >= 0. Default is 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``scale`` is a scalar.  Otherwise,
+		    ``np.array(scale).size`` samples are drawn.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Rayleigh distribution.
 		
 		Notes
 		-----
@@ -2452,6 +2509,10 @@ package numpy.random;
 		
 		Modify a sequence in-place by shuffling its contents.
 		
+		This function only shuffles the array along the first axis of a
+		multi-dimensional array. The order of sub-arrays is changed but
+		their contents remains the same.
+		
 		Parameters
 		----------
 		x : array_like
@@ -2468,8 +2529,7 @@ package numpy.random;
 		>>> arr
 		[1 7 5 2 9 4 3 6 0 8]
 		
-		This function only shuffles the array along the first index of a
-		multi-dimensional array:
+		Multi-dimensional arrays are only shuffled along the first axis:
 		
 		>>> arr = np.arange(9).reshape((3, 3))
 		>>> np.random.shuffle(arr)
@@ -2576,22 +2636,23 @@ package numpy.random;
 		
 		Parameters
 		----------
-		shape : float
+		shape : float or array_like of floats
 		    Parameter, should be > 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``shape`` is a scalar.  Otherwise,
+		    ``np.array(shape).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized standard gamma distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.gamma : probability density function,
-		    distribution or cumulative density function, etc.
+		scipy.stats.gamma : probability density function, distribution or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -2611,8 +2672,8 @@ package numpy.random;
 		.. [1] Weisstein, Eric W. "Gamma Distribution." From MathWorld--A
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
-		.. [2] Wikipedia, "Gamma-distribution",
-		       http://en.wikipedia.org/wiki/Gamma-distribution
+		.. [2] Wikipedia, "Gamma distribution",
+		       http://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
@@ -2675,17 +2736,18 @@ package numpy.random;
 		
 		Parameters
 		----------
-		df : int
+		df : int or array_like of ints
 		    Degrees of freedom, should be > 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``df`` is a scalar.  Otherwise,
+		    ``np.array(df).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Drawn samples.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized standard Student's t distribution.
 		
 		Notes
 		-----
@@ -2700,7 +2762,7 @@ package numpy.random;
 		a good estimate of the true mean.
 		
 		The derivation of the t-distribution was first published in
-		1908 by William Gisset while working for the Guinness Brewery
+		1908 by William Gosset while working for the Guinness Brewery
 		in Dublin. Due to proprietary issues, he had to publish under
 		a pseudonym, and so he used the name Student.
 		
@@ -2774,12 +2836,14 @@ package numpy.random;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -2812,7 +2876,8 @@ package numpy.random;
 	/**
 		triangular(left, mode, right, size=None)
 		
-		Draw samples from the triangular distribution.
+		Draw samples from the triangular distribution over the
+		interval ``[left, right]``.
 		
 		The triangular distribution is a continuous probability
 		distribution with lower limit left, peak at mode, and upper
@@ -2821,22 +2886,24 @@ package numpy.random;
 		
 		Parameters
 		----------
-		left : scalar
+		left : float or array_like of floats
 		    Lower limit.
-		mode : scalar
+		mode : float or array_like of floats
 		    The value where the peak of the distribution occurs.
 		    The value should fulfill the condition ``left <= mode <= right``.
-		right : scalar
+		right : float or array_like of floats
 		    Upper limit, should be larger than `left`.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``left``, ``mode``, and ``right``
+		    are all scalars.  Otherwise, ``np.broadcast(left, mode, right).size``
+		    samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    The returned samples all lie in the interval [left, right].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized triangular distribution.
 		
 		Notes
 		-----
@@ -2880,21 +2947,22 @@ package numpy.random;
 		
 		Parameters
 		----------
-		low : float, optional
+		low : float or array_like of floats, optional
 		    Lower boundary of the output interval.  All values generated will be
 		    greater than or equal to low.  The default value is 0.
-		high : float
+		high : float or array_like of floats
 		    Upper boundary of the output interval.  All values generated will be
 		    less than high.  The default value is 1.0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``low`` and ``high`` are both scalars.
+		    Otherwise, ``np.broadcast(low, high).size`` samples are drawn.
 		
 		Returns
 		-------
-		out : ndarray
-		    Drawn samples, with shape `size`.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized uniform distribution.
 		
 		See Also
 		--------
@@ -2914,6 +2982,12 @@ package numpy.random;
 		.. math:: p(x) = \frac{1}{b - a}
 		
 		anywhere within the interval ``[a, b)``, and zero elsewhere.
+		
+		When ``high`` == ``low``, values of ``low`` will be returned.
+		If ``high`` < ``low``, the results are officially undefined
+		and may eventually raise an error, i.e. do not rely on this
+		function to behave when passed arguments satisfying that
+		inequality condition.
 		
 		Examples
 		--------
@@ -2952,24 +3026,25 @@ package numpy.random;
 		
 		Parameters
 		----------
-		mu : float
+		mu : float or array_like of floats
 		    Mode ("center") of the distribution.
-		kappa : float
+		kappa : float or array_like of floats
 		    Dispersion of the distribution, has to be >=0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mu`` and ``kappa`` are both scalars.
+		    Otherwise, ``np.broadcast(mu, kappa).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    The returned samples, which are in the interval [-pi, pi].
+		out : ndarray or scalar
+		    Drawn samples from the parameterized von Mises distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.vonmises : probability density function,
-		    distribution, or cumulative density function, etc.
+		scipy.stats.vonmises : probability density function, distribution, or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -3029,19 +3104,20 @@ package numpy.random;
 		
 		Parameters
 		----------
-		mean : scalar
+		mean : float or array_like of floats
 		    Distribution mean, should be > 0.
-		scale : scalar
+		scale : float or array_like of floats
 		    Scale parameter, should be >= 0.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``mean`` and ``scale`` are both scalars.
+		    Otherwise, ``np.broadcast(mean, scale).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray or scalar
-		    Drawn sample, all greater than zero.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Wald distribution.
 		
 		Notes
 		-----
@@ -3091,22 +3167,24 @@ package numpy.random;
 		
 		Parameters
 		----------
-		a : float
-		    Shape of the distribution.
+		a : float or array_like of floats
+		    Shape of the distribution. Should be greater than zero.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar.  Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : ndarray
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Weibull distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.weibull_max
-		scipy.stats.distributions.weibull_min
-		scipy.stats.distributions.genextreme
+		scipy.stats.weibull_max
+		scipy.stats.weibull_min
+		scipy.stats.genextreme
 		gumbel
 		
 		Notes
@@ -3179,22 +3257,23 @@ package numpy.random;
 		
 		Parameters
 		----------
-		a : float > 1
-		    Distribution parameter.
+		a : float or array_like of floats
+		    Distribution parameter. Should be greater than 1.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
+		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
+		    a single value is returned if ``a`` is a scalar. Otherwise,
+		    ``np.array(a).size`` samples are drawn.
 		
 		Returns
 		-------
-		samples : scalar or ndarray
-		    The returned samples are greater than or equal to one.
+		out : ndarray or scalar
+		    Drawn samples from the parameterized Zipf distribution.
 		
 		See Also
 		--------
-		scipy.stats.distributions.zipf : probability density function,
-		    distribution, or cumulative density function, etc.
+		scipy.stats.zipf : probability density function, distribution, or
+		    cumulative density function, etc.
 		
 		Notes
 		-----
@@ -3225,11 +3304,13 @@ package numpy.random;
 		the probability density function:
 		
 		>>> import matplotlib.pyplot as plt
-		>>> import scipy.special as sps
-		Truncate s values at 50 so plot is interesting
+		>>> from scipy import special
+		
+		Truncate s values at 50 so plot is interesting:
+		
 		>>> count, bins, ignored = plt.hist(s[s<50], 50, normed=True)
 		>>> x = np.arange(1., 50.)
-		>>> y = x**(-a)/sps.zetac(a)
+		>>> y = x**(-a) / special.zetac(a)
 		>>> plt.plot(x, y/max(y), linewidth=2, color='r')
 		>>> plt.show()
 	**/

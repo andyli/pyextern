@@ -22,7 +22,7 @@ package scipy.signal._peak_finding;
 		    Array in which to find the relative extrema.
 		comparator : callable
 		    Function to use to compare two data points.
-		    Should take 2 numbers as arguments.
+		    Should take two arrays as arguments.
 		axis : int, optional
 		    Axis over which to select from `data`.  Default is 0.
 		order : int, optional
@@ -79,7 +79,7 @@ package scipy.signal._peak_finding;
 		
 		References
 		----------
-		Bioinformatics (2006) 22 (17): 2059-2065. doi: 10.1093/bioinformatics/btl355
+		Bioinformatics (2006) 22 (17): 2059-2065. :doi:`10.1093/bioinformatics/btl355`
 		http://bioinformatics.oxfordjournals.org/content/22/17/2059.long
 	**/
 	static public function _filter_ridge_lines(cwt:Dynamic, ridge_lines:Dynamic, ?window_size:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Dynamic;
@@ -114,7 +114,7 @@ package scipy.signal._peak_finding;
 		References
 		----------
 		Bioinformatics (2006) 22 (17): 2059-2065.
-		doi: 10.1093/bioinformatics/btl355
+		:doi:`10.1093/bioinformatics/btl355`
 		http://bioinformatics.oxfordjournals.org/content/22/17/2059.long
 		
 		Examples
@@ -138,7 +138,7 @@ package scipy.signal._peak_finding;
 		    Array in which to find the relative extrema.
 		comparator : callable
 		    Function to use to compare two data points.
-		    Should take 2 numbers as arguments.
+		    Should take two arrays as arguments.
 		axis : int, optional
 		    Axis over which to select from `data`.  Default is 0.
 		order : int, optional
@@ -371,7 +371,7 @@ package scipy.signal._peak_finding;
 		
 		Returns
 		-------
-		peaks_indices : list
+		peaks_indices : ndarray
 		    Indices of the locations in the `vector` where peaks were found.
 		    The list is sorted.
 		
@@ -398,7 +398,7 @@ package scipy.signal._peak_finding;
 		References
 		----------
 		.. [1] Bioinformatics (2006) 22 (17): 2059-2065.
-		    doi: 10.1093/bioinformatics/btl355
+		    :doi:`10.1093/bioinformatics/btl355`
 		    http://bioinformatics.oxfordjournals.org/content/22/17/2059.long
 		
 		Examples
@@ -410,7 +410,7 @@ package scipy.signal._peak_finding;
 		>>> peakind, xs[peakind], data[peakind]
 		([32], array([ 1.6]), array([ 0.9995736]))
 	**/
-	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Array<Dynamic>;
+	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return a Ricker wavelet, also known as the "Mexican hat wavelet".

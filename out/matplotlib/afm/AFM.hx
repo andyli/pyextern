@@ -47,6 +47,13 @@ package matplotlib.afm;
 	**/
 	public function new(fh:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -101,6 +108,7 @@ package matplotlib.afm;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var family_name : Dynamic;
 	/**
 		Return the fontangle as float
 	**/

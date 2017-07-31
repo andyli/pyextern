@@ -65,6 +65,13 @@ package tensorflow.python.training.coordinator;
 	**/
 	public function new(?clean_stop_exception_types:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -165,13 +172,19 @@ package tensorflow.python.training.coordinator;
 		    addition to the registered threads.
 		  stop_grace_period_secs: Number of seconds given to threads to stop after
 		    `request_stop()` has been called.
+		  ignore_live_threads: If `False`, raises an error if any of the threads are
+		    still alive after `stop_grace_period_secs`.
 		
 		Raises:
 		  RuntimeError: If any thread is still alive after `request_stop()`
 		    is called and the grace period expires.
 	**/
-	public function join(?threads:Dynamic, ?stop_grace_period_secs:Dynamic):Dynamic;
+	public function join(?threads:Dynamic, ?stop_grace_period_secs:Dynamic, ?ignore_live_threads:Dynamic):Dynamic;
 	public var joined : Dynamic;
+	/**
+		If an exception has been passed to `request_stop`, this raises it.
+	**/
+	public function raise_requested_exception():Dynamic;
 	/**
 		Register a thread to join.
 		

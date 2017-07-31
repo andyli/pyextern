@@ -3,7 +3,6 @@ package pandas.io.common;
 @:pythonImport("pandas.io.common") extern class Common_Module {
 	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function ZipFile(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _NA_VALUES : Dynamic;
 	static public var _PATHLIB_INSTALLED : Dynamic;
 	static public var _PY_PATH_INSTALLED : Dynamic;
@@ -16,6 +15,7 @@ package pandas.io.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _compression_to_extension : Dynamic;
 	/**
 		Return the argument with an initial component of ~ or ~user
 		   replaced by that user's home directory.
@@ -31,10 +31,53 @@ package pandas.io.common;
 	**/
 	static public function _expand_user(filepath_or_buffer:Dynamic):Dynamic;
 	/**
-		Gets file handle for given path and mode.
-		    
+		Get file handle for given path/buffer and mode.
+		
+		Parameters
+		----------
+		path_or_buf :
+		    a path (str) or buffer
+		mode : str
+		    mode to open path_or_buf with
+		encoding : str or None
+		compression : str or None
+		    Supported compression protocols are gzip, bz2, zip, and xz
+		memory_map : boolean, default False
+		    See parsers._parser_params for more information.
+		is_text : boolean, default True
+		    whether file/buffer is in text format (csv, json, etc.), or in binary
+		    mode (pickle, etc.)
+		Returns
+		-------
+		f : file-like
+		    A file-like object
+		handles : list of file-like objects
+		    A list of file-like object that were openned in this function.
 	**/
-	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic):Dynamic;
+	static public function _get_handle(path_or_buf:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic, ?is_text:Dynamic):Dynamic;
+	/**
+		Get the compression method for filepath_or_buffer. If compression='infer',
+		the inferred compression method is returned. Otherwise, the input
+		compression method is returned unchanged, unless it's invalid, in which
+		case an error is raised.
+		
+		Parameters
+		----------
+		filepath_or_buf :
+		    a path (str) or buffer
+		compression : str or None
+		    the compression method including None for no compression and 'infer'
+		
+		Returns
+		-------
+		string or None :
+		    compression method
+		
+		Raises
+		------
+		ValueError on invalid compression specified
+	**/
+	static public function _infer_compression(filepath_or_buffer:Dynamic, compression:Dynamic):Dynamic;
 	/**
 		Check for an s3, s3n, or s3a url
 	**/
@@ -65,6 +108,63 @@ package pandas.io.common;
 		str_filepath_or_buffer : a the string version of the input path
 	**/
 	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function _urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	/**
@@ -108,8 +208,8 @@ package pandas.io.common;
 	**/
 	static public function file_path_to_url(path:Dynamic):Dynamic;
 	/**
-		If the filepath_or_buffer is a url, translate and return the buffer
-		passthru otherwise.
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
 		
 		Parameters
 		----------
@@ -122,21 +222,57 @@ package pandas.io.common;
 		a filepath_or_buffer, the encoding, the compression
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
-	static public function is_number(obj:Dynamic):Dynamic;
 	/**
-		read an encoded stream from the reader and transform the bytes to
-		unicode if required based on the encoding
+		Check if the object is a file-like object.
 		
-		    Parameters
-		    ----------
-		    reader : a streamable file-like object
-		    encoding : optional, the encoding to attempt to read
+		For objects to be considered file-like, they must
+		be an iterator AND have either a `read` and/or `write`
+		method as an attribute.
 		
-		    Returns
-		    -------
-		    a tuple of (a stream of decoded bytes, the encoding which was used)
+		Note: file-like objects must be iterable, but
+		iterable objects need not be file-like.
+		
+		.. versionadded:: 0.20.0
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_file_like : bool
+		    Whether `obj` has file-like properties.
+		
+		Examples
+		--------
+		>>> buffer(StringIO("data"))
+		>>> is_file_like(buffer)
+		True
+		>>> is_file_like([1, 2, 3])
+		False
 	**/
-	static public function maybe_read_encoded_stream(reader:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function is_file_like(obj:Dynamic):Bool;
+	/**
+		Check if the object is a number.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_number : bool
+		    Whether `obj` is a number or not.
+		
+		Examples
+		--------
+		>>> is_number(1)
+		True
+		>>> is_number("foo")
+		False
+	**/
+	static public function is_number(obj:Dynamic):Bool;
+	static public var need_text_wrapping : Dynamic;
 	/**
 		Parse a URL into 6 components:
 		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>
@@ -198,6 +334,63 @@ package pandas.io.common;
 		interpretation of the latter.
 	**/
 	static public function urljoin(base:Dynamic, url:Dynamic, ?allow_fragments:Dynamic):Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public var uses_netloc : Dynamic;
 	static public var uses_params : Dynamic;

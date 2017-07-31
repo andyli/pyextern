@@ -47,6 +47,13 @@ package matplotlib.animation;
 	**/
 	public function new(fig:Dynamic, artists:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -140,52 +147,69 @@ package matplotlib.animation;
 	/**
 		Saves a movie file by drawing every frame.
 		
-		*filename* is the output filename, e.g., :file:`mymovie.mp4`
+		Parameters
+		----------
 		
-		*writer* is either an instance of :class:`MovieWriter` or a string
-		key that identifies a class to use, such as 'ffmpeg' or 'mencoder'.
-		If nothing is passed, the value of the rcparam `animation.writer` is
-		used.
+		filename : str
+		    The output filename, e.g., :file:`mymovie.mp4`
 		
-		*dpi* controls the dots per inch for the movie frames. This combined
-		with the figure's size in inches controls the size of the movie.
+		writer : :class:`MovieWriter` or str, optional
+		    A `MovieWriter` instance to use or a key that identifies a
+		    class to use, such as 'ffmpeg' or 'mencoder'. If `None`,
+		    defaults to ``rcParams['animation.writer']``
 		
-		*savefig_kwargs* is a dictionary containing keyword arguments to be
-		passed on to the 'savefig' command which is called repeatedly to save
-		the individual frames. This can be used to set tight bounding boxes,
-		for example.
+		fps : number, optional
+		   frames per second in the movie. Defaults to None,
+		   which will use the animation's specified interval to set
+		   the frames per second.
 		
-		*extra_anim* is a list of additional `Animation` objects that should
-		be included in the saved movie file. These need to be from the same
-		`matplotlib.Figure` instance. Also, animation frames will just be
-		simply combined, so there should be a 1:1 correspondence between
-		the frames from the different animations.
+		dpi : number, optional
+		   Controls the dots per inch for the movie frames.  This
+		   combined with the figure's size in inches controls the size of
+		   the movie.  If None, defaults to ``rcparam['savefig.dpi']``
 		
-		These remaining arguments are used to construct a :class:`MovieWriter`
-		instance when necessary and are only considered valid if *writer* is
-		not a :class:`MovieWriter` instance.
+		codec : str, optional
+		   The video codec to be used. Not all codecs are supported by
+		   a given :class:`MovieWriter`. If `None`,
+		   default to ``rcParams['animation.codec']``
 		
-		*fps* is the frames per second in the movie. Defaults to None,
-		which will use the animation's specified interval to set the frames
-		per second.
+		bitrate : number, optional
+		   Specifies the number of bits used per second in the
+		   compressed movie, in kilobits per second. A higher number
+		   means a higher quality movie, but at the cost of increased
+		   file size. If `None`, defaults to
+		   ``rcParam['animation.bitrate']``
 		
-		*codec* is the video codec to be used. Not all codecs are supported
-		by a given :class:`MovieWriter`. If none is given, this defaults to the
-		value specified by the rcparam `animation.codec`.
+		extra_args : list, optional
+		   List of extra string arguments to be passed to the
+		   underlying movie utility. If `None`, defaults to
+		   ``rcParams['animation.extra_args']``
 		
-		*bitrate* specifies the amount of bits used per second in the
-		compressed movie, in kilobits per second. A higher number means a
-		higher quality movie, but at the cost of increased file size. If no
-		value is given, this defaults to the value given by the rcparam
-		`animation.bitrate`.
+		metadata : dict, optional
+		   Dictionary of keys and values for metadata to include in
+		   the output file. Some keys that may be of use include:
+		   title, artist, genre, subject, copyright, srcform, comment.
 		
-		*extra_args* is a list of extra string arguments to be passed to the
-		underlying movie utility. The default is None, which passes the
-		additional arguments in the 'animation.extra_args' rcParam.
+		extra_anim : list, optional
+		   Additional `Animation` objects that should be included in
+		   the saved movie file. These need to be from the same
+		   `matplotlib.Figure` instance. Also, animation frames will
+		   just be simply combined, so there should be a 1:1
+		   correspondence between the frames from the different
+		   animations.
 		
-		*metadata* is a dictionary of keys and values for metadata to include
-		in the output file. Some keys that may be of use include:
-		title, artist, genre, subject, copyright, srcform, comment.
+		savefig_kwargs : dict, optional
+		   Is a dictionary containing keyword arguments to be passed
+		   on to the 'savefig' command which is called repeatedly to
+		   save the individual frames.
+		
+		Notes
+		-----
+		fps, codec, bitrate, extra_args, metadata are used to
+		construct a :class:`MovieWriter` instance and can only be
+		passed if `writer` is a string.  If they are passed as
+		non-`None` and ``writer`` is a :class:`MovieWriter`, a
+		`RuntimeError` will be raised.
 	**/
 	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic):Dynamic;
 	/**

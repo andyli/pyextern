@@ -63,6 +63,13 @@ package scipy.stats._continuous_distns;
 	**/
 	public function new(?momtype:Dynamic, ?a:Dynamic, ?b:Dynamic, ?xtol:Dynamic, ?badvalue:Dynamic, ?name:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -296,7 +303,8 @@ package scipy.stats._continuous_distns;
 	**/
 	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?scale:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
-		Return MLEs for shape, location, and scale parameters from data.
+		Return MLEs for shape (if applicable), location, and scale
+		parameters from data.
 		
 		MLE stands for Maximum Likelihood Estimate.  Starting estimates for
 		the fit are given by input arguments; for any arguments not provided
@@ -339,9 +347,10 @@ package scipy.stats._continuous_distns;
 		
 		Returns
 		-------
-		shape, loc, scale : tuple of floats
-		    MLEs for any shape statistics, followed by those for location and
-		    scale.
+		mle_tuple : tuple of floats
+		    MLEs for any shape parameters (if applicable), followed by those
+		    for location and scale. For most random variables, shape statistics
+		    will be returned, but there are exceptions (e.g. ``norm``).
 		
 		Notes
 		-----
@@ -379,6 +388,15 @@ package scipy.stats._continuous_distns;
 		>>> a1, b1, loc1, scale1 = beta.fit(x, fa=1, floc=0, fscale=1)
 		>>> a1
 		1
+		
+		Not all distributions return estimates for the shape parameters.
+		``norm`` for example just returns estimates for location and scale:
+		
+		>>> from scipy.stats import norm
+		>>> x = norm.rvs(a, b, size=1000, random_state=123)
+		>>> loc1, scale1 = norm.fit(x)
+		>>> loc1, scale1
+		(0.92087172783841631, 2.0015750750324668)
 	**/
 	public function fit(data:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**

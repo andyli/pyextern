@@ -16,20 +16,23 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _AsinGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Returns grad * 1/ (1 + x^2)
+		Returns grad * x / (x^2 + y^2), grad * -y / (x^2 + y^2).
+	**/
+	static public function _Atan2Grad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns grad * 1/ (1 + x^2).
 	**/
 	static public function _AtanGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchFFT2DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchFFT3DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchFFTGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchIFFT2DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchIFFT3DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _BatchIFFTGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns the gradient of x and y given the gradient of x * y.
 	**/
 	static public function _BatchMatMul(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns gradient of betainc(a, b, x) with respect to x.
+	**/
+	static public function _BetaincGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _CastGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _CeilGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
 	/**
 		Returns the gradient of ComplexAbs.
 	**/
@@ -53,6 +56,9 @@ package tensorflow.python.ops.math_grad;
 		Compute gradient of the digamma function with respect to its argument.
 	**/
 	static public function _DigammaGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		The gradient for the Div operator.
+	**/
 	static public function _DivGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns grad * 2/sqrt(pi) * exp(-x**2).
@@ -66,20 +72,21 @@ package tensorflow.python.ops.math_grad;
 		Returns grad * exp(x).
 	**/
 	static public function _ExpGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	static public function _FFT2DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _FFT3DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _FFTGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _FFTSizeForGrad(grad:Dynamic, rank:Dynamic):Dynamic;
-	static public function _FloorGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
-	static public function _IFFT2DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _IFFT3DGrad(_:Dynamic, grad:Dynamic):Dynamic;
-	static public function _IFFTGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Returns gradient of igamma(a, x) with respect to a and x.
+		Returns grad * exp(x).
+	**/
+	static public function _Expm1Grad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		The gradient for the FloorDiv operator.
+	**/
+	static public function _FloorDivGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	static public function _FloorGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	/**
+		Returns gradient of igamma(a, x) with respect to x.
 	**/
 	static public function _IgammaGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Returns gradient of igammac(a, x) = 1 - igamma(a, x) w.r.t. a and x.
+		Returns gradient of igammac(a, x) = 1 - igamma(a, x) w.r.t. x.
 	**/
 	static public function _IgammacGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
@@ -90,14 +97,22 @@ package tensorflow.python.ops.math_grad;
 		Returns -grad * (1 / x^2).
 	**/
 	static public function _InvGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _InvGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns grad * digamma(x).
 	**/
 	static public function _LgammaGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Returns grad * (1/(1 + x)).
+	**/
+	static public function _Log1pGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Returns grad * (1/x).
 	**/
 	static public function _LogGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for MatMul.
+	**/
 	static public function _MatMulGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for Max.
@@ -145,10 +160,28 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _ProdGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		RealDiv op gradient.
+	**/
+	static public function _RealDivGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Returns 'grad' as the real part and set the imaginary part 0.
 	**/
 	static public function _RealGrad(_:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns -grad * (1 / x^2).
+	**/
+	static public function _ReciprocalGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _ReciprocalGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _RintGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	static public function _RoundGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	/**
+		Returns -0.5 * grad * conj(y)^3.
+	**/
 	static public function _RsqrtGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns backprop gradient for f(a,b) = -0.5 * b * conj(a)^3.
+	**/
+	static public function _RsqrtGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for SegmentMax.
 	**/
@@ -162,9 +195,9 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _SegmentMinGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Gradient for SegmentMin and SegmentMax. Both share the same code.
+		Gradient for SegmentMin and (unsorted) SegmentMax. They share similar code.
 	**/
-	static public function _SegmentMinOrMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SegmentMinOrMaxGrad(op:Dynamic, grad:Dynamic, is_sorted:Dynamic):Dynamic;
 	/**
 		Gradient for SegmentSum.
 	**/
@@ -174,6 +207,7 @@ package tensorflow.python.ops.math_grad;
 		Returns grad * sigmoid(x) * (1 - sigmoid(x)).
 	**/
 	static public function _SigmoidGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SigmoidGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns 0.
 	**/
@@ -199,6 +233,7 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _SparseSegmentSumGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SqrtGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SqrtGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SquareGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns the gradient for (x-y)^2.
@@ -217,6 +252,9 @@ package tensorflow.python.ops.math_grad;
 		Returns grad * (1 - tanh(x) * tanh(x)).
 	**/
 	static public function _TanhGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TanhGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TruncateDivGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	static public function _UnsortedSegmentMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for SegmentSum.
 	**/

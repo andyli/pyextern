@@ -47,6 +47,13 @@ package scipy.odr.odrpack;
 	**/
 	public function new(data:Dynamic, model:Dynamic, ?beta0:Dynamic, ?delta0:Dynamic, ?ifixb:Dynamic, ?ifixx:Dynamic, ?job:Dynamic, ?iprint:Dynamic, ?errfile:Dynamic, ?rptfile:Dynamic, ?ndigit:Dynamic, ?taufac:Dynamic, ?sstol:Dynamic, ?partol:Dynamic, ?maxit:Dynamic, ?stpb:Dynamic, ?stpd:Dynamic, ?sclb:Dynamic, ?scld:Dynamic, ?work:Dynamic, ?iwork:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

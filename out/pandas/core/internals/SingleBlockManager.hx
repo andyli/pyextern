@@ -57,6 +57,13 @@ package pandas.core.internals;
 	**/
 	public function new(block:Dynamic, axis:Dynamic, ?do_integrity_check:Dynamic, ?fastpath:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -391,8 +398,9 @@ package pandas.core.internals;
 		mapper : unary callable
 		axis : int
 		copy : boolean, default True
+		level : int, default None
 	**/
-	public function rename_axis(mapper:Dynamic, axis:Dynamic, ?copy:Dynamic):Dynamic;
+	public function rename_axis(mapper:Dynamic, axis:Dynamic, ?copy:Dynamic, ?level:Dynamic):Dynamic;
 	public function replace(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		do a list replace 

@@ -104,6 +104,11 @@ package scipy.fftpack.basic;
 		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
 		always be real.
 		
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
 		
@@ -170,6 +175,13 @@ package scipy.fftpack.basic;
 		--------
 		ifftn
 		
+		Notes
+		-----
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		Examples
 		--------
 		>>> from scipy.fftpack import fftn, ifftn
@@ -210,6 +222,11 @@ package scipy.fftpack.basic;
 		
 		Notes
 		-----
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
 		
@@ -344,6 +361,11 @@ package scipy.fftpack.basic;
 		-----
 		Within numerical accuracy, ``y == rfft(irfft(y))``.
 		
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		Examples
 		--------
 		>>> from scipy.fftpack import fft, rfft
@@ -369,8 +391,8 @@ package scipy.fftpack.basic;
 		Returns
 		-------
 		a_swapped : ndarray
-		    For Numpy >= 1.10, if `a` is an ndarray, then a view of `a` is
-		    returned; otherwise a new array is created. For earlier Numpy
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
 		    versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		

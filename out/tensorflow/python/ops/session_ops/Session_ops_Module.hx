@@ -12,7 +12,7 @@ package tensorflow.python.ops.session_ops;
 	/**
 		Return a deletion subgraph for this handle.
 	**/
-	static public function _get_handle_deleter(graph:Dynamic, handle:Dynamic):Dynamic;
+	static public function _get_handle_deleter(graph:Dynamic, deleter_key:Dynamic, handle:Dynamic):Dynamic;
 	static public function _get_handle_feeder(graph:Dynamic, feeder:Dynamic):Dynamic;
 	/**
 		Return a move subgraph for this pair of feeder and handle.
@@ -43,6 +43,10 @@ package tensorflow.python.ops.session_ops;
 	static public function delete_session_tensor(handle:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Encode a ResourceHandle proto as custom numpy struct type.
+	**/
+	static public function encode_resource_handle(resource_handle:Dynamic):Dynamic;
+	/**
 		Return the handle of `data`.
 		
 		This is EXPERIMENTAL and subject to change.
@@ -66,12 +70,12 @@ package tensorflow.python.ops.session_ops;
 		Example:
 		
 		```python
-		c = tf.mul(a, b)
+		c = tf.multiply(a, b)
 		h = tf.get_session_handle(c)
 		h = sess.run(h)
 		
 		p, a = tf.get_session_tensor(h.handle, tf.float32)
-		b = tf.mul(a, 10)
+		b = tf.multiply(a, 10)
 		c = sess.run(b, feed_dict={p: h.handle})
 		```
 	**/
@@ -98,12 +102,12 @@ package tensorflow.python.ops.session_ops;
 		Example:
 		
 		```python
-		c = tf.mul(a, b)
+		c = tf.multiply(a, b)
 		h = tf.get_session_handle(c)
 		h = sess.run(h)
 		
 		p, a = tf.get_session_tensor(h.handle, tf.float32)
-		b = tf.mul(a, 10)
+		b = tf.multiply(a, 10)
 		c = sess.run(b, feed_dict={p: h.handle})
 		```
 	**/

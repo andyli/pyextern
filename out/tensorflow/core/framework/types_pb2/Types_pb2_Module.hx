@@ -35,6 +35,8 @@ package tensorflow.core.framework.types_pb2;
 	static public var DT_QUINT16_REF : Dynamic;
 	static public var DT_QUINT8 : Dynamic;
 	static public var DT_QUINT8_REF : Dynamic;
+	static public var DT_RESOURCE : Dynamic;
+	static public var DT_RESOURCE_REF : Dynamic;
 	static public var DT_STRING : Dynamic;
 	static public var DT_STRING_REF : Dynamic;
 	static public var DT_UINT16 : Dynamic;

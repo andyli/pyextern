@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib._image;
 @:pythonImport("matplotlib._image") extern class _Image_Module {
-	static public var ASPECT_FREE : Dynamic;
-	static public var ASPECT_PRESERVE : Dynamic;
 	static public var BESSEL : Dynamic;
 	static public var BICUBIC : Dynamic;
 	static public var BILINEAR : Dynamic;
@@ -26,40 +24,7 @@ package matplotlib._image;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		from_images(numrows, numcols, seq)
-		
-		return an image instance with numrows, numcols from a seq of image
-		instances using alpha blending.  seq is a list of (Image, ox, oy)
-	**/
-	static public function from_images(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		fromarray(A, isoutput)
-		
-		Load the image from a numpy array
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling
-	**/
-	static public function fromarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombuffer(buffer, width, height, isoutput)
-		
-		Load the image from a character buffer
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling.
-	**/
-	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombyte(A, isoutput)
-		
-		Load the image from a byte array.
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling.
-	**/
-	static public function frombyte(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _n_interpolation : Dynamic;
 	/**
 		pcolor(x, y, data, rows, cols, bounds)
 		
@@ -78,4 +43,47 @@ package matplotlib._image;
 		bg = ndarray of 4 uint8 representing background rgba
 	**/
 	static public function pcolor2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=0, radius=1)
+		
+		Resample input_array, blending it in-place into output_array, using an
+		affine transformation.
+		
+		Parameters
+		----------
+		input_array : 2-d or 3-d Numpy array of float, double or uint8
+		    If 2-d, the image is grayscale.  If 3-d, the image must be of size
+		    4 in the last dimension and represents RGBA data.
+		
+		output_array : 2-d or 3-d Numpy array of float, double or uint8
+		    The dtype and number of dimensions must match `input_array`.
+		
+		transform : matplotlib.transforms.Transform instance
+		    The transformation from the input array to the output
+		    array.
+		
+		interpolation : int, optional
+		    The interpolation method.  Must be one of the following constants
+		    defined in this module:
+		
+		      NEAREST (default), BILINEAR, BICUBIC, SPLINE16, SPLINE36,
+		      HANNING, HAMMING, HERMITE, KAISER, QUADRIC, CATROM, GAUSSIAN,
+		      BESSEL, MITCHELL, SINC, LANCZOS, BLACKMAN
+		
+		resample : bool, optional
+		    When `True`, use a full resampling method.  When `False`, only
+		    resample when the output image is larger than the input image.
+		
+		alpha : float, optional
+		    The level of transparency to apply.  1.0 is completely opaque.
+		    0.0 is completely transparent.
+		
+		norm : float, optional
+		    The norm for the interpolation function.  Default is 0.
+		
+		radius: float, optional
+		    The radius of the kernel, if method is SINC, LANCZOS or BLACKMAN.
+		    Default is 1.
+	**/
+	static public function resample(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

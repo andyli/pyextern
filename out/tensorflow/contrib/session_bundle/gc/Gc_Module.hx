@@ -10,9 +10,44 @@ package tensorflow.contrib.session_bundle.gc;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Gets a list of Paths in a given directory.
+		Gets a list of Paths in a given directory. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  base_dir: directory.
@@ -32,7 +67,11 @@ package tensorflow.contrib.session_bundle.gc;
 	**/
 	static public function get_paths(base_dir:Dynamic, parser:Dynamic):Dynamic;
 	/**
-		Creates a filter that keeps the largest n export versions.
+		Creates a filter that keeps the largest n export versions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  n: number of versions to keep.
@@ -42,7 +81,11 @@ package tensorflow.contrib.session_bundle.gc;
 	**/
 	static public function largest_export_versions(n:Dynamic):Dynamic;
 	/**
-		Creates a filter that keeps every export that is a multiple of n.
+		Creates a filter that keeps every export that is a multiple of n. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  n: step size.
@@ -52,7 +95,11 @@ package tensorflow.contrib.session_bundle.gc;
 	**/
 	static public function mod_export_version(n:Dynamic):Dynamic;
 	/**
-		Negate a filter.
+		Negate a filter. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  f: filter function to invert
@@ -62,7 +109,11 @@ package tensorflow.contrib.session_bundle.gc;
 	**/
 	static public function negation(f:Dynamic):Dynamic;
 	/**
-		Creates a filter that keeps one of every n export versions.
+		Creates a filter that keeps one of every n export versions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  n: interval size.
@@ -75,7 +126,11 @@ package tensorflow.contrib.session_bundle.gc;
 	static public function one_of_every_n_export_versions(n:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Creates a filter that keeps the union of two filters.
+		Creates a filter that keeps the union of two filters. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Instructions for updating:
+		Please use SavedModel instead.
 		
 		Args:
 		  lf: first filter

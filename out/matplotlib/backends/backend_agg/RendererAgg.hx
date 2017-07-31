@@ -48,6 +48,13 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function new(width:Dynamic, height:Dynamic, dpi:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -119,7 +126,6 @@ package matplotlib.backends.backend_agg;
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
-	static public var _fontd : Dynamic;
 	/**
 		Get the font for text instance t, cacheing for efficiency
 	**/
@@ -224,23 +230,34 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function draw_gouraud_triangles(gc:Dynamic, triangles_array:Dynamic, colors_array:Dynamic, transform:Dynamic):Dynamic;
 	/**
-		Draw the image instance into the current axes;
+		Draw an RGBA image.
 		
 		*gc*
-		    a GraphicsContext containing clipping information
+		    a :class:`GraphicsContextBase` instance with clipping information.
 		
 		*x*
-		    is the distance in pixels from the left hand side of the canvas.
+		    the distance in physical units (i.e., dots or pixels) from the left
+		    hand side of the canvas.
 		
 		*y*
-		    the distance from the origin.  That is, if origin is
-		    upper, y is the distance from top.  If origin is lower, y
-		    is the distance from bottom
+		    the distance in physical units (i.e., dots or pixels) from the
+		    bottom side of the canvas.
 		
 		*im*
-		    the :class:`matplotlib._image.Image` instance
+		    An NxMx4 array of RGBA pixels (of dtype uint8).
+		
+		*transform*
+		    If and only if the concrete backend is written such that
+		    :meth:`option_scale_image` returns ``True``, an affine
+		    transformation *may* be passed to :meth:`draw_image`. It takes the
+		    form of a :class:`~matplotlib.transforms.Affine2DBase` instance.
+		    The translation vector of the transformation is given in physical
+		    units (i.e., dots or pixels). Note that the transformation does not
+		    override `x` and `y`, and has to be applied *before* translating
+		    the result by `x` and `y` (this can be accomplished by adding `x`
+		    and `y` to the translation vector defined by `transform`).
 	**/
-	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic):Dynamic;
+	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Draws a marker at each of the vertices in path.  This includes
 		all vertices, including control points on curves.  To avoid
@@ -352,7 +369,7 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**
-		agg backend support arbitrary scaling of image.
+		agg backend doesn't support arbitrary scaling of image.
 	**/
 	public function option_scale_image():Dynamic;
 	/**

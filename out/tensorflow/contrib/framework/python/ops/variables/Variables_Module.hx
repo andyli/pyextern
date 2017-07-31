@@ -18,12 +18,6 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  var: a variable.
 	**/
 	static public function add_model_variable(_var:Dynamic):Dynamic;
-	/**
-		Asserts `global_step_tensor` is a scalar int `Variable` or `Tensor`.
-		
-		Args:
-		  global_step_tensor: `Tensor` to test.
-	**/
 	static public function assert_global_step(global_step_tensor:Dynamic):Dynamic;
 	/**
 		Verifies that a global step tensor is valid or gets one if None is given.
@@ -48,9 +42,13 @@ package tensorflow.contrib.framework.python.ops.variables;
 		Args:
 		  model_path: The full path to the model checkpoint. To get latest checkpoint
 		      use `model_path = tf.train.latest_checkpoint(checkpoint_dir)`
-		  var_list: A list of `Variable` objects or a dictionary mapping names in the
-		      checkpoint to the correspoing variables to initialize. If empty or None,
-		      it would return  no_op(), None.
+		  var_list: A list of (possibly partitioned) `Variable` objects
+		      or a dictionary mapping names in the checkpoint to the
+		      corresponding variables or list of variables to initialize
+		      from that checkpoint value. For partitioned Variables, the
+		      name in the checkpoint must be the full variable, not the
+		      name of the partitioned variable, eg. "my_var" rather than
+		      "my_var/part_4". If empty, returns no_op(), {}.
 		
 		Returns:
 		  the restore_op and the feed_dict that need to be run to restore var_list.
@@ -60,6 +58,33 @@ package tensorflow.contrib.framework.python.ops.variables;
 		    the variables in `var_list`.
 	**/
 	static public function assign_from_checkpoint(model_path:Dynamic, var_list:Dynamic):Dynamic;
+	/**
+		Returns a function that assigns specific variables from a checkpoint.
+		
+		If ignore_missing_vars is True and no variables are found in the checkpoint
+		it returns None.
+		
+		Args:
+		  model_path: The full path to the model checkpoint. To get latest checkpoint
+		      use `model_path = tf.train.latest_checkpoint(checkpoint_dir)`
+		  var_list: A list of `Variable` objects or a dictionary mapping names in the
+		      checkpoint to the corresponding variables to initialize. If empty or
+		      `None`, it would return `no_op(), None`.
+		  ignore_missing_vars: Boolean, if True it would ignore variables missing in
+		      the checkpoint with a warning instead of failing.
+		  reshape_variables: Boolean, if True it would automatically reshape variables
+		      which are of different shape then the ones stored in the checkpoint but
+		      which have the same number of elements.
+		
+		Returns:
+		  A function that takes a single argument, a `tf.Session`, that applies the
+		  assignment operation. If no matching variables were found in the checkpoint
+		  then `None` is returned.
+		
+		Raises:
+		  ValueError: If var_list is empty.
+	**/
+	static public function assign_from_checkpoint_fn(model_path:Dynamic, var_list:Dynamic, ?ignore_missing_vars:Dynamic, ?reshape_variables:Dynamic):Dynamic;
 	/**
 		Creates an assignment operation from a given mapping.
 		
@@ -79,6 +104,23 @@ package tensorflow.contrib.framework.python.ops.variables;
 	**/
 	static public function assign_from_values(var_names_to_values:Dynamic):Dynamic;
 	/**
+		Returns a function that assigns specific variables from the given values.
+		
+		This function provides a mechanism for performing assignment of variables
+		to values in a way that does not fill the graph with large assignment values.
+		
+		Args:
+		  var_names_to_values: A map from variable names to values.
+		
+		Returns:
+		  A function that takes a single argument, a `tf.Session`, that applies the
+		  assignment operation.
+		
+		Raises:
+		  ValueError: if any of the given variable names were not found.
+	**/
+	static public function assign_from_values_fn(var_names_to_values:Dynamic):Dynamic;
+	/**
 		Decorates a function with args so it can be used within an arg_scope.
 		
 		Args:
@@ -91,44 +133,64 @@ package tensorflow.contrib.framework.python.ops.variables;
 	/**
 		Create global step tensor in graph.
 		
+		This API is deprecated. Use core framework training version instead.
+		
 		Args:
-		  graph: The graph in which to create the global step. If missing, use default
-		      graph.
+		  graph: The graph in which to create the global step tensor. If missing,
+		    use default graph.
 		
 		Returns:
 		  Global step tensor.
 		
 		Raises:
-		  ValueError: if global step key is already defined.
+		  ValueError: if global step tensor is already defined.
 	**/
 	static public function create_global_step(?graph:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Get the global step tensor.
+		Filter a list of variables using regular expressions.
 		
-		The global step tensor must be an integer variable. We first try to find it
-		in the collection `GLOBAL_STEP`, or by name `global_step:0`.
+		First includes variables according to the list of include_patterns.
+		Afterwards, eliminates variables according to the list of exclude_patterns.
+		
+		For example, one can obtain a list of variables with the weights of all
+		convolutional layers (depending on the network definition) by:
+		
+		```python
+		variables = tf.contrib.framework.get_model_variables()
+		conv_weight_variables = tf.contrib.framework.filter_variables(
+		    variables,
+		    include_patterns=['Conv'],
+		    exclude_patterns=['biases', 'Logits'])
+		```
 		
 		Args:
-		  graph: The graph to find the global step in. If missing, use default graph.
+		  var_list: list of variables.
+		  include_patterns: list of regular expressions to include. Defaults to None,
+		      which means all variables are selected according to the include rules.
+		      A variable is included if it matches any of the include_patterns.
+		  exclude_patterns: list of regular expressions to exclude. Defaults to None,
+		      which means all variables are selected according to the exclude rules.
+		      A variable is excluded if it matches any of the exclude_patterns.
+		  reg_search: boolean. If True (default), performs re.search to find matches
+		      (i.e. pattern can match any substring of the variable name). If False,
+		      performs re.match (i.e. regexp should match from the beginning of the
+		      variable name).
 		
 		Returns:
-		  The global step variable, or `None` if none was found.
-		
-		Raises:
-		  TypeError: If the global step tensor has a non-integer type, or if it is not
-		    a `Variable`.
+		  filtered list of variables.
 	**/
+	static public function filter_variables(var_list:Dynamic, ?include_patterns:Dynamic, ?exclude_patterns:Dynamic, ?reg_search:Dynamic):Dynamic;
 	static public function get_global_step(?graph:Dynamic):Dynamic;
 	/**
-		Gets the list of model variables, filtered by scope and/or suffix.
+		Gets the list of local variables, filtered by scope and/or suffix.
 		
 		Args:
 		  scope: an optional scope for filtering the variables to return.
 		  suffix: an optional suffix for filtering the variables to return.
 		
 		Returns:
-		  a list of variables in colelction with scope and suffix.
+		  a list of variables in collection with scope and suffix.
 	**/
 	static public function get_local_variables(?scope:Dynamic, ?suffix:Dynamic):Dynamic;
 	/**
@@ -139,20 +201,31 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  suffix: an optional suffix for filtering the variables to return.
 		
 		Returns:
-		  a list of variables in colelction with scope and suffix.
+		  a list of variables in collection with scope and suffix.
 	**/
 	static public function get_model_variables(?scope:Dynamic, ?suffix:Dynamic):Dynamic;
 	/**
-		Returns and create (if necessary) the global step variable.
+		Returns and create (if necessary) the global step tensor.
 		
 		Args:
-		  graph: The graph in which to create the global step. If missing, use default
-		      graph.
+		  graph: The graph in which to create the global step tensor. If missing, use
+		    default graph.
 		
 		Returns:
-		  the tensor representing the global step variable.
+		  The global step tensor.
 	**/
 	static public function get_or_create_global_step(?graph:Dynamic):Dynamic;
+	/**
+		Gets the list of trainable variables, filtered by scope and/or suffix.
+		
+		Args:
+		  scope: an optional scope for filtering the variables to return.
+		  suffix: an optional suffix for filtering the variables to return.
+		
+		Returns:
+		  a list of variables in the trainable collection with scope and suffix.
+	**/
+	static public function get_trainable_variables(?scope:Dynamic, ?suffix:Dynamic):Dynamic;
 	/**
 		Gets the variable uniquely identified by that var_op_name.
 		
@@ -167,15 +240,32 @@ package tensorflow.contrib.framework.python.ops.variables;
 	**/
 	static public function get_unique_variable(var_op_name:Dynamic):Dynamic;
 	/**
+		Returns the full name of a variable.
+		
+		For normal Variables, this is the same as the var.op.name.  For
+		sliced or PartitionedVariables, this name is the same for all the
+		slices/partitions. In both cases, this is normally the name used in
+		a checkpoint file.
+		
+		Args:
+		  var: A `Variable` object.
+		
+		Returns:
+		  A string that is the full name.
+	**/
+	static public function get_variable_full_name(_var:Dynamic):Dynamic;
+	/**
 		Gets the list of variables, filtered by scope and/or suffix.
 		
 		Args:
-		  scope: an optional scope for filtering the variables to return.
+		  scope: an optional scope for filtering the variables to return. Can be a
+		    variable scope or a string.
 		  suffix: an optional suffix for filtering the variables to return.
-		  collection: in which collection search for. Defaults to GraphKeys.VARIABLES.
+		  collection: in which collection search for. Defaults to
+		    `GraphKeys.GLOBAL_VARIABLES`.
 		
 		Returns:
-		  a list of variables in colelction with scope and suffix.
+		  a list of variables in collection with scope and suffix.
 	**/
 	static public function get_variables(?scope:Dynamic, ?suffix:Dynamic, ?collection:Dynamic):Dynamic;
 	/**
@@ -241,20 +331,26 @@ package tensorflow.contrib.framework.python.ops.variables;
 		      applying it on a newly created variable will be added to the collection
 		      GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
 		  trainable: If `True` also add the variable to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
 		  collections: A list of collection names to which the Variable will be added.
-		    Note that the variable is always also added to the `GraphKeys.VARIABLES`
-		    and `GraphKeys.MODEL_VARIABLES` collections.
+		    Note that the variable is always also added to the
+		    `GraphKeys.GLOBAL_VARIABLES` and `GraphKeys.MODEL_VARIABLES` collections.
 		  caching_device: Optional device string or function describing where the
 		      Variable should be cached for reading.  Defaults to the Variable's
 		      device.
 		  device: Optional device to place the variable. It can be an string or a
 		    function that is called to get the device for the variable.
+		  partitioner: Optional callable that accepts a fully defined `TensorShape`
+		    and dtype of the `Variable` to be created, and returns a list of
+		    partitions for each axis (currently only one axis can be partitioned).
+		  custom_getter: Callable that allows overwriting the internal
+		    get_variable method and has to have the same signature.
+		  use_resource: If `True` use a ResourceVariable instead of a Variable.
 		
 		Returns:
 		  The created or existing variable.
 	**/
-	static public function model_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic):Dynamic;
+	static public function model_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Gets an existing variable with these parameters or creates a new one.
@@ -268,17 +364,36 @@ package tensorflow.contrib.framework.python.ops.variables;
 		      applying it on a newly created variable will be added to the collection
 		      GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
 		  trainable: If `True` also add the variable to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
 		  collections: A list of collection names to which the Variable will be added.
-		    If None it would default to tf.GraphKeys.VARIABLES.
+		    If None it would default to `tf.GraphKeys.GLOBAL_VARIABLES`.
 		  caching_device: Optional device string or function describing where the
 		      Variable should be cached for reading.  Defaults to the Variable's
 		      device.
 		  device: Optional device to place the variable. It can be an string or a
 		    function that is called to get the device for the variable.
+		  partitioner: Optional callable that accepts a fully defined `TensorShape`
+		    and dtype of the `Variable` to be created, and returns a list of
+		    partitions for each axis (currently only one axis can be partitioned).
+		  custom_getter: Callable that allows overwriting the internal
+		    get_variable method and has to have the same signature.
+		  use_resource: If `True` use a ResourceVariable instead of a Variable.
 		
 		Returns:
 		  The created or existing variable.
 	**/
-	static public function variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic):Dynamic;
+	static public function variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic):Dynamic;
+	/**
+		Initialize 'ref' with all zeros, ref tensor should be uninitialized.
+		If already initialized, you will get ValueError. This op is intended to
+		save memory during initialization.
+		Args:
+		  ref: ref of the tensor need to be zero initialized.
+		  name: optional name for this operation.
+		Returns:
+		  ref that initialized.
+		Raises:
+		  ValueError: If ref tensor is initialized.
+	**/
+	static public function zero_initializer(ref:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
 }

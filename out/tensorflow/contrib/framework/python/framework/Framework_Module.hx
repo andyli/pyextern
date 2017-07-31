@@ -17,8 +17,8 @@ package tensorflow.contrib.framework.python.framework;
 		For ops such as matrix multiplication, inputs and weights must be of the
 		same float type. This function validates that all `tensors` are the same type,
 		validates that type is `dtype` (if supplied), and returns the type. Type must
-		be `dtypes.float32` or `dtypes.float64`. If neither `tensors` nor
-		`dtype` is supplied, default to `dtypes.float32`.
+		be a floating point type. If neither `tensors` nor `dtype` is supplied,
+		the function will return `dtypes.float32`.
 		
 		Args:
 		  tensors: Tensors of input values. Can include `None` elements, which will be
@@ -28,20 +28,22 @@ package tensorflow.contrib.framework.python.framework;
 		  Validated type.
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
-		      float.
+		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert `tensor` is 0-D, of type `tf.int32` or `tf.int64`.
 		
 		Args:
-		  tensor: Tensor to test.
+		  tensor: `Tensor` to test.
+		  name: Name of the op and of the new `Tensor` if one is created.
 		Returns:
 		  `tensor`, for chaining.
 		Raises:
-		  ValueError: if `tensor` is not 0-D, of type `tf.int32` or `tf.int64`.
+		  ValueError: if `tensor` is not 0-D, of integer type.
 	**/
-	static public function assert_scalar_int(tensor:Dynamic):Dynamic;
+	static public function assert_scalar_int(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Converts value to a `SparseTensor` or `Tensor`.
 		
@@ -51,8 +53,6 @@ package tensorflow.contrib.framework.python.framework;
 		  dtype: Optional element type for the returned tensor. If missing, the
 		    type is inferred from the type of `value`.
 		  name: Optional name to use if a new `Tensor` is created.
-		  as_ref: True if we want the result as a ref tensor. Only used if a new
-		    `Tensor` is created.
 		
 		Returns:
 		  A `SparseTensor` or `Tensor` based on `value`.
@@ -60,7 +60,7 @@ package tensorflow.contrib.framework.python.framework;
 		Raises:
 		  RuntimeError: If result type is incompatible with `dtype`.
 	**/
-	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decorator for marking functions or methods deprecated.
 		
@@ -71,6 +71,7 @@ package tensorflow.contrib.framework.python.framework;
 		  Instructions for updating:
 		  <instructions>
 		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
 		<function> will include the class name if it is a method.
 		
 		It also edits the docstring of the function: ' (deprecated)' is appended
@@ -78,8 +79,8 @@ package tensorflow.contrib.framework.python.framework;
 		to the rest of the docstring.
 		
 		Args:
-		  date: String. The date the function is scheduled to be removed. Must be
-		    ISO 8601 (YYYY-MM-DD).
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
 		
@@ -87,7 +88,8 @@ package tensorflow.contrib.framework.python.framework;
 		  Decorated function or method.
 		
 		Raises:
-		  ValueError: If date is not in ISO 8601 format, or instructions are empty.
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
 	**/
 	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	/**
@@ -100,6 +102,7 @@ package tensorflow.contrib.framework.python.framework;
 		  will be removed after <date>. Instructions for updating:
 		    <instructions>
 		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
 		<function> will include the class name if it is a method.
 		
 		It also edits the docstring of the function: ' (deprecated arguments)' is
@@ -107,8 +110,8 @@ package tensorflow.contrib.framework.python.framework;
 		prepended to the rest of the docstring.
 		
 		Args:
-		  date: String. The date the function is scheduled to be removed. Must be
-		    ISO 8601 (YYYY-MM-DD).
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
 		  **deprecated_kwargs: The deprecated argument values.
@@ -117,34 +120,96 @@ package tensorflow.contrib.framework.python.framework;
 		  Decorated function or method.
 		
 		Raises:
-		  ValueError: If date is not in ISO 8601 format, or instructions are empty.
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
 	**/
 	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Decorator for marking specific function arguments as deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called with the deprecated argument. It has the following format:
+		
+		  Calling <function> (from <module>) with <arg> is deprecated and will be
+		  removed after <date>. Instructions for updating:
+		    <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> includes the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated arguments)' is
+		appended to the first line of the docstring and a deprecation notice is
+		prepended to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  *deprecated_arg_names_or_tuples: String. or 2-Tuple(String,
+		    [ok_vals]).  The string is the deprecated argument name.
+		    Optionally, an ok-value may be provided.  If the user provided
+		    argument equals this value, the warning is suppressed.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, instructions are
+		    empty, the deprecated arguments are not present in the function
+		    signature, or the second element of a deprecated_tuple is not a
+		    list.
+	**/
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Using assingment map initializes current variables with loaded tensors.
+		Decorator for marking functions or methods experimental.
+		
+		This decorator logs an experimental warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is experimental and may change or be removed at
+		  any time, and without warning.
+		
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (experimental)' is appended
+		to the first line of the docstring and a notice is prepended to the rest of
+		the docstring.
+		
+		Args:
+		  func: A function or method to mark experimental.
+		
+		Returns:
+		  Decorated function or method.
+	**/
+	static public function experimental(func:Dynamic):Dynamic;
+	/**
+		Using assignment map initializes current variables with loaded tensors.
 		
 		Note: This overrides default initialization ops of specified variables and
 		redefines dtype.
 		
 		Assignment map supports following syntax:
-		  `'checkpoint_scope_name/': 'scope_name/'` - will load all variables in
-		    current `scope_name` from `checkpoint_scope_name` with matching variable
-		    names.
-		  `'checkpoint_scope_name/some_other_variable': 'scope_name/variable_name'` -
-		    will initalize `scope_name/variable_name` variable
-		    from `checkpoint_scope_name/some_other_variable`.
-		  `'scope_variable_name': variable` - will initialize given `tf.Variable`
-		    object with variable from the checkpoint.
-		  `'scope_variable_name': list(variable)` - will initialize list of
-		    partitioned variables with variable from the checkpoint.
-		  `'scope_name/': '/'` - will load all variables in current `scope_name` from
-		    checkpoint's root (e.g. no scope).
+		
+		* `'checkpoint_scope_name/': 'scope_name/'` - will load all variables in
+		  current `scope_name` from `checkpoint_scope_name` with matching variable
+		  names.
+		* `'checkpoint_scope_name/some_other_variable': 'scope_name/variable_name'` -
+		  will initialize `scope_name/variable_name` variable
+		  from `checkpoint_scope_name/some_other_variable`.
+		* `'scope_variable_name': variable` - will initialize given `tf.Variable`
+		  object with variable from the checkpoint.
+		* `'scope_variable_name': list(variable)` - will initialize list of
+		  partitioned variables with variable from the checkpoint.
+		* `'/': 'scope_name/'` - will load all variables in current `scope_name` from
+		  checkpoint's root (e.g. no scope).
 		
 		Supports loading into partitioned variables, which are represented as
-		'<variable>/part_<part #>'.
+		`'<variable>/part_<part #>'`.
 		
 		Example:
+		
 		```python
 		  # Create variables.
 		  with tf.variable_scope('test'):
@@ -188,7 +253,8 @@ package tensorflow.contrib.framework.python.framework;
 	**/
 	static public function init_from_checkpoint(checkpoint_dir:Dynamic, assignment_map:Dynamic):Dynamic;
 	/**
-		Check for tensor types.
+		Check whether `x` is of tensor type.
+		
 		Check whether an object is a tensor. Equivalent to
 		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
 		
@@ -251,6 +317,21 @@ package tensorflow.contrib.framework.python.framework;
 		  ValueError: if `losses` is missing or empty.
 	**/
 	static public function reduce_sum_n(tensors:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Squeeze last dim if ranks of `predictions` and `labels` differ by 1.
+		
+		This will use static shape if available. Otherwise, it will add graph
+		operations, which could result in a performance hit.
+		
+		Args:
+		  predictions: Predicted values, a `Tensor` of arbitrary dimensions.
+		  labels: Label values, a `Tensor` whose dimensions match `predictions`.
+		  name: Name of the op.
+		
+		Returns:
+		  Tuple of `predictions` and `labels`, possibly with last dim squeezed.
+	**/
+	static public function remove_squeezable_dimensions(predictions:Dynamic, labels:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert tensors are the same shape, from the same graph.
 		

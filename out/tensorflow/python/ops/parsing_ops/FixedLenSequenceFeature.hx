@@ -63,6 +63,13 @@ package tensorflow.python.ops.parsing_ops;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -88,9 +95,9 @@ package tensorflow.python.ops.parsing_ops;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of FixedLenSequenceFeature(shape, dtype, allow_missing)
+		Create new instance of FixedLenSequenceFeature(shape, dtype, allow_missing, default_value)
 	**/
-	static public function __new__(_cls:Dynamic, shape:Dynamic, dtype:Dynamic, ?allow_missing:Dynamic):Dynamic;
+	static public function __new__(_cls:Dynamic, shape:Dynamic, dtype:Dynamic, ?allow_missing:Dynamic, ?default_value:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -152,6 +159,10 @@ package tensorflow.python.ops.parsing_ops;
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Alias for field number 3
+	**/
+	public var default_value : Dynamic;
 	/**
 		Alias for field number 1
 	**/

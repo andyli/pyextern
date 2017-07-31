@@ -102,6 +102,13 @@ package matplotlib.offsetbox;
 	**/
 	public function new(loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?child:Dynamic, ?prop:Dynamic, ?frameon:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -162,6 +169,7 @@ package matplotlib.offsetbox;
 		with the loc code, with the borderpad.
 	**/
 	public function _get_anchored_bbox(loc:Dynamic, bbox:Dynamic, parentbbox:Dynamic, borderpad:Dynamic):Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -406,9 +414,7 @@ package matplotlib.offsetbox;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -447,9 +453,7 @@ package matplotlib.offsetbox;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -687,6 +691,25 @@ package matplotlib.offsetbox;
 		match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
+	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

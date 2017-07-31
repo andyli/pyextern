@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.control_flow_ops;
 @:pythonImport("tensorflow.python.ops.control_flow_ops", "CondContext") extern class CondContext {
+	/**
+		Notifies a scope about an operator added to an inner scope.
+	**/
+	public function AddInnerOp(op:Dynamic):Dynamic;
 	public function AddName(name:Dynamic):Dynamic;
 	public function AddOp(op:Dynamic):Dynamic;
 	/**
@@ -24,24 +28,27 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function ExitResult(result:Dynamic):Dynamic;
 	/**
+		Returns the pivot node for this context, or None.
+	**/
+	public function GetControlPivot():Dynamic;
+	/**
 		Return the while context containing this context.
 	**/
 	public function GetWhileContext():Dynamic;
 	/**
-		Add a control dependency to the containing WhileContext.
-		
-		The added control dependency ensures that the outputs of this op
-		belong to the WhileContext. Do nothing if the op is not contained
-		in a WhileContext.
-		
-		Args:
-		  op: An operation.
-	**/
-	public function MaybeAddToWhileContext(op:Dynamic):Dynamic;
-	/**
 		Add `op` to the current context.
 	**/
 	public function _AddOpInternal(op:Dynamic):Dynamic;
+	public function _BuildCondTensor(v:Dynamic):Dynamic;
+	public function _IsInOuterContext(op:Dynamic):Dynamic;
+	/**
+		Process an output tensor of a conditional branch.
+	**/
+	public function _ProcessOutputTensor(val:Dynamic):Dynamic;
+	/**
+		Remove any external control dependency on this op.
+	**/
+	public function _RemoveExternalControlEdges(op:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -79,14 +86,41 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Creates a `CondContext`.
+		
+		Args:
+		  pred: The `boolean` tensor for the conditional predicate.
+		  pivot: The predicate tensor in this branch.
+		  branch: 0 or 1 representing this branch.
+		  name: Name of the `CondContext` python object.
+		  context_def: Optional `ContextDef` protocol buffer to initialize the
+		    `CondContext` object from.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initialing from protocol buffer.
 	**/
 	@:native("__init__")
-	public function ___init__(pred:Dynamic, pivot:Dynamic, branch:Dynamic):Dynamic;
+	public function ___init__(?pred:Dynamic, ?pivot:Dynamic, ?branch:Dynamic, ?name:Dynamic, ?context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Creates a `CondContext`.
+		
+		Args:
+		  pred: The `boolean` tensor for the conditional predicate.
+		  pivot: The predicate tensor in this branch.
+		  branch: 0 or 1 representing this branch.
+		  name: Name of the `CondContext` python object.
+		  context_def: Optional `ContextDef` protocol buffer to initialize the
+		    `CondContext` object from.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initialing from protocol buffer.
 	**/
-	public function new(pred:Dynamic, pivot:Dynamic, branch:Dynamic):Void;
+	public function new(?pred:Dynamic, ?pivot:Dynamic, ?branch:Dynamic, ?name:Dynamic, ?context_def:Dynamic, ?import_scope:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -142,13 +176,58 @@ package tensorflow.python.ops.control_flow_ops;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Returns a `ControlFlowContext` created from `values_def`.
+	**/
+	static public function _from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Creates a new `CondContext` from protocol buffer.
+		
+		Args:
+		  context_def: `CondContextDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+	**/
+	public function _init_from_proto(context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Initializes values and external_values from `ValuesDef` protocol buffer.
+		
+		Args:
+		  values_def: `ValuesDef` protocol buffer.
+		  import_scope: Optional `string`. Name scope to add.
+	**/
+	public function _init_values_from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Converts the values to a `ValuesDef` protocol buffer.
+		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  A `ValuesDef` protocol buffer.
+	**/
+	public function _to_proto(?export_scope:Dynamic):Dynamic;
 	public var back_prop : Dynamic;
 	public var branch : Dynamic;
+	/**
+		Returns a `CondContext` object created from `context_def`.
+	**/
+	static public function from_proto(context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	public var grad_state : Dynamic;
+	public var name : Dynamic;
 	/**
 		Return the context containing this context.
 	**/
 	public var outer_context : Dynamic;
 	public var pivot : Dynamic;
 	public var pred : Dynamic;
+	/**
+		Converts a `CondContext` to a `CondContextDef` protocol buffer.
+		
+		Args:
+		  export_scope: Optional `string`. Name scope to remove.
+		
+		Returns:
+		  A `CondContextDef` protocol buffer.
+	**/
+	public function to_proto(?export_scope:Dynamic):Dynamic;
 }

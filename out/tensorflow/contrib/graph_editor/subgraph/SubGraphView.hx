@@ -1,12 +1,16 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.graph_editor.subgraph;
 @:pythonImport("tensorflow.contrib.graph_editor.subgraph", "SubGraphView") extern class SubGraphView {
+	/**
+		Allows for implicit boolean conversion.
+	**/
+	public function __bool__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Create a copy of this subgraph.
 		
 		Note that this class is a "view", copying it only create another view and
-		does not copy the underlying part of the tf.Graph.
+		does not copy the underlying part of the `tf.Graph`.
 		
 		Returns:
 		  A new identical instance of the original subgraph view.
@@ -24,7 +28,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
-		Allow Python context to minize the life time of a subgraph view.
+		Allow Python context to minimize the life time of a subgraph view.
 		
 		A subgraph view is meant to be a lightweight and transient object. A short
 		lifetime will alleviate the "out-of-sync" issue mentioned earlier. For that
@@ -56,7 +60,6 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
-	public function __getitem__(op_name:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -69,16 +72,16 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Create a subgraph containing the given ops and the "passthrough" tensors.
 		
 		Args:
-		  inside_ops: an object convertible to a list of tf.Operation. This list
+		  inside_ops: an object convertible to a list of `tf.Operation`. This list
 		    defines all the operations in the subgraph.
-		  passthrough_ts: an object convertible to a list of tf.Tensor. This list
+		  passthrough_ts: an object convertible to a list of `tf.Tensor`. This list
 		    define all the "passthrough" tensors. A passthrough tensor is a tensor
 		    which goes directly from the input of the subgraph to it output, without
 		    any intermediate operations. All the non passthrough tensors are
 		    silently ignored.
 		Raises:
-		  TypeError: if inside_ops cannot be converted to a list of tf.Operation or
-		    if passthrough_ts cannot be converted to a list of tf.Tensor.
+		  TypeError: if inside_ops cannot be converted to a list of `tf.Operation`
+		    or if `passthrough_ts` cannot be converted to a list of `tf.Tensor`.
 	**/
 	@:native("__init__")
 	public function ___init__(?inside_ops:Dynamic, ?passthrough_ts:Dynamic):Dynamic;
@@ -86,18 +89,25 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Create a subgraph containing the given ops and the "passthrough" tensors.
 		
 		Args:
-		  inside_ops: an object convertible to a list of tf.Operation. This list
+		  inside_ops: an object convertible to a list of `tf.Operation`. This list
 		    defines all the operations in the subgraph.
-		  passthrough_ts: an object convertible to a list of tf.Tensor. This list
+		  passthrough_ts: an object convertible to a list of `tf.Tensor`. This list
 		    define all the "passthrough" tensors. A passthrough tensor is a tensor
 		    which goes directly from the input of the subgraph to it output, without
 		    any intermediate operations. All the non passthrough tensors are
 		    silently ignored.
 		Raises:
-		  TypeError: if inside_ops cannot be converted to a list of tf.Operation or
-		    if passthrough_ts cannot be converted to a list of tf.Tensor.
+		  TypeError: if inside_ops cannot be converted to a list of `tf.Operation`
+		    or if `passthrough_ts` cannot be converted to a list of `tf.Tensor`.
 	**/
 	public function new(?inside_ops:Dynamic, ?passthrough_ts:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -163,7 +173,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Args:
 		  other: another subgraph-view.
 		Returns:
-		  a new instance identical to the original one.
+		  A new instance identical to the original one.
 		Raises:
 		  TypeError: if other is not an SubGraphView.
 	**/
@@ -211,6 +221,12 @@ package tensorflow.contrib.graph_editor.subgraph;
 	public var connected_outputs : Dynamic;
 	/**
 		Return a Python set of all the consumers of this subgraph view.
+		
+		A consumer of a subgraph view is a tf.Operation which is a consumer
+		of one of the output tensors and is not in the subgraph.
+		
+		Returns:
+		  A list of `tf.Operation` which are the consumers of this subgraph view.
 	**/
 	public function consumers():Dynamic;
 	/**
@@ -220,7 +236,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 		does not copy the underlying part of the tf.Graph.
 		
 		Returns:
-		  a new instance identical to the original one.
+		  A new instance identical to the original one.
 	**/
 	public function copy():Dynamic;
 	/**
@@ -236,7 +252,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 	**/
 	public function find_op_by_name(op_name:Dynamic):Dynamic;
 	/**
-		The underlying tf.Graph.
+		The underlying `tf.Graph`.
 	**/
 	public var graph : Dynamic;
 	/**
@@ -245,7 +261,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Args:
 		  t: the input tensor of this subgraph view.
 		Returns:
-		  the index in the self.inputs list.
+		  The index in the self.inputs list.
 		Raises:
 		  Error: if t in not an input tensor.
 	**/
@@ -272,7 +288,7 @@ package tensorflow.contrib.graph_editor.subgraph;
 		Args:
 		  t: the output tensor of this subgraph view.
 		Returns:
-		  the index in the self.outputs list.
+		  The index in the self.outputs list.
 		Raises:
 		  Error: if t in not an output tensor.
 	**/
@@ -292,12 +308,16 @@ package tensorflow.contrib.graph_editor.subgraph;
 		affected.
 		
 		Args:
-		  new_input_indices: an iterable of integers representing a mapping between
-		    the old inputs and the new ones. This mapping can be under-complete and
-		    must be without repetitions.
-		  new_output_indices: an iterable of integers representing a mapping between
-		    the old outputs and the new ones. This mapping can be under-complete and
-		    can have repetitions.
+		  new_input_indices: an iterable of integers or tf.Tensors
+		    representing a mapping between the old inputs and the new ones.
+		    Integers must be positive and smaller than the number of old inputs.
+		    tf.Tensors must belong to the old list of inputs.
+		    This mapping can be under-complete and must be without repetitions.
+		  new_output_indices: an iterable of integers or tf.Tensors
+		    representing a mapping between the old outputs and the new ones.
+		    Integers must be positive and smaller than the number of old outputs.
+		    tf.Tensors must belong to the old list of outputs.
+		    This mapping can be under-complete and can have repetitions.
 		Returns:
 		  A new modified instance of the original subgraph view with remapped
 		    inputs and outputs.
@@ -320,13 +340,15 @@ package tensorflow.contrib.graph_editor.subgraph;
 		If the inputs of the original subgraph are [t0, t1, t2], remapping to [2,0]
 		will create a new instance whose inputs is [t2, t0].
 		
-		Note that this is only modifying the view: the underlying tf.Graph is not
+		Note that this is only modifying the view: the underlying `tf.Graph` is not
 		affected.
 		
 		Args:
-		  new_input_indices: an iterable of integers representing a mapping between
-		    the old inputs and the new ones. This mapping can be under-complete and
-		    must be without repetitions.
+		  new_input_indices: an iterable of integers or tf.Tensors
+		    representing a mapping between the old inputs and the new ones.
+		    Integers must be positive and smaller than the number of old inputs.
+		    tf.Tensors must belong to the old list of inputs.
+		    This mapping can be under-complete and must be without repetitions.
 		Returns:
 		  A new modified instance of the original subgraph view with remapped
 		    inputs.
@@ -342,9 +364,11 @@ package tensorflow.contrib.graph_editor.subgraph;
 		affected.
 		
 		Args:
-		  new_output_indices: an iterable of integers representing a mapping between
-		    the old outputs and the new ones. This mapping can be under-complete and
-		    can have repetitions.
+		  new_output_indices: an iterable of integers or tf.Tensors
+		    representing a mapping between the old outputs and the new ones.
+		    Integers must be positive and smaller than the number of old outputs.
+		    tf.Tensors must belong to the old list of outputs.
+		    This mapping can be under-complete and can have repetitions.
 		Returns:
 		  A new modified instance of the original subgraph view with remapped
 		    outputs.

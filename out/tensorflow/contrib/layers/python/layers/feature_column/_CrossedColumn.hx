@@ -2,6 +2,10 @@
 package tensorflow.contrib.layers.python.layers.feature_column;
 @:pythonImport("tensorflow.contrib.layers.python.layers.feature_column", "_CrossedColumn") extern class _CrossedColumn {
 	/**
+		IdWeightPair(id_tensor, weight_tensor)
+	**/
+	static public function IdWeightPair(id_tensor:Dynamic, weight_tensor:Dynamic):Dynamic;
+	/**
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
@@ -63,6 +67,13 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;
@@ -91,7 +102,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self*value.n
@@ -104,7 +115,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, columns:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, columns:Dynamic, hash_bucket_size:Dynamic, hash_key:Dynamic, ?combiner:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -152,19 +163,92 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	static public function _assert_is_crossable(column:Dynamic):Dynamic;
+	/**
+		Returns None, or a (path,tensor_name) to load a checkpoint from.
+	**/
+	public function _checkpoint_path():Dynamic;
+	/**
+		Returns arguments to embedding lookup to build an input layer.
+	**/
+	public function _deep_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
 	static public var _fields : Dynamic;
-	static public function _is_crossable(column:Dynamic):Dynamic;
+	/**
+		Returns an IdWeightPair.
+		
+		`IdWeightPair` is a pair of `SparseTensor`s which represents ids and
+		weights.
+		
+		`IdWeightPair.id_tensor` is typically a `batch_size` x `num_buckets`
+		`SparseTensor` of `int64`. `IdWeightPair.weight_tensor` is either a
+		`SparseTensor` of `float` or `None` to indicate all weights should be
+		taken to be 1. If specified, `weight_tensor` must have exactly the same
+		shape and indices as `sp_ids`. Expected `SparseTensor` is same as parsing
+		output of a `VarLenFeature` which is a ragged matrix.
+		
+		Args:
+		  inputs: A `LazyBuilder` as a cache to get input tensors required to
+		    create `IdWeightPair`.
+		  weight_collections: List of graph collections to which variables (if any
+		    will be created) are added.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see ${tf.get_variable}).
+	**/
+	public function _get_sparse_tensors(inputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	/**
+		Helper method for self.key() that omits particular properties.
+	**/
+	public function _key_without_properties(properties:Dynamic):Dynamic;
 	/**
 		Make a new _CrossedColumn object from a sequence or iterable
 	**/
 	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
+	/**
+		Returns number of buckets in this sparse feature.
+	**/
+	public var _num_buckets : Dynamic;
+	/**
+		Returns a `tf.Example` parsing spec as dict.
+		
+		It is used for get_parsing_spec for `tf.parse_example`. Returned spec is a
+		dict from keys ('string') to `VarLenFeature`, `FixedLenFeature`, and other
+		supported objects. Please check documentation of ${tf.parse_example} for all
+		supported spec objects.
+		
+		Let's say a Feature column depends on raw feature ('raw') and another
+		`_FeatureColumn` (input_fc). One possible implementation of
+		_parse_example_spec is as follows:
+		
+		```python
+		spec = {'raw': tf.FixedLenFeature(...)}
+		spec.update(input_fc._parse_example_spec)
+		return spec
+		```
+	**/
+	public var _parse_example_spec : Dynamic;
 	/**
 		Return a new _CrossedColumn object replacing specified fields with new values
 	**/
 	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
-		Alias for field number 3
+		Returns a dense tensor representing this column's values.
+	**/
+	public function _to_dense_tensor(input_tensor:Dynamic):Dynamic;
+	/**
+		Returns a Tensor as an input to the first layer of neural network.
+	**/
+	public function _to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?output_rank:Dynamic):Dynamic;
+	/**
+		Handles cross transformation.
+	**/
+	public function _transform_feature(inputs:Dynamic):Dynamic;
+	/**
+		Returns arguments to look up embeddings for this column.
+	**/
+	public function _wide_embedding_lookup_arguments(input_tensor:Dynamic):Dynamic;
+	/**
+		Alias for field number 4
 	**/
 	public var ckpt_to_load_from : Dynamic;
 	/**
@@ -172,11 +256,15 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public var columns : Dynamic;
 	/**
-		Alias for field number 2
+		Alias for field number 3
 	**/
 	public var combiner : Dynamic;
 	/**
-		Returns configuration of the base feature for `tf.parse_example`.
+		Returns configuration of the base feature for `tf.parse_example`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var config : Dynamic;
 	/**
@@ -188,6 +276,10 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public var hash_bucket_size : Dynamic;
 	/**
+		Alias for field number 2
+	**/
+	public var hash_key : Dynamic;
+	/**
 		Returns the id tensor from the given transformed input_tensor.
 	**/
 	public function id_tensor(input_tensor:Dynamic):Dynamic;
@@ -197,7 +289,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Handles cross transformation.
+		Handles sparse column to id conversion.
 	**/
 	public function insert_transformed_feature(columns_to_tensors:Dynamic):Dynamic;
 	/**
@@ -209,21 +301,17 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public var length : Dynamic;
 	/**
-		Returns the name of column or transformed column.
+		Returns the name of column or transformed column. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Instructions for updating:
+		Should be private.
 	**/
 	public var name : Dynamic;
 	/**
-		Alias for field number 4
+		Alias for field number 5
 	**/
 	public var tensor_name_in_ckpt : Dynamic;
-	/**
-		Returns a Tensor as an input to the first layer of neural network.
-	**/
-	public function to_dnn_input_layer(input_tensor:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
-	/**
-		Returns a Tensor as linear predictions and a list of created Variable.
-	**/
-	public function to_weighted_sum(input_tensor:Dynamic, ?num_outputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
 		Returns the weight tensor from the given transformed input_tensor.
 	**/

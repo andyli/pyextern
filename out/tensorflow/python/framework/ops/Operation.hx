@@ -48,11 +48,11 @@ package tensorflow.python.framework.ops;
 		as `node_def.name`). Valid `Operation` names match the following
 		regular expression:
 		
-		    [A-Za-z0-9.][A-Za-z0-9_.\-/]*
+		    [A-Za-z0-9.][A-Za-z0-9_.\\-/]*
 		
 		Args:
-		  node_def: `graph_pb2.NodeDef`.  `NodeDef` for the `Operation`.
-		    Used for attributes of `graph_pb2.NodeDef`, typically `name`,
+		  node_def: `node_def_pb2.NodeDef`.  `NodeDef` for the `Operation`.
+		    Used for attributes of `node_def_pb2.NodeDef`, typically `name`,
 		    `op`, and `device`.  The `input` attribute is irrelevant here
 		    as it will be computed when generating the model.
 		  g: `Graph`. The parent graph.
@@ -89,11 +89,11 @@ package tensorflow.python.framework.ops;
 		as `node_def.name`). Valid `Operation` names match the following
 		regular expression:
 		
-		    [A-Za-z0-9.][A-Za-z0-9_.\-/]*
+		    [A-Za-z0-9.][A-Za-z0-9_.\\-/]*
 		
 		Args:
-		  node_def: `graph_pb2.NodeDef`.  `NodeDef` for the `Operation`.
-		    Used for attributes of `graph_pb2.NodeDef`, typically `name`,
+		  node_def: `node_def_pb2.NodeDef`.  `NodeDef` for the `Operation`.
+		    Used for attributes of `node_def_pb2.NodeDef`, typically `name`,
 		    `op`, and `device`.  The `input` attribute is irrelevant here
 		    as it will be computed when generating the model.
 		  g: `Graph`. The parent graph.
@@ -122,6 +122,13 @@ package tensorflow.python.framework.ops;
 		  ValueError: if the `node_def` name is not valid.
 	**/
 	public function new(node_def:Dynamic, g:Dynamic, ?inputs:Dynamic, ?output_types:Dynamic, ?control_inputs:Dynamic, ?input_types:Dynamic, ?original_op:Dynamic, ?op_def:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -214,6 +221,22 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _add_input(tensor:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
+		Creates a TF_Operation.
+		
+		Arguments:
+		  graph: a `Graph`.
+		  node_def: `node_def_pb2.NodeDef` for the operation to create.
+		  inputs: A list of `Tensor`s (corresponding to scalar inputs) and lists of
+		    `Tensor`s (corresponding to sequence inputs, e.g. "int64 * N",
+		    "list(int64)"). The length of the list should be equal to the number of
+		    inputs specified by this operation's op def.
+		  control_inputs: A list of `Operation`s to set as control dependencies.
+		
+		Returns:
+		  A wrapped TF_Operation*.
+	**/
+	public function _create_c_op(graph:Dynamic, node_def:Dynamic, inputs:Dynamic, control_inputs:Dynamic):Dynamic;
+	/**
 		Returns the control flow context of this op.
 		
 		Returns:
@@ -226,6 +249,20 @@ package tensorflow.python.framework.ops;
 	public var _id : Dynamic;
 	public var _input_dtypes : Dynamic;
 	public function _recompute_node_def():Dynamic;
+	/**
+		Regroups a flat list of input tensors into scalar and sequence inputs.
+		
+		Arguments:
+		  op_def: The `op_def_pb2.OpDef` (for knowing the input types)
+		  inputs: a list of input `Tensor`s to the op.
+		  attrs: mapping from attr name to `attr_value_pb2.AttrValue` (these define
+		    how long each sequence is)
+		
+		Returns:
+		  A list of `Tensor`s (corresponding to scalar inputs) and lists of
+		  `Tensor`s (corresponding to sequence inputs).
+	**/
+	public function _reconstruct_sequence_inputs(op_def:Dynamic, inputs:Dynamic, attrs:Dynamic):Dynamic;
 	/**
 		Sets the current control flow context of this op.
 		
@@ -313,7 +350,7 @@ package tensorflow.python.framework.ops;
 		
 		Returns:
 		  A
-		  [`NodeDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
+		  [`NodeDef`](https://www.tensorflow.org/code/tensorflow/core/framework/node_def.proto)
 		  protocol buffer.
 	**/
 	public var node_def : Dynamic;
@@ -342,7 +379,7 @@ package tensorflow.python.framework.ops;
 		
 		Args:
 		  feed_dict: A dictionary that maps `Tensor` objects to feed values.
-		    See [`Session.run()`](../../api_docs/python/client.md#Session.run)
+		    See @{tf.Session.run}
 		    for a description of the valid feed values.
 		  session: (Optional.) The `Session` to be used to run to this operation. If
 		    none, the default session will be used.
@@ -352,6 +389,13 @@ package tensorflow.python.framework.ops;
 		Returns the call stack from when this operation was constructed.
 	**/
 	public var traceback : Dynamic;
+	/**
+		Same as traceback but includes start line of function definition.
+		
+		Returns:
+		  A list of 5-tuples (filename, lineno, name, code, func_start_lineno).
+	**/
+	public var traceback_with_start_lines : Dynamic;
 	/**
 		The type of the op (e.g. `"MatMul"`).
 	**/

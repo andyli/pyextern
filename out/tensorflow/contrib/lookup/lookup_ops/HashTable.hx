@@ -46,7 +46,8 @@ package tensorflow.contrib.lookup.lookup_ops;
 		the table will be immutable.
 		
 		Args:
-		  initializer: The table initializer to use.
+		  initializer: The table initializer to use. See `HashTable` kernel for
+		    supported key and value types.
 		  default_value: The value to use if a key is missing in the table.
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
@@ -66,7 +67,8 @@ package tensorflow.contrib.lookup.lookup_ops;
 		the table will be immutable.
 		
 		Args:
-		  initializer: The table initializer to use.
+		  initializer: The table initializer to use. See `HashTable` kernel for
+		    supported key and value types.
 		  default_value: The value to use if a key is missing in the table.
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
@@ -76,6 +78,13 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  A `HashTable` object.
 	**/
 	public function new(initializer:Dynamic, default_value:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -142,7 +151,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		  TypeError: when 'key_dtype' or 'value_dtype' doesn't match the table data
 		    types.
 	**/
-	public function _check_table_dtypes(key_dtype:Dynamic, value_dtype:Dynamic):Dynamic;
+	public function check_table_dtypes(key_dtype:Dynamic, value_dtype:Dynamic):Dynamic;
 	/**
 		The default value of the table.
 	**/

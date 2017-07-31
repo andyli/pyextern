@@ -47,6 +47,13 @@ package docutils.utils.math.math2html;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -112,6 +119,7 @@ package docutils.utils.math.math2html;
 	static public var directory : Dynamic;
 	static public var embedcss : Dynamic;
 	static public var endfoot : Dynamic;
+	static public var favicon : Dynamic;
 	static public var footnotes : Dynamic;
 	static public var forceformat : Dynamic;
 	static public var googlecharts : Dynamic;

@@ -48,25 +48,22 @@ package tensorflow.python.training.sync_replicas_optimizer;
 		    gradients. Must be one of the Optimizer classes.
 		  replicas_to_aggregate: number of replicas to aggregate for each variable
 		    update.
-		  variable_averages: Optional `ExponentialMovingAverage` object, used to
-		    maintain moving averages for the variables passed in
-		    `variables_to_average`.
-		  variables_to_average: a list of variables that need to be averaged. Only
-		    needed if variable_averages is passed in.
-		  replica_id: This is the task/worker/replica ID. Needed as index to access
-		    local_steps to check staleness. Must be in the interval:
-		    [0, total_num_replicas)
 		  total_num_replicas: Total number of tasks/workers/replicas, could be
 		    different from replicas_to_aggregate.
 		    If total_num_replicas > replicas_to_aggregate: it is backup_replicas +
 		    replicas_to_aggregate.
 		    If total_num_replicas < replicas_to_aggregate: Replicas compute
 		    multiple batches per update to variables.
+		  variable_averages: Optional `ExponentialMovingAverage` object, used to
+		    maintain moving averages for the variables passed in
+		    `variables_to_average`.
+		  variables_to_average: a list of variables that need to be averaged. Only
+		    needed if variable_averages is passed in.
 		  use_locking: If True use locks for update operation.
 		  name: string. Optional name of the returned operation.
 	**/
 	@:native("__init__")
-	public function ___init__(opt:Dynamic, replicas_to_aggregate:Dynamic, ?variable_averages:Dynamic, ?variables_to_average:Dynamic, ?replica_id:Dynamic, ?total_num_replicas:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(opt:Dynamic, replicas_to_aggregate:Dynamic, ?total_num_replicas:Dynamic, ?variable_averages:Dynamic, ?variables_to_average:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Construct a sync_replicas optimizer.
 		
@@ -75,24 +72,28 @@ package tensorflow.python.training.sync_replicas_optimizer;
 		    gradients. Must be one of the Optimizer classes.
 		  replicas_to_aggregate: number of replicas to aggregate for each variable
 		    update.
-		  variable_averages: Optional `ExponentialMovingAverage` object, used to
-		    maintain moving averages for the variables passed in
-		    `variables_to_average`.
-		  variables_to_average: a list of variables that need to be averaged. Only
-		    needed if variable_averages is passed in.
-		  replica_id: This is the task/worker/replica ID. Needed as index to access
-		    local_steps to check staleness. Must be in the interval:
-		    [0, total_num_replicas)
 		  total_num_replicas: Total number of tasks/workers/replicas, could be
 		    different from replicas_to_aggregate.
 		    If total_num_replicas > replicas_to_aggregate: it is backup_replicas +
 		    replicas_to_aggregate.
 		    If total_num_replicas < replicas_to_aggregate: Replicas compute
 		    multiple batches per update to variables.
+		  variable_averages: Optional `ExponentialMovingAverage` object, used to
+		    maintain moving averages for the variables passed in
+		    `variables_to_average`.
+		  variables_to_average: a list of variables that need to be averaged. Only
+		    needed if variable_averages is passed in.
 		  use_locking: If True use locks for update operation.
 		  name: string. Optional name of the returned operation.
 	**/
-	public function new(opt:Dynamic, replicas_to_aggregate:Dynamic, ?variable_averages:Dynamic, ?variables_to_average:Dynamic, ?replica_id:Dynamic, ?total_num_replicas:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Void;
+	public function new(opt:Dynamic, replicas_to_aggregate:Dynamic, ?total_num_replicas:Dynamic, ?variable_averages:Dynamic, ?variables_to_average:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -149,18 +150,6 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Aggregate sparse gradients.
-		
-		Args:
-		  grad: The sparse gradient to aggregate.
-		  var: The variable to apply this gradient to.
-		  train_ops: The train_ops for the worker to run.
-		
-		Returns:
-		  aggregated_grad: Aggregated grad.
-	**/
-	public function _aggregate_sparse_grad(grad:Dynamic, _var:Dynamic, train_ops:Dynamic):Dynamic;
-	/**
 		Add ops to apply dense gradients to `var`.
 		
 		Args:
@@ -174,14 +163,50 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	/**
 		Add ops to apply sparse gradients to `var`.
 		
+		The IndexedSlices object passed to `grad` in this function is by default
+		pre-processed in `_apply_sparse_duplicate_indices` to remove duplicate
+		indices (see its docstring for details). Optimizers which can tolerate or
+		have correct special cases for duplicate sparse indices may override
+		`_apply_sparse_duplicate_indices` instead of this function, avoiding that
+		overhead.
+		
 		Args:
-		  grad: `IndexedSlices`.
+		  grad: `IndexedSlices`, with no repeated indices.
 		  var: A `Variable` object.
 		
 		Return:
 		  An `Operation`.
 	**/
 	public function _apply_sparse(grad:Dynamic, _var:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to `var`, with repeated sparse indices.
+		
+		Optimizers which override this method must deal with IndexedSlices objects
+		such as the following:
+		
+		  IndexedSlicesValue(values=[1, 1], indices=[0, 0], dense_shape=[1])
+		
+		The correct interpretation is:
+		
+		  IndexedSlicesValue(values=[2], indices=[0], dense_shape=[1])
+		
+		Many optimizers deal incorrectly with repeated indices when updating based
+		on sparse gradients (e.g. summing squares rather than squaring the sum, or
+		applying momentum terms multiple times). Adding first is always the correct
+		behavior, so this is enforced here by reconstructing the IndexedSlices to
+		have only unique indices, then calling _apply_sparse.
+		
+		Optimizers which deal correctly with repeated indices may instead override
+		this method to avoid the overhead of summing indices.
+		
+		Args:
+		  grad: `IndexedSlices`.
+		  var: A `Variable` object.
+		
+		Returns:
+		  An `Operation`.
+	**/
+	public function _apply_sparse_duplicate_indices(grad:Dynamic, _var:Dynamic):Dynamic;
 	/**
 		Asserts tensors are all valid types (see `_valid_dtypes`).
 		
@@ -230,12 +255,81 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	**/
 	public function _get_or_make_slot(_var:Dynamic, val:Dynamic, slot_name:Dynamic, op_name:Dynamic):Dynamic;
 	/**
+		Find or create a slot for a variable, using an Initializer.
+		
+		Args:
+		  var: A `Variable` object.
+		  initializer: An `Initializer`.  The initial value of the slot.
+		  shape: Shape of the initial value of the slot.
+		  dtype: Type of the value of the slot.
+		  slot_name: Name for the slot.
+		  op_name: Name to use when scoping the Variable that
+		    needs to be created for  the slot.
+		
+		Returns:
+		  A `Variable` object.
+	**/
+	public function _get_or_make_slot_with_initializer(_var:Dynamic, initializer:Dynamic, shape:Dynamic, dtype:Dynamic, slot_name:Dynamic, op_name:Dynamic):Dynamic;
+	/**
 		Create all needed tensors before applying gradients.
 		
 		This is called with the name_scope using the "name" that
 		users have chosen for the application of gradients.
 	**/
 	public function _prepare():Dynamic;
+	/**
+		Add ops to apply dense gradients to the variable `handle`.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_dense(grad:Dynamic, handle:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to the variable `handle`.
+		
+		Similar to `_apply_sparse`, the `indices` argument to this method has been
+		de-duplicated. Optimizers which deal correctly with non-unique indices may
+		instead override `_resource_apply_sparse_duplicate_indices` to avoid this
+		overhead.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient for the affected indices.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		  indices: a `Tensor` of integral type representing the indices for
+		   which the gradient is nonzero. Indices are unique.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_sparse(grad:Dynamic, handle:Dynamic, indices:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to `handle`, with repeated indices.
+		
+		Optimizers which override this method must deal with repeated indices. See
+		the docstring of `_apply_sparse_duplicate_indices` for details. By default
+		the correct behavior, to sum non-unique indices and their associated
+		gradients, is enforced by first pre-processing `grad` and `indices` and
+		passing them on to `_resource_apply_sparse`. Optimizers which deal correctly
+		with duplicate indices may instead override this method to avoid the
+		overhead of summing.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient for the affected indices.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		  indices: a `Tensor` of integral type representing the indices for
+		   which the gradient is nonzero. Indices may be repeated.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_sparse_duplicate_indices(grad:Dynamic, handle:Dynamic, indices:Dynamic):Dynamic;
 	/**
 		Returns a dict for caching slots created under the given name.
 		
@@ -250,7 +344,7 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	/**
 		Valid types for loss, variables and gradients.
 		
-		Defaults to `float32`. Subclasses should override to allow other types.
+		Subclasses should override to allow other float types.
 		
 		Returns:
 		  Valid types for loss, variables and gradients.
@@ -327,22 +421,6 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	**/
 	public function get_chief_queue_runner():Dynamic;
 	/**
-		Returns the clean up op for the chief to execute before exit.
-		
-		This includes the operation to abort the device with the token queue so all
-		other replicas can also restart. This can avoid potential hang when chief
-		restarts.
-		
-		Note that this can only be called after calling apply_gradients().
-		
-		Returns:
-		  A clean_up_op for chief to execute before exits.
-		
-		Raises:
-		  ValueError: If this is called before apply_gradients().
-	**/
-	public function get_clean_up_op():Dynamic;
-	/**
 		Returns the op to fill the sync_token_queue with the tokens.
 		
 		This is supposed to be executed in the beginning of the chief/sync thread
@@ -391,6 +469,10 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	**/
 	public function get_slot_names(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Creates a hook to handle SyncReplicasHook ops such as initialization.
+	**/
+	public function make_session_run_hook(is_chief:Dynamic, ?num_tokens:Dynamic):Dynamic;
+	/**
 		Add operations to minimize `loss` by updating `var_list`.
 		
 		This method simply combines calls `compute_gradients()` and
@@ -402,9 +484,9 @@ package tensorflow.python.training.sync_replicas_optimizer;
 		  loss: A `Tensor` containing the value to minimize.
 		  global_step: Optional `Variable` to increment by one after the
 		    variables have been updated.
-		  var_list: Optional list of `Variable` objects to update to minimize
-		    `loss`.  Defaults to the list of variables collected in the graph
-		    under the key `GraphKeys.TRAINABLE_VARIABLES`.
+		  var_list: Optional list or tuple of `Variable` objects to update to
+		    minimize `loss`.  Defaults to the list of variables collected in
+		    the graph under the key `GraphKeys.TRAINABLE_VARIABLES`.
 		  gate_gradients: How to gate the computation of gradients.  Can be
 		    `GATE_NONE`, `GATE_OP`, or  `GATE_GRAPH`.
 		  aggregation_method: Specifies the method used to combine gradient terms.

@@ -5,24 +5,35 @@ package tensorflow.python.framework.ops;
 	static public var ASSET_FILEPATHS : Dynamic;
 	static public var BIASES : Dynamic;
 	static public var CONCATENATED_VARIABLES : Dynamic;
+	static public var COND_CONTEXT : Dynamic;
+	static public var EVAL_STEP : Dynamic;
 	static public var GLOBAL_STEP : Dynamic;
+	static public var GLOBAL_VARIABLES : Dynamic;
 	static public var INIT_OP : Dynamic;
 	static public var LOCAL_INIT_OP : Dynamic;
+	static public var LOCAL_RESOURCES : Dynamic;
 	static public var LOCAL_VARIABLES : Dynamic;
 	static public var LOSSES : Dynamic;
 	static public var MODEL_VARIABLES : Dynamic;
 	static public var MOVING_AVERAGE_VARIABLES : Dynamic;
 	static public var QUEUE_RUNNERS : Dynamic;
+	static public var READY_FOR_LOCAL_INIT_OP : Dynamic;
 	static public var READY_OP : Dynamic;
 	static public var REGULARIZATION_LOSSES : Dynamic;
+	static public var RESOURCES : Dynamic;
+	static public var SAVEABLE_OBJECTS : Dynamic;
 	static public var SAVERS : Dynamic;
 	static public var SUMMARIES : Dynamic;
 	static public var SUMMARY_OP : Dynamic;
 	static public var TABLE_INITIALIZERS : Dynamic;
+	static public var TRAINABLE_RESOURCE_VARIABLES : Dynamic;
 	static public var TRAINABLE_VARIABLES : Dynamic;
+	static public var TRAIN_OP : Dynamic;
 	static public var UPDATE_OPS : Dynamic;
 	static public var VARIABLES : Dynamic;
 	static public var WEIGHTS : Dynamic;
+	static public var WHILE_CONTEXT : Dynamic;
+	static public var _STREAMING_MODEL_PORTS : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -68,6 +79,13 @@ package tensorflow.python.framework.ops;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

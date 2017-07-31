@@ -46,6 +46,13 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(store:Dynamic, s:Dynamic, func:Dynamic, where:Dynamic, nrows:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?auto_close:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

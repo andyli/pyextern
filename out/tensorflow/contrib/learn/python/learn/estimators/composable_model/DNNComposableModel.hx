@@ -41,7 +41,7 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		Initializes DNNComposableModel objects.
 		
 		Args:
-		  num_label_columns: The number of label/target columns.
+		  num_label_columns: The number of label columns.
 		  hidden_units: List of hidden units per layer. All layers are fully
 		    connected.
 		  optimizer: An instance of `tf.Optimizer` used to apply gradients to
@@ -56,14 +56,17 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		  num_ps_replicas: The number of parameter server replicas.
 		  scope: Optional scope for variables created in this model. If not scope
 		    is supplied, one is generated.
+		  trainable: True if this model contains variables that can be trained.
+		    False otherwise (in cases where the variables are used strictly for
+		    transforming input labels for training).
 	**/
 	@:native("__init__")
-	public function ___init__(num_label_columns:Dynamic, hidden_units:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic):Dynamic;
+	public function ___init__(num_label_columns:Dynamic, hidden_units:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
 		Initializes DNNComposableModel objects.
 		
 		Args:
-		  num_label_columns: The number of label/target columns.
+		  num_label_columns: The number of label columns.
 		  hidden_units: List of hidden units per layer. All layers are fully
 		    connected.
 		  optimizer: An instance of `tf.Optimizer` used to apply gradients to
@@ -78,8 +81,18 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		  num_ps_replicas: The number of parameter server replicas.
 		  scope: Optional scope for variables created in this model. If not scope
 		    is supplied, one is generated.
+		  trainable: True if this model contains variables that can be trained.
+		    False otherwise (in cases where the variables are used strictly for
+		    transforming input labels for training).
 	**/
-	public function new(num_label_columns:Dynamic, hidden_units:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic):Void;
+	public function new(num_label_columns:Dynamic, hidden_units:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?num_ps_replicas:Dynamic, ?scope:Dynamic, ?trainable:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

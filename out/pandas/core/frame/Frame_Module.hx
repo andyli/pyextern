@@ -16,11 +16,6 @@ package pandas.core.frame;
 		Needs to handle a lot of exceptional cases.
 	**/
 	static public function _arrays_to_mgr(arrays:Dynamic, arr_names:Dynamic, index:Dynamic, columns:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		given a dtypes and a result set, coerce the result elements to the
-		dtypes
-	**/
-	static public function _coerce_to_dtypes(result:Dynamic, dtypes:Dynamic):Dynamic;
 	static public function _convert_object_array(content:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	/**
@@ -35,6 +30,19 @@ package pandas.core.frame;
 		dict
 	**/
 	static public function _dict_compat(d:Dynamic):Dynamic;
+	/**
+		Ensure that an array object has a float dtype if possible.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array whose data type we want to enforce as float.
+		
+		Returns
+		-------
+		float_arr : The original array cast to the float dtype if
+		            possible. Otherwise, the original array is returned.
+	**/
 	static public function _ensure_float(arr:Dynamic):Dynamic;
 	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
@@ -125,31 +133,28 @@ package pandas.core.frame;
 		pandas.DataFrame.eval
 	**/
 	static public function _eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
-	/**
-		Find a common data type among the given dtypes.
-	**/
-	static public function _find_common_type(types:Dynamic):Dynamic;
 	static public function _from_nested_dict(data:Dynamic):Dynamic;
 	/**
-		Get a numpy dtype.type-style object. This handles the datetime64[ns]
-		and datetime64[ns, TZ] compat
+		Get a numpy dtype.type-style object for a dtype object.
 		
-		Notes
-		-----
-		If nothing can be found, returns ``object``.
+		This methods also includes handling of the datetime64[ns] and
+		datetime64[ns, TZ] objects.
+		
+		If no dtype can be found, we return ``object``.
+		
+		Parameters
+		----------
+		dtype : dtype, type
+		    The dtype object whose numpy dtype.type-style
+		    object we want to extract.
+		
+		Returns
+		-------
+		dtype_object : The extracted numpy dtype.type-style object.
 	**/
 	static public function _get_dtype_from_object(dtype:Dynamic):Dynamic;
 	static public function _get_names_from_index(data:Dynamic):Dynamic;
 	static public function _homogenize(data:Dynamic, index:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		interpret the dtype from a scalar 
-	**/
-	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
-	/**
-		Change string like dtypes to object for
-		``DataFrame.select_dtypes()``.
-	**/
-	static public function _invalidate_string_dtypes(dtype_set:Dynamic):Dynamic;
 	static public function _list_of_dict_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _list_of_series_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _list_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
@@ -158,70 +163,8 @@ package pandas.core.frame;
 	**/
 	static public function _masked_rec_array_to_mgr(data:Dynamic, index:Dynamic, columns:Dynamic, dtype:Dynamic, copy:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
-	/**
-		provide explict type promotion and coercion
-		
-		Parameters
-		----------
-		values : the ndarray that we want to maybe upcast
-		fill_value : what we want to fill with
-		dtype : if None, then use the dtype of the values, else coerce to this type
-		copy : if True always make a copy even if no upcast is required
-	**/
-	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
-	/**
-		A safe version of putmask that potentially upcasts the result
-		
-		Parameters
-		----------
-		result : ndarray
-		    The destination array. This will be mutated in-place if no upcasting is
-		    necessary.
-		mask : boolean ndarray
-		other : ndarray or scalar
-		    The source array or value
-		
-		Returns
-		-------
-		result : ndarray
-		changed : boolean
-		    Set to true if the result array was upcasted
-	**/
-	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public var _merge_doc : Dynamic;
 	static public var _numeric_only_doc : Dynamic;
-	/**
-		try to cast the array/value to a datetimelike dtype, converting float
-		nan to iNaT
-	**/
-	static public function _possibly_cast_to_datetime(value:Dynamic, dtype:Dynamic, ?errors:Dynamic):Dynamic;
-	/**
-		try to do platform conversion, allow ndarray or list here 
-	**/
-	static public function _possibly_convert_platform(values:Dynamic):Dynamic;
-	/**
-		try to cast to the specified dtype (e.g. convert back to bool/int
-		or could be an astype of float64->float32
-	**/
-	static public function _possibly_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
-	/**
-		we might have a array (or single object) that is datetime like,
-		and no dtype is passed don't change the value unless we find a
-		datetime/timedelta set
-		
-		this is pretty strict in that a datetime/timedelta is REQUIRED
-		in addition to possible nulls/string likes
-		
-		ONLY strings are NOT datetimelike
-		
-		Parameters
-		----------
-		value : np.array / Series / Index / list-like
-		convert_dates : boolean, default False
-		   if True try really hard to convert dates (such as datetime.date), other
-		   leave inferred dtype 'date' alone
-	**/
-	static public function _possibly_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
 	static public function _prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _put_str(s:Dynamic, space:Dynamic):Dynamic;
 	static public function _reorder_arrays(arrays:Dynamic, arr_columns:Dynamic, columns:Dynamic):Dynamic;
@@ -284,6 +227,11 @@ package pandas.core.frame;
 	static public function boxplot(self:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function check_bool_indexer(ax:Dynamic, key:Dynamic):Dynamic;
 	/**
+		given a dtypes and a result set, coerce the result elements to the
+		dtypes
+	**/
+	static public function coerce_to_dtypes(result:Dynamic, dtypes:Dynamic):Dynamic;
+	/**
 		if we are index sliceable, then return my slicer, otherwise return None
 		    
 	**/
@@ -291,47 +239,37 @@ package pandas.core.frame;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public function create_block_manager_from_blocks(blocks:Dynamic, axes:Dynamic):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public function extract_index(data:Dynamic):Dynamic;
+	/**
+		Find a common data type among the given dtypes.
 		
 		Parameters
 		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of prefered argument in function
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
+		types : list of dtypes
 		
-		Examples
+		Returns
+		-------
+		pandas extension or numpy dtype
+		
+		See Also
 		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
+		numpy.find_common_type
 	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public function extract_index(data:Dynamic):Dynamic;
+	static public function find_common_type(types:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -339,9 +277,13 @@ package pandas.core.frame;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -374,6 +316,18 @@ package pandas.core.frame;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -419,6 +373,12 @@ package pandas.core.frame;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -428,13 +388,31 @@ package pandas.core.frame;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -606,29 +584,430 @@ package pandas.core.frame;
 		    [default: False] [currently: False]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		interpret the dtype from a scalar
+		
+		Parameters
+		----------
+		pandas_dtype : bool, default False
+		    whether to infer dtype including pandas extension types.
+		    If False, scalar belongs to pandas extension types is inferred as
+		    object
+	**/
+	static public function infer_dtype_from_scalar(val:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
+	/**
+		Change string like dtypes to object for
+		``DataFrame.select_dtypes()``.
+	**/
+	static public function invalidate_string_dtypes(dtype_set:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a boolean dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Examples
+		--------
+		>>> is_bool_dtype(str)
+		False
+		>>> is_bool_dtype(int)
+		False
+		>>> is_bool_dtype(bool)
+		True
+		>>> is_bool_dtype(np.bool)
+		True
+		>>> is_bool_dtype(np.array(['a', 'b']))
+		False
+		>>> is_bool_dtype(pd.Series([1, 2]))
+		False
+		>>> is_bool_dtype(np.array([True, False]))
+		True
+	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_any_dtype(str)
+		False
+		>>> is_datetime64_any_dtype(int)
+		False
+		>>> is_datetime64_any_dtype(np.datetime64)  # can be tz-naive
+		True
+		>>> is_datetime64_any_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_any_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_any_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_any_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_any_dtype(pd.DatetimeIndex([1, 2, 3],
+		                            dtype=np.datetime64))
+		True
+	**/
+	static public function is_datetime64_any_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		return if we are a datetime with tz array 
+		Check whether an array-like is a datetime array-like with a timezone
+		component in its dtype.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a datetime array-like with
+		          a timezone component in its dtype.
+		
+		Examples
+		--------
+		>>> is_datetimetz([1, 2, 3])
+		False
+		
+		Although the following examples are both DatetimeIndex objects,
+		the first one returns False because it has no timezone component
+		unlike the second one, which returns True.
+		
+		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
+		False
+		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		The object need not be a DatetimeIndex object. It just needs to have
+		a dtype which has a timezone component.
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetimetz(s)
+		True
 	**/
-	static public function is_datetimetz(array:Dynamic):Dynamic;
+	static public function is_datetimetz(arr:Dynamic):Dynamic;
 	/**
-		return a boolean if the dtypes are equal 
+		Check if two dtypes are equal.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		Examples
+		--------
+		>>> is_dtype_equal(int, float)
+		False
+		>>> is_dtype_equal("int", int)
+		True
+		>>> is_dtype_equal(object, "category")
+		False
+		>>> is_dtype_equal(CategoricalDtype(), "category")
+		True
+		>>> is_dtype_equal(DatetimeTZDtype(), "datetime64")
+		False
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	/**
-		if we are a klass that is preserved by the internals
-		these are internal klasses that we represent (and don't use a np.array)
+		Check whether an array-like is of a pandas extension class instance.
+		
+		Extension classes include categoricals, pandas sparse objects (i.e.
+		classes represented within the pandas library and not ones external
+		to it like scipy sparse matrices), and datetime-like arrays.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is of a pandas
+		          extension class instance.
+		
+		Examples
+		--------
+		>>> is_extension_type([1, 2, 3])
+		False
+		>>> is_extension_type(np.array([1, 2, 3]))
+		False
+		>>>
+		>>> cat = pd.Categorical([1, 2, 3])
+		>>>
+		>>> is_extension_type(cat)
+		True
+		>>> is_extension_type(pd.Series(cat))
+		True
+		>>> is_extension_type(pd.SparseArray([1, 2, 3]))
+		True
+		>>> is_extension_type(pd.SparseSeries([1, 2, 3]))
+		True
+		>>>
+		>>> from scipy.sparse import bsr_matrix
+		>>> is_extension_type(bsr_matrix([1, 2, 3]))
+		False
+		>>> is_extension_type(pd.DatetimeIndex([1, 2, 3]))
+		False
+		>>> is_extension_type(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		>>>
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_extension_type(s)
+		True
 	**/
-	static public function is_extension_type(value:Dynamic):Dynamic;
+	static public function is_extension_type(arr:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a float dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a float dtype.
+		
+		Examples
+		--------
+		>>> is_float_dtype(str)
+		False
+		>>> is_float_dtype(int)
+		False
+		>>> is_float_dtype(float)
+		True
+		>>> is_float_dtype(np.array(['a', 'b']))
+		False
+		>>> is_float_dtype(pd.Series([1, 2]))
+		False
+		>>> is_float_dtype(pd.Index([1, 2.]))
+		True
+	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_iterator(obj:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
-	static public function is_named_tuple(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is an iterator.
+		
+		For example, lists are considered iterators
+		but not strings or datetime objects.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_iter : bool
+		    Whether `obj` is an iterator.
+		
+		Examples
+		--------
+		>>> is_iterator([1, 2, 3])
+		True
+		>>> is_iterator(datetime(2017, 1, 1))
+		False
+		>>> is_iterator("foo")
+		False
+		>>> is_iterator(1)
+		False
+	**/
+	static public function is_iterator(obj:Dynamic):Bool;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check if the object is a named tuple.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_named_tuple : bool
+		    Whether `obj` is a named tuple.
+		
+		Examples
+		--------
+		>>> Point = namedtuple("Point", ["x", "y"])
+		>>> p = Point(1, 2)
+		>>>
+		>>> is_named_tuple(p)
+		True
+		>>> is_named_tuple((1, 2))
+		False
+	**/
+	static public function is_named_tuple(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if given value is scalar.
@@ -641,9 +1020,33 @@ package pandas.core.frame;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_sequence(x:Dynamic):Dynamic;
+	/**
+		Check if the object is a sequence of objects.
+		String types are not included as sequences here.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_sequence : bool
+		    Whether `obj` is a sequence of objects.
+		
+		Examples
+		--------
+		>>> l = [1, 2, 3]
+		>>>
+		>>> is_sequence(l)
+		True
+		>>> is_sequence(iter(l))
+		False
+	**/
+	static public function is_sequence(obj:Dynamic):Bool;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -666,7 +1069,99 @@ package pandas.core.frame;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		try to cast the array/value to a datetimelike dtype, converting float
+		nan to iNaT
+	**/
+	static public function maybe_cast_to_datetime(value:Dynamic, dtype:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
+		try to do platform conversion, allow ndarray or list here 
+	**/
+	static public function maybe_convert_platform(values:Dynamic):Dynamic;
+	/**
+		try to cast to the specified dtype (e.g. convert back to bool/int
+		or could be an astype of float64->float32
+	**/
+	static public function maybe_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
+	/**
+		we might have a array (or single object) that is datetime like,
+		and no dtype is passed don't change the value unless we find a
+		datetime/timedelta set
+		
+		this is pretty strict in that a datetime/timedelta is REQUIRED
+		in addition to possible nulls/string likes
+		
+		Parameters
+		----------
+		value : np.array / Series / Index / list-like
+		convert_dates : boolean, default False
+		   if True try really hard to convert dates (such as datetime.date), other
+		   leave inferred dtype 'date' alone
+	**/
+	static public function maybe_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
+	/**
+		provide explict type promotion and coercion
+		
+		Parameters
+		----------
+		values : the ndarray that we want to maybe upcast
+		fill_value : what we want to fill with
+		dtype : if None, then use the dtype of the values, else coerce to this type
+		copy : if True always make a copy even if no upcast is required
+	**/
+	static public function maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		A safe version of putmask that potentially upcasts the result
+		
+		Parameters
+		----------
+		result : ndarray
+		    The destination array. This will be mutated in-place if no upcasting is
+		    necessary.
+		mask : boolean ndarray
+		other : ndarray or scalar
+		    The source array or value
+		
+		Returns
+		-------
+		result : ndarray
+		changed : boolean
+		    Set to true if the result array was upcasted
+	**/
+	static public function maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
+	/**
+		Check whether the array or dtype should be converted to int64.
+		
+		An array-like or dtype "needs" such a conversion if the array-like
+		or dtype is of a datetime-like dtype
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype should be converted to int64.
+		
+		Examples
+		--------
+		>>> needs_i8_conversion(str)
+		False
+		>>> needs_i8_conversion(np.int64)
+		False
+		>>> needs_i8_conversion(np.datetime64)
+		True
+		>>> needs_i8_conversion(np.array(['a', 'b']))
+		False
+		>>> needs_i8_conversion(pd.Series([1, 2]))
+		False
+		>>> needs_i8_conversion(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>> needs_i8_conversion(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
@@ -720,4 +1215,8 @@ package pandas.core.frame;
 	**/
 	static public function raise_with_traceback(exc:Dynamic, ?traceback:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
+	/**
+		Ensures that argument passed in arg_name is of type bool. 
+	**/
+	static public function validate_bool_kwarg(value:Dynamic, arg_name:Dynamic):Dynamic;
 }

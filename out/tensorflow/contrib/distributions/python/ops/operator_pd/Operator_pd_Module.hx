@@ -10,6 +10,24 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Flip matrix to vector with dynamic shapes.
+	**/
+	static public function _flip_matrix_to_vector_dynamic(mat:Dynamic, batch_shape:Dynamic):Dynamic;
+	/**
+		Flip matrix to vector with static shapes.
+	**/
+	static public function _flip_matrix_to_vector_static(mat:Dynamic, static_batch_shape:Dynamic):Dynamic;
+	/**
+		flip_vector_to_matrix with dynamic shapes.
+	**/
+	static public function _flip_vector_to_matrix_dynamic(vec:Dynamic, batch_shape:Dynamic):Dynamic;
+	/**
+		flip_vector_to_matrix with static shapes.
+	**/
+	static public function _flip_vector_to_matrix_static(vec:Dynamic, batch_shape:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	/**
 		Extract the batch shape from `x`.
 		
 		Assuming `x.shape = batch_shape + event_shape`, when `event_shape` has
@@ -25,7 +43,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		Returns:
 		  batch_shape:  `1-D` `int32` `Tensor`
 	**/
-	static public function _extract_batch_shape(x:Dynamic, num_event_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function extract_batch_shape(x:Dynamic, num_event_dims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Flip dims to reshape batch matrix `mat` to a vector with given batch shape.
 		
@@ -33,11 +51,11 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		mat = tf.random_normal(2, 3, 4, 6)
 		
 		# Flip the trailing dimension around to the front.
-		_flip_matrix_to_vector(mat, [6, 2, 3], [6, 3, 2])  # Shape [6, 2, 3, 4]
+		flip_matrix_to_vector(mat, [6, 2, 3], [6, 3, 2])  # Shape [6, 2, 3, 4]
 		
 		# Flip the trailing dimension around then reshape batch indices to batch_shape
-		_flip_matrix_to_vector(mat, [6, 3, 2], [6, 3, 2])  # Shape [6, 3, 2, 4]
-		_flip_matrix_to_vector(mat, [2, 3, 2, 3], [2,3,2,3])  # Shape [2, 3, 2, 3, 4]
+		flip_matrix_to_vector(mat, [6, 3, 2], [6, 3, 2])  # Shape [6, 3, 2, 4]
+		flip_matrix_to_vector(mat, [2, 3, 2, 3], [2,3,2,3])  # Shape [2, 3, 2, 3, 4]
 		```
 		
 		Assume `mat.shape = matrix_batch_shape + [k, M]`.  The returned vector is
@@ -50,7 +68,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		The reshape in step 2 will fail if the number of elements is not equal, i.e.
 		`M*prod(matrix_batch_shape) != prod(batch_shape)`.
 		
-		See also:  _flip_vector_to_matrix.
+		See also:  flip_vector_to_matrix.
 		
 		Args:
 		  mat:  `Tensor` with rank `>= 2`.
@@ -60,15 +78,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		Returns:
 		  `Tensor` with same elements as `mat` but with shape `batch_shape + [k]`.
 	**/
-	static public function _flip_matrix_to_vector(mat:Dynamic, batch_shape:Dynamic, static_batch_shape:Dynamic):Dynamic;
-	/**
-		Flip matrix to vector with dynamic shapes.
-	**/
-	static public function _flip_matrix_to_vector_dynamic(mat:Dynamic, batch_shape:Dynamic):Dynamic;
-	/**
-		Flip matrix to vector with static shapes.
-	**/
-	static public function _flip_matrix_to_vector_static(mat:Dynamic, static_batch_shape:Dynamic):Dynamic;
+	static public function flip_matrix_to_vector(mat:Dynamic, batch_shape:Dynamic, static_batch_shape:Dynamic):Dynamic;
 	/**
 		Flip dims to reshape batch vector `x` to a matrix with given batch shape.
 		
@@ -76,14 +86,14 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		vec = tf.random_normal(2, 3, 4, 5)
 		
 		# Flip the leading dimension to the end.
-		_flip_vector_to_matrix(vec, [3, 4], [3, 4])  # Shape [3, 4, 5, 2]
+		flip_vector_to_matrix(vec, [3, 4], [3, 4])  # Shape [3, 4, 5, 2]
 		
 		# Flip nothing, just extend with a singleton dimension.
-		_flip_vector_to_matrix(vec, [2, 3, 4], [2, 3, 4])  # Shape [2, 3, 4, 5, 1]
+		flip_vector_to_matrix(vec, [2, 3, 4], [2, 3, 4])  # Shape [2, 3, 4, 5, 1]
 		
 		# Flip leading dimension to the end and reshape the batch indices to
 		# batch_shape.
-		_flip_vector_to_matrix(vec, [4, 3], [4, 3])  # Shape [4, 3, 5, 2]
+		flip_vector_to_matrix(vec, [4, 3], [4, 3])  # Shape [4, 3, 5, 2]
 		```
 		
 		Suppose `batch_shape` is length `n`.  Then...
@@ -97,7 +107,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		`batch_shape + [k, 1]` by extending the tensor with a singleton dimension and
 		possibly reshaping `[N1,...,Nn]` to `batch_shape`.
 		
-		See also: _flip_matrix_to_vector.
+		See also: flip_matrix_to_vector.
 		
 		Args:
 		  vec:  `Tensor` with shape `[M1,...,Mm] + [N1,...,Nn] + [k]`
@@ -107,16 +117,6 @@ package tensorflow.contrib.distributions.python.ops.operator_pd;
 		Returns:
 		  `Tensor` with same `dtype` as `vec` and new shape.
 	**/
-	static public function _flip_vector_to_matrix(vec:Dynamic, batch_shape:Dynamic, static_batch_shape:Dynamic):Dynamic;
-	/**
-		_flip_vector_to_matrix with dynamic shapes.
-	**/
-	static public function _flip_vector_to_matrix_dynamic(vec:Dynamic, batch_shape:Dynamic):Dynamic;
-	/**
-		_flip_vector_to_matrix with static shapes.
-	**/
-	static public function _flip_vector_to_matrix_static(vec:Dynamic, batch_shape:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
+	static public function flip_vector_to_matrix(vec:Dynamic, batch_shape:Dynamic, static_batch_shape:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

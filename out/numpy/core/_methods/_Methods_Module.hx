@@ -114,9 +114,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -199,9 +204,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -284,9 +294,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -369,9 +384,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -454,9 +474,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -539,9 +564,14 @@ package numpy.core._methods;
 		    The type used to represent the intermediate results. Defaults
 		    to the data-type of the output array if this is provided, or
 		    the data-type of the input array if no output array is provided.
-		out : ndarray, optional
-		    A location into which the result is stored. If not provided, a
-		    freshly-allocated array is returned.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If not provided or `None`,
+		    a freshly-allocated array is returned. For consistency with
+		    :ref:`ufunc.__call__`, if given as a keyword, this may be wrapped in a
+		    1-element tuple.
+		
+		    .. versionchanged:: 1.13.0
+		       Tuples are allowed for keyword argument.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,

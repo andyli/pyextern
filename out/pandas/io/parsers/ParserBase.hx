@@ -47,6 +47,13 @@ package pandas.io.parsers;
 	**/
 	public function new(kwds:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -102,8 +109,23 @@ package pandas.io.parsers;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _agg_index(index:Dynamic, ?try_parse_dates:Dynamic):Dynamic;
-	public function _convert_to_ndarrays(dct:Dynamic, na_values:Dynamic, na_fvalues:Dynamic, ?verbose:Dynamic, ?converters:Dynamic):Dynamic;
-	public function _convert_types(values:Dynamic, na_values:Dynamic, ?try_num_bool:Dynamic):Dynamic;
+	/**
+		Cast values to specified type
+		
+		Parameters
+		----------
+		values : ndarray
+		cast_type : string or np.dtype
+		   dtype to cast values to
+		column : string
+		    column name - used only for error reporting
+		
+		Returns
+		-------
+		converted : ndarray
+	**/
+	public function _cast_types(values:Dynamic, cast_type:Dynamic, column:Dynamic):numpy.Ndarray;
+	public function _convert_to_ndarrays(dct:Dynamic, na_values:Dynamic, na_fvalues:Dynamic, ?verbose:Dynamic, ?converters:Dynamic, ?dtypes:Dynamic):Dynamic;
 	public function _do_date_conversions(names:Dynamic, data:Dynamic):Dynamic;
 	/**
 		extract and return the names, index_names, col_names
@@ -114,6 +136,22 @@ package pandas.io.parsers;
 	public function _get_simple_index(data:Dynamic, columns:Dynamic):Dynamic;
 	public var _has_complex_date_col : Dynamic;
 	static public var _implicit_index : Dynamic;
+	/**
+		Infer types of values, possibly casting
+		
+		Parameters
+		----------
+		values : ndarray
+		na_values : set
+		try_num_bool : bool, default try
+		   try to cast values to numeric (first preference) or boolean
+		
+		Returns:
+		--------
+		converted : ndarray
+		na_count : int
+	**/
+	public function _infer_types(values:Dynamic, na_values:Dynamic, ?try_num_bool:Dynamic):Dynamic;
 	public function _make_index(data:Dynamic, alldata:Dynamic, columns:Dynamic, ?indexnamerow:Dynamic):Dynamic;
 	public function _maybe_dedup_names(names:Dynamic):Dynamic;
 	public function _maybe_make_multi_index_columns(columns:Dynamic, ?col_names:Dynamic):Dynamic;

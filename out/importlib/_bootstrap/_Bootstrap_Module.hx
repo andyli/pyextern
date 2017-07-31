@@ -41,7 +41,7 @@ package importlib._bootstrap;
 	**/
 	static public function _call_with_frames_removed(f:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Execute the spec in an existing module's namespace.
+		Execute the spec's specified module in an existing module's namespace.
 	**/
 	static public function _exec(spec:Dynamic, module:Dynamic):Dynamic;
 	/**
@@ -50,7 +50,7 @@ package importlib._bootstrap;
 	static public function _find_and_load(name:Dynamic, import_:Dynamic):Dynamic;
 	static public function _find_and_load_unlocked(name:Dynamic, import_:Dynamic):Dynamic;
 	/**
-		Find a module's loader.
+		Find a module's spec.
 	**/
 	static public function _find_spec(name:Dynamic, path:Dynamic, ?target:Dynamic):Dynamic;
 	static public function _find_spec_legacy(finder:Dynamic, name:Dynamic, path:Dynamic):Dynamic;

@@ -44,9 +44,16 @@ package tensorflow.python.training.session_manager;
 		was created. If `None`, this step is skipped.
 		
 		The `ready_op` is an `Operation` used to check if the model is ready.  The
-		model is considered ready if that operation returns an empty string tensor.
-		If the operation returns non empty string tensor, the elements are
-		concatenated and used to indicate to the user why the model is not ready.
+		model is considered ready if that operation returns an empty 1D string
+		tensor. If the operation returns a non empty 1D string tensor, the elements
+		are concatenated and used to indicate to the user why the model is not
+		ready.
+		
+		The `ready_for_local_init_op` is an `Operation` used to check if the model
+		is ready to run local_init_op.  The model is considered ready if that
+		operation returns an empty 1D string tensor. If the operation returns a non
+		empty 1D string tensor, the elements are concatenated and used to indicate
+		to the user why the model is not ready.
 		
 		If `ready_op` is `None`, the model is not checked for readiness.
 		
@@ -58,11 +65,17 @@ package tensorflow.python.training.session_manager;
 		  local_init_op: An `Operation` run immediately after session creation.
 		     Usually used to initialize tables and local variables.
 		  ready_op: An `Operation` to check if the model is initialized.
+		  ready_for_local_init_op: An `Operation` to check if the model is ready
+		     to run local_init_op.
 		  graph: The `Graph` that the model will use.
 		  recovery_wait_secs: Seconds between checks for the model to be ready.
+		
+		Raises:
+		  ValueError: If ready_for_local_init_op is not None but local_init_op is
+		    None
 	**/
 	@:native("__init__")
-	public function ___init__(?local_init_op:Dynamic, ?ready_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Dynamic;
+	public function ___init__(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Dynamic;
 	/**
 		Creates a SessionManager.
 		
@@ -70,9 +83,16 @@ package tensorflow.python.training.session_manager;
 		was created. If `None`, this step is skipped.
 		
 		The `ready_op` is an `Operation` used to check if the model is ready.  The
-		model is considered ready if that operation returns an empty string tensor.
-		If the operation returns non empty string tensor, the elements are
-		concatenated and used to indicate to the user why the model is not ready.
+		model is considered ready if that operation returns an empty 1D string
+		tensor. If the operation returns a non empty 1D string tensor, the elements
+		are concatenated and used to indicate to the user why the model is not
+		ready.
+		
+		The `ready_for_local_init_op` is an `Operation` used to check if the model
+		is ready to run local_init_op.  The model is considered ready if that
+		operation returns an empty 1D string tensor. If the operation returns a non
+		empty 1D string tensor, the elements are concatenated and used to indicate
+		to the user why the model is not ready.
 		
 		If `ready_op` is `None`, the model is not checked for readiness.
 		
@@ -84,10 +104,23 @@ package tensorflow.python.training.session_manager;
 		  local_init_op: An `Operation` run immediately after session creation.
 		     Usually used to initialize tables and local variables.
 		  ready_op: An `Operation` to check if the model is initialized.
+		  ready_for_local_init_op: An `Operation` to check if the model is ready
+		     to run local_init_op.
 		  graph: The `Graph` that the model will use.
 		  recovery_wait_secs: Seconds between checks for the model to be ready.
+		
+		Raises:
+		  ValueError: If ready_for_local_init_op is not None but local_init_op is
+		    None
 	**/
-	public function new(?local_init_op:Dynamic, ?ready_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Void;
+	public function new(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -150,10 +183,47 @@ package tensorflow.python.training.session_manager;
 		  sess: A `Session`.
 		
 		Returns:
-		  `None` if the model is ready, a `String` with the reason why it is not
-		  ready otherwise.
+		  A tuple (is_ready, msg), where is_ready is True if ready and False
+		  otherwise, and msg is `None` if the model is ready, a `String` with the
+		  reason why it is not ready otherwise.
 	**/
-	public function _model_not_ready(sess:Dynamic):Dynamic;
+	public function _model_ready(sess:Dynamic):Dynamic;
+	/**
+		Checks if the model is ready to run local_init_op.
+		
+		Args:
+		  sess: A `Session`.
+		
+		Returns:
+		  A tuple (is_ready, msg), where is_ready is True if ready to run
+		  local_init_op and False otherwise, and msg is `None` if the model is
+		  ready to run local_init_op, a `String` with the reason why it is not ready
+		  otherwise.
+	**/
+	public function _model_ready_for_local_init(sess:Dynamic):Dynamic;
+	/**
+		Creates a `Session`, and tries to restore a checkpoint.
+		
+		
+		Args:
+		  master: `String` representation of the TensorFlow master to use.
+		  saver: A `Saver` object used to restore a model.
+		  checkpoint_dir: Path to the checkpoint files. The latest checkpoint in the
+		    dir will be used to restore.
+		  checkpoint_filename_with_path: Full file name path to the checkpoint file.
+		  wait_for_checkpoint: Whether to wait for checkpoint to become available.
+		  max_wait_secs: Maximum time to wait for checkpoints to become available.
+		  config: Optional `ConfigProto` proto used to configure the session.
+		
+		Returns:
+		  A pair (sess, is_restored) where 'is_restored' is `True` if
+		  the session could be restored, `False` otherwise.
+		
+		Raises:
+		  ValueError: If both checkpoint_dir and checkpoint_filename_with_path are
+		    set.
+	**/
+	public function _restore_checkpoint(master:Dynamic, ?saver:Dynamic, ?checkpoint_dir:Dynamic, ?checkpoint_filename_with_path:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Closes a session without raising an exception.
 		
@@ -163,6 +233,19 @@ package tensorflow.python.training.session_manager;
 		  sess: A `Session`.
 	**/
 	public function _safe_close(sess:Dynamic):Dynamic;
+	/**
+		Tries to run _local_init_op, if not None, and is ready for local init.
+		
+		Args:
+		  sess: A `Session`.
+		
+		Returns:
+		  A tuple (is_successful, msg), where is_successful is True if
+		  _local_init_op is None, or we ran _local_init_op, and False otherwise;
+		  and msg is a `String` with the reason why the model was not ready to run
+		  local init.
+	**/
+	public function _try_run_local_init_op(sess:Dynamic):Dynamic;
 	/**
 		Creates a `Session`. Makes sure the model is ready to be used.
 		
@@ -175,27 +258,20 @@ package tensorflow.python.training.session_manager;
 		
 		If the model cannot be recovered successfully then it is initialized by
 		either running the provided `init_op`, or calling the provided `init_fn`.
-		It is an error if the model cannot be recovered and neither an `init_op`
-		or an `init_fn` are passed.
+		The local_init_op is also run after init_op and init_fn, regardless of
+		whether the model was recovered successfully, but only if
+		ready_for_local_init_op passes.
 		
-		This is a convenient function for the following, with a few error checks
-		added:
-		
-		```python
-		sess, initialized = self.recover_session(master)
-		if not initialized:
-		  if init_op:
-		    sess.run(init_op, feed_dict=init_feed_dict)
-		  if init_fn;
-		    init_fn(sess)
-		return sess
-		```
+		It is an error if the model cannot be recovered and no `init_op`
+		or `init_fn` or `local_init_op` are passed.
 		
 		Args:
 		  master: `String` representation of the TensorFlow master to use.
 		  init_op: Optional `Operation` used to initialize the model.
 		  saver: A `Saver` object used to restore a model.
-		  checkpoint_dir: Path to the checkpoint files.
+		  checkpoint_dir: Path to the checkpoint files. The latest checkpoint in the
+		    dir will be used to restore.
+		  checkpoint_filename_with_path: Full file name path to the checkpoint file.
 		  wait_for_checkpoint: Whether to wait for checkpoint to become available.
 		  max_wait_secs: Maximum time to wait for checkpoints to become available.
 		  config: Optional `ConfigProto` proto used to configure the session.
@@ -211,8 +287,12 @@ package tensorflow.python.training.session_manager;
 		
 		Raises:
 		  RuntimeError: If the model cannot be initialized or recovered.
+		
+		Raises:
+		  ValueError: If both checkpoint_dir and checkpoint_filename_with_path are
+		    set.
 	**/
-	public function prepare_session(master:Dynamic, ?init_op:Dynamic, ?saver:Dynamic, ?checkpoint_dir:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?config:Dynamic, ?init_feed_dict:Dynamic, ?init_fn:Dynamic):Dynamic;
+	public function prepare_session(master:Dynamic, ?init_op:Dynamic, ?saver:Dynamic, ?checkpoint_dir:Dynamic, ?checkpoint_filename_with_path:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?config:Dynamic, ?init_feed_dict:Dynamic, ?init_fn:Dynamic):Dynamic;
 	/**
 		Creates a `Session`, recovering if possible.
 		
@@ -222,16 +302,22 @@ package tensorflow.python.training.session_manager;
 		Args:
 		  master: `String` representation of the TensorFlow master to use.
 		  saver: A `Saver` object used to restore a model.
-		  checkpoint_dir: Path to the checkpoint files.
+		  checkpoint_dir: Path to the checkpoint files. The latest checkpoint in the
+		    dir will be used to restore.
+		  checkpoint_filename_with_path: Full file name path to the checkpoint file.
 		  wait_for_checkpoint: Whether to wait for checkpoint to become available.
 		  max_wait_secs: Maximum time to wait for checkpoints to become available.
 		  config: Optional `ConfigProto` proto used to configure the session.
 		
 		Returns:
 		  A pair (sess, initialized) where 'initialized' is `True` if
-		  the session could be recovered, `False` otherwise.
+		  the session could be recovered and initialized, `False` otherwise.
+		
+		Raises:
+		  ValueError: If both checkpoint_dir and checkpoint_filename_with_path are
+		    set.
 	**/
-	public function recover_session(master:Dynamic, ?saver:Dynamic, ?checkpoint_dir:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?config:Dynamic):Dynamic;
+	public function recover_session(master:Dynamic, ?saver:Dynamic, ?checkpoint_dir:Dynamic, ?checkpoint_filename_with_path:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Creates a new `Session` and waits for model to be ready.
 		

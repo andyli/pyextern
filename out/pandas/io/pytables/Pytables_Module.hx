@@ -51,6 +51,14 @@ package pandas.io.pytables;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Ensure that an index / column name is a str (python 3) or
+		unicode (python 2); otherwise they may be np.string dtype.
+		Non-string dtypes are passed through unchanged.
+		
+		https://github.com/pandas-dev/pandas/issues/13492
+	**/
+	static public function _ensure_str(name:Dynamic):Dynamic;
+	/**
 		ensure that the where is a Term or a list of Term
 		this makes sure that we are capturing the scope of variables
 		that are passed
@@ -73,8 +81,8 @@ package pandas.io.pytables;
 		
 		Returns
 		-------
-		codes_tuple : tuple of ndarrays
-		categories_tuple : tuple of Indexes
+		codes_list : list of ndarrays
+		categories_list : list of Indexes
 		
 		Notes
 		-----
@@ -192,9 +200,11 @@ package pandas.io.pytables;
 	static public var attribute_conflict_doc : Dynamic;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
-		along the other axes. Can also add a layer of hierarchical indexing on the
-		concatenation axis, which may be useful if the labels are the same (or
-		overlapping) on the passed axis number
+		along the other axes.
+		
+		Can also add a layer of hierarchical indexing on the concatenation axis,
+		which may be useful if the labels are the same (or overlapping) on
+		the passed axis number.
 		
 		Parameters
 		----------
@@ -203,7 +213,7 @@ package pandas.io.pytables;
 		    argument, unless it is passed, in which case the values will be
 		    selected (see below). Any None objects will be dropped silently unless
 		    they are all None in which case a ValueError will be raised
-		axis : {0, 1, ...}, default 0
+		axis : {0/'index', 1/'columns'}, default 0
 		    The axis to concatenate along
 		join : {'inner', 'outer'}, default 'outer'
 		    How to handle indexes on other axis(es)
@@ -230,13 +240,141 @@ package pandas.io.pytables;
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
-		Notes
-		-----
-		The keys, levels, and names arguments are all optional
-		
 		Returns
 		-------
 		concatenated : type of objects
+		
+		Notes
+		-----
+		The keys, levels, and names arguments are all optional.
+		
+		A walkthrough of how this method fits in with other tools for combining
+		panda objects can be found `here
+		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
+		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
+		Examples
+		--------
+		Combine two ``Series``.
+		
+		>>> s1 = pd.Series(['a', 'b'])
+		>>> s2 = pd.Series(['c', 'd'])
+		>>> pd.concat([s1, s2])
+		0    a
+		1    b
+		0    c
+		1    d
+		dtype: object
+		
+		Clear the existing index and reset it in the result
+		by setting the ``ignore_index`` option to ``True``.
+		
+		>>> pd.concat([s1, s2], ignore_index=True)
+		0    a
+		1    b
+		2    c
+		3    d
+		dtype: object
+		
+		Add a hierarchical index at the outermost level of
+		the data with the ``keys`` option.
+		
+		>>> pd.concat([s1, s2], keys=['s1', 's2',])
+		s1  0    a
+		    1    b
+		s2  0    c
+		    1    d
+		dtype: object
+		
+		Label the index keys you create with the ``names`` option.
+		
+		>>> pd.concat([s1, s2], keys=['s1', 's2'],
+		...           names=['Series name', 'Row ID'])
+		Series name  Row ID
+		s1           0         a
+		             1         b
+		s2           0         c
+		             1         d
+		dtype: object
+		
+		Combine two ``DataFrame`` objects with identical columns.
+		
+		>>> df1 = pd.DataFrame([['a', 1], ['b', 2]],
+		...                    columns=['letter', 'number'])
+		>>> df1
+		  letter  number
+		0      a       1
+		1      b       2
+		>>> df2 = pd.DataFrame([['c', 3], ['d', 4]],
+		...                    columns=['letter', 'number'])
+		>>> df2
+		  letter  number
+		0      c       3
+		1      d       4
+		>>> pd.concat([df1, df2])
+		  letter  number
+		0      a       1
+		1      b       2
+		0      c       3
+		1      d       4
+		
+		Combine ``DataFrame`` objects with overlapping columns
+		and return everything. Columns outside the intersection will
+		be filled with ``NaN`` values.
+		
+		>>> df3 = pd.DataFrame([['c', 3, 'cat'], ['d', 4, 'dog']],
+		...                    columns=['letter', 'number', 'animal'])
+		>>> df3
+		  letter  number animal
+		0      c       3    cat
+		1      d       4    dog
+		>>> pd.concat([df1, df3])
+		  animal letter  number
+		0    NaN      a       1
+		1    NaN      b       2
+		0    cat      c       3
+		1    dog      d       4
+		
+		Combine ``DataFrame`` objects with overlapping columns
+		and return only those that are shared by passing ``inner`` to
+		the ``join`` keyword argument.
+		
+		>>> pd.concat([df1, df3], join="inner")
+		  letter  number
+		0      a       1
+		1      b       2
+		0      c       3
+		1      d       4
+		
+		Combine ``DataFrame`` objects horizontally along the x axis by
+		passing in ``axis=1``.
+		
+		>>> df4 = pd.DataFrame([['bird', 'polly'], ['monkey', 'george']],
+		...                    columns=['animal', 'name'])
+		>>> pd.concat([df1, df4], axis=1)
+		  letter  number  animal    name
+		0      a       1    bird   polly
+		1      b       2  monkey  george
+		
+		Prevent the result from including duplicate index values with the
+		``verify_integrity`` option.
+		
+		>>> df5 = pd.DataFrame([1], index=['a'])
+		>>> df5
+		   0
+		a  1
+		>>> df6 = pd.DataFrame([2], index=['a'])
+		>>> df6
+		   0
+		a  2
+		>>> pd.concat([df5, df6], verify_integrity=True)
+		ValueError: Indexes have overlapping values: ['a']
 	**/
 	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var dropna_doc : Dynamic;
@@ -250,9 +388,13 @@ package pandas.io.pytables;
 		
 		Available options:
 		
+		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
-		- display.latex.[escape, longtable, repr]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
+		- display.html.[table_schema]
+		- display.[large_repr]
+		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
+		  repr]
 		- display.[line_width, max_categories, max_columns, max_colwidth,
 		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
 		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
@@ -285,6 +427,18 @@ package pandas.io.pytables;
 		Notes
 		-----
 		The available options with its descriptions:
+		
+		compute.use_bottleneck : bool
+		    Use the bottleneck library to accelerate if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		compute.use_numexpr : bool
+		    Use the numexpr library to accelerate computation if it is installed,
+		    the default is True
+		    Valid values: False,True
+		    [default: True] [currently: True]
 		
 		display.chop_threshold : float or None
 		    if set to a float value, all float values smaller then the given threshold
@@ -330,6 +484,12 @@ package pandas.io.pytables;
 		    [default: 60] [currently: 60]
 		    (Deprecated, use `display.max_rows` instead.)
 		
+		display.html.table_schema : boolean
+		    Whether to publish a Table Schema representation for frontends
+		    that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
 		    show a truncated table (the default from 0.13), or switch to the view from
@@ -339,13 +499,31 @@ package pandas.io.pytables;
 		display.latex.escape : bool
 		    This specifies if the to_latex method of a Dataframe uses escapes special
 		    characters.
-		    method. Valid values: False,True
+		    Valid values: False,True
 		    [default: True] [currently: True]
 		
 		display.latex.longtable :bool
 		    This specifies if the to_latex method of a Dataframe uses the longtable
 		    format.
-		    method. Valid values: False,True
+		    Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.multicolumn : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.multicolumn_format : bool
+		    This specifies if the to_latex method of a Dataframe uses multicolumns
+		    to pretty-print MultiIndex columns.
+		    Valid values: False,True
+		    [default: l] [currently: l]
+		
+		display.latex.multirow : bool
+		    This specifies if the to_latex method of a Dataframe uses multirows
+		    to pretty-print MultiIndex rows.
+		    Valid values: False,True
 		    [default: False] [currently: False]
 		
 		display.latex.repr : boolean
@@ -523,10 +701,147 @@ package pandas.io.pytables;
 	**/
 	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var incompatibility_doc : Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_dtype(object)
+		False
+		>>> is_datetime64_dtype(np.datetime64)
+		True
+		>>> is_datetime64_dtype(np.array([], dtype=int))
+		False
+		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
@@ -608,13 +923,16 @@ package pandas.io.pytables;
 		
 		Parameters
 		----------
-		path_or_buf : path (string), buffer, or path object (pathlib.Path or
-		    py._path.local.LocalPath) to read from
+		path_or_buf : path (string), buffer or path object (pathlib.Path or
+		    py._path.local.LocalPath) designating the file to open, or an
+		    already opened pd.HDFStore object
 		
 		    .. versionadded:: 0.19.0 support for pathlib, py.path.
 		
 		key : group identifier in the store. Can be omitted if the HDF file
 		    contains a single pandas object.
+		mode : string, {'r', 'r+', 'a'}, default 'r'. Mode to use when opening
+		    the file. Ignored if path_or_buf is a pd.HDFStore.
 		where : list of Term (or convertable) objects, optional
 		start : optional, integer (defaults to None), row number to start
 		    selection
@@ -629,7 +947,7 @@ package pandas.io.pytables;
 		-------
 		The selected object
 	**/
-	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	static public function timeit(key:Dynamic, df:Dynamic, ?fn:Dynamic, ?remove:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -638,16 +956,76 @@ package pandas.io.pytables;
 	static public function to_hdf(path_or_buf:Dynamic, key:Dynamic, value:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	/**
-		Compute unique values (not necessarily sorted) efficiently from input array
-		of values
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
 		
 		Parameters
 		----------
-		values : array-like
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(Series([pd.Timestamp('20160101'),
+		...                   pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'),
+		...                                 ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 }

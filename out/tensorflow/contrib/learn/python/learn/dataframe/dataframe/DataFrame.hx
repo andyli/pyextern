@@ -6,6 +6,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.dataframe;
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
+	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
@@ -56,6 +57,13 @@ package tensorflow.contrib.learn.python.learn.dataframe.dataframe;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -138,6 +146,16 @@ package tensorflow.contrib.learn.python.learn.dataframe.dataframe;
 		Set of the column names.
 	**/
 	public function columns():Dynamic;
+	/**
+		Returns a new DataFrame with all columns not excluded via exclude_keys.
+		
+		Args:
+		  exclude_keys: A list of strings. Each should be the name of a column in
+		    the DataFrame.  These columns will be excluded from the result.
+		Returns:
+		  A new DataFrame containing all columns except those specified.
+	**/
+	public function exclude_columns(exclude_keys:Dynamic):Dynamic;
 	/**
 		Returns a new DataFrame with a subset of columns.
 		

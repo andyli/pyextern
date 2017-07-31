@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions;
-typedef Normal = tensorflow.contrib.distributions.python.ops.normal.Normal;
+typedef Normal = tensorflow.python.ops.distributions.normal.Normal;

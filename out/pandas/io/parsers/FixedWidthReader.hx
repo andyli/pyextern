@@ -41,11 +41,18 @@ package pandas.io.parsers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic):Dynamic;
+	public function ___init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic):Void;
+	public function new(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -103,6 +110,28 @@ package pandas.io.parsers;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function detect_colspecs(?n:Dynamic):Dynamic;
-	public function get_rows(n:Dynamic):Dynamic;
+	public function detect_colspecs(?n:Dynamic, ?skiprows:Dynamic):Dynamic;
+	/**
+		Read rows from self.f, skipping as specified.
+		
+		We distinguish buffer_rows (the first <= n lines)
+		from the rows returned to detect_colspecs because
+		it's simpler to leave the other locations with
+		skiprows logic alone than to modify them to deal
+		with the fact we skipped some rows here as well.
+		
+		Parameters
+		----------
+		n : int
+		    Number of rows to read from self.f, not counting
+		    rows that are skipped.
+		skiprows: set, optional
+		    Indices of rows to skip.
+		
+		Returns
+		-------
+		detect_rows : list of str
+		    A list containing the rows to read.
+	**/
+	public function get_rows(n:Dynamic, ?skiprows:Dynamic):Dynamic;
 }

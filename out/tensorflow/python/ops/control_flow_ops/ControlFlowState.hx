@@ -19,9 +19,9 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function ExitGradWhileContext(op:Dynamic, before:Dynamic):Dynamic;
 	/**
-		Return a list containing the exits of all the loops.
+		Return the grad state for this op if it's in a forward loop context.
 	**/
-	public function GetAllLoopExits():Dynamic;
+	public function GetGradState(op:Dynamic, before:Dynamic):Dynamic;
 	/**
 		Perform postprocessing at the end of gradients().
 		
@@ -32,6 +32,32 @@ package tensorflow.python.ops.control_flow_ops;
 		     doesn't depend on its input.
 	**/
 	public function PostProcessing():Dynamic;
+	/**
+		Process all the "unused" loop exits.
+		
+		The "unused" exits of the loops are added to `unused_exits`. An exit is
+		unused if its pending_count is 0. If there is an exit with real gradient,
+		all these deferred exits will enter the backprop loop with zero gradient.
+		Otherwise, they will enter the backprop loop with None. As an example,
+		people often write:
+		
+		       ```
+		       v1, _ = tf.while_loop(p, b, [x1, x2])
+		       result = gradients(v1, x1)
+		       ```
+		
+		The exit node for x2 is not included by the betweenness analysis. But we
+		need to backprop x2 if x2 is involved in computing v1.
+		
+		Args:
+		  pending_count: The number of backprop inputs for every op.
+		  to_ops_set: The set of ops for ys in gradients(ys, xs)
+		
+		Returns:
+		  The set of unused loop exits that we know at this point we need
+		  to backprop.
+	**/
+	public function ProcessUnusedLoopExits(pending_count:Dynamic, to_ops_set:Dynamic):Dynamic;
 	/**
 		Create zeros_like for the specified output of an op.
 		
@@ -62,10 +88,6 @@ package tensorflow.python.ops.control_flow_ops;
 		  A zero tensor of the same shape of val.
 	**/
 	public function ZerosLikeForExit(val:Dynamic):Dynamic;
-	/**
-		Return the grad state for this op if it's in a forward loop context.
-	**/
-	public function _GetGradState(op:Dynamic, before:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -111,6 +133,13 @@ package tensorflow.python.ops.control_flow_ops;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

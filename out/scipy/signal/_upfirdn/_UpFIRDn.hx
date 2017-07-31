@@ -47,6 +47,13 @@ package scipy.signal._upfirdn;
 	**/
 	public function new(h:Dynamic, x_dtype:Dynamic, up:Dynamic, down:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -102,7 +109,7 @@ package scipy.signal._upfirdn;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Apply the prepared filter to a 1D signal x
+		Apply the prepared filter to the specified axis of a nD signal x
 	**/
-	public function apply_filter(x:Dynamic):Dynamic;
+	public function apply_filter(x:Dynamic, ?axis:Dynamic):Dynamic;
 }

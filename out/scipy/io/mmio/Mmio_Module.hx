@@ -38,8 +38,8 @@ package scipy.io.mmio;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -122,6 +122,112 @@ package scipy.io.mmio;
 	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
 	/**
+		can_cast(from, totype, casting = 'safe')
+		
+		Returns True if cast between data types can occur according to the
+		casting rule.  If from is a scalar or array scalar, also returns
+		True if the scalar value can be cast without overflow or truncation
+		to an integer.
+		
+		Parameters
+		----------
+		from : dtype, dtype specifier, scalar, or array
+		    Data type, scalar, or array to cast from.
+		totype : dtype or dtype specifier
+		    Data type to cast to.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur.
+		
+		      * 'no' means the data types should not be cast at all.
+		      * 'equiv' means only byte-order changes are allowed.
+		      * 'safe' means only casts which can preserve values are allowed.
+		      * 'same_kind' means only safe casts or casts within a kind,
+		        like float64 to float32, are allowed.
+		      * 'unsafe' means any data conversions may be done.
+		
+		Returns
+		-------
+		out : bool
+		    True if cast can occur according to the casting rule.
+		
+		Notes
+		-----
+		Starting in NumPy 1.9, can_cast function now returns False in 'safe'
+		casting mode for integer/float dtype and string dtype if the string dtype
+		length is not long enough to store the max integer/float value converted
+		to a string. Previously can_cast in 'safe' mode returned True for
+		integer/float dtype and a string dtype of any length.
+		
+		See also
+		--------
+		dtype, result_type
+		
+		Examples
+		--------
+		Basic examples
+		
+		>>> np.can_cast(np.int32, np.int64)
+		True
+		>>> np.can_cast(np.float64, np.complex)
+		True
+		>>> np.can_cast(np.complex, np.float)
+		False
+		
+		>>> np.can_cast('i8', 'f8')
+		True
+		>>> np.can_cast('i8', 'f4')
+		False
+		>>> np.can_cast('i4', 'S4')
+		False
+		
+		Casting scalars
+		
+		>>> np.can_cast(100, 'i1')
+		True
+		>>> np.can_cast(150, 'i1')
+		False
+		>>> np.can_cast(150, 'u1')
+		True
+		
+		>>> np.can_cast(3.5e100, np.float32)
+		False
+		>>> np.can_cast(1000.0, np.float32)
+		True
+		
+		Array scalar checks the value, array does not
+		
+		>>> np.can_cast(np.array(1000.0), np.float32)
+		True
+		>>> np.can_cast(np.array([1000.0]), np.float32)
+		False
+		
+		Using the casting rules
+		
+		>>> np.can_cast('i8', 'i8', 'no')
+		True
+		>>> np.can_cast('<i8', '>i8', 'no')
+		False
+		
+		>>> np.can_cast('<i8', '>i8', 'equiv')
+		True
+		>>> np.can_cast('<i4', '>i8', 'equiv')
+		False
+		
+		>>> np.can_cast('<i4', '>i8', 'safe')
+		True
+		>>> np.can_cast('<i8', '>i4', 'safe')
+		False
+		
+		>>> np.can_cast('<i8', '>i4', 'same_kind')
+		True
+		>>> np.can_cast('<i8', '>u4', 'same_kind')
+		False
+		
+		>>> np.can_cast('<i8', '>u4', 'unsafe')
+		True
+	**/
+	static public function can_cast(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		concatenate((a1, a2, ...), axis=0)
 		
 		Join a sequence of arrays along an existing axis.
@@ -195,7 +301,7 @@ package scipy.io.mmio;
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -206,6 +312,17 @@ package scipy.io.mmio;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -348,7 +465,7 @@ package scipy.io.mmio;
 	**/
 	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the imaginary part of the elements of the array.
+		Return the imaginary part of the complex argument.
 		
 		Parameters
 		----------
@@ -357,9 +474,10 @@ package scipy.io.mmio;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The imaginary component of the complex argument. If `val` is real,
+		    the type of `val` is used for the output.  If `val` has complex
+		    elements, the returned type is float.
 		
 		See Also
 		--------
@@ -373,6 +491,8 @@ package scipy.io.mmio;
 		>>> a.imag = np.array([8, 10, 12])
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
+		>>> np.imag(1 + 1j)
+		1.0
 	**/
 	static public function imag(val:Dynamic):Dynamic;
 	static public function isspmatrix(x:Dynamic):Dynamic;
@@ -481,7 +601,7 @@ package scipy.io.mmio;
 	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -490,9 +610,10 @@ package scipy.io.mmio;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -509,6 +630,8 @@ package scipy.io.mmio;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
@@ -530,7 +653,7 @@ package scipy.io.mmio;
 		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
 		            like `' (%s+%sj)' % (fmt, fmt)`
 		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4j %.4e %+.4j %.4e %+.4j'` for 3 columns
+		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
 		        c) a list of specifiers, one per column - in this case, the real
 		            and imaginary part must have separate specifiers,
 		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
@@ -629,6 +752,10 @@ package scipy.io.mmio;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -647,6 +774,7 @@ package scipy.io.mmio;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----

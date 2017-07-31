@@ -46,6 +46,13 @@ package pandas.io.parsers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(f:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -103,6 +110,7 @@ package pandas.io.parsers;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _check_file_or_buffer(f:Dynamic, engine:Dynamic):Dynamic;
 	public function _clean_options(options:Dynamic, engine:Dynamic):Dynamic;
 	public function _create_index(ret:Dynamic):Dynamic;
 	public function _failover_to_python():Dynamic;

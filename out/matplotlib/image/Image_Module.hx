@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.image;
 @:pythonImport("matplotlib.image") extern class Image_Module {
-	static public var ASPECT_FREE : Dynamic;
-	static public var ASPECT_PRESERVE : Dynamic;
 	static public var BESSEL : Dynamic;
 	static public var BICUBIC : Dynamic;
 	static public var BILINEAR : Dynamic;
@@ -28,7 +26,21 @@ package matplotlib.image;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Draw a sorted list of artists, compositing images into a single
+		image where possible.
+		
+		For internal matplotlib use only: It is here to reduce duplication
+		between `Figure.draw` and `Axes.draw`, but otherwise should not be
+		generally useful.
+	**/
+	static public function _draw_list_compositing_images(renderer:Dynamic, parent:Dynamic, dsu:Dynamic, ?suppress_composite:Dynamic):Dynamic;
 	static public var _interpd_ : Dynamic;
+	/**
+		Convert an RGB image to RGBA, as required by the image resample C++
+		extension.
+	**/
+	static public function _rgb_to_rgba(A:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
@@ -38,41 +50,42 @@ package matplotlib.image;
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
+	/**
+		ceil(x)
+		
+		Return the ceiling of x as an Integral.
+		This is the smallest integer >= x.
+	**/
+	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Composite a number of RGBA images into one.  The images are
+		composited in the order in which they appear in the `images` list.
+		
+		Parameters
+		----------
+		images : list of Images
+		    Each must have a `make_image` method.  For each image,
+		    `can_composite` should return `True`, though this is not
+		    enforced by this function.  Each image must have a purely
+		    affine transformation with no shear.
+		
+		renderer : RendererBase instance
+		
+		magnification : float
+		    The additional magnification to apply for the renderer in use.
+		
+		Returns
+		-------
+		tuple : image, offset_x, offset_y
+		    Returns the tuple:
+		
+		    - image: A numpy array of the same type as the input images.
+		
+		    - offset_x, offset_y: The offset of the image (left, bottom)
+		      in the output figure.
+	**/
+	static public function composite_images(images:Dynamic, renderer:Dynamic, ?magnification:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		from_images(numrows, numcols, seq)
-		
-		return an image instance with numrows, numcols from a seq of image
-		instances using alpha blending.  seq is a list of (Image, ox, oy)
-	**/
-	static public function from_images(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		fromarray(A, isoutput)
-		
-		Load the image from a numpy array
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling
-	**/
-	static public function fromarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombuffer(buffer, width, height, isoutput)
-		
-		Load the image from a character buffer
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling.
-	**/
-	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombyte(A, isoutput)
-		
-		Load the image from a byte array.
-		By default this function fills the input buffer, which can subsequently
-		be resampled using resize.  If isoutput=1, fill the output buffer.
-		This is used to support raw pixel images w/o resampling.
-	**/
-	static public function frombyte(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Read an image from a file into an array.
 		
@@ -157,11 +170,54 @@ package matplotlib.image;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	/**
+		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=0, radius=1)
+		
+		Resample input_array, blending it in-place into output_array, using an
+		affine transformation.
+		
+		Parameters
+		----------
+		input_array : 2-d or 3-d Numpy array of float, double or uint8
+		    If 2-d, the image is grayscale.  If 3-d, the image must be of size
+		    4 in the last dimension and represents RGBA data.
+		
+		output_array : 2-d or 3-d Numpy array of float, double or uint8
+		    The dtype and number of dimensions must match `input_array`.
+		
+		transform : matplotlib.transforms.Transform instance
+		    The transformation from the input array to the output
+		    array.
+		
+		interpolation : int, optional
+		    The interpolation method.  Must be one of the following constants
+		    defined in this module:
+		
+		      NEAREST (default), BILINEAR, BICUBIC, SPLINE16, SPLINE36,
+		      HANNING, HAMMING, HERMITE, KAISER, QUADRIC, CATROM, GAUSSIAN,
+		      BESSEL, MITCHELL, SINC, LANCZOS, BLACKMAN
+		
+		resample : bool, optional
+		    When `True`, use a full resampling method.  When `False`, only
+		    resample when the output image is larger than the input image.
+		
+		alpha : float, optional
+		    The level of transparency to apply.  1.0 is completely opaque.
+		    0.0 is completely transparent.
+		
+		norm : float, optional
+		    The norm for the interpolation function.  Default is 0.
+		
+		radius: float, optional
+		    The radius of the kernel, if method is SINC, LANCZOS or BLACKMAN.
+		    Default is 1.
+	**/
+	static public function resample(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		make a thumbnail of image in *infile* with output filename
 		*thumbfile*.
 		
 		  *infile* the image file -- must be PNG or Pillow-readable if you
-		     have `Pillow <http://python-pillow.github.io/>`_ installed
+		     have `Pillow <http://python-pillow.org/>`_ installed
 		
 		  *thumbfile*
 		    the thumbnail filename
@@ -192,6 +248,63 @@ package matplotlib.image;
 	**/
 	static public function thumbnail(infile:Dynamic, thumbfile:Dynamic, ?scale:Dynamic, ?interpolation:Dynamic, ?preview:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
+	/**
+		Open the URL url, which can be either a string or a Request object.
+		
+		*data* must be an object specifying additional data to be sent to
+		the server, or None if no such data is needed.  See Request for
+		details.
+		
+		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
+		header in its HTTP requests.
+		
+		The optional *timeout* parameter specifies a timeout in seconds for
+		blocking operations like the connection attempt (if not specified, the
+		global default timeout setting will be used). This only works for HTTP,
+		HTTPS and FTP connections.
+		
+		If *context* is specified, it must be a ssl.SSLContext instance describing
+		the various SSL options. See HTTPSConnection for more details.
+		
+		The optional *cafile* and *capath* parameters specify a set of trusted CA
+		certificates for HTTPS requests. cafile should point to a single file
+		containing a bundle of CA certificates, whereas capath should point to a
+		directory of hashed certificate files. More information can be found in
+		ssl.SSLContext.load_verify_locations().
+		
+		The *cadefault* parameter is ignored.
+		
+		This function always returns an object which can work as a context
+		manager and has methods such as
+		
+		* geturl() - return the URL of the resource retrieved, commonly used to
+		  determine if a redirect was followed
+		
+		* info() - return the meta-information of the page, such as headers, in the
+		  form of an email.message_from_string() instance (see Quick Reference to
+		  HTTP Headers)
+		
+		* getcode() - return the HTTP status code of the response.  Raises URLError
+		  on errors.
+		
+		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
+		object slightly modified. In addition to the three new methods above, the
+		msg attribute contains the same information as the reason attribute ---
+		the reason phrase returned by the server --- instead of the response
+		headers as it is specified in the documentation for HTTPResponse.
+		
+		For FTP, file, and data URLs and requests explicitly handled by legacy
+		URLopener and FancyURLopener classes, this function returns a
+		urllib.response.addinfourl object.
+		
+		Note that None may be returned if no handler handles the request (though
+		the default installed global OpenerDirector uses UnknownHandler to ensure
+		this never happens).
+		
+		In addition, if proxy settings are detected (for example, when a *_proxy
+		environment variable like http_proxy is set), ProxyHandler is default
+		installed and makes sure the requests are handled through the proxy.
+	**/
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Parse a URL into 6 components:

@@ -66,6 +66,13 @@ package scipy.sparse.dok;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(arg1:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
@@ -202,17 +209,39 @@ package scipy.sparse.dok;
 		Upcast matrix to a floating point format (if necessary)
 	**/
 	public function asfptype():Dynamic;
+	/**
+		Cast the matrix elements to a specified type.
+		
+		The data will be copied.
+		
+		Parameters
+		----------
+		t : string or numpy dtype
+		    Typecode or data-type to which to cast the data.
+	**/
 	public function astype(t:Dynamic):Dynamic;
 	/**
 		D.clear() -> None.  Remove all items from D.
 	**/
 	public function clear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conj():Dynamic;
 	/**
 		Return the conjugate transpose
 		        
 	**/
 	public function conjtransp():Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conjugate():Dynamic;
 	/**
 		Returns a copy of this matrix.
@@ -259,14 +288,30 @@ package scipy.sparse.dok;
 		but otherwise equivalent functionality.
 	**/
 	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
+	/**
+		Return the Hermitian transpose of this matrix.
+		
+		See Also
+		--------
+		np.matrix.getH : NumPy's implementation of `getH` for matrices
+	**/
 	public function getH():Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public function get_shape():Dynamic;
 	/**
 		Returns a copy of column j of the matrix as a (m x 1)
 		DOK matrix.
 	**/
 	public function getcol(j:Dynamic):Dynamic;
+	/**
+		Format of a matrix representation as a string.
+	**/
 	public function getformat():Dynamic;
+	/**
+		Maximum number of elements to display when printed.
+	**/
 	public function getmaxprint():Dynamic;
 	/**
 		Number of stored values, including explicit zeros.
@@ -295,6 +340,9 @@ package scipy.sparse.dok;
 		D.keys() -> a set-like object providing a view on D's keys
 	**/
 	public function keys(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Element-wise maximum between this and another matrix.
+	**/
 	public function maximum(other:Dynamic):Dynamic;
 	/**
 		Compute the arithmetic mean along the specified axis.
@@ -332,6 +380,9 @@ package scipy.sparse.dok;
 		np.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
 	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Element-wise minimum between this and another matrix.
+	**/
 	public function minimum(other:Dynamic):Dynamic;
 	/**
 		Point-wise multiplication by another matrix
@@ -371,6 +422,9 @@ package scipy.sparse.dok;
 		2-tuple; but raise KeyError if D is empty.
 	**/
 	public function popitem(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Element-wise power.
+	**/
 	public function power(n:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Gives a new shape to a sparse matrix without changing its data.
@@ -399,6 +453,9 @@ package scipy.sparse.dok;
 		Any non-zero elements that lie outside the new shape are removed.
 	**/
 	public function resize(shape:Dynamic):Dynamic;
+	/**
+		See `reshape`.
+	**/
 	public function set_shape(shape:Dynamic):Dynamic;
 	/**
 		D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
@@ -423,6 +480,9 @@ package scipy.sparse.dok;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public var shape : Dynamic;
 	/**
 		Sum the matrix elements over a given axis.

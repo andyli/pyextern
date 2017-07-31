@@ -52,6 +52,13 @@ package matplotlib.ticker;
 	**/
 	public function new(?minor:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -112,6 +119,7 @@ package matplotlib.ticker;
 	public function autoscale():Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function nonsingular(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		Pan numticks (can be positive or negative)
 	**/

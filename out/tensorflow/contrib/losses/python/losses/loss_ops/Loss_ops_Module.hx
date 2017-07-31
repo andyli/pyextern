@@ -11,33 +11,18 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Computes the weighted loss.
+		Computes the number of elements in the loss function induced by `weights`.
 		
-		Args:
-		  losses: A tensor of size [batch_size, d1, ... dN].
-		  weight: A tensor of size [1] or [batch_size, d1, ... dK] where K < N.
-		
-		Returns:
-		  A scalar `Tensor` that returns the weighted loss.
-		
-		Raises:
-		  ValueError: If the weight shape is not compatible with the losses shape or
-		    if the number of dimensions (rank) of either losses or weight is missing.
-	**/
-	static public function _compute_weighted_loss(losses:Dynamic, weight:Dynamic):Dynamic;
-	/**
-		Computes the number of elements in the loss function induced by `weight`.
-		
-		A given weight tensor induces different numbers of usable elements in the
-		`losses` tensor. The `weight` tensor is broadcast across `losses` for all
+		A given weights tensor induces different numbers of usable elements in the
+		`losses` tensor. The `weights` tensor is broadcast across `losses` for all
 		possible dimensions. For example, if `losses` is a tensor of dimension
-		[4, 5, 6, 3] and weight is a tensor of size [4, 5], then weight is, in effect,
-		tiled to match the size of `losses`. Following this effective tile, the total
-		number of present elements is the number of non-zero weights.
+		[4, 5, 6, 3] and `weights` is a tensor of size [4, 5], then `weights` is, in
+		effect, tiled to match the size of `losses`. Following this effective tile,
+		the total number of present elements is the number of non-zero weights.
 		
 		Args:
 		  losses: A tensor of size [batch_size, d1, ... dN].
-		  weight: A tensor of size [1] or [batch_size, d1, ... dK] where K < N.
+		  weights: A tensor of size [1] or [batch_size, d1, ... dK] where K < N.
 		  per_batch: Whether to return the number of elements per batch or as a sum
 		    total.
 		
@@ -46,7 +31,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		    `per_batch` is True, the value is returned as a tensor of size
 		    [batch_size]. Otherwise, a single scalar tensor is returned.
 	**/
-	static public function _num_present(losses:Dynamic, weight:Dynamic, ?per_batch:Dynamic):Dynamic;
+	static public function _num_present(losses:Dynamic, weights:Dynamic, ?per_batch:Dynamic):Dynamic;
 	/**
 		Computes a safe divide which returns 0 if the denominator is zero.
 		
@@ -81,34 +66,38 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		Args:
 		  losses: A `Tensor` of size [batch_size, d1, ... dN].
-		  weight: A `Tensor` of size [1], [batch_size] or [batch_size, d1, ... dN].
+		  weights: A `Tensor` of size [1], [batch_size] or [batch_size, d1, ... dN].
 		    The `losses` are reduced (tf.reduce_sum) until its dimension matches
-		    that of `weight` at which point the reduced `losses` are element-wise
-		    multiplied by `weight` and a final reduce_sum is computed on the result.
+		    that of `weights` at which point the reduced `losses` are element-wise
+		    multiplied by `weights` and a final reduce_sum is computed on the result.
 		    Conceptually, this operation is equivalent to broadcasting (tiling)
-		    `weight` to be the same size as `losses`, performing an element-wise
+		    `weights` to be the same size as `losses`, performing an element-wise
 		    multiplication, and summing the result.
 		
 		Returns:
 		  A scalar tf.float32 `Tensor` whose value represents the sum of the scaled
 		    `losses`.
 	**/
-	static public function _scale_losses(losses:Dynamic, weight:Dynamic):Dynamic;
+	static public function _scale_losses(losses:Dynamic, weights:Dynamic):Dynamic;
 	/**
-		Adds an Absolute Difference loss to the training procedure.
+		Adds an Absolute Difference loss to the training procedure. (deprecated)
 		
-		`weight` acts as a coefficient for the loss. If a scalar is provided, then the
-		loss is simply scaled by the given value. If `weight` is a tensor of size
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.absolute_difference instead.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided, then
+		the loss is simply scaled by the given value. If `weights` is a tensor of size
 		[batch_size], then the total loss for each sample of the batch is rescaled
-		by the corresponding element in the `weight` vector. If the shape of
-		`weight` matches the shape of `predictions`, then the loss of each
+		by the corresponding element in the `weights` vector. If the shape of
+		`weights` matches the shape of `predictions`, then the loss of each
 		measurable element of `predictions` is scaled by the corresponding value of
-		`weight`.
+		`weights`.
 		
 		Args:
 		  predictions: The predicted outputs.
-		  targets: The ground truth output tensor, same dimensions as 'predictions'.
-		  weight: Coefficients for the loss a scalar, a tensor of shape
+		  labels: The ground truth output tensor, same dimensions as 'predictions'.
+		  weights: Coefficients for the loss a scalar, a tensor of shape
 		    [batch_size] or a tensor whose shape matches `predictions`.
 		  scope: The scope for the operations performed in computing the loss.
 		
@@ -116,29 +105,69 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  A scalar `Tensor` representing the loss value.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid.
+		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
+		    if the shape of `weights` is invalid.
 	**/
-	static public function absolute_difference(predictions:Dynamic, targets:Dynamic, ?weight:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function absolute_difference(predictions:Dynamic, ?labels:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Adds a externally defined loss to collection of losses.
+		Decorates a function with args so it can be used within an arg_scope.
+		
+		Args:
+		  func: function to decorate.
+		
+		Returns:
+		  A tuple with the decorated function func_with_args().
+	**/
+	static public function add_arg_scope(func:Dynamic):Dynamic;
+	/**
+		Adds a externally defined loss to the collection of losses. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.add_loss instead.
 		
 		Args:
 		  loss: A loss `Tensor`.
+		  loss_collection: Optional collection to add the loss to.
 	**/
-	static public function add_loss(loss:Dynamic):Dynamic;
+	static public function add_loss(loss:Dynamic, ?loss_collection:Dynamic):Dynamic;
 	/**
-		Adds a cosine-distance loss to the training procedure.
+		Computes the weighted loss. (deprecated)
 		
-		Note that the function assumes that the predictions and targets are already
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.compute_weighted_loss instead.
+		
+		Args:
+		  losses: A tensor of size [batch_size, d1, ... dN].
+		  weights: A tensor of size [1] or [batch_size, d1, ... dK] where K < N.
+		  scope: the scope for the operations performed in computing the loss.
+		
+		Returns:
+		  A scalar `Tensor` that returns the weighted loss.
+		
+		Raises:
+		  ValueError: If `weights` is `None` or the shape is not compatible with
+		    `losses`, or if the number of dimensions (rank) of either `losses` or
+		    `weights` is missing.
+	**/
+	static public function compute_weighted_loss(losses:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a cosine-distance loss to the training procedure. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.cosine_distance instead.
+		
+		Note that the function assumes that `predictions` and `labels` are already
 		unit-normalized.
 		
 		Args:
 		  predictions: An arbitrary matrix.
-		  targets: A `Tensor` whose shape matches 'predictions'
+		  labels: A `Tensor` whose shape matches 'predictions'
 		  dim: The dimension along which the cosine distance is computed.
-		  weight: Coefficients for the loss a scalar, a tensor of shape
+		  weights: Coefficients for the loss a scalar, a tensor of shape
 		    [batch_size] or a tensor whose shape matches `predictions`.
 		  scope: The scope for the operations performed in computing the loss.
 		
@@ -146,34 +175,77 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  A scalar `Tensor` representing the loss value.
 		
 		Raises:
-		  ValueError: If predictions.shape doesn't match targets.shape, if the ignore
-		              mask is provided and its shape doesn't match targets.shape or if
-		              the ignore mask is not boolean valued.
+		  ValueError: If `predictions` shape doesn't match `labels` shape, or
+		    `weights` is `None`.
 	**/
-	static public function cosine_distance(predictions:Dynamic, targets:Dynamic, dim:Dynamic, ?weight:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function cosine_distance(predictions:Dynamic, ?labels:Dynamic, ?dim:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Gets the list of loss variables.
+		Gets the list of losses from the loss_collection. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.get_losses instead.
 		
 		Args:
 		  scope: an optional scope for filtering the losses to return.
+		  loss_collection: Optional losses collection.
 		
 		Returns:
-		  a list of loss variables.
+		  a list of loss tensors.
 	**/
-	static public function get_losses(?scope:Dynamic):Dynamic;
+	static public function get_losses(?scope:Dynamic, ?loss_collection:Dynamic):Dynamic;
 	/**
-		Gets the regularization losses.
+		Gets the regularization losses. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.get_regularization_losses instead.
 		
 		Args:
 		  scope: an optional scope for filtering the losses to return.
 		
 		Returns:
-		  A list of loss variables.
+		  A list of regularization losses as Tensors.
 	**/
 	static public function get_regularization_losses(?scope:Dynamic):Dynamic;
 	/**
-		Returns a tensor whose value represents the total loss.
+		Returns a tensor whose value represents the total loss. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.get_total_loss instead.
 		
 		Notice that the function adds the given losses to the regularization losses.
 		
@@ -190,37 +262,45 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	**/
 	static public function get_total_loss(?add_regularization_losses:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Method that returns the loss tensor for hinge loss.
+		Method that returns the loss tensor for hinge loss. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.hinge_loss instead. Note that the order of the predictions and labels arguments were changed.
 		
 		Args:
 		  logits: The logits, a float tensor.
-		  target: The ground truth output tensor. Its shape should match the shape of
+		  labels: The ground truth output tensor. Its shape should match the shape of
 		    logits. The values of the tensor are expected to be 0.0 or 1.0.
 		  scope: The scope for the operations performed in computing the loss.
 		
 		Returns:
-		  A `Tensor` of same shape as logits and target representing the loss values
-		    across the batch.
+		  A `Tensor` of same shape as `logits` and `labels` representing the loss
+		    values across the batch.
 		
 		Raises:
-		  ValueError: If the shapes of `logits` and `target` don't match.
+		  ValueError: If the shapes of `logits` and `labels` don't match.
 	**/
-	static public function hinge_loss(logits:Dynamic, target:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function hinge_loss(logits:Dynamic, ?labels:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Adds a Log Loss term to the training procedure.
+		Adds a Log Loss term to the training procedure. (deprecated)
 		
-		`weight` acts as a coefficient for the loss. If a scalar is provided, then the
-		loss is simply scaled by the given value. If `weight` is a tensor of size
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.log_loss instead. Note that the order of the predictions and labels arguments was changed.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided, then
+		the loss is simply scaled by the given value. If `weights` is a tensor of size
 		[batch_size], then the total loss for each sample of the batch is rescaled
-		by the corresponding element in the `weight` vector. If the shape of
-		`weight` matches the shape of `predictions`, then the loss of each
+		by the corresponding element in the `weights` vector. If the shape of
+		`weights` matches the shape of `predictions`, then the loss of each
 		measurable element of `predictions` is scaled by the corresponding value of
-		`weight`.
+		`weights`.
 		
 		Args:
 		  predictions: The predicted outputs.
-		  targets: The ground truth output tensor, same dimensions as 'predictions'.
-		  weight: Coefficients for the loss a scalar, a tensor of shape
+		  labels: The ground truth output tensor, same dimensions as 'predictions'.
+		  weights: Coefficients for the loss a scalar, a tensor of shape
 		    [batch_size] or a tensor whose shape matches `predictions`.
 		  epsilon: A small increment to add to avoid taking a log of zero.
 		  scope: The scope for the operations performed in computing the loss.
@@ -229,27 +309,106 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  A scalar `Tensor` representing the loss value.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid.
+		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
+		    if the shape of `weights` is invalid.
 	**/
-	static public function log_loss(predictions:Dynamic, targets:Dynamic, ?weight:Dynamic, ?epsilon:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function log_loss(predictions:Dynamic, ?labels:Dynamic, ?weights:Dynamic, ?epsilon:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a pairwise-errors-squared loss to the training procedure. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.mean_pairwise_squared_error instead. Note that the order of the predictions and labels arguments was changed.
+		
+		Unlike `mean_squared_error`, which is a measure of the differences between
+		corresponding elements of `predictions` and `labels`,
+		`mean_pairwise_squared_error` is a measure of the differences between pairs of
+		corresponding elements of `predictions` and `labels`.
+		
+		For example, if `labels`=[a, b, c] and `predictions`=[x, y, z], there are
+		three pairs of differences are summed to compute the loss:
+		  loss = [ ((a-b) - (x-y)).^2 + ((a-c) - (x-z)).^2 + ((b-c) - (y-z)).^2 ] / 3
+		
+		Note that since the inputs are of size [batch_size, d0, ... dN], the
+		corresponding pairs are computed within each batch sample but not across
+		samples within a batch. For example, if `predictions` represents a batch of
+		16 grayscale images of dimension [batch_size, 100, 200], then the set of pairs
+		is drawn from each image, but not across images.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided, then
+		the loss is simply scaled by the given value. If `weights` is a tensor of size
+		[batch_size], then the total loss for each sample of the batch is rescaled
+		by the corresponding element in the `weights` vector.
+		
+		Args:
+		  predictions: The predicted outputs, a tensor of size [batch_size, d0, .. dN]
+		    where N+1 is the total number of dimensions in `predictions`.
+		  labels: The ground truth output tensor, whose shape must match the shape of
+		    the `predictions` tensor.
+		  weights: Coefficients for the loss a scalar, a tensor of shape [batch_size]
+		    or a tensor whose shape matches `predictions`.
+		  scope: The scope for the operations performed in computing the loss.
+		
+		Returns:
+		  A scalar `Tensor` representing the loss value.
+		
+		Raises:
+		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
+		    if the shape of `weights` is invalid.
+	**/
+	static public function mean_pairwise_squared_error(predictions:Dynamic, ?labels:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a Sum-of-Squares loss to the training procedure. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.mean_squared_error instead.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided, then
+		the loss is simply scaled by the given value. If `weights` is a tensor of size
+		[batch_size], then the total loss for each sample of the batch is rescaled
+		by the corresponding element in the `weights` vector. If the shape of
+		`weights` matches the shape of `predictions`, then the loss of each
+		measurable element of `predictions` is scaled by the corresponding value of
+		`weights`.
+		
+		Args:
+		  predictions: The predicted outputs.
+		  labels: The ground truth output tensor, same dimensions as 'predictions'.
+		  weights: Coefficients for the loss a scalar, a tensor of shape
+		    [batch_size] or a tensor whose shape matches `predictions`.
+		  scope: The scope for the operations performed in computing the loss.
+		
+		Returns:
+		  A scalar `Tensor` representing the loss value.
+		
+		Raises:
+		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
+		    if the shape of `weights` is invalid.
+	**/
+	static public function mean_squared_error(predictions:Dynamic, ?labels:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Creates a cross-entropy loss using tf.nn.sigmoid_cross_entropy_with_logits.
+		Creates a cross-entropy loss using tf.nn.sigmoid_cross_entropy_with_logits. (deprecated)
 		
-		`weight` acts as a coefficient for the loss. If a scalar is provided,
-		then the loss is simply scaled by the given value. If `weight` is a
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.sigmoid_cross_entropy instead. Note that the order of the predictions and labels arguments was changed.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided,
+		then the loss is simply scaled by the given value. If `weights` is a
 		tensor of size [`batch_size`], then the loss weights apply to each
 		corresponding sample.
 		
 		If `label_smoothing` is nonzero, smooth the labels towards 1/2:
+		
 		    new_multiclass_labels = multiclass_labels * (1 - label_smoothing)
 		                            + 0.5 * label_smoothing
 		
 		Args:
 		  logits: [batch_size, num_classes] logits outputs of the network .
-		  multi_class_labels: [batch_size, num_classes] target labels in (0, 1).
-		  weight: Coefficients for the loss. The tensor must be a scalar, a tensor of
+		  multi_class_labels: [batch_size, num_classes] labels in (0, 1).
+		  weights: Coefficients for the loss. The tensor must be a scalar, a tensor of
 		    shape [batch_size] or shape [batch_size, num_classes].
 		  label_smoothing: If greater than 0 then smooth the labels.
 		  scope: The scope for the operations performed in computing the loss.
@@ -258,15 +417,20 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  A scalar `Tensor` representing the loss value.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid or if `weight` is None.
+		  ValueError: If the shape of `logits` doesn't match that of
+		    `multi_class_labels` or if the shape of `weights` is invalid, or if
+		    `weights` is None.
 	**/
-	static public function sigmoid_cross_entropy(logits:Dynamic, multi_class_labels:Dynamic, ?weight:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function sigmoid_cross_entropy(logits:Dynamic, multi_class_labels:Dynamic, ?weights:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a cross-entropy loss using tf.nn.softmax_cross_entropy_with_logits.
+		Creates a cross-entropy loss using tf.nn.softmax_cross_entropy_with_logits. (deprecated)
 		
-		`weight` acts as a coefficient for the loss. If a scalar is provided,
-		then the loss is simply scaled by the given value. If `weight` is a
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.softmax_cross_entropy instead. Note that the order of the logits and labels arguments has been changed.
+		
+		`weights` acts as a coefficient for the loss. If a scalar is provided,
+		then the loss is simply scaled by the given value. If `weights` is a
 		tensor of size [`batch_size`], then the loss weights apply to each
 		corresponding sample.
 		
@@ -276,84 +440,46 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		Args:
 		  logits: [batch_size, num_classes] logits outputs of the network .
-		  onehot_labels: [batch_size, num_classes] target one_hot_encoded labels.
-		  weight: Coefficients for the loss. The tensor must be a scalar or a tensor
+		  onehot_labels: [batch_size, num_classes] one-hot-encoded labels.
+		  weights: Coefficients for the loss. The tensor must be a scalar or a tensor
 		    of shape [batch_size].
 		  label_smoothing: If greater than 0 then smooth the labels.
 		  scope: the scope for the operations performed in computing the loss.
 		
 		Returns:
-		  A scalar `Tensor` representing the loss value.
+		  A scalar `Tensor` representing the mean loss value.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid or if `weight` is None.
+		  ValueError: If the shape of `logits` doesn't match that of `onehot_labels`
+		    or if the shape of `weights` is invalid or if `weights` is None.
 	**/
-	static public function softmax_cross_entropy(logits:Dynamic, onehot_labels:Dynamic, ?weight:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function softmax_cross_entropy(logits:Dynamic, onehot_labels:Dynamic, ?weights:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Adds a pairwise-errors-squared loss to the training procedure.
+		Cross-entropy loss using `tf.nn.sparse_softmax_cross_entropy_with_logits`. (deprecated)
 		
-		Unlike the sum_of_squares loss, which is a measure of the differences between
-		corresponding elements of `predictions` and `targets`, sum_of_pairwise_squares
-		is a measure of the differences between pairs of corresponding elements of
-		`predictions` and `targets`.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Instructions for updating:
+		Use tf.losses.sparse_softmax_cross_entropy instead. Note that the order of the logits and labels arguments has been changed.
 		
-		For example, if `targets`=[a, b, c] and `predictions`=[x, y, z], there are
-		three pairs of differences are summed to compute the loss:
-		  loss = [ ((a-b) - (x-y)).^2 + ((a-c) - (x-z)).^2 + ((b-c) - (y-z)).^2 ] / 3
-		
-		Note that since the inputs are of size [batch_size, d0, ... dN], the
-		corresponding pairs are computed within each batch sample but not across
-		samples within a batch. For example, if `predictions` represents a batch of
-		16 grayscale images of dimenion [batch_size, 100, 200], then the set of pairs
-		is drawn from each image, but not across images.
-		
-		`weight` acts as a coefficient for the loss. If a scalar is provided, then the
-		loss is simply scaled by the given value. If `weight` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
-		by the corresponding element in the `weight` vector.
+		`weights` acts as a coefficient for the loss. If a scalar is provided,
+		then the loss is simply scaled by the given value. If `weights` is a
+		tensor of size [`batch_size`], then the loss weights apply to each
+		corresponding sample.
 		
 		Args:
-		  predictions: The predicted outputs, a tensor of size [batch_size, d0, .. dN]
-		    where N+1 is the total number of dimensions in `predictions`.
-		  targets: The ground truth output tensor, whose shape must match the shape of
-		    the `predictions` tensor.
-		  weight: Coefficients for the loss a scalar, a tensor of shape [batch_size]
-		    or a tensor whose shape matches `predictions`.
-		  scope: The scope for the operations performed in computing the loss.
+		  logits: [batch_size, num_classes] logits outputs of the network .
+		  labels: [batch_size, 1] or [batch_size] labels of dtype `int32` or `int64`
+		    in the range `[0, num_classes)`.
+		  weights: Coefficients for the loss. The tensor must be a scalar or a tensor
+		    of shape [batch_size] or [batch_size, 1].
+		  scope: the scope for the operations performed in computing the loss.
 		
 		Returns:
-		  A scalar `Tensor` representing the loss value.
+		  A scalar `Tensor` representing the mean loss value.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid.
+		  ValueError: If the shapes of `logits`, `labels`, and `weights` are
+		    incompatible, or if `weights` is None.
 	**/
-	static public function sum_of_pairwise_squares(predictions:Dynamic, targets:Dynamic, ?weight:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Adds a Sum-of-Squares loss to the training procedure.
-		
-		`weight` acts as a coefficient for the loss. If a scalar is provided, then the
-		loss is simply scaled by the given value. If `weight` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
-		by the corresponding element in the `weight` vector. If the shape of
-		`weight` matches the shape of `predictions`, then the loss of each
-		measurable element of `predictions` is scaled by the corresponding value of
-		`weight`.
-		
-		Args:
-		  predictions: The predicted outputs.
-		  targets: The ground truth output tensor, same dimensions as 'predictions'.
-		  weight: Coefficients for the loss a scalar, a tensor of shape
-		    [batch_size] or a tensor whose shape matches `predictions`.
-		  scope: The scope for the operations performed in computing the loss.
-		
-		Returns:
-		  A scalar `Tensor` representing the loss value.
-		
-		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `targets` or
-		    if the shape of `weight` is invalid.
-	**/
-	static public function sum_of_squares(predictions:Dynamic, targets:Dynamic, ?weight:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function sparse_softmax_cross_entropy(logits:Dynamic, labels:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
 }

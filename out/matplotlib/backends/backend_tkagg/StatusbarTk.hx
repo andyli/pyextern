@@ -67,6 +67,13 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function new(window:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -157,6 +164,7 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function _grid_configure(command:Dynamic, index:Dynamic, cnf:Dynamic, kw:Dynamic):Dynamic;
 	public function _gridconvvalue(value:Dynamic):Dynamic;
+	static public var _last_child_ids : Dynamic;
 	/**
 		Captures the 'tool_message_event' and set the message
 	**/
@@ -599,7 +607,7 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function image_names():Dynamic;
 	/**
-		Return a list of all available image types (e.g. phote bitmap).
+		Return a list of all available image types (e.g. photo bitmap).
 	**/
 	public function image_types():Dynamic;
 	/**
@@ -901,10 +909,6 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function tk_focusPrev():Dynamic;
 	/**
-		Do not use. Needed in Tk 3.6 and earlier.
-	**/
-	public function tk_menuBar(?args:python.VarArgs<Dynamic>):Dynamic;
-	/**
 		Set a new color scheme for all widget elements.
 		
 		A single color as argument will cause that all colors of Tk
@@ -1043,7 +1047,7 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function winfo_ismapped():Dynamic;
 	/**
-		Return the window mananger name for this widget.
+		Return the window manager name for this widget.
 	**/
 	public function winfo_manager():Dynamic;
 	/**
@@ -1165,7 +1169,7 @@ package matplotlib.backends.backend_tkagg;
 		of this widget.
 		
 		Each item in the list consists of a visual name (see winfo_visual), a
-		depth and if INCLUDEIDS=1 is given also the X identifier.
+		depth and if includeids is true is given also the X identifier.
 	**/
 	public function winfo_visualsavailable(?includeids:Dynamic):Dynamic;
 	/**

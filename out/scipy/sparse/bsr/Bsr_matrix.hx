@@ -53,6 +53,13 @@ package scipy.sparse.bsr;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(arg1:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?blocksize:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
@@ -139,6 +146,8 @@ package scipy.sparse.bsr;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _arg_min_or_max(axis:Dynamic, out:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
+	public function _arg_min_or_max_axis(axis:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	/**
 		Apply the binary operation fn to two sparse matrices.
 	**/
@@ -285,6 +294,50 @@ package scipy.sparse.bsr;
 	**/
 	public function arctanh():Dynamic;
 	/**
+		Return indices of minimum elements along an axis.
+		
+		Implicit zero elements are also taken into account. If there are
+		several maximum values, the index of the first occurrence is returned.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None}, optional
+		    Axis along which the argmax is computed. If None (default), index
+		    of the maximum element in the flatten data is returned.
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
+		
+		Returns
+		-------
+		ind : np.matrix or int
+		    Indices of maximum elements. If matrix, its size along `axis` is 1.
+	**/
+	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Return indices of minimum elements along an axis.
+		
+		Implicit zero elements are also taken into account. If there are
+		several minimum values, the index of the first occurrence is returned.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None}, optional
+		    Axis along which the argmin is computed. If None (default), index
+		    of the minimum element in the flatten data is returned.
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
+		
+		Returns
+		-------
+		 ind : np.matrix or int
+		    Indices of minimum elements. If matrix, its size along `axis` is 1.
+	**/
+	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
 		Return this matrix in a given sparse format
 		
 		Parameters
@@ -302,6 +355,16 @@ package scipy.sparse.bsr;
 		Upcast matrix to a floating point format (if necessary)
 	**/
 	public function asfptype():Dynamic;
+	/**
+		Cast the matrix elements to a specified type.
+		
+		The data will be copied.
+		
+		Parameters
+		----------
+		t : string or numpy dtype
+		    Typecode or data-type to which to cast the data.
+	**/
 	public function astype(t:Dynamic):Dynamic;
 	public var blocksize : Dynamic;
 	/**
@@ -319,7 +382,19 @@ package scipy.sparse.bsr;
 		        False - basic check, O(1) operations
 	**/
 	public function check_format(?full_check:Dynamic):Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conj():Dynamic;
+	/**
+		Element-wise complex conjugation.
+		
+		If the matrix is of non-complex data type, then this method does
+		nothing and the data is not copied.
+	**/
 	public function conjugate():Dynamic;
 	/**
 		Returns a copy of this matrix.
@@ -364,9 +439,7 @@ package scipy.sparse.bsr;
 	public function dot(other:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	/**
-		Remove zero entries from the matrix
-		
-		This is an *in place* operation
+		Remove zero elements in-place.
 	**/
 	public function eliminate_zeros():Dynamic;
 	/**
@@ -382,15 +455,30 @@ package scipy.sparse.bsr;
 	**/
 	public function floor():Dynamic;
 	static public var format : Dynamic;
+	/**
+		Return the Hermitian transpose of this matrix.
+		
+		See Also
+		--------
+		np.matrix.getH : NumPy's implementation of `getH` for matrices
+	**/
 	public function getH():Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public function get_shape():Dynamic;
 	/**
 		Returns a copy of column j of the matrix, as an (m x 1) sparse
 		matrix (column vector).
 	**/
 	public function getcol(j:Dynamic):Dynamic;
-	public function getdata(ind:Dynamic):Dynamic;
+	/**
+		Format of a matrix representation as a string.
+	**/
 	public function getformat():Dynamic;
+	/**
+		Maximum number of elements to display when printed.
+	**/
 	public function getmaxprint():Dynamic;
 	/**
 		Number of stored values, including explicit zeros.
@@ -437,8 +525,20 @@ package scipy.sparse.bsr;
 		See numpy.log1p for more information.
 	**/
 	public function log1p():Dynamic;
-	public function matmat(other:Dynamic):Dynamic;
-	public function matvec(other:Dynamic):Dynamic;
+	/**
+		`matmat` is deprecated!
+		BSR matmat is deprecated in scipy 0.19.0. Use * operator instead.
+		
+		Multiply this sparse matrix by other matrix.
+	**/
+	public function matmat(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`matvec` is deprecated!
+		BSR matvec is deprecated in scipy 0.19.0. Use * operator instead.
+		
+		Multiply matrix by vector.
+	**/
+	public function matvec(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the maximum of the matrix or maximum along an axis.
 		This takes all elements into account, not just the non-zero ones.
@@ -468,6 +568,9 @@ package scipy.sparse.bsr;
 		np.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
 	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Element-wise maximum between this and another matrix.
+	**/
 	public function maximum(other:Dynamic):Dynamic;
 	/**
 		Compute the arithmetic mean along the specified axis.
@@ -534,6 +637,9 @@ package scipy.sparse.bsr;
 		np.matrix.min : NumPy's implementation of 'min' for matrices
 	**/
 	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Element-wise minimum between this and another matrix.
+	**/
 	public function minimum(other:Dynamic):Dynamic;
 	/**
 		Point-wise multiplication by another matrix, vector, or
@@ -611,6 +717,9 @@ package scipy.sparse.bsr;
 		See numpy.rint for more information.
 	**/
 	public function rint():Dynamic;
+	/**
+		See `reshape`.
+	**/
 	public function set_shape(shape:Dynamic):Dynamic;
 	/**
 		Set diagonal or off-diagonal elements of the array.
@@ -631,6 +740,9 @@ package scipy.sparse.bsr;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		Get shape of a matrix.
+	**/
 	public var shape : Dynamic;
 	/**
 		Element-wise sign.

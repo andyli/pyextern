@@ -46,9 +46,11 @@ package tensorflow.python.client.session;
 		  fetches: An arbitrary fetch structure: singleton, list, tuple,
 		    namedtuple, or dict.
 		  feeds: A feed dict where keys are fully resolved tensor names.
+		  feed_handles: A dict from feed names to TensorHandle objects used as
+		    direct feeds.
 	**/
 	@:native("__init__")
-	public function ___init__(graph:Dynamic, fetches:Dynamic, feeds:Dynamic):Dynamic;
+	public function ___init__(graph:Dynamic, fetches:Dynamic, feeds:Dynamic, ?feed_handles:Dynamic):Dynamic;
 	/**
 		Creates a fetch handler.
 		
@@ -58,8 +60,17 @@ package tensorflow.python.client.session;
 		  fetches: An arbitrary fetch structure: singleton, list, tuple,
 		    namedtuple, or dict.
 		  feeds: A feed dict where keys are fully resolved tensor names.
+		  feed_handles: A dict from feed names to TensorHandle objects used as
+		    direct feeds.
 	**/
-	public function new(graph:Dynamic, fetches:Dynamic, feeds:Dynamic):Void;
+	public function new(graph:Dynamic, fetches:Dynamic, feeds:Dynamic, ?feed_handles:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

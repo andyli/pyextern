@@ -10,6 +10,29 @@ package tensorflow.python.ops.rnn;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Concat that enables int, Tensor, or TensorShape values.
+		
+		This function takes a size specification, which can be an integer, a
+		TensorShape, or a Tensor, and converts it into a concatenated Tensor
+		(if static = False) or a list of integers (if static = True).
+		
+		Args:
+		  prefix: The prefix; usually the batch size (and/or time step size).
+		    (TensorShape, int, or Tensor.)
+		  suffix: TensorShape, int, or Tensor.
+		  static: If `True`, return a python list with possibly unknown dimensions.
+		    Otherwise return a `Tensor`.
+		
+		Returns:
+		  shape: the concatenation of prefix and suffix.
+		
+		Raises:
+		  ValueError: if `suffix` is not a scalar or vector (or TensorShape).
+		  ValueError: if prefix or suffix was `None` and asked for dynamic
+		    Tensors out.
+	**/
+	static public function _concat(prefix:Dynamic, suffix:Dynamic, ?_static:Dynamic):Dynamic;
+	/**
 		Internal implementation of Dynamic RNN.
 		
 		Args:
@@ -56,6 +79,10 @@ package tensorflow.python.ops.rnn;
 		  ValueError: if `state` has heterogeneous dtypes or is empty.
 	**/
 	static public function _infer_state_dtype(explicit_dtype:Dynamic, state:Dynamic):Dynamic;
+	/**
+		Checks that a given object is an RNNCell by using duck typing.
+	**/
+	static public function _like_rnncell(cell:Dynamic):Dynamic;
 	/**
 		Reverse a list of Tensors up to specified lengths.
 		
@@ -123,29 +150,28 @@ package tensorflow.python.ops.rnn;
 	**/
 	static public function _rnn_step(time:Dynamic, sequence_length:Dynamic, min_sequence_length:Dynamic, max_sequence_length:Dynamic, zero_output:Dynamic, state:Dynamic, call_cell:Dynamic, state_size:Dynamic, ?skip_conditionals:Dynamic):Dynamic;
 	/**
-		Helper function that enables int or TensorShape shape specification.
+		Transpose the batch and time dimensions of a Tensor.
 		
-		This function takes a size specification, which can be an integer or a
-		TensorShape, and converts it into a list of integers. One may specify any
-		additional dimensions that precede the final state size specification.
+		Retains as much of the static shape information as possible.
 		
 		Args:
-		  state_size: TensorShape or int that specifies the size of a tensor.
-		  prefix: optional additional list of dimensions to prepend.
+		  x: A tensor of rank 2 or higher.
 		
 		Returns:
-		  result_state_size: list of dimensions the resulting tensor size.
+		  x transposed along the first two dimensions.
+		
+		Raises:
+		  ValueError: if `x` is rank 1 or lower.
 	**/
-	static public function _state_size_with_prefix(state_size:Dynamic, ?prefix:Dynamic):Dynamic;
+	static public function _transpose_batch_time(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Creates a dynamic version of bidirectional recurrent neural network.
 		
-		Similar to the unidirectional case above (rnn) but takes input and builds
-		independent forward and backward RNNs. The input_size of forward and
-		backward cell must match. The initial state for both directions is zero by
-		default (but can be set optionally) and no intermediate states are ever
-		returned -- the network is fully unrolled for the given (passed in)
+		Takes input and builds independent forward and backward RNNs. The input_size
+		of forward and backward cell must match. The initial state for both directions
+		is zero by default (but can be set optionally) and no intermediate states are
+		ever returned -- the network is fully unrolled for the given (passed in)
 		length(s) of the sequence(s) or completely unrolled if length(s) is not
 		given.
 		
@@ -154,15 +180,16 @@ package tensorflow.python.ops.rnn;
 		  cell_bw: An instance of RNNCell, to be used for backward direction.
 		  inputs: The RNN inputs.
 		    If time_major == False (default), this must be a tensor of shape:
-		      `[batch_size, max_time, input_size]`.
+		      `[batch_size, max_time, ...]`, or a nested tuple of such elements.
 		    If time_major == True, this must be a tensor of shape:
-		      `[max_time, batch_size, input_size]`.
-		    [batch_size, input_size].
-		  sequence_length: An int32/int64 vector, size `[batch_size]`,
-		    containing the actual lengths for each of the sequences.
+		      `[max_time, batch_size, ...]`, or a nested tuple of such elements.
+		  sequence_length: (optional) An int32/int64 vector, size `[batch_size]`,
+		    containing the actual lengths for each of the sequences in the batch.
+		    If not provided, all batch entries are assumed to be full sequences; and
+		    time reversal is applied from time `0` to `max_time` for each sequence.
 		  initial_state_fw: (optional) An initial state for the forward RNN.
 		    This must be a tensor of appropriate type and shape
-		    `[batch_size x cell_fw.state_size]`.
+		    `[batch_size, cell_fw.state_size]`.
 		    If `cell_fw.state_size` is a tuple, this should be a tuple of
 		    tensors having shapes `[batch_size, s] for s in cell_fw.state_size`.
 		  initial_state_bw: (optional) Same as for `initial_state_fw`, but using
@@ -186,12 +213,8 @@ package tensorflow.python.ops.rnn;
 		    transposes at the beginning and end of the RNN calculation.  However,
 		    most TensorFlow data is batch-major, so by default this function
 		    accepts input and emits output in batch-major form.
-		  dtype: (optional) The data type for the initial state.  Required if
-		    initial_state is not provided.
-		  sequence_length: An int32/int64 vector, size `[batch_size]`,
-		    containing the actual lengths for each of the sequences.
-		    either of the initial states are not provided.
-		  scope: VariableScope for the created subgraph; defaults to "BiRNN"
+		  scope: VariableScope for the created subgraph; defaults to
+		    "bidirectional_rnn"
 		
 		Returns:
 		  A tuple (outputs, output_states) where:
@@ -210,7 +233,7 @@ package tensorflow.python.ops.rnn;
 		      It returns a tuple instead of a single concatenated `Tensor`, unlike
 		      in the `bidirectional_rnn`. If the concatenated one is preferred,
 		      the forward and backward outputs can be concatenated as
-		      `tf.concat(2, outputs)`.
+		      `tf.concat(outputs, 2)`.
 		    output_states: A tuple (output_state_fw, output_state_bw) containing
 		      the forward and the backward final states of bidirectional rnn.
 		
@@ -218,58 +241,14 @@ package tensorflow.python.ops.rnn;
 		  TypeError: If `cell_fw` or `cell_bw` is not an instance of `RNNCell`.
 	**/
 	static public function bidirectional_dynamic_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?sequence_length:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?time_major:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Creates a bidirectional recurrent neural network.
-		
-		Similar to the unidirectional case above (rnn) but takes input and builds
-		independent forward and backward RNNs with the final forward and backward
-		outputs depth-concatenated, such that the output will have the format
-		[time][batch][cell_fw.output_size + cell_bw.output_size]. The input_size of
-		forward and backward cell must match. The initial state for both directions
-		is zero by default (but can be set optionally) and no intermediate states are
-		ever returned -- the network is fully unrolled for the given (passed in)
-		length(s) of the sequence(s) or completely unrolled if length(s) is not given.
-		
-		Args:
-		  cell_fw: An instance of RNNCell, to be used for forward direction.
-		  cell_bw: An instance of RNNCell, to be used for backward direction.
-		  inputs: A length T list of inputs, each a tensor of shape
-		    [batch_size, input_size], or a nested tuple of such elements.
-		  initial_state_fw: (optional) An initial state for the forward RNN.
-		    This must be a tensor of appropriate type and shape
-		    `[batch_size x cell_fw.state_size]`.
-		    If `cell_fw.state_size` is a tuple, this should be a tuple of
-		    tensors having shapes `[batch_size, s] for s in cell_fw.state_size`.
-		  initial_state_bw: (optional) Same as for `initial_state_fw`, but using
-		    the corresponding properties of `cell_bw`.
-		  dtype: (optional) The data type for the initial state.  Required if
-		    either of the initial states are not provided.
-		  sequence_length: (optional) An int32/int64 vector, size `[batch_size]`,
-		    containing the actual lengths for each of the sequences.
-		  scope: VariableScope for the created subgraph; defaults to "BiRNN"
-		
-		Returns:
-		  A tuple (outputs, output_state_fw, output_state_bw) where:
-		    outputs is a length `T` list of outputs (one for each input), which
-		      are depth-concatenated forward and backward outputs.
-		    output_state_fw is the final state of the forward rnn.
-		    output_state_bw is the final state of the backward rnn.
-		
-		Raises:
-		  TypeError: If `cell_fw` or `cell_bw` is not an instance of `RNNCell`.
-		  ValueError: If inputs is None or an empty list.
-	**/
-	static public function bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Creates a recurrent neural network specified by RNNCell `cell`.
 		
-		This function is functionally identical to the function `rnn` above, but
-		performs fully dynamic unrolling of `inputs`.
+		Performs fully dynamic unrolling of `inputs`.
 		
-		Unlike `rnn`, the input `inputs` is not a Python list of `Tensors`, one for
-		each frame.  Instead, `inputs` may be a single `Tensor` where
-		the maximum time is either the first or second dimension (see the parameter
+		`Inputs` may be a single `Tensor` where the maximum time is either the first
+		or second dimension (see the parameter
 		`time_major`).  Alternatively, it may be a (possibly nested) tuple of
 		Tensors, each of them having matching batch and time dimensions.
 		The corresponding output is either a single `Tensor` having the same number
@@ -278,7 +257,7 @@ package tensorflow.python.ops.rnn;
 		
 		The parameter `sequence_length` is optional and is used to copy-through state
 		and zero-out outputs when past a batch element's sequence length. So it's more
-		for correctness than performance, unlike in rnn().
+		for correctness than performance.
 		
 		Args:
 		  cell: An instance of RNNCell.
@@ -304,7 +283,7 @@ package tensorflow.python.ops.rnn;
 		  sequence_length: (optional) An int32/int64 vector sized `[batch_size]`.
 		  initial_state: (optional) An initial state for the RNN.
 		    If `cell.state_size` is an integer, this must be
-		    a `Tensor` of appropriate type and shape `[batch_size x cell.state_size]`.
+		    a `Tensor` of appropriate type and shape `[batch_size, cell.state_size]`.
 		    If `cell.state_size` is a tuple, this should be a tuple of
 		    tensors having shapes `[batch_size, s] for s in cell.state_size`.
 		  dtype: (optional) The data type for the initial state and expected output.
@@ -326,7 +305,7 @@ package tensorflow.python.ops.rnn;
 		    transposes at the beginning and end of the RNN calculation.  However,
 		    most TensorFlow data is batch-major, so by default this function
 		    accepts input and emits output in batch-major form.
-		  scope: VariableScope for the created subgraph; defaults to "RNN".
+		  scope: VariableScope for the created subgraph; defaults to "rnn".
 		
 		Returns:
 		  A pair (outputs, state) where:
@@ -373,21 +352,23 @@ package tensorflow.python.ops.rnn;
 		`TensorArray` objects directly.
 		
 		The operation of `raw_rnn`, in pseudo-code, is basically the following:
-		```
-		emit_ta = TensorArray(dynamic_size=True, dtype=initial_state.dtype)
+		
+		```python
 		time = tf.constant(0, dtype=tf.int32)
-		(finished, next_input, _, loop_state) = loop_fn(
-		    time=time, cell_output=None, loop_state=None)
+		(finished, next_input, initial_state, _, loop_state) = loop_fn(
+		    time=time, cell_output=None, cell_state=None, loop_state=None)
+		emit_ta = TensorArray(dynamic_size=True, dtype=initial_state.dtype)
 		state = initial_state
 		while not all(finished):
-		  (output, next_state) = cell(next_input, state)
-		  (next_finished, next_input, emit, loop_state) = loop_fn(
-		      time=time + 1, cell_output=output, loop_state=loop_state)
+		  (output, cell_state) = cell(next_input, state)
+		  (next_finished, next_input, next_state, emit, loop_state) = loop_fn(
+		      time=time + 1, cell_output=output, cell_state=cell_state,
+		      loop_state=loop_state)
 		  # Emit zeros and copy forward state for minibatch entries that are finished.
-		  state = tf.select(finished, state, next_state)
-		  emit = tf.select(finished, tf.zeros_like(emit), emit)
+		  state = tf.where(finished, state, next_state)
+		  emit = tf.where(finished, tf.zeros_like(emit), emit)
 		  emit_ta = emit_ta.write(time, emit)
-		  # If any new minibatch entries are marked as finished, mark these
+		  # If any new minibatch entries are marked as finished, mark these.
 		  finished = tf.logical_or(finished, next_finished)
 		  time += 1
 		return (emit_ta, state, loop_state)
@@ -404,10 +385,16 @@ package tensorflow.python.ops.rnn;
 		                        dtype=tf.float32)
 		sequence_length = tf.placeholder(shape=(batch_size,), dtype=tf.int32)
 		inputs_ta = tf.TensorArray(dtype=tf.float32, size=max_time)
-		inputs_ta = inputs_ta.unpack(inputs)
+		inputs_ta = inputs_ta.unstack(inputs)
 		
-		def loop_fn(time, cell_output, loop_state):
+		cell = tf.contrib.rnn.LSTMCell(num_units)
+		
+		def loop_fn(time, cell_output, cell_state, loop_state):
 		  emit_output = cell_output  # == None for time == 0
+		  if cell_output is None:  # time == 0
+		    next_cell_state = cell.zero_state(batch_size, tf.float32)
+		  else:
+		    next_cell_state = cell_state
 		  elements_finished = (time >= sequence_length)
 		  finished = tf.reduce_all(elements_finished)
 		  next_input = tf.cond(
@@ -415,35 +402,55 @@ package tensorflow.python.ops.rnn;
 		      lambda: tf.zeros([batch_size, input_depth], dtype=tf.float32),
 		      lambda: inputs_ta.read(time))
 		  next_loop_state = None
-		  return (elements_finished, next_input, emit_output, next_loop_state)
+		  return (elements_finished, next_input, next_cell_state,
+		          emit_output, next_loop_state)
 		
-		cell = tf.nn.rnn_cell.LSTMCell(num_units, state_is_tuple=True)
-		initial_state = cell.zero_state(batch_size, tf.float32)
-		outputs_ta, final_state, _ = raw_rnn(cell, loop_fn, initial_state)
-		outputs = outputs_ta.pack()
+		outputs_ta, final_state, _ = raw_rnn(cell, loop_fn)
+		outputs = outputs_ta.stack()
 		```
 		
 		Args:
 		  cell: An instance of RNNCell.
-		  loop_fn: A callable that takes inputs `(time, cell_output, loop_state)` and
-		    returns the tuple `(finished, next_input, emit_output, next_loop_state)`.
+		  loop_fn: A callable that takes inputs
+		    `(time, cell_output, cell_state, loop_state)`
+		    and returns the tuple
+		    `(finished, next_input, next_cell_state, emit_output, next_loop_state)`.
 		    Here `time` is an int32 scalar `Tensor`, `cell_output` is a
 		    `Tensor` or (possibly nested) tuple of tensors as determined by
-		    `cell.output_size`.  In addition, `finished` is a boolean `Tensor` of
-		    shape `[batch_size]`, `next_input` is the next input to feed to `cell`,
-		    and `emit_output` is the output to store for this iteration.  Note that
-		    `emit_output` should be a `Tensor` or (possibly nested) tuple of tensors
-		    with shapes and structure matching `cell.output_size` and `cell_output`
-		    above.  The parameter `loop_state` and output `next_loop_state` may be
-		    either a single or (possibly nested) tuple of tensors.  This paramter
+		    `cell.output_size`, and `cell_state` is a `Tensor`
+		    or (possibly nested) tuple of tensors, as determined by the `loop_fn`
+		    on its first call (and should match `cell.state_size`).
+		    The outputs are: `finished`, a boolean `Tensor` of
+		    shape `[batch_size]`, `next_input`: the next input to feed to `cell`,
+		    `next_cell_state`: the next state to feed to `cell`,
+		    and `emit_output`: the output to store for this iteration.
+		
+		    Note that `emit_output` should be a `Tensor` or (possibly nested)
+		    tuple of tensors with shapes and structure matching `cell.output_size`
+		    and `cell_output` above.  The parameter `cell_state` and output
+		    `next_cell_state` may be either a single or (possibly nested) tuple
+		    of tensors.  The parameter `loop_state` and
+		    output `next_loop_state` may be either a single or (possibly nested) tuple
+		    of `Tensor` and `TensorArray` objects.  This last parameter
 		    may be ignored by `loop_fn` and the return value may be `None`.  If it
 		    is not `None`, then the `loop_state` will be propagated through the RNN
 		    loop, for use purely by `loop_fn` to keep track of its own state.
 		    The `next_loop_state` parameter returned may be `None`.
 		
 		    The first call to `loop_fn` will be `time = 0`, `cell_output = None`,
-		    and `loop_state = None`.  Its `emit_output` value in this case may be
-		    either `None` or a (possibly nested) tuple structure of Tensors, e.g.,
+		    `cell_state = None`, and `loop_state = None`.  For this call:
+		    The `next_cell_state` value should be the value with which to initialize
+		    the cell's state.  It may be a final state from a previous RNN or it
+		    may be the output of `cell.zero_state()`.  It should be a
+		    (possibly nested) tuple structure of tensors.
+		    If `cell.state_size` is an integer, this must be
+		    a `Tensor` of appropriate type and shape `[batch_size, cell.state_size]`.
+		    If `cell.state_size` is a `TensorShape`, this must be a `Tensor` of
+		    appropriate type and shape `[batch_size] + cell.state_size`.
+		    If `cell.state_size` is a (possibly nested) tuple of ints or
+		    `TensorShape`, this will be a tuple having the corresponding shapes.
+		    The `emit_output` value may be  either `None` or a (possibly nested)
+		    tuple structure of tensors, e.g.,
 		    `(tf.zeros(shape_0, dtype=dtype_0), tf.zeros(shape_1, dtype=dtype_1))`.
 		    If this first `emit_output` return value is `None`,
 		    then the `emit_ta` result of `raw_rnn` will have the same structure and
@@ -453,13 +460,6 @@ package tensorflow.python.ops.rnn;
 		    initializing call are ignored.  Note, this emit structure must be
 		    consistent across all time steps.
 		
-		  initial_state: An initial state for the RNN.
-		    If `cell.state_size` is an integer, this must be
-		    a `Tensor` of appropriate type and shape `[batch_size, cell.state_size]`.
-		    If `cell.state_size` is a `TensorShape`, this must be a `Tensor` of
-		    appropriate type and shape `[batch_size] + cell.state_size`.
-		    If `cell.state_size` is a (possibly nested) tuple of ints or
-		    `TensorShape`, this will be a tuple having the corresponding shapes.
 		  parallel_iterations: (Default: 32).  The number of iterations to run in
 		    parallel.  Those operations which do not have any temporal dependency
 		    and can be run in parallel, will be.  This parameter trades off
@@ -469,42 +469,85 @@ package tensorflow.python.ops.rnn;
 		    but needed for back prop from GPU to CPU.  This allows training RNNs
 		    which would typically not fit on a single GPU, with very minimal (or no)
 		    performance penalty.
-		  scope: VariableScope for the created subgraph; defaults to "RNN".
+		  scope: VariableScope for the created subgraph; defaults to "rnn".
 		
 		Returns:
 		  A tuple `(emit_ta, final_state, final_loop_state)` where:
 		
-		    `emit_ta`: The RNN output `TensorArray`.
-		       If `loop_fn` returns a (possibly nested) set of Tensors for
-		       `emit_output` during initialization, (inputs `time = 0`,
-		       `cell_output = None`, and `loop_state = None`), then `emit_ta` will
-		       have the same structure, dtypes, and shapes as `emit_output` instead.
-		       If `loop_fn` returns `emit_output = None` during this call,
-		       the structure of `cell.output_size` is used:
+		  `emit_ta`: The RNN output `TensorArray`.
+		     If `loop_fn` returns a (possibly nested) set of Tensors for
+		     `emit_output` during initialization, (inputs `time = 0`,
+		     `cell_output = None`, and `loop_state = None`), then `emit_ta` will
+		     have the same structure, dtypes, and shapes as `emit_output` instead.
+		     If `loop_fn` returns `emit_output = None` during this call,
+		     the structure of `cell.output_size` is used:
+		     If `cell.output_size` is a (possibly nested) tuple of integers
+		     or `TensorShape` objects, then `emit_ta` will be a tuple having the
+		     same structure as `cell.output_size`, containing TensorArrays whose
+		     elements' shapes correspond to the shape data in `cell.output_size`.
 		
-		       If `cell.output_size` is a (possibly nested) tuple of integers
-		       or `TensorShape` objects, then `emit_ta` will be a tuple having the
-		       same structure as `cell.output_size`, containing TensorArrays whose
-		       elements' shapes correspond to the shape data in `cell.output_size`.
+		  `final_state`: The final cell state.  If `cell.state_size` is an int, this
+		    will be shaped `[batch_size, cell.state_size]`.  If it is a
+		    `TensorShape`, this will be shaped `[batch_size] + cell.state_size`.
+		    If it is a (possibly nested) tuple of ints or `TensorShape`, this will
+		    be a tuple having the corresponding shapes.
 		
-		    `final_state`: The final cell state.  If `cell.state_size` is an int, this
-		      will be shaped `[batch_size, cell.state_size]`.  If it is a
-		      `TensorShape`, this will be shaped `[batch_size] + cell.state_size`.
-		      If it is a (possibly nested) tuple of ints or `TensorShape`, this will
-		      be a tuple having the corresponding shapes.
-		
-		    `final_loop_state`: The final loop state as returned by `loop_fn`.
+		  `final_loop_state`: The final loop state as returned by `loop_fn`.
 		
 		Raises:
 		  TypeError: If `cell` is not an instance of RNNCell, or `loop_fn` is not
 		    a `callable`.
 	**/
-	static public function raw_rnn(cell:Dynamic, loop_fn:Dynamic, initial_state:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function raw_rnn(cell:Dynamic, loop_fn:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Creates a bidirectional recurrent neural network.
+		
+		Similar to the unidirectional case above (rnn) but takes input and builds
+		independent forward and backward RNNs with the final forward and backward
+		outputs depth-concatenated, such that the output will have the format
+		[time][batch][cell_fw.output_size + cell_bw.output_size]. The input_size of
+		forward and backward cell must match. The initial state for both directions
+		is zero by default (but can be set optionally) and no intermediate states are
+		ever returned -- the network is fully unrolled for the given (passed in)
+		length(s) of the sequence(s) or completely unrolled if length(s) is not given.
+		
+		Args:
+		  cell_fw: An instance of RNNCell, to be used for forward direction.
+		  cell_bw: An instance of RNNCell, to be used for backward direction.
+		  inputs: A length T list of inputs, each a tensor of shape
+		    [batch_size, input_size], or a nested tuple of such elements.
+		  initial_state_fw: (optional) An initial state for the forward RNN.
+		    This must be a tensor of appropriate type and shape
+		    `[batch_size, cell_fw.state_size]`.
+		    If `cell_fw.state_size` is a tuple, this should be a tuple of
+		    tensors having shapes `[batch_size, s] for s in cell_fw.state_size`.
+		  initial_state_bw: (optional) Same as for `initial_state_fw`, but using
+		    the corresponding properties of `cell_bw`.
+		  dtype: (optional) The data type for the initial state.  Required if
+		    either of the initial states are not provided.
+		  sequence_length: (optional) An int32/int64 vector, size `[batch_size]`,
+		    containing the actual lengths for each of the sequences.
+		  scope: VariableScope for the created subgraph; defaults to
+		    "bidirectional_rnn"
+		
+		Returns:
+		  A tuple (outputs, output_state_fw, output_state_bw) where:
+		    outputs is a length `T` list of outputs (one for each input), which
+		      are depth-concatenated forward and backward outputs.
+		    output_state_fw is the final state of the forward rnn.
+		    output_state_bw is the final state of the backward rnn.
+		
+		Raises:
+		  TypeError: If `cell_fw` or `cell_bw` is not an instance of `RNNCell`.
+		  ValueError: If inputs is None or an empty list.
+	**/
+	static public function static_bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Creates a recurrent neural network specified by RNNCell `cell`.
 		
 		The simplest form of RNN network generated is:
-		```py
+		
+		```python
 		  state = cell.zero_state(...)
 		  outputs = []
 		  for input_ in inputs:
@@ -521,11 +564,14 @@ package tensorflow.python.ops.rnn;
 		and properly propagates the state at an example's sequence length
 		to the final state output.
 		
-		The dynamic calculation performed is, at time t for batch row b,
+		The dynamic calculation performed is, at time `t` for batch row `b`,
+		
+		```python
 		  (output, state)(b, t) =
 		    (t >= sequence_length(b))
 		      ? (zeros(cell.output_size), states(b, sequence_length(b) - 1))
 		      : cell(input(b, t), state(b, t - 1))
+		```
 		
 		Args:
 		  cell: An instance of RNNCell.
@@ -541,20 +587,21 @@ package tensorflow.python.ops.rnn;
 		    dtype.
 		  sequence_length: Specifies the length of each sequence in inputs.
 		    An int32 or int64 vector (tensor) size `[batch_size]`, values in `[0, T)`.
-		  scope: VariableScope for the created subgraph; defaults to "RNN".
+		  scope: VariableScope for the created subgraph; defaults to "rnn".
 		
 		Returns:
 		  A pair (outputs, state) where:
-		    - outputs is a length T list of outputs (one for each input), or a nested
-		      tuple of such elements.
-		    - state is the final state
+		
+		  - outputs is a length T list of outputs (one for each input), or a nested
+		    tuple of such elements.
+		  - state is the final state
 		
 		Raises:
 		  TypeError: If `cell` is not an instance of RNNCell.
 		  ValueError: If `inputs` is `None` or an empty list, or if the input depth
 		    (column size) cannot be inferred from inputs via shape inference.
 	**/
-	static public function rnn(cell:Dynamic, inputs:Dynamic, ?initial_state:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function static_rnn(cell:Dynamic, inputs:Dynamic, ?initial_state:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		RNN that accepts a state saver for time-truncated RNN calculation.
 		
@@ -570,7 +617,7 @@ package tensorflow.python.ops.rnn;
 		    be a single string.
 		  sequence_length: (optional) An int32/int64 vector size [batch_size].
 		    See the documentation for rnn() for more details about sequence_length.
-		  scope: VariableScope for the created subgraph; defaults to "RNN".
+		  scope: VariableScope for the created subgraph; defaults to "rnn".
 		
 		Returns:
 		  A pair (outputs, state) where:
@@ -582,5 +629,5 @@ package tensorflow.python.ops.rnn;
 		  ValueError: If `inputs` is `None` or an empty list, or if the arity and
 		   type of `state_name` does not match that of `cell.state_size`.
 	**/
-	static public function state_saving_rnn(cell:Dynamic, inputs:Dynamic, state_saver:Dynamic, state_name:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function static_state_saving_rnn(cell:Dynamic, inputs:Dynamic, state_saver:Dynamic, state_name:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 }

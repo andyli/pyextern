@@ -43,17 +43,17 @@ package tensorflow.python.ops.tensor_array_grad;
 	**/
 	static public function _TensorArrayConcatGrad(op:Dynamic, grad:Dynamic, unused_lengths_grad:Dynamic):Dynamic;
 	/**
-		Gradient for TensorArrayPack.
+		Gradient for TensorArrayGather.
 		
 		Args:
-		  op: Forward TensorArrayPack op.
-		  grad: Gradient `Tensor` to TensorArrayPack.
+		  op: Forward TensorArrayGather op.
+		  grad: Gradient `Tensor` to TensorArrayGather.
 		
 		Returns:
 		  A flow `Tensor`, which can be used in control dependencies to
 		  force the write of `grad` to the gradient `TensorArray`.
 	**/
-	static public function _TensorArrayPackGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TensorArrayGatherGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for TensorArrayRead.
 		
@@ -67,6 +67,17 @@ package tensorflow.python.ops.tensor_array_grad;
 	**/
 	static public function _TensorArrayReadGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Gradient for TensorArrayScatter.
+		
+		Args:
+		  op: Forward TensorArrayScatter op.
+		  flow: Gradient `Tensor` flow to TensorArrayScatter.
+		
+		Returns:
+		  A grad `Tensor`, the gradient created in upstream ReadGrads or PackGrad.
+	**/
+	static public function _TensorArrayScatterGrad(op:Dynamic, flow:Dynamic):Dynamic;
+	/**
 		Gradient for TensorArraySplit.
 		
 		Args:
@@ -77,17 +88,6 @@ package tensorflow.python.ops.tensor_array_grad;
 		  A grad `Tensor`, the gradient created in upstream ReadGrads or PackGrad.
 	**/
 	static public function _TensorArraySplitGrad(op:Dynamic, flow:Dynamic):Dynamic;
-	/**
-		Gradient for TensorArrayUnpack.
-		
-		Args:
-		  op: Forward TensorArrayUnpack op.
-		  flow: Gradient `Tensor` flow to TensorArrayUnpack.
-		
-		Returns:
-		  A grad `Tensor`, the gradient created in upstream ReadGrads or PackGrad.
-	**/
-	static public function _TensorArrayUnpackGrad(op:Dynamic, flow:Dynamic):Dynamic;
 	/**
 		Gradient for TensorArrayWrite.
 		

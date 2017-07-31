@@ -15,7 +15,7 @@ package tensorflow.contrib.distributions.python.ops.binomial;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(classname:Dynamic, baseclasses:Dynamic, attrs:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,73 +55,66 @@ package tensorflow.contrib.distributions.python.ops.binomial;
 		Initialize a batch of Binomial distributions.
 		
 		Args:
-		  n:  Non-negative floating point tensor with shape broadcastable to
-		    `[N1,..., Nm]` with `m >= 0` and the same dtype as `p` or `logits`.
-		    Defines this as a batch of `N1 x ... x Nm` different Binomial
+		  total_count: Non-negative floating point tensor with shape broadcastable
+		    to `[N1,..., Nm]` with `m >= 0` and the same dtype as `probs` or
+		    `logits`. Defines this as a batch of `N1 x ...  x Nm` different Binomial
 		    distributions. Its components should be equal to integer values.
 		  logits: Floating point tensor representing the log-odds of a
 		    positive event with shape broadcastable to `[N1,..., Nm]` `m >= 0`, and
-		    the same dtype as `n`. Each entry represents logits for the probability
-		    of success for independent Binomial distributions.
-		  p:  Positive floating point tensor with shape broadcastable to
-		    `[N1,..., Nm]` `m >= 0`, `p in [0, 1]`. Each entry represents the
-		    probability of success for independent Binomial distributions.
-		  validate_args: Whether to assert valid values for parameters `n` and `p`,
-		    and `x` in `prob` and `log_prob`.  If `False`, correct behavior is not
-		    guaranteed.
-		  allow_nan_stats:  Boolean, default `False`.  If `False`, raise an
-		    exception if a statistic (e.g. mean/mode/etc...) is undefined for any
-		    batch member.  If `True`, batch members with valid parameters leading to
-		    undefined statistics will return NaN for this statistic.
-		  name: The name to prefix Ops created by this distribution class.
-		
-		Examples:
-		
-		```python
-		# Define 1-batch of a binomial distribution.
-		dist = Binomial(n=2., p=.9)
-		
-		# Define a 2-batch.
-		dist = Binomial(n=[4., 5], p=[.1, .3])
-		```
+		    the same dtype as `total_count`. Each entry represents logits for the
+		    probability of success for independent Binomial distributions. Only one
+		    of `logits` or `probs` should be passed in.
+		  probs: Positive floating point tensor with shape broadcastable to
+		    `[N1,..., Nm]` `m >= 0`, `probs in [0, 1]`. Each entry represents the
+		    probability of success for independent Binomial distributions. Only one
+		    of `logits` or `probs` should be passed in.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
+		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
+		    result is undefined. When `False`, an exception is raised if one or
+		    more of the statistic's batch members are undefined.
+		  name: Python `str` name prefixed to Ops created by this class.
 	**/
 	@:native("__init__")
-	public function ___init__(n:Dynamic, ?logits:Dynamic, ?p:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(total_count:Dynamic, ?logits:Dynamic, ?probs:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Initialize a batch of Binomial distributions.
 		
 		Args:
-		  n:  Non-negative floating point tensor with shape broadcastable to
-		    `[N1,..., Nm]` with `m >= 0` and the same dtype as `p` or `logits`.
-		    Defines this as a batch of `N1 x ... x Nm` different Binomial
+		  total_count: Non-negative floating point tensor with shape broadcastable
+		    to `[N1,..., Nm]` with `m >= 0` and the same dtype as `probs` or
+		    `logits`. Defines this as a batch of `N1 x ...  x Nm` different Binomial
 		    distributions. Its components should be equal to integer values.
 		  logits: Floating point tensor representing the log-odds of a
 		    positive event with shape broadcastable to `[N1,..., Nm]` `m >= 0`, and
-		    the same dtype as `n`. Each entry represents logits for the probability
-		    of success for independent Binomial distributions.
-		  p:  Positive floating point tensor with shape broadcastable to
-		    `[N1,..., Nm]` `m >= 0`, `p in [0, 1]`. Each entry represents the
-		    probability of success for independent Binomial distributions.
-		  validate_args: Whether to assert valid values for parameters `n` and `p`,
-		    and `x` in `prob` and `log_prob`.  If `False`, correct behavior is not
-		    guaranteed.
-		  allow_nan_stats:  Boolean, default `False`.  If `False`, raise an
-		    exception if a statistic (e.g. mean/mode/etc...) is undefined for any
-		    batch member.  If `True`, batch members with valid parameters leading to
-		    undefined statistics will return NaN for this statistic.
-		  name: The name to prefix Ops created by this distribution class.
-		
-		Examples:
-		
-		```python
-		# Define 1-batch of a binomial distribution.
-		dist = Binomial(n=2., p=.9)
-		
-		# Define a 2-batch.
-		dist = Binomial(n=[4., 5], p=[.1, .3])
-		```
+		    the same dtype as `total_count`. Each entry represents logits for the
+		    probability of success for independent Binomial distributions. Only one
+		    of `logits` or `probs` should be passed in.
+		  probs: Positive floating point tensor with shape broadcastable to
+		    `[N1,..., Nm]` `m >= 0`, `probs in [0, 1]`. Each entry represents the
+		    probability of success for independent Binomial distributions. Only one
+		    of `logits` or `probs` should be passed in.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
+		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
+		    result is undefined. When `False`, an exception is raised if one or
+		    more of the statistic's batch members are undefined.
+		  name: Python `str` name prefixed to Ops created by this class.
 	**/
-	public function new(n:Dynamic, ?logits:Dynamic, ?p:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
+	public function new(total_count:Dynamic, ?logits:Dynamic, ?probs:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -181,202 +174,518 @@ package tensorflow.contrib.distributions.python.ops.binomial;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;
 	static public var _abc_registry : Dynamic;
+	public function _batch_shape():Dynamic;
+	public function _batch_shape_tensor():Dynamic;
+	public function _call_cdf(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_cdf(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_prob(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_prob(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_quantile(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_sample_n(sample_shape:Dynamic, seed:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _cdf(counts:Dynamic):Dynamic;
+	public function _covariance():Dynamic;
+	public function _entropy():Dynamic;
+	public function _event_shape():Dynamic;
+	public function _event_shape_tensor():Dynamic;
+	/**
+		Helper to `sample` which ensures input is 1D.
+	**/
+	public function _expand_sample_shape_to_vector(x:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Implementation for `is_scalar_batch` and `is_scalar_event`.
+	**/
+	public function _is_scalar_helper(static_shape:Dynamic, dynamic_shape_fn:Dynamic):Dynamic;
+	public function _log_cdf(value:Dynamic):Dynamic;
+	public function _log_normalization(counts:Dynamic):Dynamic;
+	/**
+		For each batch member of counts `value`, `P[value]` is the probability that
+		after sampling `self.total_count` draws from this Binomial distribution, the
+		number of successes is `value`. Since different sequences of draws can result in
+		the same counts, the probability includes a combinatorial coefficient.
+		
+		Note: `value` must be a non-negative tensor with dtype `dtype` and whose shape
+		can be broadcast with `self.probs` and `self.total_count`. `value` is only legal
+		if it is less than or equal to `self.total_count` and its components are equal
+		to integer values.
+	**/
+	public function _log_prob(counts:Dynamic):Dynamic;
+	public function _log_survival_function(value:Dynamic):Dynamic;
+	public function _log_unnormalized_prob(counts:Dynamic):Dynamic;
 	/**
 		Check counts for proper shape, values, then return tensor version.
 	**/
-	public function _check_counts(counts:Dynamic):Dynamic;
+	public function _maybe_assert_valid_sample(counts:Dynamic, ?check_integer:Dynamic):Dynamic;
+	public function _maybe_assert_valid_total_count(total_count:Dynamic, validate_args:Dynamic):Dynamic;
+	public function _mean():Dynamic;
 	/**
-		Boolean describing behavior when a stat is undefined for batch member.
+		Note that when `(1 + total_count) * probs` is an integer, there are
+		actually two modes. Namely, `(1 + total_count) * probs` and
+		`(1 + total_count) * probs - 1` are both modes. Here we return only the
+		larger of the two modes.
+	**/
+	public function _mode():Dynamic;
+	/**
+		Helper function to standardize op scope.
+	**/
+	public function _name_scope(?name:Dynamic, ?values:Dynamic):Dynamic;
+	static public function _param_shapes(sample_shape:Dynamic):Dynamic;
+	/**
+		For each batch member of counts `value`, `P[value]` is the probability that
+		after sampling `self.total_count` draws from this Binomial distribution, the
+		number of successes is `value`. Since different sequences of draws can result in
+		the same counts, the probability includes a combinatorial coefficient.
+		
+		Note: `value` must be a non-negative tensor with dtype `dtype` and whose shape
+		can be broadcast with `self.probs` and `self.total_count`. `value` is only legal
+		if it is less than or equal to `self.total_count` and its components are equal
+		to integer values.
+	**/
+	public function _prob(counts:Dynamic):Dynamic;
+	public function _quantile(value:Dynamic):Dynamic;
+	public function _sample_n(n:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Helper to `sample`; sets static shape info.
+	**/
+	public function _set_sample_static_shape(x:Dynamic, sample_shape:Dynamic):Dynamic;
+	public function _stddev():Dynamic;
+	public function _survival_function(value:Dynamic):Dynamic;
+	public function _variance():Dynamic;
+	/**
+		Python `bool` describing behavior when a stat is undefined.
+		
+		Stats return +/- infinity when it makes sense. E.g., the variance of a
+		Cauchy distribution is infinity. However, sometimes the statistic is
+		undefined, e.g., if a distribution's pdf does not achieve a maximum within
+		the support of the distribution, the mode is undefined. If the mean is
+		undefined, then by definition the variance is undefined. E.g. the mean for
+		Student's T for df = 1 is undefined (no clear way to say it is either + or -
+		infinity), so the variance = E[(X - mean)**2] is also undefined.
+		
+		Returns:
+		  allow_nan_stats: Python `bool`.
 	**/
 	public var allow_nan_stats : Dynamic;
 	/**
-		Batch dimensions of this instance as a 1-D int32 `Tensor`.
+		Shape of a single sample from a single event index as a `TensorShape`.
 		
-		The product of the dimensions of the `batch_shape` is the number of
-		independent distributions of this kind the instance represents.
+		May be partially defined or unknown.
+		
+		The batch dimensions are indexes into independent, non-identical
+		parameterizations of this distribution.
+		
+		Returns:
+		  batch_shape: `TensorShape`, possibly unknown.
+	**/
+	public var batch_shape : Dynamic;
+	/**
+		Shape of a single sample from a single event index as a 1-D `Tensor`.
+		
+		The batch dimensions are indexes into independent, non-identical
+		parameterizations of this distribution.
 		
 		Args:
 		  name: name to give to the op
 		
 		Returns:
-		  `Tensor` `batch_shape`
+		  batch_shape: `Tensor`.
 	**/
-	public function batch_shape(?name:Dynamic):Dynamic;
+	public function batch_shape_tensor(?name:Dynamic):Dynamic;
 	/**
 		Cumulative distribution function.
+		
+		Given random variable `X`, the cumulative distribution function `cdf` is:
+		
+		```none
+		cdf(x) := P[X <= x]
+		```
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  cdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
 	**/
 	public function cdf(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		dtype of samples from this distribution.
+		Creates a deep copy of the distribution.
+		
+		Note: the copy distribution may continue to depend on the original
+		initialization arguments.
+		
+		Args:
+		  **override_parameters_kwargs: String/value dictionary of initialization
+		    arguments to override with new values.
+		
+		Returns:
+		  distribution: A new instance of `type(self)` initialized from the union
+		    of self.parameters and override_parameters_kwargs, i.e.,
+		    `dict(self.parameters, **override_parameters_kwargs)`.
+	**/
+	public function copy(?override_parameters_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Covariance.
+		
+		Covariance is (possibly) defined only for non-scalar-event distributions.
+		
+		For example, for a length-`k`, vector-valued distribution, it is calculated
+		as,
+		
+		```none
+		Cov[i, j] = Covariance(X_i, X_j) = E[(X_i - E[X_i]) (X_j - E[X_j])]
+		```
+		
+		where `Cov` is a (batch of) `k x k` matrix, `0 <= (i, j) < k`, and `E`
+		denotes expectation.
+		
+		Alternatively, for non-vector, multivariate distributions (e.g.,
+		matrix-valued, Wishart), `Covariance` shall return a (batch of) matrices
+		under some vectorization of the events, i.e.,
+		
+		```none
+		Cov[i, j] = Covariance(Vec(X)_i, Vec(X)_j) = [as above]
+		```
+		
+		where `Cov` is a (batch of) `k' x k'` matrices,
+		`0 <= (i, j) < k' = reduce_prod(event_shape)`, and `Vec` is some function
+		mapping indices of this distribution's event dimensions to indices of a
+		length-`k'` vector.
+		
+		Args:
+		  name: The name to give this op.
+		
+		Returns:
+		  covariance: Floating-point `Tensor` with shape `[B1, ..., Bn, k', k']`
+		    where the first `n` dimensions are batch coordinates and
+		    `k' = reduce_prod(self.event_shape)`.
+	**/
+	public function covariance(?name:Dynamic):Dynamic;
+	/**
+		The `DType` of `Tensor`s handled by this `Distribution`.
 	**/
 	public var dtype : Dynamic;
 	/**
-		Entropy of the distribution in nats.
+		Shannon entropy in nats.
 	**/
 	public function entropy(?name:Dynamic):Dynamic;
 	/**
-		Shape of a sample from a single distribution as a 1-D int32 `Tensor`.
+		Shape of a single sample from a single batch as a `TensorShape`.
+		
+		May be partially defined or unknown.
+		
+		Returns:
+		  event_shape: `TensorShape`, possibly unknown.
+	**/
+	public var event_shape : Dynamic;
+	/**
+		Shape of a single sample from a single batch as a 1-D int32 `Tensor`.
 		
 		Args:
 		  name: name to give to the op
 		
 		Returns:
-		  `Tensor` `event_shape`
+		  event_shape: `Tensor`.
 	**/
-	public function event_shape(?name:Dynamic):Dynamic;
+	public function event_shape_tensor(?name:Dynamic):Dynamic;
 	/**
-		`TensorShape` available at graph construction time.
+		Indicates that `batch_shape == []`.
 		
-		Same meaning as `batch_shape`. May be only partially defined.
+		Args:
+		  name: The name to give this op.
 		
 		Returns:
-		  batch shape
+		  is_scalar_batch: `bool` scalar `Tensor`.
 	**/
-	public function get_batch_shape():Dynamic;
+	public function is_scalar_batch(?name:Dynamic):Dynamic;
 	/**
-		`TensorShape` available at graph construction time.
+		Indicates that `event_shape == []`.
 		
-		Same meaning as `event_shape`. May be only partially defined.
+		Args:
+		  name: The name to give this op.
 		
 		Returns:
-		  event shape
+		  is_scalar_event: `bool` scalar `Tensor`.
 	**/
-	public function get_event_shape():Dynamic;
-	public var is_continuous : Dynamic;
-	public var is_reparameterized : Dynamic;
+	public function is_scalar_event(?name:Dynamic):Dynamic;
 	/**
-		Log CDF.
+		Log cumulative distribution function.
+		
+		Given random variable `X`, the cumulative distribution function `cdf` is:
+		
+		```none
+		log_cdf(x) := Log[ P[X <= x] ]
+		```
+		
+		Often, a numerical approximation can be used for `log_cdf(x)` that yields
+		a more accurate answer than simply taking the logarithm of the `cdf` when
+		`x << -1`.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  logcdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
 	**/
 	public function log_cdf(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Log of the probability density function.
-	**/
-	public function log_pdf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Log of the probability mass function.
-	**/
-	public function log_pmf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		`Log(P[counts])`, computed for every batch member.
+		Log probability density/mass function.
 		
-		For each batch member of counts `k`, `P[counts]` is the probability that
-		after sampling `n` draws from this Binomial distribution, the number of
-		successes is `k`.  Note that different sequences of draws can result in the
-		same counts, thus the probability includes a combinatorial coefficient.
+		
+		Additional documentation from `Binomial`:
+		
+		For each batch member of counts `value`, `P[value]` is the probability that
+		after sampling `self.total_count` draws from this Binomial distribution, the
+		number of successes is `value`. Since different sequences of draws can result in
+		the same counts, the probability includes a combinatorial coefficient.
+		
+		Note: `value` must be a non-negative tensor with dtype `dtype` and whose shape
+		can be broadcast with `self.probs` and `self.total_count`. `value` is only legal
+		if it is less than or equal to `self.total_count` and its components are equal
+		to integer values.
 		
 		Args:
-		  counts:  Non-negative tensor with dtype `dtype` and whose shape can be
-		    broadcast with `self.p` and `self.n`. `counts` is only legal if it is
-		    less than or equal to `n` and its components are equal to integer
-		    values.
-		  name:  Name to give this Op, defaults to "log_prob".
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
 		
 		Returns:
-		  Log probabilities for each record, shape `[N1,...,Nm]`.
+		  log_prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
 	**/
-	public function log_prob(counts:Dynamic, ?name:Dynamic):Dynamic;
+	public function log_prob(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Log-odds.
+		Log survival function.
+		
+		Given random variable `X`, the survival function is defined:
+		
+		```none
+		log_survival_function(x) = Log[ P[X > x] ]
+		                         = Log[ 1 - P[X <= x] ]
+		                         = Log[ 1 - cdf(x) ]
+		```
+		
+		Typically, different numerical approximations can be used for the log
+		survival function, which are more accurate than `1 - cdf(x)` when `x >> 1`.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
+		    `self.dtype`.
+	**/
+	public function log_survival_function(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Log-odds of drawing a `1`.
 	**/
 	public var logits : Dynamic;
 	/**
-		Mean of the distribution.
+		Mean.
 	**/
 	public function mean(?name:Dynamic):Dynamic;
 	/**
-		Mode of the distribution.
+		Mode.
 		
-		Note that when `(n + 1) * p` is an integer, there are actually two modes.
-		Namely, `(n + 1) * p` and `(n + 1) * p - 1` are both modes. Here we return
-		only the larger of the two modes.
+		Additional documentation from `Binomial`:
 		
-		Args:
-		  name: The name for this op.
-		
-		Returns:
-		  The mode of the Binomial distribution.
+		Note that when `(1 + total_count) * probs` is an integer, there are
+		actually two modes. Namely, `(1 + total_count) * probs` and
+		`(1 + total_count) * probs - 1` are both modes. Here we return only the
+		larger of the two modes.
 	**/
 	public function mode(?name:Dynamic):Dynamic;
 	/**
-		Number of trials.
-	**/
-	public var n : Dynamic;
-	/**
-		Name to prepend to all ops.
+		Name prepended to all ops created by this `Distribution`.
 	**/
 	public var name : Dynamic;
 	/**
-		Probability of success.
-	**/
-	public var p : Dynamic;
-	/**
-		The probability density function.
-	**/
-	public function pdf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		The probability mass function.
-	**/
-	public function pmf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		`P[counts]`, computed for every batch member.
+		Shapes of parameters given the desired shape of a call to `sample()`.
 		
+		This is a class method that describes what key/value arguments are required
+		to instantiate the given `Distribution` so that a particular shape is
+		returned for that instance's call to `sample()`.
 		
-		For each batch member of counts `k`, `P[counts]` is the probability that
-		after sampling `n` draws from this Binomial distribution, the number of
-		successes is `k`.  Note that different sequences of draws can result in the
-		same counts, thus the probability includes a combinatorial coefficient.
+		Subclasses should override class method `_param_shapes`.
 		
 		Args:
-		  counts:  Non-negative tensor with dtype `dtype` and whose shape can be
-		    broadcast with `self.p` and `self.n`. `counts` is only legal if it is
-		    less than or equal to `n` and its components are equal to integer
-		    values.
-		  name:  Name to give this Op, defaults to "prob".
+		  sample_shape: `Tensor` or python list/tuple. Desired shape of a call to
+		    `sample()`.
+		  name: name to prepend ops with.
 		
 		Returns:
-		  Probabilities for each record, shape `[N1,...,Nm]`.
+		  `dict` of parameter name to `Tensor` shapes.
 	**/
-	public function prob(counts:Dynamic, ?name:Dynamic):Dynamic;
+	static public function param_shapes(sample_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Generate samples of the specified shape for each batched distribution.
+		param_shapes with static (i.e. `TensorShape`) shapes.
 		
-		Note that a call to `sample()` without arguments will generate a single
-		sample per batched distribution.
+		This is a class method that describes what key/value arguments are required
+		to instantiate the given `Distribution` so that a particular shape is
+		returned for that instance's call to `sample()`. Assumes that the sample's
+		shape is known statically.
+		
+		Subclasses should override class method `_param_shapes` to return
+		constant-valued tensors when constant values are fed.
 		
 		Args:
-		  sample_shape: `int32` `Tensor` or tuple or list. Shape of the generated
-		    samples.
+		  sample_shape: `TensorShape` or python list/tuple. Desired shape of a call
+		    to `sample()`.
+		
+		Returns:
+		  `dict` of parameter name to `TensorShape`.
+		
+		Raises:
+		  ValueError: if `sample_shape` is a `TensorShape` and is not fully defined.
+	**/
+	static public function param_static_shapes(sample_shape:Dynamic):Dynamic;
+	/**
+		Dictionary of parameters used to instantiate this `Distribution`.
+	**/
+	public var parameters : Dynamic;
+	/**
+		Probability density/mass function.
+		
+		
+		Additional documentation from `Binomial`:
+		
+		For each batch member of counts `value`, `P[value]` is the probability that
+		after sampling `self.total_count` draws from this Binomial distribution, the
+		number of successes is `value`. Since different sequences of draws can result in
+		the same counts, the probability includes a combinatorial coefficient.
+		
+		Note: `value` must be a non-negative tensor with dtype `dtype` and whose shape
+		can be broadcast with `self.probs` and `self.total_count`. `value` is only legal
+		if it is less than or equal to `self.total_count` and its components are equal
+		to integer values.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
+	**/
+	public function prob(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Probability of of drawing a `1`.
+	**/
+	public var probs : Dynamic;
+	/**
+		Quantile function. Aka "inverse cdf" or "percent point function".
+		
+		Given random variable `X` and `p in [0, 1]`, the `quantile` is:
+		
+		```none
+		quantile(p) := x such that P[X <= x] == p
+		```
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  quantile: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
+	**/
+	public function quantile(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Describes how samples from the distribution are reparameterized.
+		
+		Currently this is one of the static instances
+		`distributions.FULLY_REPARAMETERIZED`
+		or `distributions.NOT_REPARAMETERIZED`.
+		
+		Returns:
+		  An instance of `ReparameterizationType`.
+	**/
+	public var reparameterization_type : Dynamic;
+	/**
+		Generate samples of the specified shape.
+		
+		Note that a call to `sample()` without arguments will generate a single
+		sample.
+		
+		Args:
+		  sample_shape: 0D or 1D `int32` `Tensor`. Shape of the generated samples.
 		  seed: Python integer seed for RNG
 		  name: name to give to the op.
 		
 		Returns:
-		  samples: a `Tensor` of dtype `self.dtype` and shape
-		      `sample_shape + self.batch_shape + self.event_shape`.
+		  samples: a `Tensor` with prepended dimensions `sample_shape`.
 	**/
 	public function sample(?sample_shape:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Generate `n` samples.
+		Standard deviation.
+		
+		Standard deviation is defined as,
+		
+		```none
+		stddev = E[(X - E[X])**2]**0.5
+		```
+		
+		where `X` is the random variable associated with this distribution, `E`
+		denotes expectation, and `stddev.shape = batch_shape + event_shape`.
 		
 		Args:
-		  n: scalar. Number of samples to draw from each distribution.
-		  seed: Python integer seed for RNG
-		  name: name to give to the op.
+		  name: The name to give this op.
 		
 		Returns:
-		  samples: a `Tensor` of shape `(n,) + self.batch_shape + self.event_shape`
-		      with values of type `self.dtype`.
+		  stddev: Floating-point `Tensor` with shape identical to
+		    `batch_shape + event_shape`, i.e., the same shape as `self.mean()`.
 	**/
-	public function sample_n(n:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	public function stddev(?name:Dynamic):Dynamic;
 	/**
-		Standard deviation of the distribution.
+		Survival function.
+		
+		Given random variable `X`, the survival function is defined:
+		
+		```none
+		survival_function(x) = P[X > x]
+		                     = 1 - P[X <= x]
+		                     = 1 - cdf(x).
+		```
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
+		    `self.dtype`.
 	**/
-	public function std(?name:Dynamic):Dynamic;
+	public function survival_function(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Boolean describing behavior on invalid input.
+		Number of trials.
+	**/
+	public var total_count : Dynamic;
+	/**
+		Python `bool` indicating possibly expensive checks are enabled.
 	**/
 	public var validate_args : Dynamic;
 	/**
-		Variance of the distribution.
+		Variance.
+		
+		Variance is defined as,
+		
+		```none
+		Var = E[(X - E[X])**2]
+		```
+		
+		where `X` is the random variable associated with this distribution, `E`
+		denotes expectation, and `Var.shape = batch_shape + event_shape`.
+		
+		Args:
+		  name: The name to give this op.
+		
+		Returns:
+		  variance: Floating-point `Tensor` with shape identical to
+		    `batch_shape + event_shape`, i.e., the same shape as `self.mean()`.
 	**/
 	public function variance(?name:Dynamic):Dynamic;
 }

@@ -47,6 +47,13 @@ package docutils.writers.latex2e;
 	**/
 	public function new(document:Dynamic, ?babel_class:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -102,6 +109,7 @@ package docutils.writers.latex2e;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _thead_depth : Dynamic;
+	static public var alltt : Dynamic;
 	/**
 		Append hypertargets for all ids of `node`
 	**/
@@ -216,7 +224,7 @@ package docutils.writers.latex2e;
 	/**
 		Return text with 'problematic' characters escaped.
 		
-		* Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
+		* Escape the special printing characters ``# $ % & ~ _ ^ \ { }``,
 		  square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
 		* Translate non-supported Unicode characters.
 		* Separate ``-`` (and more in literal text) to prevent input ligatures.
@@ -233,6 +241,7 @@ package docutils.writers.latex2e;
 		If `set_anchor` is True, an anchor is set with \phantomsection.
 	**/
 	public function ids_to_labels(node:Dynamic, ?set_anchor:Dynamic):Dynamic;
+	public function insert_additional_table_colum_delimiters():Dynamic;
 	static public var insert_newline : Dynamic;
 	static public var insert_non_breaking_blanks : Dynamic;
 	static public var inside_citation_reference_label : Dynamic;

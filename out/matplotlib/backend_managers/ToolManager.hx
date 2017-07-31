@@ -47,6 +47,13 @@ package matplotlib.backend_managers;
 	**/
 	public function new(canvas:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -157,7 +164,7 @@ package matplotlib.backend_managers;
 		Return the tool object, also accepts the actual tool for convenience
 		
 		Parameters
-		-----------
+		----------
 		name : str, ToolBase
 		    Name of the tool, or the tool itself
 		warn : bool, optional
@@ -173,7 +180,7 @@ package matplotlib.backend_managers;
 		    Name of the Tool
 		
 		Returns
-		----------
+		-------
 		list : list of keys associated with the Tool
 	**/
 	public function get_tool_keymap(name:Dynamic):Dynamic;
@@ -194,7 +201,7 @@ package matplotlib.backend_managers;
 		Connect event with string *s* to *func*.
 		
 		Parameters
-		-----------
+		----------
 		s : String
 		    Name of the event
 		

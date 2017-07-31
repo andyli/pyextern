@@ -13,14 +13,6 @@ package tensorflow.python.ops.ctc_ops;
 	**/
 	static public function _BroadcastMul(vec:Dynamic, mat:Dynamic):Dynamic;
 	/**
-		Shape function for the CTCBeamSearchDecoder op.
-	**/
-	static public function _CTCBeamSearchDecoderShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for the CTCGreedyDecoder op.
-	**/
-	static public function _CTCGreedyDecoderShape(op:Dynamic):Dynamic;
-	/**
 		The derivative provided by CTC Loss.
 		
 		Args:
@@ -31,10 +23,6 @@ package tensorflow.python.ops.ctc_ops;
 		   The CTC Loss gradient.
 	**/
 	static public function _CTCLossGrad(op:Dynamic, grad_loss:Dynamic, _:Dynamic):Dynamic;
-	/**
-		Shape function for the CTCLoss op.
-	**/
-	static public function _CTCLossShape(op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -48,8 +36,8 @@ package tensorflow.python.ops.ctc_ops;
 		Performs beam search decoding on the logits given in input.
 		
 		**Note** The `ctc_greedy_decoder` is a special case of the
-		`ctc_beam_search_decoder` with `top_paths=1` (but that decoder is faster
-		for this special case).
+		`ctc_beam_search_decoder` with `top_paths=1` and `beam_width=1` (but
+		that decoder is faster for this special case).
 		
 		If `merge_repeated` is `True`, merge repeated classes in the output beams.
 		This means that if consecutive entries in a beam are the same,
@@ -94,8 +82,8 @@ package tensorflow.python.ops.ctc_ops;
 		only the first of these is emitted.  The sequence `A B B * B * B` (where '*'
 		is the blank label) becomes
 		
-		  * `A B` if `merge_repeated=True`.
-		  * `A B B B B B` if `merge_repeated=False`.
+		  * `A B B B` if `merge_repeated=True`.
+		  * `A B B B B` if `merge_repeated=False`.
 		
 		Args:
 		  inputs: 3-D `float` `Tensor` sized
@@ -105,7 +93,7 @@ package tensorflow.python.ops.ctc_ops;
 		  merge_repeated: Boolean.  Default: True.
 		
 		Returns:
-		  A tuple `(decoded, log_probabilities)` where
+		  A tuple `(decoded, neg_sum_logits)` where
 		  decoded: A single-element list. `decoded[0]`
 		    is an `SparseTensor` containing the decoded outputs s.t.:
 		    `decoded.indices`: Indices matrix `(total_decoded_outputs x 2)`.
@@ -114,8 +102,9 @@ package tensorflow.python.ops.ctc_ops;
 		      The vector stores the decoded classes.
 		    `decoded.shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length]`
-		  log_probability: A `float` matrix `(batch_size x 1)` containing sequence
-		      log-probabilities.
+		  neg_sum_logits: A `float` matrix `(batch_size x 1)` containing, for the
+		      sequence found, the negative of the sum of the greatest logit at each
+		      timeframe.
 	**/
 	static public function ctc_greedy_decoder(inputs:Dynamic, sequence_length:Dynamic, ?merge_repeated:Dynamic):Dynamic;
 	/**
@@ -123,11 +112,9 @@ package tensorflow.python.ops.ctc_ops;
 		
 		This op implements the CTC loss as presented in the article:
 		
-		A. Graves, S. Fernandez, F. Gomez, J. Schmidhuber.
+		[A. Graves, S. Fernandez, F. Gomez, J. Schmidhuber.
 		Connectionist Temporal Classification: Labelling Unsegmented Sequence Data
-		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA, pp. 369-376.
-		
-		http://www.cs.toronto.edu/~graves/icml_2006.pdf
+		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA, pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
 		
 		Input requirements:
 		
@@ -137,6 +124,18 @@ package tensorflow.python.ops.ctc_ops;
 		max(labels.indices(labels.indices[:, 1] == b, 2))
 		  <= sequence_length(b) for all b.
 		```
+		
+		Notes:
+		
+		This class performs the softmax operation for you, so inputs should
+		be e.g. linear projections of outputs by an LSTM.
+		
+		The `inputs` Tensor's innermost dimension size, `num_classes`, represents
+		`num_labels + 1` classes, where num_labels is the number of true labels, and
+		the largest value `(num_classes - 1)` is reserved for the blank label.
+		
+		For example, for a vocabulary containing 3 labels `[a, b, c]`,
+		`num_classes = 4` and the labels indexing is `{a: 0, b: 1, c: 2, blank: 3}`.
 		
 		Regarding the arguments `preprocess_collapse_repeated` and
 		`ctc_merge_repeated`:
@@ -172,17 +171,37 @@ package tensorflow.python.ops.ctc_ops;
 		
 		  Untested.  Very likely will not learn to output repeated classes.
 		
+		The `ignore_longer_outputs_than_inputs` option allows to specify the behavior
+		of the CTCLoss when dealing with sequences that have longer outputs than
+		inputs. If true, the CTCLoss will simply return zero gradient for those
+		items, otherwise an InvalidArgument error is returned, stopping training.
+		
 		Args:
-		  inputs: 3-D `float` `Tensor` sized
-		    `[max_time x batch_size x num_classes]`.  The logits.
 		  labels: An `int32` `SparseTensor`.
 		    `labels.indices[i, :] == [b, t]` means `labels.values[i]` stores
-		    the id for (batch b, time t).  See `core/ops/ctc_ops.cc` for more details.
+		    the id for (batch b, time t).
+		    `labels.values[i]` must take on values in `[0, num_labels)`.
+		    See `core/ops/ctc_ops.cc` for more details.
+		  inputs: 3-D `float` `Tensor`.
+		    If time_major == False, this will be a `Tensor` shaped:
+		      `[batch_size x max_time x num_classes]`.
+		    If time_major == True (default), this will be a `Tensor` shaped:
+		      `[max_time x batch_size x num_classes]`.
+		    The logits.
 		  sequence_length: 1-D `int32` vector, size `[batch_size]`.
 		    The sequence lengths.
 		  preprocess_collapse_repeated: Boolean.  Default: False.
 		    If True, repeated labels are collapsed prior to the CTC calculation.
 		  ctc_merge_repeated: Boolean.  Default: True.
+		  ignore_longer_outputs_than_inputs: Boolean. Default: False.
+		    If True, sequences with longer outputs than inputs will be ignored.
+		  time_major: The shape format of the `inputs` Tensors.
+		    If True, these `Tensors` must be shaped `[max_time, batch_size, num_classes]`.
+		    If False, these `Tensors` must be shaped `[batch_size, max_time, num_classes]`.
+		    Using `time_major = True` (default) is a bit more efficient because it avoids
+		    transposes at the beginning of the ctc_loss calculation.  However, most
+		    TensorFlow data is batch-major, so by this function also accepts inputs
+		    in batch-major form.
 		
 		Returns:
 		  A 1-D `float` `Tensor`, size `[batch]`, containing the negative log probabilities.
@@ -190,7 +209,7 @@ package tensorflow.python.ops.ctc_ops;
 		Raises:
 		  TypeError: if labels is not a `SparseTensor`.
 	**/
-	static public function ctc_loss(inputs:Dynamic, labels:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic):Dynamic;
+	static public function ctc_loss(labels:Dynamic, inputs:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?time_major:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

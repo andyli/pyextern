@@ -2,7 +2,6 @@
 package tensorflow.python.ops.gen_image_ops;
 @:pythonImport("tensorflow.python.ops.gen_image_ops") extern class Gen_image_ops_Module {
 	static public function _InitOpDefLibrary():Dynamic;
-	static public var __adjust_contrastv2_outputs : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,11 +9,7 @@ package tensorflow.python.ops.gen_image_ops;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __random_crop_outputs : Dynamic;
-	static public var __resize_bilinear_grad_outputs : Dynamic;
-	static public var __resize_nearest_neighbor_grad_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _adjust_contrast_outputs : Dynamic;
 	/**
 		Adjust the contrast of one or more images.
 		
@@ -38,18 +33,6 @@ package tensorflow.python.ops.gen_image_ops;
 		  A `Tensor` of type `float32`. The contrast-adjusted image or images.
 	**/
 	static public function _adjust_contrastv2(images:Dynamic, contrast_factor:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _crop_and_resize_grad_boxes_outputs : Dynamic;
-	static public var _crop_and_resize_grad_image_outputs : Dynamic;
-	static public var _crop_and_resize_outputs : Dynamic;
-	static public var _decode_gif_outputs : Dynamic;
-	static public var _decode_jpeg_outputs : Dynamic;
-	static public var _decode_png_outputs : Dynamic;
-	static public var _draw_bounding_boxes_outputs : Dynamic;
-	static public var _encode_jpeg_outputs : Dynamic;
-	static public var _encode_png_outputs : Dynamic;
-	static public var _extract_glimpse_outputs : Dynamic;
-	static public var _hsv_to_rgb_outputs : Dynamic;
-	static public var _non_max_suppression_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Randomly crop `image`.
@@ -79,8 +62,6 @@ package tensorflow.python.ops.gen_image_ops;
 		  3-D of shape `[crop_height, crop_width, channels].`
 	**/
 	static public function _random_crop(image:Dynamic, size:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _resize_area_outputs : Dynamic;
-	static public var _resize_bicubic_outputs : Dynamic;
 	/**
 		Computes the gradient of bilinear interpolation.
 		
@@ -103,7 +84,6 @@ package tensorflow.python.ops.gen_image_ops;
 		  float or double.
 	**/
 	static public function _resize_bilinear_grad(grads:Dynamic, original_image:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _resize_bilinear_outputs : Dynamic;
 	/**
 		Computes the gradient of nearest neighbor interpolation.
 		
@@ -124,8 +104,6 @@ package tensorflow.python.ops.gen_image_ops;
 		  with respect to the input image.
 	**/
 	static public function _resize_nearest_neighbor_grad(grads:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _resize_nearest_neighbor_outputs : Dynamic;
-	static public var _rgb_to_hsv_outputs : Dynamic;
 	static public var _sample_distorted_bounding_box_outputs : Dynamic;
 	/**
 		Deprecated. Disallowed in GraphDef version >= 2.
@@ -141,6 +119,45 @@ package tensorflow.python.ops.gen_image_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function adjust_contrast(images:Dynamic, contrast_factor:Dynamic, min_value:Dynamic, max_value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Adjust the hue of one or more images.
+		
+		`images` is a tensor of at least 3 dimensions.  The last dimension is
+		interpretted as channels, and must be three.
+		
+		The input image is considered in the RGB colorspace. Conceptually, the RGB
+		colors are first mapped into HSV. A delta is then applied all the hue values,
+		and then remapped back to RGB colorspace.
+		
+		Args:
+		  images: A `Tensor` of type `float32`. Images to adjust.  At least 3-D.
+		  delta: A `Tensor` of type `float32`. A float delta to add to the hue.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`. The hue-adjusted image or images.
+	**/
+	static public function adjust_hue(images:Dynamic, delta:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Adjust the saturation of one or more images.
+		
+		`images` is a tensor of at least 3 dimensions.  The last dimension is
+		interpretted as channels, and must be three.
+		
+		The input image is considered in the RGB colorspace. Conceptually, the RGB
+		colors are first mapped into HSV. A scale is then applied all the saturation
+		values, and then remapped back to RGB colorspace.
+		
+		Args:
+		  images: A `Tensor` of type `float32`. Images to adjust.  At least 3-D.
+		  scale: A `Tensor` of type `float32`.
+		    A float scale to add to the saturation.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`. The hue-adjusted image or images.
+	**/
+	static public function adjust_saturation(images:Dynamic, scale:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Extracts crops from the input image tensor and bilinearly resizes them (possibly
 		
@@ -261,7 +278,10 @@ package tensorflow.python.ops.gen_image_ops;
 		GIF with frame or transparency compression are not supported
 		convert animated GIF from compressed to uncompressed by:
 		
-		convert $src.gif -coalesce $dst.gif
+		    convert $src.gif -coalesce $dst.gif
+		
+		This op also supports decoding JPEGs and PNGs, though it is cleaner to use
+		`tf.image.decode_image`.
 		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The GIF-encoded image.
@@ -291,6 +311,9 @@ package tensorflow.python.ops.gen_image_ops;
 		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
 		downscaling the image later.
 		
+		This op also supports decoding PNGs and non-animated GIFs since the interface is
+		the same, though it is cleaner to use `tf.image.decode_image`.
+		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The JPEG-encoded image.
 		  channels: An optional `int`. Defaults to `0`.
@@ -304,12 +327,19 @@ package tensorflow.python.ops.gen_image_ops;
 		  acceptable_fraction: An optional `float`. Defaults to `1`.
 		    The minimum required fraction of lines before a truncated
 		    input is accepted.
+		  dct_method: An optional `string`. Defaults to `""`.
+		    string specifying a hint about the algorithm used for
+		    decompression.  Defaults to "" which maps to a system-specific
+		    default.  Currently valid values are ["INTEGER_FAST",
+		    "INTEGER_ACCURATE"].  The hint may be ignored (e.g., the internal
+		    jpeg library changes to a version that does not have that specific
+		    option.)
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `uint8`. 3-D with shape `[height, width, channels]`..
 	**/
-	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?name:Dynamic):Dynamic;
+	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decode a PNG-encoded image to a uint8 or uint16 tensor.
 		
@@ -325,6 +355,9 @@ package tensorflow.python.ops.gen_image_ops;
 		
 		If needed, the PNG-encoded image is transformed to match the requested number
 		of color channels.
+		
+		This op also supports decoding JPEGs and non-animated GIFs since the interface
+		is the same, though it is cleaner to use `tf.image.decode_image`.
 		
 		Args:
 		  contents: A `Tensor` of type `string`. 0-D.  The PNG-encoded image.
@@ -347,7 +380,7 @@ package tensorflow.python.ops.gen_image_ops;
 		height of the underlying image.
 		
 		For example, if an image is 100 x 200 pixels and the bounding box is
-		`[0.1, 0.5, 0.2, 0.9]`, the bottom-left and upper-right coordinates of the
+		`[0.1, 0.2, 0.5, 0.9]`, the bottom-left and upper-right coordinates of the
 		bounding box will be `(10, 40)` to `(50, 180)`.
 		
 		Parts of the bounding box may fall outside the image.
@@ -473,7 +506,7 @@ package tensorflow.python.ops.gen_image_ops;
 		    by the glimpse width.
 		  offsets: A `Tensor` of type `float32`.
 		    A 2-D integer tensor of shape `[batch_size, 2]` containing
-		    the x, y locations of the center of each window.
+		    the y, x locations of the center of each window.
 		  centered: An optional `bool`. Defaults to `True`.
 		    indicates if the offset coordinates are centered relative to
 		    the image, in which case the (0, 0) offset is relative to the center
@@ -483,7 +516,7 @@ package tensorflow.python.ops.gen_image_ops;
 		    indicates if the offset coordinates are normalized.
 		  uniform_noise: An optional `bool`. Defaults to `True`.
 		    indicates if the noise should be generated using a
-		    uniform distribution or a gaussian distribution.
+		    uniform distribution or a Gaussian distribution.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -526,7 +559,7 @@ package tensorflow.python.ops.gen_image_ops;
 		The output of this operation is a set of integers indexing into the input
 		collection of bounding boxes representing the selected boxes.  The bounding
 		box coordinates corresponding to the selected indices can then be obtained
-		using the tf.gather operation.  For example:
+		using the `tf.gather operation`.  For example:
 		
 		  selected_indices = tf.image.non_max_suppression(
 		      boxes, scores, max_output_size, iou_threshold)
@@ -667,7 +700,7 @@ package tensorflow.python.ops.gen_image_ops;
 		The output of this Op is a single bounding box that may be used to crop the
 		original image. The output is returned as 3 tensors: `begin`, `size` and
 		`bboxes`. The first 2 tensors can be fed directly into `tf.slice` to crop the
-		image. The latter may be supplied to `tf.image.draw_bounding_box` to visualize
+		image. The latter may be supplied to `tf.image.draw_bounding_boxes` to visualize
 		what the bounding box looks like.
 		
 		Bounding boxes are supplied and returned as `[y_min, x_min, y_max, x_max]`. The
@@ -676,6 +709,7 @@ package tensorflow.python.ops.gen_image_ops;
 		
 		For example,
 		
+		```python
 		    # Generate a single distorted bounding box.
 		    begin, size, bbox_for_draw = tf.image.sample_distorted_bounding_box(
 		        tf.shape(image),
@@ -688,6 +722,7 @@ package tensorflow.python.ops.gen_image_ops;
 		
 		    # Employ the bounding box to distort the image.
 		    distorted_image = tf.slice(image, begin, size)
+		```
 		
 		Note that if no bounding box information is available, setting
 		`use_image_if_no_bounding_boxes = true` will assume there is a single implicit
@@ -708,7 +743,9 @@ package tensorflow.python.ops.gen_image_ops;
 		    A second seed to avoid seed collision.
 		  min_object_covered: An optional `float`. Defaults to `0.1`.
 		    The cropped area of the image must contain at least this
-		    fraction of any bounding box supplied.
+		    fraction of any bounding box supplied. The value of this parameter should be
+		    non-negative. In the case of 0, the cropped area does not need to overlap
+		    any of the bounding boxes supplied.
 		  aspect_ratio_range: An optional list of `floats`. Defaults to `[0.75, 1.33]`.
 		    The cropped area of the image must have an aspect ratio =
 		    width / height within this range.
@@ -727,6 +764,7 @@ package tensorflow.python.ops.gen_image_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (begin, size, bboxes).
+		
 		  begin: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[offset_height, offset_width, 0]`. Provide as input to
 		    `tf.slice`.
 		  size: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[target_height, target_width, -1]`. Provide as input to

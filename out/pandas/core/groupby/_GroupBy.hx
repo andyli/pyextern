@@ -56,6 +56,13 @@ package pandas.core.groupby;
 	**/
 	public function new(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Groupby iterator
 		
 		Returns
@@ -132,7 +139,6 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -152,7 +158,7 @@ package pandas.core.groupby;
 		None if not required
 	**/
 	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
 	/**
@@ -178,7 +184,7 @@ package pandas.core.groupby;
 		(though the default is sort=True) for groupby in general
 	**/
 	public function _cumcount_array(?ascending:Dynamic):Dynamic;
-	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_agg_general(how:Dynamic, ?alt:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	/**
@@ -241,10 +247,15 @@ package pandas.core.groupby;
 		each group regardless of whether a group selection was previously set.
 	**/
 	public function _reset_group_selection():Dynamic;
-	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
+	/**
+		return a name for myself; this would ideally be called
+		the 'name' property, but we cannot conflict with the
+		Series.name property which can be set
+	**/
+	public var _selection_name : Dynamic;
 	/**
 		Create group based selection. Used when selection is not passed
 		directly but instead via a grouper.
@@ -256,10 +267,20 @@ package pandas.core.groupby;
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		if arg is a string, then try to operate on it:
+		- try to find a function (or attribute) on ourselves
+		- try to find a numpy function
+		- raise
+	**/
+	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		try to cast the result to our obj original type,
 		we may have roundtripped thru object in the mean-time
+		
+		if numeric_only is True, then only try to cast numerics
+		and not datetimelikes
 	**/
-	public function _try_cast(result:Dynamic, obj:Dynamic):Dynamic;
+	public function _try_cast(result:Dynamic, obj:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _wrap_applied_output(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function aggregate(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -328,7 +349,6 @@ package pandas.core.groupby;
 		dict {group name -> group indices} 
 	**/
 	public var indices : Dynamic;
-	public var name : Dynamic;
 	static public var ndim : Dynamic;
 	public var ngroups : Dynamic;
 	/**

@@ -41,7 +41,7 @@ package tensorflow.contrib.layers.python.layers.regularizers;
 		Args:
 		  scale_l1: A scalar multiplier `Tensor` for L1 regularization.
 		  scale_l2: A scalar multiplier `Tensor` for L2 regularization.
-		  scope: An optional op_scope name.
+		  scope: An optional scope name.
 		
 		Returns:
 		  A function with signature `l1_l2(weights)` that applies a weighted sum of
@@ -58,7 +58,7 @@ package tensorflow.contrib.layers.python.layers.regularizers;
 		
 		Args:
 		  scale: A scalar multiplier `Tensor`. 0.0 disables the regularizer.
-		  scope: An optional op_scope name.
+		  scope: An optional scope name.
 		
 		Returns:
 		  A function with signature `l1(weights)` that apply L1 regularization.
@@ -74,7 +74,7 @@ package tensorflow.contrib.layers.python.layers.regularizers;
 		
 		Args:
 		  scale: A scalar multiplier `Tensor`. 0.0 disables the regularizer.
-		  scope: An optional op_scope name.
+		  scope: An optional scope name.
 		
 		Returns:
 		  A function with signature `l2(weights)` that applies L2 regularization.
@@ -89,7 +89,7 @@ package tensorflow.contrib.layers.python.layers.regularizers;
 		
 		Args:
 		  regularizer_list: A list of regularizers to apply.
-		  scope: An optional op_scope name
+		  scope: An optional scope name
 		
 		Returns:
 		  A function with signature `sum_reg(weights)` that applies the

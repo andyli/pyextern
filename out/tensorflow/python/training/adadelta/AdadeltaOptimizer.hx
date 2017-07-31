@@ -45,6 +45,7 @@ package tensorflow.python.training.adadelta;
 		
 		Args:
 		  learning_rate: A `Tensor` or a floating point value. The learning rate.
+		    To match the exact form in the original paper use 1.0.
 		  rho: A `Tensor` or a floating point value. The decay rate.
 		  epsilon: A `Tensor` or a floating point value.  A constant epsilon used
 		           to better conditioning the grad update.
@@ -59,6 +60,7 @@ package tensorflow.python.training.adadelta;
 		
 		Args:
 		  learning_rate: A `Tensor` or a floating point value. The learning rate.
+		    To match the exact form in the original paper use 1.0.
 		  rho: A `Tensor` or a floating point value. The decay rate.
 		  epsilon: A `Tensor` or a floating point value.  A constant epsilon used
 		           to better conditioning the grad update.
@@ -67,6 +69,13 @@ package tensorflow.python.training.adadelta;
 		    gradients.  Defaults to "Adadelta".
 	**/
 	public function new(?learning_rate:Dynamic, ?rho:Dynamic, ?epsilon:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -136,14 +145,50 @@ package tensorflow.python.training.adadelta;
 	/**
 		Add ops to apply sparse gradients to `var`.
 		
+		The IndexedSlices object passed to `grad` in this function is by default
+		pre-processed in `_apply_sparse_duplicate_indices` to remove duplicate
+		indices (see its docstring for details). Optimizers which can tolerate or
+		have correct special cases for duplicate sparse indices may override
+		`_apply_sparse_duplicate_indices` instead of this function, avoiding that
+		overhead.
+		
 		Args:
-		  grad: `IndexedSlices`.
+		  grad: `IndexedSlices`, with no repeated indices.
 		  var: A `Variable` object.
 		
 		Return:
 		  An `Operation`.
 	**/
 	public function _apply_sparse(grad:Dynamic, _var:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to `var`, with repeated sparse indices.
+		
+		Optimizers which override this method must deal with IndexedSlices objects
+		such as the following:
+		
+		  IndexedSlicesValue(values=[1, 1], indices=[0, 0], dense_shape=[1])
+		
+		The correct interpretation is:
+		
+		  IndexedSlicesValue(values=[2], indices=[0], dense_shape=[1])
+		
+		Many optimizers deal incorrectly with repeated indices when updating based
+		on sparse gradients (e.g. summing squares rather than squaring the sum, or
+		applying momentum terms multiple times). Adding first is always the correct
+		behavior, so this is enforced here by reconstructing the IndexedSlices to
+		have only unique indices, then calling _apply_sparse.
+		
+		Optimizers which deal correctly with repeated indices may instead override
+		this method to avoid the overhead of summing indices.
+		
+		Args:
+		  grad: `IndexedSlices`.
+		  var: A `Variable` object.
+		
+		Returns:
+		  An `Operation`.
+	**/
+	public function _apply_sparse_duplicate_indices(grad:Dynamic, _var:Dynamic):Dynamic;
 	/**
 		Asserts tensors are all valid types (see `_valid_dtypes`).
 		
@@ -192,12 +237,81 @@ package tensorflow.python.training.adadelta;
 	**/
 	public function _get_or_make_slot(_var:Dynamic, val:Dynamic, slot_name:Dynamic, op_name:Dynamic):Dynamic;
 	/**
+		Find or create a slot for a variable, using an Initializer.
+		
+		Args:
+		  var: A `Variable` object.
+		  initializer: An `Initializer`.  The initial value of the slot.
+		  shape: Shape of the initial value of the slot.
+		  dtype: Type of the value of the slot.
+		  slot_name: Name for the slot.
+		  op_name: Name to use when scoping the Variable that
+		    needs to be created for  the slot.
+		
+		Returns:
+		  A `Variable` object.
+	**/
+	public function _get_or_make_slot_with_initializer(_var:Dynamic, initializer:Dynamic, shape:Dynamic, dtype:Dynamic, slot_name:Dynamic, op_name:Dynamic):Dynamic;
+	/**
 		Create all needed tensors before applying gradients.
 		
 		This is called with the name_scope using the "name" that
 		users have chosen for the application of gradients.
 	**/
 	public function _prepare():Dynamic;
+	/**
+		Add ops to apply dense gradients to the variable `handle`.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_dense(grad:Dynamic, _var:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to the variable `handle`.
+		
+		Similar to `_apply_sparse`, the `indices` argument to this method has been
+		de-duplicated. Optimizers which deal correctly with non-unique indices may
+		instead override `_resource_apply_sparse_duplicate_indices` to avoid this
+		overhead.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient for the affected indices.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		  indices: a `Tensor` of integral type representing the indices for
+		   which the gradient is nonzero. Indices are unique.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_sparse(grad:Dynamic, _var:Dynamic, indices:Dynamic):Dynamic;
+	/**
+		Add ops to apply sparse gradients to `handle`, with repeated indices.
+		
+		Optimizers which override this method must deal with repeated indices. See
+		the docstring of `_apply_sparse_duplicate_indices` for details. By default
+		the correct behavior, to sum non-unique indices and their associated
+		gradients, is enforced by first pre-processing `grad` and `indices` and
+		passing them on to `_resource_apply_sparse`. Optimizers which deal correctly
+		with duplicate indices may instead override this method to avoid the
+		overhead of summing.
+		
+		Args:
+		  grad: a `Tensor` representing the gradient for the affected indices.
+		  handle: a `Tensor` of dtype `resource` which points to the variable
+		   to be updated.
+		  indices: a `Tensor` of integral type representing the indices for
+		   which the gradient is nonzero. Indices may be repeated.
+		
+		Returns:
+		  An `Operation` which updates the value of the variable.
+	**/
+	public function _resource_apply_sparse_duplicate_indices(grad:Dynamic, handle:Dynamic, indices:Dynamic):Dynamic;
 	/**
 		Returns a dict for caching slots created under the given name.
 		
@@ -212,7 +326,7 @@ package tensorflow.python.training.adadelta;
 	/**
 		Valid types for loss, variables and gradients.
 		
-		Defaults to `float32`. Subclasses should override to allow other types.
+		Subclasses should override to allow other float types.
 		
 		Returns:
 		  Valid types for loss, variables and gradients.
@@ -265,7 +379,7 @@ package tensorflow.python.training.adadelta;
 		
 		Args:
 		  loss: A Tensor containing the value to minimize.
-		  var_list: Optional list of tf.Variable to update to minimize
+		  var_list: Optional list or tuple of `tf.Variable` to update to minimize
 		    `loss`.  Defaults to the list of variables collected in the graph
 		    under the key `GraphKey.TRAINABLE_VARIABLES`.
 		  gate_gradients: How to gate the computation of gradients.  Can be
@@ -277,7 +391,8 @@ package tensorflow.python.training.adadelta;
 		  grad_loss: Optional. A `Tensor` holding the gradient computed for `loss`.
 		
 		Returns:
-		  A list of (gradient, variable) pairs.
+		  A list of (gradient, variable) pairs. Variable is always present, but
+		  gradient can be `None`.
 		
 		Raises:
 		  TypeError: If `var_list` contains anything else than `Variable` objects.
@@ -324,9 +439,9 @@ package tensorflow.python.training.adadelta;
 		  loss: A `Tensor` containing the value to minimize.
 		  global_step: Optional `Variable` to increment by one after the
 		    variables have been updated.
-		  var_list: Optional list of `Variable` objects to update to minimize
-		    `loss`.  Defaults to the list of variables collected in the graph
-		    under the key `GraphKeys.TRAINABLE_VARIABLES`.
+		  var_list: Optional list or tuple of `Variable` objects to update to
+		    minimize `loss`.  Defaults to the list of variables collected in
+		    the graph under the key `GraphKeys.TRAINABLE_VARIABLES`.
 		  gate_gradients: How to gate the computation of gradients.  Can be
 		    `GATE_NONE`, `GATE_OP`, or  `GATE_GRAPH`.
 		  aggregation_method: Specifies the method used to combine gradient terms.

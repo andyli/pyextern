@@ -80,35 +80,43 @@ package numpy.lib.index_tricks;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -124,7 +132,13 @@ package numpy.lib.index_tricks;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -170,10 +184,61 @@ package numpy.lib.index_tricks;
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Make an ndarray from the given array with the given shape and strides.
-		    
+		Create a view into the array with the given shape and strides.
+		
+		.. warning:: This function has to be used with extreme care, see notes.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Array to create a new.
+		shape : sequence of int, optional
+		    The shape of the new array. Defaults to ``x.shape``.
+		strides : sequence of int, optional
+		    The strides of the new array. Defaults to ``x.strides``.
+		subok : bool, optional
+		    .. versionadded:: 1.10
+		
+		    If True, subclasses are preserved.
+		writeable : bool, optional
+		    .. versionadded:: 1.12
+		
+		    If set to False, the returned array will always be readonly.
+		    Otherwise it will be writable if the original array was. It
+		    is advisable to set this to False if possible (see Notes).
+		
+		Returns
+		-------
+		view : ndarray
+		
+		See also
+		--------
+		broadcast_to: broadcast an array to a given shape.
+		reshape : reshape an array.
+		
+		Notes
+		-----
+		``as_strided`` creates a view into the array given the exact strides
+		and shape. This means it manipulates the internal data structure of
+		ndarray and, if done incorrectly, the array elements can point to
+		invalid memory and can corrupt results or crash your program.
+		It is advisable to always use the original ``x.strides`` when
+		calculating new strides to avoid reliance on a contiguous memory
+		layout.
+		
+		Furthermore, arrays created with this function often contain self
+		overlapping memory, so that two elements are identical.
+		Vectorized write operations on such arrays will typically be
+		unpredictable. They may even give different results for small, large,
+		or transposed arrays.
+		Since writing to these arrays has to be tested and done with great
+		care, you may want to use ``writeable=False`` to avoid accidental write
+		operations.
+		
+		For these reasons it is advisable to avoid ``as_strided`` when
+		possible.
 	**/
-	static public function as_strided(x:Dynamic, ?shape:Dynamic, ?strides:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function as_strided(x:Dynamic, ?shape:Dynamic, ?strides:Dynamic, ?subok:Dynamic, ?writeable:Dynamic):numpy.Ndarray;
 	/**
 		Convert the input to an array.
 		
@@ -194,8 +259,8 @@ package numpy.lib.index_tricks;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -384,56 +449,77 @@ package numpy.lib.index_tricks;
 	**/
 	static public function diag_indices_from(arr:Dynamic):Dynamic;
 	/**
-		    Calculate the n-th discrete difference along given axis.
+		Calculate the n-th discrete difference along given axis.
 		
-		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
-		    the given axis, higher differences are calculated by using `diff`
-		    recursively.
+		The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		the given axis, higher differences are calculated by using `diff`
+		recursively.
 		
-		    Parameters
-		    ----------
-		    a : array_like
-		        Input array
-		    n : int, optional
-		        The number of times values are differenced.
-		    axis : int, optional
-		        The axis along which the difference is taken, default is the last axis.
+		Parameters
+		----------
+		a : array_like
+		    Input array
+		n : int, optional
+		    The number of times values are differenced.
+		axis : int, optional
+		    The axis along which the difference is taken, default is the last axis.
 		
-		    Returns
-		    -------
-		    diff : ndarray
-		        The n-th differences. The shape of the output is the same as `a`
-		        except along `axis` where the dimension is smaller by `n`.
-		.
+		Returns
+		-------
+		diff : ndarray
+		    The n-th differences. The shape of the output is the same as `a`
+		    except along `axis` where the dimension is smaller by `n`. The
+		    type of the output is the same as that of the input.
 		
-		    See Also
-		    --------
-		    gradient, ediff1d, cumsum
+		See Also
+		--------
+		gradient, ediff1d, cumsum
 		
-		    Examples
-		    --------
-		    >>> x = np.array([1, 2, 4, 7, 0])
-		    >>> np.diff(x)
-		    array([ 1,  2,  3, -7])
-		    >>> np.diff(x, n=2)
-		    array([  1,   1, -10])
+		Notes
+		-----
+		For boolean arrays, the preservation of type means that the result
+		will contain `False` when consecutive elements are the same and
+		`True` when they differ.
 		
-		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		    >>> np.diff(x)
-		    array([[2, 3, 4],
-		           [5, 1, 2]])
-		    >>> np.diff(x, axis=0)
-		    array([[-1,  2,  0, -2]])
+		For unsigned integer arrays, the results will also be unsigned. This should
+		not be surprising, as the result is consistent with calculating the
+		difference directly:
 		
-		    
+		>>> u8_arr = np.array([1, 0], dtype=np.uint8)
+		>>> np.diff(u8_arr)
+		array([255], dtype=uint8)
+		>>> u8_arr[1,...] - u8_arr[0,...]
+		array(255, np.uint8)
+		
+		If this is not desirable, then the array should be cast to a larger integer
+		type first:
+		
+		>>> i16_arr = u8_arr.astype(np.int16)
+		>>> np.diff(i16_arr)
+		array([-1], dtype=int16)
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 4, 7, 0])
+		>>> np.diff(x)
+		array([ 1,  2,  3, -7])
+		>>> np.diff(x, n=2)
+		array([  1,   1, -10])
+		
+		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		>>> np.diff(x)
+		array([[2, 3, 4],
+		       [5, 1, 2]])
+		>>> np.diff(x, axis=0)
+		array([[-1,  2,  0, -2]])
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
 		
-		For an array `a` with ``a.ndim > 2``, the diagonal is the list of
-		locations with indices ``a[i, i, ..., i]`` all identical. This function
+		For an array `a` with ``a.ndim >= 2``, the diagonal is the list of
+		locations with indices ``a[i, ..., i]`` all identical. This function
 		modifies the input array in-place, it does not return a value.
 		
 		Parameters
@@ -613,6 +699,10 @@ package numpy.lib.index_tricks;
 		Parameters
 		----------
 		args : 1-D sequences
+		    Each sequence should be of integer or boolean type.
+		    Boolean sequences will be interpreted as boolean masks for the
+		    corresponding dimension (equivalent to passing in
+		    ``np.nonzero(boolean_sequence)``).
 		
 		Returns
 		-------
@@ -630,12 +720,21 @@ package numpy.lib.index_tricks;
 		>>> a
 		array([[0, 1, 2, 3, 4],
 		       [5, 6, 7, 8, 9]])
-		>>> ixgrid = np.ix_([0,1], [2,4])
+		>>> ixgrid = np.ix_([0, 1], [2, 4])
 		>>> ixgrid
 		(array([[0],
 		       [1]]), array([[2, 4]]))
 		>>> ixgrid[0].shape, ixgrid[1].shape
 		((2, 1), (1, 2))
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		
+		>>> ixgrid = np.ix_([True, True], [2, 4])
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		>>> ixgrid = np.ix_([True, True], [False, False, True, False, True])
 		>>> a[ixgrid]
 		array([[2, 4],
 		       [7, 9]])

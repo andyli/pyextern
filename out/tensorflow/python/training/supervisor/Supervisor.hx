@@ -70,7 +70,7 @@ package tensorflow.python.training.supervisor;
 		Note that the queue runners collected in the graph key `QUEUE_RUNNERS`
 		are already started automatically when you create a session with the
 		supervisor, so unless you have non-collected queue runners to start
-		you do not need to call this explicitely.
+		you do not need to call this explicitly.
 		
 		Args:
 		  sess: A `Session`.
@@ -199,12 +199,19 @@ package tensorflow.python.training.supervisor;
 		    The model is considered ready if it returns an empty array.  Defaults to
 		    the tensor returned from `tf.report_uninitialized_variables()`  If
 		    `None`, the model is not checked for readiness.
+		  ready_for_local_init_op: 1-D string `Tensor`.  This tensor is evaluated by
+		    supervisors in `prepare_or_wait_for_session()` to check if the model is
+		    ready to run the local_init_op.
+		    The model is considered ready if it returns an empty array.  Defaults to
+		    the tensor returned from
+		    `tf.report_uninitialized_variables(tf.global_variables())`. If `None`,
+		    the model is not checked for readiness before running local_init_op.
 		  is_chief: If True, create a chief supervisor in charge of initializing
 		    and restoring the model.  If False, create a supervisor that relies
 		    on a chief supervisor for inits and restore.
 		  init_op: `Operation`.  Used by chief supervisors to initialize the model
 		    when it can not be recovered.  Defaults to an `Operation` that
-		    initializes all variables.  If `None`, no initialization is done
+		    initializes all global variables.  If `None`, no initialization is done
 		    automatically unless you pass a value for `init_fn`, see below.
 		  init_feed_dict: A dictionary that maps `Tensor` objects to feed values.
 		    This feed dictionary will be used when `init_op` is evaluated.
@@ -218,7 +225,7 @@ package tensorflow.python.training.supervisor;
 		    The directory will be created if it does not exist.
 		  summary_op: An `Operation` that returns a Summary for the event logs.
 		    Used by chief supervisors if a `logdir` was specified.  Defaults to the
-		    operation returned from merge_all_summaries().  If `None`, summaries are
+		    operation returned from summary.merge_all().  If `None`, summaries are
 		    not computed automatically.
 		  saver: A Saver object.  Used by chief supervisors if a `logdir` was
 		    specified.  Defaults to the saved returned by Saver().
@@ -226,7 +233,7 @@ package tensorflow.python.training.supervisor;
 		  global_step: An integer Tensor of size 1 that counts steps.  The value
 		    from 'global_step' is used in summaries and checkpoint filenames.
 		    Default to the op named 'global_step' in the graph if it exists, is of
-		    rank 1, size 1, and of type tf.int32 ot tf.int64.  If `None` the global
+		    rank 1, size 1, and of type tf.int32 or tf.int64.  If `None` the global
 		    step is not recorded in summaries and checkpoint files.  Used by chief
 		    supervisors if a `logdir` was specified.
 		  save_summaries_secs: Number of seconds between the computation of
@@ -253,7 +260,7 @@ package tensorflow.python.training.supervisor;
 		  A `Supervisor`.
 	**/
 	@:native("__init__")
-	public function ___init__(?graph:Dynamic, ?ready_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Dynamic;
+	public function ___init__(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Dynamic;
 	/**
 		Create a `Supervisor`.
 		
@@ -267,12 +274,19 @@ package tensorflow.python.training.supervisor;
 		    The model is considered ready if it returns an empty array.  Defaults to
 		    the tensor returned from `tf.report_uninitialized_variables()`  If
 		    `None`, the model is not checked for readiness.
+		  ready_for_local_init_op: 1-D string `Tensor`.  This tensor is evaluated by
+		    supervisors in `prepare_or_wait_for_session()` to check if the model is
+		    ready to run the local_init_op.
+		    The model is considered ready if it returns an empty array.  Defaults to
+		    the tensor returned from
+		    `tf.report_uninitialized_variables(tf.global_variables())`. If `None`,
+		    the model is not checked for readiness before running local_init_op.
 		  is_chief: If True, create a chief supervisor in charge of initializing
 		    and restoring the model.  If False, create a supervisor that relies
 		    on a chief supervisor for inits and restore.
 		  init_op: `Operation`.  Used by chief supervisors to initialize the model
 		    when it can not be recovered.  Defaults to an `Operation` that
-		    initializes all variables.  If `None`, no initialization is done
+		    initializes all global variables.  If `None`, no initialization is done
 		    automatically unless you pass a value for `init_fn`, see below.
 		  init_feed_dict: A dictionary that maps `Tensor` objects to feed values.
 		    This feed dictionary will be used when `init_op` is evaluated.
@@ -286,7 +300,7 @@ package tensorflow.python.training.supervisor;
 		    The directory will be created if it does not exist.
 		  summary_op: An `Operation` that returns a Summary for the event logs.
 		    Used by chief supervisors if a `logdir` was specified.  Defaults to the
-		    operation returned from merge_all_summaries().  If `None`, summaries are
+		    operation returned from summary.merge_all().  If `None`, summaries are
 		    not computed automatically.
 		  saver: A Saver object.  Used by chief supervisors if a `logdir` was
 		    specified.  Defaults to the saved returned by Saver().
@@ -294,7 +308,7 @@ package tensorflow.python.training.supervisor;
 		  global_step: An integer Tensor of size 1 that counts steps.  The value
 		    from 'global_step' is used in summaries and checkpoint filenames.
 		    Default to the op named 'global_step' in the graph if it exists, is of
-		    rank 1, size 1, and of type tf.int32 ot tf.int64.  If `None` the global
+		    rank 1, size 1, and of type tf.int32 or tf.int64.  If `None` the global
 		    step is not recorded in summaries and checkpoint files.  Used by chief
 		    supervisors if a `logdir` was specified.
 		  save_summaries_secs: Number of seconds between the computation of
@@ -320,7 +334,14 @@ package tensorflow.python.training.supervisor;
 		Returns:
 		  A `Supervisor`.
 	**/
-	public function new(?graph:Dynamic, ?ready_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Void;
+	public function new(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -428,8 +449,12 @@ package tensorflow.python.training.supervisor;
 		  ready_op: `Tensor` to check if the model is initialized.
 		    If it's set to USE_DEFAULT, creates an op that checks all
 		    the variables are initialized.
+		  ready_for_local_init_op: `Tensor` to check if the model is ready to run
+		    local_init_op.
+		    If it's set to USE_DEFAULT, creates an op that checks all
+		    the global variables are initialized.
 	**/
-	public function _init_ready_op(?ready_op:Dynamic):Dynamic;
+	public function _init_ready_op(?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic):Dynamic;
 	/**
 		Initializes saver.
 		
@@ -440,7 +465,7 @@ package tensorflow.python.training.supervisor;
 	public function _init_saver(?saver:Dynamic):Dynamic;
 	public function _init_session_manager(?session_manager:Dynamic):Dynamic;
 	/**
-		Initilizes summary_op.
+		Initializes summary_op.
 		
 		Args:
 		  summary_op: An Operation that returns a Summary for the event logs.
@@ -599,6 +624,7 @@ package tensorflow.python.training.supervisor;
 		  A Session object that can be used to drive the model.
 	**/
 	public function prepare_or_wait_for_session(?master:Dynamic, ?config:Dynamic, ?wait_for_checkpoint:Dynamic, ?max_wait_secs:Dynamic, ?start_standard_services:Dynamic):Dynamic;
+	public var ready_for_local_init_op : Dynamic;
 	/**
 		Return the Ready Op used by the supervisor.
 		
@@ -667,7 +693,7 @@ package tensorflow.python.training.supervisor;
 		Note that the queue runners collected in the graph key `QUEUE_RUNNERS`
 		are already started automatically when you create a session with the
 		supervisor, so unless you have non-collected queue runners to start
-		you do not need to call this explicitely.
+		you do not need to call this explicitly.
 		
 		Args:
 		  sess: A `Session`.

@@ -13,60 +13,6 @@ package scipy.spatial;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
 		Plot the given convex hull diagram in 2-D
 		
 		Parameters
@@ -123,9 +69,9 @@ package scipy.spatial;
 		Parameters
 		----------
 		x : (M, K) array_like
-		    TODO: description needed
+		    Matrix of M vectors in K dimensions.
 		y : (N, K) array_like
-		    TODO: description needed
+		    Matrix of N vectors in K dimensions.
 		p : float, 1 <= p <= infinity
 		    Which Minkowski p-norm to use.
 		threshold : positive int
@@ -135,7 +81,8 @@ package scipy.spatial;
 		Returns
 		-------
 		result : (M, N) ndarray
-		    Distance matrix.
+		    Matrix containing the distance from every vector in `x` to every vector
+		    in `y`.
 		
 		Examples
 		--------
@@ -240,6 +187,8 @@ package scipy.spatial;
 		See Also
 		--------
 		scipy.linalg.orthogonal_procrustes
+		scipy.spatial.distance.directed_hausdorff : Another similarity test
+		  for two data sets
 		
 		Notes
 		-----
@@ -296,12 +245,14 @@ package scipy.spatial;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

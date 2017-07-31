@@ -138,8 +138,8 @@ package scipy.optimize.nonlin;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -820,10 +820,10 @@ package scipy.optimize.nonlin;
 		References
 		----------
 		.. [1] D.A. Knoll and D.E. Keyes, J. Comp. Phys. 193, 357 (2004).
-		       doi:10.1016/j.jcp.2003.08.010
+		       :doi:`10.1016/j.jcp.2003.08.010`
 		.. [2] A.H. Baker and E.R. Jessup and T. Manteuffel,
 		       SIAM J. Matrix Anal. Appl. 26, 962 (2005).
-		       doi:10.1137/S0895479803422014
+		       :doi:`10.1137/S0895479803422014`
 	**/
 	static public function newton_krylov(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1165,19 +1165,40 @@ package scipy.optimize.nonlin;
 	**/
 	static public function scalar_search_wolfe1(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?amin:Dynamic, ?xtol:Dynamic):Float;
 	/**
-		Solve the equation ``a x = b`` for ``x``.
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix.
-		b : (M,) or (M, N) array_like
-		    Right-hand side matrix in ``a x = b``.
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
 		sym_pos : bool, optional
-		    Assume `a` is symmetric and positive definite.
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
 		lower : bool, optional
-		    Use only data contained in the lower triangle of `a`, if `sym_pos` is
-		    true.  Default is to use upper triangle.
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
 		overwrite_a : bool, optional
 		    Allow overwriting data in `a` (may enhance performance).
 		    Default is False.
@@ -1188,19 +1209,25 @@ package scipy.optimize.nonlin;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
+		    solved (only taken into account for ``'gen'``).
 		
 		Returns
 		-------
-		x : (M,) or (M, N) ndarray
-		    Solution to the system ``a x = b``.  Shape of the return matches the
-		    shape of `b`.
+		x : (N, NRHS) ndarray
+		    The solution array.
 		
 		Raises
 		------
-		LinAlgError
-		    If `a` is singular.
 		ValueError
-		    If `a` is not square
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		RuntimeWarning
+		    If an ill-conditioned input a is detected.
 		
 		Examples
 		--------
@@ -1214,8 +1241,19 @@ package scipy.optimize.nonlin;
 		array([ 2., -2.,  9.])
 		>>> np.dot(a, x) == b
 		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		LAPACK respectively.
 	**/
-	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		

@@ -2,15 +2,43 @@
 package tensorflow.python.training.saver;
 @:pythonImport("tensorflow.python.training.saver", "BaseSaverBuilder") extern class BaseSaverBuilder {
 	/**
-		Class used to describe variable slices that need to be saved.
+		Create a dictionary of names to operation lists.
+		
+		Args:
+		  op_list: A list, tuple, or set of Variables or SaveableObjects.
+		
+		Returns:
+		  A dictionary of names to the operations that must be saved under
+		  that name.  Variables with save_slice_info are grouped together under the
+		  same key in no particular order.
+		
+		Raises:
+		  TypeError: If the type of op_list or its elements is not supported.
+		  ValueError: If at least two saveables share the same name.
 	**/
-	static public function VarToSave(_var:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	static public function OpListToDict(op_list:Dynamic):Dynamic;
 	/**
-		Add operations to restore vars_to_save.
+		SaveableObject implementation that handles ResourceVariables.
+	**/
+	static public function ResourceVariableSaveable(_var:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Class used to describe tensor slices that need to be saved.
+	**/
+	static public function SaveSpec(tensor:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Base class for saving and restoring saveable objects.
+	**/
+	static public function SaveableObject(op:Dynamic, specs:Dynamic, name:Dynamic):Dynamic;
+	/**
+		SaveableObject implementation that handles Variables.
+	**/
+	static public function VariableSaveable(_var:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Add operations to restore saveables.
 		
 		Args:
 		  filename_tensor: Tensor for the path of the file to load.
-		  vars_to_save: A list of _VarToSave objects.
+		  saveables: A list of SaveableObject objects.
 		  restore_sequentially: True if we want to restore variables sequentially
 		    within a shard.
 		  reshape: True if we want to reshape loaded tensors to the shape of
@@ -21,24 +49,37 @@ package tensorflow.python.training.saver;
 		Returns:
 		  An Operation that restores the variables.
 	**/
-	public function _AddRestoreOps(filename_tensor:Dynamic, vars_to_save:Dynamic, restore_sequentially:Dynamic, reshape:Dynamic, ?preferred_shard:Dynamic, ?name:Dynamic):Dynamic;
+	public function _AddRestoreOps(filename_tensor:Dynamic, saveables:Dynamic, restore_sequentially:Dynamic, reshape:Dynamic, ?preferred_shard:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Add ops to save variables that are on the same shard.
 		
 		Args:
 		  filename_tensor: String Tensor.
-		  vars_to_save: A list of _VarToSave objects.
+		  saveables: A list of SaveableObject objects.
 		
 		Returns:
 		  A tensor with the filename used to save.
 	**/
-	public function _AddSaveOps(filename_tensor:Dynamic, vars_to_save:Dynamic):Dynamic;
+	public function _AddSaveOps(filename_tensor:Dynamic, saveables:Dynamic):Dynamic;
+	/**
+		Adds the saveable to the saveables list.
+		
+		Args:
+		  saveables: List to append the SaveableObject to.
+		  seen_ops: Set of the ops of the saveables already processed.  Used to
+		    check that each saveable is only saved once.
+		  saveable: The saveable.
+		
+		Raises:
+		  ValueError: If the saveable has already been processed.
+	**/
+	public function _AddSaveable(saveables:Dynamic, seen_ops:Dynamic, saveable:Dynamic):Dynamic;
 	/**
 		Add Ops to restore variables from multiple devices.
 		
 		Args:
 		  filename_tensor: Tensor for the path of the file to load.
-		  per_device: A list of (device, _VarToSave) pairs, as
+		  per_device: A list of (device, SaveableObject) pairs, as
 		    returned by _GroupByDevices().
 		  restore_sequentially: True if we want to restore variables sequentially
 		    within a shard.
@@ -53,8 +94,8 @@ package tensorflow.python.training.saver;
 		Add ops to save the params per shard.
 		
 		Args:
-		  filename_tensor: String Tensor.
-		  per_device: A list of (device, BaseSaverBuilder.VarToSave) pairs, as
+		  filename_tensor: a scalar String Tensor.
+		  per_device: A list of (device, BaseSaverBuilder.SaveableObject) pairs, as
 		    returned by _GroupByDevices().
 		
 		Returns:
@@ -62,69 +103,59 @@ package tensorflow.python.training.saver;
 	**/
 	public function _AddShardedSaveOps(filename_tensor:Dynamic, per_device:Dynamic):Dynamic;
 	/**
-		Create a VarToSave and add it  to the vars_to_save list.
+		Add ops to save the params per shard, for the V2 format.
+		
+		Note that the sharded save procedure for the V2 format is different from
+		V1: there is a special "merge" step that merges the small metadata produced
+		from each device.
 		
 		Args:
-		  vars_to_save: List to append the new VarToSave to.
-		  seen_variables: Set of variables already processed.  Used to check
-		    that each variable is only saved once.
-		  variable: Variable to save.
-		  slice_spec: String.  Slice spec for the variable.
-		  name: Name to use to save the variable.
+		  checkpoint_prefix: scalar String Tensor.  Interpreted *NOT AS A
+		    FILENAME*, but as a prefix of a V2 checkpoint;
+		  per_device: A list of (device, BaseSaverBuilder.VarToSave) pairs, as
+		    returned by _GroupByDevices().
 		
-		Raises:
-		  ValueError: If the variable has already been processed.
+		Returns:
+		  An op to save the variables, which, when evaluated, returns the prefix
+		    "<user-fed prefix>" only and does not include the sharded spec suffix.
 	**/
-	public function _AddVarToSave(vars_to_save:Dynamic, seen_variables:Dynamic, variable:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	public function _AddShardedSaveOpsForV2(checkpoint_prefix:Dynamic, per_device:Dynamic):Dynamic;
 	/**
 		Group Variable tensor slices per device.
 		
 		TODO(touts): Make sure that all the devices found are on different
 		job/replica/task/cpu|gpu.  It would be bad if 2 were on the same device.
-		It can happen if the devices as unspecified.
+		It can happen if the devices are unspecified.
 		
 		Args:
-		  vars_to_save: A list of BaseSaverBuilder.VarToSave objects.
+		  saveables: A list of BaseSaverBuilder.SaveableObject objects.
 		
 		Returns:
-		  A list of tuples: (device_name, BaseSaverBuilder.VarToSave) tuples.
+		  A list of tuples: (device_name, BaseSaverBuilder.SaveableObject) tuples.
 		  The list is sorted by ascending device_name.
+		
+		Raises:
+		  ValueError: If the tensors of a saveable are on different devices.
 	**/
-	public function _GroupByDevices(vars_to_save:Dynamic):Dynamic;
-	public function _IsVariable(v:Dynamic):Dynamic;
+	public function _GroupByDevices(saveables:Dynamic):Dynamic;
+	static public function _IsVariable(v:Dynamic):Dynamic;
 	/**
 		Returns the variables and names that will be used for a Saver.
 		
 		Args:
-		  names_to_variables: A dict (k, v) where k is the name of a variable and v
-		     is a Variable to save or a BaseSaverBuilder.Saver.
+		  names_to_saveables: A dict (k, v) where k is the name of an operation and
+		     v is an operation to save or a BaseSaverBuilder.Saver.
 		
 		Returns:
-		  A list of BaseSaverBuilder.VarToSave objects.
+		  A list of BaseSaverBuilder.SaveableObject objects.
 		
 		Raises:
 		  TypeError: If any of the keys are not strings or any of the
-		    values are not one of Tensor or Variable.
-		  ValueError: If the same variable is given in more than one value
+		    values are not one of Tensor or Variable or a checkpointable operation.
+		  ValueError: If the same operation is given in more than one value
 		    (this also applies to slices of SlicedVariables).
 	**/
-	public function _ValidateAndSliceInputs(names_to_variables:Dynamic):Dynamic;
-	/**
-		Create a dictionary of names to variable lists.
-		
-		Args:
-		  var_list: A list, tuple, or set of Variables.
-		
-		Returns:
-		  A dictionary of variable names to the variables that must be saved under
-		  that name.  Variables with save_slice_info are grouped together under the
-		  same key in no particular order.
-		
-		Raises:
-		  TypeError: If the type of var_list or its elements is not supported.
-		  ValueError: If at least two variables share the same name.
-	**/
-	public function _VarListToDict(var_list:Dynamic):Dynamic;
+	public function _ValidateAndSliceInputs(names_to_saveables:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -165,11 +196,18 @@ package tensorflow.python.training.saver;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?write_version:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?write_version:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -229,8 +267,8 @@ package tensorflow.python.training.saver;
 		Adds save/restore nodes to the graph and creates a SaverDef proto.
 		
 		Args:
-		  names_to_variables: A dictionary mapping name to a Variable.
-		    Each name will be associated with the
+		  names_to_saveables: A dictionary mapping name to a Variable or
+		    SaveableObject. Each name will be associated with the
 		    corresponding variable in the checkpoint.
 		  reshape: If True, allow restoring parameters from a checkpoint
 		    that where the parameters have a different shape.  This is
@@ -256,41 +294,46 @@ package tensorflow.python.training.saver;
 		  A SaverDef proto.
 		
 		Raises:
-		  TypeError: If 'names_to_variables' is not a dictionary mapping string
+		  TypeError: If 'names_to_saveables' is not a dictionary mapping string
 		    keys to variable Tensors.
-		  ValueError: If any of the keys or values in 'names_to_variables' is not
+		  ValueError: If any of the keys or values in 'names_to_saveables' is not
 		    unique.
 	**/
-	public function build(names_to_variables:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?filename:Dynamic):Dynamic;
+	public function build(names_to_saveables:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?filename:Dynamic):Dynamic;
 	/**
-		Create an Op to read the variable 'var_to_save'.
+		Create ops to restore 'saveable'.
 		
 		This is intended to be overridden by subclasses that want to generate
 		different Ops.
 		
 		Args:
 		  filename_tensor: String Tensor.
-		  var_to_save: A BaseSaverBuilder.VarToSave object.
+		  saveable: A BaseSaverBuilder.SaveableObject object.
 		  preferred_shard: Int.  Shard to open first when loading a sharded file.
 		
 		Returns:
-		  A Tensor resulting from reading 'var_to_save' from 'filename'.
+		  A list of Tensors resulting from reading 'saveable' from
+		    'filename'.
 	**/
-	public function restore_op(filename_tensor:Dynamic, var_to_save:Dynamic, preferred_shard:Dynamic):Dynamic;
+	public function restore_op(filename_tensor:Dynamic, saveable:Dynamic, preferred_shard:Dynamic):Dynamic;
 	/**
-		Create an Op to save 'vars_to_save'.
+		Create an Op to save 'saveables'.
 		
 		This is intended to be overridden by subclasses that want to generate
 		different Ops.
 		
 		Args:
 		  filename_tensor: String Tensor.
-		  vars_to_save: A list of BaseSaverBuilder.VarToSave objects.
+		  saveables: A list of BaseSaverBuilder.SaveableObject objects.
 		
 		Returns:
 		  An Operation that save the variables.
+		
+		Raises:
+		  RuntimeError: (implementation detail) if "self._write_version" is an
+		    unexpected value.
 	**/
-	public function save_op(filename_tensor:Dynamic, vars_to_save:Dynamic):Dynamic;
+	public function save_op(filename_tensor:Dynamic, saveables:Dynamic):Dynamic;
 	/**
 		Append sharding information to a filename.
 		

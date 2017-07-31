@@ -97,10 +97,10 @@ package scipy.optimize.minpack;
 		    variables.
 	**/
 	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
-	static public function _wrap_func(func:Dynamic, xdata:Dynamic, ydata:Dynamic, weights:Dynamic):Dynamic;
-	static public function _wrap_jac(jac:Dynamic, xdata:Dynamic, weights:Dynamic):Dynamic;
+	static public function _wrap_func(func:Dynamic, xdata:Dynamic, ydata:Dynamic, transform:Dynamic):Dynamic;
+	static public function _wrap_jac(jac:Dynamic, xdata:Dynamic, transform:Dynamic):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -108,6 +108,17 @@ package scipy.optimize.minpack;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -135,7 +146,7 @@ package scipy.optimize.minpack;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -167,7 +178,7 @@ package scipy.optimize.minpack;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
@@ -213,35 +224,43 @@ package scipy.optimize.minpack;
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -257,7 +276,13 @@ package scipy.optimize.minpack;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -322,8 +347,8 @@ package scipy.optimize.minpack;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -384,7 +409,7 @@ package scipy.optimize.minpack;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -415,6 +440,48 @@ package scipy.optimize.minpack;
 	**/
 	static public function check_gradient(fcn:Dynamic, Dfcn:Dynamic, x0:Dynamic, ?args:Dynamic, ?col_deriv:Dynamic):Dynamic;
 	/**
+		Compute the Cholesky decomposition of a matrix.
+		
+		Returns the Cholesky decomposition, :math:`A = L L^*` or
+		:math:`A = U^* U` of a Hermitian positive-definite matrix A.
+		
+		Parameters
+		----------
+		a : (M, M) array_like
+		    Matrix to be decomposed
+		lower : bool, optional
+		    Whether to compute the upper or lower triangular Cholesky
+		    factorization.  Default is upper-triangular.
+		overwrite_a : bool, optional
+		    Whether to overwrite data in `a` (may improve performance).
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		
+		Returns
+		-------
+		c : (M, M) ndarray
+		    Upper- or lower-triangular Cholesky factor of `a`.
+		
+		Raises
+		------
+		LinAlgError : if decomposition fails.
+		
+		Examples
+		--------
+		>>> from scipy import array, linalg, dot
+		>>> a = array([[1,-2j],[2j,5]])
+		>>> L = linalg.cholesky(a, lower=True)
+		>>> L
+		array([[ 1.+0.j,  0.+0.j],
+		       [ 0.+2.j,  1.+0.j]])
+		>>> dot(L, L.T.conj())
+		array([[ 1.+0.j,  0.-2.j],
+		       [ 0.+2.j,  5.+0.j]])
+	**/
+	static public function cholesky(a:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
 		Use non-linear least squares to fit a function, f, to data.
 		
 		Assumes ``ydata = f(xdata, *params) + eps``
@@ -425,8 +492,7 @@ package scipy.optimize.minpack;
 		    The model function, f(x, ...).  It must take the independent
 		    variable as the first argument and the parameters to fit as
 		    separate remaining arguments.
-		xdata : An M-length sequence or an (k,M)-shaped array
-		    for functions with k predictors.
+		xdata : An M-length sequence or an (k,M)-shaped array for functions with k predictors
 		    The independent variable where the data is measured.
 		ydata : M-length sequence
 		    The dependent data --- nominally f(xdata, ...)
@@ -435,28 +501,41 @@ package scipy.optimize.minpack;
 		    values will all be 1 (if the number of parameters for the function
 		    can be determined using introspection, otherwise a ValueError
 		    is raised).
-		sigma : None or M-length sequence, optional
-		    If not None, the uncertainties in the ydata array. These are used as
-		    weights in the least-squares problem
-		    i.e. minimising ``np.sum( ((f(xdata, *popt) - ydata) / sigma)**2 )``
-		    If None, the uncertainties are assumed to be 1.
-		absolute_sigma : bool, optional
-		    If False, `sigma` denotes relative weights of the data points.
-		    The returned covariance matrix `pcov` is based on *estimated*
-		    errors in the data, and is not affected by the overall
-		    magnitude of the values in `sigma`. Only the relative
-		    magnitudes of the `sigma` values matter.
+		sigma : None or M-length sequence or MxM array, optional
+		    Determines the uncertainty in `ydata`. If we define residuals as
+		    ``r = ydata - f(xdata, *popt)``, then the interpretation of `sigma`
+		    depends on its number of dimensions:
 		
-		    If True, `sigma` describes one standard deviation errors of
-		    the input data points. The estimated covariance in `pcov` is
-		    based on these values.
+		        - A 1-d `sigma` should contain values of standard deviations of
+		          errors in `ydata`. In this case, the optimized function is
+		          ``chisq = sum((r / sigma) ** 2)``.
+		
+		        - A 2-d `sigma` should contain the covariance matrix of
+		          errors in `ydata`. In this case, the optimized function is
+		          ``chisq = r.T @ inv(sigma) @ r``.
+		
+		          .. versionadded:: 0.19
+		
+		    None (default) is equivalent of 1-d `sigma` filled with ones.
+		absolute_sigma : bool, optional
+		    If True, `sigma` is used in an absolute sense and the estimated parameter
+		    covariance `pcov` reflects these absolute values.
+		
+		    If False, only the relative magnitudes of the `sigma` values matter.
+		    The returned parameter covariance matrix `pcov` is based on scaling
+		    `sigma` by a constant factor. This constant is set by demanding that the
+		    reduced `chisq` for the optimal parameters `popt` when using the
+		    *scaled* `sigma` equals unity. In other words, `sigma` is scaled to
+		    match the sample variance of the residuals after the fit.
+		    Mathematically,
+		    ``pcov(absolute_sigma=False) = pcov(absolute_sigma=True) * chisq(popt)/(M-N)``
 		check_finite : bool, optional
 		    If True, check that the input arrays do not contain nans of infs,
 		    and raise a ValueError if they do. Setting this parameter to
 		    False may silently produce nonsensical results if the input arrays
 		    do contain nans. Default is True.
 		bounds : 2-tuple of array_like, optional
-		    Lower and upper bounds on independent variables. Defaults to no bounds.        
+		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each element of the tuple must be either an array with the length equal
 		    to the number of parameters, or a scalar (in which case the bound is
 		    taken to be the same for all parameters.) Use ``np.inf`` with an
@@ -487,8 +566,8 @@ package scipy.optimize.minpack;
 		Returns
 		-------
 		popt : array
-		    Optimal values for the parameters so that the sum of the squared error
-		    of ``f(xdata, *popt) - ydata`` is minimized
+		    Optimal values for the parameters so that the sum of the squared
+		    residuals of ``f(xdata, *popt) - ydata`` is minimized
 		pcov : 2d array
 		    The estimated covariance of popt. The diagonals provide the variance
 		    of the parameter estimate. To compute one standard deviation errors
@@ -517,8 +596,8 @@ package scipy.optimize.minpack;
 		See Also
 		--------
 		least_squares : Minimize the sum of squares of nonlinear functions.
-		stats.linregress : Calculate a linear least squares regression for two sets
-		                   of measurements.
+		scipy.stats.linregress : Calculate a linear least squares regression for
+		                         two sets of measurements.
 		
 		Notes
 		-----
@@ -532,20 +611,35 @@ package scipy.optimize.minpack;
 		Examples
 		--------
 		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy.optimize import curve_fit
+		
 		>>> def func(x, a, b, c):
 		...     return a * np.exp(-b * x) + c
 		
+		define the data to be fit with some noise
+		
 		>>> xdata = np.linspace(0, 4, 50)
 		>>> y = func(xdata, 2.5, 1.3, 0.5)
-		>>> ydata = y + 0.2 * np.random.normal(size=len(xdata))
+		>>> y_noise = 0.2 * np.random.normal(size=xdata.size)
+		>>> ydata = y + y_noise
+		>>> plt.plot(xdata, ydata, 'b-', label='data')
+		
+		Fit for the parameters a, b, c of the function `func`
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
+		>>> plt.plot(xdata, func(xdata, *popt), 'r-', label='fit')
 		
 		Constrain the optimization to the region of ``0 < a < 3``, ``0 < b < 2``
 		and ``0 < c < 1``:
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
+		>>> plt.plot(xdata, func(xdata, *popt), 'g--', label='fit-with-bounds')
+		
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
 	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
 	static public var division : Dynamic;
@@ -788,7 +882,7 @@ package scipy.optimize.minpack;
 	**/
 	static public function fsolve(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?fprime:Dynamic, ?full_output:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?epsfcn:Dynamic, ?factor:Dynamic, ?diag:Dynamic):Dynamic;
 	/**
-		greater(x1, x2[, out])
+		greater(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 > x2) element-wise.
 		
@@ -798,6 +892,17 @@ package scipy.optimize.minpack;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -874,9 +979,9 @@ package scipy.optimize.minpack;
 	/**
 		Solve a nonlinear least-squares problem with bounds on the variables.
 		
-		Given the residuals f(x) (an m-dimensional function of n variables) and
-		the loss function rho(s) (a scalar function), `least_squares` finds a
-		local minimum of the cost function F(x)::
+		Given the residuals f(x) (an m-dimensional real function of n real
+		variables) and the loss function rho(s) (a scalar function), `least_squares`
+		finds a local minimum of the cost function F(x)::
 		
 		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
 		    subject to lb <= x <= ub
@@ -891,7 +996,10 @@ package scipy.optimize.minpack;
 		    ``fun(x, *args, **kwargs)``, i.e., the minimization proceeds with
 		    respect to its first argument. The argument ``x`` passed to this
 		    function is an ndarray of shape (n,) (never a scalar, even for n=1).
-		    It must return a 1-d array_like of shape (m,) or a scalar.
+		    It must return a 1-d array_like of shape (m,) or a scalar. If the
+		    argument ``x`` is complex or the function ``fun`` returns complex
+		    residuals, it must be wrapped in a real function of real arguments,
+		    as shown at the end of the Examples section.
 		x0 : array_like with shape (n,) or float
 		    Initial guess on independent variables. If float, it will be treated
 		    as a 1-d array with one element.
@@ -1345,6 +1453,29 @@ package scipy.optimize.minpack;
 		>>> plt.ylabel("y")
 		>>> plt.legend()
 		>>> plt.show()
+		
+		In the next example, we show how complex-valued residual functions of
+		complex variables can be optimized with ``least_squares()``. Consider the
+		following function:
+		
+		>>> def f(z):
+		...     return z - (0.5 + 0.5j)
+		
+		We wrap it into a function of real variables that returns real residuals
+		by simply handling the real and imaginary parts as independent variables:
+		
+		>>> def f_wrap(x):
+		...     fx = f(x[0] + 1j*x[1])
+		...     return np.array([fx.real, fx.imag])
+		
+		Thus, instead of the original m-dimensional complex function of n complex
+		variables we optimize a 2m-dimensional real function of 2n real variables:
+		
+		>>> from scipy.optimize import least_squares
+		>>> res_wrapped = least_squares(f_wrap, (0.1, 0.1), bounds=([0, 0], [1, 1]))
+		>>> z = res_wrapped.x[0] + res_wrapped.x[1]*1j
+		>>> z
+		(0.49999999999925893+0.49999999999925893j)
 	**/
 	static public function least_squares(fun:Dynamic, x0:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?x_scale:Dynamic, ?loss:Dynamic, ?f_scale:Dynamic, ?diff_step:Dynamic, ?tr_solver:Dynamic, ?tr_options:Dynamic, ?jac_sparsity:Dynamic, ?max_nfev:Dynamic, ?verbose:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Float;
 	/**
@@ -1510,6 +1641,53 @@ package scipy.optimize.minpack;
 		(2,)
 	**/
 	static public function shape(a:Dynamic):Dynamic;
+	/**
+		Solve the equation `a x = b` for `x`, assuming a is a triangular matrix.
+		
+		Parameters
+		----------
+		a : (M, M) array_like
+		    A triangular matrix
+		b : (M,) or (M, N) array_like
+		    Right-hand side matrix in `a x = b`
+		lower : bool, optional
+		    Use only data contained in the lower triangle of `a`.
+		    Default is to use upper triangle.
+		trans : {0, 1, 2, 'N', 'T', 'C'}, optional
+		    Type of system to solve:
+		
+		    ========  =========
+		    trans     system
+		    ========  =========
+		    0 or 'N'  a x  = b
+		    1 or 'T'  a^T x = b
+		    2 or 'C'  a^H x = b
+		    ========  =========
+		unit_diagonal : bool, optional
+		    If True, diagonal elements of `a` are assumed to be 1 and
+		    will not be referenced.
+		overwrite_b : bool, optional
+		    Allow overwriting data in `b` (may enhance performance)
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		
+		Returns
+		-------
+		x : (M,) or (M, N) ndarray
+		    Solution to the system `a x = b`.  Shape of return matches `b`.
+		
+		Raises
+		------
+		LinAlgError
+		    If `a` is singular
+		
+		Notes
+		-----
+		.. versionadded:: 0.9.0
+	**/
+	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		
@@ -1730,8 +1908,8 @@ package scipy.optimize.minpack;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -1778,7 +1956,7 @@ package scipy.optimize.minpack;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],

@@ -116,35 +116,43 @@ package numpy.core.multiarray;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -160,7 +168,13 @@ package numpy.core.multiarray;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -206,7 +220,7 @@ package numpy.core.multiarray;
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bincount(x, weights=None, minlength=None)
+		bincount(x, weights=None, minlength=0)
 		
 		Count number of occurrences of each value in array of non-negative ints.
 		
@@ -240,7 +254,7 @@ package numpy.core.multiarray;
 		------
 		ValueError
 		    If the input is not 1-dimensional, or contains elements with negative
-		    values, or if `minlength` is non-positive.
+		    values, or if `minlength` is negative.
 		TypeError
 		    If the type of the input is float or complex.
 		
@@ -428,6 +442,7 @@ package numpy.core.multiarray;
 		numpy.datetime64('2011-03-23','D')
 	**/
 	static public function busday_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function c_einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		can_cast(from, totype, casting = 'safe')
 		
@@ -644,32 +659,6 @@ package numpy.core.multiarray;
 	**/
 	static public function correlate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function correlate2(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		count_nonzero(a)
-		
-		Counts the number of non-zero values in the array ``a``.
-		
-		Parameters
-		----------
-		a : array_like
-		    The array for which to count non-zeros.
-		
-		Returns
-		-------
-		count : int or array of int
-		    Number of non-zero values in the array.
-		
-		See Also
-		--------
-		nonzero : Return the coordinates of all the non-zero values.
-		
-		Examples
-		--------
-		>>> np.count_nonzero(np.eye(4))
-		4
-		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
-		5
-	**/
 	static public function count_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -683,13 +672,13 @@ package numpy.core.multiarray;
 		`bins` is monotonically decreasing. If values in `x` are beyond the
 		bounds of `bins`, 0 or ``len(bins)`` is returned as appropriate. If right
 		is True, then the right bin is closed so that the index ``i`` is such
-		that ``bins[i-1] < x <= bins[i]`` or bins[i-1] >= x > bins[i]`` if `bins`
+		that ``bins[i-1] < x <= bins[i]`` or ``bins[i-1] >= x > bins[i]`` if `bins`
 		is monotonically increasing or decreasing, respectively.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array to be binned. Prior to Numpy 1.10.0, this array had to
+		    Input array to be binned. Prior to NumPy 1.10.0, this array had to
 		    be 1-dimensional, but can now have any shape.
 		bins : array_like
 		    Array of bins. It has to be 1-dimensional and monotonic.
@@ -714,7 +703,7 @@ package numpy.core.multiarray;
 		
 		See Also
 		--------
-		bincount, histogram, unique
+		bincount, histogram, unique, searchsorted
 		
 		Notes
 		-----
@@ -825,224 +814,6 @@ package numpy.core.multiarray;
 		499128
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		einsum(subscripts, *operands, out=None, dtype=None, order='K', casting='safe')
-		
-		Evaluates the Einstein summation convention on the operands.
-		
-		Using the Einstein summation convention, many common multi-dimensional
-		array operations can be represented in a simple fashion.  This function
-		provides a way to compute such summations. The best way to understand this
-		function is to try the examples below, which show how many common NumPy
-		functions can be implemented as calls to `einsum`.
-		
-		Parameters
-		----------
-		subscripts : str
-		    Specifies the subscripts for summation.
-		operands : list of array_like
-		    These are the arrays for the operation.
-		out : ndarray, optional
-		    If provided, the calculation is done into this array.
-		dtype : data-type, optional
-		    If provided, forces the calculation to use the data type specified.
-		    Note that you may have to also give a more liberal `casting`
-		    parameter to allow the conversions.
-		order : {'C', 'F', 'A', 'K'}, optional
-		    Controls the memory layout of the output. 'C' means it should
-		    be C contiguous. 'F' means it should be Fortran contiguous,
-		    'A' means it should be 'F' if the inputs are all 'F', 'C' otherwise.
-		    'K' means it should be as close to the layout as the inputs as
-		    is possible, including arbitrarily permuted axes.
-		    Default is 'K'.
-		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
-		    Controls what kind of data casting may occur.  Setting this to
-		    'unsafe' is not recommended, as it can adversely affect accumulations.
-		
-		      * 'no' means the data types should not be cast at all.
-		      * 'equiv' means only byte-order changes are allowed.
-		      * 'safe' means only casts which can preserve values are allowed.
-		      * 'same_kind' means only safe casts or casts within a kind,
-		        like float64 to float32, are allowed.
-		      * 'unsafe' means any data conversions may be done.
-		
-		Returns
-		-------
-		output : ndarray
-		    The calculation based on the Einstein summation convention.
-		
-		See Also
-		--------
-		dot, inner, outer, tensordot
-		
-		Notes
-		-----
-		.. versionadded:: 1.6.0
-		
-		The subscripts string is a comma-separated list of subscript labels,
-		where each label refers to a dimension of the corresponding operand.
-		Repeated subscripts labels in one operand take the diagonal.  For example,
-		``np.einsum('ii', a)`` is equivalent to ``np.trace(a)``.
-		
-		Whenever a label is repeated, it is summed, so ``np.einsum('i,i', a, b)``
-		is equivalent to ``np.inner(a,b)``.  If a label appears only once,
-		it is not summed, so ``np.einsum('i', a)`` produces a view of ``a``
-		with no changes.
-		
-		The order of labels in the output is by default alphabetical.  This
-		means that ``np.einsum('ij', a)`` doesn't affect a 2D array, while
-		``np.einsum('ji', a)`` takes its transpose.
-		
-		The output can be controlled by specifying output subscript labels
-		as well.  This specifies the label order, and allows summing to
-		be disallowed or forced when desired.  The call ``np.einsum('i->', a)``
-		is like ``np.sum(a, axis=-1)``, and ``np.einsum('ii->i', a)``
-		is like ``np.diag(a)``.  The difference is that `einsum` does not
-		allow broadcasting by default.
-		
-		To enable and control broadcasting, use an ellipsis.  Default
-		NumPy-style broadcasting is done by adding an ellipsis
-		to the left of each term, like ``np.einsum('...ii->...i', a)``.
-		To take the trace along the first and last axes,
-		you can do ``np.einsum('i...i', a)``, or to do a matrix-matrix
-		product with the left-most indices instead of rightmost, you can do
-		``np.einsum('ij...,jk...->ik...', a, b)``.
-		
-		When there is only one operand, no axes are summed, and no output
-		parameter is provided, a view into the operand is returned instead
-		of a new array.  Thus, taking the diagonal as ``np.einsum('ii->i', a)``
-		produces a view.
-		
-		An alternative way to provide the subscripts and operands is as
-		``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``. The examples
-		below have corresponding `einsum` calls with the two parameter methods.
-		
-		.. versionadded:: 1.10.0
-		
-		Views returned from einsum are now writeable whenever the input array
-		is writeable. For example, ``np.einsum('ijk...->kji...', a)`` will now
-		have the same effect as ``np.swapaxes(a, 0, 2)`` and
-		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
-		of a 2D array.
-		
-		Examples
-		--------
-		>>> a = np.arange(25).reshape(5,5)
-		>>> b = np.arange(5)
-		>>> c = np.arange(6).reshape(2,3)
-		
-		>>> np.einsum('ii', a)
-		60
-		>>> np.einsum(a, [0,0])
-		60
-		>>> np.trace(a)
-		60
-		
-		>>> np.einsum('ii->i', a)
-		array([ 0,  6, 12, 18, 24])
-		>>> np.einsum(a, [0,0], [0])
-		array([ 0,  6, 12, 18, 24])
-		>>> np.diag(a)
-		array([ 0,  6, 12, 18, 24])
-		
-		>>> np.einsum('ij,j', a, b)
-		array([ 30,  80, 130, 180, 230])
-		>>> np.einsum(a, [0,1], b, [1])
-		array([ 30,  80, 130, 180, 230])
-		>>> np.dot(a, b)
-		array([ 30,  80, 130, 180, 230])
-		>>> np.einsum('...j,j', a, b)
-		array([ 30,  80, 130, 180, 230])
-		
-		>>> np.einsum('ji', c)
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> np.einsum(c, [1,0])
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> c.T
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		
-		>>> np.einsum('..., ...', 3, c)
-		array([[ 0,  3,  6],
-		       [ 9, 12, 15]])
-		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
-		array([[ 0,  3,  6],
-		       [ 9, 12, 15]])
-		>>> np.multiply(3, c)
-		array([[ 0,  3,  6],
-		       [ 9, 12, 15]])
-		
-		>>> np.einsum('i,i', b, b)
-		30
-		>>> np.einsum(b, [0], b, [0])
-		30
-		>>> np.inner(b,b)
-		30
-		
-		>>> np.einsum('i,j', np.arange(2)+1, b)
-		array([[0, 1, 2, 3, 4],
-		       [0, 2, 4, 6, 8]])
-		>>> np.einsum(np.arange(2)+1, [0], b, [1])
-		array([[0, 1, 2, 3, 4],
-		       [0, 2, 4, 6, 8]])
-		>>> np.outer(np.arange(2)+1, b)
-		array([[0, 1, 2, 3, 4],
-		       [0, 2, 4, 6, 8]])
-		
-		>>> np.einsum('i...->...', a)
-		array([50, 55, 60, 65, 70])
-		>>> np.einsum(a, [0,Ellipsis], [Ellipsis])
-		array([50, 55, 60, 65, 70])
-		>>> np.sum(a, axis=0)
-		array([50, 55, 60, 65, 70])
-		
-		>>> a = np.arange(60.).reshape(3,4,5)
-		>>> b = np.arange(24.).reshape(4,3,2)
-		>>> np.einsum('ijk,jil->kl', a, b)
-		array([[ 4400.,  4730.],
-		       [ 4532.,  4874.],
-		       [ 4664.,  5018.],
-		       [ 4796.,  5162.],
-		       [ 4928.,  5306.]])
-		>>> np.einsum(a, [0,1,2], b, [1,0,3], [2,3])
-		array([[ 4400.,  4730.],
-		       [ 4532.,  4874.],
-		       [ 4664.,  5018.],
-		       [ 4796.,  5162.],
-		       [ 4928.,  5306.]])
-		>>> np.tensordot(a,b, axes=([1,0],[0,1]))
-		array([[ 4400.,  4730.],
-		       [ 4532.,  4874.],
-		       [ 4664.,  5018.],
-		       [ 4796.,  5162.],
-		       [ 4928.,  5306.]])
-		
-		>>> a = np.arange(6).reshape((3,2))
-		>>> b = np.arange(12).reshape((4,3))
-		>>> np.einsum('ki,jk->ij', a, b)
-		array([[10, 28, 46, 64],
-		       [13, 40, 67, 94]])
-		>>> np.einsum('ki,...k->i...', a, b)
-		array([[10, 28, 46, 64],
-		       [13, 40, 67, 94]])
-		>>> np.einsum('k...,jk', a, b)
-		array([[10, 28, 46, 64],
-		       [13, 40, 67, 94]])
-		
-		>>> # since version 1.10.0
-		>>> a = np.zeros((3, 3))
-		>>> np.einsum('ii->i', a)[:] = 1
-		>>> a
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
-	**/
-	static public function einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
 		
@@ -1160,7 +931,7 @@ package numpy.core.multiarray;
 		count : int, optional
 		    Number of items to read. ``-1`` means all data in the buffer.
 		offset : int, optional
-		    Start reading the buffer from this offset; default: 0.
+		    Start reading the buffer from this offset (in bytes); default: 0.
 		
 		Notes
 		-----
@@ -1411,6 +1182,7 @@ package numpy.core.multiarray;
 	static public function inner(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function int_asbuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function interp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function interp_complex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		is_busday(dates, weekmask='1111100', holidays=None, busdaycal=None, out=None)
 		
@@ -1564,7 +1336,7 @@ package numpy.core.multiarray;
 		  were elements.
 		
 		.. warning::
-		   This function is preliminary and included in Numpy 1.10 for testing
+		   This function is preliminary and included in NumPy 1.10.0 for testing
 		   and documentation. Its semantics will not change, but the number and
 		   order of the optional arguments will.
 		
@@ -1740,6 +1512,56 @@ package numpy.core.multiarray;
 	static public function min_scalar_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function nested_iters(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		packbits(myarray, axis=None)
 		
 		Packs the elements of a binary-valued array into bits in a uint8 array.
@@ -1749,7 +1571,8 @@ package numpy.core.multiarray;
 		Parameters
 		----------
 		myarray : array_like
-		    An integer type array whose elements should be packed to bits.
+		    An array of integers or booleans whose elements should be packed to
+		    bits.
 		axis : int, optional
 		    The dimension over which bit-packing is done.
 		    ``None`` implies packing the flattened array.
@@ -2103,6 +1926,7 @@ package numpy.core.multiarray;
 	**/
 	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function test_interrupt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var tracemalloc_domain : Dynamic;
 	static public var typeinfo : Dynamic;
 	/**
 		unpackbits(myarray, axis=None)
@@ -2251,8 +2075,8 @@ package numpy.core.multiarray;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -2299,7 +2123,7 @@ package numpy.core.multiarray;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],

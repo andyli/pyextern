@@ -21,6 +21,7 @@ package matplotlib.backends.qt4_compat;
 	static public var _warn_str : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public function is_pyqt5():Dynamic;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	static public var unicode_literals : Dynamic;

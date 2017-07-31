@@ -13,9 +13,10 @@ package scipy.integrate.quadrature;
 	static public function _basic_simps(y:Dynamic, start:Dynamic, stop:Dynamic, x:Dynamic, dx:Dynamic, axis:Dynamic):Dynamic;
 	static public var _builtincoeffs : Dynamic;
 	/**
-		Cache p_roots results to speed up calls of the fixed_quad function.
+		Cache roots_legendre results to speed up calls of the fixed_quad
+		function.
 	**/
-	static public function _cached_p_roots(n:Dynamic):Dynamic;
+	static public function _cached_roots_legendre(n:Dynamic):Dynamic;
 	/**
 		Perform part of the trapezoidal rule to integrate a function.
 		Assume that we had called difftrap with all lower powers-of-2
@@ -46,7 +47,7 @@ package scipy.integrate.quadrature;
 		x : array_like, optional
 		    The coordinate to integrate along.  If None (default), use spacing `dx`
 		    between consecutive elements in `y`.
-		dx : int, optional
+		dx : float, optional
 		    Spacing between elements of `y`.  Only used if `x` is None.
 		axis : int, optional
 		    Specifies the axis to cumulate.  Default is -1 (last axis).
@@ -100,6 +101,8 @@ package scipy.integrate.quadrature;
 		----------
 		func : callable
 		    A Python function or method to integrate (must accept vector inputs).
+		    If integrating a vector-valued function, the returned array must have
+		    shape ``(..., len(x))``.
 		a : float
 		    Lower limit of integration.
 		b : float
@@ -202,38 +205,6 @@ package scipy.integrate.quadrature;
 		regions and a composite rule is used to return the total integral.
 	**/
 	static public function newton_cotes(rn:Dynamic, ?equal:Dynamic):Dynamic;
-	/**
-		Gauss-Legendre quadrature.
-		
-		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the n-th degree Legendre polynomial
-		:math:`P_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2n - 1` or less over the interval
-		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
-		
-		Parameters
-		----------
-		n : int
-		    quadrature order
-		mu : bool, optional
-		    If True, return the sum of the weights, optional.
-		
-		Returns
-		-------
-		x : ndarray
-		    Sample points
-		w : ndarray
-		    Weights
-		mu : float
-		    Sum of the weights
-		
-		See Also
-		--------
-		scipy.integrate.quadrature
-		scipy.integrate.fixed_quad
-		numpy.polynomial.legendre.leggauss
-	**/
-	static public function p_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute a definite integral using fixed-tolerance Gaussian quadrature.
@@ -401,6 +372,38 @@ package scipy.integrate.quadrature;
 	**/
 	static public function romberg(_function:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?show:Dynamic, ?divmax:Dynamic, ?vec_func:Dynamic):Float;
 	/**
+		Gauss-Legendre quadrature.
+		
+		Computes the sample points and weights for Gauss-Legendre quadrature.
+		The sample points are the roots of the n-th degree Legendre polynomial
+		:math:`P_n(x)`.  These sample points and weights correctly integrate
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
+		
+		Parameters
+		----------
+		n : int
+		    quadrature order
+		mu : bool, optional
+		    If True, return the sum of the weights, optional.
+		
+		Returns
+		-------
+		x : ndarray
+		    Sample points
+		w : ndarray
+		    Weights
+		mu : float
+		    Sum of the weights
+		
+		See Also
+		--------
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
+		numpy.polynomial.legendre.leggauss
+	**/
+	static public function roots_legendre(n:Dynamic, ?mu:Dynamic):Dynamic;
+	/**
 		Integrate y(x) using samples along the given axis and the composite
 		Simpson's rule.  If x is None, spacing of dx is assumed.
 		
@@ -419,7 +422,7 @@ package scipy.integrate.quadrature;
 		    `x` is None. Default is 1.
 		axis : int, optional
 		    Axis along which to integrate. Default is the last axis.
-		even : {'avg', 'first', 'str'}, optional
+		even : str {'avg', 'first', 'last'}, optional
 		    'avg' : Average two results:1) use the first N-2 intervals with
 		              a trapezoidal rule on the last interval and 2) use the last
 		              N-2 intervals with a trapezoidal rule on the first interval.

@@ -7,4 +7,4 @@
 -python Main.py
 -dce no
 # -cmd python3 Main.py docutils,pkgutil,inspect,importlib coredep
-# -cmd python3 Main.py docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn out
+# -cmd python3 Main.py docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow out

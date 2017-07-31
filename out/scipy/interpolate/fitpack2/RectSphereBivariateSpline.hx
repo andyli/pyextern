@@ -77,6 +77,13 @@ package scipy.interpolate.fitpack2;
 	**/
 	public function new(u:Dynamic, v:Dynamic, r:Dynamic, ?s:Dynamic, ?pole_continuity:Dynamic, ?pole_values:Dynamic, ?pole_exact:Dynamic, ?pole_flat:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

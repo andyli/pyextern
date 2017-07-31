@@ -16,12 +16,7 @@ package pandas.core.panel;
 	**/
 	static public function _ensure_like_indices(time:Dynamic, panels:Dynamic):Dynamic;
 	static public function _get_combined_index(indexes:Dynamic, ?intersect:Dynamic):Dynamic;
-	/**
-		interpret the dtype from a scalar 
-	**/
-	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	static public var _op_descriptions : Dynamic;
-	static public function _possibly_cast_item(obj:Dynamic, item:Dynamic, dtype:Dynamic):Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _try_sort(iterable:Dynamic):Dynamic;
@@ -54,8 +49,49 @@ package pandas.core.panel;
 	static public function create_block_manager_from_blocks(blocks:Dynamic, axes:Dynamic):Dynamic;
 	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		interpret the dtype from a scalar
+		
+		Parameters
+		----------
+		pandas_dtype : bool, default False
+		    whether to infer dtype including pandas extension types.
+		    If False, scalar belongs to pandas extension types is inferred as
+		    object
+	**/
+	static public function infer_dtype_from_scalar(val:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
@@ -67,9 +103,31 @@ package pandas.core.panel;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_string_like(obj:Dynamic):Dynamic;
+	/**
+		Check if the object is a string.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Examples
+		--------
+		>>> is_string_like("foo")
+		True
+		>>> is_string_like(1)
+		False
+		
+		Returns
+		-------
+		is_str_like : bool
+		    Whether `obj` is a string or not.
+	**/
+	static public function is_string_like(obj:Dynamic):Bool;
+	static public function maybe_cast_item(obj:Dynamic, item:Dynamic, dtype:Dynamic):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use

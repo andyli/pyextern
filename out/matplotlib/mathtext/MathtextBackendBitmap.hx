@@ -47,6 +47,13 @@ package matplotlib.mathtext;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -103,7 +110,7 @@ package matplotlib.mathtext;
 	public var __weakref__ : Dynamic;
 	public function _update_bbox(x1:Dynamic, y1:Dynamic, x2:Dynamic, y2:Dynamic):Dynamic;
 	/**
-		Get the Freetype hinting type to use with this particular
+		Get the FreeType hinting type to use with this particular
 		backend.
 	**/
 	public function get_hinting_type():Dynamic;

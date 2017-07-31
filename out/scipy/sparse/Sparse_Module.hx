@@ -13,60 +13,6 @@ package scipy.sparse;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
 		Build a block diagonal sparse matrix from provided matrices.
 		
 		Parameters
@@ -450,6 +396,31 @@ package scipy.sparse;
 		--------
 	**/
 	static public function kronsum(A:Dynamic, B:Dynamic, ?format:Dynamic):Dynamic;
+	/**
+		Load a sparse matrix from a file using ``.npz`` format.
+		
+		Parameters
+		----------
+		file : str or file-like object
+		    Either the file name (string) or an open file (file-like object)
+		    where the data will be loaded.
+		
+		Returns
+		-------
+		result : csc_matrix, csr_matrix, bsr_matrix, dia_matrix or coo_matrix
+		    A sparse matrix containing the loaded data.
+		
+		Raises
+		------
+		IOError
+		    If the input file does not exist or cannot be read.
+		
+		See Also
+		--------
+		scipy.sparse.save_npz: Save a sparse matrix to a file using ``.npz`` format.
+		numpy.load: Load several arrays from a ``.npz`` archive.
+	**/
+	static public function load_npz(file:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Generate a sparse matrix of the given shape and density with uniformly
@@ -526,6 +497,51 @@ package scipy.sparse;
 	**/
 	static public function random(m:Dynamic, n:Dynamic, ?density:Dynamic, ?format:Dynamic, ?dtype:Dynamic, ?random_state:Dynamic, ?data_rvs:Dynamic):Dynamic;
 	/**
+		Save a sparse matrix to a file using ``.npz`` format.
+		
+		Parameters
+		----------
+		file : str or file-like object
+		    Either the file name (string) or an open file (file-like object)
+		    where the data will be saved. If file is a string, the ``.npz``
+		    extension will be appended to the file name if it is not already
+		    there.
+		matrix: spmatrix (format: ``csc``, ``csr``, ``bsr``, ``dia`` or coo``)
+		    The sparse matrix to save.
+		compressed : bool, optional
+		    Allow compressing the file. Default: True
+		
+		See Also
+		--------
+		scipy.sparse.load_npz: Load a sparse matrix from a file using ``.npz`` format.
+		numpy.savez: Save several arrays into a ``.npz`` archive.
+		numpy.savez_compressed : Save several arrays into a compressed ``.npz`` archive.
+		
+		Examples
+		--------
+		Store sparse matrix to disk, and load it again:
+		
+		>>> import scipy.sparse
+		>>> sparse_matrix = scipy.sparse.csc_matrix(np.array([[0, 0, 3], [4, 0, 0]]))
+		>>> sparse_matrix
+		<2x3 sparse matrix of type '<type 'numpy.int64'>'
+		   with 2 stored elements in Compressed Sparse Column format>
+		>>> sparse_matrix.todense()
+		matrix([[0, 0, 3],
+		        [4, 0, 0]], dtype=int64)
+		
+		>>> scipy.sparse.save_npz('/tmp/sparse_matrix.npz', sparse_matrix)
+		>>> sparse_matrix = scipy.sparse.load_npz('/tmp/sparse_matrix.npz')
+		
+		>>> sparse_matrix
+		<2x3 sparse matrix of type '<type 'numpy.int64'>'
+		   with 2 stored elements in Compressed Sparse Column format>
+		>>> sparse_matrix.todense()
+		matrix([[0, 0, 3],
+		        [4, 0, 0]], dtype=int64)
+	**/
+	static public function save_npz(file:Dynamic, matrix:Dynamic, ?compressed:Dynamic):Dynamic;
+	/**
 		Return a sparse matrix from diagonals.
 		
 		Parameters
@@ -584,12 +600,14 @@ package scipy.sparse;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

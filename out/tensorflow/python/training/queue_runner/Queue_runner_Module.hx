@@ -9,7 +9,7 @@ package tensorflow.python.training.queue_runner;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
 		Adds a `QueueRunner` to a collection in the graph.
 		
@@ -26,8 +26,6 @@ package tensorflow.python.training.queue_runner;
 		    the queue runner to.  Defaults to `GraphKeys.QUEUE_RUNNERS`.
 	**/
 	static public function add_queue_runner(qr:Dynamic, ?collection:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Starts all queue runners collected in the graph.
 		
@@ -44,6 +42,10 @@ package tensorflow.python.training.queue_runner;
 		  start: Set to `False` to only create the threads, not start them.
 		  collection: A `GraphKey` specifying the graph collection to
 		    get the queue runners from.  Defaults to `GraphKeys.QUEUE_RUNNERS`.
+		
+		Raises:
+		  ValueError: if `sess` is None and there isn't any default session.
+		  TypeError: if `sess` is not a `tf.Session` object.
 		
 		Returns:
 		  A list of threads.

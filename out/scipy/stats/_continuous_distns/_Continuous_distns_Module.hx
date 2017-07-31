@@ -15,6 +15,11 @@ package scipy.stats._continuous_distns;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Utility function for the argus distribution
+		used in the CDF and norm of the Argus Funktion
+	**/
+	static public function _argus_phi(chi:Dynamic):Dynamic;
 	static public function _beta_mle_a(a:Dynamic, b:Dynamic, n:Dynamic, s1:Dynamic):Dynamic;
 	static public function _beta_mle_ab(theta:Dynamic, n:Dynamic, s1:Dynamic, s2:Dynamic):Dynamic;
 	static public function _digammainv(y:Dynamic):Dynamic;
@@ -41,12 +46,12 @@ package scipy.stats._continuous_distns;
 		array([  0,   1,   4,   0,  64, 125])
 		
 		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
-		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		array([   0.,    1.,    4.,   0.,   64.,  125.])
 		
 		>>> a = -np.ones_like(x)
 		>>> _lazyselect([x < 3, x > 3],
 		...             [lambda x, a: x**2, lambda x, a: a * x**3],
-		...             (x, a))
+		...             (x, a), default=np.nan)
 		array([   0.,    1.,    4.,   nan,  -64., -125.])
 	**/
 	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
@@ -68,69 +73,9 @@ package scipy.stats._continuous_distns;
 	static public function _ncx2_cdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
 	static public function _ncx2_log_pdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
 	static public function _ncx2_pdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
-	/**
-		ndtr(x[, out])
-		
-		ndtr(x)
-		
-		Gaussian cumulative distribution function.
-		
-		Returns the area under the standard Gaussian probability
-		density function, integrated from minus infinity to `x`
-		
-		.. math::
-		
-		   \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-t^2/2) dt
-		
-		Parameters
-		----------
-		x : array_like, real or complex
-		    Argument
-		
-		Returns
-		-------
-		ndarray
-		    The value of the normal CDF evaluated at `x`
-		
-		See Also
-		--------
-		erf
-		erfc
-		scipy.stats.norm
-		log_ndtr
-	**/
-	static public function _norm_cdf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _norm_cdf(x:Dynamic):Dynamic;
 	static public function _norm_isf(q:Dynamic):Dynamic;
-	/**
-		log_ndtr(x[, out])
-		
-		log_ndtr(x)
-		
-		Logarithm of Gaussian cumulative distribution function.
-		
-		Returns the log of the area under the standard Gaussian probability
-		density function, integrated from minus infinity to `x`::
-		
-		    log(1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x))
-		
-		Parameters
-		----------
-		x : array_like, real or complex
-		    Argument
-		
-		Returns
-		-------
-		ndarray
-		    The value of the log of the normal CDF evaluated at `x`
-		
-		See Also
-		--------
-		erf
-		erfc
-		scipy.stats.norm
-		ndtr
-	**/
-	static public function _norm_logcdf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _norm_logcdf(x:Dynamic):Dynamic;
 	static public function _norm_logpdf(x:Dynamic):Dynamic;
 	static public function _norm_logsf(x:Dynamic):Dynamic;
 	static public function _norm_pdf(x:Dynamic):Dynamic;
@@ -397,122 +342,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function anglit(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		arange([start,] stop[, step,], dtype=None)
-		
-		Return evenly spaced values within a given interval.
-		
-		Values are generated within the half-open interval ``[start, stop)``
-		(in other words, the interval including `start` but excluding `stop`).
-		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
-		
-		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
-		
-		Parameters
-		----------
-		start : number, optional
-		    Start of interval.  The interval includes this value.  The default
-		    start value is 0.
-		stop : number
-		    End of interval.  The interval does not include this value, except
-		    in some cases where `step` is not an integer and floating point
-		    round-off affects the length of `out`.
-		step : number, optional
-		    Spacing between values.  For any output `out`, this is the distance
-		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
-		dtype : dtype
-		    The type of the output array.  If `dtype` is not given, infer the data
-		    type from the other input arguments.
-		
-		Returns
-		-------
-		arange : ndarray
-		    Array of evenly spaced values.
-		
-		    For floating point arguments, the length of the result is
-		    ``ceil((stop - start)/step)``.  Because of floating point overflow,
-		    this rule may result in the last element of `out` being greater
-		    than `stop`.
-		
-		See Also
-		--------
-		linspace : Evenly spaced numbers with careful handling of endpoints.
-		ogrid: Arrays of evenly spaced numbers in N-dimensions.
-		mgrid: Grid-shaped arrays of evenly spaced numbers in N-dimensions.
-		
-		Examples
-		--------
-		>>> np.arange(3)
-		array([0, 1, 2])
-		>>> np.arange(3.0)
-		array([ 0.,  1.,  2.])
-		>>> np.arange(3,7)
-		array([3, 4, 5, 6])
-		>>> np.arange(3,7,2)
-		array([3, 5])
-	**/
-	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		arcsin(x[, out])
-		
-		Inverse sine, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    `y`-coordinate on the unit circle.
-		
-		out : ndarray, optional
-		    Array of the same shape as `x`, in which to store the results.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
-		
-		Returns
-		-------
-		angle : ndarray
-		    The inverse sine of each element in `x`, in radians and in the
-		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
-		    is returned, otherwise an array.
-		
-		See Also
-		--------
-		sin, cos, arccos, tan, arctan, arctan2, emath.arcsin
-		
-		Notes
-		-----
-		`arcsin` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that :math:`sin(z) = x`.  The convention is to
-		return the angle `z` whose real part lies in [-pi/2, pi/2].
-		
-		For real-valued input data types, *arcsin* always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `arcsin` is a complex analytic function that
-		has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is
-		continuous from above on the former and from below on the latter.
-		
-		The inverse sine is also known as `asin` or sin^{-1}.
-		
-		References
-		----------
-		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
-		10th printing, New York: Dover, 1964, pp. 79ff.
-		http://www.math.sfu.ca/~cbm/aands/
-		
-		Examples
-		--------
-		>>> np.arcsin(1)     # pi/2
-		1.5707963267948966
-		>>> np.arcsin(-1)    # -pi/2
-		-1.5707963267948966
-		>>> np.arcsin(0)
-		0.0
-	**/
-	static public function arcsin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		An arcsine continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `arcsine` object inherits from it
@@ -619,187 +448,123 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function arcsine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		arctan(x[, out])
+		Argus distribution
 		
-		Trigonometric inverse tangent, element-wise.
+		As an instance of the `rv_continuous` class, `argus` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
 		
-		The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.  `arctan` is applied to each element of `x`.
-		
-		Returns
+		Methods
 		-------
-		out : ndarray
-		    Out has the same shape as `x`.  Its real part is in
-		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
-		    It is a scalar if `x` is a scalar.
-		
-		See Also
-		--------
-		arctan2 : The "four quadrant" arctan of the angle formed by (`x`, `y`)
-		    and the positive `x`-axis.
-		angle : Argument of complex values.
+		``rvs(chi, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, chi, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, chi, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, chi, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, chi, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, chi, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, chi, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, chi, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, chi, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, chi, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(chi, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(chi, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, chi, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(chi,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(chi, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(chi, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(chi, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(chi, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, chi, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		`arctan` is a multi-valued function: for each `x` there are infinitely
-		many numbers `z` such that tan(`z`) = `x`.  The convention is to return
-		the angle `z` whose real part lies in [-pi/2, pi/2].
+		The probability density function for `argus` is::
 		
-		For real-valued input data types, `arctan` always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
+		    argus.pdf(x, chi) = chi**3 / (sqrt(2*pi) * Psi(chi)) * x * sqrt(1-x**2) * exp(- 0.5 * chi**2 * (1 - x**2))
 		
-		For complex-valued input, `arctan` is a complex analytic function that
-		has [`1j, infj`] and [`-1j, -infj`] as branch cuts, and is continuous
-		from the left on the former and from the right on the latter.
+		    where:
+		             Psi(chi) = Phi(chi) - chi * phi(chi) - 1/2
+		             with Phi and phi being the CDF and PDF of a standard normal distribution, respectively.
 		
-		The inverse tangent is also known as `atan` or tan^{-1}.
+		`argus` takes ``chi`` as shape a parameter.
 		
 		References
 		----------
-		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
-		10th printing, New York: Dover, 1964, pp. 79.
-		http://www.math.sfu.ca/~cbm/aands/
+		
+		.. [1] "ARGUS distribution",
+		       https://en.wikipedia.org/wiki/ARGUS_distribution
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``argus.pdf(x, chi, loc, scale)`` is identically
+		equivalent to ``argus.pdf(y, chi) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
-		We expect the arctan of 0 to be 0, and of 1 to be pi/4:
-		
-		>>> np.arctan([0, 1])
-		array([ 0.        ,  0.78539816])
-		
-		>>> np.pi/4
-		0.78539816339744828
-		
-		Plot arctan:
-		
+		>>> from scipy.stats import argus
 		>>> import matplotlib.pyplot as plt
-		>>> x = np.linspace(-10, 10)
-		>>> plt.plot(x, np.arctan(x))
-		>>> plt.axis('tight')
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> chi = 1
+		>>> mean, var, skew, kurt = argus.stats(chi, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(argus.ppf(0.01, chi),
+		...                 argus.ppf(0.99, chi), 100)
+		>>> ax.plot(x, argus.pdf(x, chi),
+		...        'r-', lw=5, alpha=0.6, label='argus pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = argus(chi)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = argus.ppf([0.001, 0.5, 0.999], chi)
+		>>> np.allclose([0.001, 0.5, 0.999], argus.cdf(vals, chi))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = argus.rvs(chi, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function arctan(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		arctanh(x[, out])
-		
-		Inverse hyperbolic tangent element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of the same shape as `x`.
-		
-		See Also
-		--------
-		emath.arctanh
-		
-		Notes
-		-----
-		`arctanh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `tanh(z) = x`. The convention is to return
-		the `z` whose imaginary part lies in `[-pi/2, pi/2]`.
-		
-		For real-valued input data types, `arctanh` always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `arctanh` is a complex analytical function
-		that has branch cuts `[-1, -inf]` and `[1, inf]` and is continuous from
-		above on the former and from below on the latter.
-		
-		The inverse hyperbolic tangent is also known as `atanh` or ``tanh^-1``.
-		
-		References
-		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arctanh
-		
-		Examples
-		--------
-		>>> np.arctanh([0, -0.5])
-		array([ 0.        , -0.54930614])
-	**/
-	static public function arctanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function argus(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A beta continuous random variable.
 		
@@ -1020,88 +785,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function betaprime(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		boxcox(x1, x2[, out])
-		
-		boxcox(x, lmbda)
-		
-		Compute the Box-Cox transformation.
-		
-		The Box-Cox transformation is::
-		
-		    y = (x**lmbda - 1) / lmbda  if lmbda != 0
-		        log(x)                  if lmbda == 0
-		
-		Returns `nan` if ``x < 0``.
-		Returns `-inf` if ``x == 0`` and ``lmbda < 0``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Data to be transformed.
-		lmbda : array_like
-		    Power parameter of the Box-Cox transform.
-		
-		Returns
-		-------
-		y : array
-		    Transformed data.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.14.0
-		
-		Examples
-		--------
-		>>> from scipy.special import boxcox
-		>>> boxcox([1, 4, 10], 2.5)
-		array([   0.        ,   12.4       ,  126.09110641])
-		>>> boxcox(2, [0, 1, 2])
-		array([ 0.69314718,  1.        ,  1.5       ])
-	**/
-	static public function boxcox(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		boxcox1p(x1, x2[, out])
-		
-		boxcox1p(x, lmbda)
-		
-		Compute the Box-Cox transformation of 1 + `x`.
-		
-		The Box-Cox transformation computed by `boxcox1p` is::
-		
-		    y = ((1+x)**lmbda - 1) / lmbda  if lmbda != 0
-		        log(1+x)                    if lmbda == 0
-		
-		Returns `nan` if ``x < -1``.
-		Returns `-inf` if ``x == -1`` and ``lmbda < 0``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Data to be transformed.
-		lmbda : array_like
-		    Power parameter of the Box-Cox transform.
-		
-		Returns
-		-------
-		y : array
-		    Transformed data.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.14.0
-		
-		Examples
-		--------
-		>>> from scipy.special import boxcox1p
-		>>> boxcox1p(1e-4, [0, 0.5, 1])
-		array([  9.99950003e-05,   9.99975001e-05,   1.00000000e-04])
-		>>> boxcox1p([0.01, 0.1], 0.25)
-		array([ 0.00996272,  0.09645476])
-	**/
-	static public function boxcox1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A Bradford continuous random variable.
 		
@@ -1821,142 +1504,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function chi2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		chndtr(x1, x2, x3[, out])
-		
-		chndtr(x, df, nc)
-		
-		Non-central chi square cumulative distribution function
-	**/
-	static public function chndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		chndtrix(x1, x2, x3[, out])
-		
-		chndtrix(p, df, nc)
-		
-		Inverse to `chndtr` vs `x`
-	**/
-	static public function chndtrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		The number of combinations of N things taken k at a time.
-		
-		This is often expressed as "N choose k".
-		
-		Parameters
-		----------
-		N : int, ndarray
-		    Number of things.
-		k : int, ndarray
-		    Number of elements taken.
-		exact : bool, optional
-		    If `exact` is False, then floating point precision is used, otherwise
-		    exact long integer is computed.
-		repetition : bool, optional
-		    If `repetition` is True, then the number of combinations with
-		    repetition is computed.
-		
-		Returns
-		-------
-		val : int, ndarray
-		    The total number of combinations.
-		
-		Notes
-		-----
-		- Array arguments accepted only for exact=False case.
-		- If k > N, N < 0, or k < 0, then a 0 is returned.
-		
-		Examples
-		--------
-		>>> from scipy.special import comb
-		>>> k = np.array([3, 4])
-		>>> n = np.array([10, 10])
-		>>> comb(n, k, exact=False)
-		array([ 120.,  210.])
-		>>> comb(10, 3, exact=True)
-		120L
-		>>> comb(10, 3, exact=True, repetition=True)
-		220L
-	**/
-	static public function comb(N:Dynamic, k:Dynamic, ?exact:Dynamic, ?repetition:Dynamic):Dynamic;
-	/**
-		cos(x[, out])
-		
-		Cosine element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
-		
-		Returns
-		-------
-		y : ndarray
-		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
-		
-		Notes
-		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
-		
-		References
-		----------
-		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		New York, NY: Dover, 1972.
-		
-		Examples
-		--------
-		>>> np.cos(np.array([0, np.pi/2, np.pi]))
-		array([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])
-		>>>
-		>>> # Example of providing the optional output parameter
-		>>> out2 = np.cos([0.1], out1)
-		>>> out2 is out1
-		True
-		>>>
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
-	**/
-	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		cosh(x[, out])
-		
-		Hyperbolic cosine, element-wise.
-		
-		Equivalent to ``1/2 * (np.exp(x) + np.exp(-x))`` and ``np.cos(1j*x)``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		
-		Returns
-		-------
-		out : ndarray
-		    Output array of same shape as `x`.
-		
-		Examples
-		--------
-		>>> np.cosh(0)
-		1.0
-		
-		The hyperbolic cosine describes the shape of a hanging cable:
-		
-		>>> import matplotlib.pyplot as plt
-		>>> x = np.linspace(-4, 4, 1000)
-		>>> plt.plot(x, np.cosh(x))
-		>>> plt.show()
-	**/
-	static public function cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		A cosine continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `cosine` object inherits from it
@@ -2279,33 +1826,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function dweibull(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		erfc(x[, out])
-		
-		erfc(x)
-		
-		Complementary error function, ``1 - erf(x)``.
-		
-		See Also
-		--------
-		erf, erfi, erfcx, dawsn, wofz
-		
-		References
-		----------
-		.. [1] Steven G. Johnson, Faddeeva W function implementation.
-		   http://ab-initio.mit.edu/Faddeeva
-		
-		Examples
-		--------
-		>>> from scipy import special
-		>>> import matplotlib.pyplot as plt
-		>>> x = np.linspace(-3, 3)
-		>>> plt.plot(x, special.erfc(x))
-		>>> plt.xlabel('$x$')
-		>>> plt.ylabel('$erfc(x)$')
-		>>> plt.show()
-	**/
-	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		An Erlang continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `erlang` object inherits from it
@@ -2367,69 +1887,6 @@ package scipy.stats._continuous_distns;
 		Refer to `gamma` for examples.
 	**/
 	static public function erlang(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		exp(x[, out])
-		
-		Calculate the exponential of all elements in the input array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.
-		
-		Returns
-		-------
-		out : ndarray
-		    Output array, element-wise exponential of `x`.
-		
-		See Also
-		--------
-		expm1 : Calculate ``exp(x) - 1`` for all elements in the array.
-		exp2  : Calculate ``2**x`` for all elements in the array.
-		
-		Notes
-		-----
-		The irrational number ``e`` is also known as Euler's number.  It is
-		approximately 2.718281, and is the base of the natural logarithm,
-		``ln`` (this means that, if :math:`x = \ln y = \log_e y`,
-		then :math:`e^x = y`. For real input, ``exp(x)`` is always positive.
-		
-		For complex arguments, ``x = a + ib``, we can write
-		:math:`e^x = e^a e^{ib}`.  The first term, :math:`e^a`, is already
-		known (it is the real argument, described above).  The second term,
-		:math:`e^{ib}`, is :math:`\cos b + i \sin b`, a function with
-		magnitude 1 and a periodic phase.
-		
-		References
-		----------
-		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
-		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
-		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
-		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
-		
-		Examples
-		--------
-		Plot the magnitude and phase of ``exp(x)`` in the complex plane:
-		
-		>>> import matplotlib.pyplot as plt
-		
-		>>> x = np.linspace(-2*np.pi, 2*np.pi, 100)
-		>>> xx = x + 1j * x[:, np.newaxis] # a + ib over complex plane
-		>>> out = np.exp(xx)
-		
-		>>> plt.subplot(121)
-		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
-		>>> plt.title('Magnitude of exp(x)')
-		
-		>>> plt.subplot(122)
-		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
-		>>> plt.title('Phase (angle) of exp(x)')
-		>>> plt.show()
-	**/
-	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		An exponential continuous random variable.
 		
@@ -2592,7 +2049,8 @@ package scipy.stats._continuous_distns;
 		-----
 		The probability density function for `exponnorm` is::
 		
-		    exponnorm.pdf(x, K) = 1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc(-(x - 1/K) / sqrt(2))
+		    exponnorm.pdf(x, K) =
+		        1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc-(x - 1/K) / sqrt(2))
 		
 		where the shape parameter ``K > 0``.
 		
@@ -2883,53 +2341,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function exponweib(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Return the elements of an array that satisfy some condition.
-		
-		This is equivalent to ``np.compress(ravel(condition), ravel(arr))``.  If
-		`condition` is boolean ``np.extract`` is equivalent to ``arr[condition]``.
-		
-		Note that `place` does the exact opposite of `extract`.
-		
-		Parameters
-		----------
-		condition : array_like
-		    An array whose nonzero or True entries indicate the elements of `arr`
-		    to extract.
-		arr : array_like
-		    Input array of the same size as `condition`.
-		
-		Returns
-		-------
-		extract : ndarray
-		    Rank 1 array of values from `arr` where `condition` is True.
-		
-		See Also
-		--------
-		take, put, copyto, compress, place
-		
-		Examples
-		--------
-		>>> arr = np.arange(12).reshape((3, 4))
-		>>> arr
-		array([[ 0,  1,  2,  3],
-		       [ 4,  5,  6,  7],
-		       [ 8,  9, 10, 11]])
-		>>> condition = np.mod(arr, 3)==0
-		>>> condition
-		array([[ True, False, False,  True],
-		       [False, False,  True, False],
-		       [False,  True, False, False]], dtype=bool)
-		>>> np.extract(condition, arr)
-		array([0, 3, 6, 9])
-		
-		
-		If `condition` is boolean:
-		
-		>>> arr[condition]
-		array([0, 3, 6, 9])
-	**/
-	static public function extract(condition:Dynamic, arr:Dynamic):Dynamic;
 	/**
 		An F continuous random variable.
 		
@@ -3271,6 +2682,74 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function fisk(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		float_power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		First array elements raised to powers from second array, element-wise.
+		
+		Raise each base in `x1` to the positionally-corresponding power in `x2`.
+		`x1` and `x2` must be broadcastable to the same shape. This differs from
+		the power function in that integers, float16, and float32  are promoted to
+		floats with a minimum precision of float64 so that the result is always
+		inexact.  The intent is that the function will return a usable result for
+		negative powers and seldom overflow for positive powers.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		x1 : array_like
+		    The bases.
+		x2 : array_like
+		    The exponents.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray
+		    The bases in `x1` raised to the exponents in `x2`.
+		
+		See Also
+		--------
+		power : power function that preserves type
+		
+		Examples
+		--------
+		Cube each element in a list.
+		
+		>>> x1 = range(6)
+		>>> x1
+		[0, 1, 2, 3, 4, 5]
+		>>> np.float_power(x1, 3)
+		array([   0.,    1.,    8.,   27.,   64.,  125.])
+		
+		Raise the bases to different exponents.
+		
+		>>> x2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]
+		>>> np.float_power(x1, x2)
+		array([  0.,   1.,   8.,  27.,  16.,   5.])
+		
+		The effect of broadcasting.
+		
+		>>> x2 = np.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])
+		>>> x2
+		array([[1, 2, 3, 3, 2, 1],
+		       [1, 2, 3, 3, 2, 1]])
+		>>> np.float_power(x1, x2)
+		array([[  0.,   1.,   8.,  27.,  16.,   5.],
+		       [  0.,   1.,   8.,  27.,  16.,   5.]])
+	**/
+	static public function float_power(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A folded Cauchy continuous random variable.
 		
@@ -3708,50 +3187,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function frechet_r(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		gamma(x[, out])
-		
-		gamma(z)
-		
-		Gamma function.
-		
-		The gamma function is often referred to as the generalized
-		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
-		n!`` for natural number *n*.
-	**/
-	static public function gam(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
-		
-		Parameters
-		----------
-		x : array-like
-		    Values on the real line at which to compute ``gammaln``
-		
-		Returns
-		-------
-		gammaln : ndarray
-		    Values of ``gammaln`` at x.
-		
-		See Also
-		--------
-		gammasgn : sign of the gamma function
-		loggamma : principal branch of the logarithm of the gamma function
-		
-		Notes
-		-----
-		When used in conjunction with `gammasgn`, this function is useful
-		for working in logspace on the real axis without having to deal with
-		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
-		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
-		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
-	**/
-	static public function gamln(x:Dynamic):Dynamic;
-	/**
 		A gamma continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `gamma` object inherits from it
@@ -4045,8 +3480,8 @@ package scipy.stats._continuous_distns;
 		H.K. Ryu, "An Extension of Marshall and Olkin's Bivariate Exponential
 		Distribution", Journal of the American Statistical Association, 1993.
 		
-		 N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
-		 Applications", Asit P. Basu.
+		N. Balakrishnan, "The Exponential Distribution: Theory, Methods and
+		Applications", Asit P. Basu.
 		
 		Examples
 		--------
@@ -4368,7 +3803,8 @@ package scipy.stats._continuous_distns;
 		-----
 		The probability density function for `genhalflogistic` is::
 		
-		    genhalflogistic.pdf(x, c) = 2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
+		    genhalflogistic.pdf(x, c) =
+		        2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
 		
 		for ``0 <= x <= 1/c``, and ``c > 0``.
 		
@@ -5766,92 +5202,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function hypsecant(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		i0(x[, out])
-		
-		i0(x)
-		
-		Modified Bessel function of order 0.
-		
-		Defined as,
-		
-		.. math::
-		    I_0(x) = \sum_{k=0}^\infty \frac{(x^2/4)^k}{(k!)^2} = J_0(\imath x),
-		
-		where :math:`J_0` is the Bessel function of the first kind of order 0.
-		
-		Parameters
-		----------
-		x : array_like
-		    Argument (float)
-		
-		Returns
-		-------
-		I : ndarray
-		    Value of the modified Bessel function of order 0 at `x`.
-		
-		Notes
-		-----
-		The range is partitioned into the two intervals [0, 8] and (8, infinity).
-		Chebyshev polynomial expansions are employed in each interval.
-		
-		This function is a wrapper for the Cephes [1]_ routine `i0`.
-		
-		See also
-		--------
-		iv
-		i0e
-		
-		References
-		----------
-		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
-	**/
-	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		i1(x[, out])
-		
-		i1(x)
-		
-		Modified Bessel function of order 1.
-		
-		Defined as,
-		
-		.. math::
-		    I_1(x) = \frac{1}{2}x \sum_{k=0}^\infty \frac{(x^2/4)^k}{k! (k + 1)!}
-		           = -\imath J_1(\imath x),
-		
-		where :math:`J_1` is the Bessel function of the first kind of order 1.
-		
-		Parameters
-		----------
-		x : array_like
-		    Argument (float)
-		
-		Returns
-		-------
-		I : ndarray
-		    Value of the modified Bessel function of order 1 at `x`.
-		
-		Notes
-		-----
-		The range is partitioned into the two intervals [0, 8] and (8, infinity).
-		Chebyshev polynomial expansions are employed in each interval.
-		
-		This function is a wrapper for the Cephes [1]_ routine `i1`.
-		
-		See also
-		--------
-		iv
-		i1e
-		
-		References
-		----------
-		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
-	**/
-	static public function i1(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var inf : Dynamic;
-	/**
 		This decorator modifies the decorated function's docstring by
 		replacing occurrences of '%(super)s' with the docstring of the
 		method of the same name from the class `cls`.
@@ -5897,80 +5247,6 @@ package scipy.stats._continuous_distns;
 		    '
 	**/
 	static public function inherit_docstring_from(cls:Dynamic):haxe.Constraints.Function;
-	/**
-		inv_boxcox(x1, x2[, out])
-		
-		inv_boxcox(y, lmbda)
-		
-		Compute the inverse of the Box-Cox transformation.
-		
-		Find ``x`` such that::
-		
-		    y = (x**lmbda - 1) / lmbda  if lmbda != 0
-		        log(x)                  if lmbda == 0
-		
-		Parameters
-		----------
-		y : array_like
-		    Data to be transformed.
-		lmbda : array_like
-		    Power parameter of the Box-Cox transform.
-		
-		Returns
-		-------
-		x : array
-		    Transformed data.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.16.0
-		
-		Examples
-		--------
-		>>> from scipy.special import boxcox, inv_boxcox
-		>>> y = boxcox([1, 4, 10], 2.5)
-		>>> inv_boxcox(y, 2.5)
-		array([1., 4., 10.])
-	**/
-	static public function inv_boxcox(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		inv_boxcox1p(x1, x2[, out])
-		
-		inv_boxcox1p(y, lmbda)
-		
-		Compute the inverse of the Box-Cox transformation.
-		
-		Find ``x`` such that::
-		
-		    y = ((1+x)**lmbda - 1) / lmbda  if lmbda != 0
-		        log(1+x)                    if lmbda == 0
-		
-		Parameters
-		----------
-		y : array_like
-		    Data to be transformed.
-		lmbda : array_like
-		    Power parameter of the Box-Cox transform.
-		
-		Returns
-		-------
-		x : array
-		    Transformed data.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.16.0
-		
-		Examples
-		--------
-		>>> from scipy.special import boxcox1p, inv_boxcox1p
-		>>> y = boxcox1p([1, 4, 10], 2.5)
-		>>> inv_boxcox1p(y, 2.5)
-		array([1., 4., 10.])
-	**/
-	static public function inv_boxcox1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		An inverted gamma continuous random variable.
 		
@@ -7447,56 +6723,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function levy_stable(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		log(x[, out])
-		
-		Natural logarithm, element-wise.
-		
-		The natural logarithm `log` is the inverse of the exponential function,
-		so that `log(exp(x)) = x`. The natural logarithm is logarithm in base
-		`e`.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input value.
-		
-		Returns
-		-------
-		y : ndarray
-		    The natural logarithm of `x`, element-wise.
-		
-		See Also
-		--------
-		log10, log2, log1p, emath.log
-		
-		Notes
-		-----
-		Logarithm is a multivalued function: for each `x` there is an infinite
-		number of `z` such that `exp(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi, pi]`.
-		
-		For real-valued input data types, `log` always returns real output. For
-		each value that cannot be expressed as a real number or infinity, it
-		yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `log` is a complex analytical function that
-		has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
-		handles the floating-point negative zero as an infinitesimal negative
-		number, conforming to the C99 standard.
-		
-		References
-		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
-		
-		Examples
-		--------
-		>>> np.log([1, np.e, np.e**2, 0])
-		array([  0.,   1.,   2., -Inf])
-	**/
-	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		A log gamma continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `loggamma` object inherits from it
@@ -8380,7 +7606,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function nakagami(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public var nan : Dynamic;
 	/**
 		A non-central F distribution continuous random variable.
 		
@@ -9059,99 +8284,6 @@ package scipy.stats._continuous_distns;
 		Aviation Loads Data", Office of Aviation Research (2003).
 	**/
 	static public function pearson3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public var pi : Dynamic;
-	/**
-		Change elements of an array based on conditional and input values.
-		
-		Similar to ``np.copyto(arr, vals, where=mask)``, the difference is that
-		`place` uses the first N elements of `vals`, where N is the number of
-		True values in `mask`, while `copyto` uses the elements where `mask`
-		is True.
-		
-		Note that `extract` does the exact opposite of `place`.
-		
-		Parameters
-		----------
-		arr : ndarray
-		    Array to put data into.
-		mask : array_like
-		    Boolean mask array. Must have the same size as `a`.
-		vals : 1-D sequence
-		    Values to put into `a`. Only the first N elements are used, where
-		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
-		
-		See Also
-		--------
-		copyto, put, take, extract
-		
-		Examples
-		--------
-		>>> arr = np.arange(6).reshape(2, 3)
-		>>> np.place(arr, arr>2, [44, 55])
-		>>> arr
-		array([[ 0,  1,  2],
-		       [44, 55, 44]])
-	**/
-	static public function place(arr:Dynamic, mask:Dynamic, vals:Dynamic):Dynamic;
-	/**
-		Evaluate a polynomial at specific values.
-		
-		If `p` is of length N, this function returns the value:
-		
-		    ``p[0]*x**(N-1) + p[1]*x**(N-2) + ... + p[N-2]*x + p[N-1]``
-		
-		If `x` is a sequence, then `p(x)` is returned for each element of `x`.
-		If `x` is another polynomial then the composite polynomial `p(x(t))`
-		is returned.
-		
-		Parameters
-		----------
-		p : array_like or poly1d object
-		   1D array of polynomial coefficients (including coefficients equal
-		   to zero) from highest degree to the constant term, or an
-		   instance of poly1d.
-		x : array_like or poly1d object
-		   A number, an array of numbers, or an instance of poly1d, at
-		   which to evaluate `p`.
-		
-		Returns
-		-------
-		values : ndarray or poly1d
-		   If `x` is a poly1d instance, the result is the composition of the two
-		   polynomials, i.e., `x` is "substituted" in `p` and the simplified
-		   result is returned. In addition, the type of `x` - array_like or
-		   poly1d - governs the type of the output: `x` array_like => `values`
-		   array_like, `x` a poly1d object => `values` is also.
-		
-		See Also
-		--------
-		poly1d: A polynomial class.
-		
-		Notes
-		-----
-		Horner's scheme [1]_ is used to evaluate the polynomial. Even so,
-		for polynomials of high degree the values may be inaccurate due to
-		rounding errors. Use carefully.
-		
-		References
-		----------
-		.. [1] I. N. Bronshtein, K. A. Semendyayev, and K. A. Hirsch (Eng.
-		   trans. Ed.), *Handbook of Mathematics*, New York, Van Nostrand
-		   Reinhold Co., 1985, pg. 720.
-		
-		Examples
-		--------
-		>>> np.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1
-		76
-		>>> np.polyval([3,0,1], np.poly1d(5))
-		poly1d([ 76.])
-		>>> np.polyval(np.poly1d([3,0,1]), 5)
-		76
-		>>> np.polyval(np.poly1d([3,0,1]), np.poly1d(5))
-		poly1d([ 76.])
-	**/
-	static public function polyval(p:Dynamic, x:Dynamic):Dynamic;
 	/**
 		A power-function continuous random variable.
 		
@@ -9482,147 +8614,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function powernorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		putmask(a, mask, values)
-		
-		Changes elements of an array based on conditional and input values.
-		
-		Sets ``a.flat[n] = values[n]`` for each n where ``mask.flat[n]==True``.
-		
-		If `values` is not the same size as `a` and `mask` then it will repeat.
-		This gives behavior different from ``a[mask] = values``.
-		
-		Parameters
-		----------
-		a : array_like
-		    Target array.
-		mask : array_like
-		    Boolean mask array. It has to be the same shape as `a`.
-		values : array_like
-		    Values to put into `a` where `mask` is True. If `values` is smaller
-		    than `a` it will be repeated.
-		
-		See Also
-		--------
-		place, put, take, copyto
-		
-		Examples
-		--------
-		>>> x = np.arange(6).reshape(2, 3)
-		>>> np.putmask(x, x>2, x**2)
-		>>> x
-		array([[ 0,  1,  2],
-		       [ 9, 16, 25]])
-		
-		If `values` is smaller than `a` it is repeated:
-		
-		>>> x = np.arange(5)
-		>>> np.putmask(x, x>1, [-33, -44])
-		>>> x
-		array([  0,   1, -33, -44, -33])
-	**/
-	static public function putmask(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return a contiguous flattened array.
-		
-		A 1-D array, containing the elements of the input, is returned.  A copy is
-		made only if needed.
-		
-		As of NumPy 1.10, the returned array will have the same type as the input
-		array. (for example, a masked array will be returned for a masked array
-		input)
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.  The elements in `a` are read in the order specified by
-		    `order`, and packed as a 1-D array.
-		order : {'C','F', 'A', 'K'}, optional
-		
-		    The elements of `a` are read using this index order. 'C' means
-		    to index the elements in row-major, C-style order,
-		    with the last axis index changing fastest, back to the first
-		    axis index changing slowest.  'F' means to index the elements
-		    in column-major, Fortran-style order, with the
-		    first index changing fastest, and the last index changing
-		    slowest. Note that the 'C' and 'F' options take no account of
-		    the memory layout of the underlying array, and only refer to
-		    the order of axis indexing.  'A' means to read the elements in
-		    Fortran-like index order if `a` is Fortran *contiguous* in
-		    memory, C-like order otherwise.  'K' means to read the
-		    elements in the order they occur in memory, except for
-		    reversing the data when strides are negative.  By default, 'C'
-		    index order is used.
-		
-		Returns
-		-------
-		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
-		
-		See Also
-		--------
-		ndarray.flat : 1-D iterator over an array.
-		ndarray.flatten : 1-D array copy of the elements of an array
-		                  in row-major order.
-		ndarray.reshape : Change the shape of an array without changing its data.
-		
-		Notes
-		-----
-		In row-major, C-style order, in two dimensions, the row index
-		varies the slowest, and the column index the quickest.  This can
-		be generalized to multiple dimensions, where row-major order
-		implies that the index along the first axis varies slowest, and
-		the index along the last quickest.  The opposite holds for
-		column-major, Fortran-style index ordering.
-		
-		When a view is desired in as many cases as possible, ``arr.reshape(-1)``
-		may be preferable.
-		
-		Examples
-		--------
-		It is equivalent to ``reshape(-1, order=order)``.
-		
-		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print(np.ravel(x))
-		[1 2 3 4 5 6]
-		
-		>>> print(x.reshape(-1))
-		[1 2 3 4 5 6]
-		
-		>>> print(np.ravel(x, order='F'))
-		[1 4 2 5 3 6]
-		
-		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
-		
-		>>> print(np.ravel(x.T))
-		[1 4 2 5 3 6]
-		>>> print(np.ravel(x.T, order='A'))
-		[1 2 3 4 5 6]
-		
-		When ``order`` is 'K', it will preserve orderings that are neither 'C'
-		nor 'F', but won't reverse axes:
-		
-		>>> a = np.arange(3)[::-1]; a
-		array([2, 1, 0])
-		>>> a.ravel(order='C')
-		array([2, 1, 0])
-		>>> a.ravel(order='K')
-		array([2, 1, 0])
-		
-		>>> a = np.arange(12).reshape(2,3,2).swapaxes(1,2); a
-		array([[[ 0,  2,  4],
-		        [ 1,  3,  5]],
-		       [[ 6,  8, 10],
-		        [ 7,  9, 11]]])
-		>>> a.ravel(order='C')
-		array([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])
-		>>> a.ravel(order='K')
-		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
-	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		A Rayleigh continuous random variable.
 		
@@ -10276,156 +9267,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function semicircular(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the shape of an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		
-		Returns
-		-------
-		shape : tuple of ints
-		    The elements of the shape tuple give the lengths of the
-		    corresponding array dimensions.
-		
-		See Also
-		--------
-		alen
-		ndarray.shape : Equivalent array method.
-		
-		Examples
-		--------
-		>>> np.shape(np.eye(3))
-		(3, 3)
-		>>> np.shape([[1, 2]])
-		(1, 2)
-		>>> np.shape([0])
-		(1,)
-		>>> np.shape(0)
-		()
-		
-		>>> a = np.array([(1, 2), (3, 4)], dtype=[('x', 'i4'), ('y', 'i4')])
-		>>> np.shape(a)
-		(2,)
-		>>> a.shape
-		(2,)
-	**/
-	static public function shape(a:Dynamic):Dynamic;
-	/**
-		sin(x[, out])
-		
-		Trigonometric sine, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
-		
-		Returns
-		-------
-		y : array_like
-		    The sine of each element of x.
-		
-		See Also
-		--------
-		arcsin, sinh, cos
-		
-		Notes
-		-----
-		The sine is one of the fundamental functions of trigonometry (the
-		mathematical study of triangles).  Consider a circle of radius 1
-		centered on the origin.  A ray comes in from the :math:`+x` axis, makes
-		an angle at the origin (measured counter-clockwise from that axis), and
-		departs from the origin.  The :math:`y` coordinate of the outgoing
-		ray's intersection with the unit circle is the sine of that angle.  It
-		ranges from -1 for :math:`x=3\pi / 2` to +1 for :math:`\pi / 2.`  The
-		function has zeroes where the angle is a multiple of :math:`\pi`.
-		Sines of angles between :math:`\pi` and :math:`2\pi` are negative.
-		The numerous properties of the sine and related functions are included
-		in any standard trigonometry text.
-		
-		Examples
-		--------
-		Print sine of one angle:
-		
-		>>> np.sin(np.pi/2.)
-		1.0
-		
-		Print sines of an array of angles given in degrees:
-		
-		>>> np.sin(np.array((0., 30., 45., 60., 90.)) * np.pi / 180. )
-		array([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])
-		
-		Plot the sine function:
-		
-		>>> import matplotlib.pylab as plt
-		>>> x = np.linspace(-np.pi, np.pi, 201)
-		>>> plt.plot(x, np.sin(x))
-		>>> plt.xlabel('Angle [rad]')
-		>>> plt.ylabel('sin(x)')
-		>>> plt.axis('tight')
-		>>> plt.show()
-	**/
-	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		sinh(x[, out])
-		
-		Hyperbolic sine, element-wise.
-		
-		Equivalent to ``1/2 * (np.exp(x) - np.exp(-x))`` or
-		``-1j * np.sin(1j*x)``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
-		
-		Returns
-		-------
-		y : ndarray
-		    The corresponding hyperbolic sine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
-		
-		Notes
-		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
-		
-		References
-		----------
-		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		New York, NY: Dover, 1972, pg. 83.
-		
-		Examples
-		--------
-		>>> np.sinh(0)
-		0.0
-		>>> np.sinh(np.pi*1j/2)
-		1j
-		>>> np.sinh(np.pi*1j) # (exact value is 0)
-		1.2246063538223773e-016j
-		>>> # Discrepancy due to vagaries of floating point arithmetic.
-		
-		>>> # Example of providing the optional output parameter
-		>>> out2 = np.sinh([0.1], out1)
-		>>> out2 is out1
-		True
-		
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
-	**/
-	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		A skew-normal random variable.
 		
 		As an instance of the `rv_continuous` class, `skewnorm` object inherits from it
@@ -10543,53 +9384,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function skewnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
-		
-		Return the positive square-root of an array, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
-		
-		Returns
-		-------
-		y : ndarray
-		    An array of the same shape as `x`, containing the positive
-		    square-root of each element in `x`.  If any element in `x` is
-		    complex, a complex array is returned (and the square-roots of
-		    negative reals are calculated).  If all of the elements in `x`
-		    are real, so is `y`, with negative elements returning ``nan``.
-		    If `out` was provided, `y` is a reference to it.
-		
-		See Also
-		--------
-		lib.scimath.sqrt
-		    A version which returns complex numbers when given negative reals.
-		
-		Notes
-		-----
-		*sqrt* has--consistent with common convention--as its branch cut the
-		real "interval" [`-inf`, 0), and is continuous from above on it.
-		A branch cut is a curve in the complex plane across which a given
-		complex function fails to be continuous.
-		
-		Examples
-		--------
-		>>> np.sqrt([1,4,9])
-		array([ 1.,  2.,  3.])
-		
-		>>> np.sqrt([4, -1, -3+4J])
-		array([ 2.+0.j,  0.+1.j,  1.+2.j])
-		
-		>>> np.sqrt([4, -1, numpy.inf])
-		array([  2.,  NaN,  Inf])
-	**/
-	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		A Student's T continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `t` object inherits from it
@@ -10699,115 +9493,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function t(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		tan(x[, out])
-		
-		Compute tangent element-wise.
-		
-		Equivalent to ``np.sin(x)/np.cos(x)`` element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		  Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
-		
-		Returns
-		-------
-		y : ndarray
-		  The corresponding tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
-		
-		Notes
-		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
-		
-		References
-		----------
-		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		New York, NY: Dover, 1972.
-		
-		Examples
-		--------
-		>>> from math import pi
-		>>> np.tan(np.array([-pi,pi/2,pi]))
-		array([  1.22460635e-16,   1.63317787e+16,  -1.22460635e-16])
-		>>>
-		>>> # Example of providing the optional output parameter illustrating
-		>>> # that what is returned is a reference to said parameter
-		>>> out2 = np.cos([0.1], out1)
-		>>> out2 is out1
-		True
-		>>>
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
-	**/
-	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		tanh(x[, out])
-		
-		Compute hyperbolic tangent element-wise.
-		
-		Equivalent to ``np.sinh(x)/np.cosh(x)`` or ``-1j * np.tan(1j*x)``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
-		
-		Returns
-		-------
-		y : ndarray
-		    The corresponding hyperbolic tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
-		
-		Notes
-		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
-		
-		References
-		----------
-		.. [1] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		       New York, NY: Dover, 1972, pg. 83.
-		       http://www.math.sfu.ca/~cbm/aands/
-		
-		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
-		
-		Examples
-		--------
-		>>> np.tanh((0, np.pi*1j, np.pi*1j/2))
-		array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])
-		
-		>>> # Example of providing the optional output parameter illustrating
-		>>> # that what is returned is a reference to said parameter
-		>>> out2 = np.tanh([0.1], out1)
-		>>> out2 is out1
-		True
-		
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
-	**/
-	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A trapezoidal continuous random variable.
 		
@@ -12021,75 +10706,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function weibull_min(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		where(condition, [x, y])
-		
-		Return elements, either from `x` or `y`, depending on `condition`.
-		
-		If only `condition` is given, return ``condition.nonzero()``.
-		
-		Parameters
-		----------
-		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
-		
-		Returns
-		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
-		
-		See Also
-		--------
-		nonzero, choose
-		
-		Notes
-		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
-		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
-		
-		Examples
-		--------
-		>>> np.where([[True, False], [True, True]],
-		...          [[1, 2], [3, 4]],
-		...          [[9, 8], [7, 6]])
-		array([[1, 8],
-		       [3, 4]])
-		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
-		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
-		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
-	**/
-	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A wrapped Cauchy continuous random variable.
 		

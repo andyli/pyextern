@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.graph_editor.util;
 @:pythonImport("tensorflow.contrib.graph_editor.util", "ListView") extern class ListView {
+	public function __add__(other:Dynamic):Dynamic;
 	public function __bool__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -48,6 +49,13 @@ package tensorflow.contrib.graph_editor.util;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(list_:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

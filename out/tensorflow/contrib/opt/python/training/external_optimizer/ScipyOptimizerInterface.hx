@@ -70,6 +70,13 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 	**/
 	public function new(loss:Dynamic, ?var_list:Dynamic, ?equalities:Dynamic, ?inequalities:Dynamic, ?optimizer_kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -172,14 +179,14 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 		Args:
 		  session: A `Session` instance.
 		  feed_dict: A feed dict to be passed to calls to `session.run`.
-		  fetches: A list of `Tensor`s to fetch and supply to `loss_callback` and
-		    `grad_callback` as positional arguments.
+		  fetches: A list of `Tensor`s to fetch and supply to `loss_callback`
+		    as positional arguments.
 		  step_callback: A function to be called at each optimization step;
 		    arguments are the current values of all optimization variables
 		    flattened into a single vector.
 		  loss_callback: A function to be called every time the loss and gradients
 		    are computed, with evaluated fetches supplied as positional arguments.
-		  grad_callback: Deprecated.
+		  **run_kwargs: kwargs to pass to `session.run`.
 	**/
-	public function minimize(?session:Dynamic, ?feed_dict:Dynamic, ?fetches:Dynamic, ?step_callback:Dynamic, ?loss_callback:Dynamic, ?grad_callback:Dynamic):Dynamic;
+	public function minimize(?session:Dynamic, ?feed_dict:Dynamic, ?fetches:Dynamic, ?step_callback:Dynamic, ?loss_callback:Dynamic, ?run_kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

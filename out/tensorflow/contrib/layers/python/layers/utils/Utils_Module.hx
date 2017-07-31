@@ -12,22 +12,34 @@ package tensorflow.contrib.layers.python.layers.utils;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Add `Tensor` outputs tagged with name to collections.
+		Append an alias to the list of aliases of the tensor.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  alias: String, to add to the list of aliases of the tensor.
+		
+		Returns:
+		  The tensor with a new alias appended to its list of aliases.
+	**/
+	static public function append_tensor_alias(tensor:Dynamic, alias:Dynamic):Dynamic;
+	/**
+		Add `Tensor` outputs tagged with alias to collections.
 		
 		It is useful to collect end-points or tags for summaries. Example of usage:
 		
 		logits = collect_named_outputs('end_points', 'inception_v3/logits', logits)
-		assert logits.tag == 'inception_v3/logits'
+		assert 'inception_v3/logits' in logits.aliases
 		
 		Args:
 		  collections: A collection or list of collections. If None skip collection.
-		  name: String, name to represent the outputs, ex. 'inception_v3/conv1'
+		  alias: String to append to the list of aliases of outputs, for example,
+		         'inception_v3/conv1'.
 		  outputs: Tensor, an output tensor to collect
 		
 		Returns:
 		  The outputs Tensor to allow inline call.
 	**/
-	static public function collect_named_outputs(collections:Dynamic, name:Dynamic, outputs:Dynamic):Dynamic;
+	static public function collect_named_outputs(collections:Dynamic, alias:Dynamic, outputs:Dynamic):Dynamic;
 	/**
 		Returns value if value_or_tensor_or_var has a constant value.
 		
@@ -44,6 +56,16 @@ package tensorflow.contrib.layers.python.layers.utils;
 		  wrong dtype.
 	**/
 	static public function constant_value(value_or_tensor_or_var:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Returns an OrderedDict of Tensors with their aliases as keys.
+		
+		Args:
+		  collection: A collection.
+		
+		Returns:
+		  An OrderedDict of {alias: tensor}
+	**/
+	static public function convert_collection_to_dict(collection:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns the first dimension of shape while checking it has min_rank.
@@ -60,6 +82,29 @@ package tensorflow.contrib.layers.python.layers.utils;
 		    first dimension value is not defined.
 	**/
 	static public function first_dimension(shape:Dynamic, ?min_rank:Dynamic):Dynamic;
+	/**
+		Given a list of tensors, gather their aliases.
+		
+		Args:
+		  tensors: A list of `Tensors`.
+		
+		Returns:
+		  A list of strings with the aliases of all tensors.
+	**/
+	static public function gather_tensors_aliases(tensors:Dynamic):Dynamic;
+	/**
+		Get a list with the aliases of the input tensor.
+		
+		If the tensor does not have any alias, it would default to its its op.name or
+		its name.
+		
+		Args:
+		  tensor: A `Tensor`.
+		
+		Returns:
+		  A list of strings with the aliases of the tensor.
+	**/
+	static public function get_tensor_aliases(tensor:Dynamic):Dynamic;
 	static public function get_variable_collections(variables_collections:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Returns the last dimension of shape while checking it has min_rank.
@@ -76,6 +121,26 @@ package tensorflow.contrib.layers.python.layers.utils;
 		    last dimension value is not defined.
 	**/
 	static public function last_dimension(shape:Dynamic, ?min_rank:Dynamic):Dynamic;
+	/**
+		Converts `value` to a sequence of `n` positive integers.
+		
+		`value` may be either be a sequence of values convertible to `int`, or a
+		single value convertible to `int`, in which case the resulting integer is
+		duplicated `n` times.  It may also be a TensorShape of rank `n`.
+		
+		Args:
+		  n: Length of sequence to return.
+		  value: Either a single value convertible to a positive `int` or an
+		    `n`-element sequence of values convertible to a positive `int`.
+		
+		Returns:
+		  A tuple of `n` positive integers.
+		
+		Raises:
+		  TypeError: If `n` is not convertible to an integer.
+		  ValueError: If `n` or `value` are invalid.
+	**/
+	static public function n_positive_integers(n:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		
@@ -98,7 +163,7 @@ package tensorflow.contrib.layers.python.layers.utils;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return either fn1() or fn2() based on the boolean predicate/value `pred`.
@@ -124,7 +189,6 @@ package tensorflow.contrib.layers.python.layers.utils;
 		  pred: A value determining whether to return the result of `fn1` or `fn2`.
 		  fn1: The callable to be performed if pred is true.
 		  fn2: The callable to be performed if pred is false.
-		  name: Optional name prefix for the returned tensors.
 		
 		Returns:
 		  Tensors returned by the call to either `fn1` or `fn2`.
@@ -132,7 +196,7 @@ package tensorflow.contrib.layers.python.layers.utils;
 		Raises:
 		  TypeError: if `fn1` or `fn2` is not callable.
 	**/
-	static public function static_cond(pred:Dynamic, fn1:Dynamic, fn2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function static_cond(pred:Dynamic, fn1:Dynamic, fn2:Dynamic):Dynamic;
 	/**
 		Converts `int_or_tuple` to height, width.
 		

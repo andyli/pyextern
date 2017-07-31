@@ -2,9 +2,16 @@
 package tensorflow.contrib.learn.python.learn.estimators.dnn;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.dnn", "DNNRegressor") extern class DNNRegressor {
 	/**
-		This class specifies the specific configurations for the run.
+		This class specifies the configurations for an `Estimator` run.
+		
+		This class is the implementation of ${tf.estimator.RunConfig} interface.
+		
+		If you're a Google-internal user using command line flags with
+		`learn_runner.py` (for instance, to do distributed training or to use
+		parameter servers), you probably want to use `learn_runner.EstimatorConfig`
+		instead.
 	**/
-	static public function _Config(?master:Dynamic, ?task:Dynamic, ?num_ps_replicas:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic):Dynamic;
+	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -51,9 +58,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  feature_columns: An iterable containing all the feature columns used by
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
-		  model_dir: Directory to save model parameters, graph and etc. This can also
-		    be used to load checkpoints from the directory into a estimator to continue
-		    training a previously saved model.
+		  model_dir: Directory to save model parameters, graph and etc. This can
+		    also be used to load checkpoints from the directory into a estimator to
+		    continue training a previously saved model.
 		  weight_column_name: A string defining feature column name representing
 		    weights. It is used to down weight or boost examples during training. It
 		    will be multiplied by the loss of the example.
@@ -70,12 +77,24 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		    bias variable for each class. Rest of the model structure learns the
 		    residual after centered bias.
 		  config: `RunConfig` object to configure the runtime settings.
+		  feature_engineering_fn: Feature engineering function. Takes features and
+		                    labels which are the output of `input_fn` and
+		                    returns features and labels which will be fed
+		                    into the model.
+		  label_dimension: Number of regression targets per example. This is the
+		    size of the last dimension of the labels and logits `Tensor` objects
+		    (typically, these have shape `[batch_size, label_dimension]`).
+		  embedding_lr_multipliers: Optional. A dictionary from `EbeddingColumn` to
+		      a `float` multiplier. Multiplier will be used to multiply with
+		      learning rate for the embedding variables.
+		  input_layer_min_slice_size: Optional. The min slice size of input layer
+		      partitions. If not provided, will use the default of 64M.
 		
 		Returns:
 		  A `DNNRegressor` estimator.
 	**/
 	@:native("__init__")
-	public function ___init__(hidden_units:Dynamic, ?feature_columns:Dynamic, ?model_dir:Dynamic, ?weight_column_name:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?enable_centered_bias:Dynamic, ?config:Dynamic):Dynamic;
+	public function ___init__(hidden_units:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?weight_column_name:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?enable_centered_bias:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic, ?label_dimension:Dynamic, ?embedding_lr_multipliers:Dynamic, ?input_layer_min_slice_size:Dynamic):Dynamic;
 	/**
 		Initializes a `DNNRegressor` instance.
 		
@@ -86,9 +105,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  feature_columns: An iterable containing all the feature columns used by
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
-		  model_dir: Directory to save model parameters, graph and etc. This can also
-		    be used to load checkpoints from the directory into a estimator to continue
-		    training a previously saved model.
+		  model_dir: Directory to save model parameters, graph and etc. This can
+		    also be used to load checkpoints from the directory into a estimator to
+		    continue training a previously saved model.
 		  weight_column_name: A string defining feature column name representing
 		    weights. It is used to down weight or boost examples during training. It
 		    will be multiplied by the loss of the example.
@@ -105,11 +124,30 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		    bias variable for each class. Rest of the model structure learns the
 		    residual after centered bias.
 		  config: `RunConfig` object to configure the runtime settings.
+		  feature_engineering_fn: Feature engineering function. Takes features and
+		                    labels which are the output of `input_fn` and
+		                    returns features and labels which will be fed
+		                    into the model.
+		  label_dimension: Number of regression targets per example. This is the
+		    size of the last dimension of the labels and logits `Tensor` objects
+		    (typically, these have shape `[batch_size, label_dimension]`).
+		  embedding_lr_multipliers: Optional. A dictionary from `EbeddingColumn` to
+		      a `float` multiplier. Multiplier will be used to multiply with
+		      learning rate for the embedding variables.
+		  input_layer_min_slice_size: Optional. The min slice size of input layer
+		      partitions. If not provided, will use the default of 64M.
 		
 		Returns:
 		  A `DNNRegressor` estimator.
 	**/
-	public function new(hidden_units:Dynamic, ?feature_columns:Dynamic, ?model_dir:Dynamic, ?weight_column_name:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?enable_centered_bias:Dynamic, ?config:Dynamic):Void;
+	public function new(hidden_units:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?weight_column_name:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?enable_centered_bias:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic, ?label_dimension:Dynamic, ?embedding_lr_multipliers:Dynamic, ?input_layer_min_slice_size:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,7 +169,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -179,23 +217,61 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _centered_bias():Dynamic;
-	public function _centered_bias_step(targets:Dynamic, features:Dynamic):Dynamic;
-	public function _check_inputs(features:Dynamic, targets:Dynamic):Dynamic;
-	public function _dnn_logits(features:Dynamic, is_training:Dynamic):Dynamic;
-	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calls model function with support of 2, 3 or 4 arguments.
+		
+		Args:
+		  features: features dict.
+		  labels: labels dict.
+		  mode: ModeKeys
+		
+		Returns:
+		  A `ModelFnOps` object. If model_fn returns a tuple, wraps them up in a
+		  `ModelFnOps` object.
+		
+		Raises:
+		  ValueError: if model_fn returns invalid objects.
+	**/
+	public function _call_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic):Dynamic;
+	public function _check_inputs(features:Dynamic, labels:Dynamic):Dynamic;
+	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic, ?log_progress:Dynamic):Dynamic;
 	/**
 		Separate update operations from metric value operations.
 	**/
 	public function _extract_metric_update_ops(eval_dict:Dynamic):Dynamic;
-	public function _get_dnn_feature_columns():Dynamic;
+	public function _filter_predictions(predictions:Dynamic, outputs:Dynamic):Dynamic;
 	/**
-		See base class.
+		Method that builds model graph and returns evaluation ops.
+		
+		Expected to be overriden by sub-classes that require custom support.
+		This implementation uses `model_fn` passed as parameter to constructor to
+		build model.
+		
+		Args:
+		  features: `Tensor` or `dict` of `Tensor` objects.
+		  labels: `Tensor` or `dict` of `Tensor` objects.
+		  metrics: Dict of metrics to run. If None, the default metric functions
+		    are used; if {}, no metrics are used. Otherwise, `metrics` should map
+		    friendly names for the metric to a `MetricSpec` object defining which
+		    model outputs to evaluate against which labels with which metric
+		    function. Metric ops should support streaming, e.g., returning
+		    update_op and value tensors. See more details in
+		    `../../../../metrics/python/metrics/ops/streaming_metrics.py` and
+		    `../metric_spec.py`.
+		
+		Returns:
+		  `ModelFnOps` object.
+		
+		Raises:
+		  ValueError: if `metrics` don't match `labels`.
 	**/
-	public function _get_eval_ops(features:Dynamic, targets:Dynamic, ?metrics:Dynamic):Dynamic;
-	public function _get_feature_dict(features:Dynamic):Dynamic;
+	public function _get_eval_ops(features:Dynamic, labels:Dynamic, metrics:Dynamic):Dynamic;
 	/**
-		Returns feature parser for given example batch using features info.
+		Returns feature parser for given example batch using features info. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Instructions for updating:
+		The signature of the input_fn accepted by export is changing to be consistent with what's used by tf.Learn Estimator's train/evaluate, which makes this function useless. This will be removed after the deprecation date.
 		
 		This function requires `fit()` has been called.
 		
@@ -211,42 +287,90 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 	**/
 	public function _get_feature_ops_from_example(examples_batch:Dynamic):Dynamic;
 	public function _get_features_from_input_fn(input_fn:Dynamic):Dynamic;
-	public function _get_linear_feature_columns():Dynamic;
 	/**
-		See base class.
+		Method that builds model graph and returns prediction ops.
+		
+		Expected to be overriden by sub-classes that require custom support.
+		This implementation uses `model_fn` passed as parameter to constructor to
+		build model.
+		
+		Args:
+		  features: `Tensor` or `dict` of `Tensor` objects.
+		
+		Returns:
+		  `ModelFnOps` object.
 	**/
 	public function _get_predict_ops(features:Dynamic):Dynamic;
 	/**
-		See base class.
+		Method that builds model graph and returns trainer ops.
+		
+		Expected to be overriden by sub-classes that require custom support.
+		This implementation uses `model_fn` passed as parameter to constructor to
+		build model.
+		
+		Args:
+		  features: `Tensor` or `dict` of `Tensor` objects.
+		  labels: `Tensor` or `dict` of `Tensor` objects.
+		
+		Returns:
+		  `ModelFnOps` object.
 	**/
-	public function _get_train_ops(features:Dynamic, targets:Dynamic):Dynamic;
-	public function _infer_model(input_fn:Dynamic, ?feed_fn:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
-	public function _infer_model_as_iterable(checkpoint_path:Dynamic, predictions:Dynamic, feed_fn:Dynamic, return_dict:Dynamic):Dynamic;
-	public function _infer_model_single(checkpoint_path:Dynamic, predictions:Dynamic, feed_fn:Dynamic, return_dict:Dynamic):Dynamic;
-	public function _linear_logits(features:Dynamic, is_training:Dynamic):Dynamic;
-	public function _logits(features:Dynamic, ?is_training:Dynamic):Dynamic;
-	public function _train_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?init_op:Dynamic, ?init_feed_fn:Dynamic, ?init_fn:Dynamic, ?device_fn:Dynamic, ?monitors:Dynamic, ?log_every_steps:Dynamic, ?fail_on_nan_loss:Dynamic, ?max_steps:Dynamic):Dynamic;
-	public function _validate_dnn_feature_columns(features:Dynamic):Dynamic;
-	public var bias_ : Dynamic;
+	public function _get_train_ops(features:Dynamic, labels:Dynamic):Dynamic;
+	public function _infer_model(input_fn:Dynamic, ?feed_fn:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic, ?iterate_batches:Dynamic):Dynamic;
+	public function _is_input_constant(feed_fn:Dynamic, graph:Dynamic):Dynamic;
+	public function _predict_generator(mon_sess:Dynamic, predictions:Dynamic, feed_fn:Dynamic, iterate_batches:Dynamic):Dynamic;
+	public function _train_model(input_fn:Dynamic, hooks:Dynamic):Dynamic;
+	public var config : Dynamic;
 	/**
-		Returns bias of deep neural network part.
+		See evaluable.Evaluable.
 	**/
-	public var dnn_bias_ : Dynamic;
+	public function evaluate(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?feed_fn:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic):Dynamic;
 	/**
-		Returns weights of deep neural network part.
+		See BaseEstimator.export. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Instructions for updating:
+		Please use Estimator.export_savedmodel() instead.
 	**/
-	public var dnn_weights_ : Dynamic;
+	public function export(export_dir:Dynamic, ?input_fn:Dynamic, ?input_feature_key:Dynamic, ?use_deprecated_input_fn:Dynamic, ?signature_fn:Dynamic, ?default_batch_size:Dynamic, ?exports_to_keep:Dynamic):Dynamic;
 	/**
-		See `Evaluable`.
+		Exports inference graph as a SavedModel into given dir.
+		
+		Args:
+		  export_dir_base: A string containing a directory to write the exported
+		    graph and checkpoints.
+		  serving_input_fn: A function that takes no argument and
+		    returns an `InputFnOps`.
+		  default_output_alternative_key: the name of the head to serve when none is
+		    specified.  Not needed for single-headed models.
+		  assets_extra: A dict specifying how to populate the assets.extra directory
+		    within the exported SavedModel.  Each key should give the destination
+		    path (including the filename) relative to the assets.extra directory.
+		    The corresponding value gives the full path of the source file to be
+		    copied.  For example, the simple case of copying a single file without
+		    renaming it is specified as
+		    `{'my_asset_file.txt': '/path/to/my_asset_file.txt'}`.
+		  as_text: whether to write the SavedModel proto in text format.
+		  checkpoint_path: The checkpoint path to export.  If None (the default),
+		    the most recent checkpoint found within the model directory is chosen.
+		
+		Returns:
+		  The string path to the exported directory.
 		
 		Raises:
-		  ValueError: If at least one of `x` or `y` is provided, and at least one of
-		      `input_fn` or `feed_fn` is provided.
-		      Or if `metrics` is not `None` or `dict`.
+		  ValueError: if an unrecognized export_type is requested.
 	**/
-	public function evaluate(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?feed_fn:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic, ?name:Dynamic):Dynamic;
+	public function export_savedmodel(export_dir_base:Dynamic, serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
 	/**
-		See `Trainable`.
+		See `Trainable`. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		Raises:
 		  ValueError: If `x` or `y` are not `None` while `input_fn` is not `None`.
@@ -285,16 +409,19 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 	**/
 	public function get_variable_value(name:Dynamic):Dynamic;
 	/**
-		Returns bias of the linear part.
+		Returns a path in which the eval process will look for checkpoints.
 	**/
-	public var linear_bias_ : Dynamic;
-	/**
-		Returns weights per feature of the linear part.
-	**/
-	public var linear_weights_ : Dynamic;
 	public var model_dir : Dynamic;
 	/**
-		Incremental fit on a batch of samples.
+		Incremental fit on a batch of samples. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		This method is expected to be called several times consecutively
 		on different or the same chunks of the dataset. This either can
@@ -309,7 +436,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		     returns arrays of features. The training input samples for fitting the
 		     model. If set, `input_fn` must be `None`.
 		  y: Vector or matrix [n_samples] or [n_samples, n_outputs]. Can be
-		     iterator that returns array of targets. The training target values
+		     iterator that returns array of labels. The training label values
 		     (class labels in classification, real numbers in regression). If set,
 		     `input_fn` must be `None`.
 		  input_fn: Input function. If set, `x`, `y`, and `batch_size` must be
@@ -329,32 +456,63 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 	**/
 	public function partial_fit(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?steps:Dynamic, ?batch_size:Dynamic, ?monitors:Dynamic):Dynamic;
 	/**
-		Returns predictions for given features.
+		Returns predictions for given features. (deprecated arguments) (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-09-15.
+		Instructions for updating:
+		The default behavior of predict() is changing. The default value for
+		as_iterable will change to True, and then the flag will be removed
+		altogether. The behavior of this flag is described below.
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-03-01.
+		Instructions for updating:
+		Please switch to predict_scores, or set `outputs` argument.
+		
+		By default, returns predicted scores. But this default will be dropped
+		soon. Users should either pass `outputs`, or call `predict_scores` method.
 		
 		Args:
-		  x: Matrix of shape [n_samples, n_features...]. Can be iterator that
-		     returns arrays of features. The training input samples for fitting the
-		     model. If set, `input_fn` must be `None`.
-		  input_fn: Input function. If set, `x` and 'batch_size' must be `None`.
-		  batch_size: Override default batch size. If set, 'input_fn' must be
-		    'None'.
+		  x: features.
+		  input_fn: Input function. If set, x must be None.
+		  batch_size: Override default batch size.
 		  outputs: list of `str`, name of the output to predict.
-		    If `None`, returns all.
+		    If `None`, returns scores.
 		  as_iterable: If True, return an iterable which keeps yielding predictions
 		    for each example until inputs are exhausted. Note: The inputs must
 		    terminate if you want the iterable to terminate (e.g. be sure to pass
 		    num_epochs=1 if you are using something like read_batch_features).
 		
 		Returns:
-		  A numpy array of predicted classes or regression values if the
-		  constructor's `model_fn` returns a `Tensor` for `predictions` or a `dict`
-		  of numpy arrays if `model_fn` returns a `dict`. Returns an iterable of
-		  predictions if as_iterable is True.
-		
-		Raises:
-		  ValueError: If x and input_fn are both provided or both `None`.
+		  Numpy array of predicted scores (or an iterable of predicted scores if
+		  as_iterable is True). If `label_dimension == 1`, the shape of the output
+		  is `[batch_size]`, otherwise the shape is `[batch_size, label_dimension]`.
+		  If `outputs` is set, returns a dict of predictions.
 	**/
 	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
+	/**
+		Returns predicted scores for given features. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-09-15.
+		Instructions for updating:
+		The default behavior of predict() is changing. The default value for
+		as_iterable will change to True, and then the flag will be removed
+		altogether. The behavior of this flag is described below.
+		
+		Args:
+		  x: features.
+		  input_fn: Input function. If set, x must be None.
+		  batch_size: Override default batch size.
+		  as_iterable: If True, return an iterable which keeps yielding predictions
+		    for each example until inputs are exhausted. Note: The inputs must
+		    terminate if you want the iterable to terminate (e.g. be sure to pass
+		    num_epochs=1 if you are using something like read_batch_features).
+		
+		Returns:
+		  Numpy array of predicted scores (or an iterable of predicted scores if
+		  as_iterable is True). If `label_dimension == 1`, the shape of the output
+		  is `[batch_size]`, otherwise the shape is `[batch_size, label_dimension]`.
+	**/
+	public function predict_scores(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?as_iterable:Dynamic):Dynamic;
 	/**
 		Set the parameters of this estimator.
 		
@@ -373,5 +531,4 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  ValueError: If params contain invalid names.
 	**/
 	public function set_params(?params:python.KwArgs<Dynamic>):Dynamic;
-	public var weights_ : Dynamic;
 }

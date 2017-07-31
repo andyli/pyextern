@@ -24,14 +24,14 @@ package matplotlib.tri.triinterpolate;
 		    Right hand side of the linear system.
 		
 		Returns
-		----------
+		-------
 		x: array.
 		    The converged solution.
 		err: float
 		    The absolute error np.linalg.norm(A.dot(x) - b)
 		
 		Other parameters
-		----------
+		----------------
 		x0: array.
 		    Starting guess for the solution.
 		tol: float.

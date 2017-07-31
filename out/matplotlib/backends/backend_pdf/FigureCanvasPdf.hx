@@ -47,6 +47,13 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function new(figure:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -373,10 +380,10 @@ package matplotlib.backends.backend_pdf;
 		    the dots per inch to save the figure in; if None, use savefig.dpi
 		
 		*facecolor*
-		    the facecolor of the figure
+		    the facecolor of the figure; if None, defaults to savefig.facecolor
 		
 		*edgecolor*
-		    the edgecolor of the figure
+		    the edgecolor of the figure; if None, defaults to savefig.edgecolor
 		
 		*orientation*
 		    landscape' | 'portrait' (not supported on all backends)
@@ -451,10 +458,6 @@ package matplotlib.backends.backend_pdf;
 		functions for each of the GUI backends can be written.  As
 		such, it throws a deprecated warning.
 		
-		Call signature::
-		
-		    start_event_loop_default(self,timeout=0)
-		
 		This call blocks until a callback function triggers
 		stop_event_loop() or *timeout* is reached.  If *timeout* is
 		<=0, never timeout.
@@ -472,10 +475,6 @@ package matplotlib.backends.backend_pdf;
 		Stop an event loop.  This is used to stop a blocking event
 		loop so that interactive functions, such as ginput and
 		waitforbuttonpress, can wait for events.
-		
-		Call signature::
-		
-		  stop_event_loop_default(self)
 	**/
 	public function stop_event_loop_default():Dynamic;
 	static public var supports_blit : Dynamic;

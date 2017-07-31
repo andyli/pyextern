@@ -47,6 +47,13 @@ package docutils.parsers.rst.states;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -107,7 +114,6 @@ package docutils.parsers.rst.states;
 	static public var email_pattern : Dynamic;
 	static public var emailc : Dynamic;
 	public function emphasis(match:Dynamic, lineno:Dynamic):Dynamic;
-	static public var end_string_suffix : Dynamic;
 	/**
 		Handles `nodes.footnote_reference` and `nodes.citation_reference`
 		elements.
@@ -120,9 +126,6 @@ package docutils.parsers.rst.states;
 		and inline element nodes.
 	**/
 	public function implicit_inline(text:Dynamic, lineno:Dynamic):Dynamic;
-	/**
-		Setting-based customizations; run when parsing begins.
-	**/
 	public function init_customizations(settings:Dynamic):Dynamic;
 	public function inline_internal_target(match:Dynamic, lineno:Dynamic):Dynamic;
 	public function inline_obj(match:Dynamic, lineno:Dynamic, end_pattern:Dynamic, nodeclass:Dynamic, ?restore_backslashes:Dynamic):Dynamic;
@@ -147,8 +150,6 @@ package docutils.parsers.rst.states;
 		URIs) is found last.
 	**/
 	public function parse(text:Dynamic, lineno:Dynamic, memo:Dynamic, parent:Dynamic):Dynamic;
-	static public var parts : Dynamic;
-	static public var patterns : Dynamic;
 	public function pep_reference(match:Dynamic, lineno:Dynamic):Dynamic;
 	public function phrase_ref(before:Dynamic, after:Dynamic, rawsource:Dynamic, escaped:Dynamic, text:Dynamic):Dynamic;
 	public function problematic(text:Dynamic, rawsource:Dynamic, message:Dynamic):Dynamic;
@@ -165,7 +166,6 @@ package docutils.parsers.rst.states;
 	static public var rfc_url : Dynamic;
 	static public var simplename : Dynamic;
 	public function standalone_uri(match:Dynamic, lineno:Dynamic):Dynamic;
-	static public var start_string_prefix : Dynamic;
 	public function strong(match:Dynamic, lineno:Dynamic):Dynamic;
 	public function substitution_reference(match:Dynamic, lineno:Dynamic):Dynamic;
 	static public var uri_end : Dynamic;

@@ -159,4 +159,8 @@ package docutils.parsers.rst.directives;
 		Raise ``ValueError`` if no argument is found.
 	**/
 	static public function uri(argument:Dynamic):Dynamic;
+	/**
+		The argument can be any of `values` or `argument_type`.
+	**/
+	static public function value_or(values:Dynamic, other:Dynamic):Dynamic;
 }

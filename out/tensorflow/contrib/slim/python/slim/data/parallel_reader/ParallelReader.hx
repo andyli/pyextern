@@ -131,6 +131,13 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 	**/
 	public function new(reader_class:Dynamic, common_queue:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

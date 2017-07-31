@@ -85,6 +85,13 @@ package scipy.io.matlab.miobase;
 	**/
 	public function new(mat_stream:Dynamic, ?byte_order:Dynamic, ?mat_dtype:Dynamic, ?squeeze_me:Dynamic, ?chars_as_strings:Dynamic, ?matlab_compatible:Dynamic, ?struct_as_record:Dynamic, ?verify_compressed_data_integrity:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

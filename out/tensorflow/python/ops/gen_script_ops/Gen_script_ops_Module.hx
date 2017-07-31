@@ -9,8 +9,6 @@ package tensorflow.python.ops.gen_script_ops;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __py_func_outputs : Dynamic;
-	static public var __py_func_stateless_outputs : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
@@ -24,8 +22,7 @@ package tensorflow.python.ops.gen_script_ops;
 		    List of Tensors that will provide input to the Op.
 		  token: A `string`.
 		    A token representing a registered python function in this address space.
-		  Tout: A list of `tf.DTypes` that has length `>= 1`.
-		    Data types of the outputs from the op.
+		  Tout: A list of `tf.DTypes`. Data types of the outputs from the op.
 		    The length of the list specifies the number of outputs.
 		  name: A name for the operation (optional).
 		
@@ -39,7 +36,7 @@ package tensorflow.python.ops.gen_script_ops;
 		Args:
 		  input: A list of `Tensor` objects.
 		  token: A `string`.
-		  Tout: A list of `tf.DTypes` that has length `>= 1`.
+		  Tout: A list of `tf.DTypes`.
 		  name: A name for the operation (optional).
 		
 		Returns:

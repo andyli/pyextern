@@ -52,7 +52,7 @@ package numpy;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -60,6 +60,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -87,12 +98,12 @@ package numpy;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		absolute(x[, out])
+		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
 		
@@ -100,6 +111,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -127,13 +149,13 @@ package numpy;
 		Plot the function over the complex plane:
 		
 		>>> xx = x + 1j * x[:, np.newaxis]
-		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')
 		>>> plt.show()
 	**/
 	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		add(x1, x2[, out])
+		add(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Add arguments element-wise.
 		
@@ -143,6 +165,17 @@ package numpy;
 		    The arrays to be added.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -274,7 +307,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
@@ -389,31 +422,6 @@ package numpy;
 	**/
 	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Change `dot`, `vdot`, and `inner` to use accelerated BLAS functions.
-		
-		Typically, as a user of Numpy, you do not explicitly call this
-		function. If Numpy is built with an accelerated BLAS, this function is
-		automatically called when Numpy is imported.
-		
-		When Numpy is built with an accelerated BLAS like ATLAS, these
-		functions are replaced to make use of the faster implementations.  The
-		faster implementations only affect float32, float64, complex64, and
-		complex128 arrays. Furthermore, the BLAS API only includes
-		matrix-matrix, matrix-vector, and vector-vector products. Products of
-		arrays with larger dimensionalities use the built in functions and are
-		not accelerated.
-		
-		.. note:: Deprecated in Numpy 1.10
-		          The cblas functions have been integrated into the multarray
-		          module and alterdot now longer does anything. It will be
-		          removed in Numpy 1.11.0.
-		
-		See Also
-		--------
-		restoredot : `restoredot` undoes the effects of `alterdot`.
-	**/
-	static public function alterdot():Dynamic;
-	/**
 		Return the maximum of an array or maximum along an axis.
 		
 		Parameters
@@ -424,7 +432,7 @@ package numpy;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -436,7 +444,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -508,7 +516,7 @@ package numpy;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -520,7 +528,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -641,7 +649,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
@@ -753,7 +761,7 @@ package numpy;
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
-		kwargs: any
+		kwargs : any
 		    Additional named arguments to `func1d`.
 		
 		    .. versionadded:: 1.9.0
@@ -763,9 +771,10 @@ package numpy;
 		-------
 		apply_along_axis : ndarray
 		    The output array. The shape of `outarr` is identical to the shape of
-		    `arr`, except along the `axis` dimension, where the length of `outarr`
-		    is equal to the size of the return value of `func1d`.  If `func1d`
-		    returns a scalar `outarr` will have one fewer dimensions than `arr`.
+		    `arr`, except along the `axis` dimension. This axis is removed, and
+		    replaced with new dimensions equal to the shape of the return value
+		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    fewer dimensions than `arr`.
 		
 		See Also
 		--------
@@ -782,7 +791,7 @@ package numpy;
 		>>> np.apply_along_axis(my_func, 1, b)
 		array([ 2.,  5.,  8.])
 		
-		For a function that doesn't return a scalar, the number of dimensions in
+		For a function that returns a 1D array, the number of dimensions in
 		`outarr` is the same as `arr`.
 		
 		>>> b = np.array([[8,1,7], [4,3,9], [5,2,6]])
@@ -790,6 +799,23 @@ package numpy;
 		array([[1, 7, 8],
 		       [3, 4, 9],
 		       [2, 5, 6]])
+		
+		For a function that returns a higher dimensional array, those dimensions
+		are inserted in place of the `axis` dimension.
+		
+		>>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+		>>> np.apply_along_axis(np.diag, -1, b)
+		array([[[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]],
+		
+		       [[4, 0, 0],
+		        [0, 5, 0],
+		        [0, 0, 6]],
+		
+		       [[7, 0, 0],
+		        [0, 8, 0],
+		        [0, 0, 9]]])
 	**/
 	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -826,7 +852,7 @@ package numpy;
 		Notes
 		------
 		This function is equivalent to tuple axis arguments to reorderable ufuncs
-		with keepdims=True. Tuple axis arguments to ufuncs have been availabe since
+		with keepdims=True. Tuple axis arguments to ufuncs have been available since
 		version 1.7.0.
 		
 		Examples
@@ -916,7 +942,7 @@ package numpy;
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arccos(x[, out])
+		arccos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse cosine, element-wise.
 		
@@ -927,10 +953,17 @@ package numpy;
 		x : array_like
 		    `x`-coordinate on the unit circle.
 		    For real arguments, the domain is [-1, 1].
-		
-		out : ndarray, optional
-		    Array of the same shape as `a`, to store results in. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -982,7 +1015,7 @@ package numpy;
 	**/
 	static public function arccos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arccosh(x[, out])
+		arccosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic cosine, element-wise.
 		
@@ -990,10 +1023,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array of the same shape as `x`, to store results in.
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1035,7 +1075,7 @@ package numpy;
 	**/
 	static public function arccosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arcsin(x[, out])
+		arcsin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse sine, element-wise.
 		
@@ -1043,10 +1083,17 @@ package numpy;
 		----------
 		x : array_like
 		    `y`-coordinate on the unit circle.
-		
-		out : ndarray, optional
-		    Array of the same shape as `x`, in which to store the results.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1092,7 +1139,7 @@ package numpy;
 	**/
 	static public function arcsin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arcsinh(x[, out])
+		arcsinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic sine element-wise.
 		
@@ -1100,9 +1147,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1139,7 +1194,7 @@ package numpy;
 	**/
 	static public function arcsinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan(x[, out])
+		arctan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric inverse tangent, element-wise.
 		
@@ -1148,7 +1203,17 @@ package numpy;
 		Parameters
 		----------
 		x : array_like
-		    Input values.  `arctan` is applied to each element of `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1205,7 +1270,7 @@ package numpy;
 	**/
 	static public function arctan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctan2(x1, x2[, out])
+		arctan2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.
 		
@@ -1228,6 +1293,17 @@ package numpy;
 		x2 : array_like, real-valued
 		    `x`-coordinates. `x2` must be broadcastable to match the shape of
 		    `x1` or vice versa.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1282,7 +1358,7 @@ package numpy;
 	**/
 	static public function arctan2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arctanh(x[, out])
+		arctanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Inverse hyperbolic tangent element-wise.
 		
@@ -1290,6 +1366,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1434,10 +1521,10 @@ package numpy;
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Perform an indirect partition along the given axis using the algorithm
-		specified by the `kind` keyword. It returns an array of indices of the
-		same shape as `a` that index data along the given axis in partitioned
-		order.
+		Perform an indirect partition along the given axis using the
+		algorithm specified by the `kind` keyword. It returns an array of
+		indices of the same shape as `a` that index data along the given
+		axis in partitioned order.
 		
 		.. versionadded:: 1.8.0
 		
@@ -1446,29 +1533,29 @@ package numpy;
 		a : array_like
 		    Array to sort.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth element will be in its final
-		    sorted position and all smaller elements will be moved before it and
-		    all larger elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all of them into
-		    their sorted position at once.
+		    Element index to partition by. The k-th element will be in its
+		    final sorted position and all smaller elements will be moved
+		    before it and all larger elements behind it. The order all
+		    elements in the partitions is undefined. If provided with a
+		    sequence of k-th it will partition all of them into their sorted
+		    position at once.
 		axis : int or None, optional
-		    Axis along which to sort.  The default is -1 (the last axis). If None,
-		    the flattened array is used.
+		    Axis along which to sort. The default is -1 (the last axis). If
+		    None, the flattened array is used.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
-		    but unspecified fields will still be used, in the order in which
-		    they come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc. A single
+		    field can be specified as a string, and not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
 		index_array : ndarray, int
 		    Array of indices that partition `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    In other words, ``a[index_array]`` yields a partitioned `a`.
 		
 		See Also
 		--------
@@ -1648,7 +1735,7 @@ package numpy;
 		
 		Notes
 		-----
-		For values exactly halfway between rounded decimal values, Numpy
+		For values exactly halfway between rounded decimal values, NumPy
 		rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
 		-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
 		to the inexact representation of decimal fractions in the IEEE
@@ -1678,35 +1765,43 @@ package numpy;
 	**/
 	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -1722,7 +1817,13 @@ package numpy;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -1810,7 +1911,7 @@ package numpy;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::
@@ -2088,8 +2189,8 @@ package numpy;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -2353,7 +2454,7 @@ package numpy;
 		Returns
 		-------
 		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    An array, or list of arrays, each with ``a.ndim >= 1``.
 		    Copies are made only if necessary.
 		
 		See Also
@@ -2390,7 +2491,7 @@ package numpy;
 		Returns
 		-------
 		res, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 2``.
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
 		    Copies are avoided where possible, and views with two or more
 		    dimensions are returned.
 		
@@ -2426,7 +2527,7 @@ package numpy;
 		Returns
 		-------
 		res1, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 3``.  Copies are
+		    An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
 		    avoided where possible, and views with three or more dimensions are
 		    returned.  For example, a 1-D array of shape ``(N,)`` becomes a view
 		    of shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a
@@ -2448,7 +2549,7 @@ package numpy;
 		>>> x = np.arange(12.0).reshape(4,3)
 		>>> np.atleast_3d(x).shape
 		(4, 3, 1)
-		>>> np.atleast_3d(x).base is x
+		>>> np.atleast_3d(x).base is x.base  # x is a reshape, so not base itself
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
@@ -2469,9 +2570,16 @@ package numpy;
 		a : array_like
 		    Array containing data to be averaged. If `a` is not an array, a
 		    conversion is attempted.
-		axis : int, optional
-		    Axis along which to average `a`. If `None`, averaging is done over
-		    the flattened array.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which to average `a`.  The default,
+		    axis=None, will average over all of the elements of the input array.
+		    If axis is negative it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If axis is a tuple of ints, averaging is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		weights : array_like, optional
 		    An array of weights associated with the values in `a`. Each value in
 		    `a` contributes to the average according to its associated weight.
@@ -2590,7 +2698,6 @@ package numpy;
 		.. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 		
-		
 		Examples
 		--------
 		>>> np.bartlett(12)
@@ -2638,7 +2745,7 @@ package numpy;
 		Parameters
 		----------
 		number : int
-		    The value to convert. Only positive values are handled.
+		    The value to convert. Positive and negative values are handled.
 		base : int, optional
 		    Convert `number` to the `base` number system. The valid range is 2-36,
 		    the default value is 2.
@@ -2741,8 +2848,18 @@ package numpy;
 		num : int
 		    Only an integer decimal number can be used.
 		width : int, optional
-		    The length of the returned string if `num` is positive, the length of
-		    the two's complement if `num` is negative.
+		    The length of the returned string if `num` is positive, or the length
+		    of the two's complement if `num` is negative, provided that `width` is
+		    at least a sufficient number of bits for `num` to be represented in the
+		    designated form.
+		
+		    If the `width` value is insufficient, it will be ignored, and `num` will
+		    be returned in binary (`num` > 0) or two's complement (`num` < 0) form
+		    with its width equal to the minimum number of bits needed to represent
+		    the number in the designated form. This behavior is deprecated and will
+		    later raise an error.
+		
+		    .. deprecated:: 1.12.0
 		
 		Returns
 		-------
@@ -2753,6 +2870,7 @@ package numpy;
 		--------
 		base_repr: Return a string representation of a number in the given base
 		           system.
+		bin: Python's built-in binary representation generator of an integer.
 		
 		Notes
 		-----
@@ -2776,12 +2894,14 @@ package numpy;
 		The two's complement is returned when the input number is negative and
 		width is specified:
 		
-		>>> np.binary_repr(-3, width=4)
-		'1101'
+		>>> np.binary_repr(-3, width=3)
+		'101'
+		>>> np.binary_repr(-3, width=5)
+		'11101'
 	**/
 	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
-		bincount(x, weights=None, minlength=None)
+		bincount(x, weights=None, minlength=0)
 		
 		Count number of occurrences of each value in array of non-negative ints.
 		
@@ -2815,7 +2935,7 @@ package numpy;
 		------
 		ValueError
 		    If the input is not 1-dimensional, or contains elements with negative
-		    values, or if `minlength` is non-positive.
+		    values, or if `minlength` is negative.
 		TypeError
 		    If the type of the input is float or complex.
 		
@@ -2852,7 +2972,7 @@ package numpy;
 	**/
 	static public function bincount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_and(x1, x2[, out])
+		bitwise_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise AND of two arrays element-wise.
 		
@@ -2864,6 +2984,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2903,7 +3034,7 @@ package numpy;
 	**/
 	static public function bitwise_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		invert(x[, out])
+		invert(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute bit-wise inversion, or bit-wise NOT, element-wise.
 		
@@ -2920,8 +3051,19 @@ package numpy;
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2983,7 +3125,7 @@ package numpy;
 	**/
 	static public function bitwise_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_or(x1, x2[, out])
+		bitwise_or(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise OR of two arrays element-wise.
 		
@@ -2995,9 +3137,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3042,7 +3192,7 @@ package numpy;
 	**/
 	static public function bitwise_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bitwise_xor(x1, x2[, out])
+		bitwise_xor(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the bit-wise XOR of two arrays element-wise.
 		
@@ -3054,6 +3204,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3180,13 +3341,159 @@ package numpy;
 	**/
 	static public function blackman(M:Dynamic):numpy.Ndarray;
 	/**
+		Assemble an nd-array from nested lists of blocks.
+		
+		Blocks in the innermost lists are concatenated (see `concatenate`) along
+		the last dimension (-1), then these are concatenated along the
+		second-last dimension (-2), and so on until the outermost list is reached.
+		
+		Blocks can be of any dimension, but will not be broadcasted using the normal
+		rules. Instead, leading axes of size 1 are inserted, to make ``block.ndim``
+		the same for all blocks. This is primarily useful for working with scalars,
+		and means that code like ``np.block([v, 1])`` is valid, where
+		``v.ndim == 1``.
+		
+		When the nested list is two levels deep, this allows block matrices to be
+		constructed from their components.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		arrays : nested list of array_like or scalars (but not tuples)
+		    If passed a single ndarray or scalar (a nested list of depth 0), this
+		    is returned unmodified (and not copied).
+		
+		    Elements shapes must match along the appropriate axes (without
+		    broadcasting), but leading 1s will be prepended to the shape as
+		    necessary to make the dimensions match.
+		
+		Returns
+		-------
+		block_array : ndarray
+		    The array assembled from the given blocks.
+		
+		    The dimensionality of the output is equal to the greatest of:
+		    * the dimensionality of all the inputs
+		    * the depth to which the input list is nested
+		
+		Raises
+		------
+		ValueError
+		    * If list depths are mismatched - for instance, ``[[a, b], c]`` is
+		      illegal, and should be spelt ``[[a, b], [c]]``
+		    * If lists are empty - for instance, ``[[a, b], []]``
+		
+		See Also
+		--------
+		concatenate : Join a sequence of arrays together.
+		stack : Stack arrays in sequence along a new dimension.
+		hstack : Stack arrays in sequence horizontally (column wise).
+		vstack : Stack arrays in sequence vertically (row wise).
+		dstack : Stack arrays in sequence depth wise (along third dimension).
+		vsplit : Split array into a list of multiple sub-arrays vertically.
+		
+		Notes
+		-----
+		
+		When called with only scalars, ``np.block`` is equivalent to an ndarray
+		call. So ``np.block([[1, 2], [3, 4]])`` is equivalent to
+		``np.array([[1, 2], [3, 4]])``.
+		
+		This function does not enforce that the blocks lie on a fixed grid.
+		``np.block([[a, b], [c, d]])`` is not restricted to arrays of the form::
+		
+		    AAAbb
+		    AAAbb
+		    cccDD
+		
+		But is also allowed to produce, for some ``a, b, c, d``::
+		
+		    AAAbb
+		    AAAbb
+		    cDDDD
+		
+		Since concatenation happens along the last axis first, `block` is _not_
+		capable of producing the following directly::
+		
+		    AAAbb
+		    cccbb
+		    cccDD
+		
+		Matlab's "square bracket stacking", ``[A, B, ...; p, q, ...]``, is
+		equivalent to ``np.block([[A, B, ...], [p, q, ...]])``.
+		
+		Examples
+		--------
+		The most common use of this function is to build a block matrix
+		
+		>>> A = np.eye(2) * 2
+		>>> B = np.eye(3) * 3
+		>>> np.block([
+		...     [A,               np.zeros((2, 3))],
+		...     [np.ones((3, 2)), B               ]
+		... ])
+		array([[ 2.,  0.,  0.,  0.,  0.],
+		       [ 0.,  2.,  0.,  0.,  0.],
+		       [ 1.,  1.,  3.,  0.,  0.],
+		       [ 1.,  1.,  0.,  3.,  0.],
+		       [ 1.,  1.,  0.,  0.,  3.]])
+		
+		With a list of depth 1, `block` can be used as `hstack`
+		
+		>>> np.block([1, 2, 3])              # hstack([1, 2, 3])
+		array([1, 2, 3])
+		
+		>>> a = np.array([1, 2, 3])
+		>>> b = np.array([2, 3, 4])
+		>>> np.block([a, b, 10])             # hstack([a, b, 10])
+		array([1, 2, 3, 2, 3, 4, 10])
+		
+		>>> A = np.ones((2, 2), int)
+		>>> B = 2 * A
+		>>> np.block([A, B])                 # hstack([A, B])
+		array([[1, 1, 2, 2],
+		       [1, 1, 2, 2]])
+		
+		With a list of depth 2, `block` can be used in place of `vstack`:
+		
+		>>> a = np.array([1, 2, 3])
+		>>> b = np.array([2, 3, 4])
+		>>> np.block([[a], [b]])             # vstack([a, b])
+		array([[1, 2, 3],
+		       [2, 3, 4]])
+		
+		>>> A = np.ones((2, 2), int)
+		>>> B = 2 * A
+		>>> np.block([[A], [B]])             # vstack([A, B])
+		array([[1, 1],
+		       [1, 1],
+		       [2, 2],
+		       [2, 2]])
+		
+		It can also be used in places of `atleast_1d` and `atleast_2d`
+		
+		>>> a = np.array(0)
+		>>> b = np.array([1])
+		>>> np.block([a])                    # atleast_1d(a)
+		array([0])
+		>>> np.block([b])                    # atleast_1d(b)
+		array([1])
+		
+		>>> np.block([[a]])                  # atleast_2d(a)
+		array([[0]])
+		>>> np.block([[b]])                  # atleast_2d(b)
+		array([[1]])
+	**/
+	static public function block(arrays:Dynamic):numpy.Ndarray;
+	/**
 		Build a matrix object from a string, nested sequence, or array.
 		
 		Parameters
 		----------
 		obj : str or array_like
-		    Input data.  Names of variables in the current scope may be
-		    referenced, even if `obj` is a string.
+		    Input data. If a string, variables in the current scope may be
+		    referenced by name.
 		ldict : dict, optional
 		    A dictionary that replaces local operands in current frame.
 		    Ignored if `obj` is not a string or `gdict` is `None`.
@@ -3201,7 +3508,9 @@ package numpy;
 		
 		See Also
 		--------
-		matrix
+		block :
+		    A generalization of this function for N-d arrays, that returns normal
+		    ndarrays.
 		
 		Examples
 		--------
@@ -3603,7 +3912,7 @@ package numpy;
 	@:native("cast")
 	static public var _cast : Dynamic;
 	/**
-		cbrt(x[, out])
+		cbrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the cube-root of an array, element-wise.
 		
@@ -3613,9 +3922,17 @@ package numpy;
 		----------
 		x : array_like
 		    The values whose cube-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3632,7 +3949,7 @@ package numpy;
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ceil(x[, out])
+		ceil(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the ceiling of the input, element-wise.
 		
@@ -3643,6 +3960,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -3790,11 +4118,15 @@ package numpy;
 		----------
 		a : array_like
 		    Array containing elements to clip.
-		a_min : scalar or array_like
-		    Minimum value.
-		a_max : scalar or array_like
-		    Maximum value.  If `a_min` or `a_max` are array_like, then they will
-		    be broadcasted to the shape of `a`.
+		a_min : scalar or array_like or `None`
+		    Minimum value. If `None`, clipping is not performed on lower
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`.
+		a_max : scalar or array_like or `None`
+		    Maximum value. If `None`, clipping is not performed on upper
+		    interval edge. Not more than one of `a_min` and `a_max` may be
+		    `None`. If `a_min` or `a_max` are array_like, then the three
+		    arrays will be broadcasted to match their shapes.
 		out : ndarray, optional
 		    The results will be placed in this array. It may be the input
 		    array for in-place clipping.  `out` must be of the right shape
@@ -3823,7 +4155,7 @@ package numpy;
 		>>> a = np.arange(10)
 		>>> a
 		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-		>>> np.clip(a, [3,4,1,1,1,4,4,4,4,4], 8)
+		>>> np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
 	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):numpy.Ndarray;
@@ -4028,7 +4360,7 @@ package numpy;
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -4039,6 +4371,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4057,7 +4400,7 @@ package numpy;
 	**/
 	static public function conj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		conjugate(x[, out])
+		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the complex conjugate, element-wise.
 		
@@ -4068,6 +4411,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4182,7 +4536,7 @@ package numpy;
 		    Controls the memory layout of the copy. 'C' means C-order,
 		    'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,
 		    'C' otherwise. 'K' means match the layout of `a` as closely
-		    as possible. (Note that this function and :meth:ndarray.copy are very
+		    as possible. (Note that this function and :meth:`ndarray.copy` are very
 		    similar, but have different default values for their order=
 		    arguments.)
 		
@@ -4193,9 +4547,9 @@ package numpy;
 		
 		Notes
 		-----
-		This is equivalent to
+		This is equivalent to:
 		
-		>>> np.array(a, copy=True)                              #doctest: +SKIP
+		>>> np.array(a, copy=True)  #doctest: +SKIP
 		
 		Examples
 		--------
@@ -4215,7 +4569,7 @@ package numpy;
 	**/
 	static public function copy(a:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
-		copysign(x1, x2[, out])
+		copysign(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Change the sign of x1 to that of x2, element-wise.
 		
@@ -4229,9 +4583,17 @@ package numpy;
 		    Values to change the sign of.
 		x2 : array_like
 		    The sign of `x2` is copied to `x1`.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4304,8 +4666,8 @@ package numpy;
 		y : array_like, optional
 		    An additional set of variables and observations. `y` has the same
 		    shape as `x`.
-		rowvar : int, optional
-		    If `rowvar` is non-zero (default), then each row represents a
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
 		    variable, with observations in the columns. Otherwise, the relationship
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
@@ -4405,7 +4767,7 @@ package numpy;
 	**/
 	static public function correlate(a:Dynamic, v:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
-		cos(x[, out])
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -4413,18 +4775,22 @@ package numpy;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -4454,7 +4820,7 @@ package numpy;
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cosh(x[, out])
+		cosh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic cosine, element-wise.
 		
@@ -4464,6 +4830,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4484,19 +4861,35 @@ package numpy;
 	**/
 	static public function cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		count_nonzero(a)
-		
 		Counts the number of non-zero values in the array ``a``.
+		
+		The word "non-zero" is in reference to the Python 2.x
+		built-in method ``__nonzero__()`` (renamed ``__bool__()``
+		in Python 3.x) of Python objects that tests an object's
+		"truthfulness". For example, any number is considered
+		truthful if it is nonzero, whereas any string is considered
+		truthful if it is not the empty string. Thus, this function
+		(recursively) counts how many elements in ``a`` (and in
+		sub-arrays thereof) have their ``__nonzero__()`` or ``__bool__()``
+		method evaluated to ``True``.
 		
 		Parameters
 		----------
 		a : array_like
 		    The array for which to count non-zeros.
+		axis : int or tuple, optional
+		    Axis or tuple of axes along which to count non-zeros.
+		    Default is None, meaning that non-zeros will be counted
+		    along a flattened version of ``a``.
+		
+		    .. versionadded:: 1.12.0
 		
 		Returns
 		-------
 		count : int or array of int
-		    Number of non-zero values in the array.
+		    Number of non-zero values in the array along a given axis.
+		    Otherwise, the total number of non-zero values in the array
+		    is returned.
 		
 		See Also
 		--------
@@ -4508,8 +4901,12 @@ package numpy;
 		4
 		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
 		5
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=0)
+		array([1, 1, 1, 1, 1])
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=1)
+		array([2, 3])
 	**/
-	static public function count_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function count_nonzero(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Estimate a covariance matrix, given data and weights.
 		
@@ -4537,9 +4934,9 @@ package numpy;
 		    contain observations.
 		bias : bool, optional
 		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
-		    number of observations given (unbiased estimate). If `bias` is True, then
-		    normalization is by ``N``. These values can be overridden by using the
-		    keyword ``ddof`` in numpy versions >= 1.5.
+		    number of observations given (unbiased estimate). If `bias` is True,
+		    then normalization is by ``N``. These values can be overridden by using
+		    the keyword ``ddof`` in numpy versions >= 1.5.
 		ddof : int, optional
 		    If not ``None`` the default value implied by `bias` is overridden.
 		    Note that ``ddof=1`` will return the unbiased estimate, even if both
@@ -4867,7 +5264,7 @@ package numpy;
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		deg2rad(x[, out])
+		deg2rad(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from degrees to radians.
 		
@@ -4875,6 +5272,17 @@ package numpy;
 		----------
 		x : array_like
 		    Angles in degrees.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -4899,7 +5307,7 @@ package numpy;
 	**/
 	static public function deg2rad(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		degrees(x[, out])
+		degrees(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from radians to degrees.
 		
@@ -4907,8 +5315,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as x.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -5029,7 +5446,7 @@ package numpy;
 		>>> olduint(6)
 		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
 		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning)
+		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
 		6
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
@@ -5312,50 +5729,71 @@ package numpy;
 	**/
 	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):numpy.Ndarray;
 	/**
-		    Calculate the n-th discrete difference along given axis.
+		Calculate the n-th discrete difference along given axis.
 		
-		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
-		    the given axis, higher differences are calculated by using `diff`
-		    recursively.
+		The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		the given axis, higher differences are calculated by using `diff`
+		recursively.
 		
-		    Parameters
-		    ----------
-		    a : array_like
-		        Input array
-		    n : int, optional
-		        The number of times values are differenced.
-		    axis : int, optional
-		        The axis along which the difference is taken, default is the last axis.
+		Parameters
+		----------
+		a : array_like
+		    Input array
+		n : int, optional
+		    The number of times values are differenced.
+		axis : int, optional
+		    The axis along which the difference is taken, default is the last axis.
 		
-		    Returns
-		    -------
-		    diff : ndarray
-		        The n-th differences. The shape of the output is the same as `a`
-		        except along `axis` where the dimension is smaller by `n`.
-		.
+		Returns
+		-------
+		diff : ndarray
+		    The n-th differences. The shape of the output is the same as `a`
+		    except along `axis` where the dimension is smaller by `n`. The
+		    type of the output is the same as that of the input.
 		
-		    See Also
-		    --------
-		    gradient, ediff1d, cumsum
+		See Also
+		--------
+		gradient, ediff1d, cumsum
 		
-		    Examples
-		    --------
-		    >>> x = np.array([1, 2, 4, 7, 0])
-		    >>> np.diff(x)
-		    array([ 1,  2,  3, -7])
-		    >>> np.diff(x, n=2)
-		    array([  1,   1, -10])
+		Notes
+		-----
+		For boolean arrays, the preservation of type means that the result
+		will contain `False` when consecutive elements are the same and
+		`True` when they differ.
 		
-		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		    >>> np.diff(x)
-		    array([[2, 3, 4],
-		           [5, 1, 2]])
-		    >>> np.diff(x, axis=0)
-		    array([[-1,  2,  0, -2]])
+		For unsigned integer arrays, the results will also be unsigned. This should
+		not be surprising, as the result is consistent with calculating the
+		difference directly:
 		
-		    
+		>>> u8_arr = np.array([1, 0], dtype=np.uint8)
+		>>> np.diff(u8_arr)
+		array([255], dtype=uint8)
+		>>> u8_arr[1,...] - u8_arr[0,...]
+		array(255, np.uint8)
+		
+		If this is not desirable, then the array should be cast to a larger integer
+		type first:
+		
+		>>> i16_arr = u8_arr.astype(np.int16)
+		>>> np.diff(i16_arr)
+		array([-1], dtype=int16)
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 4, 7, 0])
+		>>> np.diff(x)
+		array([ 1,  2,  3, -7])
+		>>> np.diff(x, n=2)
+		array([  1,   1, -10])
+		
+		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		>>> np.diff(x)
+		array([[2, 3, 4],
+		       [5, 1, 2]])
+		>>> np.diff(x, axis=0)
+		array([[-1,  2,  0, -2]])
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		digitize(x, bins, right=False)
 		
@@ -5366,13 +5804,13 @@ package numpy;
 		`bins` is monotonically decreasing. If values in `x` are beyond the
 		bounds of `bins`, 0 or ``len(bins)`` is returned as appropriate. If right
 		is True, then the right bin is closed so that the index ``i`` is such
-		that ``bins[i-1] < x <= bins[i]`` or bins[i-1] >= x > bins[i]`` if `bins`
+		that ``bins[i-1] < x <= bins[i]`` or ``bins[i-1] >= x > bins[i]`` if `bins`
 		is monotonically increasing or decreasing, respectively.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array to be binned. Prior to Numpy 1.10.0, this array had to
+		    Input array to be binned. Prior to NumPy 1.10.0, this array had to
 		    be 1-dimensional, but can now have any shape.
 		bins : array_like
 		    Array of bins. It has to be 1-dimensional and monotonic.
@@ -5397,7 +5835,7 @@ package numpy;
 		
 		See Also
 		--------
-		bincount, histogram, unique
+		bincount, histogram, unique, searchsorted
 		
 		Notes
 		-----
@@ -5467,7 +5905,7 @@ package numpy;
 	**/
 	static public function disp(mesg:Dynamic, ?device:Dynamic, ?linefeed:Dynamic):Dynamic;
 	/**
-		true_divide(x1, x2[, out])
+		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns a true division of the inputs, element-wise.
 		
@@ -5481,6 +5919,17 @@ package numpy;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -5517,6 +5966,55 @@ package numpy;
 	**/
 	static public function divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	/**
+		divmod(x1, x2[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Return element-wise quotient and remainder simultaneously.
+		
+		.. versionadded:: 1.13.0
+		
+		``np.divmod(x, y)`` is equivalent to ``(x // y, x % y)``, but faster
+		because it avoids redundant work. It is used to implement the Python
+		built-in function ``divmod`` on NumPy arrays.
+		
+		Parameters
+		----------
+		x1 : array_like
+		    Dividend array.
+		x2 : array_like
+		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		out1 : ndarray
+		    Element-wise quotient resulting from floor division.
+		out2 : ndarray
+		    Element-wise remainder from floor division.
+		
+		See Also
+		--------
+		floor_divide : Equivalent to Python's ``//`` operator.
+		remainder : Equivalent to Python's ``%`` operator.
+		modf : Equivalent to ``divmod(x, 1)`` for positive ``x`` with the return
+		       values switched.
+		
+		Examples
+		--------
+		>>> np.divmod(np.arange(5), 3)
+		(array([0, 0, 0, 1, 1]), array([0, 1, 2, 0, 1]))
+	**/
+	static public function divmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		dot(a, b, out=None)
 		
@@ -5638,6 +6136,10 @@ package numpy;
 		This is a simple way to stack 2D arrays (images) into a single
 		3D array for processing.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of arrays
@@ -5659,7 +6161,8 @@ package numpy;
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=2)``.
+		Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
+		are at least 3-dimensional.
 		
 		Examples
 		--------
@@ -5722,7 +6225,8 @@ package numpy;
 	**/
 	static public function ediff1d(ary:Dynamic, ?to_end:Dynamic, ?to_begin:Dynamic):numpy.Ndarray;
 	/**
-		einsum(subscripts, *operands, out=None, dtype=None, order='K', casting='safe')
+		einsum(subscripts, *operands, out=None, dtype=None, order='K',
+		       casting='safe', optimize=False)
 		
 		Evaluates the Einstein summation convention on the operands.
 		
@@ -5738,12 +6242,12 @@ package numpy;
 		    Specifies the subscripts for summation.
 		operands : list of array_like
 		    These are the arrays for the operation.
-		out : ndarray, optional
+		out : {ndarray, None}, optional
 		    If provided, the calculation is done into this array.
-		dtype : data-type, optional
+		dtype : {data-type, None}, optional
 		    If provided, forces the calculation to use the data type specified.
 		    Note that you may have to also give a more liberal `casting`
-		    parameter to allow the conversions.
+		    parameter to allow the conversions. Default is None.
 		order : {'C', 'F', 'A', 'K'}, optional
 		    Controls the memory layout of the output. 'C' means it should
 		    be C contiguous. 'F' means it should be Fortran contiguous,
@@ -5762,6 +6266,13 @@ package numpy;
 		        like float64 to float32, are allowed.
 		      * 'unsafe' means any data conversions may be done.
 		
+		    Default is 'safe'.
+		optimize : {False, True, 'greedy', 'optimal'}, optional
+		    Controls if intermediate optimization should occur. No optimization
+		    will occur if False and True will default to the 'greedy' algorithm.
+		    Also accepts an explicit contraction list from the ``np.einsum_path``
+		    function. See ``np.einsum_path`` for more details. Default is False.
+		
 		Returns
 		-------
 		output : ndarray
@@ -5769,7 +6280,7 @@ package numpy;
 		
 		See Also
 		--------
-		dot, inner, outer, tensordot
+		einsum_path, dot, inner, outer, tensordot, linalg.multi_dot
 		
 		Notes
 		-----
@@ -5821,6 +6332,15 @@ package numpy;
 		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
 		of a 2D array.
 		
+		.. versionadded:: 1.12.0
+		
+		Added the ``optimize`` argument which will optimize the contraction order
+		of an einsum expression. For a contraction with three or more operands this
+		can greatly increase the computational efficiency at the cost of a larger
+		memory footprint during computation.
+		
+		See ``np.einsum_path`` for more details.
+		
 		Examples
 		--------
 		>>> a = np.arange(25).reshape(5,5)
@@ -5864,6 +6384,9 @@ package numpy;
 		       [2, 5]])
 		
 		>>> np.einsum('..., ...', 3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(',ij', 3, C)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
@@ -5938,7 +6461,115 @@ package numpy;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function einsum(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
+	/**
+		einsum_path(subscripts, *operands, optimize='greedy')
+		
+		Evaluates the lowest cost contraction order for an einsum expression by
+		considering the creation of intermediate arrays.
+		
+		Parameters
+		----------
+		subscripts : str
+		    Specifies the subscripts for summation.
+		*operands : list of array_like
+		    These are the arrays for the operation.
+		optimize : {bool, list, tuple, 'greedy', 'optimal'}
+		    Choose the type of path. If a tuple is provided, the second argument is
+		    assumed to be the maximum intermediate size created. If only a single
+		    argument is provided the largest input or output array size is used
+		    as a maximum intermediate size.
+		
+		    * if a list is given that starts with ``einsum_path``, uses this as the
+		      contraction path
+		    * if False no optimization is taken
+		    * if True defaults to the 'greedy' algorithm
+		    * 'optimal' An algorithm that combinatorially explores all possible
+		      ways of contracting the listed tensors and choosest the least costly
+		      path. Scales exponentially with the number of terms in the
+		      contraction.
+		    * 'greedy' An algorithm that chooses the best pair contraction
+		      at each step. Effectively, this algorithm searches the largest inner,
+		      Hadamard, and then outer products at each step. Scales cubically with
+		      the number of terms in the contraction. Equivalent to the 'optimal'
+		      path for most contractions.
+		
+		    Default is 'greedy'.
+		
+		Returns
+		-------
+		path : list of tuples
+		    A list representation of the einsum path.
+		string_repr : str
+		    A printable representation of the einsum path.
+		
+		Notes
+		-----
+		The resulting path indicates which terms of the input contraction should be
+		contracted first, the result of this contraction is then appended to the
+		end of the contraction list. This list can then be iterated over until all
+		intermediate contractions are complete.
+		
+		See Also
+		--------
+		einsum, linalg.multi_dot
+		
+		Examples
+		--------
+		
+		We can begin with a chain dot example. In this case, it is optimal to
+		contract the ``b`` and ``c`` tensors first as reprsented by the first
+		element of the path ``(1, 2)``. The resulting tensor is added to the end
+		of the contraction and the remaining contraction ``(0, 1)`` is then
+		completed.
+		
+		>>> a = np.random.rand(2, 2)
+		>>> b = np.random.rand(2, 5)
+		>>> c = np.random.rand(5, 2)
+		>>> path_info = np.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')
+		>>> print(path_info[0])
+		['einsum_path', (1, 2), (0, 1)]
+		>>> print(path_info[1])
+		  Complete contraction:  ij,jk,kl->il
+		         Naive scaling:  4
+		     Optimized scaling:  3
+		      Naive FLOP count:  1.600e+02
+		  Optimized FLOP count:  5.600e+01
+		   Theoretical speedup:  2.857
+		  Largest intermediate:  4.000e+00 elements
+		-------------------------------------------------------------------------
+		scaling                  current                                remaining
+		-------------------------------------------------------------------------
+		   3                   kl,jk->jl                                ij,jl->il
+		   3                   jl,ij->il                                   il->il
+		
+		
+		A more complex index transformation example.
+		
+		>>> I = np.random.rand(10, 10, 10, 10)
+		>>> C = np.random.rand(10, 10)
+		>>> path_info = np.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,
+		                               optimize='greedy')
+		
+		>>> print(path_info[0])
+		['einsum_path', (0, 2), (0, 3), (0, 2), (0, 1)]
+		>>> print(path_info[1])
+		  Complete contraction:  ea,fb,abcd,gc,hd->efgh
+		         Naive scaling:  8
+		     Optimized scaling:  5
+		      Naive FLOP count:  8.000e+08
+		  Optimized FLOP count:  8.000e+05
+		   Theoretical speedup:  1000.000
+		  Largest intermediate:  1.000e+04 elements
+		--------------------------------------------------------------------------
+		scaling                  current                                remaining
+		--------------------------------------------------------------------------
+		   5               abcd,ea->bcde                      fb,gc,hd,bcde->efgh
+		   5               bcde,fb->cdef                         gc,hd,cdef->efgh
+		   5               cdef,gc->defg                            hd,defg->efgh
+		   5               defg,hd->efgh                               efgh->efgh
+	**/
+	static public function einsum_path(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
 		
@@ -6042,7 +6673,7 @@ package numpy;
 	**/
 	static public function empty_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		equal(x1, x2[, out])
+		equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return (x1 == x2) element-wise.
 		
@@ -6050,6 +6681,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Input arrays of the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6074,7 +6716,7 @@ package numpy;
 	static public function equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var euler_gamma : Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -6082,6 +6724,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6126,18 +6779,18 @@ package numpy;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp2(x[, out])
+		exp2(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate `2**p` for all `p` in the input array.
 		
@@ -6145,9 +6798,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
-		
-		out : ndarray, optional
-		    Array to insert results into.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6173,14 +6834,20 @@ package numpy;
 	/**
 		Expand the shape of an array.
 		
-		Insert a new axis, corresponding to a given position in the array shape.
+		Insert a new axis that will appear at the `axis` position in the expanded
+		array shape.
+		
+		.. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+		   ``axis > a.ndim`` raised errors or put the new axis where documented.
+		   Those axis values are now deprecated and will raise an AxisError in the
+		   future.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		axis : int
-		    Position (amongst axes) where new axis is to be inserted.
+		    Position in the expanded axes where the new axis is placed.
 		
 		Returns
 		-------
@@ -6190,6 +6857,8 @@ package numpy;
 		
 		See Also
 		--------
+		squeeze : The inverse operation, removing singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
 		doc.indexing, atleast_1d, atleast_2d, atleast_3d
 		
 		Examples
@@ -6221,7 +6890,7 @@ package numpy;
 	**/
 	static public function expand_dims(a:Dynamic, axis:Dynamic):numpy.Ndarray;
 	/**
-		expm1(x[, out])
+		expm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate ``exp(x) - 1`` for all elements in the array.
 		
@@ -6229,6 +6898,17 @@ package numpy;
 		----------
 		x : array_like
 		   Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6343,7 +7023,7 @@ package numpy;
 	**/
 	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		fabs(x[, out])
+		fabs(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the absolute values element-wise.
 		
@@ -6356,9 +7036,17 @@ package numpy;
 		x : array_like
 		    The array of numbers for which the absolute values are required. If
 		    `x` is a scalar, the result `y` will also be a scalar.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6384,8 +7072,8 @@ package numpy;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
 		
-		For an array `a` with ``a.ndim > 2``, the diagonal is the list of
-		locations with indices ``a[i, i, ..., i]`` all identical. This function
+		For an array `a` with ``a.ndim >= 2``, the diagonal is the list of
+		locations with indices ``a[i, ..., i]`` all identical. This function
 		modifies the input array in-place, it does not return a value.
 		
 		Parameters
@@ -6556,7 +7244,7 @@ package numpy;
 		>>> np.fix([2.1, 2.9, -2.1, -2.9])
 		array([ 2.,  2., -2., -2.])
 	**/
-	static public function fix(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function fix(x:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Return indices that are non-zero in the flattened version of a.
 		
@@ -6594,6 +7282,67 @@ package numpy;
 	**/
 	static public function flatnonzero(a:Dynamic):numpy.Ndarray;
 	/**
+		Reverse the order of elements in an array along the given axis.
+		
+		The shape of the array is preserved, but the elements are reordered.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		m : array_like
+		    Input array.
+		axis : integer
+		    Axis in array, which entries are reversed.
+		
+		
+		Returns
+		-------
+		out : array_like
+		    A view of `m` with the entries of axis reversed.  Since a view is
+		    returned, this operation is done in constant time.
+		
+		See Also
+		--------
+		flipud : Flip an array vertically (axis=0).
+		fliplr : Flip an array horizontally (axis=1).
+		
+		Notes
+		-----
+		flip(m, 0) is equivalent to flipud(m).
+		flip(m, 1) is equivalent to fliplr(m).
+		flip(m, n) corresponds to ``m[...,::-1,...]`` with ``::-1`` at position n.
+		
+		Examples
+		--------
+		>>> A = np.arange(8).reshape((2,2,2))
+		>>> A
+		array([[[0, 1],
+		        [2, 3]],
+		
+		       [[4, 5],
+		        [6, 7]]])
+		
+		>>> flip(A, 0)
+		array([[[4, 5],
+		        [6, 7]],
+		
+		       [[0, 1],
+		        [2, 3]]])
+		
+		>>> flip(A, 1)
+		array([[[2, 3],
+		        [0, 1]],
+		
+		       [[6, 7],
+		        [4, 5]]])
+		
+		>>> A = np.random.randn(3,4,5)
+		>>> np.all(flip(A,2) == A[:,:,::-1,...])
+		True
+	**/
+	static public function flip(m:Dynamic, axis:Dynamic):python.NativeIterable<Dynamic>;
+	/**
 		Flip array in the left/right direction.
 		
 		Flip the entries in each row in the left/right direction.
@@ -6617,7 +7366,7 @@ package numpy;
 		
 		Notes
 		-----
-		Equivalent to A[:,::-1]. Requires the array to be at least 2-D.
+		Equivalent to m[:,::-1]. Requires the array to be at least 2-D.
 		
 		Examples
 		--------
@@ -6632,7 +7381,7 @@ package numpy;
 		       [ 3.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.fliplr(A)==A[:,::-1,...])
+		>>> np.all(np.fliplr(A) == A[:,::-1,...])
 		True
 	**/
 	static public function fliplr(m:Dynamic):numpy.Ndarray;
@@ -6660,7 +7409,7 @@ package numpy;
 		
 		Notes
 		-----
-		Equivalent to ``A[::-1,...]``.
+		Equivalent to ``m[::-1,...]``.
 		Does not require the array to be two-dimensional.
 		
 		Examples
@@ -6676,7 +7425,7 @@ package numpy;
 		       [ 1.,  0.,  0.]])
 		
 		>>> A = np.random.randn(2,3,5)
-		>>> np.all(np.flipud(A)==A[::-1,...])
+		>>> np.all(np.flipud(A) == A[::-1,...])
 		True
 		
 		>>> np.flipud([1,2])
@@ -6684,7 +7433,75 @@ package numpy;
 	**/
 	static public function flipud(m:Dynamic):python.NativeIterable<Dynamic>;
 	/**
-		floor(x[, out])
+		float_power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		First array elements raised to powers from second array, element-wise.
+		
+		Raise each base in `x1` to the positionally-corresponding power in `x2`.
+		`x1` and `x2` must be broadcastable to the same shape. This differs from
+		the power function in that integers, float16, and float32  are promoted to
+		floats with a minimum precision of float64 so that the result is always
+		inexact.  The intent is that the function will return a usable result for
+		negative powers and seldom overflow for positive powers.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		x1 : array_like
+		    The bases.
+		x2 : array_like
+		    The exponents.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray
+		    The bases in `x1` raised to the exponents in `x2`.
+		
+		See Also
+		--------
+		power : power function that preserves type
+		
+		Examples
+		--------
+		Cube each element in a list.
+		
+		>>> x1 = range(6)
+		>>> x1
+		[0, 1, 2, 3, 4, 5]
+		>>> np.float_power(x1, 3)
+		array([   0.,    1.,    8.,   27.,   64.,  125.])
+		
+		Raise the bases to different exponents.
+		
+		>>> x2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]
+		>>> np.float_power(x1, x2)
+		array([  0.,   1.,   8.,  27.,  16.,   5.])
+		
+		The effect of broadcasting.
+		
+		>>> x2 = np.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])
+		>>> x2
+		array([[1, 2, 3, 3, 2, 1],
+		       [1, 2, 3, 3, 2, 1]])
+		>>> np.float_power(x1, x2)
+		array([[  0.,   1.,   8.,  27.,  16.,   5.],
+		       [  0.,   1.,   8.,  27.,  16.,   5.]])
+	**/
+	static public function float_power(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -6695,6 +7512,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6719,7 +7547,7 @@ package numpy;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor_divide(x1, x2[, out])
+		floor_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the largest integer smaller or equal to the division of the inputs.
 		It is equivalent to the Python ``//`` operator and pairs with the
@@ -6732,6 +7560,17 @@ package numpy;
 		    Numerator.
 		x2 : array_like
 		    Denominator.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6742,6 +7581,7 @@ package numpy;
 		See Also
 		--------
 		remainder : Remainder complementary to floor_divide.
+		divmod : Simultaneous floor division and remainder.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -6755,7 +7595,7 @@ package numpy;
 	**/
 	static public function floor_divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmax(x1, x2[, out])
+		fmax(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -6771,6 +7611,17 @@ package numpy;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6812,7 +7663,7 @@ package numpy;
 	**/
 	static public function fmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmin(x1, x2[, out])
+		fmin(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise minimum of array elements.
 		
@@ -6828,6 +7679,17 @@ package numpy;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6858,18 +7720,18 @@ package numpy;
 		Examples
 		--------
 		>>> np.fmin([2, 3, 4], [1, 5, 2])
-		array([2, 5, 4])
+		array([1, 3, 2])
 		
 		>>> np.fmin(np.eye(2), [0.5, 2])
-		array([[ 1. ,  2. ],
-		       [ 0.5,  2. ]])
+		array([[ 0.5,  0. ],
+		       [ 0. ,  1. ]])
 		
 		>>> np.fmin([np.nan, 0, np.nan],[0, np.nan, np.nan])
 		array([  0.,   0.,  NaN])
 	**/
 	static public function fmin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fmod(x1, x2[, out])
+		fmod(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the element-wise remainder of division.
 		
@@ -6884,6 +7746,17 @@ package numpy;
 		  Dividend.
 		x2 : array_like
 		  Divisor.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6924,7 +7797,7 @@ package numpy;
 	**/
 	static public function fmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		frexp(x[, out1, out2])
+		frexp(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Decompose the elements of x into mantissa and twos exponent.
 		
@@ -6940,6 +7813,17 @@ package numpy;
 		    Output array for the mantissa. Must have the same shape as `x`.
 		out2 : ndarray, optional
 		    Output array for the exponent. Must have the same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -6982,7 +7866,7 @@ package numpy;
 		count : int, optional
 		    Number of items to read. ``-1`` means all data in the buffer.
 		offset : int, optional
-		    Start reading the buffer from this offset; default: 0.
+		    Start reading the buffer from this offset (in bytes); default: 0.
 		
 		Notes
 		-----
@@ -7089,8 +7973,8 @@ package numpy;
 		    The function is called with N parameters, where N is the rank of
 		    `shape`.  Each parameter represents the coordinates of the array
 		    varying along a specific axis.  For example, if `shape`
-		    were ``(2, 2)``, then the parameters in turn be (0, 0), (0, 1),
-		    (1, 0), (1, 1).
+		    were ``(2, 2)``, then the parameters would be
+		    ``array([[0, 0], [1, 1]])`` and ``array([[0, 1], [0, 1]])``
 		shape : (N,) tuple of ints
 		    Shape of the output array, which also determines the shape of
 		    the coordinate arrays passed to `function`.
@@ -7162,7 +8046,7 @@ package numpy;
 	/**
 		frompyfunc(func, nin, nout)
 		
-		Takes an arbitrary Python function and returns a Numpy ufunc.
+		Takes an arbitrary Python function and returns a NumPy ufunc.
 		
 		Can be used, for example, to add broadcasting to a built-in Python
 		function (see Examples section).
@@ -7179,7 +8063,11 @@ package numpy;
 		Returns
 		-------
 		out : ufunc
-		    Returns a Numpy universal function (``ufunc``) object.
+		    Returns a NumPy universal function (``ufunc``) object.
+		
+		See Also
+		--------
+		vectorize : evaluates pyfunc over input arrays using broadcasting rules of numpy
 		
 		Notes
 		-----
@@ -7311,9 +8199,8 @@ package numpy;
 		fill_value : scalar
 		    Fill value.
 		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `np.int8`.  Default
-		    is `float`, but will change to `np.array(fill_value).dtype` in a
-		    future release.
+		    The desired data-type for the array  The default, `None`, means
+		     `np.array(fill_value).dtype`.
 		order : {'C', 'F'}, optional
 		    Whether to store multidimensional data in C- or Fortran-contiguous
 		    (row- or column-wise) order in memory.
@@ -7338,7 +8225,7 @@ package numpy;
 		>>> np.full((2, 2), np.inf)
 		array([[ inf,  inf],
 		       [ inf,  inf]])
-		>>> np.full((2, 2), 10, dtype=np.int)
+		>>> np.full((2, 2), 10)
 		array([[10, 10],
 		       [10, 10]])
 	**/
@@ -7485,9 +8372,9 @@ package numpy;
 		
 		Parameters
 		----------
-		fname : file, str, list of str, generator
+		fname : file, str, pathlib.Path, list of str, generator
 		    File, filename, list, or generator to read.  If the filename
-		    extension is `.gz` or `.bz2`, the file is first decompressed. Mote
+		    extension is `.gz` or `.bz2`, the file is first decompressed. Note
 		    that generators must return byte strings in Python 3k.  The strings
 		    in a list or produced by a generator are treated as lines.
 		dtype : dtype, optional
@@ -7586,7 +8473,7 @@ package numpy;
 		
 		References
 		----------
-		.. [1] Numpy User Guide, section `I/O with Numpy
+		.. [1] NumPy User Guide, section `I/O with NumPy
 		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
@@ -7631,6 +8518,93 @@ package numpy;
 		      dtype=[('intvar', '<i8'), ('fltvar', '<f8'), ('strvar', '|S5')])
 	**/
 	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
+	/**
+		Return numbers spaced evenly on a log scale (a geometric progression).
+		
+		This is similar to `logspace`, but with endpoints specified directly.
+		Each output sample is a constant multiple of the previous.
+		
+		Parameters
+		----------
+		start : scalar
+		    The starting value of the sequence.
+		stop : scalar
+		    The final value of the sequence, unless `endpoint` is False.
+		    In that case, ``num + 1`` values are spaced over the
+		    interval in log-space, of which all but the last (a sequence of
+		    length `num`) are returned.
+		num : integer, optional
+		    Number of samples to generate.  Default is 50.
+		endpoint : boolean, optional
+		    If true, `stop` is the last sample. Otherwise, it is not included.
+		    Default is True.
+		dtype : dtype
+		    The type of the output array.  If `dtype` is not given, infer the data
+		    type from the other input arguments.
+		
+		Returns
+		-------
+		samples : ndarray
+		    `num` samples, equally spaced on a log scale.
+		
+		See Also
+		--------
+		logspace : Similar to geomspace, but with endpoints specified using log
+		           and base.
+		linspace : Similar to geomspace, but with arithmetic instead of geometric
+		           progression.
+		arange : Similar to linspace, with the step size specified instead of the
+		         number of samples.
+		
+		Notes
+		-----
+		If the inputs or dtype are complex, the output will follow a logarithmic
+		spiral in the complex plane.  (There are an infinite number of spirals
+		passing through two points; the output will follow the shortest such path.)
+		
+		Examples
+		--------
+		>>> np.geomspace(1, 1000, num=4)
+		array([    1.,    10.,   100.,  1000.])
+		>>> np.geomspace(1, 1000, num=3, endpoint=False)
+		array([   1.,   10.,  100.])
+		>>> np.geomspace(1, 1000, num=4, endpoint=False)
+		array([   1.        ,    5.62341325,   31.6227766 ,  177.827941  ])
+		>>> np.geomspace(1, 256, num=9)
+		array([   1.,    2.,    4.,    8.,   16.,   32.,   64.,  128.,  256.])
+		
+		Note that the above may not produce exact integers:
+		
+		>>> np.geomspace(1, 256, num=9, dtype=int)
+		array([  1,   2,   4,   7,  16,  32,  63, 127, 256])
+		>>> np.around(np.geomspace(1, 256, num=9)).astype(int)
+		array([  1,   2,   4,   8,  16,  32,  64, 128, 256])
+		
+		Negative, decreasing, and complex inputs are allowed:
+		
+		>>> np.geomspace(1000, 1, num=4)
+		array([ 1000.,   100.,    10.,     1.])
+		>>> np.geomspace(-1000, -1, num=4)
+		array([-1000.,  -100.,   -10.,    -1.])
+		>>> np.geomspace(1j, 1000j, num=4)  # Straight line
+		array([ 0.   +1.j,  0.  +10.j,  0. +100.j,  0.+1000.j])
+		>>> np.geomspace(-1+0j, 1+0j, num=5)  # Circle
+		array([-1.00000000+0.j        , -0.70710678+0.70710678j,
+		        0.00000000+1.j        ,  0.70710678+0.70710678j,
+		        1.00000000+0.j        ])
+		
+		Graphical illustration of ``endpoint`` parameter:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> N = 10
+		>>> y = np.zeros(N)
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=True), y + 1, 'o')
+		>>> plt.semilogx(np.geomspace(1, 1000, N, endpoint=False), y + 2, 'o')
+		>>> plt.axis([0.5, 2000, 0, 3])
+		>>> plt.grid(True, color='0.7', linestyle='-', which='both', axis='both')
+		>>> plt.show()
+	**/
+	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
@@ -7771,7 +8745,7 @@ package numpy;
 		Return the current object that defines floating-point error handling.
 		
 		The error object contains all information that defines the error handling
-		behavior in Numpy. `geterrobj` is used internally by the other
+		behavior in NumPy. `geterrobj` is used internally by the other
 		functions that get and set error handling behavior (`geterr`, `seterr`,
 		`geterrcall`, `seterrcall`).
 		
@@ -7831,45 +8805,71 @@ package numpy;
 		Return the gradient of an N-dimensional array.
 		
 		The gradient is computed using second order accurate central differences
-		in the interior and either first differences or second order accurate
-		one-sides (forward or backwards) differences at the boundaries. The
-		returned gradient hence has the same shape as the input array.
+		in the interior points and either first or second order accurate one-sides
+		(forward or backwards) differences at the boundaries.
+		The returned gradient hence has the same shape as the input array.
 		
 		Parameters
 		----------
 		f : array_like
 		    An N-dimensional array containing samples of a scalar function.
-		varargs : scalar or list of scalar, optional
-		    N scalars specifying the sample distances for each dimension,
-		    i.e. `dx`, `dy`, `dz`, ... Default distance: 1.
-		    single scalar specifies sample distance for all dimensions.
-		    if `axis` is given, the number of varargs must equal the number of axes.
+		varargs : list of scalar or array, optional
+		    Spacing between f values. Default unitary spacing for all dimensions.
+		    Spacing can be specified using:
+		
+		    1. single scalar to specify a sample distance for all dimensions.
+		    2. N scalars to specify a constant sample distance for each dimension.
+		       i.e. `dx`, `dy`, `dz`, ...
+		    3. N arrays to specify the coordinates of the values along each
+		       dimension of F. The length of the array must match the size of
+		       the corresponding dimension
+		    4. Any combination of N scalars/arrays with the meaning of 2. and 3.
+		
+		    If `axis` is given, the number of varargs must equal the number of axes.
+		    Default: 1.
+		
 		edge_order : {1, 2}, optional
-		    Gradient is calculated using N\ :sup:`th` order accurate differences
+		    Gradient is calculated using N-th order accurate differences
 		    at the boundaries. Default: 1.
 		
 		    .. versionadded:: 1.9.1
 		
 		axis : None or int or tuple of ints, optional
 		    Gradient is calculated only along the given axis or axes
-		    The default (axis = None) is to calculate the gradient for all the axes of the input array.
-		    axis may be negative, in which case it counts from the last to the first axis.
+		    The default (axis = None) is to calculate the gradient for all the axes
+		    of the input array. axis may be negative, in which case it counts from
+		    the last to the first axis.
 		
 		    .. versionadded:: 1.11.0
 		
 		Returns
 		-------
-		gradient : list of ndarray
-		    Each element of `list` has the same shape as `f` giving the derivative
-		    of `f` with respect to each dimension.
+		gradient : ndarray or list of ndarray
+		    A set of ndarrays (or a single ndarray if there is only one dimension)
+		    corresponding to the derivatives of f with respect to each dimension.
+		    Each derivative has the same shape as f.
 		
 		Examples
 		--------
-		>>> x = np.array([1, 2, 4, 7, 11, 16], dtype=np.float)
-		>>> np.gradient(x)
+		>>> f = np.array([1, 2, 4, 7, 11, 16], dtype=np.float)
+		>>> np.gradient(f)
 		array([ 1. ,  1.5,  2.5,  3.5,  4.5,  5. ])
-		>>> np.gradient(x, 2)
+		>>> np.gradient(f, 2)
 		array([ 0.5 ,  0.75,  1.25,  1.75,  2.25,  2.5 ])
+		
+		Spacing can be also specified with an array that represents the coordinates
+		of the values F along the dimensions.
+		For instance a uniform spacing:
+		
+		>>> x = np.arange(f.size)
+		>>> np.gradient(f, x)
+		array([ 1. ,  1.5,  2.5,  3.5,  4.5,  5. ])
+		
+		Or a non uniform one:
+		
+		>>> x = np.array([0., 1., 1.5, 3.5, 4., 6.], dtype=np.float)
+		>>> np.gradient(f, x)
+		array([ 1. ,  3. ,  3.5,  6.7,  6.9,  2.5])
 		
 		For two dimensional arrays, the return will be two arrays ordered by
 		axis. In this example the first array stands for the gradient in
@@ -7880,20 +8880,103 @@ package numpy;
 		        [ 2.,  2., -1.]]), array([[ 1. ,  2.5,  4. ],
 		        [ 1. ,  1. ,  1. ]])]
 		
+		In this example the spacing is also specified:
+		uniform for axis=0 and non uniform for axis=1
+		
+		>>> dx = 2.
+		>>> y = [1., 1.5, 3.5]
+		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float), dx, y)
+		[array([[ 1. ,  1. , -0.5],
+		        [ 1. ,  1. , -0.5]]), array([[ 2. ,  2. ,  2. ],
+		        [ 2. ,  1.7,  0.5]])]
+		
+		It is possible to specify how boundaries are treated using `edge_order`
+		
 		>>> x = np.array([0, 1, 2, 3, 4])
-		>>> dx = np.gradient(x)
-		>>> y = x**2
-		>>> np.gradient(y, dx, edge_order=2)
+		>>> f = x**2
+		>>> np.gradient(f, edge_order=1)
+		array([ 1.,  2.,  4.,  6.,  7.])
+		>>> np.gradient(f, edge_order=2)
 		array([-0.,  2.,  4.,  6.,  8.])
 		
-		The axis keyword can be used to specify a subset of axes of which the gradient is calculated
+		The `axis` keyword can be used to specify a subset of axes of which the
+		gradient is calculated
+		
 		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float), axis=0)
 		array([[ 2.,  2., -1.],
 		       [ 2.,  2., -1.]])
+		
+		Notes
+		-----
+		Assuming that :math:`f\in C^{3}` (i.e., :math:`f` has at least 3 continuous
+		derivatives) and let be :math:`h_{*}` a non homogeneous stepsize, the
+		spacing the finite difference coefficients are computed by minimising
+		the consistency error :math:`\eta_{i}`:
+		
+		.. math::
+		
+		    \eta_{i} = f_{i}^{\left(1\right)} -
+		                \left[ \alpha f\left(x_{i}\right) +
+		                        \beta f\left(x_{i} + h_{d}\right) +
+		                        \gamma f\left(x_{i}-h_{s}\right)
+		                \right]
+		
+		By substituting :math:`f(x_{i} + h_{d})` and :math:`f(x_{i} - h_{s})`
+		with their Taylor series expansion, this translates into solving
+		the following the linear system:
+		
+		.. math::
+		
+		    \left\{
+		        \begin{array}{r}
+		            \alpha+\beta+\gamma=0 \\
+		            -\beta h_{d}+\gamma h_{s}=1 \\
+		            \beta h_{d}^{2}+\gamma h_{s}^{2}=0
+		        \end{array}
+		    \right.
+		
+		The resulting approximation of :math:`f_{i}^{(1)}` is the following:
+		
+		.. math::
+		
+		    \hat f_{i}^{(1)} =
+		        \frac{
+		            h_{s}^{2}f\left(x_{i} + h_{d}\right)
+		            + \left(h_{d}^{2} - h_{s}^{2}\right)f\left(x_{i}\right)
+		            - h_{d}^{2}f\left(x_{i}-h_{s}\right)}
+		            { h_{s}h_{d}\left(h_{d} + h_{s}\right)}
+		        + \mathcal{O}\left(\frac{h_{d}h_{s}^{2}
+		                            + h_{s}h_{d}^{2}}{h_{d}
+		                            + h_{s}}\right)
+		
+		It is worth noting that if :math:`h_{s}=h_{d}`
+		(i.e., data are evenly spaced)
+		we find the standard second order approximation:
+		
+		.. math::
+		
+		    \hat f_{i}^{(1)}=
+		        \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h}
+		        + \mathcal{O}\left(h^{2}\right)
+		
+		With a similar procedure the forward/backward approximations used for
+		boundaries can be derived.
+		
+		References
+		----------
+		.. [1]  Quarteroni A., Sacco R., Saleri F. (2007) Numerical Mathematics
+		        (Texts in Applied Mathematics). New York: Springer.
+		.. [2]  Durran D. R. (1999) Numerical Methods for Wave Equations
+		        in Geophysical Fluid Dynamics. New York: Springer.
+		.. [3]  Fornberg B. (1988) Generation of Finite Difference Formulas on
+		        Arbitrarily Spaced Grids,
+		        Mathematics of Computation 51, no. 184 : 699-706.
+		        `PDF <http://www.ams.org/journals/mcom/1988-51-184/
+		        S0025-5718-1988-0935077-0/S0025-5718-1988-0935077-0.pdf>`_.
 	**/
 	static public function gradient(f:Dynamic, ?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		greater(x1, x2[, out])
+		greater(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 > x2) element-wise.
 		
@@ -7903,6 +8986,17 @@ package numpy;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -7928,7 +9022,7 @@ package numpy;
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		greater_equal(x1, x2[, out])
+		greater_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 >= x2) element-wise.
 		
@@ -7938,6 +9032,17 @@ package numpy;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -8135,6 +9240,59 @@ package numpy;
 	**/
 	static public function hanning(M:Dynamic):Dynamic;
 	/**
+		heaviside(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Compute the Heaviside step function.
+		
+		The Heaviside step function is defined as::
+		
+		                          0   if x1 < 0
+		    heaviside(x1, x2) =  x2   if x1 == 0
+		                          1   if x1 > 0
+		
+		where `x2` is often taken to be 0.5, but 0 and 1 are also sometimes used.
+		
+		Parameters
+		----------
+		x1 : array_like
+		    Input values.
+		x2 : array_like
+		    The value of the function when x1 is 0.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		out : ndarray
+		    The output array, element-wise Heaviside step function of `x1`.
+		
+		Notes
+		-----
+		.. versionadded:: 1.13.0
+		
+		References
+		----------
+		.. Wikipedia, "Heaviside step function",
+		   https://en.wikipedia.org/wiki/Heaviside_step_function
+		
+		Examples
+		--------
+		>>> np.heaviside([-1.5, 0, 2.0], 0.5)
+		array([ 0. ,  0.5,  1. ])
+		>>> np.heaviside([-1.5, 0, 2.0], 1)
+		array([ 0.,  1.,  1.])
+	**/
+	static public function heaviside(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Compute the histogram of a set of data.
 		
 		Parameters
@@ -8161,11 +9319,11 @@ package numpy;
 		
 		    'auto'
 		        Maximum of the 'sturges' and 'fd' estimators. Provides good
-		        all round performance
+		        all around performance.
 		
 		    'fd' (Freedman Diaconis Estimator)
 		        Robust (resilient to outliers) estimator that takes into
-		        account data variability and data size .
+		        account data variability and data size.
 		
 		    'doane'
 		        An improved version of Sturges' estimator that works better
@@ -8197,8 +9355,8 @@ package numpy;
 		    based on the actual data within `range`, the bin count will fill
 		    the entire range including portions containing no data.
 		normed : bool, optional
-		    This keyword is deprecated in Numpy 1.6 due to confusing/buggy
-		    behavior. It will be removed in Numpy 2.0. Use the ``density``
+		    This keyword is deprecated in NumPy 1.6.0 due to confusing/buggy
+		    behavior. It will be removed in NumPy 2.0.0. Use the ``density``
 		    keyword instead. If ``False``, the result will contain the
 		    number of samples in each bin. If ``True``, the result is the
 		    value of the probability *density* function at the bin,
@@ -8300,7 +9458,7 @@ package numpy;
 		
 		'Doane'
 		    .. math:: n_h = 1 + \log_{2}(n) +
-		                    \log_{2}(1 + \frac{|g_1|}{\sigma_{g_1})}
+		                    \log_{2}(1 + \frac{|g_1|}{\sigma_{g_1}})
 		
 		        g_1 = mean[(\frac{x - \mu}{\sigma})^3]
 		
@@ -8330,7 +9488,7 @@ package numpy;
 		array([ 0.5,  0. ,  0.5,  0. ,  0. ,  0.5,  0. ,  0.5,  0. ,  0.5])
 		>>> hist.sum()
 		2.4999999999999996
-		>>> np.sum(hist*np.diff(bin_edges))
+		>>> np.sum(hist * np.diff(bin_edges))
 		1.0
 		
 		.. versionadded:: 1.11.0
@@ -8342,7 +9500,7 @@ package numpy;
 		>>> rng = np.random.RandomState(10)  # deterministic random data
 		>>> a = np.hstack((rng.normal(size=1000),
 		...                rng.normal(loc=5, scale=2, size=1000)))
-		>>> plt.hist(a, bins='auto')  # plt.hist passes it's arguments to np.histogram
+		>>> plt.hist(a, bins='auto')  # arguments are passed to np.histogram
 		>>> plt.title("Histogram with 'auto' bins")
 		>>> plt.show()
 	**/
@@ -8391,9 +9549,9 @@ package numpy;
 		    The bi-dimensional histogram of samples `x` and `y`. Values in `x`
 		    are histogrammed along the first dimension and values in `y` are
 		    histogrammed along the second dimension.
-		xedges : ndarray, shape(nx,)
+		xedges : ndarray, shape(nx+1,)
 		    The bin edges along the first dimension.
-		yedges : ndarray, shape(ny,)
+		yedges : ndarray, shape(ny+1,)
 		    The bin edges along the second dimension.
 		
 		See Also
@@ -8418,55 +9576,43 @@ package numpy;
 		>>> import matplotlib as mpl
 		>>> import matplotlib.pyplot as plt
 		
-		Construct a 2D-histogram with variable bin width. First define the bin
+		Construct a 2-D histogram with variable bin width. First define the bin
 		edges:
 		
-		>>> xedges = [0, 1, 1.5, 3, 5]
+		>>> xedges = [0, 1, 3, 5]
 		>>> yedges = [0, 2, 3, 4, 6]
 		
 		Next we create a histogram H with random bin content:
 		
-		>>> x = np.random.normal(3, 1, 100)
+		>>> x = np.random.normal(2, 1, 100)
 		>>> y = np.random.normal(1, 1, 100)
-		>>> H, xedges, yedges = np.histogram2d(y, x, bins=(xedges, yedges))
+		>>> H, xedges, yedges = np.histogram2d(x, y, bins=(xedges, yedges))
+		>>> H = H.T  # Let each row list bins with common y range.
 		
-		Or we fill the histogram H with a determined bin content:
-		
-		>>> H = np.ones((4, 4)).cumsum().reshape(4, 4)
-		>>> print(H[::-1])  # This shows the bin content in the order as plotted
-		[[ 13.  14.  15.  16.]
-		 [  9.  10.  11.  12.]
-		 [  5.   6.   7.   8.]
-		 [  1.   2.   3.   4.]]
-		
-		Imshow can only do an equidistant representation of bins:
+		:func:`imshow <matplotlib.pyplot.imshow>` can only display square bins:
 		
 		>>> fig = plt.figure(figsize=(7, 3))
-		>>> ax = fig.add_subplot(131)
-		>>> ax.set_title('imshow: equidistant')
-		>>> im = plt.imshow(H, interpolation='nearest', origin='low',
-		                extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
+		>>> ax = fig.add_subplot(131, title='imshow: square bins')
+		>>> plt.imshow(H, interpolation='nearest', origin='low',
+		...         extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
 		
-		pcolormesh can display exact bin edges:
+		:func:`pcolormesh <matplotlib.pyplot.pcolormesh>` can display actual edges:
 		
-		>>> ax = fig.add_subplot(132)
-		>>> ax.set_title('pcolormesh: exact bin edges')
+		>>> ax = fig.add_subplot(132, title='pcolormesh: actual edges',
+		...         aspect='equal')
 		>>> X, Y = np.meshgrid(xedges, yedges)
 		>>> ax.pcolormesh(X, Y, H)
-		>>> ax.set_aspect('equal')
 		
-		NonUniformImage displays exact bin edges with interpolation:
+		:class:`NonUniformImage <matplotlib.image.NonUniformImage>` can be used to
+		display actual bin edges with interpolation:
 		
-		>>> ax = fig.add_subplot(133)
-		>>> ax.set_title('NonUniformImage: interpolated')
+		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
+		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
 		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
-		>>> xcenters = xedges[:-1] + 0.5 * (xedges[1:] - xedges[:-1])
-		>>> ycenters = yedges[:-1] + 0.5 * (yedges[1:] - yedges[:-1])
+		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
+		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
 		>>> ax.images.append(im)
-		>>> ax.set_xlim(xedges[0], xedges[-1])
-		>>> ax.set_ylim(yedges[0], yedges[-1])
-		>>> ax.set_aspect('equal')
 		>>> plt.show()
 	**/
 	static public function histogram2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):Dynamic;
@@ -8580,6 +9726,10 @@ package numpy;
 		Take a sequence of arrays and stack them horizontally to make
 		a single array. Rebuild arrays divided by `hsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -8597,10 +9747,12 @@ package numpy;
 		dstack : Stack arrays in sequence depth wise (along third axis).
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=1)``
+		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
+		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -8617,7 +9769,7 @@ package numpy;
 	**/
 	static public function hstack(tup:Dynamic):numpy.Ndarray;
 	/**
-		hypot(x1, x2[, out])
+		hypot(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Given the "legs" of a right triangle, return its hypotenuse.
 		
@@ -8630,9 +9782,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Leg of the triangle(s).
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -8735,7 +9895,7 @@ package numpy;
 	**/
 	static public function identity(n:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
-		Return the imaginary part of the elements of the array.
+		Return the imaginary part of the complex argument.
 		
 		Parameters
 		----------
@@ -8744,9 +9904,10 @@ package numpy;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The imaginary component of the complex argument. If `val` is real,
+		    the type of `val` is used for the output.  If `val` has complex
+		    elements, the returned type is float.
 		
 		See Also
 		--------
@@ -8760,13 +9921,17 @@ package numpy;
 		>>> a.imag = np.array([8, 10, 12])
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
+		>>> np.imag(1 + 1j)
+		1.0
 	**/
-	static public function imag(val:Dynamic):numpy.Ndarray;
+	static public function imag(val:Dynamic):Dynamic;
 	/**
 		Test whether each element of a 1-D array is also present in a second array.
 		
 		Returns a boolean array the same length as `ar1` that is True
 		where an element of `ar1` is in `ar2` and False otherwise.
+		
+		We recommend using :func:`isin` instead of `in1d` for new code.
 		
 		Parameters
 		----------
@@ -8792,6 +9957,8 @@ package numpy;
 		
 		See Also
 		--------
+		isin                  : Version of this function that preserves the
+		                        shape of ar1.
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
 		
@@ -9109,13 +10276,13 @@ package numpy;
 		    `period` is not specified. Otherwise, `xp` is internally sorted after
 		    normalizing the periodic boundaries with ``xp = xp % period``.
 		
-		fp : 1-D sequence of floats
+		fp : 1-D sequence of float or complex
 		    The y-coordinates of the data points, same length as `xp`.
 		
-		left : float, optional
+		left : optional float or complex corresponding to fp
 		    Value to return for `x < xp[0]`, default is `fp[0]`.
 		
-		right : float, optional
+		right : optional float or complex corresponding to fp
 		    Value to return for `x > xp[-1]`, default is `fp[-1]`.
 		
 		period : None or float, optional
@@ -9127,7 +10294,7 @@ package numpy;
 		
 		Returns
 		-------
-		y : float or ndarray
+		y : float or complex (corresponding to fp) or ndarray
 		    The interpolated values, same shape as `x`.
 		
 		Raises
@@ -9177,6 +10344,13 @@ package numpy;
 		>>> fp = [5, 10, 3, 4]
 		>>> np.interp(x, xp, fp, period=360)
 		array([7.5, 5., 8.75, 6.25, 3., 3.25, 3.5, 3.75])
+		
+		Complex interpolation
+		>>> x = [1.5, 4.0]
+		>>> xp = [2,3,5]
+		>>> fp = [1.0j, 0, 2+3j]
+		>>> np.interp(x, xp, fp)
+		array([ 0.+1.j ,  1.+1.5j])
 	**/
 	static public function interp(x:Dynamic, xp:Dynamic, fp:Dynamic, ?left:Dynamic, ?right:Dynamic, ?period:Dynamic):Dynamic;
 	/**
@@ -9215,7 +10389,7 @@ package numpy;
 	**/
 	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
 	/**
-		invert(x[, out])
+		invert(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute bit-wise inversion, or bit-wise NOT, element-wise.
 		
@@ -9232,8 +10406,19 @@ package numpy;
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Only integer and boolean types are handled.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -9605,7 +10790,7 @@ package numpy;
 	**/
 	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
-		isfinite(x[, out])
+		isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for finiteness (not infinity or not Not a Number).
 		
@@ -9615,9 +10800,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -9641,7 +10834,7 @@ package numpy;
 		Not a Number, positive infinity and negative infinity are considered
 		to be non-finite.
 		
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Also that positive infinity is not equivalent to negative infinity. But
 		infinity is equivalent to positive infinity.  Errors result if the
@@ -9676,7 +10869,7 @@ package numpy;
 		
 		This function is obsolete and, because of changes due to relaxed stride
 		checking, its return value for the same array may differ for versions
-		of Numpy >= 1.10 and previous versions. If you only want to check if an
+		of NumPy >= 1.10.0 and previous versions. If you only want to check if an
 		array is Fortran contiguous use ``a.flags.f_contiguous`` instead.
 		
 		Parameters
@@ -9730,7 +10923,92 @@ package numpy;
 	**/
 	static public function isfortran(a:Dynamic):Dynamic;
 	/**
-		isinf(x[, out])
+		Calculates `element in test_elements`, broadcasting over `element` only.
+		Returns a boolean array of the same shape as `element` that is True
+		where an element of `element` is in `test_elements` and False otherwise.
+		
+		Parameters
+		----------
+		element : array_like
+		    Input array.
+		test_elements : array_like
+		    The values against which to test each value of `element`.
+		    This argument is flattened if it is an array or array_like.
+		    See notes for behavior with non-array-like parameters.
+		assume_unique : bool, optional
+		    If True, the input arrays are both assumed to be unique, which
+		    can speed up the calculation.  Default is False.
+		invert : bool, optional
+		    If True, the values in the returned array are inverted, as if
+		    calculating `element not in test_elements`. Default is False.
+		    ``np.isin(a, b, invert=True)`` is equivalent to (but faster
+		    than) ``np.invert(np.isin(a, b))``.
+		
+		Returns
+		-------
+		isin : ndarray, bool
+		    Has the same shape as `element`. The values `element[isin]`
+		    are in `test_elements`.
+		
+		See Also
+		--------
+		in1d                  : Flattened version of this function.
+		numpy.lib.arraysetops : Module with a number of other functions for
+		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		
+		`isin` is an element-wise function version of the python keyword `in`.
+		``isin(a, b)`` is roughly equivalent to
+		``np.array([item in b for item in a])`` if `a` and `b` are 1-D sequences.
+		
+		`element` and `test_elements` are converted to arrays if they are not
+		already. If `test_elements` is a set (or other non-sequence collection)
+		it will be converted to an object array with one element, rather than an
+		array of the values contained in `test_elements`. This is a consequence
+		of the `array` constructor's way of handling non-sequence collections.
+		Converting the set to a list usually gives the desired behavior.
+		
+		.. versionadded:: 1.13.0
+		
+		Examples
+		--------
+		>>> element = 2*np.arange(4).reshape((2, 2))
+		>>> element
+		array([[0, 2],
+		       [4, 6]])
+		>>> test_elements = [1, 2, 4, 8]
+		>>> mask = np.isin(element, test_elements)
+		>>> mask
+		array([[ False,  True],
+		       [ True,  False]], dtype=bool)
+		>>> element[mask]
+		array([2, 4])
+		>>> mask = np.isin(element, test_elements, invert=True)
+		>>> mask
+		array([[ True, False],
+		       [ False, True]], dtype=bool)
+		>>> element[mask]
+		array([0, 6])
+		
+		Because of how `array` handles sets, the following does not
+		work as expected:
+		
+		>>> test_set = {1, 2, 4, 8}
+		>>> np.isin(element, test_set)
+		array([[ False, False],
+		       [ False, False]], dtype=bool)
+		
+		Casting the set to a list gives the expected result:
+		
+		>>> np.isin(element, list(test_set))
+		array([[ False,  True],
+		       [ True,  False]], dtype=bool)
+	**/
+	static public function isin(element:Dynamic, test_elements:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
+	/**
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -9741,8 +11019,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -9766,7 +11053,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first
@@ -9793,7 +11080,7 @@ package numpy;
 	**/
 	static public function isinf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		isnan(x[, out])
+		isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for NaN and return result as a boolean array.
 		
@@ -9801,6 +11088,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -9815,11 +11113,11 @@ package numpy;
 		
 		See Also
 		--------
-		isinf, isneginf, isposinf, isfinite
+		isinf, isneginf, isposinf, isfinite, isnat
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		Examples
@@ -9833,19 +11131,65 @@ package numpy;
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		isnat(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Test element-wise for NaT (not a time) and return result as a boolean array.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array with datetime or timedelta data type.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray or bool
+		    For scalar input, the result is a new boolean with value True if
+		    the input is NaT; otherwise the value is False.
+		
+		    For array input, the result is a boolean array of the same
+		    dimensions as the input and the values are True if the
+		    corresponding element of the input is NaT; otherwise the values are
+		    False.
+		
+		See Also
+		--------
+		isnan, isinf, isneginf, isposinf, isfinite
+		
+		Examples
+		--------
+		>>> np.isnat(np.datetime64("NaT"))
+		True
+		>>> np.isnat(np.datetime64("2016-01-01"))
+		False
+		>>> np.isnat(np.array(["NaT", "2016-01-01"], dtype="datetime64[ns]"))
+		array([ True, False], dtype=bool)
+	**/
+	static public function isnat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Test element-wise for negative infinity, return result as bool array.
 		
 		Parameters
 		----------
 		x : array_like
 		    The input array.
-		y : array_like, optional
+		out : array_like, optional
 		    A boolean array with the same shape and type as `x` to store the
 		    result.
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a numpy boolean array is
 		    returned with values True where the corresponding element of the
@@ -9855,7 +11199,7 @@ package numpy;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as
 		    zeros and ones, if the type is boolean then as False and True. The
-		    return value `y` is then a reference to that array.
+		    return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -9863,7 +11207,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
@@ -9887,7 +11231,7 @@ package numpy;
 		>>> y
 		array([1, 0, 0])
 	**/
-	static public function isneginf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
+	static public function isneginf(x:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Test element-wise for positive infinity, return result as bool array.
 		
@@ -9900,7 +11244,7 @@ package numpy;
 		
 		Returns
 		-------
-		y : ndarray
+		out : ndarray
 		    A boolean array with the same dimensions as the input.
 		    If second argument is not supplied then a boolean array is returned
 		    with values True where the corresponding element of the input is
@@ -9910,7 +11254,7 @@ package numpy;
 		    If a second argument is supplied the result is stored there. If the
 		    type of that array is a numeric type the result is represented as zeros
 		    and ones, if the type is boolean then as False and True.
-		    The return value `y` is then a reference to that array.
+		    The return value `out` is then a reference to that array.
 		
 		See Also
 		--------
@@ -9918,7 +11262,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when `x` is a
@@ -9942,7 +11286,7 @@ package numpy;
 		>>> y
 		array([0, 0, 1])
 	**/
-	static public function isposinf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
+	static public function isposinf(x:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Returns a bool array, where True if input element is real.
 		
@@ -10151,19 +11495,19 @@ package numpy;
 		
 		Returns
 		-------
-		b : {0, 1}
-		  Return 1 if the object has an iterator method or is a sequence,
-		  and 0 otherwise.
+		b : bool
+		  Return ``True`` if the object has an iterator method or is a
+		  sequence and ``False`` otherwise.
 		
 		
 		Examples
 		--------
 		>>> np.iterable([1, 2, 3])
-		1
+		True
 		>>> np.iterable(2)
-		0
+		False
 	**/
-	static public function iterable(y:Dynamic):Dynamic;
+	static public function iterable(y:Dynamic):Bool;
 	/**
 		Construct an open mesh from multiple sequences.
 		
@@ -10179,6 +11523,10 @@ package numpy;
 		Parameters
 		----------
 		args : 1-D sequences
+		    Each sequence should be of integer or boolean type.
+		    Boolean sequences will be interpreted as boolean masks for the
+		    corresponding dimension (equivalent to passing in
+		    ``np.nonzero(boolean_sequence)``).
 		
 		Returns
 		-------
@@ -10196,12 +11544,21 @@ package numpy;
 		>>> a
 		array([[0, 1, 2, 3, 4],
 		       [5, 6, 7, 8, 9]])
-		>>> ixgrid = np.ix_([0,1], [2,4])
+		>>> ixgrid = np.ix_([0, 1], [2, 4])
 		>>> ixgrid
 		(array([[0],
 		       [1]]), array([[2, 4]]))
 		>>> ixgrid[0].shape, ixgrid[1].shape
 		((2, 1), (1, 2))
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		
+		>>> ixgrid = np.ix_([True, True], [2, 4])
+		>>> a[ixgrid]
+		array([[2, 4],
+		       [7, 9]])
+		>>> ixgrid = np.ix_([True, True], [False, False, True, False, True])
 		>>> a[ixgrid]
 		array([[2, 4],
 		       [7, 9]])
@@ -10393,7 +11750,7 @@ package numpy;
 	**/
 	static public function kron(a:Dynamic, b:Dynamic):numpy.Ndarray;
 	/**
-		ldexp(x1, x2[, out])
+		ldexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns x1 * 2**x2, element-wise.
 		
@@ -10406,8 +11763,17 @@ package numpy;
 		    Array of multipliers.
 		x2 : array_like, int
 		    Array of twos exponents.
-		out : ndarray, optional
-		    Output array for the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10436,7 +11802,7 @@ package numpy;
 	**/
 	static public function ldexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		left_shift(x1, x2[, out])
+		left_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Shift the bits of an integer to the left.
 		
@@ -10450,6 +11816,17 @@ package numpy;
 		    Input values.
 		x2 : array_like of integer type
 		    Number of zeros to append to `x1`. Has to be non-negative.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10476,7 +11853,7 @@ package numpy;
 	**/
 	static public function left_shift(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		less(x1, x2[, out])
+		less(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 < x2) element-wise.
 		
@@ -10486,6 +11863,17 @@ package numpy;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10503,7 +11891,7 @@ package numpy;
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		less_equal(x1, x2[, out])
+		less_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 =< x2) element-wise.
 		
@@ -10513,6 +11901,17 @@ package numpy;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10640,7 +12039,7 @@ package numpy;
 		    There are `num` equally spaced samples in the closed interval
 		    ``[start, stop]`` or the half-open interval ``[start, stop)``
 		    (depending on whether `endpoint` is True or False).
-		step : float
+		step : float, optional
 		    Only returned if `retstep` is True
 		
 		    Size of spacing between samples.
@@ -10655,11 +12054,11 @@ package numpy;
 		Examples
 		--------
 		>>> np.linspace(2.0, 3.0, num=5)
-		    array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
 		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
-		    array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
 		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
-		    (array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
 		
 		Graphical illustration:
 		
@@ -10683,7 +12082,7 @@ package numpy;
 		
 		Parameters
 		----------
-		file : file-like object or string
+		file : file-like object, string, or pathlib.Path
 		    The file to read. File-like objects must support the
 		    ``seek()`` and ``read()`` methods. Pickled files require that the
 		    file-like object support the ``readline()`` method as well.
@@ -10729,6 +12128,7 @@ package numpy;
 		--------
 		save, savez, savez_compressed, loadtxt
 		memmap : Create a memory-map to an array stored in a file on disk.
+		lib.format.open_memmap : Create or load a memory-mapped ``.npy`` file.
 		
 		Notes
 		-----
@@ -10801,7 +12201,7 @@ package numpy;
 		
 		Parameters
 		----------
-		fname : file or str
+		fname : file, str, or pathlib.Path
 		    File, filename, or generator to read.  If the filename extension is
 		    ``.gz`` or ``.bz2``, the file is first decompressed. Note that
 		    generators should return byte strings for Python 3k.
@@ -10826,10 +12226,18 @@ package numpy;
 		    ``converters = {3: lambda s: float(s.strip() or 0)}``.  Default: None.
 		skiprows : int, optional
 		    Skip the first `skiprows` lines; default: 0.
-		usecols : sequence, optional
-		    Which columns to read, with 0 being the first.  For example,
-		    ``usecols = (1,4,5)`` will extract the 2nd, 5th and 6th columns.
+		
+		usecols : int or sequence, optional
+		    Which columns to read, with 0 being the first. For example,
+		    usecols = (1,4,5) will extract the 2nd, 5th and 6th columns.
 		    The default, None, results in all columns being read.
+		
+		    .. versionadded:: 1.11.0
+		
+		    Also when a single column has to be read it is possible to use
+		    an integer instead of a tuple. E.g ``usecols = 3`` reads the
+		    fourth column the same way as `usecols = (3,)`` would.
+		
 		unpack : bool, optional
 		    If True, the returned array is transposed, so that arguments may be
 		    unpacked using ``x, y, z = loadtxt(...)``.  When used with a structured
@@ -10886,7 +12294,7 @@ package numpy;
 	**/
 	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):numpy.Ndarray;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -10898,6 +12306,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10936,7 +12355,7 @@ package numpy;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log10(x[, out])
+		log10(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the base 10 logarithm of the input array, element-wise.
 		
@@ -10944,6 +12363,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -10983,7 +12413,7 @@ package numpy;
 	**/
 	static public function log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log1p(x[, out])
+		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the natural logarithm of one plus the input array, element-wise.
 		
@@ -10993,6 +12423,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11036,7 +12477,7 @@ package numpy;
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log2(x[, out])
+		log2(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Base-2 logarithm of `x`.
 		
@@ -11044,6 +12485,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11083,7 +12535,7 @@ package numpy;
 	**/
 	static public function log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logaddexp(x1, x2[, out])
+		logaddexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Logarithm of the sum of exponentiations of the inputs.
 		
@@ -11097,6 +12549,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11123,7 +12586,7 @@ package numpy;
 	**/
 	static public function logaddexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logaddexp2(x1, x2[, out])
+		logaddexp2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Logarithm of the sum of exponentiations of the inputs in base-2.
 		
@@ -11137,8 +12600,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Input values.
-		out : ndarray, optional
-		    Array to store results in.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11165,7 +12637,7 @@ package numpy;
 	**/
 	static public function logaddexp2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_and(x1, x2[, out])
+		logical_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 AND x2 element-wise.
 		
@@ -11173,7 +12645,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Input arrays. `x1` and `x2` must be of the same shape.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11199,7 +12681,7 @@ package numpy;
 	**/
 	static public function logical_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_not(x[, out])
+		logical_not(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of NOT x element-wise.
 		
@@ -11207,6 +12689,17 @@ package numpy;
 		----------
 		x : array_like
 		    Logical NOT is applied to the elements of `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11231,7 +12724,7 @@ package numpy;
 	**/
 	static public function logical_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_or(x1, x2[, out])
+		logical_or(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 OR x2 element-wise.
 		
@@ -11240,6 +12733,17 @@ package numpy;
 		x1, x2 : array_like
 		    Logical OR is applied to the elements of `x1` and `x2`.
 		    They have to be of the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11265,7 +12769,7 @@ package numpy;
 	**/
 	static public function logical_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_xor(x1, x2[, out])
+		logical_xor(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 XOR x2, element-wise.
 		
@@ -11274,6 +12778,17 @@ package numpy;
 		x1, x2 : array_like
 		    Logical XOR is applied to the elements of `x1` and `x2`.  They must
 		    be broadcastable to the same shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11319,7 +12834,7 @@ package numpy;
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
-		    length ``num``) are returned.
+		    length `num`) are returned.
 		num : integer, optional
 		    Number of samples to generate.  Default is 50.
 		endpoint : boolean, optional
@@ -11345,6 +12860,7 @@ package numpy;
 		         endpoint may or may not be included.
 		linspace : Similar to logspace, but with the samples uniformly distributed
 		           in linear space, instead of log space.
+		geomspace : Similar to logspace, but with endpoints specified directly.
 		
 		Notes
 		-----
@@ -11358,11 +12874,11 @@ package numpy;
 		Examples
 		--------
 		>>> np.logspace(2.0, 3.0, num=4)
-		    array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
+		array([  100.        ,   215.443469  ,   464.15888336,  1000.        ])
 		>>> np.logspace(2.0, 3.0, num=4, endpoint=False)
-		    array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
+		array([ 100.        ,  177.827941  ,  316.22776602,  562.34132519])
 		>>> np.logspace(2.0, 3.0, num=4, base=2.0)
-		    array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
+		array([ 4.        ,  5.0396842 ,  6.34960421,  8.        ])
 		
 		Graphical illustration:
 		
@@ -11560,7 +13076,7 @@ package numpy;
 		  were elements.
 		
 		.. warning::
-		   This function is preliminary and included in Numpy 1.10 for testing
+		   This function is preliminary and included in NumPy 1.10.0 for testing
 		   and documentation. Its semantics will not change, but the number and
 		   order of the optional arguments will.
 		
@@ -11663,7 +13179,7 @@ package numpy;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the maximum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -11675,7 +13191,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
@@ -11737,7 +13253,7 @@ package numpy;
 	**/
 	static public function max(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		maximum(x1, x2[, out])
+		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise maximum of array elements.
 		
@@ -11753,6 +13269,17 @@ package numpy;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -11883,7 +13410,7 @@ package numpy;
 		    Axis or axes along which the means are computed. The default is to
 		    compute the mean of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a mean is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -11900,7 +13427,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
@@ -11930,6 +13457,9 @@ package numpy;
 		example below).  Specifying a higher-precision accumulator using the
 		`dtype` keyword can alleviate this issue.
 		
+		By default, `float16` results are computed using `float32` intermediates
+		for extra precision.
+		
 		Examples
 		--------
 		>>> a = np.array([[1, 2], [3, 4]])
@@ -11946,7 +13476,7 @@ package numpy;
 		>>> a[0, :] = 1.0
 		>>> a[1, :] = 0.1
 		>>> np.mean(a)
-		0.546875
+		0.54999924
 		
 		Computing the mean in float64 is more accurate:
 		
@@ -12088,12 +13618,12 @@ package numpy;
 		'xy' indexing and (M, N, P) for 'ij' indexing.  The difference is
 		illustrated by the following code snippet::
 		
-		    xv, yv = meshgrid(x, y, sparse=False, indexing='ij')
+		    xv, yv = np.meshgrid(x, y, sparse=False, indexing='ij')
 		    for i in range(nx):
 		        for j in range(ny):
 		            # treat xv[i,j], yv[i,j]
 		
-		    xv, yv = meshgrid(x, y, sparse=False, indexing='xy')
+		    xv, yv = np.meshgrid(x, y, sparse=False, indexing='xy')
 		    for i in range(nx):
 		        for j in range(ny):
 		            # treat xv[j,i], yv[j,i]
@@ -12112,14 +13642,14 @@ package numpy;
 		>>> nx, ny = (3, 2)
 		>>> x = np.linspace(0, 1, nx)
 		>>> y = np.linspace(0, 1, ny)
-		>>> xv, yv = meshgrid(x, y)
+		>>> xv, yv = np.meshgrid(x, y)
 		>>> xv
 		array([[ 0. ,  0.5,  1. ],
 		       [ 0. ,  0.5,  1. ]])
 		>>> yv
 		array([[ 0.,  0.,  0.],
 		       [ 1.,  1.,  1.]])
-		>>> xv, yv = meshgrid(x, y, sparse=True)  # make sparse output arrays
+		>>> xv, yv = np.meshgrid(x, y, sparse=True)  # make sparse output arrays
 		>>> xv
 		array([[ 0. ,  0.5,  1. ]])
 		>>> yv
@@ -12130,7 +13660,7 @@ package numpy;
 		
 		>>> x = np.arange(-5, 5, 0.1)
 		>>> y = np.arange(-5, 5, 0.1)
-		>>> xx, yy = meshgrid(x, y, sparse=True)
+		>>> xx, yy = np.meshgrid(x, y, sparse=True)
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
@@ -12187,7 +13717,7 @@ package numpy;
 		    Axis or axes along which to operate.  By default, flattened input is
 		    used.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, the minimum is selected over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -12199,7 +13729,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
@@ -12307,7 +13837,7 @@ package numpy;
 	**/
 	static public function min_scalar_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		minimum(x1, x2[, out])
+		minimum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Element-wise minimum of array elements.
 		
@@ -12323,6 +13853,17 @@ package numpy;
 		x1, x2 : array_like
 		    The arrays holding the elements to be compared. They must have
 		    the same shape, or shapes that can be broadcast to a single shape.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12427,7 +13968,7 @@ package numpy;
 	**/
 	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
-		remainder(x1, x2[, out])
+		remainder(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return element-wise remainder of division.
 		
@@ -12442,9 +13983,17 @@ package numpy;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12455,6 +14004,7 @@ package numpy;
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
+		divmod : Simultaneous floor division and remainder.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -12472,7 +14022,7 @@ package numpy;
 	**/
 	static public function mod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		modf(x[, out1, out2])
+		modf(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the fractional and integral parts of an array, element-wise.
 		
@@ -12483,6 +14033,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12494,6 +14055,11 @@ package numpy;
 		Notes
 		-----
 		For integer input the return values are floats.
+		
+		See Also
+		--------
+		divmod : ``divmod(x, 1)`` is equivalent to ``modf`` with the return values
+		         switched, except it always has a positive remainder.
 		
 		Examples
 		--------
@@ -12543,7 +14109,7 @@ package numpy;
 		
 		>>> np.transpose(x).shape
 		(5, 4, 3)
-		>>> np.swapaxis(x, 0, -1).shape
+		>>> np.swapaxes(x, 0, -1).shape
 		(5, 4, 3)
 		>>> np.moveaxis(x, [0, 1], [-1, -2]).shape
 		(5, 4, 3)
@@ -12574,7 +14140,7 @@ package numpy;
 	**/
 	static public function msort(a:Dynamic):numpy.Ndarray;
 	/**
-		multiply(x1, x2[, out])
+		multiply(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Multiply arguments element-wise.
 		
@@ -12582,6 +14148,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    Input arrays to be multiplied.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -12618,6 +14195,13 @@ package numpy;
 		----------
 		x : array_like
 		    Input data.
+		copy : bool, optional
+		    Whether to create a copy of `x` (True) or to replace values
+		    in-place (False). The in-place operation only occurs if
+		    casting to an array does not require a copy.
+		    Default is True.
+		
+		    .. versionadded:: 1.13
 		
 		Returns
 		-------
@@ -12631,7 +14215,7 @@ package numpy;
 		
 		See Also
 		--------
-		isinf : Shows which elements are negative or negative infinity.
+		isinf : Shows which elements are positive or negative infinity.
 		isneginf : Shows which elements are negative infinity.
 		isposinf : Shows which elements are positive infinity.
 		isnan : Shows which elements are Not a Number (NaN).
@@ -12639,7 +14223,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		
@@ -12651,7 +14235,7 @@ package numpy;
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
 	**/
-	static public function nan_to_num(x:Dynamic):numpy.Ndarray;
+	static public function nan_to_num(x:Dynamic, ?copy:Dynamic):numpy.Ndarray;
 	/**
 		Return the indices of the maximum values in the specified axis ignoring
 		NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the
@@ -12722,6 +14306,123 @@ package numpy;
 	**/
 	static public function nanargmin(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
+		Return the cumulative product of array elements over a given axis treating Not a
+		Numbers (NaNs) as one.  The cumulative product does not change when NaNs are
+		encountered and leading NaNs are replaced by ones.
+		
+		Ones are returned for slices that are all-NaN or empty.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int, optional
+		    Axis along which the cumulative product is computed.  By default
+		    the input is flattened.
+		dtype : dtype, optional
+		    Type of the returned array, as well as of the accumulator in which
+		    the elements are multiplied.  If *dtype* is not specified, it
+		    defaults to the dtype of `a`, unless `a` has an integer dtype with
+		    a precision less than that of the default platform integer.  In
+		    that case, the default platform integer is used instead.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output
+		    but the type of the resulting values will be cast if necessary.
+		
+		Returns
+		-------
+		nancumprod : ndarray
+		    A new array holding the result is returned unless `out` is
+		    specified, in which case it is returned.
+		
+		See Also
+		--------
+		numpy.cumprod : Cumulative product across array propagating NaNs.
+		isnan : Show which elements are NaN.
+		
+		Examples
+		--------
+		>>> np.nancumprod(1)
+		array([1])
+		>>> np.nancumprod([1])
+		array([1])
+		>>> np.nancumprod([1, np.nan])
+		array([ 1.,  1.])
+		>>> a = np.array([[1, 2], [3, np.nan]])
+		>>> np.nancumprod(a)
+		array([ 1.,  2.,  6.,  6.])
+		>>> np.nancumprod(a, axis=0)
+		array([[ 1.,  2.],
+		       [ 3.,  2.]])
+		>>> np.nancumprod(a, axis=1)
+		array([[ 1.,  2.],
+		       [ 3.,  3.]])
+	**/
+	static public function nancumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
+	/**
+		Return the cumulative sum of array elements over a given axis treating Not a
+		Numbers (NaNs) as zero.  The cumulative sum does not change when NaNs are
+		encountered and leading NaNs are replaced by zeros.
+		
+		Zeros are returned for slices that are all-NaN or empty.
+		
+		.. versionadded:: 1.12.0
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int, optional
+		    Axis along which the cumulative sum is computed. The default
+		    (None) is to compute the cumsum over the flattened array.
+		dtype : dtype, optional
+		    Type of the returned array and of the accumulator in which the
+		    elements are summed.  If `dtype` is not specified, it defaults
+		    to the dtype of `a`, unless `a` has an integer dtype with a
+		    precision less than that of the default platform integer.  In
+		    that case, the default platform integer is used.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output
+		    but the type will be cast if necessary. See `doc.ufuncs`
+		    (Section "Output arguments") for more details.
+		
+		Returns
+		-------
+		nancumsum : ndarray.
+		    A new array holding the result is returned unless `out` is
+		    specified, in which it is returned. The result has the same
+		    size as `a`, and the same shape as `a` if `axis` is not None
+		    or `a` is a 1-d array.
+		
+		See Also
+		--------
+		numpy.cumsum : Cumulative sum across array propagating NaNs.
+		isnan : Show which elements are NaN.
+		
+		Examples
+		--------
+		>>> np.nancumsum(1)
+		array([1])
+		>>> np.nancumsum([1])
+		array([1])
+		>>> np.nancumsum([1, np.nan])
+		array([ 1.,  1.])
+		>>> a = np.array([[1, 2], [3, np.nan]])
+		>>> np.nancumsum(a)
+		array([ 1.,  3.,  6.,  6.])
+		>>> np.nancumsum(a, axis=0)
+		array([[ 1.,  2.],
+		       [ 4.,  2.]])
+		>>> np.nancumsum(a, axis=1)
+		array([[ 1.,  3.],
+		       [ 3.,  3.]])
+	**/
+	static public function nancumsum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
 		Return the maximum of an array or maximum along an axis, ignoring any
 		NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is
 		raised and NaN is returned for that slice.
@@ -12779,7 +14480,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Positive infinity is treated as a very large number and negative
 		infinity is treated as a very small (i.e. negative) number.
@@ -13018,7 +14719,7 @@ package numpy;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		Positive infinity is treated as a very large number and negative
 		infinity is treated as a very small (i.e. negative) number.
@@ -13089,9 +14790,9 @@ package numpy;
 		        * nearest: ``i`` or ``j``, whichever is nearest.
 		        * midpoint: ``(i + j) / 2``.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
 		
 		    If this is anything but the default value it will be passed
 		    through (in the special case of an empty array) to the
@@ -13118,8 +14819,8 @@ package numpy;
 		Notes
 		-----
 		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
-		``V`` is the value ``q/100`` of the way from the mimumum to the
-		maximum in in a sorted copy of ``V``. The values and distances of
+		``V`` is the value ``q/100`` of the way from the minimum to the
+		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
 		will determine the percentile if the normalized ranking does not
 		match the location of ``q`` exactly. This function is the same as
@@ -13132,7 +14833,7 @@ package numpy;
 		>>> a[0][1] = np.nan
 		>>> a
 		array([[ 10.,  nan,   4.],
-		   [  3.,   2.,   1.]])
+		      [  3.,   2.,   1.]])
 		>>> np.percentile(a, 50)
 		nan
 		>>> np.nanpercentile(a, 50)
@@ -13157,7 +14858,7 @@ package numpy;
 	static public function nanpercentile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Return the product of array elements over a given axis treating Not a
-		Numbers (NaNs) as zero.
+		Numbers (NaNs) as ones.
 		
 		One is returned for slices that are all-NaN or empty.
 		
@@ -13191,19 +14892,14 @@ package numpy;
 		
 		Returns
 		-------
-		y : ndarray or numpy scalar
+		nanprod : ndarray
+		    A new array holding the result is returned unless `out` is
+		    specified, in which case it is returned.
 		
 		See Also
 		--------
 		numpy.prod : Product across array propagating NaNs.
 		isnan : Show which elements are NaN.
-		
-		Notes
-		-----
-		Numpy integer arithmetic is modular. If the size of a product exceeds
-		the size of an integer accumulator, its value will wrap around and the
-		result will be incorrect. Specifying ``dtype=double`` can alleviate
-		that problem.
 		
 		Examples
 		--------
@@ -13219,7 +14915,7 @@ package numpy;
 		>>> np.nanprod(a, axis=0)
 		array([ 3.,  2.])
 	**/
-	static public function nanprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the standard deviation along the specified axis, while
 		ignoring NaNs.
@@ -13317,7 +15013,7 @@ package numpy;
 		Return the sum of array elements over a given axis treating Not a
 		Numbers (NaNs) as zero.
 		
-		In Numpy versions <= 1.8 Nan is returned for slices that are all-NaN or
+		In NumPy versions <= 1.8.0 Nan is returned for slices that are all-NaN or
 		empty. In later versions zero is returned.
 		
 		Parameters
@@ -13360,7 +15056,11 @@ package numpy;
 		
 		Returns
 		-------
-		y : ndarray or numpy scalar
+		nansum : ndarray.
+		    A new array holding the result is returned unless `out` is
+		    specified, in which it is returned. The result has the same
+		    size as `a`, and the same shape as `a` if `axis` is not None
+		    or `a` is a 1-d array.
 		
 		See Also
 		--------
@@ -13372,11 +15072,6 @@ package numpy;
 		-----
 		If both positive and negative infinity are present, the sum will be Not
 		A Number (NaN).
-		
-		Numpy integer arithmetic is modular. If the size of a sum exceeds the
-		size of an integer accumulator, its value will wrap around and the
-		result will be incorrect. Specifying ``dtype=double`` can alleviate
-		that problem.
 		
 		Examples
 		--------
@@ -13532,7 +15227,7 @@ package numpy;
 	**/
 	static public function ndim(a:Dynamic):Int;
 	/**
-		negative(x[, out])
+		negative(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Numerical negative, element-wise.
 		
@@ -13540,6 +15235,17 @@ package numpy;
 		----------
 		x : array_like or scalar
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -13555,7 +15261,7 @@ package numpy;
 	static public function nested_iters(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
-		nextafter(x1, x2[, out])
+		nextafter(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the next floating-point value after x1 towards x2, element-wise.
 		
@@ -13565,9 +15271,17 @@ package numpy;
 		    Values to find the next representable value of.
 		x2 : array_like
 		    The direction where to look for the next representable value of `x1`.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -13623,13 +15337,13 @@ package numpy;
 		
 		Examples
 		--------
-		>>> x = np.eye(3)
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
 		>>> x
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2]), array([0, 1, 2]))
+		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
 		
 		>>> x[np.nonzero(x)]
 		array([ 1.,  1.,  1.])
@@ -13658,7 +15372,7 @@ package numpy;
 	**/
 	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
-		not_equal(x1, x2[, out])
+		not_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return (x1 != x2) element-wise.
 		
@@ -13666,9 +15380,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		  Input arrays.
-		out : ndarray, optional
-		  A placeholder the same shape as `x1` to store the result.
-		  See `doc.ufuncs` (Section "Output arguments") for more details.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -14037,7 +15759,8 @@ package numpy;
 		Parameters
 		----------
 		myarray : array_like
-		    An integer type array whose elements should be packed to bits.
+		    An array of integers or booleans whose elements should be packed to
+		    bits.
 		axis : int, optional
 		    The dimension over which bit-packing is done.
 		    ``None`` implies packing the flattened array.
@@ -14269,11 +15992,12 @@ package numpy;
 	/**
 		Return a partitioned copy of an array.
 		
-		Creates a copy of the array with its elements rearranged in such a way that
-		the value of the element in kth position is in the position it would be in
-		a sorted array. All elements smaller than the kth element are moved before
-		this element and all equal or greater are moved behind it. The ordering of
-		the elements in the two partitions is undefined.
+		Creates a copy of the array with its elements rearranged in such a
+		way that the value of the element in k-th position is in the
+		position it would be in a sorted array. All elements smaller than
+		the k-th element are moved before this element and all equal or
+		greater are moved behind it. The ordering of the elements in the two
+		partitions is undefined.
 		
 		.. versionadded:: 1.8.0
 		
@@ -14282,23 +16006,23 @@ package numpy;
 		a : array_like
 		    Array to be sorted.
 		kth : int or sequence of ints
-		    Element index to partition by. The kth value of the element will be in
-		    its final sorted position and all smaller elements will be moved before
-		    it and all equal or greater elements behind it.
-		    The order all elements in the partitions is undefined.
-		    If provided with a sequence of kth it will partition all elements
-		    indexed by kth  of them into their sorted position at once.
+		    Element index to partition by. The k-th value of the element
+		    will be in its final sorted position and all smaller elements
+		    will be moved before it and all equal or greater elements behind
+		    it. The order all elements in the partitions is undefined. If
+		    provided with a sequence of k-th it will partition all elements
+		    indexed by k-th  of them into their sorted position at once.
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
 		kind : {'introselect'}, optional
 		    Selection algorithm. Default is 'introselect'.
 		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string.  Not all fields need be specified, but
-		    unspecified fields will still be used, in the order in which they
-		    come up in the dtype, to break ties.
+		    When `a` is an array with fields defined, this argument
+		    specifies which fields to compare first, second, etc.  A single
+		    field can be specified as a string.  Not all fields need be
+		    specified, but unspecified fields will still be used, in the
+		    order in which they come up in the dtype, to break ties.
 		
 		Returns
 		-------
@@ -14313,10 +16037,11 @@ package numpy;
 		
 		Notes
 		-----
-		The various selection algorithms are characterized by their average speed,
-		worst case performance, work space size, and whether they are stable. A
-		stable sort keeps items with the same key in the same relative order. The
-		available algorithms have the following properties:
+		The various selection algorithms are characterized by their average
+		speed, worst case performance, work space size, and whether they are
+		stable. A stable sort keeps items with the same key in the same
+		relative order. The available algorithms have the following
+		properties:
 		
 		================= ======= ============= ============ =======
 		   kind            speed   worst case    work space  stable
@@ -14325,14 +16050,14 @@ package numpy;
 		================= ======= ============= ============ =======
 		
 		All the partition algorithms make temporary copies of the data when
-		partitioning along any but the last axis.  Consequently, partitioning
-		along the last axis is faster and uses less space than partitioning
-		along any other axis.
+		partitioning along any but the last axis.  Consequently,
+		partitioning along the last axis is faster and uses less space than
+		partitioning along any other axis.
 		
-		The sort order for complex numbers is lexicographic. If both the real
-		and imaginary parts are non-nan then the order is determined by the
-		real parts except when they are equal, in which case the order is
-		determined by the imaginary parts.
+		The sort order for complex numbers is lexicographic. If both the
+		real and imaginary parts are non-nan then the order is determined by
+		the real parts except when they are equal, in which case the order
+		is determined by the imaginary parts.
 		
 		Examples
 		--------
@@ -14365,7 +16090,7 @@ package numpy;
 		    have the same shape and buffer length as the expected output,
 		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		    If True, then allow use of memory of input array `a` 
+		    If True, then allow use of memory of input array `a`
 		    calculations. The input array will be modified by the call to
 		    `percentile`. This will save memory when you do not need to
 		    preserve the contents of the input array. In this case you
@@ -14400,7 +16125,7 @@ package numpy;
 		    If `q` is a single percentile and `axis=None`, then the result
 		    is a scalar. If multiple percentiles are given, first axis of
 		    the result corresponds to the percentiles. The other axes are
-		    the axes that remain after the reduction of `a`. If the input 
+		    the axes that remain after the reduction of `a`. If the input
 		    contains integers or floats smaller than ``float64``, the output
 		    data-type is ``float64``. Otherwise, the output data-type is the
 		    same as that of the input. If `out` is specified, that array is
@@ -14413,8 +16138,8 @@ package numpy;
 		Notes
 		-----
 		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
-		``V`` is the value ``q/100`` of the way from the mimumum to the
-		maximum in in a sorted copy of ``V``. The values and distances of
+		``V`` is the value ``q/100`` of the way from the minimum to the
+		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
 		will determine the percentile if the normalized ranking does not
 		match the location of ``q`` exactly. This function is the same as
@@ -14459,9 +16184,9 @@ package numpy;
 		
 		Parameters
 		----------
-		x : ndarray
+		x : ndarray or scalar
 		    The input domain.
-		condlist : list of bool arrays
+		condlist : list of bool arrays or bool scalars
 		    Each boolean array corresponds to a function in `funclist`.  Wherever
 		    `condlist[i]` is True, `funclist[i](x)` is used as the output value.
 		
@@ -14485,8 +16210,8 @@ package numpy;
 		kw : dict, optional
 		    Keyword arguments used in calling `piecewise` are passed to the
 		    functions upon execution, i.e., if called
-		    ``piecewise(..., ..., lambda=1)``, then each function is called as
-		    ``f(x, lambda=1)``.
+		    ``piecewise(..., ..., alpha=1)``, then each function is called as
+		    ``f(x, alpha=1)``.
 		
 		Returns
 		-------
@@ -14529,6 +16254,12 @@ package numpy;
 		
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
+		
+		Apply the same function to a scalar value.
+		
+		>>> y = -2
+		>>> np.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])
+		array(2)
 	**/
 	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -14588,7 +16319,8 @@ package numpy;
 		vals : 1-D sequence
 		    Values to put into `a`. Only the first N elements are used, where
 		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
+		    than N, it will be repeated, and if elements of `a` are to be masked,
+		    this sequence must be non-empty.
 		
 		See Also
 		--------
@@ -14949,11 +16681,11 @@ package numpy;
 		
 		Returns
 		-------
-		p : ndarray, shape (M,) or (M, K)
+		p : ndarray, shape (deg + 1,) or (deg + 1, K)
 		    Polynomial coefficients, highest power first.  If `y` was 2-D, the
 		    coefficients for `k`-th data set are in ``p[:,k]``.
 		
-		residuals, rank, singular_values, rcond :
+		residuals, rank, singular_values, rcond
 		    Present only if `full` = True.  Residuals of the least-squares fit,
 		    the effective rank of the scaled Vandermonde coefficient matrix,
 		    its singular values, and the specified value of `rcond`. For more
@@ -15262,12 +16994,36 @@ package numpy;
 	**/
 	static public function polyval(p:Dynamic, x:Dynamic):Dynamic;
 	/**
-		power(x1, x2[, out])
+		positive(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Numerical positive, element-wise.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		x : array_like or scalar
+		    Input array.
+		
+		Returns
+		-------
+		y : ndarray or scalar
+		    Returned array or scalar: `y = +x`.
+		
+		Notes
+		-----
+		Equivalent to `x.copy()`, but only defined for types that support
+		arithmetic.
+	**/
+	static public function positive(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		First array elements raised to powers from second array, element-wise.
 		
 		Raise each base in `x1` to the positionally-corresponding power in
-		`x2`.  `x1` and `x2` must be broadcastable to the same shape.
+		`x2`.  `x1` and `x2` must be broadcastable to the same shape. Note that an
+		integer type raised to a negative integer power will raise a ValueError.
 		
 		Parameters
 		----------
@@ -15275,11 +17031,26 @@ package numpy;
 		    The bases.
 		x2 : array_like
 		    The exponents.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		
+		See Also
+		--------
+		float_power : power function that promotes integers to float
 		
 		Examples
 		--------
@@ -15699,7 +17470,7 @@ package numpy;
 	static public function pv(rate:Dynamic, nper:Dynamic, pmt:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
 	static public var r_ : Dynamic;
 	/**
-		rad2deg(x[, out])
+		rad2deg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from radians to degrees.
 		
@@ -15707,9 +17478,17 @@ package numpy;
 		----------
 		x : array_like
 		    Angle in radians.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -15734,7 +17513,7 @@ package numpy;
 	**/
 	static public function rad2deg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		radians(x[, out])
+		radians(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Convert angles from degrees to radians.
 		
@@ -15742,8 +17521,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array in degrees.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -15802,7 +17590,7 @@ package numpy;
 		Notes
 		-----
 		In the old Numeric package, `rank` was the term used for the number of
-		dimensions, but in Numpy `ndim` is used instead.
+		dimensions, but in NumPy `ndim` is used instead.
 		
 		Examples
 		--------
@@ -16015,7 +17803,7 @@ package numpy;
 	**/
 	static public function ravel_multi_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -16024,9 +17812,10 @@ package numpy;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -16043,8 +17832,10 @@ package numpy;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
-	static public function real(val:Dynamic):numpy.Ndarray;
+	static public function real(val:Dynamic):Dynamic;
 	/**
 		If complex input returns a real array if complex parts are close to zero.
 		
@@ -16129,7 +17920,7 @@ package numpy;
 	**/
 	static public function recfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		reciprocal(x[, out])
+		reciprocal(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the reciprocal of the argument, element-wise.
 		
@@ -16139,6 +17930,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -16163,7 +17965,7 @@ package numpy;
 	**/
 	static public function reciprocal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		remainder(x1, x2[, out])
+		remainder(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return element-wise remainder of division.
 		
@@ -16178,9 +17980,17 @@ package numpy;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See doc.ufuncs.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -16191,6 +18001,7 @@ package numpy;
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
+		divmod : Simultaneous floor division and remainder.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -16233,6 +18044,8 @@ package numpy;
 		
 		Examples
 		--------
+		>>> np.repeat(3, 4)
+		array([3, 3, 3, 3])
 		>>> x = np.array([[1,2],[3,4]])
 		>>> np.repeat(x, 2)
 		array([1, 1, 2, 2, 3, 3, 4, 4])
@@ -16314,20 +18127,21 @@ package numpy;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -16438,25 +18252,6 @@ package numpy;
 	**/
 	static public function resize(a:Dynamic, new_shape:Dynamic):numpy.Ndarray;
 	/**
-		Restore `dot`, `vdot`, and `innerproduct` to the default non-BLAS
-		implementations.
-		
-		Typically, the user will only need to call this when troubleshooting
-		and installation problem, reproducing the conditions of a build without
-		an accelerated BLAS, or when being very careful about benchmarking
-		linear algebra operations.
-		
-		.. note:: Deprecated in Numpy 1.10
-		          The cblas functions have been integrated into the multarray
-		          module and restoredot now longer does anything. It will be
-		          removed in Numpy 1.11.0.
-		
-		See Also
-		--------
-		alterdot : `restoredot` undoes the effects of `alterdot`.
-	**/
-	static public function restoredot():Dynamic;
-	/**
 		result_type(*arrays_and_dtypes)
 		
 		Returns the type that results from applying the NumPy
@@ -16524,7 +18319,7 @@ package numpy;
 	**/
 	static public function result_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		right_shift(x1, x2[, out])
+		right_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Shift the bits of an integer to the right.
 		
@@ -16538,6 +18333,17 @@ package numpy;
 		    Input values.
 		x2 : array_like, int
 		    Number of bits to remove at the right of `x1`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -16564,7 +18370,7 @@ package numpy;
 	**/
 	static public function right_shift(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		rint(x[, out])
+		rint(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Round elements of the array to the nearest integer.
 		
@@ -16572,6 +18378,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -16599,11 +18416,15 @@ package numpy;
 		----------
 		a : array_like
 		    Input array.
-		shift : int
-		    The number of places by which elements are shifted.
-		axis : int, optional
-		    The axis along which elements are shifted.  By default, the array
-		    is flattened before shifting, after which the original
+		shift : int or tuple of ints
+		    The number of places by which elements are shifted.  If a tuple,
+		    then `axis` must be a tuple of the same size, and each of the
+		    given axes is shifted by the corresponding number.  If an int
+		    while `axis` is a tuple of ints, then the same value is used for
+		    all given axes.
+		axis : int or tuple of ints, optional
+		    Axis or axes along which elements are shifted.  By default, the
+		    array is flattened before shifting, after which the original
 		    shape is restored.
 		
 		Returns
@@ -16615,6 +18436,12 @@ package numpy;
 		--------
 		rollaxis : Roll the specified axis backwards, until it lies in a
 		           given position.
+		
+		Notes
+		-----
+		.. versionadded:: 1.12.0
+		
+		Supports rolling over multiple dimensions simultaneously.
 		
 		Examples
 		--------
@@ -16654,8 +18481,8 @@ package numpy;
 		Returns
 		-------
 		res : ndarray
-		    For Numpy >= 1.10 a view of `a` is always returned. For earlier
-		    Numpy versions a view of `a` is returned only if the order of the
+		    For NumPy >= 1.10.0 a view of `a` is always returned. For earlier
+		    NumPy versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
 		See Also
@@ -16691,7 +18518,7 @@ package numpy;
 		Returns
 		-------
 		out : ndarray
-		    An array containing the complex roots of the polynomial.
+		    An array containing the roots of the polynomial.
 		
 		Raises
 		------
@@ -16724,10 +18551,11 @@ package numpy;
 	**/
 	static public function roots(p:Dynamic):numpy.Ndarray;
 	/**
-		Rotate an array by 90 degrees in the counter-clockwise direction.
+		Rotate an array by 90 degrees in the plane specified by axes.
 		
-		The first two dimensions are rotated; therefore, the array must be at
-		least 2-D.
+		Rotation direction is from the first towards the second axis.
+		
+		.. versionadded:: 1.12.0
 		
 		Parameters
 		----------
@@ -16735,16 +18563,25 @@ package numpy;
 		    Array of two or more dimensions.
 		k : integer
 		    Number of times the array is rotated by 90 degrees.
+		axes: (2,) array_like
+		    The array is rotated in the plane defined by the axes.
+		    Axes must be different.
 		
 		Returns
 		-------
 		y : ndarray
-		    Rotated array.
+		    A rotated view of `m`.
 		
 		See Also
 		--------
+		flip : Reverse the order of elements in an array along the given axis.
 		fliplr : Flip an array horizontally.
 		flipud : Flip an array vertically.
+		
+		Notes
+		-----
+		rot90(m, k=1, axes=(1,0)) is the reverse of rot90(m, k=1, axes=(0,1))
+		rot90(m, k=1, axes=(1,0)) is equivalent to rot90(m, k=-1, axes=(0,1))
 		
 		Examples
 		--------
@@ -16758,8 +18595,15 @@ package numpy;
 		>>> np.rot90(m, 2)
 		array([[4, 3],
 		       [2, 1]])
+		>>> m = np.arange(8).reshape((2,2,2))
+		>>> np.rot90(m, 1, (1,2))
+		array([[[1, 3],
+		        [0, 2]],
+		
+		      [[5, 7],
+		       [4, 6]]])
 	**/
-	static public function rot90(m:Dynamic, ?k:Dynamic):numpy.Ndarray;
+	static public function rot90(m:Dynamic, ?k:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		Round an array to the given number of decimals.
 		
@@ -16786,6 +18630,10 @@ package numpy;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -16804,6 +18652,7 @@ package numpy;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -16877,9 +18726,9 @@ package numpy;
 		
 		Parameters
 		----------
-		file : file or str
+		file : file, str, or pathlib.Path
 		    File or filename to which the data is saved.  If file is a file-object,
-		    then the filename is unchanged.  If file is a string, a ``.npy``
+		    then the filename is unchanged.  If file is a string or Path, a ``.npy``
 		    extension will be appended to the file name if it does not already
 		    have one.
 		allow_pickle : bool, optional
@@ -16906,7 +18755,7 @@ package numpy;
 		Notes
 		-----
 		For a description of the ``.npy`` format, see the module docstring
-		of `numpy.lib.format` or the Numpy Enhancement Proposal
+		of `numpy.lib.format` or the NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		Examples
@@ -16941,7 +18790,7 @@ package numpy;
 		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
 		            like `' (%s+%sj)' % (fmt, fmt)`
 		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4j %.4e %+.4j %.4e %+.4j'` for 3 columns
+		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
 		        c) a list of specifiers, one per column - in this case, the real
 		            and imaginary part must have separate specifiers,
 		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
@@ -17045,8 +18894,9 @@ package numpy;
 		----------
 		file : str or file
 		    Either the file name (string) or an open file (file-like object)
-		    where the data will be saved. If file is a string, the ``.npz``
-		    extension will be appended to the file name if it is not already there.
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
 		args : Arguments, optional
 		    Arrays to save to the file. Since it is not possible for Python to
 		    know the names of the arrays outside `savez`, the arrays will be saved
@@ -17072,7 +18922,7 @@ package numpy;
 		variables they contain.  The archive is not compressed and each file
 		in the archive contains one variable in ``.npy`` format. For a
 		description of the ``.npy`` format, see `numpy.lib.format` or the
-		Numpy Enhancement Proposal
+		NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
@@ -17118,17 +18968,55 @@ package numpy;
 		
 		Parameters
 		----------
-		file : str
-		    File name of ``.npz`` file.
-		args : Arguments
-		    Function arguments.
-		kwds : Keyword arguments
-		    Keywords.
+		file : str or file
+		    Either the file name (string) or an open file (file-like object)
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
+		args : Arguments, optional
+		    Arrays to save to the file. Since it is not possible for Python to
+		    know the names of the arrays outside `savez`, the arrays will be saved
+		    with names "arr_0", "arr_1", and so on. These arguments can be any
+		    expression.
+		kwds : Keyword arguments, optional
+		    Arrays to save to the file. Arrays will be saved in the file with the
+		    keyword names.
+		
+		Returns
+		-------
+		None
 		
 		See Also
 		--------
+		numpy.save : Save a single array to a binary file in NumPy format.
+		numpy.savetxt : Save an array to a file as plain text.
 		numpy.savez : Save several arrays into an uncompressed ``.npz`` file format
 		numpy.load : Load the files created by savez_compressed.
+		
+		Notes
+		-----
+		The ``.npz`` file format is a zipped archive of files named after the
+		variables they contain.  The archive is compressed with
+		``zipfile.ZIP_DEFLATED`` and each file in the archive contains one variable
+		in ``.npy`` format. For a description of the ``.npy`` format, see
+		`numpy.lib.format` or the NumPy Enhancement Proposal
+		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		
+		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
+		returned. This is a dictionary-like object which can be queried for
+		its list of arrays (with the ``.files`` attribute), and for the arrays
+		themselves.
+		
+		Examples
+		--------
+		>>> test_array = np.random.rand(3, 2)
+		>>> test_vector = np.random.rand(4)
+		>>> np.savez_compressed('/tmp/123', a=test_array, b=test_vector)
+		>>> loaded = np.load('/tmp/123.npz')
+		>>> print(np.array_equal(test_array, loaded['a']))
+		True
+		>>> print(np.array_equal(test_vector, loaded['b']))
+		True
 	**/
 	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -17214,7 +19102,7 @@ package numpy;
 		-----
 		Binary search is used to find the required insertion points.
 		
-		As of Numpy 1.4.0 `searchsorted` works with real/complex arrays containing
+		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
 		
 		Examples
@@ -17346,7 +19234,8 @@ package numpy;
 		        - 'longfloat' : 128-bit floats
 		        - 'complexfloat'
 		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpy_str' : types `numpy.string_` and `numpy.unicode_`
+		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		        - 'object' : `np.object_` arrays
 		        - 'str' : all other strings
 		
 		    Other keys that can be used to set a group of types at once are::
@@ -17661,7 +19550,7 @@ package numpy;
 		Set the object that defines floating-point error handling.
 		
 		The error object contains all information that defines the error handling
-		behavior in Numpy. `seterrobj` is used internally by the other
+		behavior in NumPy. `seterrobj` is used internally by the other
 		functions that set error handling behavior (`seterr`, `seterrcall`).
 		
 		Parameters
@@ -17818,7 +19707,7 @@ package numpy;
 	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function show_config():Dynamic;
 	/**
-		sign(x[, out])
+		sign(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns an element-wise indication of the sign of a number.
 		
@@ -17834,6 +19723,17 @@ package numpy;
 		----------
 		x : array_like
 		  Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -17857,7 +19757,7 @@ package numpy;
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		signbit(x[, out])
+		signbit(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns element-wise True where signbit is set (less than zero).
 		
@@ -17865,9 +19765,17 @@ package numpy;
 		----------
 		x : array_like
 		    The input value(s).
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output.  See `doc.ufuncs`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -17883,7 +19791,7 @@ package numpy;
 	**/
 	static public function signbit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -17891,6 +19799,17 @@ package numpy;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18012,7 +19931,7 @@ package numpy;
 	**/
 	static public function sinc(x:Dynamic):numpy.Ndarray;
 	/**
-		sinh(x[, out])
+		sinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Hyperbolic sine, element-wise.
 		
@@ -18023,18 +19942,22 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -18180,6 +20103,12 @@ package numpy;
 		placements are sorted according to the non-nan part if it exists.
 		Non-nan values are sorted as before.
 		
+		.. versionadded:: 1.12.0
+		
+		quicksort has been changed to an introsort which will switch
+		heapsort when it does not make enough progress. This makes its
+		worst case O(n*log(n)).
+		
 		Examples
 		--------
 		>>> a = np.array([[1,4],[3,1]])
@@ -18235,7 +20164,7 @@ package numpy;
 	**/
 	static public function sort_complex(a:Dynamic):Dynamic;
 	/**
-		Print or write to a file the source code for a Numpy object.
+		Print or write to a file the source code for a NumPy object.
 		
 		The source code is only returned for objects written in Python. Many
 		functions and classes are defined in C and will therefore not return
@@ -18273,14 +20202,25 @@ package numpy;
 	**/
 	static public function source(object:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		spacing(x[, out])
+		spacing(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the distance between x and the nearest adjacent number.
 		
 		Parameters
 		----------
-		x1 : array_like
+		x : array_like
 		    Values to find the spacing of.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18368,7 +20308,7 @@ package numpy;
 	**/
 	static public function split(ary:Dynamic, indices_or_sections:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -18376,9 +20316,17 @@ package numpy;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18415,7 +20363,7 @@ package numpy;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		square(x[, out])
+		square(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the element-wise square of the input.
 		
@@ -18423,6 +20371,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18463,6 +20422,16 @@ package numpy;
 		    dimensions of length 1 removed. This is always `a` itself
 		    or a view into `a`.
 		
+		Raises
+		------
+		ValueError
+		    If `axis` is not `None`, and an axis being squeezed is not of length 1
+		
+		See Also
+		--------
+		expand_dims : The inverse operation, adding singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		
 		Examples
 		--------
 		>>> x = np.array([[[0], [1], [2]]])
@@ -18470,7 +20439,13 @@ package numpy;
 		(1, 3, 1)
 		>>> np.squeeze(x).shape
 		(3,)
-		>>> np.squeeze(x, axis=(2,)).shape
+		>>> np.squeeze(x, axis=0).shape
+		(3, 1)
+		>>> np.squeeze(x, axis=1).shape
+		Traceback (most recent call last):
+		...
+		ValueError: cannot select an axis to squeeze out which has size not equal to one
+		>>> np.squeeze(x, axis=2).shape
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
@@ -18499,6 +20474,7 @@ package numpy;
 		--------
 		concatenate : Join a sequence of arrays along an existing axis.
 		split : Split array into a list of multiple sub-arrays of equal size.
+		block : Assemble arrays from blocks.
 		
 		Examples
 		--------
@@ -18539,7 +20515,7 @@ package numpy;
 		    Axis or axes along which the standard deviation is computed. The
 		    default is to compute the standard deviation of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a standard deviation is performed over
 		    multiple axes, instead of a single axis or all the axes as before.
@@ -18558,7 +20534,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `std` method of sub-classes of
@@ -18626,7 +20602,7 @@ package numpy;
 	**/
 	static public function std(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		subtract(x1, x2[, out])
+		subtract(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Subtract arguments, element-wise.
 		
@@ -18634,6 +20610,17 @@ package numpy;
 		----------
 		x1, x2 : array_like
 		    The arrays to be subtracted from each other.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -18689,7 +20676,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
@@ -18759,8 +20746,8 @@ package numpy;
 		Returns
 		-------
 		a_swapped : ndarray
-		    For Numpy >= 1.10, if `a` is an ndarray, then a view of `a` is
-		    returned; otherwise a new array is created. For earlier Numpy
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
 		    versions a view of `a` is returned only if the order of the
 		    axes is changed, otherwise the input array is returned.
 		
@@ -18851,7 +20838,7 @@ package numpy;
 	**/
 	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
-		tan(x[, out])
+		tan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute tangent element-wise.
 		
@@ -18861,18 +20848,22 @@ package numpy;
 		----------
 		x : array_like
 		  Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		  The corresponding tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -18904,7 +20895,7 @@ package numpy;
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tanh(x[, out])
+		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute hyperbolic tangent element-wise.
 		
@@ -18914,18 +20905,22 @@ package numpy;
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding hyperbolic tangent values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -18991,9 +20986,9 @@ package numpy;
 		Notes
 		-----
 		Three common use cases are:
-		    ``axes = 0`` : tensor product $a\otimes b$
-		    ``axes = 1`` : tensor dot product $a\cdot b$
-		    ``axes = 2`` : (default) tensor double contraction $a:b$
+		    * ``axes = 0`` : tensor product :math:`a\otimes b`
+		    * ``axes = 1`` : tensor dot product :math:`a\cdot b`
+		    * ``axes = 2`` : (default) tensor double contraction :math:`a:b`
 		
 		When `axes` is integer_like, the sequence for evaluation will be: first
 		the -Nth axis in `a` and 0th axis in `b`, and the -1th axis in `a` and
@@ -19105,12 +21100,14 @@ package numpy;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------
@@ -19261,6 +21258,7 @@ package numpy;
 		(2, 3)
 	**/
 	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
+	static public var tracemalloc_domain : Dynamic;
 	/**
 		Permute the dimensions of an array.
 		
@@ -19690,7 +21688,7 @@ package numpy;
 	**/
 	static public function triu_indices_from(arr:Dynamic, ?k:Dynamic):Dynamic;
 	/**
-		true_divide(x1, x2[, out])
+		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Returns a true division of the inputs, element-wise.
 		
@@ -19704,6 +21702,17 @@ package numpy;
 		    Dividend array.
 		x2 : array_like
 		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19740,7 +21749,7 @@ package numpy;
 	**/
 	static public function true_divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		trunc(x[, out])
+		trunc(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truncated value of the input, element-wise.
 		
@@ -19752,6 +21761,17 @@ package numpy;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -19869,18 +21889,27 @@ package numpy;
 		Parameters
 		----------
 		ar : array_like
-		    Input array. This will be flattened if it is not already 1-D.
+		    Input array. Unless `axis` is specified, this will be flattened if it
+		    is not already 1-D.
 		return_index : bool, optional
-		    If True, also return the indices of `ar` that result in the unique
-		    array.
+		    If True, also return the indices of `ar` (along the specified axis,
+		    if provided, or in the flattened array) that result in the unique array.
 		return_inverse : bool, optional
-		    If True, also return the indices of the unique array that can be used
-		    to reconstruct `ar`.
+		    If True, also return the indices of the unique array (for the specified
+		    axis, if provided) that can be used to reconstruct `ar`.
 		return_counts : bool, optional
-		    If True, also return the number of times each unique value comes up
+		    If True, also return the number of times each unique item appears
 		    in `ar`.
-		
 		    .. versionadded:: 1.9.0
+		axis : int or None, optional
+		    The axis to operate on. If None, `ar` will be flattened beforehand.
+		    Otherwise, duplicate items will be removed along the provided axis,
+		    with all the other axes belonging to the each of the unique elements.
+		    Object arrays or structured arrays that contain objects are not
+		    supported if the `axis` kwarg is used.
+		    .. versionadded:: 1.13.0
+		
+		
 		
 		Returns
 		-------
@@ -19888,14 +21917,13 @@ package numpy;
 		    The sorted unique values.
 		unique_indices : ndarray, optional
 		    The indices of the first occurrences of the unique values in the
-		    (flattened) original array. Only provided if `return_index` is True.
+		    original array. Only provided if `return_index` is True.
 		unique_inverse : ndarray, optional
-		    The indices to reconstruct the (flattened) original array from the
+		    The indices to reconstruct the original array from the
 		    unique array. Only provided if `return_inverse` is True.
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
-		
 		    .. versionadded:: 1.9.0
 		
 		See Also
@@ -19910,6 +21938,12 @@ package numpy;
 		>>> a = np.array([[1, 1], [2, 3]])
 		>>> np.unique(a)
 		array([1, 2, 3])
+		
+		Return the unique rows of a 2D array
+		
+		>>> a = np.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])
+		>>> np.unique(a, axis=0)
+		array([[1, 0, 0], [2, 3, 4]])
 		
 		Return the indices of the original array that give the unique values:
 		
@@ -19935,7 +21969,7 @@ package numpy;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):numpy.Ndarray;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		unpackbits(myarray, axis=None)
 		
@@ -20145,7 +22179,7 @@ package numpy;
 		    Axis or axes along which the variance is computed.  The default is to
 		    compute the variance of the flattened array.
 		
-		    .. versionadded: 1.7.0
+		    .. versionadded:: 1.7.0
 		
 		    If this is a tuple of ints, a variance is performed over multiple axes,
 		    instead of a single axis or all the axes as before.
@@ -20164,7 +22198,7 @@ package numpy;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the input array.
 		
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of
@@ -20336,6 +22370,10 @@ package numpy;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -20354,6 +22392,7 @@ package numpy;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -20391,8 +22430,8 @@ package numpy;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -20439,7 +22478,7 @@ package numpy;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
@@ -20449,10 +22488,10 @@ package numpy;
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Print the Numpy arrays in the given dictionary.
+		Print the NumPy arrays in the given dictionary.
 		
 		If there is no dictionary passed in or `vardict` is None then returns
-		Numpy arrays in the globals() dictionary (all Numpy arrays in the
+		NumPy arrays in the globals() dictionary (all NumPy arrays in the
 		namespace).
 		
 		Parameters

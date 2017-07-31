@@ -48,6 +48,13 @@ package pandas.core.base;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -102,7 +109,6 @@ package pandas.core.base;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -122,7 +128,7 @@ package pandas.core.base;
 		None if not required
 	**/
 	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	static public var _builtin_table : Dynamic;
 	static public var _cython_table : Dynamic;
 	/**
@@ -150,16 +156,27 @@ package pandas.core.base;
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	static public var _obj_with_exclusions : Dynamic;
-	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
+		return a name for myself; this would ideally be called
+		the 'name' property, but we cannot conflict with the
+		Series.name property which can be set
+	**/
+	public var _selection_name : Dynamic;
+	/**
 		return a new object with the replacement attributes 
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		if arg is a string, then try to operate on it:
+		- try to find a function (or attribute) on ourselves
+		- try to find a numpy function
+		- raise
+	**/
+	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function aggregate(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public var name : Dynamic;
 	static public var ndim : Dynamic;
 }

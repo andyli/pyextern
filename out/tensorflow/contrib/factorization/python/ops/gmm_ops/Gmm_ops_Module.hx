@@ -43,8 +43,10 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		
 		This function is used to perform parallel lookups on the list of
 		tensors in `params`.  It is a generalization of
-		[`tf.gather()`](../../api_docs/python/array_ops.md#gather), where `params` is
-		interpreted as a partition of a larger embedding tensor.
+		@{tf.gather}, where `params` is
+		interpreted as a partitioning of a large embedding tensor.  `params` may be
+		a `PartitionedVariable` as returned by using `tf.get_variable()` with a
+		partitioner.
 		
 		If `len(params) > 1`, each element `id` of `ids` is partitioned between
 		the elements of `params` according to the `partition_strategy`.
@@ -65,16 +67,23 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		tensor. The returned tensor has shape `shape(ids) + shape(params)[1:]`.
 		
 		Args:
-		  params: A list of tensors with the same type and which can be concatenated
-		    along dimension 0. Each `Tensor` must be appropriately sized for the given
-		    `partition_strategy`.
+		  params: A single tensor representing the complete embedding tensor,
+		    or a list of P tensors all of same shape except for the first dimension,
+		    representing sharded embedding tensors.  Alternatively, a
+		    `PartitionedVariable`, created by partitioning along dimension 0. Each
+		    element must be appropriately sized for the given `partition_strategy`.
 		  ids: A `Tensor` with type `int32` or `int64` containing the ids to be looked
 		    up in `params`.
 		  partition_strategy: A string specifying the partitioning strategy, relevant
 		    if `len(params) > 1`. Currently `"div"` and `"mod"` are supported. Default
 		    is `"mod"`.
 		  name: A name for the operation (optional).
-		  validate_indices: Whether or not to validate gather indices.
+		  validate_indices: DEPRECATED. If this operation is assigned to CPU, values
+		    in `indices` are always validated to be within range.  If assigned to GPU,
+		    out-of-bound indices result in safe but unspecified behavior, which may
+		    include raising an error.
+		  max_norm: If not None, embedding values are l2-normalized to the value of
+		   max_norm.
 		
 		Returns:
 		  A `Tensor` with the same type as the tensors in `params`.
@@ -82,7 +91,7 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		Raises:
 		  ValueError: If `params` is empty.
 	**/
-	static public function embedding_lookup(params:Dynamic, ids:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?validate_indices:Dynamic):Dynamic;
+	static public function embedding_lookup(params:Dynamic, ids:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?validate_indices:Dynamic, ?max_norm:Dynamic):Dynamic;
 	/**
 		Creates the graph for Gaussian mixture model (GMM) clustering.
 		

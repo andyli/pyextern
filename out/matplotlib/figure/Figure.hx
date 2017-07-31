@@ -103,6 +103,13 @@ package matplotlib.figure;
 	**/
 	public function new(?figsize:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?frameon:Dynamic, ?subplotpars:Dynamic, ?tight_layout:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -169,6 +176,7 @@ package matplotlib.figure;
 		make a hashable key out of args and kwargs
 	**/
 	public function _make_key(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _prop_order : Dynamic;
 	public function _repr_html_():Dynamic;
 	public function _set_artist_props(a:Dynamic):Dynamic;
 	public function _set_dpi(dpi:Dynamic):Dynamic;
@@ -184,13 +192,13 @@ package matplotlib.figure;
 		sets the projection type of the axes.  (For backward
 		compatibility, ``polar=True`` may also be provided, which is
 		equivalent to ``projection='polar'``).  Valid values for
-		*projection* are: ['3d', 'aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of these
+		*projection* are: ['aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of these
 		projections support  additional kwargs, which may be provided
 		to :meth:`add_axes`. Typical usage::
 		
 		    rect = l,b,w,h
 		    fig.add_axes(rect)
-		    fig.add_axes(rect, frameon=False, axisbg='g')
+		    fig.add_axes(rect, frameon=False, facecolor='g')
 		    fig.add_axes(rect, polar=True)
 		    fig.add_axes(rect, projection='polar')
 		    fig.add_axes(ax)
@@ -231,13 +239,14 @@ package matplotlib.figure;
 		  autoscaley_on: unknown
 		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
-		  axisbelow: [ *True* | *False* ] 
+		  axisbelow: [ *True* | *False* | 'line' ] 
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
 		  clip_on: [True | False] 
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
 		  contains: a callable function 
+		  facecolor: unknown
+		  fc: unknown
 		  figure: unknown
 		  frame_on: [ *True* | *False* ] 
 		  gid: an id string 
@@ -257,14 +266,14 @@ package matplotlib.figure;
 		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats 
+		  xlim: unknown
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats 
+		  ylim: unknown
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
@@ -293,7 +302,7 @@ package matplotlib.figure;
 		    fig.add_subplot(1,1,1)
 		
 		    # add subplot with red background
-		    fig.add_subplot(212, axisbg='r')
+		    fig.add_subplot(212, facecolor='r')
 		
 		    # add a polar subplot
 		    fig.add_subplot(111, projection='polar')
@@ -305,7 +314,7 @@ package matplotlib.figure;
 		*projection*, which chooses a projection type for the axes.
 		(For backward compatibility, *polar=True* may also be
 		provided, which is equivalent to *projection='polar'*). Valid
-		values for *projection* are: ['3d', 'aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of
+		values for *projection* are: ['aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of
 		these projections
 		support additional *kwargs*, which may be provided to
 		:meth:`add_axes`.
@@ -332,13 +341,14 @@ package matplotlib.figure;
 		  autoscaley_on: unknown
 		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
-		  axisbelow: [ *True* | *False* ] 
+		  axisbelow: [ *True* | *False* | 'line' ] 
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
 		  clip_on: [True | False] 
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
 		  contains: a callable function 
+		  facecolor: unknown
+		  fc: unknown
 		  figure: unknown
 		  frame_on: [ *True* | *False* ] 
 		  gid: an id string 
@@ -358,14 +368,14 @@ package matplotlib.figure;
 		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats 
+		  xlim: unknown
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats 
+		  ylim: unknown
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
@@ -648,7 +658,7 @@ package matplotlib.figure;
 		(:meth:`~matplotlib.axes.Axes.imshow`) which will be resampled
 		to fit the current axes.  If you want a resampled image to
 		fill the entire figure, you can define an
-		:class:`~matplotlib.axes.Axes` with size [0,1,0,1].
+		:class:`~matplotlib.axes.Axes` with extent [0,0,1,1].
 		
 		An :class:`matplotlib.image.FigureImage` instance is returned.
 		
@@ -700,13 +710,14 @@ package matplotlib.figure;
 		  autoscaley_on: unknown
 		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
-		  axisbelow: [ *True* | *False* ] 
+		  axisbelow: [ *True* | *False* | 'line' ] 
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
 		  clip_on: [True | False] 
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
 		  contains: a callable function 
+		  facecolor: unknown
+		  fc: unknown
 		  figure: unknown
 		  frame_on: [ *True* | *False* ] 
 		  gid: an id string 
@@ -726,14 +737,14 @@ package matplotlib.figure;
 		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats 
+		  xlim: unknown
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats 
+		  ylim: unknown
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
@@ -920,11 +931,6 @@ package matplotlib.figure;
 	**/
 	public function get_zorder():Dynamic;
 	/**
-		Call signature::
-		
-		  ginput(self, n=1, timeout=30, show_clicks=True,
-		         mouse_add=1, mouse_pop=3, mouse_stop=2)
-		
 		Blocking call to interact with the figure.
 		
 		This will wait for *n* clicks from the user and return a list of the
@@ -959,6 +965,9 @@ package matplotlib.figure;
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The hold function was deprecated in version 2.0.
+		
 		Set the hold state.  If hold is None (default), toggle the
 		hold state.  Else set the hold state to boolean value b.
 		
@@ -967,6 +976,8 @@ package matplotlib.figure;
 		    hold()      # toggle hold
 		    hold(True)  # hold is on
 		    hold(False) # hold is off
+		
+		All "hold" machinery is deprecated.
 	**/
 	public function hold(?b:Dynamic):Dynamic;
 	/**
@@ -1013,43 +1024,67 @@ package matplotlib.figure;
 		
 		Keyword arguments:
 		
-		  *prop*: [ *None* | FontProperties | dict ]
+		  prop: [ *None* | FontProperties | dict ]
 		    A :class:`matplotlib.font_manager.FontProperties`
 		    instance. If *prop* is a dictionary, a new instance will be
 		    created with *prop*. If *None*, use rc settings.
 		
-		  *numpoints*: integer
+		  numpoints: integer
 		    The number of points in the legend line, default is 4
 		
-		  *scatterpoints*: integer
+		  scatterpoints: integer
 		    The number of points in the legend line, default is 4
 		
-		  *scatteryoffsets*: list of floats
+		  scatteryoffsets: list of floats
 		    a list of yoffsets for scatter symbols in legend
 		
-		  *markerscale*: [ *None* | scalar ]
+		  markerscale: [ *None* | scalar ]
 		    The relative size of legend markers vs. original. If *None*, use rc
 		    settings.
 		
-		  *markerfirst*: [ *True* | *False* ]
+		  markerfirst: [ *True* | *False* ]
 		    if *True*, legend marker is placed to the left of the legend label
 		    if *False*, legend marker is placed to the right of the legend
 		    label
 		
-		  *fancybox*: [ *None* | *False* | *True* ]
+		  frameon: [ *None* | bool ]
+		    Control whether the legend should be drawn on a patch (frame).
+		    Default is *None* which will take the value from the
+		    ``legend.frameon`` :data:`rcParam<matplotlib.rcParams>`.
+		
+		  fancybox: [ *None* | *False* | *True* ]
 		    if *True*, draw a frame with a round fancybox.  If *None*, use rc
 		
-		  *shadow*: [ *None* | *False* | *True* ]
+		  shadow: [ *None* | *False* | *True* ]
 		    If *True*, draw a shadow behind legend. If *None*, use rc settings.
 		
-		  *ncol* : integer
+		  framealpha: [ *None* | float ]
+		    Control the alpha transparency of the legend's background.
+		    Default is *None* which will take the value from the
+		    ``legend.framealpha`` :data:`rcParam<matplotlib.rcParams>`.
+		
+		  facecolor: [ *None* | "inherit" | a color spec ]
+		    Control the legend's background color.
+		    Default is *None* which will take the value from the
+		    ``legend.facecolor`` :data:`rcParam<matplotlib.rcParams>`.
+		    If ``"inherit"``, it will take the ``axes.facecolor``
+		    :data:`rcParam<matplotlib.rcParams>`.
+		
+		  edgecolor: [ *None* | "inherit" | a color spec ]
+		    Control the legend's background patch edge color.
+		    Default is *None* which will take the value from the
+		    ``legend.edgecolor`` :data:`rcParam<matplotlib.rcParams>`.
+		    If ``"inherit"``, it will take the ``axes.edgecolor``
+		    :data:`rcParam<matplotlib.rcParams>`.
+		
+		  ncol : integer
 		    number of columns. default is 1
 		
-		  *mode* : [ "expand" | *None* ]
+		  mode : [ "expand" | *None* ]
 		    if mode is "expand", the legend will be horizontally expanded
 		    to fill the axes area (or *bbox_to_anchor*)
 		
-		  *title* : string
+		  title : string
 		    the legend title
 		
 		Padding and spacing between various elements use following keywords
@@ -1082,9 +1117,7 @@ package matplotlib.figure;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -1204,9 +1237,7 @@ package matplotlib.figure;
 	public function sca(a:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1393,14 +1424,12 @@ package matplotlib.figure;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		set_size_inches(w,h, forward=False)
-		
 		Set the figure size in inches (1in == 2.54cm)
 		
-		Usage::
+		Usage ::
 		
 		     fig.set_size_inches(w,h)  # OR
-		     fig.set_size_inches((w,h) )
+		     fig.set_size_inches((w,h))
 		
 		optional kwarg *forward=True* will cause the canvas size to be
 		automatically updated; e.g., you can resize the figure window
@@ -1502,6 +1531,25 @@ package matplotlib.figure;
 	**/
 	public var stale : Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Call signature::
 		
 		  subplots_adjust(left=None, bottom=None, right=None, top=None,
@@ -1517,17 +1565,22 @@ package matplotlib.figure;
 		kwargs are :class:`matplotlib.text.Text` properties.  Using figure
 		coordinates, the defaults are:
 		
-		  *x* : 0.5
+		  x : 0.5
 		    The x location of the text in figure coords
 		
-		  *y* : 0.98
+		  y : 0.98
 		    The y location of the text in figure coords
 		
-		  *horizontalalignment* : 'center'
+		  horizontalalignment : 'center'
 		    The horizontal alignment of the text
 		
-		  *verticalalignment* : 'top'
+		  verticalalignment : 'top'
 		    The vertical alignment of the text
+		
+		If the `fontproperties` keyword argument is given then the
+		rcParams defaults for `fontsize` (`figure.titlesize`) and
+		`fontweight` (`figure.titleweight`) will be ignored in favour
+		of the `FontProperties` defaults.
 		
 		A :class:`matplotlib.text.Text` instance is returned.
 		
@@ -1560,7 +1613,7 @@ package matplotlib.figure;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -1598,13 +1651,13 @@ package matplotlib.figure;
 		
 		Parameters:
 		
-		  *pad* : float
+		  pad : float
 		    padding between the figure edge and the edges of subplots,
 		    as a fraction of the font-size.
-		  *h_pad*, *w_pad* : float
+		  h_pad, w_pad : float
 		    padding (height/width) between edges of adjacent subplots.
 		    Defaults to `pad_inches`.
-		  *rect* : if rect is given, it is interpreted as a rectangle
+		  rect : if rect is given, it is interpreted as a rectangle
 		    (left, bottom, right, top) in the normalized figure
 		    coordinate that the whole subplots area (including
 		    labels) will fit into. Default is (0, 0, 1, 1).
@@ -1620,10 +1673,6 @@ package matplotlib.figure;
 	**/
 	public function update_from(other:Dynamic):Dynamic;
 	/**
-		Call signature::
-		
-		  waitforbuttonpress(self, timeout=-1)
-		
 		Blocking call to interact with the figure.
 		
 		This will return True is a key was pressed, False if a mouse

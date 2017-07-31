@@ -44,7 +44,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		  x: iterator that returns for each element, returns features.
 		  y: iterator that returns for each element, returns 1 or many classes /
 		    regression values.
-		  n_classes: indicator of how many classes the target has.
+		  n_classes: indicator of how many classes the label has.
 		  batch_size: Mini batch size to accumulate.
 		  shuffle: Whether to shuffle the inputs.
 		  random_state: random state for RNG. Note that it will mutate so use a
@@ -53,13 +53,16 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		
 		Attributes:
 		  x: input features.
-		  y: input target.
+		  y: input label.
 		  n_classes: number of classes.
 		  batch_size: mini batch size to accumulate.
 		  input_shape: shape of the input.
 		  output_shape: shape of the output.
 		  input_dtype: dtype of input.
 		  output_dtype: dtype of output.
+		
+		Raises:
+		  ValueError: if `x` or `y` are `dict`, as they are not supported currently.
 	**/
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, n_classes:Dynamic, batch_size:Dynamic, ?shuffle:Dynamic, ?random_state:Dynamic, ?epochs:Dynamic):Dynamic;
@@ -70,7 +73,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		  x: iterator that returns for each element, returns features.
 		  y: iterator that returns for each element, returns 1 or many classes /
 		    regression values.
-		  n_classes: indicator of how many classes the target has.
+		  n_classes: indicator of how many classes the label has.
 		  batch_size: Mini batch size to accumulate.
 		  shuffle: Whether to shuffle the inputs.
 		  random_state: random state for RNG. Note that it will mutate so use a
@@ -79,15 +82,25 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		
 		Attributes:
 		  x: input features.
-		  y: input target.
+		  y: input label.
 		  n_classes: number of classes.
 		  batch_size: mini batch size to accumulate.
 		  input_shape: shape of the input.
 		  output_shape: shape of the output.
 		  input_dtype: dtype of input.
 		  output_dtype: dtype of output.
+		
+		Raises:
+		  ValueError: if `x` or `y` are `dict`, as they are not supported currently.
 	**/
 	public function new(x:Dynamic, y:Dynamic, n_classes:Dynamic, batch_size:Dynamic, ?shuffle:Dynamic, ?random_state:Dynamic, ?epochs:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -148,7 +161,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		
 		Args:
 		  input_placeholder: tf.Placeholder for input features mini batch.
-		  output_placeholder: tf.Placeholder for output targets.
+		  output_placeholder: tf.Placeholder for output labels.
 		
 		Returns:
 		  A function that when called samples a random subset of batch size
@@ -156,10 +169,10 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	public function get_feed_dict_fn(input_placeholder:Dynamic, output_placeholder:Dynamic):Dynamic;
 	/**
-		Function returns a dict with data feed params while training.
+		Function returns a `dict` with data feed params while training.
 		
 		Returns:
-		  A dict with data feed params while training.
+		  A `dict` with data feed params while training.
 	**/
 	public function get_feed_params():Dynamic;
 }

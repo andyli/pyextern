@@ -43,6 +43,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		Args:
 		  dataset: An instance of the Dataset class.
 		  num_readers: The number of parallel readers to use.
+		  reader_kwargs: An optional dict of kwargs for the reader.
 		  shuffle: Whether to shuffle the data sources and common queue when
 		    reading.
 		  num_epochs: The number of times each data source is read. If left as None,
@@ -50,15 +51,22 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		  common_queue_capacity: The capacity of the common queue.
 		  common_queue_min: The minimum number of elements in the common queue after
 		    a dequeue.
+		  record_key: The item name to use for the dataset record keys in the
+		    provided tensors.
+		  seed: The seed to use if shuffling.
+		  scope: Optional name scope for the ops.
+		Raises:
+		  ValueError: If `record_key` matches one of the items in the dataset.
 	**/
 	@:native("__init__")
-	public function ___init__(dataset:Dynamic, ?num_readers:Dynamic, ?shuffle:Dynamic, ?num_epochs:Dynamic, ?common_queue_capacity:Dynamic, ?common_queue_min:Dynamic):Dynamic;
+	public function ___init__(dataset:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic, ?shuffle:Dynamic, ?num_epochs:Dynamic, ?common_queue_capacity:Dynamic, ?common_queue_min:Dynamic, ?record_key:Dynamic, ?seed:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Creates a DatasetDataProvider.
 		
 		Args:
 		  dataset: An instance of the Dataset class.
 		  num_readers: The number of parallel readers to use.
+		  reader_kwargs: An optional dict of kwargs for the reader.
 		  shuffle: Whether to shuffle the data sources and common queue when
 		    reading.
 		  num_epochs: The number of times each data source is read. If left as None,
@@ -66,8 +74,21 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		  common_queue_capacity: The capacity of the common queue.
 		  common_queue_min: The minimum number of elements in the common queue after
 		    a dequeue.
+		  record_key: The item name to use for the dataset record keys in the
+		    provided tensors.
+		  seed: The seed to use if shuffling.
+		  scope: Optional name scope for the ops.
+		Raises:
+		  ValueError: If `record_key` matches one of the items in the dataset.
 	**/
-	public function new(dataset:Dynamic, ?num_readers:Dynamic, ?shuffle:Dynamic, ?num_epochs:Dynamic, ?common_queue_capacity:Dynamic, ?common_queue_min:Dynamic):Void;
+	public function new(dataset:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic, ?shuffle:Dynamic, ?num_epochs:Dynamic, ?common_queue_capacity:Dynamic, ?common_queue_min:Dynamic, ?record_key:Dynamic, ?seed:Dynamic, ?scope:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -89,7 +110,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.

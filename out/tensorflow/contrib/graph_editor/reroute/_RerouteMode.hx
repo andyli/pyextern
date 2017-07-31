@@ -47,6 +47,13 @@ package tensorflow.contrib.graph_editor.reroute;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -109,8 +116,7 @@ package tensorflow.contrib.graph_editor.reroute;
 		Args:
 		  mode: an integer representing one of the modes.
 		Returns:
-		  True if a is rerouted to b (mode is swap or a2b).
-		  True if b is rerouted to a (mode is swap or b2a).
+		  A tuple `(a2b, b2a)` boolean indicating what rerouting needs doing.
 		Raises:
 		  ValueError: if mode is outside the enum range.
 	**/

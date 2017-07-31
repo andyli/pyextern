@@ -29,7 +29,7 @@ package numpy.lib.shape_base;
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
-		kwargs: any
+		kwargs : any
 		    Additional named arguments to `func1d`.
 		
 		    .. versionadded:: 1.9.0
@@ -39,9 +39,10 @@ package numpy.lib.shape_base;
 		-------
 		apply_along_axis : ndarray
 		    The output array. The shape of `outarr` is identical to the shape of
-		    `arr`, except along the `axis` dimension, where the length of `outarr`
-		    is equal to the size of the return value of `func1d`.  If `func1d`
-		    returns a scalar `outarr` will have one fewer dimensions than `arr`.
+		    `arr`, except along the `axis` dimension. This axis is removed, and
+		    replaced with new dimensions equal to the shape of the return value
+		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    fewer dimensions than `arr`.
 		
 		See Also
 		--------
@@ -58,7 +59,7 @@ package numpy.lib.shape_base;
 		>>> np.apply_along_axis(my_func, 1, b)
 		array([ 2.,  5.,  8.])
 		
-		For a function that doesn't return a scalar, the number of dimensions in
+		For a function that returns a 1D array, the number of dimensions in
 		`outarr` is the same as `arr`.
 		
 		>>> b = np.array([[8,1,7], [4,3,9], [5,2,6]])
@@ -66,6 +67,23 @@ package numpy.lib.shape_base;
 		array([[1, 7, 8],
 		       [3, 4, 9],
 		       [2, 5, 6]])
+		
+		For a function that returns a higher dimensional array, those dimensions
+		are inserted in place of the `axis` dimension.
+		
+		>>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+		>>> np.apply_along_axis(np.diag, -1, b)
+		array([[[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]],
+		
+		       [[4, 0, 0],
+		        [0, 5, 0],
+		        [0, 0, 6]],
+		
+		       [[7, 0, 0],
+		        [0, 8, 0],
+		        [0, 0, 9]]])
 	**/
 	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -102,7 +120,7 @@ package numpy.lib.shape_base;
 		Notes
 		------
 		This function is equivalent to tuple axis arguments to reorderable ufuncs
-		with keepdims=True. Tuple axis arguments to ufuncs have been availabe since
+		with keepdims=True. Tuple axis arguments to ufuncs have been available since
 		version 1.7.0.
 		
 		Examples
@@ -133,35 +151,43 @@ package numpy.lib.shape_base;
 	**/
 	static public function apply_over_axes(func:Dynamic, a:Dynamic, axes:Dynamic):numpy.Ndarray;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
+		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
 		
 		Parameters
 		----------
 		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
+		    An array, any object exposing the array interface, an object whose
+		    __array__ method returns an array, or any (nested) sequence.
 		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
+		    The desired data-type for the array.  If not given, then the type will
+		    be determined as the minimum type required to hold the objects in the
+		    sequence.  This argument can only be used to 'upcast' the array.  For
+		    downcasting, use the .astype(t) method.
 		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
+		    If true (default), then the object is copied.  Otherwise, a copy will
+		    only be made if __array__ returns a copy, if obj is a nested sequence,
+		    or if a copy is needed to satisfy any of the other requirements
+		    (`dtype`, `order`, etc.).
+		order : {'K', 'A', 'C', 'F'}, optional
+		    Specify the memory layout of the array. If object is not an array, the
+		    newly created array will be in C order (row major) unless 'F' is
+		    specified, in which case it will be in Fortran order (column major).
+		    If object is an array the following holds.
+		
+		    ===== ========= ===================================================
+		    order  no copy                     copy=True
+		    ===== ========= ===================================================
+		    'K'   unchanged F & C order preserved, otherwise most similar order
+		    'A'   unchanged F order if input is F and not C, otherwise C order
+		    'C'   C order   C order
+		    'F'   F order   F order
+		    ===== ========= ===================================================
+		
+		    When ``copy=False`` and a copy is made for other reasons, the result is
+		    the same as if ``copy=True``, with some exceptions for `A`, see the
+		    Notes section. The default order is 'K'.
 		subok : bool, optional
 		    If True, then sub-classes will be passed-through, otherwise
 		    the returned array will be forced to be a base-class array (default).
@@ -177,7 +203,13 @@ package numpy.lib.shape_base;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		
+		Notes
+		-----
+		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
+		and a copy is forced by a change in dtype, then the order of the result is
+		not necessarily 'C' as expected. This is likely a bug.
 		
 		Examples
 		--------
@@ -310,8 +342,8 @@ package numpy.lib.shape_base;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -371,7 +403,7 @@ package numpy.lib.shape_base;
 		Returns
 		-------
 		res1, res2, ... : ndarray
-		    An array, or tuple of arrays, each with ``a.ndim >= 3``.  Copies are
+		    An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
 		    avoided where possible, and views with three or more dimensions are
 		    returned.  For example, a 1-D array of shape ``(N,)`` becomes a view
 		    of shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a
@@ -393,7 +425,7 @@ package numpy.lib.shape_base;
 		>>> x = np.arange(12.0).reshape(4,3)
 		>>> np.atleast_3d(x).shape
 		(4, 3, 1)
-		>>> np.atleast_3d(x).base is x
+		>>> np.atleast_3d(x).base is x.base  # x is a reshape, so not base itself
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
@@ -560,6 +592,10 @@ package numpy.lib.shape_base;
 		This is a simple way to stack 2D arrays (images) into a single
 		3D array for processing.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of arrays
@@ -581,7 +617,8 @@ package numpy.lib.shape_base;
 		
 		Notes
 		-----
-		Equivalent to ``np.concatenate(tup, axis=2)``.
+		Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
+		are at least 3-dimensional.
 		
 		Examples
 		--------
@@ -603,14 +640,20 @@ package numpy.lib.shape_base;
 	/**
 		Expand the shape of an array.
 		
-		Insert a new axis, corresponding to a given position in the array shape.
+		Insert a new axis that will appear at the `axis` position in the expanded
+		array shape.
+		
+		.. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+		   ``axis > a.ndim`` raised errors or put the new axis where documented.
+		   Those axis values are now deprecated and will raise an AxisError in the
+		   future.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		axis : int
-		    Position (amongst axes) where new axis is to be inserted.
+		    Position in the expanded axes where the new axis is placed.
 		
 		Returns
 		-------
@@ -620,6 +663,8 @@ package numpy.lib.shape_base;
 		
 		See Also
 		--------
+		squeeze : The inverse operation, removing singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
 		doc.indexing, atleast_1d, atleast_2d, atleast_3d
 		
 		Examples
@@ -807,6 +852,56 @@ package numpy.lib.shape_base;
 	**/
 	static public function kron(a:Dynamic, b:Dynamic):numpy.Ndarray;
 	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Compute the outer product of two vectors.
 		
 		Given two vectors, ``a = [a0, a1, ..., aM]`` and
@@ -900,20 +995,21 @@ package numpy.lib.shape_base;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -989,6 +1085,10 @@ package numpy.lib.shape_base;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -1007,6 +1107,7 @@ package numpy.lib.shape_base;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -1164,6 +1265,51 @@ package numpy.lib.shape_base;
 	**/
 	static public function tile(A:Dynamic, reps:Dynamic):numpy.Ndarray;
 	/**
+		Permute the dimensions of an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axes : list of ints, optional
+		    By default, reverse the dimensions, otherwise permute the axes
+		    according to the values given.
+		
+		Returns
+		-------
+		p : ndarray
+		    `a` with its axes permuted.  A view is returned whenever
+		    possible.
+		
+		See Also
+		--------
+		moveaxis
+		argsort
+		
+		Notes
+		-----
+		Use `transpose(a, argsort(axes))` to invert the transposition of tensors
+		when using the `axes` keyword argument.
+		
+		Transposing a 1-D array returns an unchanged view of the original array.
+		
+		Examples
+		--------
+		>>> x = np.arange(4).reshape((2,2))
+		>>> x
+		array([[0, 1],
+		       [2, 3]])
+		
+		>>> np.transpose(x)
+		array([[0, 2],
+		       [1, 3]])
+		
+		>>> x = np.ones((1, 2, 3))
+		>>> np.transpose(x, (1, 0, 2)).shape
+		(2, 1, 3)
+	**/
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
+	/**
 		Split an array into multiple sub-arrays vertically (row-wise).
 		
 		Please refer to the ``split`` documentation.  ``vsplit`` is equivalent
@@ -1215,6 +1361,10 @@ package numpy.lib.shape_base;
 		Take a sequence of arrays and stack them vertically to make a single
 		array. Rebuild arrays divided by `vsplit`.
 		
+		This function continues to be supported for backward compatibility, but
+		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
+		function was added in NumPy 1.10.
+		
 		Parameters
 		----------
 		tup : sequence of ndarrays
@@ -1233,6 +1383,7 @@ package numpy.lib.shape_base;
 		dstack : Stack arrays in sequence depth wise (along third dimension).
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----

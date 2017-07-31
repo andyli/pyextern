@@ -54,7 +54,7 @@ package matplotlib.patches;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -92,7 +92,7 @@ package matplotlib.patches;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
 		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
 		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fill: [True | False] 
@@ -113,6 +113,13 @@ package matplotlib.patches;
 		  zorder: any number 
 	**/
 	public function new(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -168,7 +175,12 @@ package matplotlib.patches;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _edge_default : Dynamic;
 	static public var _path : Dynamic;
+	public function _process_radius(radius:Dynamic):Dynamic;
+	static public var _prop_order : Dynamic;
+	public function _set_edgecolor(color:Dynamic):Dynamic;
+	public function _set_facecolor(color:Dynamic):Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -492,9 +504,7 @@ package matplotlib.patches;
 	**/
 	public function pchanged():Dynamic;
 	/**
-		call signature::
-		
-		  pick(mouseevent)
+		Process pick event
 		
 		each child artist will fire a pick event if *mouseevent* is over
 		the artist and the artist has picker set
@@ -533,9 +543,7 @@ package matplotlib.patches;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -648,7 +656,7 @@ package matplotlib.patches;
 	/**
 		Set the patch edge color
 		
-		ACCEPTS: mpl color spec, or None for default, or 'none' for no color
+		ACCEPTS: mpl color spec, None, 'none', or 'auto'
 	**/
 	public function set_edgecolor(color:Dynamic):Dynamic;
 	/**
@@ -871,6 +879,25 @@ package matplotlib.patches;
 		match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
+	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

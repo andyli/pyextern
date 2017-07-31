@@ -2,14 +2,15 @@
 package pandas.core.datetools;
 @:pythonImport("pandas.core.datetools") extern class Datetools_Module {
 	static public var DAYS : Dynamic;
-	static public var D_RESO : Dynamic;
-	static public var H_RESO : Dynamic;
 	static public var MONTHS : Dynamic;
-	static public var MS_RESO : Dynamic;
 	static public var OLE_TIME_ZERO : Dynamic;
-	static public var S_RESO : Dynamic;
-	static public var T_RESO : Dynamic;
-	static public var US_RESO : Dynamic;
+	static public var RESO_DAY : Dynamic;
+	static public var RESO_HR : Dynamic;
+	static public var RESO_MIN : Dynamic;
+	static public var RESO_MS : Dynamic;
+	static public var RESO_NS : Dynamic;
+	static public var RESO_SEC : Dynamic;
+	static public var RESO_US : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -39,7 +40,7 @@ package pandas.core.datetools;
 		old_arg_name : str
 		    Name of argument in function to deprecate
 		new_arg_name : str
-		    Name of prefered argument in function
+		    Name of preferred argument in function
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -201,16 +202,247 @@ package pandas.core.datetools;
 	static public function isBMonthEnd(dt:Dynamic):Dynamic;
 	static public function isBusinessDay(dt:Dynamic):Dynamic;
 	static public function isMonthEnd(dt:Dynamic):Dynamic;
-	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
-		return if we are period arraylike / PeriodIndex 
+		Check whether an array-like or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_dtype(object)
+		False
+		>>> is_datetime64_dtype(np.datetime64)
+		True
+		>>> is_datetime64_dtype(np.array([], dtype=int))
+		False
+		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of the datetime64[ns] dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the datetime64[ns] dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_ns_dtype(str)
+		False
+		>>> is_datetime64_ns_dtype(int)
+		False
+		>>> is_datetime64_ns_dtype(np.datetime64)  # no unit
+		False
+		>>> is_datetime64_ns_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_ns_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_ns_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_ns_dtype(np.array([], dtype=np.datetime64))  # no unit
+		False
+		>>> is_datetime64_ns_dtype(np.array([],
+		                           dtype="datetime64[ps]"))  # wrong unit
+		False
+		>>> is_datetime64_ns_dtype(pd.DatetimeIndex([1, 2, 3],
+		                           dtype=np.datetime64))  # has 'ns' unit
+		True
+	**/
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+	**/
+	static public function is_list_like(obj:Dynamic):Bool;
+	/**
+		Check whether the provided array or dtype is of a numeric dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a numeric dtype.
+		
+		Examples
+		--------
+		>>> is_numeric_dtype(str)
+		False
+		>>> is_numeric_dtype(int)
+		True
+		>>> is_numeric_dtype(float)
+		True
+		>>> is_numeric_dtype(np.uint64)
+		True
+		>>> is_numeric_dtype(np.datetime64)
+		False
+		>>> is_numeric_dtype(np.timedelta64)
+		False
+		>>> is_numeric_dtype(np.array(['a', 'b']))
+		False
+		>>> is_numeric_dtype(pd.Series([1, 2]))
+		True
+		>>> is_numeric_dtype(pd.Index([1, 2.]))
+		True
+		>>> is_numeric_dtype(np.array([], dtype=np.timedelta64))
+		False
+	**/
+	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a periodical array-like or PeriodIndex.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a periodical
+		          array-like or PeriodIndex instance.
+		
+		Examples
+		--------
+		>>> is_period_arraylike([1, 2, 3])
+		False
+		>>> is_period_arraylike(pd.Index([1, 2, 3]))
+		False
+		>>> is_period_arraylike(pd.PeriodIndex(["2017-01-01"], freq="D"))
+		True
 	**/
 	static public function is_period_arraylike(arr:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+		- instances of decimal.Decimal
+		- Interval
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns True if downsampling is possible between source and target
 		frequencies
@@ -243,6 +475,30 @@ package pandas.core.datetools;
 		is_superperiod : boolean
 	**/
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function monthEnd(other:Dynamic):Dynamic;
 	static public var need_suffix : Dynamic;
@@ -312,7 +568,7 @@ package pandas.core.datetools;
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, Series
+		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
 		    .. versionadded: 0.18.1
 		
@@ -358,13 +614,27 @@ package pandas.core.datetools;
 		    - If False, allow the format to match anywhere in the target string.
 		
 		unit : string, default 'ns'
-		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
-		    (e.g. a unix timestamp), which is an integer/float number.
+		    unit of the arg (D,s,ms,us,ns) denote the unit, which is an
+		    integer or float number. This will be based off the origin.
+		    Example, with unit='ms' and origin='unix' (the default), this
+		    would calculate the number of milliseconds to the unix epoch start.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
 		    datetime strings, and if it can be inferred, switch to a faster
 		    method of parsing them. In some cases this can increase the parsing
 		    speed by ~5-10x.
+		origin : scalar, default is 'unix'
+		    Define the reference date. The numeric values would be parsed as number
+		    of units (defined by `unit`) since this reference date.
+		
+		    - If 'unix' (or POSIX) time; origin is set to 1970-01-01.
+		    - If 'julian', unit must be 'D', and origin is set to beginning of
+		      Julian Calendar. Julian day number 0 is assigned to the day starting
+		      at noon on January 1, 4713 BC.
+		    - If Timestamp convertible, origin is set to Timestamp identified by
+		      origin.
+		
+		    .. versionadded: 0.20.0
 		
 		Returns
 		-------
@@ -394,10 +664,15 @@ package pandas.core.datetools;
 		1   2016-03-05
 		dtype: datetime64[ns]
 		
-		If a date that does not meet timestamp limitations, passing errors='coerce'
-		will force to NaT. Furthermore this will force non-dates to NaT as well.
+		If a date does not meet the `timestamp limitations
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html
+		#timeseries-timestamp-limits>`_, passing errors='ignore'
+		will return the original input instead of raising any exception.
 		
-		>>> pd.to_datetime('13000101', format='%Y%m%d')
+		Passing errors='coerce' will force an out-of-bounds date to NaT,
+		in addition to forcing non-dates (or non-parseable dates) to NaT.
+		
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='ignore')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
@@ -420,8 +695,26 @@ package pandas.core.datetools;
 		
 		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
 		1 loop, best of 3: 471 ms per loop
+		
+		Using a unix epoch time
+		
+		>>> pd.to_datetime(1490195805, unit='s')
+		Timestamp('2017-03-22 15:16:45')
+		>>> pd.to_datetime(1490195805433502912, unit='ns')
+		Timestamp('2017-03-22 15:16:45.433502912')
+		
+		.. warning:: For float arg, precision rounding might happen. To prevent
+		    unexpected behavior use a fixed-width exact type.
+		
+		Using a non-unix epoch origin
+		
+		>>> pd.to_datetime([1, 2, 3], unit='D',
+		                   origin=pd.Timestamp('1960-01-01'))
+		0    1960-01-02
+		1    1960-01-03
+		2    1960-01-04
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
 		Return DateOffset object from string or tuple representation
 		or datetime.timedelta object
@@ -493,16 +786,76 @@ package pandas.core.datetools;
 	**/
 	static public function to_time(arg:Dynamic, ?format:Dynamic, ?infer_time_format:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
-		Compute unique values (not necessarily sorted) efficiently from input array
-		of values
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
 		
 		Parameters
 		----------
-		values : array-like
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(Series([pd.Timestamp('20160101'),
+		...                   pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'),
+		...                                 ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 	static public function week(other:Dynamic):Dynamic;

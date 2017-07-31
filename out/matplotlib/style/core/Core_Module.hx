@@ -2,6 +2,7 @@
 package matplotlib.style.core;
 @:pythonImport("matplotlib.style.core") extern class Core_Module {
 	static public var BASE_LIBRARY_PATH : Dynamic;
+	static public var STYLE_BLACKLIST : Dynamic;
 	static public var STYLE_EXTENSION : Dynamic;
 	static public var STYLE_FILE_PATTERN : Dynamic;
 	static public var USER_LIBRARY_PATHS : Dynamic;
@@ -14,7 +15,9 @@ package matplotlib.style.core;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _apply_style(d:Dynamic, ?warn:Dynamic):Dynamic;
 	static public var _base_library : Dynamic;
+	static public function _remove_blacklisted_style_params(d:Dynamic, ?warn:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var available : Dynamic;
 	/**
@@ -57,6 +60,7 @@ package matplotlib.style.core;
 	**/
 	static public function load_base_library():Dynamic;
 	static public var print_function : Dynamic;
+	static public var rcParamsDefault : Dynamic;
 	/**
 		Return :class:`matplotlib.RcParams` from the contents of the given file.
 		

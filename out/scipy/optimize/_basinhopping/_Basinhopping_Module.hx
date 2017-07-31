@@ -74,7 +74,18 @@ package scipy.optimize._basinhopping;
 		niter_success : integer, optional
 		    Stop the run if the global minimum candidate remains the same for this
 		    number of iterations.
-		
+		seed : int or `np.random.RandomState`, optional
+		    If `seed` is not specified the `np.RandomState` singleton is used.
+		    If `seed` is an int, a new `np.random.RandomState` instance is used,
+		    seeded with seed.
+		    If `seed` is already a `np.random.RandomState instance`, then that
+		    `np.random.RandomState` instance is used.
+		    Specify `seed` for repeatable minimizations. The random numbers
+		    generated with this seed only affect the default Metropolis
+		    `accept_test` and the default `take_step`. If you supply your own
+		    `take_step` and `accept_test`, and these functions use random
+		    number generation, then those functions are responsible for the state
+		    of their random number generator.
 		
 		Returns
 		-------
@@ -278,9 +289,19 @@ package scipy.optimize._basinhopping;
 		>>> ret = basinhopping(func2d, x0, minimizer_kwargs=minimizer_kwargs,
 		...                    niter=10, accept_test=mybounds)
 	**/
-	static public function basinhopping(func:Dynamic, x0:Dynamic, ?niter:Dynamic, ?T:Dynamic, ?stepsize:Dynamic, ?minimizer_kwargs:Dynamic, ?take_step:Dynamic, ?accept_test:Dynamic, ?callback:Dynamic, ?interval:Dynamic, ?disp:Dynamic, ?niter_success:Dynamic):Dynamic;
+	static public function basinhopping(func:Dynamic, x0:Dynamic, ?niter:Dynamic, ?T:Dynamic, ?stepsize:Dynamic, ?minimizer_kwargs:Dynamic, ?take_step:Dynamic, ?accept_test:Dynamic, ?callback:Dynamic, ?interval:Dynamic, ?disp:Dynamic, ?niter_success:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		cos(x[, out])
+		Turn seed into a np.random.RandomState instance
+		
+		If seed is None (or np.random), return the RandomState singleton used
+		by np.random.
+		If seed is an int, return a new RandomState instance seeded with seed.
+		If seed is already a RandomState instance, return it.
+		Otherwise raise ValueError.
+	**/
+	static public function check_random_state(seed:Dynamic):Dynamic;
+	/**
+		cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Cosine element-wise.
 		
@@ -288,18 +309,22 @@ package scipy.optimize._basinhopping;
 		----------
 		x : array_like
 		    Input array in radians.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
 		y : ndarray
 		    The corresponding cosine values.
-		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
@@ -331,7 +356,7 @@ package scipy.optimize._basinhopping;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -339,6 +364,17 @@ package scipy.optimize._basinhopping;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------

@@ -99,6 +99,13 @@ package pandas.tseries.holiday;
 	**/
 	public function new(name:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?offset:Dynamic, ?observance:Dynamic, ?start_date:Dynamic, ?end_date:Dynamic, ?days_of_week:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -41,21 +41,29 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		Initializes a StreamingDataFeeder instance.
 		
 		Args:
-		  x: iterator that returns for each element, returns features.
-		  y: iterator that returns for each element, returns 1 or many classes /
-		     regression values.
-		  n_classes: indicator of how many classes the target has.
-		  batch_size: Mini batch size to accumulate.
+		  x: iterator each element of which returns one feature sample. Sample can
+		    be a Nd numpy matrix or dictionary of Nd numpy matrices.
+		  y: iterator each element of which returns one label sample. Sample can be
+		    a Nd numpy matrix or dictionary of Nd numpy matrices with 1 or many
+		    classes regression values.
+		  n_classes: indicator of how many classes the corresponding label sample
+		    has for the purposes of one-hot conversion of label. In case where `y`
+		    is a dictionary, `n_classes` must be dictionary (with same keys as `y`)
+		    of how many classes there are in each label in `y`. If key is
+		    present in `y` and missing in `n_classes`, the value is assumed `None`
+		    and no one-hot conversion will be applied to the label with that key.
+		  batch_size: Mini batch size to accumulate samples in one batch. If set
+		    `None`, then assumes that iterator to return already batched element.
 		
 		Attributes:
-		  x: input features.
-		  y: input target.
+		  x: input features (or dictionary of input features).
+		  y: input label (or dictionary of output features).
 		  n_classes: number of classes.
 		  batch_size: mini batch size to accumulate.
-		  input_shape: shape of the input.
-		  output_shape: shape of the output.
-		  input_dtype: dtype of input.
-		  output_dtype: dtype of output.
+		  input_shape: shape of the input (can be dictionary depending on `x`).
+		  output_shape: shape of the output (can be dictionary depending on `y`).
+		  input_dtype: dtype of input (can be dictionary depending on `x`).
+		  output_dtype: dtype of output (can be dictionary depending on `y`).
 	**/
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, n_classes:Dynamic, batch_size:Dynamic):Dynamic;
@@ -63,23 +71,38 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		Initializes a StreamingDataFeeder instance.
 		
 		Args:
-		  x: iterator that returns for each element, returns features.
-		  y: iterator that returns for each element, returns 1 or many classes /
-		     regression values.
-		  n_classes: indicator of how many classes the target has.
-		  batch_size: Mini batch size to accumulate.
+		  x: iterator each element of which returns one feature sample. Sample can
+		    be a Nd numpy matrix or dictionary of Nd numpy matrices.
+		  y: iterator each element of which returns one label sample. Sample can be
+		    a Nd numpy matrix or dictionary of Nd numpy matrices with 1 or many
+		    classes regression values.
+		  n_classes: indicator of how many classes the corresponding label sample
+		    has for the purposes of one-hot conversion of label. In case where `y`
+		    is a dictionary, `n_classes` must be dictionary (with same keys as `y`)
+		    of how many classes there are in each label in `y`. If key is
+		    present in `y` and missing in `n_classes`, the value is assumed `None`
+		    and no one-hot conversion will be applied to the label with that key.
+		  batch_size: Mini batch size to accumulate samples in one batch. If set
+		    `None`, then assumes that iterator to return already batched element.
 		
 		Attributes:
-		  x: input features.
-		  y: input target.
+		  x: input features (or dictionary of input features).
+		  y: input label (or dictionary of output features).
 		  n_classes: number of classes.
 		  batch_size: mini batch size to accumulate.
-		  input_shape: shape of the input.
-		  output_shape: shape of the output.
-		  input_dtype: dtype of input.
-		  output_dtype: dtype of output.
+		  input_shape: shape of the input (can be dictionary depending on `x`).
+		  output_shape: shape of the output (can be dictionary depending on `y`).
+		  input_dtype: dtype of input (can be dictionary depending on `x`).
+		  output_dtype: dtype of output (can be dictionary depending on `y`).
 	**/
 	public function new(x:Dynamic, y:Dynamic, n_classes:Dynamic, batch_size:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -145,10 +168,10 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	public function get_feed_dict_fn():Dynamic;
 	/**
-		Function returns a dict with data feed params while training.
+		Function returns a `dict` with data feed params while training.
 		
 		Returns:
-		  A dict with data feed params while training.
+		  A `dict` with data feed params while training.
 	**/
 	public function get_feed_params():Dynamic;
 	/**
@@ -174,7 +197,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		  input_placeholder: Placeholder for `x` variable. Should match shape
 		    of the examples in the x dataset.
 		  output_placeholder: Placeholder for `y` variable. Should match
-		    shape of the examples in the y dataset. Can be None.
+		    shape of the examples in the y dataset. Can be `None`.
 	**/
 	public function set_placeholders(input_placeholder:Dynamic, output_placeholder:Dynamic):Dynamic;
 	public var shuffle : Dynamic;

@@ -15,7 +15,7 @@ package pandas.io.excel;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,6 +62,13 @@ package pandas.io.excel;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -157,6 +164,8 @@ package pandas.io.excel;
 		    Name of Excel sheet, if None, then use self.cur_sheet
 		startrow: upper left cell row to dump data frame
 		startcol: upper left cell column to dump data frame
+		freeze_panes: integer tuple of length 2
+		    contains the bottom-most row and right-most column to freeze
 	**/
-	public function write_cells(cells:Dynamic, ?sheet_name:Dynamic, ?startrow:Dynamic, ?startcol:Dynamic):Dynamic;
+	public function write_cells(cells:Dynamic, ?sheet_name:Dynamic, ?startrow:Dynamic, ?startcol:Dynamic, ?freeze_panes:Dynamic):Dynamic;
 }

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions.python.ops.chi2;
 @:pythonImport("tensorflow.contrib.distributions.python.ops.chi2") extern class Chi2_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

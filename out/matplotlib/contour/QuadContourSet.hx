@@ -39,24 +39,101 @@ package matplotlib.contour;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Calculate and draw contour lines or filled regions, depending
-		on whether keyword arg 'filled' is False (default) or True.
+		Draw contour lines or filled regions, depending on
+		whether keyword arg 'filled' is *False* (default) or *True*.
 		
-		The first argument of the initializer must be an axes
-		object.  The remaining arguments and keyword arguments
-		are described in QuadContourSet.contour_doc.
+		The first three arguments must be:
+		
+		  *ax*: axes object.
+		
+		  *levels*: [level0, level1, ..., leveln]
+		    A list of floating point numbers indicating the contour
+		    levels.
+		
+		  *allsegs*: [level0segs, level1segs, ...]
+		    List of all the polygon segments for all the *levels*.
+		    For contour lines ``len(allsegs) == len(levels)``, and for
+		    filled contour regions ``len(allsegs) = len(levels)-1``.
+		
+		    level0segs = [polygon0, polygon1, ...]
+		
+		    polygon0 = array_like [[x0,y0], [x1,y1], ...]
+		
+		  *allkinds*: *None* or [level0kinds, level1kinds, ...]
+		    Optional list of all the polygon vertex kinds (code types), as
+		    described and used in Path.   This is used to allow multiply-
+		    connected paths such as holes within filled polygons.
+		    If not *None*, len(allkinds) == len(allsegs).
+		
+		    level0kinds = [polygon0kinds, ...]
+		
+		    polygon0kinds = [vertexcode0, vertexcode1, ...]
+		
+		    If *allkinds* is not *None*, usually all polygons for a particular
+		    contour level are grouped together so that
+		
+		    level0segs = [polygon0] and level0kinds = [polygon0kinds].
+		
+		Keyword arguments are as described in
+		:attr:`matplotlib.contour.QuadContourSet.contour_doc`.
+		
+		**Examples:**
+		
+		.. plot:: mpl_examples/misc/contour_manual.py
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Calculate and draw contour lines or filled regions, depending
-		on whether keyword arg 'filled' is False (default) or True.
+		Draw contour lines or filled regions, depending on
+		whether keyword arg 'filled' is *False* (default) or *True*.
 		
-		The first argument of the initializer must be an axes
-		object.  The remaining arguments and keyword arguments
-		are described in QuadContourSet.contour_doc.
+		The first three arguments must be:
+		
+		  *ax*: axes object.
+		
+		  *levels*: [level0, level1, ..., leveln]
+		    A list of floating point numbers indicating the contour
+		    levels.
+		
+		  *allsegs*: [level0segs, level1segs, ...]
+		    List of all the polygon segments for all the *levels*.
+		    For contour lines ``len(allsegs) == len(levels)``, and for
+		    filled contour regions ``len(allsegs) = len(levels)-1``.
+		
+		    level0segs = [polygon0, polygon1, ...]
+		
+		    polygon0 = array_like [[x0,y0], [x1,y1], ...]
+		
+		  *allkinds*: *None* or [level0kinds, level1kinds, ...]
+		    Optional list of all the polygon vertex kinds (code types), as
+		    described and used in Path.   This is used to allow multiply-
+		    connected paths such as holes within filled polygons.
+		    If not *None*, len(allkinds) == len(allsegs).
+		
+		    level0kinds = [polygon0kinds, ...]
+		
+		    polygon0kinds = [vertexcode0, vertexcode1, ...]
+		
+		    If *allkinds* is not *None*, usually all polygons for a particular
+		    contour level are grouped together so that
+		
+		    level0segs = [polygon0] and level0kinds = [polygon0kinds].
+		
+		Keyword arguments are as described in
+		:attr:`matplotlib.contour.QuadContourSet.contour_doc`.
+		
+		**Examples:**
+		
+		.. plot:: mpl_examples/misc/contour_manual.py
 	**/
 	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -356,11 +433,6 @@ package matplotlib.contour;
 		Returns a tuple containing the contour, segment, index of
 		segment, x & y of segment point and distance to minimum point.
 		
-		Call signature::
-		
-		  conmin,segmin,imin,xmin,ymin,dmin = find_nearest_contour(
-		             self, x, y, indices=None, pixel=True )
-		
 		Optional keyword arguments:
 		
 		  *indices*:
@@ -498,12 +570,15 @@ package matplotlib.contour;
 		array will be floats in the 0-1 range; if it is *True*,
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
+		If norm is False, no normalization of the input data is
+		performed, and it is assumed to already be in the range (0-1).
+		
 		Note: this method assumes the input is well-behaved; it does
 		not check for anomalies such as *x* being a masked rgba
 		array, or being an integer type other than uint8, or being
 		a floating point rgba array with values outside the 0-1 range.
 	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Return *True* if a label is already near this location.
 	**/

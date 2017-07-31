@@ -71,6 +71,13 @@ package scipy.interpolate.fitpack2;
 	**/
 	public function new(x:Dynamic, y:Dynamic, t:Dynamic, ?w:Dynamic, ?bbox:Dynamic, ?k:Dynamic, ?ext:Dynamic, ?check_finite:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -221,7 +228,8 @@ package scipy.interpolate.fitpack2;
 		>>> spl.derivative().roots() / np.pi
 		array([ 0.50000001,  1.5       ,  2.49999998])
 		
-		This agrees well with roots :math:`\pi/2 + n\pi` of `cos(x) = sin'(x)`.
+		This agrees well with roots :math:`\pi/2 + n\pi` of
+		:math:`\cos(x) = \sin'(x)`.
 	**/
 	public function derivative(?n:Dynamic):Dynamic;
 	/**

@@ -9,10 +9,9 @@ package tensorflow.python.platform.resource_loader;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
+	static public var _allowed_symbols : Dynamic;
 	/**
-		Get the directory where files specified in data attribute are stored.
+		Get a direct path to the data files colocated with the script.
 		
 		Returns:
 		  The directory where files specified in data attribute of py_test
@@ -36,6 +35,15 @@ package tensorflow.python.platform.resource_loader;
 	**/
 	static public function get_path_to_datafile(path:Dynamic):Dynamic;
 	/**
+		Get a root directory containing all the data attributes in the build rule.
+		
+		Returns:
+		  The path to the specified file present in the data attribute of py_test
+		  or py_binary. Falls back to returning the same as get_data_files_path if it
+		  fails to detect a bazel runfiles directory.
+	**/
+	static public function get_root_dir_with_all_resources():Dynamic;
+	/**
 		Load the resource at given path, where path is relative to tensorflow/.
 		
 		Args:
@@ -48,9 +56,8 @@ package tensorflow.python.platform.resource_loader;
 		  IOError: If the path is not found, or the resource can't be opened.
 	**/
 	static public function load_resource(path:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Readahead files not implemented; simply returns given path.
 	**/
-	static public function readahead_file_path(path:Dynamic, ?unused_readahead:Dynamic):Dynamic;
+	static public function readahead_file_path(path:Dynamic, ?readahead:Dynamic):Dynamic;
 }

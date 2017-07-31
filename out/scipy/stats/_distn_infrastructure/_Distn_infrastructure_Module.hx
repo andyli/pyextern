@@ -2,6 +2,7 @@
 package scipy.stats._distn_infrastructure;
 @:pythonImport("scipy.stats._distn_infrastructure") extern class _Distn_infrastructure_Module {
 	static public var NINF : Dynamic;
+	static public var PY3 : Dynamic;
 	static public var _XMAX : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -80,12 +81,12 @@ package scipy.stats._distn_infrastructure;
 		array([  0,   1,   4,   0,  64, 125])
 		
 		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
-		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		array([   0.,    1.,    4.,   0.,   64.,  125.])
 		
 		>>> a = -np.ones_like(x)
 		>>> _lazyselect([x < 3, x > 3],
 		...             [lambda x, a: x**2, lambda x, a: a * x**3],
-		...             (x, a))
+		...             (x, a), default=np.nan)
 		array([   0.,    1.,    4.,   nan,  -64., -125.])
 	**/
 	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
@@ -345,8 +346,8 @@ package scipy.stats._distn_infrastructure;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -404,7 +405,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function check_random_state(seed:Dynamic):Dynamic;
 	/**
-		chndtr(x1, x2, x3[, out])
+		chndtr(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		chndtr(x, df, nc)
 		
@@ -433,6 +434,10 @@ package scipy.stats._distn_infrastructure;
 		-------
 		val : int, ndarray
 		    The total number of combinations.
+		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
 		
 		Notes
 		-----
@@ -537,7 +542,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		entr(x[, out])
+		entr(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		entr(x)
 		
@@ -605,7 +610,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function exec_(source:Dynamic, ?globals:Dynamic, ?locals:Dynamic):Dynamic;
 	/**
-		exp(x[, out])
+		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the exponential of all elements in the input array.
 		
@@ -613,6 +618,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x : array_like
 		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -657,18 +673,18 @@ package scipy.stats._distn_infrastructure;
 		
 		>>> plt.subplot(121)
 		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
 		>>> plt.title('Magnitude of exp(x)')
 		
 		>>> plt.subplot(122)
 		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi])
+		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor(x[, out])
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -679,6 +695,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -725,7 +752,7 @@ package scipy.stats._distn_infrastructure;
 	static public var inf : Dynamic;
 	static public function instancemethod(func:Dynamic, obj:Dynamic, cls:Dynamic):Dynamic;
 	/**
-		isinf(x[, out])
+		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for positive or negative infinity.
 		
@@ -736,8 +763,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x : array_like
 		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -761,7 +797,7 @@ package scipy.stats._distn_infrastructure;
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
 		Errors result if the second argument is supplied when the first
@@ -788,7 +824,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function isinf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ive(x1, x2[, out])
+		ive(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ive(v, z)
 		
@@ -841,7 +877,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kl_div(x1, x2[, out])
+		kl_div(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kl_div(x, y)
 		
@@ -873,7 +909,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log(x[, out])
+		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
 		
@@ -885,6 +921,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x : array_like
 		    Input value.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -923,7 +970,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logical_and(x1, x2[, out])
+		logical_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Compute the truth value of x1 AND x2 element-wise.
 		
@@ -931,7 +978,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x1, x2 : array_like
 		    Input arrays. `x1` and `x2` must be of the same shape.
-		
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1018,7 +1075,8 @@ package scipy.stats._distn_infrastructure;
 		vals : 1-D sequence
 		    Values to put into `a`. Only the first N elements are used, where
 		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
+		    than N, it will be repeated, and if elements of `a` are to be masked,
+		    this sequence must be non-empty.
 		
 		See Also
 		--------
@@ -1184,6 +1242,38 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
 	/**
+		rel_entr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		rel_entr(x, y)
+		
+		Elementwise function for computing relative entropy.
+		
+		.. math:: \mathrm{rel\_entr}(x, y) = \begin{cases} x \log(x / y) & x > 0, y > 0 \\ 0 & x = 0, y \ge 0 \\ \infty & \text{otherwise} \end{cases}
+		
+		Parameters
+		----------
+		x : ndarray
+		    First input array.
+		y : ndarray
+		    Second input array.
+		
+		Returns
+		-------
+		res : ndarray
+		    Output array.
+		
+		See Also
+		--------
+		entr, kl_div
+		
+		Notes
+		-----
+		This function is jointly convex in x and y.
+		
+		.. versionadded:: 0.15.0
+	**/
+	static public function rel_entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Gives a new shape to an array without changing its data.
 		
 		Parameters
@@ -1193,20 +1283,21 @@ package scipy.stats._distn_infrastructure;
 		newshape : int or tuple of ints
 		    The new shape should be compatible with the original shape. If
 		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is inferred
-		    from the length of the array and remaining dimensions.
+		    One shape dimension can be -1. In this case, the value is
+		    inferred from the length of the array and remaining dimensions.
 		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the elements
-		    into the reshaped array using this index order.  'C' means to
-		    read / write the elements using C-like index order, with the last axis
-		    index changing fastest, back to the first axis index changing slowest.
-		    'F' means to read / write the elements using Fortran-like index order,
-		    with the first index changing fastest, and the last index changing
-		    slowest.
-		    Note that the 'C' and 'F' options take no account of the memory layout
-		    of the underlying array, and only refer to the order of indexing.  'A'
-		    means to read / write the elements in Fortran-like index order if `a`
-		    is Fortran *contiguous* in memory, C-like order otherwise.
+		    Read the elements of `a` using this index order, and place the
+		    elements into the reshaped array using this index order.  'C'
+		    means to read / write the elements using C-like index order,
+		    with the last axis index changing fastest, back to the first
+		    axis index changing slowest. 'F' means to read / write the
+		    elements using Fortran-like index order, with the first index
+		    changing fastest, and the last index changing slowest. Note that
+		    the 'C' and 'F' options take no account of the memory layout of
+		    the underlying array, and only refer to the order of indexing.
+		    'A' means to read / write the elements in Fortran-like index
+		    order if `a` is Fortran *contiguous* in memory, C-like order
+		    otherwise.
 		
 		Returns
 		-------
@@ -1314,7 +1405,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function shape(a:Dynamic):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -1322,9 +1413,17 @@ package scipy.stats._distn_infrastructure;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1431,7 +1530,7 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function valarray(shape:Dynamic, ?value:Dynamic, ?typecode:Dynamic):Dynamic;
 	/**
-		xlogy(x1, x2[, out])
+		xlogy(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		xlogy(x, y)
 		

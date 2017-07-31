@@ -47,6 +47,13 @@ package seaborn.categorical;
 	**/
 	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, markers:Dynamic, linestyles:Dynamic, dodge:Dynamic, join:Dynamic, scale:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -20,6 +20,7 @@ package tensorflow.contrib.metrics.python.metrics;
 		  labels: the ground truth values, a `Tensor` of any shape and
 		          bool, integer, or string dtype.
 		  weights: None or `Tensor` of float values to reweight the accuracy.
+		  name: A name for the operation (optional).
 		
 		Returns:
 		  Accuracy `Tensor`.
@@ -28,7 +29,7 @@ package tensorflow.contrib.metrics.python.metrics;
 		  ValueError: if dtypes don't match or
 		              if dtype is not bool, integer, or string.
 	**/
-	static public function accuracy(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function accuracy(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

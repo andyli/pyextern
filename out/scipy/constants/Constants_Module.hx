@@ -8,7 +8,7 @@ package scipy.constants;
 	static public var Btu_th : Dynamic;
 	/**
 		`C2F` is deprecated!
-		scipy.constants.C2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.C2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Celsius to Fahrenheit
@@ -42,7 +42,7 @@ package scipy.constants;
 	static public function C2F(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`C2K` is deprecated!
-		scipy.constants.C2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.C2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Celsius to Kelvin
@@ -77,7 +77,7 @@ package scipy.constants;
 	static public function C2K(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`F2C` is deprecated!
-		scipy.constants.F2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.F2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Fahrenheit to Celsius
@@ -111,7 +111,7 @@ package scipy.constants;
 	static public function F2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`F2K` is deprecated!
-		scipy.constants.F2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.F2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Fahrenheit to Kelvin
@@ -149,7 +149,7 @@ package scipy.constants;
 	static public var Julian_year : Dynamic;
 	/**
 		`K2C` is deprecated!
-		scipy.constants.K2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.K2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Kelvin to Celsius
@@ -184,7 +184,7 @@ package scipy.constants;
 	static public function K2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`K2F` is deprecated!
-		scipy.constants.K2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
+		scipy.constants.K2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
 		
 		
 		    Convert Kelvin to Fahrenheit
@@ -522,12 +522,14 @@ package scipy.constants;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

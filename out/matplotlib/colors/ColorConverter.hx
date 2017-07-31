@@ -47,6 +47,13 @@ package matplotlib.colors;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -117,7 +124,7 @@ package matplotlib.colors;
 		
 		if *arg* is *RGBA*, the *A* will simply be discarded.
 	**/
-	public function to_rgb(arg:Dynamic):Dynamic;
+	static public function to_rgb(arg:Dynamic):Dynamic;
 	/**
 		Returns an *RGBA* tuple of four floats from 0-1.
 		
@@ -127,7 +134,7 @@ package matplotlib.colors;
 		If *arg* is an *RGBA* sequence and *alpha* is not *None*,
 		*alpha* will replace the original *A*.
 	**/
-	public function to_rgba(arg:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function to_rgba(arg:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
 		Returns a numpy array of *RGBA* tuples.
 		
@@ -136,5 +143,5 @@ package matplotlib.colors;
 		Special case to handle "no color": if *c* is "none" (case-insensitive),
 		then an empty array will be returned.  Same for an empty list.
 	**/
-	public function to_rgba_array(c:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function to_rgba_array(arg:Dynamic, ?alpha:Dynamic):Dynamic;
 }

@@ -13,6 +13,7 @@ package tensorflow.python.training.saver;
 		  The path of the file that contains the CheckpointState proto.
 	**/
 	static public function _GetCheckpointFilename(save_dir:Dynamic, latest_filename:Dynamic):Dynamic;
+	static public var _VARIABLE_OPS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -22,62 +23,90 @@ package tensorflow.python.training.saver;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Adds a collection to MetaGraphDef protocol buffer.
+		Returns the saver from SAVERS collection, or creates a default one.
 		
-		Args:
-		  meta_graph_def: MetaGraphDef protocol buffer.
-		  key: One of the GraphKeys or user-defined string.
-	**/
-	static public function _add_collection_def(meta_graph_def:Dynamic, key:Dynamic):Dynamic;
-	/**
-		Construct and returns a `MetaGraphDef` protocol buffer.
-		
-		Args:
-		  meta_info_def: `MetaInfoDef` protocol buffer.
-		  graph_def: `GraphDef` protocol buffer.
-		  saver_def: `SaverDef` protocol buffer.
-		  collection_list: List of string keys to collect.
+		This method is used by other members of the training module, such as
+		`Scaffold`, or `CheckpointSaverHook`.
 		
 		Returns:
-		  MetaGraphDef protocol buffer.
+		  `Saver`.
 		
 		Raises:
-		  TypeError: If the arguments are not of the correct proto buffer type.
+		  RuntimeError: If the SAVERS collection already has more than one items.
 	**/
-	static public function _as_meta_graph_def(?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic):Dynamic;
+	static public function _get_saver_or_default():Dynamic;
 	/**
-		Returns the kind name in CollectionDef.
+		Returns the pathname of a checkpoint file, given the checkpoint prefix.
+		
+		For V1 checkpoint, simply returns the prefix itself (the data file).  For V2,
+		returns the pathname to the index file.
 		
 		Args:
-		  item: A data item.
-		
+		  prefix: a string, the prefix of a checkpoint.
+		  format_version: the checkpoint format version that corresponds to the
+		    prefix.
 		Returns:
-		  The string representation of the kind in CollectionDef.
+		  The pathname of a checkpoint file, taking into account the checkpoint
+		    format version.
 	**/
-	static public function _get_kind_name(item:Dynamic):Dynamic;
+	static public function _prefix_to_checkpoint_path(prefix:Dynamic, format_version:Dynamic):Dynamic;
 	/**
-		Recreates a Graph saved in a `MetaGraphDef` proto.
+		Creates a new device string based on `device_string` but using /CPU:0.
 		
-		This function adds all the nodes from the meta graph def proto to the current
-		graph, recreates all the collections, and returns a saver from saver_def.
+		If the device is already on /CPU:0, this is a no-op.
 		
 		Args:
-		  meta_graph_def: `MetaGraphDef` protocol buffer.
+		  device_string: A device string.
 		
 		Returns:
-		  A saver constructed from `saver_def` in `meta_graph_def` or None.
-		
-		  A None value is returned if no variables exist in the `meta_graph_def`
-		  (i.e., no variables to restore).
+		  A device string.
 	**/
-	static public function _import_meta_graph_def(meta_graph_def:Dynamic):Dynamic;
+	static public function _set_cpu0(device_string:Dynamic):Dynamic;
+	/**
+		Updates the content of the 'checkpoint' file.
+		
+		This updates the checkpoint file containing a CheckpointState
+		proto.
+		
+		Args:
+		  save_dir: Directory where the model was saved.
+		  model_checkpoint_path: The checkpoint file.
+		  all_model_checkpoint_paths: List of strings.  Paths to all not-yet-deleted
+		    checkpoints, sorted from oldest to newest.  If this is a non-empty list,
+		    the last element must be equal to model_checkpoint_path.  These paths
+		    are also saved in the CheckpointState proto.
+		  latest_filename: Optional name of the checkpoint file.  Default to
+		    'checkpoint'.
+		  save_relative_paths: If `True`, will write relative paths to the checkpoint
+		    state file.
+		
+		Raises:
+		  RuntimeError: If any of the model checkpoint paths conflict with the file
+		    containing CheckpointSate.
+	**/
+	static public function _update_checkpoint_state(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?latest_filename:Dynamic, ?save_relative_paths:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Checks whether a V1 or V2 checkpoint exists with the specified prefix.
+		
+		This is the recommended way to check if a checkpoint exists, since it takes
+		into account the naming difference between V1 and V2 formats.
+		
+		Args:
+		  checkpoint_prefix: the prefix of a V1 or V2 checkpoint, with V2 taking
+		    priority.  Typically the result of `Saver.save()` or that of
+		    `tf.train.latest_checkpoint()`, regardless of sharded/non-sharded or
+		    V1/V2.
+		Returns:
+		  A bool, true iff a checkpoint referred to by `checkpoint_prefix` exists.
+	**/
+	static public function checkpoint_exists(checkpoint_prefix:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns `MetaGraphDef` proto. Optionally writes it to filename.
 		
 		This function exports the graph, saver, and collection objects into
-		`MetaGraphDef` protocol buffer with the intension of it being imported
+		`MetaGraphDef` protocol buffer with the intention of it being imported
 		at a later time or location to restart training, run inference, or be
 		a subgraph.
 		
@@ -89,11 +118,22 @@ package tensorflow.python.training.saver;
 		  saver_def: `SaverDef` protocol buffer.
 		  collection_list: List of string keys to collect.
 		  as_text: If `True`, writes the `MetaGraphDef` as an ASCII proto.
+		  graph: The `Graph` to import into. If `None`, use the default graph.
+		  export_scope: Optional `string`. Name scope under which to extract
+		    the subgraph. The scope name will be striped from the node definitions
+		    for easy import later into new name scopes. If `None`, the whole graph
+		    is exported. graph_def and export_scope cannot both be specified.
+		  clear_devices: Whether or not to clear the device field for an `Operation`
+		    or `Tensor` during export.
+		  **kwargs: Optional keyed arguments.
 		
 		Returns:
 		  A `MetaGraphDef` proto.
+		
+		Raises:
+		  ValueError: When the `GraphDef` is larger than 2GB.
 	**/
-	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic):Dynamic;
+	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?graph:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates a checkpoint state proto.
 		
@@ -111,6 +151,24 @@ package tensorflow.python.training.saver;
 		  relative paths to the current save_dir.
 	**/
 	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic):Dynamic;
+	/**
+		Returns the mtimes (modification timestamps) of the checkpoints.
+		
+		Globs for the checkpoints pointed to by `checkpoint_prefixes`.  If the files
+		exist, collect their mtime.  Both V2 and V1 checkpoints are considered, in
+		that priority.
+		
+		This is the recommended way to get the mtimes, since it takes into account
+		the naming difference between V1 and V2 formats.
+		
+		Args:
+		  checkpoint_prefixes: a list of checkpoint paths, typically the results of
+		    `Saver.save()` or those of `tf.train.latest_checkpoint()`, regardless of
+		    sharded/non-sharded or V1/V2.
+		Returns:
+		  A list of mtimes (in microseconds) of the found checkpoints.
+	**/
+	static public function get_checkpoint_mtimes(checkpoint_prefixes:Dynamic):Dynamic;
 	/**
 		Returns CheckpointState proto from the "checkpoint" file.
 		
@@ -184,6 +242,11 @@ package tensorflow.python.training.saver;
 		Args:
 		  meta_graph_or_file: `MetaGraphDef` protocol buffer or filename (including
 		    the path) containing a `MetaGraphDef`.
+		  clear_devices: Whether or not to clear the device field for an `Operation`
+		    or `Tensor` during import.
+		  import_scope: Optional `string`. Name scope to add. Only used when
+		    initializing from protocol buffer.
+		  **kwargs: Optional keyed arguments.
 		
 		Returns:
 		  A saver constructed from `saver_def` in `MetaGraphDef` or None.
@@ -191,7 +254,7 @@ package tensorflow.python.training.saver;
 		  A None value is returned if no variables exist in the `MetaGraphDef`
 		  (i.e., there are no variables to restore).
 	**/
-	static public function import_meta_graph(meta_graph_or_file:Dynamic):Dynamic;
+	static public function import_meta_graph(meta_graph_or_file:Dynamic, ?clear_devices:Dynamic, ?import_scope:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds the filename of latest saved checkpoint file.
 		
@@ -205,50 +268,7 @@ package tensorflow.python.training.saver;
 		  The full path to the latest checkpoint or `None` if no checkpoint was found.
 	**/
 	static public function latest_checkpoint(checkpoint_dir:Dynamic, ?latest_filename:Dynamic):Dynamic;
-	/**
-		Collect the list of ops used by a graph.
-		
-		Does not validate that the ops are all registered.
-		
-		Args:
-		  graph_def: A `GraphDef` proto, as from `graph.as_graph_def()`.
-		
-		Returns:
-		  A list of strings, each naming an op used by the graph.
-	**/
-	static public function ops_used_by_graph_def(graph_def:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Reads a file containing `MetaGraphDef` and returns the protocol buffer.
-		
-		Args:
-		  filename: `meta_graph_def` filename including the path.
-		
-		Returns:
-		  A `MetaGraphDef` protocol buffer.
-		
-		Raises:
-		  IOError: If the file doesn't exist, or cannot be successfully parsed.
-	**/
-	static public function read_meta_graph_file(filename:Dynamic):Dynamic;
-	/**
-		Collect the stripped OpDefs for ops used by a graph.
-		
-		This function computes the `stripped_op_list` field of `MetaGraphDef` and
-		similar protos.  The result can be communicated from the producer to the
-		consumer, which can then use the C++ function
-		`RemoveNewDefaultAttrsFromGraphDef` to improve forwards compatibility.
-		
-		Args:
-		  graph_def: A `GraphDef` proto, as from `graph.as_graph_def()`.
-		
-		Returns:
-		  An `OpList` of ops used by the graph.
-		
-		Raises:
-		  ValueError: If an unregistered op is used.
-	**/
-	static public function stripped_op_list_for_graph(graph_def:Dynamic):Dynamic;
 	/**
 		Updates the content of the 'checkpoint' file.
 		
@@ -266,7 +286,8 @@ package tensorflow.python.training.saver;
 		    'checkpoint'.
 		
 		Raises:
-		  RuntimeError: If the save paths conflict.
+		  RuntimeError: If any of the model checkpoint paths conflict with the file
+		    containing CheckpointSate.
 	**/
 	static public function update_checkpoint_state(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?latest_filename:Dynamic):Dynamic;
 }

@@ -52,6 +52,13 @@ package pandas.core.base;
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -150,7 +157,6 @@ package pandas.core.base;
 		    - ``first`` : Drop duplicates except for the first occurrence.
 		    - ``last`` : Drop duplicates except for the last occurrence.
 		    - False : Drop all duplicates.
-		take_last : deprecated
 		
 		
 		Returns
@@ -169,13 +175,13 @@ package pandas.core.base;
 		    - ``last`` : Mark duplicates as ``True`` except for the last
 		      occurrence.
 		    - False : Mark all duplicates as ``True``.
-		take_last : deprecated
 		
 		Returns
 		-------
 		duplicated : IndexOpsMixin
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
+	public var empty : Dynamic;
 	/**
 		Encode the object as an enumerated type or categorical variable
 		
@@ -306,12 +312,12 @@ package pandas.core.base;
 		Find indices where elements should be inserted to maintain order.
 		
 		Find the indices into a sorted IndexOpsMixin `self` such that, if the
-		corresponding elements in `v` were inserted before the indices, the
-		order of `self` would be preserved.
+		corresponding elements in `value` were inserted before the indices,
+		the order of `self` would be preserved.
 		
 		Parameters
 		----------
-		key : array_like
+		value : array_like
 		    Values to insert into `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
@@ -324,7 +330,7 @@ package pandas.core.base;
 		Returns
 		-------
 		indices : array of ints
-		    Array of insertion points with the same shape as `v`.
+		    Array of insertion points with the same shape as `value`.
 		
 		See Also
 		--------
@@ -336,34 +342,43 @@ package pandas.core.base;
 		
 		Examples
 		--------
+		
 		>>> x = pd.Series([1, 2, 3])
 		>>> x
 		0    1
 		1    2
 		2    3
 		dtype: int64
+		
 		>>> x.searchsorted(4)
 		array([3])
+		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
+		
 		>>> x.searchsorted([1, 3], side='left')
 		array([0, 2])
+		
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
-		>>>
+		
 		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
+		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
+		
 		>>> x.searchsorted(['bread'])
 		array([1])
+		
 		>>> x.searchsorted(['bread', 'eggs'])
 		array([1, 4])
+		
 		>>> x.searchsorted(['bread', 'eggs'], side='right')
 		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(key:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
+	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
@@ -381,13 +396,25 @@ package pandas.core.base;
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return IndexOpsMixin of unique values in the object.
-		Significantly faster than numpy.unique. Includes NA values.
-		The order of the original is preserved.
+		Return unique values in the object. Uniques are returned in order
+		of appearance, this does NOT sort. Hash table-based unique.
+		
+		Parameters
+		----------
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques : IndexOpsMixin
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		See Also
+		--------
+		unique
+		Index.unique
+		Series.unique
 	**/
 	public function unique():Dynamic;
 	/**

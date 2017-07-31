@@ -47,6 +47,13 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	**/
 	public function new(label_name:Dynamic, weight_column_name:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -103,14 +110,22 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	public var __weakref__ : Dynamic;
 	public function _default_eval_metrics():Dynamic;
 	/**
+		Returns cumulative weighted loss.
+	**/
+	public function _weighted_loss(loss:Dynamic, weight_tensor:Dynamic):Dynamic;
+	/**
 		Returns eval op.
 	**/
-	public function get_eval_ops(features:Dynamic, logits:Dynamic, targets:Dynamic, ?metrics:Dynamic):Dynamic;
+	public function get_eval_ops(features:Dynamic, logits:Dynamic, labels:Dynamic, ?metrics:Dynamic):Dynamic;
 	public function get_weight_tensor(features:Dynamic):Dynamic;
 	public var label_name : Dynamic;
 	public function logits_to_predictions(logits:Dynamic, ?proba:Dynamic):Dynamic;
 	/**
 		Returns loss tensor for this head.
+		
+		The loss returned is the weighted average.
+		
+		  L = sum_{i} w_{i} * l_{i} / sum_{i} w_{i}
 		
 		Args:
 		  logits: logits, a float tensor.
@@ -123,5 +138,28 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	**/
 	public function loss(logits:Dynamic, target:Dynamic, features:Dynamic):Dynamic;
 	public var num_label_columns : Dynamic;
+	public var problem_type : Dynamic;
+	/**
+		Returns training loss tensor for this head.
+		
+		Training loss is different from the loss reported on the tensorboard as we
+		should respect the example weights when computing the gradient.
+		
+		  L = sum_{i} w_{i} * l_{i} / B
+		
+		where B is the number of examples in the batch, l_{i}, w_{i} are individual
+		losses, and example weight.
+		
+		Args:
+		  logits: logits, a float tensor.
+		  target: either a tensor for labels or in multihead case, a dict of string
+		    to target tensor.
+		  features: features dict.
+		  name: Op name.
+		
+		Returns:
+		  Loss tensor.
+	**/
+	public function training_loss(logits:Dynamic, target:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
 	public var weight_column_name : Dynamic;
 }

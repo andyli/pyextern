@@ -2,13 +2,14 @@
 package pandas.tseries.frequencies;
 @:pythonImport("pandas.tseries.frequencies") extern class Frequencies_Module {
 	static public var DAYS : Dynamic;
-	static public var D_RESO : Dynamic;
-	static public var H_RESO : Dynamic;
 	static public var MONTHS : Dynamic;
-	static public var MS_RESO : Dynamic;
-	static public var S_RESO : Dynamic;
-	static public var T_RESO : Dynamic;
-	static public var US_RESO : Dynamic;
+	static public var RESO_DAY : Dynamic;
+	static public var RESO_HR : Dynamic;
+	static public var RESO_MIN : Dynamic;
+	static public var RESO_MS : Dynamic;
+	static public var RESO_NS : Dynamic;
+	static public var RESO_SEC : Dynamic;
+	static public var RESO_US : Dynamic;
 	static public var _INVALID_FREQ_ERROR : Dynamic;
 	static public var _ONE_DAY : Dynamic;
 	static public var _ONE_HOUR : Dynamic;
@@ -93,7 +94,7 @@ package pandas.tseries.frequencies;
 		old_arg_name : str
 		    Name of argument in function to deprecate
 		new_arg_name : str
-		    Name of prefered argument in function
+		    Name of preferred argument in function
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -248,10 +249,55 @@ package pandas.tseries.frequencies;
 		    ValueError if there are less than three values.
 	**/
 	static public function infer_freq(index:Dynamic, ?warn:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_dtype(object)
+		False
+		>>> is_datetime64_dtype(np.datetime64)
+		True
+		>>> is_datetime64_dtype(np.array([], dtype=int))
+		False
+		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_dtype([1, 2, 3])
+		False
+	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		return if we are period arraylike / PeriodIndex 
+		Check whether an array-like is a periodical array-like or PeriodIndex.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a periodical
+		          array-like or PeriodIndex instance.
+		
+		Examples
+		--------
+		>>> is_period_arraylike([1, 2, 3])
+		False
+		>>> is_period_arraylike(pd.Index([1, 2, 3]))
+		False
+		>>> is_period_arraylike(pd.PeriodIndex(["2017-01-01"], freq="D"))
+		True
 	**/
 	static public function is_period_arraylike(arr:Dynamic):Dynamic;
 	/**
@@ -286,6 +332,30 @@ package pandas.tseries.frequencies;
 		is_superperiod : boolean
 	**/
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public var need_suffix : Dynamic;
 	static public var opattern : Dynamic;
@@ -334,16 +404,76 @@ package pandas.tseries.frequencies;
 	**/
 	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
-		Compute unique values (not necessarily sorted) efficiently from input array
-		of values
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
 		
 		Parameters
 		----------
-		values : array-like
+		values : 1d array-like
 		
 		Returns
 		-------
-		uniques
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(Series([pd.Timestamp('20160101'),
+		...                   pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(Series(pd.Categorical(list('baabc'),
+		...                                 categories=list('abc'),
+		...                                 ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 }

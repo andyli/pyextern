@@ -6,6 +6,7 @@ package scipy.sparse.csgraph._reordering;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -18,10 +19,13 @@ package scipy.sparse.csgraph._reordering;
 		at a node of lowest degree for each connected component.
 	**/
 	static public function _reverse_cuthill_mckee(ind:Dynamic, ptr:Dynamic, num_rows:Dynamic):Dynamic;
+	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public function isspmatrix_coo(x:Dynamic):Dynamic;
 	static public function isspmatrix_csc(x:Dynamic):Dynamic;
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
 	/**
+		maximum_bipartite_matching(graph, perm_type='row')
+		
 		Returns an array of row or column permutations that makes
 		the diagonal of a nonsingular square CSC sparse matrix zero free.  
 		
@@ -58,6 +62,8 @@ package scipy.sparse.csgraph._reordering;
 	**/
 	static public function maximum_bipartite_matching(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		reverse_cuthill_mckee(graph, symmetric_mode=False)
+		
 		Returns the permutation array that orders a sparse CSR or CSC matrix
 		in Reverse-Cuthill McKee ordering.  
 		
@@ -88,4 +94,39 @@ package scipy.sparse.csgraph._reordering;
 		ACM '69 Proceedings of the 1969 24th national conference, (1969).
 	**/
 	static public function reverse_cuthill_mckee(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		structural_rank(graph)
+		
+		Compute the structural rank of a graph (matrix) with a given 
+		sparsity pattern.
+		
+		The structural rank of a matrix is the number of entries in the maximum 
+		transversal of the corresponding bipartite graph, and is an upper bound 
+		on the numerical rank of the matrix. A graph has full structural rank 
+		if it is possible to permute the elements to make the diagonal zero-free.
+		
+		Parameters
+		----------
+		graph : sparse matrix
+		    Input sparse matrix.
+		
+		Returns
+		-------
+		rank : int
+		    The structural rank of the sparse graph.
+		
+		.. versionadded:: 0.19.0
+		
+		References
+		----------
+		.. [1] I. S. Duff, "Computing the Structural Index", SIAM J. Alg. Disc. 
+		        Meth., Vol. 7, 594 (1986).
+		
+		.. [2] http://www.cise.ufl.edu/research/sparse/matrices/legend.html
+	**/
+	static public function structural_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Issue a warning, or maybe ignore it or raise an exception.
+	**/
+	static public function warn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

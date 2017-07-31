@@ -41,11 +41,18 @@ package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(example_id_column:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Dynamic;
+	public function ___init__(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(example_id_column:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Void;
+	public function new(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -101,8 +108,14 @@ package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var example_id_column : Dynamic;
+	public function get_name():Dynamic;
 	/**
 		Returns the training operation of an SdcaModel optimizer.
 	**/
-	public function get_train_step(linear_feature_columns:Dynamic, weight_column_name:Dynamic, loss_type:Dynamic, features:Dynamic, targets:Dynamic, columns_to_variables:Dynamic, global_step:Dynamic):Dynamic;
+	public function get_train_step(columns_to_variables:Dynamic, weight_column_name:Dynamic, loss_type:Dynamic, features:Dynamic, targets:Dynamic, global_step:Dynamic):Dynamic;
+	public var num_loss_partitions : Dynamic;
+	public var num_table_shards : Dynamic;
+	public var symmetric_l1_regularization : Dynamic;
+	public var symmetric_l2_regularization : Dynamic;
 }

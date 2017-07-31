@@ -10,9 +10,10 @@ package tensorflow;
 		NOTE: To ensure that Assert executes, one usually attaches a dependency:
 		
 		```python
-		 # Ensure maximum element of x is smaller or equal to 1
+		# Ensure maximum element of x is smaller or equal to 1
 		assert_op = tf.Assert(tf.less_equal(tf.reduce_max(x), 1.), [x])
-		x = tf.with_dependencies([assert_op], x)
+		with tf.control_dependencies([assert_op]):
+		  ... code using x ...
 		```
 		
 		Args:
@@ -24,21 +25,35 @@ package tensorflow;
 		Returns:
 		  assert_op: An `Operation` that, when executed, raises a
 		  `tf.errors.InvalidArgumentError` if `condition` is not true.
+		
+		
+		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function Assert(condition:Dynamic, data:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	static public var COMPILER_VERSION : Dynamic;
+	static public var GIT_VERSION : Dynamic;
 	static public var GRAPH_DEF_VERSION : Dynamic;
 	static public var GRAPH_DEF_VERSION_MIN_CONSUMER : Dynamic;
 	static public var GRAPH_DEF_VERSION_MIN_PRODUCER : Dynamic;
 	/**
-		Specifies that ops of type `op_type` do not have a defined gradient.
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
 		
 		This function is only used when defining a new op type. It may be
 		used for ops such as `tf.size()` that are not differentiable.  For
 		example:
 		
 		```python
-		tf.NoGradient("Size")
+		tf.NotDifferentiable("Size")
 		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
 		
 		Args:
 		  op_type: The string type of an operation. This corresponds to the
@@ -49,10 +64,42 @@ package tensorflow;
 	**/
 	static public function NoGradient(op_type:Dynamic):Dynamic;
 	/**
+		Specifies that ops of type `op_type` is not differentiable.
+		
+		This function should *not* be used for operations that have a
+		well-defined gradient that is not yet implemented.
+		
+		This function is only used when defining a new op type. It may be
+		used for ops such as `tf.size()` that are not differentiable.  For
+		example:
+		
+		```python
+		tf.NotDifferentiable("Size")
+		```
+		
+		The gradient computed for 'op_type' will then propagate zeros.
+		
+		For ops that have a well-defined gradient but are not yet implemented,
+		no declaration should be made, and an error *must* be thrown if
+		an attempt to request its gradient is made.
+		
+		Args:
+		  op_type: The string type of an operation. This corresponds to the
+		    `OpDef.name` field for the proto that defines the operation.
+		
+		Raises:
+		  TypeError: If `op_type` is not a string.
+	**/
+	static public function NotDifferentiable(op_type:Dynamic):Dynamic;
+	/**
 		Prints a list of tensors.
 		
 		This is an identity op with the side effect of printing `data` when
 		evaluating.
+		
+		Note: This op prints to the standard error. It is not currently compatible
+		  with jupyter notebook (printing to the notebook *server's* output, not into
+		  the notebook).
 		
 		Args:
 		  input_: A tensor passed through this op.
@@ -69,10 +116,13 @@ package tensorflow;
 	**/
 	static public function Print(input_:Dynamic, data:Dynamic, ?message:Dynamic, ?first_n:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	static public var QUANTIZED_DTYPES : Dynamic;
+	static public var VERSION : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
+	static public var __compiler_version__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
+	static public var __git_version__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
@@ -85,10 +135,7 @@ package tensorflow;
 		Given a tensor of real numbers `x`, this operation returns a tensor
 		containing the absolute value of each element in `x`. For example, if x is
 		an input element and y is an output element, this operation computes
-		\\(y = |x|\\).
-		
-		See [`tf.complex_abs()`](#tf_complex_abs) to compute the absolute value of a complex
-		number.
+		\\\\(y = |x|\\\\).
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` of type `float32`, `float64`, `int32`, or
@@ -100,12 +147,20 @@ package tensorflow;
 		    values.
 	**/
 	static public function abs(x:Dynamic, ?name:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Returns the element-wise sum of a list of tensors.
 		
 		Optionally, pass `shape` and `tensor_dtype` for shape and type checking,
 		otherwise, these are inferred.
+		
+		NOTE: This operation is not differentiable and cannot be used if inputs depend
+		on trainable variables. Please use `tf.add_n` for such cases.
+		
+		Aside from differentiability, `tf.accumulate_n` performs the same operation as
+		`tf.add_n`, but does not wait for all of its inputs to be ready before
+		beginning to sum. This can save memory if inputs are ready at different times,
+		since minimum temporary storage is proportional to the output size rather than
+		the inputs size.
 		
 		For example:
 		
@@ -189,7 +244,7 @@ package tensorflow;
 	/**
 		Wrapper for `Graph.add_to_collection()` using the default graph.
 		
-		See [`Graph.add_to_collection()`](../../api_docs/python/framework.md#Graph.add_to_collection)
+		See @{tf.Graph.add_to_collection}
 		for more details.
 		
 		Args:
@@ -199,22 +254,21 @@ package tensorflow;
 	**/
 	static public function add_to_collection(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Returns all variables that must be saved/restored.
+		See `tf.global_variables`. (deprecated)
 		
-		The `Variable()` constructor automatically adds new variables to the graph
-		collection `GraphKeys.VARIABLES`. This convenience function returns the
-		contents of that collection.
-		
-		Returns:
-		  A list of `Variable` objects.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Instructions for updating:
+		Please use tf.global_variables instead.
 	**/
 	static public function all_variables():Dynamic;
 	/**
 		Returns the index with the largest value across dimensions of a tensor.
 		
+		Note that in case of ties the identity of the return value is not guaranteed.
+		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		  dimension: A `Tensor` of type `int32`.
+		  dimension: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    int32, 0 <= dimension < rank(input).  Describes which dimension
 		    of the input Tensor to reduce across. For vectors, use dimension = 0.
 		  name: A name for the operation (optional).
@@ -226,9 +280,11 @@ package tensorflow;
 	/**
 		Returns the index with the smallest value across dimensions of a tensor.
 		
+		Note that in case of ties the identity of the return value is not guaranteed.
+		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		  dimension: A `Tensor` of type `int32`.
+		  dimension: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    int32, 0 <= dimension < rank(input).  Describes which dimension
 		    of the input Tensor to reduce across. For vectors, use dimension = 0.
 		  name: A name for the operation (optional).
@@ -238,33 +294,37 @@ package tensorflow;
 	**/
 	static public function arg_min(input:Dynamic, dimension:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns the index with the largest value across dimensions of a tensor.
+		Returns the index with the largest value across axes of a tensor.
+		
+		Note that in case of ties the identity of the return value is not guaranteed.
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		  dimension: A `Tensor` of type `int32`.
-		    int32, 0 <= dimension < rank(input).  Describes which dimension
-		    of the input Tensor to reduce across. For vectors, use dimension = 0.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    int32, 0 <= axis < rank(input).  Describes which axis
+		    of the input Tensor to reduce across. For vectors, use axis = 0.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `int64`.
 	**/
-	static public function argmax(input:Dynamic, dimension:Dynamic, ?name:Dynamic):Dynamic;
+	static public function argmax(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dimension:Dynamic):Dynamic;
 	/**
-		Returns the index with the smallest value across dimensions of a tensor.
+		Returns the index with the smallest value across axes of a tensor.
+		
+		Note that in case of ties the identity of the return value is not guaranteed.
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		  dimension: A `Tensor` of type `int32`.
-		    int32, 0 <= dimension < rank(input).  Describes which dimension
-		    of the input Tensor to reduce across. For vectors, use dimension = 0.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    int32, 0 <= axis < rank(input).  Describes which axis
+		    of the input Tensor to reduce across. For vectors, use axis = 0.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `int64`.
 	**/
-	static public function argmin(input:Dynamic, dimension:Dynamic, ?name:Dynamic):Dynamic;
+	static public function argmin(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dimension:Dynamic):Dynamic;
 	/**
 		Converts the given `type_value` to a `DType`.
 		
@@ -330,12 +390,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_equal(x, y)], x)
-		```
-		
 		This condition holds if for every pair of (possibly broadcast) elements
 		`x[i]`, `y[i]`, we have `x[i] == y[i]`.
 		If both `x` and `y` are empty, this is trivially satisfied.
@@ -354,6 +408,61 @@ package tensorflow;
 	**/
 	static public function assert_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x > y` holds element-wise.
+		
+		Example of adding a dependency to an operation:
+		
+		```python
+		with tf.control_dependencies([tf.assert_greater(x, y)]):
+		  output = tf.reduce_sum(x)
+		```
+		
+		This condition holds if for every pair of (possibly broadcast) elements
+		`x[i]`, `y[i]`, we have `x[i] > y[i]`.
+		If both `x` and `y` are empty, this is trivially satisfied.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  data:  The tensors to print out if the condition is False.  Defaults to
+		    error message and first few entries of `x`, `y`.
+		  summarize: Print this many entries of each tensor.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).  Defaults to "assert_greater".
+		
+		Returns:
+		  Op that raises `InvalidArgumentError` if `x > y` is False.
+	**/
+	static public function assert_greater(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x >= y` holds element-wise.
+		
+		Example of adding a dependency to an operation:
+		
+		```python
+		with tf.control_dependencies([tf.assert_greater_equal(x, y)]):
+		  output = tf.reduce_sum(x)
+		```
+		
+		This condition holds if for every pair of (possibly broadcast) elements
+		`x[i]`, `y[i]`, we have `x[i] >= y[i]`.
+		If both `x` and `y` are empty, this is trivially satisfied.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  data:  The tensors to print out if the condition is False.  Defaults to
+		    error message and first few entries of `x`, `y`.
+		  summarize: Print this many entries of each tensor.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).  Defaults to
+		    "assert_greater_equal"
+		
+		Returns:
+		  Op that raises `InvalidArgumentError` if `x >= y` is False.
+	**/
+	static public function assert_greater_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert that `x` is of integer dtype.
 		
 		Example of adding a dependency to an operation:
@@ -361,12 +470,6 @@ package tensorflow;
 		```python
 		with tf.control_dependencies([tf.assert_integer(x)]):
 		  output = tf.reduce_sum(x)
-		```
-		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_integer(x)], x)
 		```
 		
 		Args:
@@ -389,12 +492,6 @@ package tensorflow;
 		```python
 		with tf.control_dependencies([tf.assert_less(x, y)]):
 		  output = tf.reduce_sum(x)
-		```
-		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_less(x, y)], x)
 		```
 		
 		This condition holds if for every pair of (possibly broadcast) elements
@@ -424,12 +521,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_less_equal(x, y)], x)
-		```
-		
 		This condition holds if for every pair of (possibly broadcast) elements
 		`x[i]`, `y[i]`, we have `x[i] <= y[i]`.
 		If both `x` and `y` are empty, this is trivially satisfied.
@@ -457,12 +548,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_negative(x)], x)
-		```
-		
 		Negative means, for every element `x[i]` of `x`, we have `x[i] < 0`.
 		If `x` is empty this is trivially satisfied.
 		
@@ -486,12 +571,6 @@ package tensorflow;
 		```python
 		with tf.control_dependencies([tf.assert_non_negative(x)]):
 		  output = tf.reduce_sum(x)
-		```
-		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_non_negative(x)], x)
 		```
 		
 		Non-negative means, for every element `x[i]` of `x`, we have `x[i] >= 0`.
@@ -520,12 +599,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_non_positive(x)], x)
-		```
-		
 		Non-positive means, for every element `x[i]` of `x`, we have `x[i] <= 0`.
 		If `x` is empty this is trivially satisfied.
 		
@@ -543,6 +616,34 @@ package tensorflow;
 	**/
 	static public function assert_non_positive(x:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x != y` holds for all elements.
+		
+		Example of adding a dependency to an operation:
+		
+		```python
+		with tf.control_dependencies([tf.assert_none_equal(x, y)]):
+		  output = tf.reduce_sum(x)
+		```
+		
+		This condition holds if for every pair of (possibly broadcast) elements
+		`x[i]`, `y[i]`, we have `x[i] != y[i]`.
+		If both `x` and `y` are empty, this is trivially satisfied.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  data:  The tensors to print out if the condition is False.  Defaults to
+		    error message and first few entries of `x`, `y`.
+		  summarize: Print this many entries of each tensor.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).
+		    Defaults to "assert_none_equal".
+		
+		Returns:
+		  Op that raises `InvalidArgumentError` if `x != y` is ever False.
+	**/
+	static public function assert_none_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x > 0` holds element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -550,12 +651,6 @@ package tensorflow;
 		```python
 		with tf.control_dependencies([tf.assert_positive(x)]):
 		  output = tf.reduce_sum(x)
-		```
-		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_positive(x)], x)
 		```
 		
 		Positive means, for every element `x[i]` of `x`, we have `x[i] > 0`.
@@ -597,12 +692,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_rank(x, 2)], x)
-		```
-		
 		Args:
 		  x:  Numeric `Tensor`.
 		  rank:  Scalar integer `Tensor`.
@@ -630,12 +719,6 @@ package tensorflow;
 		  output = tf.reduce_sum(x)
 		```
 		
-		Example of adding dependency to the tensor being checked:
-		
-		```python
-		x = tf.with_dependencies([tf.assert_rank_at_least(x, 2)], x)
-		```
-		
 		Args:
 		  x:  Numeric `Tensor`.
 		  rank:  Scalar `Tensor`.
@@ -655,16 +738,38 @@ package tensorflow;
 	**/
 	static public function assert_rank_at_least(x:Dynamic, rank:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Validate and return float type based on `tensors` and `dtype`.
+		
+		For ops such as matrix multiplication, inputs and weights must be of the
+		same float type. This function validates that all `tensors` are the same type,
+		validates that type is `dtype` (if supplied), and returns the type. Type must
+		be a floating point type. If neither `tensors` nor `dtype` is supplied,
+		the function will return `dtypes.float32`.
+		
+		Args:
+		  tensors: Tensors of input values. Can include `None` elements, which will be
+		      ignored.
+		  dtype: Expected type.
+		Returns:
+		  Validated type.
+		Raises:
+		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
+		      float, or the common type of the inputs is not a floating point type.
+	**/
+	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Statically asserts that the given `Tensor` is of the specified type.
 		
 		Args:
 		  tensor: A tensorflow `Tensor`.
-		  tf_type: A tensorflow type (dtypes.float32, tf.int64, dtypes.bool, etc).
+		  tf_type: A tensorflow type (`dtypes.float32`, `tf.int64`, `dtypes.bool`,
+		    etc).
 		  message: A string to prefix to the default message.
 		  name:  A name to give this `Op`.  Defaults to "assert_type"
 		
 		Raises:
-		  TypeError: If the tensors data type doesn't match tf_type.
+		  TypeError: If the tensors data type doesn't match `tf_type`.
 		
 		Returns:
 		  A `no_op` that does nothing.  Type can be determined statically.
@@ -685,17 +790,21 @@ package tensorflow;
 		
 		Args:
 		  var_list: List of `Variable` objects to check. Defaults to the
-		    value of `all_variables().`
+		    value of `global_variables().`
 		
 		Returns:
 		  An Op, or None if there are no variables.
+		
+		
+		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function assert_variables_initialized(?var_list:Dynamic):Dynamic;
 	/**
 		Update 'ref' by assigning 'value' to it.
 		
-		This operation outputs "ref" after the assignment is done.
-		This makes it easier to chain operations that need to use the reset value.
+		This operation outputs a Tensor that holds the new value of 'ref' after
+		  the value has been assigned. This makes it easier to chain operations
+		  that need to use the reset value.
 		
 		Args:
 		  ref: A mutable `Tensor`.
@@ -712,8 +821,8 @@ package tensorflow;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  Same as "ref".  Returned as a convenience for operations that want
-		  to use the new value after the variable has been reset.
+		  A `Tensor` that will hold the new value of 'ref' after
+		    the assignment has completed.
 	**/
 	static public function assign(ref:Dynamic, value:Dynamic, ?validate_shape:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -723,7 +832,9 @@ package tensorflow;
 		This makes it easier to chain operations that need to use the reset value.
 		
 		Args:
-		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		  ref: A mutable `Tensor`. Must be one of the following types:
+		    `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`,
+		    `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
 		    Should be from a `Variable` node.
 		  value: A `Tensor`. Must have the same type as `ref`.
 		    The value to be added to the variable.
@@ -744,7 +855,9 @@ package tensorflow;
 		This makes it easier to chain operations that need to use the reset value.
 		
 		Args:
-		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		  ref: A mutable `Tensor`. Must be one of the following types:
+		    `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`,
+		    `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
 		    Should be from a `Variable` node.
 		  value: A `Tensor`. Must have the same type as `ref`.
 		    The value to be subtracted to the variable.
@@ -770,632 +883,27 @@ package tensorflow;
 	**/
 	static public function atan(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with audio.
+		Computes arctangent of `y/x` element-wise, respecting signs of the arguments.
 		
-		The summary has up to `max_outputs` summary values containing audio. The
-		audio is built from `tensor` which must be 3-D with shape `[batch_size,
-		frames, channels]` or 2-D with shape `[batch_size, frames]`. The values are
-		assumed to be in the range of `[-1.0, 1.0]` with a sample rate of
-		`sample_rate`.
-		
-		The `tag` argument is a scalar `Tensor` of type `string`.  It is used to
-		build the `tag` of the summary values:
-		
-		*  If `max_outputs` is 1, the summary value tag is '*tag* /audio'.
-		*  If `max_outputs` is greater than 1, the summary value tags are
-		   generated sequentially as '*tag* /audio/0', '*tag* /audio/1', etc.
+		This is the angle \( \theta \in [-\pi, \pi] \) such that
+		\[ x = r \cos(\theta) \]
+		and
+		\[ y = r \sin(\theta) \]
+		where \(r = \sqrt(x^2 + y^2) \).
 		
 		Args:
-		  tag: A scalar `Tensor` of type `string`. Used to build the `tag`
-		    of the summary values.
-		  tensor: A 3-D `float32` `Tensor` of shape `[batch_size, frames, channels]`
-		    or a 2-D `float32` `Tensor` of shape `[batch_size, frames]`.
-		  sample_rate: The sample rate of the signal in hertz.
-		  max_outputs: Max number of batch elements to generate audio for.
-		  collections: Optional list of ops.GraphKeys.  The collections to add the
-		    summary to.  Defaults to [ops.GraphKeys.SUMMARIES]
+		  y: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  x: A `Tensor`. Must have the same type as `y`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
-		  buffer.
+		  A `Tensor`. Has the same type as `y`.
 	**/
-	static public function audio_summary(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the Cholesky decomposition of a batch of square matrices.
-		
-		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
-		form square matrices, with the same constraints as the single matrix Cholesky
-		decomposition above. The output is a tensor of the same shape as the input
-		containing the Cholesky decompositions for all input submatrices `[..., :, :]`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[..., M, M]`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
-	**/
-	static public function batch_cholesky(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Solve batches of linear eqns `A X = RHS`, given Cholesky factorizations.
-		
-		```python
-		# Solve one linear system (K = 1) for every member of the length 10 batch.
-		A = ... # shape 10 x 2 x 2
-		RHS = ... # shape 10 x 2 x 1
-		chol = tf.batch_cholesky(A)  # shape 10 x 2 x 2
-		X = tf.batch_cholesky_solve(chol, RHS)  # shape 10 x 2 x 1
-		# tf.matmul(A, X) ~ RHS
-		X[3, :, 0]  # Solution to the linear system A[3, :, :] x = RHS[3, :, 0]
-		
-		# Solve five linear systems (K = 5) for every member of the length 10 batch.
-		A = ... # shape 10 x 2 x 2
-		RHS = ... # shape 10 x 2 x 5
-		...
-		X[3, :, 2]  # Solution to the linear system A[3, :, :] x = RHS[3, :, 2]
-		```
-		
-		Args:
-		  chol:  A `Tensor`.  Must be `float32` or `float64`, shape is `[..., M, M]`.
-		    Cholesky factorization of `A`, e.g. `chol = tf.batch_cholesky(A)`.
-		    For that reason, only the lower triangular parts (including the diagonal)
-		    of the last two dimensions of `chol` are used.  The strictly upper part is
-		    assumed to be zero and not accessed.
-		  rhs:  A `Tensor`, same type as `chol`, shape is `[..., M, K]`.
-		  name:  A name to give this `Op`.  Defaults to `batch_cholesky_solve`.
-		
-		Returns:
-		  Solution to `A x = rhs`, shape `[..., M, K]`.
-	**/
-	static public function batch_cholesky_solve(chol:Dynamic, rhs:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the 1-dimensional discrete Fourier Transform over the inner-most
-		
-		dimension of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		  dimension of `input` is replaced with its 1D Fourier Transform.
-	**/
-	static public function batch_fft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the 2-dimensional discrete Fourier Transform over the inner-most
-		
-		2 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		  dimensions of `input` are replaced with their 2D Fourier Transform.
-	**/
-	static public function batch_fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the 3-dimensional discrete Fourier Transform over the inner-most 3
-		
-		dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		  dimensions of `input` are replaced with their 3D Fourier Transform.
-	**/
-	static public function batch_fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the inverse 1-dimensional discrete Fourier Transform over the inner-most
-		
-		dimension of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		  dimension of `input` is replaced with its inverse 1D Fourier Transform.
-	**/
-	static public function batch_ifft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the inverse 2-dimensional discrete Fourier Transform over the inner-most
-		
-		2 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		  dimensions of `input` are replaced with their inverse 2D Fourier Transform.
-	**/
-	static public function batch_ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Compute the inverse 3-dimensional discrete Fourier Transform over the inner-most
-		
-		3 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		  dimensions of `input` are replaced with their inverse 3D Fourier Transform.
-	**/
-	static public function batch_ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Multiplies slices of two tensors in batches.
-		
-		Multiplies all slices of `Tensor` `x` and `y` (each slice can be
-		viewed as an element of a batch), and arranges the individual results
-		in a single output tensor of the same batch size. Each of the
-		individual slices can optionally be adjointed (to adjoint a matrix
-		means to transpose and conjugate it) before multiplication by setting
-		the `adj_x` or `adj_y` flag to `True`, which are by default `False`.
-		
-		The input tensors `x` and `y` are 3-D or higher with shape `[..., r_x, c_x]`
-		and `[..., r_y, c_y]`.
-		
-		The output tensor is 3-D or higher with shape `[..., r_o, c_o]`, where:
-		
-		    r_o = c_x if adj_x else r_x
-		    c_o = r_y if adj_y else c_y
-		
-		It is computed as:
-		
-		    output[..., :, :] = matrix(x[..., :, :]) * matrix(y[..., :, :])
-		
-		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
-		    3-D or higher with shape `[..., r_x, c_x]`.
-		  y: A `Tensor`. Must have the same type as `x`.
-		    3-D or higher with shape `[..., r_y, c_y]`.
-		  adj_x: An optional `bool`. Defaults to `False`.
-		    If `True`, adjoint the slices of `x`. Defaults to `False`.
-		  adj_y: An optional `bool`. Defaults to `False`.
-		    If `True`, adjoint the slices of `y`. Defaults to `False`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `x`.
-		  3-D or higher with shape `[..., r_o, c_o]`
-	**/
-	static public function batch_matmul(x:Dynamic, y:Dynamic, ?adj_x:Dynamic, ?adj_y:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Copy a tensor setting everything outside a central band in each innermost matrix
-		
-		to zero.
-		
-		The `band` part is computed as follows:
-		Assume `input` has `k` dimensions `[I, J, K, ..., M, N]`, then the output is a
-		tensor with the same shape where
-		
-		`band[i, j, k, ..., m, n] = in_band(m, n) * input[i, j, k, ..., m, n]`.
-		
-		The indicator function 'in_band(m, n)` is one if
-		`(num_lower < 0 || (m-n) <= num_lower)) &&
-		(num_upper < 0 || (n-m) <= num_upper)`, and zero otherwise.
-		
-		For example:
-		
-		```prettyprint
-		# if 'input' is [[ 0,  1,  2, 3]
-		                 [-1,  0,  1, 2]
-		                 [-2, -1,  0, 1]
-		                 [-3, -2, -1, 0]],
-		
-		tf.batch_matrix_band_part(input, 1, -1) ==> [[ 0,  1,  2, 3]
-		                                             [-1,  0,  1, 2]
-		                                             [ 0, -1,  0, 1]
-		                                             [ 0,  0, -1, 0]],
-		
-		tf.batch_matrix_band_part(input, 2, 1) ==> [[ 0,  1,  0, 0]
-		                                            [-1,  0,  1, 0]
-		                                            [-2, -1,  0, 1]
-		                                            [ 0, -2, -1, 0]]
-		```
-		
-		Useful special cases:
-		
-		```prettyprint
-		 tf.batch_matrix_band_part(input, 0, -1) ==> Upper triangular part.
-		 tf.batch_matrix_band_part(input, -1, 0) ==> Lower triangular part.
-		 tf.batch_matrix_band_part(input, 0, 0) ==> Diagonal.
-		```
-		
-		Args:
-		  input: A `Tensor`. Rank `k` tensor.
-		  num_lower: A `Tensor` of type `int64`.
-		    0-D tensor. Number of subdiagonals to keep. If negative, keep entire
-		    lower triangle.
-		  num_upper: A `Tensor` of type `int64`.
-		    0-D tensor. Number of superdiagonals to keep. If negative, keep
-		    entire upper triangle.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-		  Rank `k` tensor of the same shape as input. The extracted banded tensor.
-	**/
-	static public function batch_matrix_band_part(input:Dynamic, num_lower:Dynamic, num_upper:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the determinants for a batch of square matrices.
-		
-		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
-		form square matrices. The output is a tensor containing the determinants
-		for all input submatrices `[..., :, :]`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		    Shape is `[..., M, M]`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[...]`.
-	**/
-	static public function batch_matrix_determinant(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Returns a batched diagonal tensor with a given batched diagonal values.
-		
-		Given a `diagonal`, this operation returns a tensor with the `diagonal` and
-		everything else padded with zeros. The diagonal is computed as follows:
-		
-		Assume `diagonal` has `k` dimensions `[I, J, K, ..., N]`, then the output is a
-		tensor of rank `k+1` with dimensions [I, J, K, ..., N, N]` where:
-		
-		`output[i, j, k, ..., m, n] = 1{m=n} * diagonal[i, j, k, ..., n]`.
-		
-		For example:
-		
-		```prettyprint
-		# 'diagonal' is [[1, 2, 3, 4], [5, 6, 7, 8]]
-		
-		and diagonal.shape = (2, 4)
-		
-		tf.batch_matrix_diag(diagonal) ==> [[[1, 0, 0, 0]
-		                                     [0, 2, 0, 0]
-		                                     [0, 0, 3, 0]
-		                                     [0, 0, 0, 4]],
-		                                    [[5, 0, 0, 0]
-		                                     [0, 6, 0, 0]
-		                                     [0, 0, 7, 0]
-		                                     [0, 0, 0, 8]]]
-		
-		which has shape (2, 4, 4)
-		```
-		
-		Args:
-		  diagonal: A `Tensor`. Rank `k`, where `k >= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `diagonal`.
-		  Rank `k+1`, with `output.shape = diagonal.shape + [diagonal.shape[-1]]`.
-	**/
-	static public function batch_matrix_diag(diagonal:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Returns the batched diagonal part of a batched tensor.
-		
-		This operation returns a tensor with the `diagonal` part
-		of the batched `input`. The `diagonal` part is computed as follows:
-		
-		Assume `input` has `k` dimensions `[I, J, K, ..., N, N]`, then the output is a
-		tensor of rank `k - 1` with dimensions `[I, J, K, ..., N]` where:
-		
-		`diagonal[i, j, k, ..., n] = input[i, j, k, ..., n, n]`.
-		
-		The input must be at least a matrix.
-		
-		For example:
-		
-		```prettyprint
-		# 'input' is [[[1, 0, 0, 0]
-		               [0, 2, 0, 0]
-		               [0, 0, 3, 0]
-		               [0, 0, 0, 4]],
-		              [[5, 0, 0, 0]
-		               [0, 6, 0, 0]
-		               [0, 0, 7, 0]
-		               [0, 0, 0, 8]]]
-		
-		and input.shape = (2, 4, 4)
-		
-		tf.batch_matrix_diag_part(input) ==> [[1, 2, 3, 4], [5, 6, 7, 8]]
-		
-		which has shape (2, 4)
-		```
-		
-		Args:
-		  input: A `Tensor`.
-		    Rank `k` tensor where `k >= 2` and the last two dimensions are equal.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-		  The extracted diagonal(s) having shape
-		  `diagonal.shape = input.shape[:-1]`.
-	**/
-	static public function batch_matrix_diag_part(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the inverse of square invertible matrices or their adjoints
-		
-		(conjugate transposes).
-		
-		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
-		form square matrices. The output is a tensor of the same shape as the input
-		containing the inverse for all input submatrices `[..., :, :]`.
-		
-		The op uses LU decomposition with partial pivoting to compute the inverses.
-		
-		If a matrix is not invertible there is no guarantee what the op does. It
-		may detect the condition and raise an exception or it may simply return a
-		garbage result.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[..., M, M]`.
-		  adjoint: An optional `bool`. Defaults to `False`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
-	**/
-	static public function batch_matrix_inverse(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Returns a batched matrix tensor with new batched diagonal values.
-		
-		Given `input` and `diagonal`, this operation returns a tensor with the
-		same shape and values as `input`, except for the diagonals of the innermost
-		matrices.  These will be overwritten by the values in `diagonal`.
-		The batched matrices must be square.
-		
-		The output is computed as follows:
-		
-		Assume `input` has `k+1` dimensions `[I, J, K, ..., N, N]` and `diagonal` has
-		`k` dimensions `[I, J, K, ..., N]`.  Then the output is a
-		tensor of rank `k+1` with dimensions [I, J, K, ..., N, N]` where:
-		
-		  * `output[i, j, k, ..., m, n] = diagonal[i, j, k, ..., n]` for `m == n`.
-		  * `output[i, j, k, ..., m, n] = input[i, j, k, ..., m, n]` for `m != n`.
-		
-		Args:
-		  input: A `Tensor`. Rank `k+1`, where `k >= 1`.
-		  diagonal: A `Tensor`. Must have the same type as `input`.
-		    Rank `k`, where `k >= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-		  Rank `k+1`, with `output.shape = input.shape`.
-	**/
-	static public function batch_matrix_set_diag(input:Dynamic, diagonal:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Solves systems of linear equations. Checks for invertibility.
-		
-		Matrix is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
-		form square matrices. Rhs is a tensor of shape
-		`[..., M, K]`. The output is a tensor shape `[..., M, K]`.  If `adjoint` is `False` then each output
-		matrix satisfies `matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]`.
-		If `adjoint` is `True` then each output
-		matrix satisfies `adjoint(matrix[..., :, :]) * output[..., :, :] = rhs[..., :, :]`.
-		
-		Args:
-		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[..., M, M]`.
-		  rhs: A `Tensor`. Must have the same type as `matrix`.
-		    Shape is `[..., M, K]`.
-		  adjoint: An optional `bool`. Defaults to `False`.
-		    Boolean indicating whether to solve with `matrix` or its (block-wise)
-		    adjoint.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
-	**/
-	static public function batch_matrix_solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Solves multiple linear least-squares problems.
-		
-		`matrix` is a tensor of shape `[..., M, N]` whose inner-most 2 dimensions
-		form `M`-by-`N` matrices. Rhs is a tensor of shape `[..., M, K]` whose
-		inner-most 2 dimensions form `M`-by-`K` matrices.   The computed output is a
-		`Tensor` of shape `[..., N, K]` whose inner-most 2 dimensions form `M`-by-`K`
-		matrices that solve the equations
-		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least squares
-		sense.
-		
-		Below we will use the following notation for each pair of
-		matrix and right-hand sides in the batch:
-		
-		`matrix`=\\(A \in \Re^{m \times n}\\),
-		`rhs`=\\(B  \in \Re^{m \times k}\\),
-		`output`=\\(X  \in \Re^{n \times k}\\),
-		`l2_regularizer`=\\(\lambda\\).
-		
-		If `fast` is `True`, then the solution is computed by solving the normal
-		equations using Cholesky decomposition. Specifically, if \\(m \ge n\\) then
-		\\(X = (A^T A + \lambda I)^{-1} A^T B\\), which solves the least-squares
-		problem \\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}} ||A Z - B||_F^2 +
-		\lambda ||Z||_F^2\\). If \\(m \lt n\\) then `output` is computed as
-		\\(X = A^T (A A^T + \lambda I)^{-1} B\\), which (for \\(\lambda = 0\\)) is
-		the minimum-norm solution to the under-determined linear system, i.e.
-		\\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}} ||Z||_F^2 \\), subject to
-		\\(A Z = B\\). Notice that the fast path is only numerically stable when
-		\\(A\\) is numerically full rank and has a condition number
-		\\(\mathrm{cond}(A) \lt \frac{1}{\sqrt{\epsilon_{mach}}}\\) or\\(\lambda\\)
-		is sufficiently large.
-		
-		If `fast` is `False` an algorithm based on the numerically robust complete
-		orthogonal decomposition is used. This computes the minimum-norm
-		least-squares solution, even when \\(A\\) is rank deficient. This path is
-		typically 6-7 times slower than the fast path. If `fast` is `False` then
-		`l2_regularizer` is ignored.
-		
-		Args:
-		  matrix: `Tensor` of shape `[..., M, N]`.
-		  rhs: `Tensor` of shape `[..., M, K]`.
-		  l2_regularizer: 0-D `double` `Tensor`. Ignored if `fast=False`.
-		  fast: bool. Defaults to `True`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  output: `Tensor` of shape `[..., N, K]` whose inner-most 2 dimensions form
-		    `M`-by-`K` matrices that solve the equations
-		    `matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least
-		    squares sense.
-	**/
-	static public function batch_matrix_solve_ls(matrix:Dynamic, rhs:Dynamic, ?l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Transposes last two dimensions of batch matrix `a`.
-		
-		For example:
-		
-		```python
-		# Matrix with no batch dimension.
-		# 'x' is [[1 2 3]
-		#         [4 5 6]]
-		tf.batch_matrixtranspose(x) ==> [[1 4]
-		                                 [2 5]
-		                                 [3 6]]
-		
-		# Matrix with two batch dimensions.
-		# x.shape is [1, 2, 3, 4]
-		# tf.batch_matrix_transpose(x) is shape [1, 2, 4, 3]
-		```
-		
-		Args:
-		  a: A `Tensor` with `rank >= 2`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A transposed batch matrix `Tensor`.
-		
-		Raises:
-		  ValueError:  If `a` is determined statically to have `rank < 2`.
-	**/
-	static public function batch_matrix_transpose(a:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Solves systems of linear equations with upper or lower triangular matrices by
-		
-		backsubstitution.
-		
-		`matrix` is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions form
-		square matrices. If `lower` is `True` then the strictly upper triangular part
-		of each inner-most matrix is assumed to be zero and not accessed.
-		If `lower` is False then the strictly lower triangular part of each inner-most
-		matrix is assumed to be zero and not accessed.
-		`rhs` is a tensor of shape [..., M, K]`.
-		
-		The output is a tensor of shape `[..., M, K]`. If `adjoint` is `True` then the
-		innermost matrices in output` satisfy matrix equations
-		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]`.
-		If `adjoint` is `False` then the strictly then the  innermost matrices in
-		`output` satisfy matrix equations
-		`adjoint(matrix[..., i, k]) * output[..., k, j] = rhs[..., i, j]`.
-		
-		Args:
-		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[..., M, M]`.
-		  rhs: A `Tensor`. Must have the same type as `matrix`.
-		    Shape is `[..., M, K]`.
-		  lower: An optional `bool`. Defaults to `True`.
-		    Boolean indicating whether the innermost matrices in `matrix` are
-		    lower or upper triangular.
-		  adjoint: An optional `bool`. Defaults to `False`.
-		    Boolean indicating whether to solve with `matrix` or its (block-wise)
-		    adjoint.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
-	**/
-	static public function batch_matrix_triangular_solve(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the eigen decomposition of a batch of self-adjoint matrices.
-		
-		Computes the eigenvalues and eigenvectors of the innermost N-by-N matrices
-		in `tensor` such that
-		`tensor[...,:,:] * v[..., :,i] = e(..., i) * v[...,:,i]`, for i=0...N-1.
-		
-		Args:
-		  tensor: `Tensor` of shape `[..., N, N]`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  e: Eigenvalues. Shape is `[..., N]`.
-		  v: Eigenvectors. Shape is `[..., N, N]`. The columns of the inner most
-		  matrices
-		    contain eigenvectors of the corresponding matrices in `tensor`
-	**/
-	static public function batch_self_adjoint_eig(tensor:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the eigenvalues of a batch of self-adjoint matrices.
-		
-		Args:
-		  tensor: `Tensor` of shape `[..., N, N]`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  e: Eigenvalues. Shape is `[..., N]`. The vector `e[..., :]` contains the `N`
-		    eigenvalues of `tensor[..., :, :]`.
-	**/
-	static public function batch_self_adjoint_eigvals(tensor:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the singular value decompositions of a batch of matrices.
-		
-		Computes the SVD of each inner matrix in `tensor` such that
-		`tensor[..., :, :] = u[..., :, :] * diag(s[..., :, :]) * transpose(v[..., :,
-		:])`
-		
-		```prettyprint
-		# a is a tensor.
-		# s is a tensor of singular values.
-		# u is a tensor of left singular vectors.
-		# v is a tensor of right singular vectors.
-		s, u, v = batch_svd(a)
-		s = batch_svd(a, compute_uv=False)
-		```
-		
-		Args:
-		  matrix: `Tensor` of shape `[..., M, N]`. Let `P` be the minimum of `M` and
-		    `N`.
-		  compute_uv: If `True` then left and right singular vectors will be
-		    computed and returned in `u` and `v`, respectively. Otherwise, only the
-		    singular values will be computed, which can be significantly faster.
-		  full_matrices: If true, compute full-sized `u` and `v`. If false
-		    (the default), compute only the leading `P` singular vectors.
-		    Ignored if `compute_uv` is `False`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  s: Singular values. Shape is `[..., P]`.
-		  u: Right singular vectors. If `full_matrices` is `False` (default) then
-		    shape is `[..., M, P]`; if `full_matrices` is `True` then shape is
-		    `[..., M, M]`. Not returned if `compute_uv` is `False`.
-		  v: Left singular vectors. If `full_matrices` is `False` (default) then
-		    shape is `[..., N, P]`. If `full_matrices` is `True` then shape is
-		    `[..., N, N]`. Not returned if `compute_uv` is `False`.
-	**/
-	static public function batch_svd(tensor:Dynamic, ?compute_uv:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic):Dynamic;
+	static public function atan2(y:Dynamic, x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		BatchToSpace for 4-D tensors of type T.
+		
+		This is a legacy version of the more general BatchToSpaceND.
 		
 		Rearranges (permutes) data from batch into blocks of spatial data, followed by
 		cropping. This is the reverse transformation of SpaceToBatch. More specifically,
@@ -1408,7 +916,7 @@ package tensorflow;
 		    `[batch*block_size*block_size, height_pad/block_size, width_pad/block_size,
 		      depth]`. Note that the batch size of the input tensor must be divisible by
 		    `block_size * block_size`.
-		  crops: A `Tensor` of type `int32`.
+		  crops: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2-D tensor of non-negative integers with shape `[2, 2]`. It specifies
 		    how many elements to crop from the intermediate result across the spatial
 		    dimensions as follows:
@@ -1430,33 +938,33 @@ package tensorflow;
 		
 		  (1) For the following input of shape `[4, 1, 1, 1]` and block_size of 2:
 		
-		  ```prettyprint
+		  ```
 		  [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
 		  ```
 		
 		  The output tensor has shape `[1, 2, 2, 1]` and value:
 		
-		  ```prettyprint
+		  ```
 		  x = [[[[1], [2]], [[3], [4]]]]
 		  ```
 		
 		  (2) For the following input of shape `[4, 1, 1, 3]` and block_size of 2:
 		
-		  ```prettyprint
+		  ```
 		  [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
 		  ```
 		
 		  The output tensor has shape `[1, 2, 2, 3]` and value:
 		
-		  ```prettyprint
+		  ```
 		  x = [[[[1, 2, 3], [4, 5, 6]],
 		        [[7, 8, 9], [10, 11, 12]]]]
 		  ```
 		
 		  (3) For the following input of shape `[4, 2, 2, 1]` and block_size of 2:
 		
-		  ```prettyprint
-		  x = [[[[1], [3]], [[5], [7]]],
+		  ```
+		  x = [[[[1], [3]], [[9], [11]]],
 		       [[[2], [4]], [[10], [12]]],
 		       [[[5], [7]], [[13], [15]]],
 		       [[[6], [8]], [[14], [16]]]]
@@ -1464,7 +972,7 @@ package tensorflow;
 		
 		  The output tensor has shape `[1, 4, 4, 1]` and value:
 		
-		  ```prettyprint
+		  ```
 		  x = [[[1],   [2],  [3],  [4]],
 		       [[5],   [6],  [7],  [8]],
 		       [[9],  [10], [11],  [12]],
@@ -1473,14 +981,14 @@ package tensorflow;
 		
 		  (4) For the following input of shape `[8, 1, 2, 1]` and block_size of 2:
 		
-		  ```prettyprint
+		  ```
 		  x = [[[[1], [3]]], [[[9], [11]]], [[[2], [4]]], [[[10], [12]]],
 		       [[[5], [7]]], [[[13], [15]]], [[[6], [8]]], [[[14], [16]]]]
 		  ```
 		
 		  The output tensor has shape `[2, 2, 4, 1]` and value:
 		
-		  ```prettyprint
+		  ```
 		  x = [[[[1], [3]], [[5], [7]]],
 		       [[[2], [4]], [[10], [12]]],
 		       [[[5], [7]], [[13], [15]]],
@@ -1488,8 +996,191 @@ package tensorflow;
 		  ```
 	**/
 	static public function batch_to_space(input:Dynamic, crops:Dynamic, block_size:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		BatchToSpace for N-D tensors of type T.
+		
+		This operation reshapes the "batch" dimension 0 into `M + 1` dimensions of shape
+		`block_shape + [batch]`, interleaves these blocks back into the grid defined by
+		the spatial dimensions `[1, ..., M]`, to obtain a result with the same rank as
+		the input.  The spatial dimensions of this intermediate result are then
+		optionally cropped according to `crops` to produce the output.  This is the
+		reverse of SpaceToBatch.  See below for a precise description.
+		
+		Args:
+		  input: A `Tensor`.
+		    N-D with shape `input_shape = [batch] + spatial_shape + remaining_shape`,
+		    where spatial_shape has M dimensions.
+		  block_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D with shape `[M]`, all values must be >= 1.
+		  crops: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    2-D with shape `[M, 2]`, all values must be >= 0.
+		      `crops[i] = [crop_start, crop_end]` specifies the amount to crop from input
+		      dimension `i + 1`, which corresponds to spatial dimension `i`.  It is
+		      required that
+		      `crop_start[i] + crop_end[i] <= block_shape[i] * input_shape[i + 1]`.
+		
+		    This operation is equivalent to the following steps:
+		
+		    1. Reshape `input` to `reshaped` of shape:
+		         [block_shape[0], ..., block_shape[M-1],
+		          batch / prod(block_shape),
+		          input_shape[1], ..., input_shape[N-1]]
+		
+		    2. Permute dimensions of `reshaped` to produce `permuted` of shape
+		         [batch / prod(block_shape),
+		
+		          input_shape[1], block_shape[0],
+		          ...,
+		          input_shape[M], block_shape[M-1],
+		
+		          input_shape[M+1], ..., input_shape[N-1]]
+		
+		    3. Reshape `permuted` to produce `reshaped_permuted` of shape
+		         [batch / prod(block_shape),
+		
+		          input_shape[1] * block_shape[0],
+		          ...,
+		          input_shape[M] * block_shape[M-1],
+		
+		          input_shape[M+1],
+		          ...,
+		          input_shape[N-1]]
+		
+		    4. Crop the start and end of dimensions `[1, ..., M]` of
+		       `reshaped_permuted` according to `crops` to produce the output of shape:
+		         [batch / prod(block_shape),
+		
+		          input_shape[1] * block_shape[0] - crops[0,0] - crops[0,1],
+		          ...,
+		          input_shape[M] * block_shape[M-1] - crops[M-1,0] - crops[M-1,1],
+		
+		          input_shape[M+1], ..., input_shape[N-1]]
+		
+		    Some examples:
+		
+		    (1) For the following input of shape `[4, 1, 1, 1]`, `block_shape = [2, 2]`, and
+		        `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
+		    ```
+		
+		    The output tensor has shape `[1, 2, 2, 1]` and value:
+		
+		    ```
+		    x = [[[[1], [2]], [[3], [4]]]]
+		    ```
+		
+		    (2) For the following input of shape `[4, 1, 1, 3]`, `block_shape = [2, 2]`, and
+		        `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
+		    ```
+		
+		    The output tensor has shape `[1, 2, 2, 3]` and value:
+		
+		    ```
+		    x = [[[[1, 2, 3], [4, 5, 6]],
+		          [[7, 8, 9], [10, 11, 12]]]]
+		    ```
+		
+		    (3) For the following input of shape `[4, 2, 2, 1]`, `block_shape = [2, 2]`, and
+		        `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1], [3]], [[9], [11]]],
+		         [[[2], [4]], [[10], [12]]],
+		         [[[5], [7]], [[13], [15]]],
+		         [[[6], [8]], [[14], [16]]]]
+		    ```
+		
+		    The output tensor has shape `[1, 4, 4, 1]` and value:
+		
+		    ```
+		    x = [[[1],   [2],  [3],  [4]],
+		         [[5],   [6],  [7],  [8]],
+		         [[9],  [10], [11],  [12]],
+		         [[13], [14], [15],  [16]]]
+		    ```
+		
+		    (4) For the following input of shape `[8, 1, 3, 1]`, `block_shape = [2, 2]`, and
+		        `crops = [[0, 0], [2, 0]]`:
+		
+		    ```
+		    x = [[[[0], [1], [3]]], [[[0], [9], [11]]],
+		         [[[0], [2], [4]]], [[[0], [10], [12]]],
+		         [[[0], [5], [7]]], [[[0], [13], [15]]],
+		         [[[0], [6], [8]]], [[[0], [14], [16]]]]
+		    ```
+		
+		    The output tensor has shape `[2, 2, 4, 1]` and value:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]]],
+		         [[[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_to_space_nd(input:Dynamic, block_shape:Dynamic, crops:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute the regularized incomplete beta integral \\(I_x(a, b)\\).
+		
+		The regularized incomplete beta integral is defined as:
+		
+		
+		\\(I_x(a, b) = \frac{B(x; a, b)}{B(a, b)}\\)
+		
+		where
+		
+		
+		\\(B(x; a, b) = \int_0^x t^{a-1} (1 - t)^{b-1} dt\\)
+		
+		
+		is the incomplete beta function and \\(B(a, b)\\) is the *complete*
+		beta function.
+		
+		Args:
+		  a: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  b: A `Tensor`. Must have the same type as `a`.
+		  x: A `Tensor`. Must have the same type as `a`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `a`.
+	**/
+	static public function betainc(a:Dynamic, b:Dynamic, x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var bfloat16 : Dynamic;
-	static public var bfloat16_ref : Dynamic;
+	/**
+		Counts the number of occurrences of each value in an integer array.
+		
+		If `minlength` and `maxlength` are not given, returns a vector with length
+		`tf.reduce_max(arr) + 1` if `arr` is non-empty, and length 0 otherwise.
+		If `weights` are non-None, then index `i` of the output stores the sum of the
+		value in `weights` at each index where the corresponding value in `arr` is
+		`i`.
+		
+		Args:
+		  arr: An int32 tensor of non-negative values.
+		  weights: If non-None, must be the same shape as arr. For each value in
+		      `arr`, the bin will be incremented by the corresponding weight instead
+		      of 1.
+		  minlength: If given, ensures the output has length at least `minlength`,
+		      padding with zeros at the end if necessary.
+		  maxlength: If given, skips values in `arr` that are equal or greater than
+		      `maxlength`, ensuring that the output has length at most `maxlength`.
+		  dtype: If `weights` is None, determines the type of the output bins.
+		
+		Returns:
+		  A vector with the same dtype as `weights` or the given `dtype`. The bin
+		  values.
+	**/
+	static public function bincount(arr:Dynamic, ?weights:Dynamic, ?minlength:Dynamic, ?maxlength:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Bitcasts a tensor from one type to another without copying data.
 		
@@ -1516,14 +1207,13 @@ package tensorflow;
 	**/
 	static public function bitcast(input:Dynamic, type:Dynamic, ?name:Dynamic):Dynamic;
 	static public var bool : Dynamic;
-	static public var bool_ref : Dynamic;
 	/**
 		Apply boolean mask to tensor.  Numpy equivalent is `tensor[mask]`.
 		
 		```python
 		# 1-D example
 		tensor = [0, 1, 2, 3]
-		mask = [True, False, True, False]
+		mask = np.array([True, False, True, False])
 		boolean_mask(tensor, mask) ==> [0, 2]
 		```
 		
@@ -1538,8 +1228,8 @@ package tensorflow;
 		  name:  A name for this operation (optional).
 		
 		Returns:
-		  Tensor populated by entries in `tensor` corresponding to `True` values in
-		    `mask`.
+		  (N-K+1)-dimensional tensor populated by entries in `tensor` corresponding
+		  to `True` values in `mask`.
 		
 		Raises:
 		  ValueError:  If shapes do not conform.
@@ -1549,11 +1239,35 @@ package tensorflow;
 		```python
 		# 2-D example
 		tensor = [[1, 2], [3, 4], [5, 6]]
-		mask = [True, False, True]
+		mask = np.array([True, False, True])
 		boolean_mask(tensor, mask) ==> [[1, 2], [5, 6]]
 		```
 	**/
 	static public function boolean_mask(tensor:Dynamic, mask:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the broadcasted dynamic shape between `shape_x` and `shape_y`.
+		
+		Args:
+		  shape_x: A rank 1 integer `Tensor`, representing the shape of x.
+		  shape_y: A rank 1 integer `Tensor`, representing the shape of y.
+		Returns:
+		  A rank 1 integer `Tensor` representing the broadcasted shape.
+	**/
+	static public function broadcast_dynamic_shape(shape_x:Dynamic, shape_y:Dynamic):Dynamic;
+	/**
+		Returns the broadcasted static shape between `shape_x` and `shape_y`.
+		
+		Args:
+		  shape_x: A `TensorShape`
+		  shape_y: A `TensorShape`
+		
+		Returns:
+		  A `TensorShape` representing the broadcasted shape.
+		
+		Raises:
+		  ValueError: If the two shapes can not be broadcasted.
+	**/
+	static public function broadcast_static_shape(shape_x:Dynamic, shape_y:Dynamic):Dynamic;
 	/**
 		Create a case operation.
 		
@@ -1564,12 +1278,24 @@ package tensorflow;
 		in `pred_fn_pairs` as well as `default` should return the same number
 		and types of tensors.
 		
-		If `exclusive==True`, all predicates are evaluated, and a logging operation
-		with an error is returned if more than one of the predicates evaluates to
-		True. If `exclusive==False`, execution stops are the first predicate which
+		If `exclusive==True`, all predicates are evaluated, and an exception is
+		thrown if more than one of the predicates evaluates to `True`.
+		If `exclusive==False`, execution stops are the first predicate which
 		evaluates to True, and the tensors generated by the corresponding function
 		are returned immediately. If none of the predicates evaluate to True, this
 		operation returns the tensors generated by `default`.
+		
+		`tf.case` supports nested structures as implemented in
+		`tensorflow.python.util.nest`. All of the callables must return the same
+		(possibly nested) value structure of lists, tuples, and/or named tuples.
+		Singleton lists and tuples form the only exceptions to this: when returned by
+		a callable, they are implicitly unpacked to single values. This
+		behavior is disabled by passing `strict=True`.
+		
+		If an unordered dictionary is used for `pred_fn_pairs`, the order of the
+		conditional tests is not guaranteed. However, the order is guaranteed to be
+		deterministic, so that variables created in conditional branches are created
+		in fixed order across runs.
 		
 		Example 1:
 		  Pseudocode:
@@ -1596,9 +1322,6 @@ package tensorflow;
 		
 		  Expressions:
 		  ```
-		    x = tf.constant(0)
-		    y = tf.constant(1)
-		    z = tf.constant(2)
 		    def f1(): return tf.constant(17)
 		    def f2(): return tf.constant(23)
 		    def f3(): return tf.constant(-1)
@@ -1610,7 +1333,8 @@ package tensorflow;
 		  pred_fn_pairs: Dict or list of pairs of a boolean scalar tensor and a
 		                 callable which returns a list of tensors.
 		  default: A callable that returns a list of tensors.
-		  exclusive: True iff more than one predicate is allowed to evaluate to True.
+		  exclusive: True iff at most one predicate is allowed to evaluate to `True`.
+		  strict: A boolean that enables/disables 'strict' mode; see above.
 		  name: A name for this operation (optional).
 		
 		Returns:
@@ -1624,7 +1348,7 @@ package tensorflow;
 		             callable.
 	**/
 	@:native("case")
-	static public function _case(pred_fn_pairs:Dynamic, _default:Dynamic, ?exclusive:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _case(pred_fn_pairs:Dynamic, _default:Dynamic, ?exclusive:Dynamic, ?strict:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Casts a tensor to a new type.
 		
@@ -1678,54 +1402,52 @@ package tensorflow;
 	**/
 	static public function check_numerics(tensor:Dynamic, message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the Cholesky decomposition of a square matrix.
+		Computes the Cholesky decomposition of one or more square matrices.
 		
-		The input has to be symmetric and positive definite. Only the lower-triangular
-		part of the input will be used for this operation. The upper-triangular part
-		will not be read.
-		
-		The result is the lower-triangular matrix of the Cholesky decomposition of the
-		input, `L`, so that `input = L L^*`.
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices, with the same constraints as the single matrix Cholesky
+		decomposition above. The output is a tensor of the same shape as the input
+		containing the Cholesky decompositions for all input submatrices `[..., :, :]`.
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[M, M]`.
+		    Shape is `[..., M, M]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[M, M]`.
+		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
 	**/
 	static public function cholesky(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Solve linear equations `A X = RHS`, given Cholesky factorization of `A`.
+		Solves systems of linear eqns `A X = RHS`, given Cholesky factorizations.
 		
 		```python
-		# Solve one system of linear equations (K = 1).
-		A = [[3, 1], [1, 3]]
-		RHS = [[2], [22]]  # shape 2 x 1
-		chol = tf.cholesky(A)
-		X = tf.cholesky_solve(chol, RHS)
+		# Solve 10 separate 2x2 linear systems:
+		A = ... # shape 10 x 2 x 2
+		RHS = ... # shape 10 x 2 x 1
+		chol = tf.cholesky(A)  # shape 10 x 2 x 2
+		X = tf.cholesky_solve(chol, RHS)  # shape 10 x 2 x 1
 		# tf.matmul(A, X) ~ RHS
-		X[:, 0]  # Solution to the linear system A x = RHS[:, 0]
+		X[3, :, 0]  # Solution to the linear system A[3, :, :] x = RHS[3, :, 0]
 		
-		# Solve five systems of linear equations (K = 5).
-		A = [[3, 1], [1, 3]]
-		RHS = [[1, 2, 3, 4, 5], [11, 22, 33, 44, 55]]  # shape 2 x 5
+		# Solve five linear systems (K = 5) for every member of the length 10 batch.
+		A = ... # shape 10 x 2 x 2
+		RHS = ... # shape 10 x 2 x 5
 		...
-		X[:, 2]  # Solution to the linear system A x = RHS[:, 2]
+		X[3, :, 2]  # Solution to the linear system A[3, :, :] x = RHS[3, :, 2]
 		```
 		
 		Args:
-		  chol:  A `Tensor`.  Must be `float32` or `float64`, shape is `[M, M]`.
-		    Cholesky factorization of `A`, e.g. `chol = tf.cholesky(A)`.  For that
-		    reason, only the lower triangular part (including the diagonal) of `chol`
-		    is used.  The strictly upper part is assumed to be zero and not accessed.
-		  rhs:  A `Tensor`, same type as `chol`, shape is `[M, K]`, designating `K`
-		    systems of linear equations.
+		  chol:  A `Tensor`.  Must be `float32` or `float64`, shape is `[..., M, M]`.
+		    Cholesky factorization of `A`, e.g. `chol = tf.cholesky(A)`.
+		    For that reason, only the lower triangular parts (including the diagonal)
+		    of the last two dimensions of `chol` are used.  The strictly upper part is
+		    assumed to be zero and not accessed.
+		  rhs:  A `Tensor`, same type as `chol`, shape is `[..., M, K]`.
 		  name:  A name to give this `Op`.  Defaults to `cholesky_solve`.
 		
 		Returns:
-		  Solution to `A X = RHS`, shape `[M, K]`.  The solutions to the `K` systems.
+		  Solution to `A x = rhs`, shape `[..., M, K]`.
 	**/
 	static public function cholesky_solve(chol:Dynamic, rhs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1842,12 +1564,18 @@ package tensorflow;
 		
 		Args:
 		  t: A `Tensor`.
-		  clip_value_min: A 0-D (scalar) `Tensor`. The minimum value to clip by.
-		  clip_value_max: A 0-D (scalar) `Tensor`. The maximum value to clip by.
+		  clip_value_min: A 0-D (scalar) `Tensor`, or a `Tensor` with the same shape
+		    as `t`. The minimum value to clip by.
+		  clip_value_max: A 0-D (scalar) `Tensor`, or a `Tensor` with the same shape
+		    as `t`. The maximum value to clip by.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A clipped `Tensor`.
+		
+		Raises:
+		  ValueError: if the clip tensors would trigger array broadcasting
+		    that would make the returned tensor larger than the input.
 	**/
 	static public function clip_by_value(t:Dynamic, clip_value_min:Dynamic, clip_value_max:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1855,7 +1583,7 @@ package tensorflow;
 		
 		Given a tensor `real` representing the real part of a complex number, and a
 		tensor `imag` representing the imaginary part of a complex number, this
-		operation returns complex numbers elementwise of the form \(a + bj\), where
+		operation returns complex numbers elementwise of the form \\(a + bj\\), where
 		*a* represents the `real` part and *b* represents the `imag` part.
 		
 		The input tensors `real` and `imag` must have the same shape.
@@ -1869,7 +1597,8 @@ package tensorflow;
 		```
 		
 		Args:
-		  real: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  real: A `Tensor`. Must be one of the following types: `float32`,
+		    `float64`.
 		  imag: A `Tensor`. Must have the same type as `real`.
 		  name: A name for the operation (optional).
 		
@@ -1878,135 +1607,184 @@ package tensorflow;
 	**/
 	static public function complex(real:Dynamic, imag:Dynamic, ?name:Dynamic):Dynamic;
 	static public var complex128 : Dynamic;
-	static public var complex128_ref : Dynamic;
 	static public var complex64 : Dynamic;
-	static public var complex64_ref : Dynamic;
-	/**
-		Computes the complex absolute value of a tensor.
-		
-		Given a tensor `x` of complex numbers, this operation returns a tensor of type
-		`float32` or `float64` that is the absolute value of each element in `x`. All
-		elements in `x` must be complex numbers of the form \\(a + bj\\). The
-		absolute value is computed as \\( \sqrt{a^2 + b^2}\\).
-		
-		For example:
-		
-		```
-		# tensor 'x' is [[-2.25 + 4.75j], [-3.25 + 5.75j]]
-		tf.complex_abs(x) ==> [5.25594902, 6.60492229]
-		```
-		
-		Args:
-		  x: A `Tensor` of type `complex64` or `complex128`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `float32` or `float64`.
-	**/
-	static public function complex_abs(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Concatenates tensors along one dimension.
 		
-		Concatenates the list of tensors `values` along dimension `concat_dim`.  If
-		`values[i].shape = [D0, D1, ... Dconcat_dim(i), ...Dn]`, the concatenated
+		Concatenates the list of tensors `values` along dimension `axis`.  If
+		`values[i].shape = [D0, D1, ... Daxis(i), ...Dn]`, the concatenated
 		result has shape
 		
-		    [D0, D1, ... Rconcat_dim, ...Dn]
+		    [D0, D1, ... Raxis, ...Dn]
 		
 		where
 		
-		    Rconcat_dim = sum(Dconcat_dim(i))
+		    Raxis = sum(Daxis(i))
 		
-		That is, the data from the input tensors is joined along the `concat_dim`
+		That is, the data from the input tensors is joined along the `axis`
 		dimension.
 		
 		The number of dimensions of the input tensors must match, and all dimensions
-		except `concat_dim` must be equal.
+		except `axis` must be equal.
 		
 		For example:
 		
 		```python
 		t1 = [[1, 2, 3], [4, 5, 6]]
 		t2 = [[7, 8, 9], [10, 11, 12]]
-		tf.concat(0, [t1, t2]) ==> [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
-		tf.concat(1, [t1, t2]) ==> [[1, 2, 3, 7, 8, 9], [4, 5, 6, 10, 11, 12]]
+		tf.concat([t1, t2], 0) ==> [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+		tf.concat([t1, t2], 1) ==> [[1, 2, 3, 7, 8, 9], [4, 5, 6, 10, 11, 12]]
 		
 		# tensor t3 with shape [2, 3]
 		# tensor t4 with shape [2, 3]
-		tf.shape(tf.concat(0, [t3, t4])) ==> [4, 3]
-		tf.shape(tf.concat(1, [t3, t4])) ==> [2, 6]
+		tf.shape(tf.concat([t3, t4], 0)) ==> [4, 3]
+		tf.shape(tf.concat([t3, t4], 1)) ==> [2, 6]
 		```
 		
-		Note: If you are concatenating along a new axis consider using pack.
+		Note: If you are concatenating along a new axis consider using stack.
 		E.g.
 		
 		```python
-		tf.concat(axis, [tf.expand_dims(t, axis) for t in tensors])
+		tf.concat([tf.expand_dims(t, axis) for t in tensors], axis)
 		```
 		
 		can be rewritten as
 		
 		```python
-		tf.pack(tensors, axis=axis)
+		tf.stack(tensors, axis=axis)
 		```
 		
 		Args:
-		  concat_dim: 0-D `int32` `Tensor`.  Dimension along which to concatenate.
 		  values: A list of `Tensor` objects or a single `Tensor`.
+		  axis: 0-D `int32` `Tensor`.  Dimension along which to concatenate.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` resulting from concatenation of the input tensors.
 	**/
-	static public function concat(concat_dim:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function concat(values:Dynamic, axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Return either fn1() or fn2() based on the boolean predicate `pred`.
+		Return `true_fn()` if the predicate `pred` is true else `false_fn()`. (deprecated arguments)
 		
-		`fn1` and `fn2` both return lists of output tensors. `fn1` and `fn2` must have
-		the same non-zero number and type of outputs.
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		fn1/fn2 are deprecated in favor of the true_fn/false_fn arguments.
+		
+		`true_fn` and `false_fn` both return lists of output tensors. `true_fn` and
+		`false_fn` must have the same non-zero number and type of outputs.
 		
 		Note that the conditional execution applies only to the operations defined in
-		fn1 and fn2. Consider the following simple program:
+		`true_fn` and `false_fn`. Consider the following simple program:
 		
 		```python
-		z = tf.mul(a, b)
+		z = tf.multiply(a, b)
 		result = tf.cond(x < y, lambda: tf.add(x, z), lambda: tf.square(y))
 		```
 		
-		If x < y, the tf.add operation will be executed and tf.square
-		operation will not be executed. Since z is needed for at least one
-		branch of the cond, the tf.mul operation is always executed, unconditionally.
+		If `x < y`, the `tf.add` operation will be executed and `tf.square`
+		operation will not be executed. Since `z` is needed for at least one
+		branch of the `cond`, the `tf.multiply` operation is always executed,
+		unconditionally.
 		Although this behavior is consistent with the dataflow model of TensorFlow,
 		it has occasionally surprised some users who expected a lazier semantics.
 		
+		Note that `cond` calls `true_fn` and `false_fn` *exactly once* (inside the
+		call to `cond`, and not at all during `Session.run()`). `cond`
+		stitches together the graph fragments created during the `true_fn` and
+		`false_fn` calls with some additional graph nodes to ensure that the right
+		branch gets executed depending on the value of `pred`.
+		
+		`tf.cond` supports nested structures as implemented in
+		`tensorflow.python.util.nest`. Both `true_fn` and `false_fn` must return the
+		same (possibly nested) value structure of lists, tuples, and/or named tuples.
+		Singleton lists and tuples form the only exceptions to this: when returned by
+		`true_fn` and/or `false_fn`, they are implicitly unpacked to single values.
+		This behavior is disabled by passing `strict=True`.
+		
 		Args:
-		  pred: A scalar determining whether to return the result of `fn1` or `fn2`.
-		  fn1: The callable to be performed if pred is true.
-		  fn2: The callable to be performed if pref is false.
+		  pred: A scalar determining whether to return the result of `true_fn` or
+		    `false_fn`.
+		  true_fn: The callable to be performed if pred is true.
+		  false_fn: The callable to be performed if pred is false.
+		  strict: A boolean that enables/disables 'strict' mode; see above.
 		  name: Optional name prefix for the returned tensors.
 		
 		Returns:
-		  Tensors returned by the call to either `fn1` or `fn2`. If the callables
-		  return a singleton list, the element is extracted from the list.
+		  Tensors returned by the call to either `true_fn` or `false_fn`. If the
+		  callables return a singleton list, the element is extracted from the list.
 		
 		Raises:
-		  TypeError: if `fn1` or `fn2` is not callable.
-		  ValueError: if `fn1` and `fn2` do not return the same number of tensors, or
-		              return tensors of different types.
+		  TypeError: if `true_fn` or `false_fn` is not callable.
+		  ValueError: if `true_fn` and `false_fn` do not return the same number of
+		    tensors, or return tensors of different types.
 		
 		Example:
 		
 		```python
 		  x = tf.constant(2)
 		  y = tf.constant(5)
-		  def f1(): return tf.mul(x, 17)
+		  def f1(): return tf.multiply(x, 17)
 		  def f2(): return tf.add(y, 23)
-		  r = cond(tf.less(x, y), f1, f2)
+		  r = tf.cond(tf.less(x, y), f1, f2)
 		  # r is set to f1().
 		  # Operations in f2 (e.g., tf.add) are not executed.
 		```
 	**/
-	static public function cond(pred:Dynamic, fn1:Dynamic, fn2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function cond(pred:Dynamic, ?true_fn:Dynamic, ?false_fn:Dynamic, ?strict:Dynamic, ?name:Dynamic, ?fn1:Dynamic, ?fn2:Dynamic):Dynamic;
+	/**
+		Computes the confusion matrix from predictions and labels.
+		
+		Calculate the Confusion Matrix for a pair of prediction and
+		label 1-D int arrays.
+		
+		The matrix columns represent the prediction labels and the rows represent the
+		real labels. The confusion matrix is always a 2-D array of shape `[n, n]`,
+		where `n` is the number of valid labels for a given classification task. Both
+		prediction and labels must be 1-D arrays of the same shape in order for this
+		function to work.
+		
+		If `num_classes` is None, then `num_classes` will be set to the one plus
+		the maximum value in either predictions or labels.
+		Class labels are expected to start at 0. E.g., if `num_classes` was
+		three, then the possible labels would be `[0, 1, 2]`.
+		
+		If `weights` is not `None`, then each prediction contributes its
+		corresponding weight to the total value of the confusion matrix cell.
+		
+		For example:
+		
+		```python
+		  tf.contrib.metrics.confusion_matrix([1, 2, 4], [2, 2, 4]) ==>
+		      [[0 0 0 0 0]
+		       [0 0 1 0 0]
+		       [0 0 1 0 0]
+		       [0 0 0 0 0]
+		       [0 0 0 0 1]]
+		```
+		
+		Note that the possible labels are assumed to be `[0, 1, 2, 3, 4]`,
+		resulting in a 5x5 confusion matrix.
+		
+		Args:
+		  labels: 1-D `Tensor` of real labels for the classification task.
+		  predictions: 1-D `Tensor` of predictions for a given classification.
+		  num_classes: The possible number of labels the classification task can
+		               have. If this value is not provided, it will be calculated
+		               using both predictions and labels array.
+		  dtype: Data type of the confusion matrix.
+		  name: Scope name.
+		  weights: An optional `Tensor` whose shape matches `predictions`.
+		
+		Returns:
+		  A k X k matrix representing the confusion matrix, where k is the number of
+		  possible labels in the classification task.
+		
+		Raises:
+		  ValueError: If both predictions and labels are not 1-D vectors and have
+		    mismatched shapes, or if `weights` is not `None` and its shape doesn't
+		    match `predictions`.
+	**/
+	static public function confusion_matrix(labels:Dynamic, predictions:Dynamic, ?num_classes:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
 		Returns the complex conjugate of a complex number.
 		
@@ -2019,19 +1797,22 @@ package tensorflow;
 		
 		For example:
 		
-		```
-		# tensor 'input' is [-2.25 + 4.75j, 3.25 + 5.75j]
-		tf.conj(input) ==> [-2.25 - 4.75j, 3.25 - 5.75j]
-		```
+		    # tensor 'input' is [-2.25 + 4.75j, 3.25 + 5.75j]
+		    tf.conj(input) ==> [-2.25 - 4.75j, 3.25 - 5.75j]
+		
+		If `x` is real, it is returned unchanged.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		  x: `Tensor` to conjugate.  Must have numeric type.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`.
+		  A `Tensor` that is the conjugate of `x` (with the same type).
+		
+		Raises:
+		  TypeError: If `x` is not a numeric tensor.
 	**/
-	static public function conj(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conj(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Creates a constant tensor.
 		
@@ -2064,33 +1845,20 @@ package tensorflow;
 		 ```
 		
 		Args:
-		  value:     A constant value (or list) of output type `dtype`.
+		  value:          A constant value (or list) of output type `dtype`.
 		
-		  dtype:     The type of the elements of the resulting tensor.
+		  dtype:          The type of the elements of the resulting tensor.
 		
-		  shape:     Optional dimensions of resulting tensor.
+		  shape:          Optional dimensions of resulting tensor.
 		
-		  name:      Optional name for the tensor.
+		  name:           Optional name for the tensor.
+		
+		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
 		  A Constant Tensor.
 	**/
-	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Returns an initializer that generates tensors with a single value.
-		
-		Args:
-		  value: A Python scalar. All elements of the initialized variable
-		    will be set to this value.
-		  dtype: The data type. Only floating point types are supported.
-		
-		Returns:
-		  An initializer that generates tensors with a single value.
-		
-		Raises:
-		  ValueError: if `dtype` is not a floating point type.
-	**/
-	static public function constant_initializer(?value:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	/**
 		Wrapper for `Graph.container()` using the default graph.
 		
@@ -2105,7 +1873,7 @@ package tensorflow;
 	/**
 		Wrapper for `Graph.control_dependencies()` using the default graph.
 		
-		See [`Graph.control_dependencies()`](../../api_docs/python/framework.md#Graph.control_dependencies)
+		See @{tf.Graph.control_dependencies}
 		for more details.
 		
 		Args:
@@ -2150,17 +1918,20 @@ package tensorflow;
 		  dtype: Optional element type for the returned tensor. If missing, the
 		    type is inferred from the type of `value`.
 		  name: Optional name to use if a new `Tensor` is created.
-		  as_ref: True if we want the result as a ref tensor. Only used if a new
-		    `Tensor` is created.
+		  preferred_dtype: Optional element type for the returned tensor,
+		    used when dtype is None. In some cases, a caller may not have a
+		    dtype in mind when converting to a tensor, so preferred_dtype
+		    can be used as a soft preference.  If the conversion to
+		    `preferred_dtype` is not possible, this argument has no effect.
 		
 		Returns:
-		  A `Tensor` based on `value`.
+		  An `Output` based on `value`.
 		
 		Raises:
 		  TypeError: If no conversion function is registered for `value`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
 	**/
-	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
 	/**
 		Converts the given object to a `Tensor` or an `IndexedSlices`.
 		
@@ -2174,7 +1945,6 @@ package tensorflow;
 		  dtype: (Optional.) The required `DType` of the returned `Tensor` or
 		    `IndexedSlices`.
 		  name: (Optional.) A name to use if a new `Tensor` is created.
-		  as_ref: True if the caller wants the results as ref tensors.
 		
 		Returns:
 		  An `Tensor`, `IndexedSlices`, or `SparseTensor` based on `value`.
@@ -2182,7 +1952,24 @@ package tensorflow;
 		Raises:
 		  ValueError: If `dtype` does not match the element type of `value`.
 	**/
-	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	static public function convert_to_tensor_or_indexed_slices(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Converts value to a `SparseTensor` or `Tensor`.
+		
+		Args:
+		  value: A `SparseTensor`, `SparseTensorValue`, or an object whose type has a
+		    registered `Tensor` conversion function.
+		  dtype: Optional element type for the returned tensor. If missing, the
+		    type is inferred from the type of `value`.
+		  name: Optional name to use if a new `Tensor` is created.
+		
+		Returns:
+		  A `SparseTensor` or `Tensor` based on `value`.
+		
+		Raises:
+		  RuntimeError: If result type is incompatible with `dtype`.
+	**/
+	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes cos of x element-wise.
 		
@@ -2195,10 +1982,47 @@ package tensorflow;
 	**/
 	static public function cos(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Increments 'ref' until it reaches 'limit'.
+		Computes number of nonzero elements across dimensions of a tensor.
 		
-		This operation outputs "ref" after the update is done.  This makes it
-		easier to chain operations that need to use the updated value.
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		**NOTE** Floating point comparison to zero is done by exact floating point
+		equality check.  Small values are **not** rounded to zero for purposes of
+		the nonzero check.
+		
+		For example:
+		
+		```python
+		# 'x' is [[0, 1, 0]
+		#         [1, 1, 0]]
+		tf.count_nonzero(x) ==> 3
+		tf.count_nonzero(x, 0) ==> [1, 2, 0]
+		tf.count_nonzero(x, 1) ==> [1, 2]
+		tf.count_nonzero(x, 1, keep_dims=True) ==> [[1], [2]]
+		tf.count_nonzero(x, [0, 1]) ==> 3
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should be of numeric type, or `bool`.
+		  axis: The dimensions to reduce. If `None` (the default),
+		    reduces all dimensions.
+		  keep_dims: If true, retains reduced dimensions with length 1.
+		  dtype: The output dtype; defaults to `tf.int64`.
+		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
+		
+		Returns:
+		  The reduced tensor (number of nonzero values).
+	**/
+	static public function count_nonzero(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
+	/**
+		Increments 'ref' until it reaches 'limit'.
 		
 		Args:
 		  ref: A mutable `Tensor`. Must be one of the following types: `int32`, `int64`.
@@ -2243,7 +2067,7 @@ package tensorflow;
 		  trainable: If True also add all the variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES`.
 		  collections: List of graph collections keys to add the variables to.
-		    Defaults to `[GraphKeys.VARIABLES]`.
+		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]`.
 		  name: Optional name for the full variable.  Defaults to
 		    `"PartitionedVariable"` and gets uniquified automatically.
 		  reuse: Boolean or `None`; if `True` and name is set, it would reuse
@@ -2290,7 +2114,7 @@ package tensorflow;
 		performed
 		instead:
 		```prettyprint
-		tf.cumprod([a, b, c], exclusive=True) ==> [0, a, a * b]
+		tf.cumprod([a, b, c], exclusive=True) ==> [1, a, a * b]
 		```
 		
 		By setting the `reverse` kwarg to `True`, the cumprod is performed in the
@@ -2302,7 +2126,7 @@ package tensorflow;
 		
 		The `reverse` and `exclusive` kwargs can also be combined:
 		```prettyprint
-		tf.cumprod([a, b, c], exclusive=True, reverse=True) ==> [b * c, c, 0]
+		tf.cumprod([a, b, c], exclusive=True, reverse=True) ==> [b * c, c, 1]
 		```
 		
 		Args:
@@ -2310,6 +2134,7 @@ package tensorflow;
 		     `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`,
 		     `complex128`, `qint8`, `quint8`, `qint32`, `half`.
 		  axis: A `Tensor` of type `int32` (default: 0).
+		  exclusive: If `True`, perform exclusive cumprod.
 		  reverse: A `bool` (default: False).
 		  name: A name for the operation (optional).
 		
@@ -2348,14 +2173,29 @@ package tensorflow;
 		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`,
 		     `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`,
 		     `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		     axis: A `Tensor` of type `int32` (default: 0).
-		     reverse: A `bool` (default: False).
-		     name: A name for the operation (optional).
+		  axis: A `Tensor` of type `int32` (default: 0).
+		  exclusive: If `True`, perform exclusive cumsum.
+		  reverse: A `bool` (default: False).
+		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
 	static public function cumsum(x:Dynamic, ?axis:Dynamic, ?exclusive:Dynamic, ?reverse:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decode web-safe base64-encoded strings.
+		
+		Input may or may not have padding at the end. See EncodeBase64 for padding.
+		Web-safe means that input must use - and _ instead of + and /.
+		
+		Args:
+		  input: A `Tensor` of type `string`. Base64 strings to decode.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`. Decoded strings.
+	**/
+	static public function decode_base64(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Convert CSV records to tensors. Each column maps to one tensor.
 		
@@ -2407,7 +2247,7 @@ package tensorflow;
 		Args:
 		  bytes: A `Tensor` of type `string`.
 		    All the elements must have the same length.
-		  out_type: A `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
+		  out_type: A `tf.DType` from: `tf.half, tf.float32, tf.float64, tf.int32, tf.uint8, tf.int16, tf.int8, tf.int64`.
 		  little_endian: An optional `bool`. Defaults to `True`.
 		    Whether the input `bytes` are in little-endian order.
 		    Ignored for `out_type` values that are stored in a single byte like
@@ -2469,14 +2309,14 @@ package tensorflow;
 		
 		For example, given this input of shape `[1, 1, 1, 4]`, and a block size of 2:
 		
-		```prettyprint
+		```
 		x = [[[[1, 2, 3, 4]]]]
 		
 		```
 		
 		This operation will output a tensor of shape `[1, 2, 2, 1]`:
 		
-		```prettyprint
+		```
 		   [[[[1], [2]],
 		     [[3], [4]]]]
 		```
@@ -2488,14 +2328,14 @@ package tensorflow;
 		
 		For an input tensor with larger depth, here of shape `[1, 1, 1, 12]`, e.g.
 		
-		```prettyprint
+		```
 		x = [[[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]]
 		```
 		
 		This operation, for block size of 2, will return the following tensor of shape
 		`[1, 2, 2, 3]`
 		
-		```prettyprint
+		```
 		   [[[[1, 2, 3], [4, 5, 6]],
 		     [[7, 8, 9], [10, 11, 12]]]]
 		
@@ -2503,7 +2343,7 @@ package tensorflow;
 		
 		Similarly, for the following input of shape `[1 2 2 4]`, and a block size of 2:
 		
-		```prettyprint
+		```
 		x =  [[[[1, 2, 3, 4],
 		       [5, 6, 7, 8]],
 		      [[9, 10, 11, 12],
@@ -2512,7 +2352,7 @@ package tensorflow;
 		
 		the operator will return the following tensor of shape `[1 4 4 1]`:
 		
-		```prettyprint
+		```
 		x = [[ [1],   [2],  [5],  [6]],
 		     [ [3],   [4],  [7],  [8]],
 		     [ [9],  [10], [13],  [14]],
@@ -2530,6 +2370,55 @@ package tensorflow;
 		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function depth_to_space(input:Dynamic, block_size:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Dequantize the 'input' tensor into a float Tensor.
+		
+		[min_range, max_range] are scalar floats that specify the range for
+		the 'input' data. The 'mode' attribute controls exactly which calculations are
+		used to convert the float values to their quantized equivalents.
+		
+		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
+		
+		```
+		if T == qint8, in[i] += (range(T) + 1)/ 2.0
+		out[i] = min_range + (in[i]* (max_range - min_range) / range(T))
+		```
+		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
+		
+		*MIN_COMBINED Mode Example*
+		
+		If the input comes from a QuantizedRelu6, the output type is
+		quint8 (range of 0-255) but the possible range of QuantizedRelu6 is
+		0-6.  The min_range and max_range values are therefore 0.0 and 6.0.
+		Dequantize on quint8 will take each value, cast to float, and multiply
+		by 6 / 255.
+		Note that if quantizedtype is qint8, the operation will additionally add
+		each value by 128 prior to casting.
+		
+		If the mode is 'MIN_FIRST', then this approach is used:
+		
+		```c++
+		number_of_steps = 1 << (# of bits in T)
+		range_adjust = number_of_steps / (number_of_steps - 1)
+		range = (range_max - range_min) * range_adjust
+		range_scale = range / number_of_steps
+		const double offset_input = static_cast<double>(input) - lowest_quantized;
+		result = range_min + ((input - numeric_limits<T>::min()) * range_scale)
+		```
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
+		  min_range: A `Tensor` of type `float32`.
+		    The minimum scalar value possibly produced for the input.
+		  max_range: A `Tensor` of type `float32`.
+		    The maximum scalar value possibly produced for the input.
+		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST"`. Defaults to `"MIN_COMBINED"`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+	**/
+	static public function dequantize(input:Dynamic, min_range:Dynamic, max_range:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Deserialize and concatenate `SparseTensors` from a serialized minibatch.
 		
@@ -2593,7 +2482,7 @@ package tensorflow;
 		Wrapper for `Graph.device()` using the default graph.
 		
 		See
-		[`Graph.device()`](../../api_docs/python/framework.md#Graph.device)
+		@{tf.Graph.device}
 		for more details.
 		
 		Args:
@@ -2618,7 +2507,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# 'diagonal' is [1, 2, 3, 4]
 		tf.diag(diagonal) ==> [[1, 0, 0, 0]
 		                       [0, 2, 0, 0]
@@ -2627,7 +2516,7 @@ package tensorflow;
 		```
 		
 		Args:
-		  diagonal: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `complex64`.
+		  diagonal: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		    Rank k tensor where k is at most 3.
 		  name: A name for the operation (optional).
 		
@@ -2648,7 +2537,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# 'input' is [[1, 0, 0, 0]
 		              [0, 2, 0, 0]
 		              [0, 0, 3, 0]
@@ -2658,7 +2547,7 @@ package tensorflow;
 		```
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `complex64`.
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		    Rank k tensor where k is 2, 4, or 6.
 		  name: A name for the operation (optional).
 		
@@ -2680,23 +2569,29 @@ package tensorflow;
 	**/
 	static public function digamma(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns x / y element-wise.
+		Divides x / y elementwise (using Python 2 division operator semantics).
 		
-		*NOTE*: `Div` supports broadcasting. More about broadcasting
-		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		NOTE: Prefer using the Tensor division operator or tf.divide which obey Python
+		division operator semantics.
+		
+		This function divides `x` and `y`, forcing Python 2.7 semantics. That is,
+		if one of `x` or `y` is a float, then the result will be a float.
+		Otherwise, the output will be an integer type. Flooring semantics are used
+		for integer division.
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
-		  y: A `Tensor`. Must have the same type as `x`.
+		  x: `Tensor` numerator of real numeric type.
+		  y: `Tensor` denominator of real numeric type.
 		  name: A name for the operation (optional).
-		
 		Returns:
-		  A `Tensor`. Has the same type as `x`.
+		  `x / y` returns the quotient of x and y.
 	**/
 	static public function div(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	/**
+		Computes Python style division of `x` by `y`.
+	**/
+	static public function divide(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	static public var double : Dynamic;
-	static public var double_ref : Dynamic;
 	/**
 		Partitions `data` into `num_partitions` tensors using indices from `partitions`.
 		
@@ -2706,30 +2601,36 @@ package tensorflow;
 		dimension of `outputs[i]` is the number of entries in `partitions` equal to `i`.
 		In detail,
 		
+		```python
 		    outputs[i].shape = [sum(partitions == i)] + data.shape[partitions.ndim:]
 		
 		    outputs[i] = pack([data[js, ...] for js if partitions[js] == i])
+		```
 		
 		`data.shape` must start with `partitions.shape`.
 		
 		For example:
 		
-		    # Scalar partitions
+		```python
+		    # Scalar partitions.
 		    partitions = 1
 		    num_partitions = 2
 		    data = [10, 20]
 		    outputs[0] = []  # Empty with shape [0, 2]
 		    outputs[1] = [[10, 20]]
 		
-		    # Vector partitions
+		    # Vector partitions.
 		    partitions = [0, 0, 1, 1, 0]
 		    num_partitions = 2
 		    data = [10, 20, 30, 40, 50]
 		    outputs[0] = [10, 20, 50]
 		    outputs[1] = [30, 40]
+		```
+		
+		See `dynamic_stitch` for an example on how to merge partitions back.
 		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/DynamicPartition.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/DynamicPartition.png" alt>
 		</div>
 		
 		Args:
@@ -2741,7 +2642,7 @@ package tensorflow;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A list of `num_partitions` `Tensor` objects of the same type as data.
+		  A list of `num_partitions` `Tensor` objects with the same type as `data`.
 	**/
 	static public function dynamic_partition(data:Dynamic, partitions:Dynamic, num_partitions:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2749,15 +2650,19 @@ package tensorflow;
 		
 		Builds a merged tensor such that
 		
+		```python
 		    merged[indices[m][i, ..., j], ...] = data[m][i, ..., j, ...]
+		```
 		
 		For example, if each `indices[m]` is scalar or vector, we have
 		
-		    # Scalar indices
+		```python
+		    # Scalar indices:
 		    merged[indices[m], ...] = data[m][...]
 		
-		    # Vector indices
+		    # Vector indices:
 		    merged[indices[m][i], ...] = data[m][i, ...]
+		```
 		
 		Each `data[i].shape` must start with the corresponding `indices[i].shape`,
 		and the rest of `data[i].shape` must be constant w.r.t. `i`.  That is, we
@@ -2772,6 +2677,7 @@ package tensorflow;
 		
 		For example:
 		
+		```python
 		    indices[0] = 6
 		    indices[1] = [4, 1]
 		    indices[2] = [[5, 2], [0, 3]]
@@ -2780,14 +2686,33 @@ package tensorflow;
 		    data[2] = [[[51, 52], [21, 22]], [[1, 2], [31, 32]]]
 		    merged = [[1, 2], [11, 12], [21, 22], [31, 32], [41, 42],
 		              [51, 52], [61, 62]]
+		```
+		
+		This method can be used to merge partitions created by `dynamic_partition`
+		as illustrated on the following example:
+		
+		```python
+		    # Apply function (increments x_i) on elements for which a certain condition
+		    # apply (x_i != -1 in this example).
+		    x=tf.constant([0.1, -1., 5.2, 4.3, -1., 7.4])
+		    condition_mask=tf.not_equal(x,tf.constant(-1.))
+		    partitioned_data = tf.dynamic_partition(
+		        x, tf.cast(condition_mask, tf.int32) , 2)
+		    partitioned_data[1] = partitioned_data[1] + 1.0
+		    condition_indices = tf.dynamic_partition(
+		        tf.range(tf.shape(x)[0]), tf.cast(condition_mask, tf.int32) , 2)
+		    x = tf.dynamic_stitch(condition_indices, partitioned_data)
+		    # Here x=[1.1, -1., 6.2, 5.3, -1, 8.4], the -1. values remain
+		    # unchanged.
+		```
 		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/DynamicStitch.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/DynamicStitch.png" alt>
 		</div>
 		
 		Args:
-		  indices: A list of at least 2 `Tensor` objects of type `int32`.
-		  data: A list with the same number of `Tensor` objects as `indices` of `Tensor` objects of the same type.
+		  indices: A list of at least 1 `Tensor` objects with type `int32`.
+		  data: A list with the same length as `indices` of `Tensor` objects with the same type.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -2855,6 +2780,96 @@ package tensorflow;
 	**/
 	static public function edit_distance(hypothesis:Dynamic, truth:Dynamic, ?normalize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		A generalized contraction between tensors of arbitrary dimension.
+		
+		This function returns a tensor whose elements are defined by `equation`,
+		which is written in a shorthand form inspired by the Einstein summation
+		convention.  As an example, consider multiplying two matrices
+		A and B to form a matrix C.  The elements of C are given by:
+		
+		```
+		  C[i,k] = sum_j A[i,j] * B[j,k]
+		```
+		
+		The corresponding `equation` is:
+		
+		```
+		  ij,jk->ik
+		```
+		
+		In general, the `equation` is obtained from the more familiar element-wise
+		equation by
+		  1. removing variable names, brackets, and commas,
+		  2. replacing "*" with ",",
+		  3. dropping summation signs, and
+		  4. moving the output to the right, and replacing "=" with "->".
+		
+		Many common operations can be expressed in this way.  For example:
+		
+		```python
+		# Matrix multiplication
+		>>> einsum('ij,jk->ik', m0, m1)  # output[i,k] = sum_j m0[i,j] * m1[j, k]
+		
+		# Dot product
+		>>> einsum('i,i->', u, v)  # output = sum_i u[i]*v[i]
+		
+		# Outer product
+		>>> einsum('i,j->ij', u, v)  # output[i,j] = u[i]*v[j]
+		
+		# Transpose
+		>>> einsum('ij->ji', m)  # output[j,i] = m[i,j]
+		
+		# Batch matrix multiplication
+		>>> einsum('aij,ajk->aik', s, t)  # out[a,i,k] = sum_j s[a,i,j] * t[a, j, k]
+		```
+		
+		This function behaves like `numpy.einsum`, but does not support:
+		
+		* Ellipses (subscripts like `ij...,jk...->ik...`)
+		* Subscripts where an axis appears more than once for a single input
+		  (e.g. `ijj,k->ik`).
+		* Subscripts that are summed across multiple inputs (e.g., `ij,ij,jk->ik`).
+		
+		Args:
+		  equation: a `str` describing the contraction, in the same format as
+		    `numpy.einsum`.
+		  *inputs: the inputs to contract (each one a `Tensor`), whose shapes should
+		    be consistent with `equation`.
+		
+		Returns:
+		  The contracted `Tensor`, with shape determined by `equation`.
+		
+		Raises:
+		  ValueError: If
+		    - the format of `equation` is incorrect,
+		    - the number of inputs implied by `equation` does not match `len(inputs)`,
+		    - an axis appears in the output subscripts but not in any of the inputs,
+		    - the number of dimensions of an input differs from the number of
+		      indices in its subscript, or
+		    - the input shapes are inconsistent along a particular axis.
+	**/
+	static public function einsum(equation:Dynamic, ?inputs:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Encode strings into web-safe base64 format.
+		
+		Refer to the following article for more information on base64 format:
+		en.wikipedia.org/wiki/Base64. Base64 strings may have padding with '=' at the
+		end so that the encoded has length multiple of 4. See Padding section of the
+		link above.
+		
+		Web-safe means that the encoder uses - and _ instead of + and /.
+		
+		Args:
+		  input: A `Tensor` of type `string`. Strings to be encoded.
+		  pad: An optional `bool`. Defaults to `False`.
+		    Bool whether padding is applied at the ends.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`. Input strings encoded in base64.
+	**/
+	static public function encode_base64(input:Dynamic, ?pad:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns the truth value of (x == y) element-wise.
 		
 		*NOTE*: `Equal` supports broadcasting. More about broadcasting
@@ -2907,9 +2922,9 @@ package tensorflow;
 		Inserts a dimension of 1 into a tensor's shape.
 		
 		Given a tensor `input`, this operation inserts a dimension of 1 at the
-		dimension index `dim` of `input`'s shape. The dimension index `dim` starts at
-		zero; if you specify a negative number for `dim` it is counted backward from
-		the end.
+		dimension index `axis` of `input`'s shape. The dimension index `axis` starts
+		at zero; if you specify a negative number for `axis` it is counted backward
+		from the end.
 		
 		This operation is useful if you want to add a batch dimension to a single
 		element. For example, if you have a single image of shape `[height, width,
@@ -2918,7 +2933,7 @@ package tensorflow;
 		
 		Other examples:
 		
-		```prettyprint
+		```python
 		# 't' is a tensor of shape [2]
 		shape(expand_dims(t, 0)) ==> [1, 2]
 		shape(expand_dims(t, 1)) ==> [2, 1]
@@ -2939,17 +2954,32 @@ package tensorflow;
 		
 		Args:
 		  input: A `Tensor`.
-		  dim: A `Tensor` of type `int32`.
-		    0-D (scalar). Specifies the dimension index at which to
+		  axis: 0-D (scalar). Specifies the dimension index at which to
 		    expand the shape of `input`.
+		  name: The name of the output `Tensor`.
+		  dim: 0-D (scalar). Equivalent to `axis`, to be deprecated.
+		
+		Returns:
+		  A `Tensor` with the same data as `input`, but its shape has an additional
+		  dimension of size 1 added.
+		
+		Raises:
+		  ValueError: if both `dim` and `axis` are specified.
+	**/
+	static public function expand_dims(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Computes exponential of x - 1 element-wise.
+		
+		I.e., \\(y = (\exp x) - 1\\).
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`.
-		  Contains the same data as `input`, but its shape has an additional
-		  dimension of size 1 added.
+		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function expand_dims(input:Dynamic, dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function expm1(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Extract `patches` from `images` and put them in the "depth" output dimension.
 		
@@ -2965,16 +2995,18 @@ package tensorflow;
 		    1-D of length 4. Must be: `[1, rate_rows, rate_cols, 1]`. This is the
 		    input stride, specifying how far two consecutive patch samples are in the
 		    input. Equivalent to extracting patches with
-		    `patch_sizes_eff = patch_sizes + (patch_sizes - 1) * (rates - 1), followed by
+		    `patch_sizes_eff = patch_sizes + (patch_sizes - 1) * (rates - 1)`, followed by
 		    subsampling them spatially by a factor of `rates`.
 		  padding: A `string` from: `"SAME", "VALID"`.
 		    The type of padding algorithm to use.
 		
 		    We specify the size-related attributes as:
 		
+		    ```python
 		          ksizes = [1, ksize_rows, ksize_cols, 1]
 		          strides = [1, strides_rows, strides_cols, 1]
 		          rates = [1, rates_rows, rates_cols, 1]
+		    ```
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -2985,36 +3017,238 @@ package tensorflow;
 	**/
 	static public function extract_image_patches(images:Dynamic, ksizes:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Compute the 1-dimensional discrete Fourier Transform.
+		Construct an identity matrix, or a batch of matrices.
+		
+		```python
+		# Construct one identity matrix.
+		tf.eye(2)
+		==> [[1., 0.],
+		     [0., 1.]]
+		
+		# Construct a batch of 3 identity matricies, each 2 x 2.
+		# batch_identity[i, :, :] is a 2 x 2 identity matrix, i = 0, 1, 2.
+		batch_identity = tf.eye(2, batch_shape=[3])
+		
+		# Construct one 2 x 3 "identity" matrix
+		tf.eye(2, num_columns=3)
+		==> [[ 1.,  0.,  0.],
+		     [ 0.,  1.,  0.]]
+		```
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 vector.
+		  num_rows: Non-negative `int32` scalar `Tensor` giving the number of rows
+		    in each batch matrix.
+		  num_columns: Optional non-negative `int32` scalar `Tensor` giving the number
+		    of columns in each batch matrix.  Defaults to `num_rows`.
+		  batch_shape:  `int32` `Tensor`.  If provided, returned `Tensor` will have
+		    leading batch dimensions of this shape.
+		  dtype:  The type of an element in the resulting `Tensor`
+		  name:  A name for this `Op`.  Defaults to "eye".
+		
+		Returns:
+		  A `Tensor` of shape `batch_shape + [num_rows, num_columns]`
+	**/
+	static public function eye(num_rows:Dynamic, ?num_columns:Dynamic, ?batch_shape:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Fake-quantize the 'inputs' tensor, type float to 'outputs' tensor of same type.
+		
+		Attributes [min; max] define the clamping range for the 'inputs' data.  Op
+		divides this range into 255 steps (total of 256 values), then replaces each
+		'inputs' value with the closest of the quantized step values.
+		'num_bits' is the bitwidth of the quantization; between 2 and 8, inclusive.
+		
+		Quantization is called fake since the output is still in floating point.
+		
+		Args:
+		  inputs: A `Tensor` of type `float32`.
+		  min: An optional `float`. Defaults to `-6`.
+		  max: An optional `float`. Defaults to `6`.
+		  num_bits: An optional `int`. Defaults to `8`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`. The 1D Fourier Transform of `input`.
+		  A `Tensor` of type `float32`.
+	**/
+	static public function fake_quant_with_min_max_args(inputs:Dynamic, ?min:Dynamic, ?max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute gradients for a FakeQuantWithMinMaxArgs operation.
+		
+		Args:
+		  gradients: A `Tensor` of type `float32`.
+		    Backpropagated gradients above the FakeQuantWithMinMaxArgs operation.
+		  inputs: A `Tensor` of type `float32`.
+		    Values passed as inputs to the FakeQuantWithMinMaxArgs operation.
+		  min: An optional `float`. Defaults to `-6`.
+		  max: An optional `float`. Defaults to `6`.
+		  num_bits: An optional `int`. Defaults to `8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+		  Backpropagated gradients below the FakeQuantWithMinMaxArgs operation:
+		  `gradients * (inputs >= min && inputs <= max)`.
+	**/
+	static public function fake_quant_with_min_max_args_gradient(gradients:Dynamic, inputs:Dynamic, ?min:Dynamic, ?max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Fake-quantize the 'inputs' tensor of type float via global float scalars `min`
+		
+		and `max` to 'outputs' tensor of same shape as `inputs`.
+		
+		[min; max] is the clamping range for the 'inputs' data.  Op divides this range
+		into 255 steps (total of 256 values), then replaces each 'inputs' value with the
+		closest of the quantized step values.
+		'num_bits' is the bitwidth of the quantization; between 2 and 8, inclusive.
+		
+		This operation has a gradient and thus allows for training `min` and `max` values.
+		
+		Args:
+		  inputs: A `Tensor` of type `float32`.
+		  min: A `Tensor` of type `float32`.
+		  max: A `Tensor` of type `float32`.
+		  num_bits: An optional `int`. Defaults to `8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+	**/
+	static public function fake_quant_with_min_max_vars(inputs:Dynamic, min:Dynamic, max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute gradients for a FakeQuantWithMinMaxVars operation.
+		
+		Args:
+		  gradients: A `Tensor` of type `float32`.
+		    Backpropagated gradients above the FakeQuantWithMinMaxVars operation.
+		  inputs: A `Tensor` of type `float32`.
+		    Values passed as inputs to the FakeQuantWithMinMaxVars operation.
+		    min, max: Quantization interval, scalar floats.
+		  min: A `Tensor` of type `float32`.
+		  max: A `Tensor` of type `float32`.
+		  num_bits: An optional `int`. Defaults to `8`.
+		    The bitwidth of the quantization; between 2 and 8, inclusive.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (backprops_wrt_input, backprop_wrt_min, backprop_wrt_max).
+		
+		  backprops_wrt_input: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. inputs:
+		    `gradients * (inputs >= min && inputs <= max)`.
+		  backprop_wrt_min: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. min parameter:
+		    `sum(gradients * (inputs < min))`.
+		  backprop_wrt_max: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. max parameter:
+		    `sum(gradients * (inputs > max))`.
+	**/
+	static public function fake_quant_with_min_max_vars_gradient(gradients:Dynamic, inputs:Dynamic, min:Dynamic, max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Fake-quantize the 'inputs' tensor of type float and one of the shapes: `[d]`,
+		
+		`[b, d]` `[b, h, w, d]` via per-channel floats `min` and `max` of shape `[d]`
+		to 'outputs' tensor of same shape as `inputs`.
+		
+		[min; max] is the clamping range for the 'inputs' data in the corresponding
+		depth channel.  Op divides this range into 255 steps (total of 256 values), then
+		replaces each 'inputs' value with the closest of the quantized step values.
+		'num_bits' is the bitwidth of the quantization; between 2 and 8, inclusive.
+		
+		This operation has a gradient and thus allows for training `min` and `max` values.
+		
+		Args:
+		  inputs: A `Tensor` of type `float32`.
+		  min: A `Tensor` of type `float32`.
+		  max: A `Tensor` of type `float32`.
+		  num_bits: An optional `int`. Defaults to `8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+	**/
+	static public function fake_quant_with_min_max_vars_per_channel(inputs:Dynamic, min:Dynamic, max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute gradients for a FakeQuantWithMinMaxVarsPerChannel operation.
+		
+		Args:
+		  gradients: A `Tensor` of type `float32`.
+		    Backpropagated gradients above the FakeQuantWithMinMaxVars operation,
+		    shape one of: `[d]`, `[b, d]`,  `[b, h, w, d]`.
+		  inputs: A `Tensor` of type `float32`.
+		    Values passed as inputs to the FakeQuantWithMinMaxVars operation, shape
+		      same as `gradients`.
+		    min, max: Quantization interval, floats of shape `[d]`.
+		  min: A `Tensor` of type `float32`.
+		  max: A `Tensor` of type `float32`.
+		  num_bits: An optional `int`. Defaults to `8`.
+		    The bitwidth of the quantization; between 2 and 8, inclusive.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (backprops_wrt_input, backprop_wrt_min, backprop_wrt_max).
+		
+		  backprops_wrt_input: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. inputs, shape same as
+		    `inputs`:
+		      `gradients * (inputs >= min && inputs <= max)`.
+		  backprop_wrt_min: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. min parameter, shape `[d]`:
+		    `sum_per_d(gradients * (inputs < min))`.
+		  backprop_wrt_max: A `Tensor` of type `float32`. Backpropagated gradients w.r.t. max parameter, shape `[d]`:
+		    `sum_per_d(gradients * (inputs > max))`.
+	**/
+	static public function fake_quant_with_min_max_vars_per_channel_gradient(gradients:Dynamic, inputs:Dynamic, min:Dynamic, max:Dynamic, ?num_bits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Fast Fourier transform.
+		
+		Computes the 1-dimensional discrete Fourier transform over the inner-most
+		dimension of `input`.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+		  A complex64 tensor of the same shape as `input`. The inner-most
+		    dimension of `input` is replaced with its 1D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.fft
+		  @end_compatibility
 	**/
 	static public function fft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Compute the 2-dimensional discrete Fourier Transform.
+		2D fast Fourier transform.
+		
+		Computes the 2-dimensional discrete Fourier transform over the inner-most
+		2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 matrix.
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`. The 2D Fourier Transform of `input`.
+		  A `Tensor` of type `complex64`.
+		  A complex64 tensor of the same shape as `input`. The inner-most 2
+		    dimensions of `input` are replaced with their 2D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.fft2
+		  @end_compatibility
 	**/
 	static public function fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Compute the 3-dimensional discrete Fourier Transform.
+		3D fast Fourier transform.
+		
+		Computes the 3-dimensional discrete Fourier transform over the inner-most 3
+		dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 3-D tensor.
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`. The 3D Fourier Transform of `input`.
+		  A `Tensor` of type `complex64`.
+		  A complex64 tensor of the same shape as `input`. The inner-most 3
+		    dimensions of `input` are replaced with their 3D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.fftn with 3 dimensions.
+		  @end_compatibility
 	**/
 	static public function fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -3024,7 +3258,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# Output tensor has shape [2, 3].
 		fill([2, 3], 9) ==> [[9, 9, 9]
 		                     [9, 9, 9]]
@@ -3034,18 +3268,31 @@ package tensorflow;
 		  dims: A `Tensor` of type `int32`.
 		    1-D. Represents the shape of the output tensor.
 		  value: A `Tensor`. 0-D (scalar). Value to fill the returned tensor.
+		
+		    @compatibility(numpy)
+		    Equivalent to np.full
+		    @end_compatibility
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `value`.
 	**/
 	static public function fill(dims:Dynamic, value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Partitioner to specify a fixed number of shards along given axis.
+		
+		Args:
+		  num_shards: `int`, number of shards to partition variable.
+		  axis: `int`, axis to partition on.
+		
+		Returns:
+		  A partition function usable as the `partitioner` argument to
+		  `variable_scope`, `get_variable`, and `get_partitioned_variable_list`.
+	**/
+	static public function fixed_size_partitioner(num_shards:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var float16 : Dynamic;
-	static public var float16_ref : Dynamic;
 	static public var float32 : Dynamic;
-	static public var float32_ref : Dynamic;
 	static public var float64 : Dynamic;
-	static public var float64_ref : Dynamic;
 	/**
 		Returns element-wise largest integer not greater than x.
 		
@@ -3058,7 +3305,22 @@ package tensorflow;
 	**/
 	static public function floor(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Divides `x / y` elementwise, rounding down for floating point.
+		Returns x // y element-wise.
+		
+		*NOTE*: `FloorDiv` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function floor_div(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Divides `x / y` elementwise, rounding toward the most negative integer.
 		
 		The same as `tf.div(x,y)` for integers, but uses `tf.floor(tf.div(x,y))` for
 		floating point arguments so that the result is always an integer (though
@@ -3084,6 +3346,24 @@ package tensorflow;
 		  TypeError: If the inputs are complex.
 	**/
 	static public function floordiv(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
+		
+		true, this follows Python semantics in that the result here is consistent
+		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
+		
+		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function floormod(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		foldl on the list of tensors unpacked from `elems` on dimension 0.
 		
@@ -3166,6 +3446,7 @@ package tensorflow;
 		`indices` must be an integer tensor of any dimension (usually 0-D or 1-D).
 		Produces an output tensor with shape `indices.shape + params.shape[1:]` where:
 		
+		```python
 		    # Scalar indices
 		    output[:, ..., :] = params[indices, :, ... :]
 		
@@ -3174,12 +3455,18 @@ package tensorflow;
 		
 		    # Higher rank indices
 		    output[i, ..., j, :, ... :] = params[indices[i, ..., j], :, ..., :]
+		```
 		
 		If `indices` is a permutation and `len(indices) == params.shape[0]` then
 		this operation will permute `params` accordingly.
 		
+		`validate_indices`: DEPRECATED. If this operation is assigned to CPU, values in
+		`indices` are always validated to be within range. If assigned to GPU,
+		out-of-bound indices result in safe but unspecified behavior, which may include
+		raising an error.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/Gather.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/Gather.png" alt>
 		</div>
 		
 		Args:
@@ -3195,35 +3482,39 @@ package tensorflow;
 	/**
 		Gather values or slices from `params` according to `indices`.
 		
-		`params` is a Tensor of rank `R` and `indices` is a Tensor of rank `M`.
+		`indices` is an integer tensor containing indices into `params`.  The last
+		dimension of `indices` can be at most the rank of `params`:
 		
-		`indices` must be integer tensor, containing indices into `params`.
-		It must be shape `[d_0, ..., d_N, R]` where `0 < R <= M`.
+		    indices.shape[-1] <= params.rank
 		
-		The innermost dimension of `indices` (with length `R`) corresponds to
-		indices into elements (if `R = M`) or slices (if `R < M`) along the `N`th
-		dimension of `params`.
+		The last dimension of `indices` corresponds to elements
+		(if `indices.shape[-1] = params.rank`) or slices
+		(if `indices.shape[-1] < params.rank`) along dimension `indices.shape[-1]`
+		of `params`.  The output tensor has shape
 		
-		Produces an output tensor with shape
-		
-		    [d_0, ..., d_{n-1}, params.shape[R], ..., params.shape[M-1]].
+		    indices.shape[:-1] + params.shape[indices.shape[-1]:]
 		
 		Some examples below.
 		
 		Simple indexing into a matrix:
 		
+		```python
 		    indices = [[0, 0], [1, 1]]
 		    params = [['a', 'b'], ['c', 'd']]
 		    output = ['a', 'd']
+		```
 		
 		Slice indexing into a matrix:
 		
+		```python
 		    indices = [[1], [0]]
 		    params = [['a', 'b'], ['c', 'd']]
 		    output = [['c', 'd'], ['a', 'b']]
+		```
 		
 		Indexing into a 3-tensor:
 		
+		```python
 		    indices = [[1]]
 		    params = [[['a0', 'b0'], ['c0', 'd0']],
 		              [['a1', 'b1'], ['c1', 'd1']]]
@@ -3240,27 +3531,32 @@ package tensorflow;
 		    params = [[['a0', 'b0'], ['c0', 'd0']],
 		              [['a1', 'b1'], ['c1', 'd1']]]
 		    output = ['b0', 'b1']
+		```
 		
 		Batched indexing into a matrix:
 		
+		```python
 		    indices = [[[0, 0]], [[0, 1]]]
 		    params = [['a', 'b'], ['c', 'd']]
 		    output = [['a'], ['b']]
+		```
 		
 		Batched slice indexing into a matrix:
 		
+		```python
 		    indices = [[[1]], [[0]]]
 		    params = [['a', 'b'], ['c', 'd']]
 		    output = [[['c', 'd']], [['a', 'b']]]
+		```
 		
 		Batched indexing into a 3-tensor:
 		
+		```python
 		    indices = [[[1]], [[0]]]
 		    params = [[['a0', 'b0'], ['c0', 'd0']],
 		              [['a1', 'b1'], ['c1', 'd1']]]
 		    output = [[[['a1', 'b1'], ['c1', 'd1']]],
 		              [[['a0', 'b0'], ['c0', 'd0']]]]
-		
 		
 		    indices = [[[0, 1], [1, 0]], [[0, 0], [1, 1]]]
 		    params = [[['a0', 'b0'], ['c0', 'd0']],
@@ -3273,23 +3569,24 @@ package tensorflow;
 		    params = [[['a0', 'b0'], ['c0', 'd0']],
 		              [['a1', 'b1'], ['c1', 'd1']]]
 		    output = [['b0', 'b1'], ['d0', 'c1']]
+		```
 		
 		Args:
-		  params: A `Tensor`. `M-D`.  The tensor from which to gather values.
+		  params: A `Tensor`. The tensor from which to gather values.
 		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		    `(N+1)-D`.  Index tensor having shape `[d_0, ..., d_N, R]`.
+		    Index tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `params`.
-		  `(N+M-R)-D`.  Values from `params` gathered from indices given by
-		  `indices`.
+		  Values from `params` gathered from indices given by `indices`, with
+		  shape `indices.shape[:-1] + params.shape[indices.shape[-1]:]`.
 	**/
 	static public function gather_nd(params:Dynamic, indices:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Wrapper for `Graph.get_collection()` using the default graph.
 		
-		See [`Graph.get_collection()`](../../api_docs/python/framework.md#Graph.get_collection)
+		See @{tf.Graph.get_collection}
 		for more details.
 		
 		Args:
@@ -3311,7 +3608,7 @@ package tensorflow;
 	/**
 		Wrapper for `Graph.get_collection_ref()` using the default graph.
 		
-		See [`Graph.get_collection_ref()`](../../api_docs/python/framework.md#Graph.get_collection_ref)
+		See @{tf.Graph.get_collection_ref}
 		for more details.
 		
 		Args:
@@ -3357,6 +3654,88 @@ package tensorflow;
 	**/
 	static public function get_default_session():Dynamic;
 	/**
+		Gets an existing *local* variable or creates a new one.
+		
+		Behavior is the same as in `get_variable`, except that variables are
+		added to the `LOCAL_VARIABLES` collection and `trainable` is set to
+		`False`.
+		This function prefixes the name with the current variable scope
+		and performs reuse checks. See the
+		@{$variable_scope$Variable Scope How To}
+		for an extensive description of how reusing works. Here is a basic example:
+		
+		```python
+		with tf.variable_scope("foo"):
+		    v = tf.get_variable("v", [1])  # v.name == "foo/v:0"
+		    w = tf.get_variable("w", [1])  # w.name == "foo/w:0"
+		with tf.variable_scope("foo", reuse=True):
+		    v1 = tf.get_variable("v")  # The same as v above.
+		```
+		
+		If initializer is `None` (the default), the default initializer passed in
+		the variable scope will be used. If that one is `None` too, a
+		`glorot_uniform_initializer` will be used. The initializer can also be
+		a Tensor, in which case the variable is initialized to this value and shape.
+		
+		Similarly, if the regularizer is `None` (the default), the default regularizer
+		passed in the variable scope will be used (if that is `None` too,
+		then by default no regularization is performed).
+		
+		If a partitioner is provided, a `PartitionedVariable` is returned.
+		Accessing this object as a `Tensor` returns the shards concatenated along
+		the partition axis.
+		
+		Some useful partitioners are available.  See, e.g.,
+		`variable_axis_size_partitioner` and `min_max_variable_partitioner`.
+		
+		Args:
+		  name: The name of the new or existing variable.
+		  shape: Shape of the new or existing variable.
+		  dtype: Type of the new or existing variable (defaults to `DT_FLOAT`).
+		  initializer: Initializer for the variable if one is created.
+		  regularizer: A (Tensor -> Tensor or None) function; the result of
+		    applying it on a newly created variable will be added to the collection
+		    @{tf.GraphKeys.REGULARIZATION_LOSSES} and can be used for regularization.
+		  collections: List of graph collections keys to add the Variable to.
+		    Defaults to `[GraphKeys.LOCAL_VARIABLES]` (see `tf.Variable`).
+		  caching_device: Optional device string or function describing where the
+		    Variable should be cached for reading.  Defaults to the Variable's
+		    device.  If not `None`, caches on another device.  Typical use is to
+		    cache on the device where the Ops using the Variable reside, to
+		    deduplicate copying through `Switch` and other conditional statements.
+		  partitioner: Optional callable that accepts a fully defined `TensorShape`
+		    and `dtype` of the Variable to be created, and returns a list of
+		    partitions for each axis (currently only one axis can be partitioned).
+		  validate_shape: If False, allows the variable to be initialized with a
+		      value of unknown shape. If True, the default, the shape of initial_value
+		      must be known.
+		  use_resource: If False, creates a regular Variable. If true, creates an
+		    experimental ResourceVariable instead with well-defined semantics.
+		    Defaults to False (will later change to True).
+		  custom_getter: Callable that takes as a first argument the true getter, and
+		    allows overwriting the internal get_variable method.
+		    The signature of `custom_getter` should match that of this method,
+		    but the most future-proof version will allow for changes:
+		    `def custom_getter(getter, *args, **kwargs)`.  Direct access to
+		    all `get_variable` parameters is also allowed:
+		    `def custom_getter(getter, name, *args, **kwargs)`.  A simple identity
+		    custom getter that simply creates variables with modified names is:
+		    ```python
+		    def custom_getter(getter, name, *args, **kwargs):
+		      return getter(name + '_suffix', *args, **kwargs)
+		    ```
+		
+		Returns:
+		  The created or existing `Variable` (or `PartitionedVariable`, if a
+		  partitioner was used).
+		
+		Raises:
+		  ValueError: when creating a new variable and shape is not declared,
+		    when violating reuse during variable creation, or when `initializer` dtype
+		    and `dtype` don't match. Reuse is set inside `variable_scope`.
+	**/
+	static public function get_local_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	/**
 		Returns the local seeds an operation should use given an op-specific seed.
 		
 		Given operation-specific seed, `op_seed`, this helper function returns two
@@ -3365,7 +3744,7 @@ package tensorflow;
 		graph, or for only specific operations.
 		
 		For details on how the graph-level seed interacts with op seeds, see
-		[`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed).
+		@{tf.set_random_seed}.
 		
 		Args:
 		  op_seed: integer.
@@ -3399,12 +3778,12 @@ package tensorflow;
 		Example:
 		
 		```python
-		c = tf.mul(a, b)
+		c = tf.multiply(a, b)
 		h = tf.get_session_handle(c)
 		h = sess.run(h)
 		
 		p, a = tf.get_session_tensor(h.handle, tf.float32)
-		b = tf.mul(a, 10)
+		b = tf.multiply(a, 10)
 		c = sess.run(b, feed_dict={p: h.handle})
 		```
 	**/
@@ -3431,12 +3810,12 @@ package tensorflow;
 		Example:
 		
 		```python
-		c = tf.mul(a, b)
+		c = tf.multiply(a, b)
 		h = tf.get_session_handle(c)
 		h = sess.run(h)
 		
 		p, a = tf.get_session_tensor(h.handle, tf.float32)
-		b = tf.mul(a, 10)
+		b = tf.multiply(a, 10)
 		c = sess.run(b, feed_dict={p: h.handle})
 		```
 	**/
@@ -3446,29 +3825,29 @@ package tensorflow;
 		
 		This function prefixes the name with the current variable scope
 		and performs reuse checks. See the
-		[Variable Scope How To](../../how_tos/variable_scope/index.md)
+		@{$variable_scope$Variable Scope How To}
 		for an extensive description of how reusing works. Here is a basic example:
 		
 		```python
 		with tf.variable_scope("foo"):
 		    v = tf.get_variable("v", [1])  # v.name == "foo/v:0"
 		    w = tf.get_variable("w", [1])  # w.name == "foo/w:0"
-		with tf.variable_scope("foo", reuse=True)
+		with tf.variable_scope("foo", reuse=True):
 		    v1 = tf.get_variable("v")  # The same as v above.
 		```
 		
 		If initializer is `None` (the default), the default initializer passed in
 		the variable scope will be used. If that one is `None` too, a
-		`uniform_unit_scaling_initializer` will be used. The initializer can also be
+		`glorot_uniform_initializer` will be used. The initializer can also be
 		a Tensor, in which case the variable is initialized to this value and shape.
 		
 		Similarly, if the regularizer is `None` (the default), the default regularizer
 		passed in the variable scope will be used (if that is `None` too,
 		then by default no regularization is performed).
 		
-		If a partitioner is provided, first a sharded `Variable` is created
-		via `_get_partitioned_variable`, and the return value is a
-		`Tensor` composed of the shards concatenated along the partition axis.
+		If a partitioner is provided, a `PartitionedVariable` is returned.
+		Accessing this object as a `Tensor` returns the shards concatenated along
+		the partition axis.
 		
 		Some useful partitioners are available.  See, e.g.,
 		`variable_axis_size_partitioner` and `min_max_variable_partitioner`.
@@ -3480,11 +3859,11 @@ package tensorflow;
 		  initializer: Initializer for the variable if one is created.
 		  regularizer: A (Tensor -> Tensor or None) function; the result of
 		    applying it on a newly created variable will be added to the collection
-		    GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
+		    @{tf.GraphKeys.REGULARIZATION_LOSSES} and can be used for regularization.
 		  trainable: If `True` also add the variable to the graph collection
-		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
 		  collections: List of graph collections keys to add the Variable to.
-		    Defaults to `[GraphKeys.VARIABLES]` (see tf.Variable).
+		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]` (see `tf.Variable`).
 		  caching_device: Optional device string or function describing where the
 		    Variable should be cached for reading.  Defaults to the Variable's
 		    device.  If not `None`, caches on another device.  Typical use is to
@@ -3496,6 +3875,9 @@ package tensorflow;
 		  validate_shape: If False, allows the variable to be initialized with a
 		      value of unknown shape. If True, the default, the shape of initial_value
 		      must be known.
+		  use_resource: If False, creates a regular Variable. If true, creates an
+		    experimental ResourceVariable instead with well-defined semantics.
+		    Defaults to False (will later change to True).
 		  custom_getter: Callable that takes as a first argument the true getter, and
 		    allows overwriting the internal get_variable method.
 		    The signature of `custom_getter` should match that of this method,
@@ -3510,14 +3892,15 @@ package tensorflow;
 		    ```
 		
 		Returns:
-		  The created or existing variable.
+		  The created or existing `Variable` (or `PartitionedVariable`, if a
+		  partitioner was used).
 		
 		Raises:
 		  ValueError: when creating a new variable and shape is not declared,
-		    or when violating reuse during variable creation. Reuse is set inside
-		    `variable_scope`.
+		    when violating reuse during variable creation, or when `initializer` dtype
+		    and `dtype` don't match. Reuse is set inside `variable_scope`.
 	**/
-	static public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	static public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
 	/**
 		Returns the current variable scope.
 	**/
@@ -3544,6 +3927,31 @@ package tensorflow;
 		  TypeError: If `t_list` is not a sequence.
 	**/
 	static public function global_norm(t_list:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns global variables.
+		
+		Global variables are variables that are shared across machines in a
+		distributed environment. The `Variable()` constructor or `get_variable()`
+		automatically adds new variables to the graph collection
+		`GraphKeys.GLOBAL_VARIABLES`.
+		This convenience function returns the contents of that collection.
+		
+		An alternative to global variables are local variables. See
+		@{tf.local_variables}
+		
+		Returns:
+		  A list of `Variable` objects.
+	**/
+	static public function global_variables():Dynamic;
+	/**
+		Returns an Op that initializes global variables.
+		
+		This is just a shortcut for `variable_initializer(global_variables())`
+		
+		Returns:
+		  An Op that initializes global variables in the graph.
+	**/
+	static public function global_variables_initializer():Dynamic;
 	/**
 		Constructs symbolic partial derivatives of sum of `ys` w.r.t. x in `xs`.
 		
@@ -3623,7 +4031,8 @@ package tensorflow;
 		When this op finishes, all ops in `input` have finished. This op has no
 		output.
 		
-		See also `tuple` and `with_dependencies`.
+		See also @{tf.tuple$tuple} and
+		@{tf.control_dependencies$control_dependencies}.
 		
 		Args:
 		  *inputs: Zero or more tensors to group.
@@ -3638,7 +4047,37 @@ package tensorflow;
 	**/
 	static public function group(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var half : Dynamic;
-	static public var half_ref : Dynamic;
+	/**
+		Constructs the Hessian of sum of `ys` with respect to `x` in `xs`.
+		
+		`hessians()` adds ops to the graph to output the Hessian matrix of `ys`
+		with respect to `xs`.  It returns a list of `Tensor` of length `len(xs)`
+		where each tensor is the Hessian of `sum(ys)`. This function currently
+		only supports evaluating the Hessian with respect to (a list of) one-
+		dimensional tensors.
+		
+		The Hessian is a matrix of second-order partial derivatives of a scalar
+		tensor (see https://en.wikipedia.org/wiki/Hessian_matrix for more details).
+		
+		Args:
+		  ys: A `Tensor` or list of tensors to be differentiated.
+		  xs: A `Tensor` or list of tensors to be used for differentiation.
+		  name: Optional name to use for grouping all the gradient ops together.
+		    defaults to 'hessians'.
+		  colocate_gradients_with_ops: See `gradients()` documentation for details.
+		  gate_gradients: See `gradients()` documentation for details.
+		  aggregation_method: See `gradients()` documentation for details.
+		
+		Returns:
+		  A list of Hessian matrices of `sum(y)` for each `x` in `xs`.
+		
+		Raises:
+		  LookupError: if one of the operations between `xs` and `ys` does not
+		    have a registered gradient function.
+		  ValueError: if the arguments are invalid or not supported. Currently,
+		    this function only supports one-dimensional `x` in `xs`.
+	**/
+	static public function hessians(ys:Dynamic, xs:Dynamic, ?name:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic):Dynamic;
 	/**
 		Return histogram of values.
 		
@@ -3648,9 +4087,9 @@ package tensorflow;
 		
 		Args:
 		  values:  Numeric `Tensor`.
-		  value_range:  Shape [2] `Tensor`.  new_values <= value_range[0] will be
-		    mapped to hist[0], values >= value_range[1] will be mapped to hist[-1].
-		    Must be same dtype as new_values.
+		  value_range:  Shape [2] `Tensor` of same `dtype` as `values`.
+		    values <= value_range[0] will be mapped to hist[0],
+		    values >= value_range[1] will be mapped to hist[-1].
 		  nbins:  Scalar `int32 Tensor`.  Number of histogram bins.
 		  dtype:  dtype for returned histogram.
 		  name:  A name for this operation (defaults to 'histogram_fixed_width').
@@ -3668,33 +4107,11 @@ package tensorflow;
 		
 		with tf.default_session() as sess:
 		  hist = tf.histogram_fixed_width(new_values, value_range, nbins=5)
-		  variables.initialize_all_variables().run()
+		  variables.global_variables_initializer().run()
 		  sess.run(hist) => [2, 1, 1, 0, 2]
 		```
 	**/
 	static public function histogram_fixed_width(values:Dynamic, value_range:Dynamic, ?nbins:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Outputs a `Summary` protocol buffer with a histogram.
-		
-		The generated
-		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
-		has one summary value containing a histogram for `values`.
-		
-		This op reports an `InvalidArgument` error if any value is not finite.
-		
-		Args:
-		  tag: A `string` `Tensor`. 0-D.  Tag to use for the summary value.
-		  values: A real numeric `Tensor`. Any shape. Values to use to
-		    build the histogram.
-		  collections: Optional list of graph collections keys. The new summary op is
-		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
-		  buffer.
-	**/
-	static public function histogram_summary(tag:Dynamic, values:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return a tensor with the same shape and contents as the input tensor or value.
 		
@@ -3707,41 +4124,63 @@ package tensorflow;
 	**/
 	static public function identity(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		.Doc(R"doc(
+		Inverse fast Fourier transform.
 		
-		Compute the inverse 1-dimensional discrete Fourier Transform.
+		Computes the inverse 1-dimensional discrete Fourier transform over the
+		inner-most dimension of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 vector.
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  The inverse 1D Fourier Transform of `input`.
+		  A complex64 tensor of the same shape as `input`. The inner-most
+		    dimension of `input` is replaced with its inverse 1D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.ifft
+		  @end_compatibility
 	**/
 	static public function ifft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Compute the inverse 2-dimensional discrete Fourier Transform.
+		Inverse 2D fast Fourier transform.
+		
+		Computes the inverse 2-dimensional discrete Fourier transform over the
+		inner-most 2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 matrix.
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  The inverse 2D Fourier Transform of `input`.
+		  A complex64 tensor of the same shape as `input`. The inner-most 2
+		    dimensions of `input` are replaced with their inverse 2D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.ifft2
+		  @end_compatibility
 	**/
 	static public function ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Compute the inverse 3-dimensional discrete Fourier Transform.
+		Inverse 3D fast Fourier transform.
+		
+		Computes the inverse 3-dimensional discrete Fourier transform over the
+		inner-most 3 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 3-D tensor.
+		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  The inverse 3D Fourier Transform of `input`.
+		  A complex64 tensor of the same shape as `input`. The inner-most 3
+		    dimensions of `input` are replaced with their inverse 3D Fourier transform.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.fft.ifftn with 3 dimensions.
+		  @end_compatibility
 	**/
 	static public function ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -3749,13 +4188,13 @@ package tensorflow;
 		
 		The lower regularized incomplete Gamma function is defined as:
 		
-		```
-		P(a, x) = gamma(a, x) / Gamma(x) = 1 - Q(a, x)
-		```
+		
+		\\(P(a, x) = gamma(a, x) / Gamma(a) = 1 - Q(a, x)\\)
+		
 		where
-		```
-		gamma(a, x) = int_{0}^{x} t^{a-1} exp(-t) dt
-		```
+		
+		\\(gamma(a, x) = int_{0}^{x} t^{a-1} exp(-t) dt\\)
+		
 		is the lower incomplete Gamma function.
 		
 		Note, above `Q(a, x)` (`Igammac`) is the upper regularized complete
@@ -3775,13 +4214,12 @@ package tensorflow;
 		
 		The upper regularized incomplete Gamma function is defined as:
 		
-		```
-		Q(a, x) = Gamma(a, x) / Gamma(x) = 1 - P(a, x)
-		```
+		\\(Q(a, x) = Gamma(a, x) / Gamma(a) = 1 - P(a, x)\\)
+		
 		where
-		```
-		Gamma(a, x) = int_{x}^{\infty} t^{a-1} exp(-t) dt
-		```
+		
+		\\(Gamma(a, x) = int_{x}^{\infty} t^{a-1} exp(-t) dt\\)
+		
 		is the upper incomplete Gama function.
 		
 		Note, above `P(a, x)` (`Igamma`) is the lower regularized complete
@@ -3801,8 +4239,8 @@ package tensorflow;
 		
 		Given a tensor `input` of complex numbers, this operation returns a tensor of
 		type `float32` or `float64` that is the imaginary part of each element in
-		`input`. All elements in `input` must be complex numbers of the form \(a +
-		bj\), where *a* is the real part and *b* is the imaginary part returned by
+		`input`. All elements in `input` must be complex numbers of the form \\(a +
+		bj\\), where *a* is the real part and *b* is the imaginary part returned by
 		this operation.
 		
 		For example:
@@ -3813,7 +4251,8 @@ package tensorflow;
 		```
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		  input: A `Tensor`. Must be one of the following types: `complex64`,
+		    `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -3821,59 +4260,15 @@ package tensorflow;
 	**/
 	static public function imag(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with images.
-		
-		The summary has up to `max_images` summary values containing images. The
-		images are built from `tensor` which must be 4-D with shape `[batch_size,
-		height, width, channels]` and where `channels` can be:
-		
-		*  1: `tensor` is interpreted as Grayscale.
-		*  3: `tensor` is interpreted as RGB.
-		*  4: `tensor` is interpreted as RGBA.
-		
-		The images have the same number of channels as the input tensor. For float
-		input, the values are normalized one image at a time to fit in the range
-		`[0, 255]`.  `uint8` values are unchanged.  The op uses two different
-		normalization algorithms:
-		
-		*  If the input values are all positive, they are rescaled so the largest one
-		   is 255.
-		
-		*  If any input value is negative, the values are shifted so input value 0.0
-		   is at 127.  They are then rescaled so that either the smallest value is 0,
-		   or the largest one is 255.
-		
-		The `tag` argument is a scalar `Tensor` of type `string`.  It is used to
-		build the `tag` of the summary values:
-		
-		*  If `max_images` is 1, the summary value tag is '*tag* /image'.
-		*  If `max_images` is greater than 1, the summary value tags are
-		   generated sequentially as '*tag* /image/0', '*tag* /image/1', etc.
-		
-		Args:
-		  tag: A scalar `Tensor` of type `string`. Used to build the `tag`
-		    of the summary values.
-		  tensor: A 4-D `uint8` or `float32` `Tensor` of shape `[batch_size, height,
-		    width, channels]` where `channels` is 1, 3, or 4.
-		  max_images: Max number of batch elements to generate images for.
-		  collections: Optional list of ops.GraphKeys.  The collections to add the
-		    summary to.  Defaults to [ops.GraphKeys.SUMMARIES]
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
-		  buffer.
-	**/
-	static public function image_summary(tag:Dynamic, tensor:Dynamic, ?max_images:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Imports the TensorFlow graph in `graph_def` into the Python `Graph`.
+		Imports the graph from `graph_def` into the current default `Graph`.
 		
 		This function provides a way to import a serialized TensorFlow
 		[`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
 		protocol buffer, and extract individual objects in the `GraphDef` as
-		[`Tensor`](#Tensor) and [`Operation`](#Operation) objects. See
-		[`Graph.as_graph_def()`](#Graph.as_graph_def) for a way to create a
-		`GraphDef` proto.
+		@{tf.Tensor} and @{tf.Operation} objects. Once extracted,
+		these objects are placed into the current default `Graph`. See
+		@{tf.Graph.as_graph_def} for a way to create a `GraphDef`
+		proto.
 		
 		Args:
 		  graph_def: A `GraphDef` proto containing operations to be imported into
@@ -3885,7 +4280,8 @@ package tensorflow;
 		    `graph_def` that will be returned as `Operation` objects; and/or
 		    tensor names in `graph_def` that will be returned as `Tensor` objects.
 		  name: (Optional.) A prefix that will be prepended to the names in
-		    `graph_def`. Defaults to `"import"`.
+		    `graph_def`. Note that this does not apply to imported function names.
+		    Defaults to `"import"`.
 		  op_dict: (Optional.) A dictionary mapping op type names to `OpDef` protos.
 		    Must contain an `OpDef` proto for each op type named in `graph_def`.
 		    If omitted, uses the `OpDef` protos registered in the global registry.
@@ -3910,7 +4306,11 @@ package tensorflow;
 	**/
 	static public function import_graph_def(graph_def:Dynamic, ?input_map:Dynamic, ?return_elements:Dynamic, ?name:Dynamic, ?op_dict:Dynamic, ?producer_op_list:Dynamic):Dynamic;
 	/**
-		Returns an Op that initializes all tables of the default graph.
+		Returns an Op that initializes all tables of the default graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Instructions for updating:
+		Use `tf.tables_initializer` instead.
 		
 		Args:
 		  name: Optional name for the initialization op.
@@ -3921,65 +4321,39 @@ package tensorflow;
 	**/
 	static public function initialize_all_tables(?name:Dynamic):Dynamic;
 	/**
-		Returns an Op that initializes all variables.
+		See `tf.global_variables_initializer`. (deprecated)
 		
-		This is just a shortcut for `initialize_variables(all_variables())`
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Instructions for updating:
+		Use `tf.global_variables_initializer` instead.
 		
-		Returns:
-		  An Op that initializes all variables in the graph.
+		  **NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function initialize_all_variables():Dynamic;
 	/**
-		Returns an Op that initializes all local variables.
+		See `tf.local_variables_initializer`. (deprecated)
 		
-		This is just a shortcut for `initialize_variables(local_variables())`
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Instructions for updating:
+		Use `tf.local_variables_initializer` instead.
 		
-		Returns:
-		  An Op that initializes all local variables in the graph.
+		  **NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function initialize_local_variables():Dynamic;
 	/**
-		Returns an Op that initializes a list of variables.
+		See `tf.variables_initializer`. (deprecated)
 		
-		After you launch the graph in a session, you can run the returned Op to
-		initialize all the variables in `var_list`. This Op runs all the
-		initializers of the variables in `var_list` in parallel.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Instructions for updating:
+		Use `tf.variables_initializer` instead.
 		
-		Calling `initialize_variables()` is equivalent to passing the list of
-		initializers to `Group()`.
-		
-		If `var_list` is empty, however, the function still returns an Op that can
-		be run. That Op just has no effect.
-		
-		Args:
-		  var_list: List of `Variable` objects to initialize.
-		  name: Optional name for the returned operation.
-		
-		Returns:
-		  An Op that run the initializers of all the specified variables.
+		  **NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function initialize_variables(var_list:Dynamic, ?name:Dynamic):Dynamic;
 	static public var int16 : Dynamic;
-	static public var int16_ref : Dynamic;
 	static public var int32 : Dynamic;
-	static public var int32_ref : Dynamic;
 	static public var int64 : Dynamic;
-	static public var int64_ref : Dynamic;
 	static public var int8 : Dynamic;
-	static public var int8_ref : Dynamic;
-	/**
-		Computes the reciprocal of x element-wise.
-		
-		I.e., \\(y = 1 / x\\).
-		
-		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `x`.
-	**/
-	static public function inv(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the inverse permutation of a tensor.
 		
@@ -3994,21 +4368,25 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# tensor `x` is [3, 4, 0, 2, 1]
 		invert_permutation(x) ==> [2, 4, 3, 0, 1]
 		```
 		
 		Args:
-		  x: A `Tensor` of type `int32`. 1-D.
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`. 1-D.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `int32`. 1-D.
+		  A `Tensor`. Has the same type as `x`. 1-D.
 	**/
 	static public function invert_permutation(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns which elements of x are finite.
+		
+		@compatibility(numpy)
+		Equivalent to np.isfinite
+		@end_compatibility
 		
 		Args:
 		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
@@ -4021,6 +4399,10 @@ package tensorflow;
 	/**
 		Returns which elements of x are Inf.
 		
+		@compatibility(numpy)
+		Equivalent to np.isinf
+		@end_compatibility
+		
 		Args:
 		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
 		  name: A name for the operation (optional).
@@ -4031,6 +4413,10 @@ package tensorflow;
 	static public function is_inf(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns which elements of x are NaN.
+		
+		@compatibility(numpy)
+		Equivalent to np.isnan
+		@end_compatibility
 		
 		Args:
 		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
@@ -4091,32 +4477,36 @@ package tensorflow;
 		Returns:
 		  Returns a scalar boolean Tensor, `True` if the variable has been
 		  initialized, `False` otherwise.
+		
+		
+		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function is_variable_initialized(variable:Dynamic):Dynamic;
 	/**
-		Computes `ln(|Beta(x)|)`, reducing along the last dimension.
+		Computes \\(ln(|Beta(x)|)\\), reducing along the last dimension.
 		
 		Given one-dimensional `z = [z_0,...,z_{K-1}]`, we define
 		
-		```Beta(z) = \prod_j Gamma(z_j) / Gamma(\sum_j z_j)```
+		$$Beta(z) = \prod_j Gamma(z_j) / Gamma(\sum_j z_j)$$
 		
 		And for `n + 1` dimensional `x` with shape `[N1, ..., Nn, K]`, we define
-		`lbeta(x)[i1, ..., in] = Log(|Beta(x[i1, ..., in, :])|)`.  In other words,
-		the last dimension is treated as the `z` vector.
+		$$lbeta(x)[i1, ..., in] = Log(|Beta(x[i1, ..., in, :])|)$$.
+		
+		In other words, the last dimension is treated as the `z` vector.
 		
 		Note that if `z = [u, v]`, then
-		`Beta(z) = int_0^1 t^{u-1} (1 - t)^{v-1} dt`, which defines the traditional
-		bivariate beta function.
+		\\(Beta(z) = int_0^1 t^{u-1} (1 - t)^{v-1} dt\\), which defines the
+		traditional bivariate beta function.
+		
+		If the last dimension is empty, we follow the convention that the sum over
+		the empty set is zero, and the product is one.
 		
 		Args:
-		  x: A rank `n + 1` `Tensor` with type `float`, or `double`.
+		  x: A rank `n + 1` `Tensor`, `n >= 0` with type `float`, or `double`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  The logarithm of `|Beta(x)|` reducing along the last dimension.
-		
-		Raises:
-		  ValueError:  If `x` is empty with rank one or less.
+		  The logarithm of \\(|Beta(x)|\\) reducing along the last dimension.
 	**/
 	static public function lbeta(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -4178,7 +4568,8 @@ package tensorflow;
 		    First entry in the range.
 		  stop: A `Tensor`. Must have the same type as `start`.
 		    Last entry in the range.
-		  num: A `Tensor` of type `int32`. Number of values to generate.
+		  num: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Number of values to generate.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -4203,85 +4594,14 @@ package tensorflow;
 		    First entry in the range.
 		  stop: A `Tensor`. Must have the same type as `start`.
 		    Last entry in the range.
-		  num: A `Tensor` of type `int32`. Number of values to generate.
+		  num: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Number of values to generate.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `start`. 1-D. The generated values.
 	**/
 	static public function linspace(start:Dynamic, stop:Dynamic, num:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the difference between two lists of numbers or strings.
-		
-		Given a list `x` and a list `y`, this operation returns a list `out` that
-		represents all values that are in `x` but not in `y`. The returned list `out`
-		is sorted in the same order that the numbers appear in `x` (duplicates are
-		preserved). This operation also returns a list `idx` that represents the
-		position of each `out` element in `x`. In other words:
-		
-		`out[i] = x[idx[i]] for i in [0, 1, ..., len(out) - 1]`
-		
-		For example, given this input:
-		
-		```prettyprint
-		x = [1, 2, 3, 4, 5, 6]
-		y = [1, 3, 5]
-		```
-		
-		This operation would return:
-		
-		```prettyprint
-		out ==> [2, 4, 6]
-		idx ==> [1, 3, 5]
-		```
-		
-		Args:
-		  x: A `Tensor`. 1-D. Values to keep.
-		  y: A `Tensor`. Must have the same type as `x`. 1-D. Values to remove.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A tuple of `Tensor` objects (out, idx).
-		  out: A `Tensor`. Has the same type as `x`. 1-D. Values present in `x` but not in `y`.
-		  idx: A `Tensor` of type `int32`. 1-D. Positions of `x` values preserved in `out`.
-	**/
-	static public function list_diff(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the difference between two lists of numbers or strings.
-		
-		Given a list `x` and a list `y`, this operation returns a list `out` that
-		represents all values that are in `x` but not in `y`. The returned list `out`
-		is sorted in the same order that the numbers appear in `x` (duplicates are
-		preserved). This operation also returns a list `idx` that represents the
-		position of each `out` element in `x`. In other words:
-		
-		`out[i] = x[idx[i]] for i in [0, 1, ..., len(out) - 1]`
-		
-		For example, given this input:
-		
-		```prettyprint
-		x = [1, 2, 3, 4, 5, 6]
-		y = [1, 3, 5]
-		```
-		
-		This operation would return:
-		
-		```prettyprint
-		out ==> [2, 4, 6]
-		idx ==> [1, 3, 5]
-		```
-		
-		Args:
-		  x: A `Tensor`. 1-D. Values to keep.
-		  y: A `Tensor`. Must have the same type as `x`. 1-D. Values to remove.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A tuple of `Tensor` objects (out, idx).
-		  out: A `Tensor`. Has the same type as `x`. 1-D. Values present in `x` but not in `y`.
-		  idx: A `Tensor` of type `int32`. 1-D. Positions of `x` values preserved in `out`.
-	**/
-	static public function listdiff(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Loads a TensorFlow plugin, containing file system implementation.
 		
@@ -4307,7 +4627,7 @@ package tensorflow;
 		loading a library. The rules for determining the exact location of the
 		library are platform-specific and are not documented here. When the
 		library is loaded, ops and kernels registered in the library via the
-		REGISTER_* macros are made available in the TensorFlow process. Note
+		`REGISTER_*` macros are made available in the TensorFlow process. Note
 		that ops with the same name as an existing op are rejected and not
 		registered with the process.
 		
@@ -4324,12 +4644,32 @@ package tensorflow;
 	**/
 	static public function load_op_library(library_filename:Dynamic):Dynamic;
 	/**
-		Returns all variables created with collection=[LOCAL_VARIABLES].
+		Returns local variables.
+		
+		Local variables - per process variables, usually not saved/restored to
+		checkpoint and used for temporary or intermediate values.
+		For example, they can be used as counters for metrics computation or
+		number of epochs this machine has read data.
+		The `tf.contrib.framework.local_variable()` function automatically adds the
+		new variable to `GraphKeys.LOCAL_VARIABLES`.
+		This convenience function returns the contents of that collection.
+		
+		An alternative to local variables are global variables. See
+		@{tf.global_variables}
 		
 		Returns:
-		  A list of local Variable objects.
+		  A list of local `Variable` objects.
 	**/
 	static public function local_variables():Dynamic;
+	/**
+		Returns an Op that initializes all local variables.
+		
+		This is just a shortcut for `variable_initializer(local_variables())`
+		
+		Returns:
+		  An Op that initializes all local variables in the graph.
+	**/
+	static public function local_variables_initializer():Dynamic;
 	/**
 		Computes natural logarithm of x element-wise.
 		
@@ -4343,6 +4683,33 @@ package tensorflow;
 		  A `Tensor`. Has the same type as `x`.
 	**/
 	static public function log(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes natural logarithm of (1 + x) element-wise.
+		
+		I.e., \\(y = \log_e (1 + x)\\).
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `complex64`, `complex128`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function log1p(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes log sigmoid of `x` element-wise.
+		
+		Specifically, `y = log(1 / (1 + exp(-x)))`.  For numerical stability,
+		we use `y = -tf.nn.softplus(-x)`.
+		
+		Args:
+		  x: A Tensor with type `float32` or `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A Tensor with the same type as `x`.
+	**/
+	static public function log_sigmoid(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
@@ -4389,6 +4756,21 @@ package tensorflow;
 	**/
 	static public function logical_xor(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Create a numpy ndarray from a tensor.
+		
+		Create a numpy ndarray with the same shape and data as the tensor.
+		
+		Args:
+		  tensor: A TensorProto.
+		
+		Returns:
+		  A numpy array with the tensor contents.
+		
+		Raises:
+		  TypeError: if tensor has unsupported type.
+	**/
+	static public function make_ndarray(tensor:Dynamic):Dynamic;
+	/**
 		Given an arbitrary function, wrap it so that it does variable sharing.
 		
 		This wraps `func_` in a Template and partially evaluates it. Templates are
@@ -4402,7 +4784,7 @@ package tensorflow;
 		   that are intended to be locals can be created by specifying
 		   `tf.Variable(..., trainable=false)`.
 		* The function may use variable scopes and other templates internally to
-		    create and reuse variables, but it shouldn't use `tf.get_variables` to
+		    create and reuse variables, but it shouldn't use `tf.global_variables` to
 		    capture variables that are defined outside of the scope of the function.
 		* Internal scopes and variable names should not depend on any arguments that
 		    are not supplied to `make_template`. In general you will get a ValueError
@@ -4476,6 +4858,9 @@ package tensorflow;
 		  unique_name_: When used, it overrides name_ and is not made unique. If a
 		    template of the same scope/unique_name already exists and reuse is false,
 		    an error is raised. Defaults to None.
+		  custom_getter_: Optional custom getter for variables used in `func_`. See
+		    the @{tf.get_variable} `custom_getter` documentation for
+		    more information.
 		  **kwargs: Keyword arguments to apply to `func_`.
 		
 		Returns:
@@ -4490,11 +4875,52 @@ package tensorflow;
 		Raises:
 		  ValueError: if the name is None.
 	**/
-	static public function make_template(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function make_template(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?custom_getter_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a TensorProto.
+		
+		Args:
+		  values:         Values to put in the TensorProto.
+		  dtype:          Optional tensor_pb2 DataType value.
+		  shape:          List of integers representing the dimensions of tensor.
+		  verify_shape:   Boolean that enables verification of a shape of values.
+		
+		Returns:
+		  A TensorProto. Depending on the type, it may contain data in the
+		  "tensor_content" attribute, which is not directly useful to Python programs.
+		  To access the values you should convert the proto back to a numpy ndarray
+		  with tensor_util.MakeNdarray(proto).
+		
+		Raises:
+		  TypeError:  if unsupported types are provided.
+		  ValueError: if arguments have inappropriate values or if verify_shape is
+		   True and shape of values is not equals to a shape from the argument.
+		
+		make_tensor_proto accepts "values" of a python scalar, a python list, a
+		numpy ndarray, or a numpy scalar.
+		
+		If "values" is a python scalar or a python list, make_tensor_proto
+		first convert it to numpy ndarray. If dtype is None, the
+		conversion tries its best to infer the right numpy data
+		type. Otherwise, the resulting numpy array has a compatible data
+		type with the given dtype.
+		
+		In either case above, the numpy ndarray (either the caller provided
+		or the auto converted) must have the compatible type with dtype.
+		
+		make_tensor_proto then converts the numpy array to a tensor proto.
+		
+		If "shape" is None, the resulting tensor proto represents the numpy
+		array precisely.
+		
+		Otherwise, "shape" specifies the tensor's shape and the numpy array
+		can not have more elements than what "shape" specifies.
+	**/
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	/**
 		map on the list of tensors unpacked from `elems` on dimension 0.
 		
-		The simplest version of `map` repeatedly applies the callable `fn` to a
+		The simplest version of `map_fn` repeatedly applies the callable `fn` to a
 		sequence of elements from first to last. The elements are made of the
 		tensors unpacked from `elems`. `dtype` is the data type of the return
 		value of `fn`. Users must provide `dtype` if it is different from
@@ -4514,6 +4940,23 @@ package tensorflow;
 		`fn` may look like: `fn = lambda t1: return (t1 + 1, t1 - 1)`.  In this case,
 		the `dtype` parameter is not optional: `dtype` must be a type or (possibly
 		nested) tuple of types matching the output of `fn`.
+		
+		To apply a functional operation to the nonzero elements of a SparseTensor
+		one of the following methods is recommended. First, if the function is
+		expressible as TensorFlow ops, use
+		
+		```python
+		  result = SparseTensor(input.indices, fn(input.values), input.dense_shape)
+		```
+		
+		If, however, the function is not expressible as a TensorFlow op, then use
+		
+		```python
+		result = SparseTensor(
+		  input.indices, map_fn(fn, input.values), input.dense_shape)
+		```
+		
+		instead.
 		
 		Args:
 		  fn: The callable to be performed.  It accepts one argument, which will
@@ -4540,7 +4983,7 @@ package tensorflow;
 		
 		Raises:
 		  TypeError: if `fn` is not callable or the structure of the output of
-		    `fn` and `dtype` do not match.
+		    `fn` and `dtype` do not match, or if elems is a SparseTensor.
 		  ValueError: if the lengths of the output of `fn` and `dtype` do not match.
 		
 		Examples:
@@ -4565,13 +5008,14 @@ package tensorflow;
 	**/
 	static public function map_fn(fn:Dynamic, elems:Dynamic, ?dtype:Dynamic, ?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?infer_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns the set of files matching a pattern.
+		Returns the set of files matching one or more glob patterns.
 		
 		Note that this routine only supports wildcard characters in the
 		basename portion of the pattern, not in the directory portion.
 		
 		Args:
-		  pattern: A `Tensor` of type `string`. A (scalar) shell wildcard pattern.
+		  pattern: A `Tensor` of type `string`.
+		    Shell wildcard pattern(s). Scalar or vector of type string.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -4581,18 +5025,21 @@ package tensorflow;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
-		The inputs must be two-dimensional matrices, with matching inner dimensions,
-		possibly after transposition.
+		The inputs must be matrices (or tensors of rank > 2, representing batches of
+		matrices), with matching inner dimensions, possibly after transposition.
 		
 		Both matrices must be of the same type. The supported types are:
-		`float32`, `float64`, `int32`, `complex64`.
+		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
 		
-		Either matrix can be transposed on the fly by setting the corresponding flag
-		to `True`. This is `False` by default.
+		Either matrix can be transposed or adjointed (conjugated and transposed) on
+		the fly by setting one of the corresponding flag to `True`. These are `False`
+		by default.
 		
 		If one or both of the matrices contain a lot of zeros, a more efficient
 		multiplication algorithm can be used by setting the corresponding
 		`a_is_sparse` or `b_is_sparse` flag to `True`. These are `False` by default.
+		This optimization is only available for plain matrices (rank-2 tensors) with
+		datatypes `bfloat16` or `float32`.
 		
 		For example:
 		
@@ -4606,80 +5053,314 @@ package tensorflow;
 		                                                         [11. 12.]]
 		c = tf.matmul(a, b) => [[58 64]
 		                        [139 154]]
+		
+		
+		# 3-D tensor `a`
+		a = tf.constant(np.arange(1, 13, dtype=np.int32),
+		                shape=[2, 2, 3])                  => [[[ 1.  2.  3.]
+		                                                       [ 4.  5.  6.]],
+		                                                      [[ 7.  8.  9.]
+		                                                       [10. 11. 12.]]]
+		
+		# 3-D tensor `b`
+		b = tf.constant(np.arange(13, 25, dtype=np.int32),
+		                shape=[2, 3, 2])                   => [[[13. 14.]
+		                                                        [15. 16.]
+		                                                        [17. 18.]],
+		                                                       [[19. 20.]
+		                                                        [21. 22.]
+		                                                        [23. 24.]]]
+		c = tf.matmul(a, b) => [[[ 94 100]
+		                         [229 244]],
+		                        [[508 532]
+		                         [697 730]]]
+		
+		# Since python >= 3.5 the @ operator is supported (see PEP 465).
+		# In TensorFlow, it simply calls the `tf.matmul()` function, so the
+		# following lines are equivalent:
+		d = a @ b @ [[10.], [11.]]
+		d = tf.matmul(tf.matmul(a, b), [[10.], [11.]])
 		```
 		
 		Args:
-		  a: `Tensor` of type `float32`, `float64`, `int32` or `complex64`.
-		  b: `Tensor` with same type as `a`.
+		  a: `Tensor` of type `float16`, `float32`, `float64`, `int32`, `complex64`,
+		    `complex128` and rank > 1.
+		  b: `Tensor` with same type and rank as `a`.
 		  transpose_a: If `True`, `a` is transposed before multiplication.
 		  transpose_b: If `True`, `b` is transposed before multiplication.
+		  adjoint_a: If `True`, `a` is conjugated and transposed before
+		    multiplication.
+		  adjoint_b: If `True`, `b` is conjugated and transposed before
+		    multiplication.
 		  a_is_sparse: If `True`, `a` is treated as a sparse matrix.
 		  b_is_sparse: If `True`, `b` is treated as a sparse matrix.
 		  name: Name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of the same type as `a`.
+		  A `Tensor` of the same type as `a` and `b` where each inner-most matrix is
+		  the product of the corresponding matrices in `a` and `b`, e.g. if all
+		  transpose or adjoint attributes are `False`:
+		
+		  `output`[..., i, j] = sum_k (`a`[..., i, k] * `b`[..., k, j]),
+		  for all indices i, j.
+		
+		  Note: This is matrix product, not element-wise product.
+		
+		
+		Raises:
+		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
+		    are both set to True.
 	**/
-	static public function matmul(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
+	static public function matmul(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?adjoint_a:Dynamic, ?adjoint_b:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the determinant of a square matrix.
+		Copy a tensor setting everything outside a central band in each innermost matrix
+		
+		to zero.
+		
+		The `band` part is computed as follows:
+		Assume `input` has `k` dimensions `[I, J, K, ..., M, N]`, then the output is a
+		tensor with the same shape where
+		
+		`band[i, j, k, ..., m, n] = in_band(m, n) * input[i, j, k, ..., m, n]`.
+		
+		The indicator function
+		
+		`in_band(m, n) = (num_lower < 0 || (m-n) <= num_lower)) &&
+		                 (num_upper < 0 || (n-m) <= num_upper)`.
+		
+		For example:
+		
+		```
+		# if 'input' is [[ 0,  1,  2, 3]
+		                 [-1,  0,  1, 2]
+		                 [-2, -1,  0, 1]
+		                 [-3, -2, -1, 0]],
+		
+		tf.matrix_band_part(input, 1, -1) ==> [[ 0,  1,  2, 3]
+		                                       [-1,  0,  1, 2]
+		                                       [ 0, -1,  0, 1]
+		                                       [ 0,  0, -1, 0]],
+		
+		tf.matrix_band_part(input, 2, 1) ==> [[ 0,  1,  0, 0]
+		                                      [-1,  0,  1, 0]
+		                                      [-2, -1,  0, 1]
+		                                      [ 0, -2, -1, 0]]
+		```
+		
+		Useful special cases:
+		
+		```
+		 tf.matrix_band_part(input, 0, -1) ==> Upper triangular part.
+		 tf.matrix_band_part(input, -1, 0) ==> Lower triangular part.
+		 tf.matrix_band_part(input, 0, 0) ==> Diagonal.
+		```
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		    A tensor of shape `[M, M]`.
+		  input: A `Tensor`. Rank `k` tensor.
+		  num_lower: A `Tensor` of type `int64`.
+		    0-D tensor. Number of subdiagonals to keep. If negative, keep entire
+		    lower triangle.
+		  num_upper: A `Tensor` of type `int64`.
+		    0-D tensor. Number of superdiagonals to keep. If negative, keep
+		    entire upper triangle.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
-		  A scalar, equal to the determinant of the input.
+		  Rank `k` tensor of the same shape as input. The extracted banded tensor.
+	**/
+	static public function matrix_band_part(input:Dynamic, num_lower:Dynamic, num_upper:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the determinant of one ore more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor containing the determinants
+		for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`. Shape is `[...]`.
 	**/
 	static public function matrix_determinant(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the inverse of a square invertible matrix or its adjoint (conjugate
+		Returns a batched diagonal tensor with a given batched diagonal values.
 		
-		transpose).
+		Given a `diagonal`, this operation returns a tensor with the `diagonal` and
+		everything else padded with zeros. The diagonal is computed as follows:
 		
-		The op uses LU decomposition with partial pivoting to compute the inverse.
+		Assume `diagonal` has `k` dimensions `[I, J, K, ..., N]`, then the output is a
+		tensor of rank `k+1` with dimensions [I, J, K, ..., N, N]` where:
 		
-		If the matrix is not invertible there is no guarantee what the op does. It
+		`output[i, j, k, ..., m, n] = 1{m=n} * diagonal[i, j, k, ..., n]`.
+		
+		For example:
+		
+		```
+		# 'diagonal' is [[1, 2, 3, 4], [5, 6, 7, 8]]
+		
+		and diagonal.shape = (2, 4)
+		
+		tf.matrix_diag(diagonal) ==> [[[1, 0, 0, 0]
+		                                     [0, 2, 0, 0]
+		                                     [0, 0, 3, 0]
+		                                     [0, 0, 0, 4]],
+		                                    [[5, 0, 0, 0]
+		                                     [0, 6, 0, 0]
+		                                     [0, 0, 7, 0]
+		                                     [0, 0, 0, 8]]]
+		
+		which has shape (2, 4, 4)
+		```
+		
+		Args:
+		  diagonal: A `Tensor`. Rank `k`, where `k >= 1`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `diagonal`.
+		  Rank `k+1`, with `output.shape = diagonal.shape + [diagonal.shape[-1]]`.
+	**/
+	static public function matrix_diag(diagonal:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the batched diagonal part of a batched tensor.
+		
+		This operation returns a tensor with the `diagonal` part
+		of the batched `input`. The `diagonal` part is computed as follows:
+		
+		Assume `input` has `k` dimensions `[I, J, K, ..., M, N]`, then the output is a
+		tensor of rank `k - 1` with dimensions `[I, J, K, ..., min(M, N)]` where:
+		
+		`diagonal[i, j, k, ..., n] = input[i, j, k, ..., n, n]`.
+		
+		The input must be at least a matrix.
+		
+		For example:
+		
+		```
+		# 'input' is [[[1, 0, 0, 0]
+		               [0, 2, 0, 0]
+		               [0, 0, 3, 0]
+		               [0, 0, 0, 4]],
+		              [[5, 0, 0, 0]
+		               [0, 6, 0, 0]
+		               [0, 0, 7, 0]
+		               [0, 0, 0, 8]]]
+		
+		and input.shape = (2, 4, 4)
+		
+		tf.matrix_diag_part(input) ==> [[1, 2, 3, 4], [5, 6, 7, 8]]
+		
+		which has shape (2, 4)
+		```
+		
+		Args:
+		  input: A `Tensor`. Rank `k` tensor where `k >= 2`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+		  The extracted diagonal(s) having shape
+		  `diagonal.shape = input.shape[:-2] + [min(input.shape[-2:])]`.
+	**/
+	static public function matrix_diag_part(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the inverse of one or more square invertible matrices or their
+		
+		adjoints (conjugate transposes).
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the inverse for all input submatrices `[..., :, :]`.
+		
+		The op uses LU decomposition with partial pivoting to compute the inverses.
+		
+		If a matrix is not invertible there is no guarantee what the op does. It
 		may detect the condition and raise an exception or it may simply return a
 		garbage result.
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[M, M]`.
+		    Shape is `[..., M, M]`.
 		  adjoint: An optional `bool`. Defaults to `False`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
+		
+		  @compatibility(numpy)
+		  Equivalent to np.linalg.inv
+		  @end_compatibility
+	**/
+	static public function matrix_inverse(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns a batched matrix tensor with new batched diagonal values.
+		
+		Given `input` and `diagonal`, this operation returns a tensor with the
+		same shape and values as `input`, except for the main diagonal of the
+		innermost matrices.  These will be overwritten by the values in `diagonal`.
+		
+		The output is computed as follows:
+		
+		Assume `input` has `k+1` dimensions `[I, J, K, ..., M, N]` and `diagonal` has
+		`k` dimensions `[I, J, K, ..., min(M, N)]`.  Then the output is a
+		tensor of rank `k+1` with dimensions `[I, J, K, ..., M, N]` where:
+		
+		  * `output[i, j, k, ..., m, n] = diagonal[i, j, k, ..., n]` for `m == n`.
+		  * `output[i, j, k, ..., m, n] = input[i, j, k, ..., m, n]` for `m != n`.
+		
+		Args:
+		  input: A `Tensor`. Rank `k+1`, where `k >= 1`.
+		  diagonal: A `Tensor`. Must have the same type as `input`.
+		    Rank `k`, where `k >= 1`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
-		  Shape is `[M, M]`. If `adjoint` is `False` then `output` contains the
-		  matrix inverse of `input`. If `adjoint` is `True` then `output` contains the
-		  matrix inverse of the adjoint of `input`.
+		  Rank `k+1`, with `output.shape = input.shape`.
 	**/
-	static public function matrix_inverse(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	static public function matrix_set_diag(input:Dynamic, diagonal:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Solves a system of linear equations. Checks for invertibility.
+		Solves systems of linear equations.
+		
+		`Matrix` is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. `Rhs` is a tensor of shape `[..., M, K]`. The `output` is
+		a tensor shape `[..., M, K]`.  If `adjoint` is `False` then each output matrix
+		satisfies `matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]`.
+		If `adjoint` is `True` then each output matrix satisfies
+		`adjoint(matrix[..., :, :]) * output[..., :, :] = rhs[..., :, :]`.
 		
 		Args:
-		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[M, M]`.
-		  rhs: A `Tensor`. Must have the same type as `matrix`. Shape is `[M, K]`.
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  rhs: A `Tensor`. Must have the same type as `matrix`.
+		    Shape is `[..., M, K]`.
 		  adjoint: An optional `bool`. Defaults to `False`.
-		    Boolean indicating whether to solve with `matrix` or its adjoint.
+		    Boolean indicating whether to solve with `matrix` or its (block-wise)
+		    adjoint.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `matrix`.
-		  Shape is `[M, K]`. If `adjoint` is `False` then `output` that solves
-		  `matrix` * `output` = `rhs`. If `adjoint` is `True` then `output` that solves
-		  `adjoint(matrix)` * `output` = `rhs`.
+		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
 	**/
 	static public function matrix_solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Solves a linear least-squares problem.
+		Solves one or more linear least-squares problems.
 		
-		Below we will use the following notation
+		`matrix` is a tensor of shape `[..., M, N]` whose inner-most 2 dimensions
+		form `M`-by-`N` matrices. Rhs is a tensor of shape `[..., M, K]` whose
+		inner-most 2 dimensions form `M`-by-`K` matrices.   The computed output is a
+		`Tensor` of shape `[..., N, K]` whose inner-most 2 dimensions form `M`-by-`K`
+		matrices that solve the equations
+		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least squares
+		sense.
+		
+		Below we will use the following notation for each pair of matrix and
+		right-hand sides in the batch:
+		
 		`matrix`=\\(A \in \Re^{m \times n}\\),
 		`rhs`=\\(B  \in \Re^{m \times k}\\),
 		`output`=\\(X  \in \Re^{n \times k}\\),
@@ -4687,68 +5368,115 @@ package tensorflow;
 		
 		If `fast` is `True`, then the solution is computed by solving the normal
 		equations using Cholesky decomposition. Specifically, if \\(m \ge n\\) then
-		\\(X = (A^T A + \lambda I)^{-1} A^T B\\), which solves the regularized
-		least-squares problem \\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}}
-		||A Z - B||_F^2 + \lambda ||Z||_F^2\\). If \\(m \lt n\\) then `output` is
-		computed as \\(X = A^T (A A^T + \lambda I)^{-1} B\\),
-		which (for \\(\lambda = 0\\)) is the minimum-norm solution to the
-		under-determined linear system, i.e.
-		\\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}} ||Z||_F^2 \\),
-		subject to \\(A Z = B\\).
-		Notice that the fast path is only numerically stable when \\(A\\) is
-		numerically full rank and has a condition number
-		\\(\mathrm{cond}(A) \lt \frac{1}{\sqrt{\epsilon_{mach}}}\\)
-		or \\(\lambda\\) is sufficiently large.
+		\\(X = (A^T A + \lambda I)^{-1} A^T B\\), which solves the least-squares
+		problem \\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}} ||A Z - B||_F^2 +
+		\lambda ||Z||_F^2\\). If \\(m \lt n\\) then `output` is computed as
+		\\(X = A^T (A A^T + \lambda I)^{-1} B\\), which (for \\(\lambda = 0\\)) is
+		the minimum-norm solution to the under-determined linear system, i.e.
+		\\(X = \mathrm{argmin}_{Z \in \Re^{n \times k}} ||Z||_F^2 \\), subject to
+		\\(A Z = B\\). Notice that the fast path is only numerically stable when
+		\\(A\\) is numerically full rank and has a condition number
+		\\(\mathrm{cond}(A) \lt \frac{1}{\sqrt{\epsilon_{mach}}}\\) or\\(\lambda\\)
+		is sufficiently large.
 		
-		If `fast` is `False` then the solution is computed using the rank revealing
-		QR decomposition with column pivoting. This will always compute a
-		least-squares solution that minimizes the residual norm
-		\\(||A X - B||_F^2 \\), even when \\(A\\) is rank deficient or
-		ill-conditioned. Notice: The current version does not compute a minimum norm
-		solution. If `fast` is `False` then `l2_regularizer` is ignored.
+		If `fast` is `False` an algorithm based on the numerically robust complete
+		orthogonal decomposition is used. This computes the minimum-norm
+		least-squares solution, even when \\(A\\) is rank deficient. This path is
+		typically 6-7 times slower than the fast path. If `fast` is `False` then
+		`l2_regularizer` is ignored.
 		
 		Args:
-		  matrix: 2-D `Tensor` of shape `[M, N]`.
-		  rhs: 2-D `Tensor` of shape is `[M, K]`.
-		  l2_regularizer: 0-D  `double` `Tensor`. Ignored if `fast=False`.
+		  matrix: `Tensor` of shape `[..., M, N]`.
+		  rhs: `Tensor` of shape `[..., M, K]`.
+		  l2_regularizer: 0-D `double` `Tensor`. Ignored if `fast=False`.
 		  fast: bool. Defaults to `True`.
 		  name: string, optional name of the operation.
 		
 		Returns:
-		  output: Matrix of shape `[N, K]` containing the matrix that solves
-		    `matrix * output = rhs` in the least-squares sense.
+		  output: `Tensor` of shape `[..., N, K]` whose inner-most 2 dimensions form
+		    `M`-by-`K` matrices that solve the equations
+		    `matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least
+		    squares sense.
 	**/
 	static public function matrix_solve_ls(matrix:Dynamic, rhs:Dynamic, ?l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Solves a system of linear equations with an upper or lower triangular matrix by
+		Transposes last two dimensions of tensor `a`.
 		
-		backsubstitution.
+		For example:
 		
-		`matrix` is a matrix of shape `[M, M]`. If `lower` is `True` then the strictly
-		upper triangular part of `matrix` is assumed to be zero and not accessed.
-		If `lower` is False then the strictly lower triangular part of `matrix` is
-		assumed to be zero and not accessed.
-		`rhs` is a matrix of shape [M, K]`.
+		```python
+		# Matrix with no batch dimension.
+		# 'x' is [[1 2 3]
+		#         [4 5 6]]
+		tf.matrix_transpose(x) ==> [[1 4]
+		                                 [2 5]
+		                                 [3 6]]
 		
-		The output is a matrix of shape `[M, K]`. If `adjoint` is `False` the output
-		satisfies the matrix equation `matrix` * `output` = `rhs`.
-		If `adjoint` is `False` then `output` satisfies the matrix equation
-		`matrix` * `output` = `rhs`.
-		If `adjoint` is `True` then `output` satisfies the matrix equation
-		`adjoint(matrix)` * `output` = `rhs`.
+		# Matrix with two batch dimensions.
+		# x.shape is [1, 2, 3, 4]
+		# tf.matrix_transpose(x) is shape [1, 2, 4, 3]
+		```
+		
+		Note that `tf.matmul` provides kwargs allowing for transpose of arguments.
+		This is done with minimal cost, and is preferable to using this function. E.g.
+		
+		```
+		# Good!  Transpose is taken at minimal additional cost.
+		tf.matmul(matrix, b, transpose_b=True)
+		
+		# Inefficient!
+		tf.matmul(matrix, tf.matrix_transpose(b))
+		```
 		
 		Args:
-		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
-		    Shape is `[M, M]`.
-		  rhs: A `Tensor`. Must have the same type as `matrix`. Shape is `[M, K]`.
-		  lower: An optional `bool`. Defaults to `True`.
-		    Boolean indicating whether `matrix` is lower or upper triangular
-		  adjoint: An optional `bool`. Defaults to `False`.
-		    Boolean indicating whether to solve with `matrix` or its adjoint.
+		  a: A `Tensor` with `rank >= 2`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `matrix`. Shape is `[M, K]`.
+		  A transposed batch matrix `Tensor`.
+		
+		Raises:
+		  ValueError:  If `a` is determined statically to have `rank < 2`.
+	**/
+	static public function matrix_transpose(a:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Solves systems of linear equations with upper or lower triangular matrices by
+		
+		backsubstitution.
+		
+		`matrix` is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions form
+		square matrices. If `lower` is `True` then the strictly upper triangular part
+		of each inner-most matrix is assumed to be zero and not accessed.
+		If `lower` is False then the strictly lower triangular part of each inner-most
+		matrix is assumed to be zero and not accessed.
+		`rhs` is a tensor of shape `[..., M, K]`.
+		
+		The output is a tensor of shape `[..., M, K]`. If `adjoint` is
+		`True` then the innermost matrices in output` satisfy matrix equations
+		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]`.
+		If `adjoint` is `False` then the strictly then the  innermost matrices in
+		`output` satisfy matrix equations
+		`adjoint(matrix[..., i, k]) * output[..., k, j] = rhs[..., i, j]`.
+		
+		Args:
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		    Shape is `[..., M, M]`.
+		  rhs: A `Tensor`. Must have the same type as `matrix`.
+		    Shape is `[..., M, K]`.
+		  lower: An optional `bool`. Defaults to `True`.
+		    Boolean indicating whether the innermost matrices in `matrix` are
+		    lower or upper triangular.
+		  adjoint: An optional `bool`. Defaults to `False`.
+		    Boolean indicating whether to solve with `matrix` or its (block-wise)
+		             adjoint.
+		
+		    @compatibility(numpy)
+		    Equivalent to np.linalg.triangular_solve
+		    @end_compatibility
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
 	**/
 	static public function matrix_triangular_solve(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -4767,42 +5495,6 @@ package tensorflow;
 	**/
 	static public function maximum(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Merges all summaries collected in the default graph.
-		
-		Args:
-		  key: `GraphKey` used to collect the summaries.  Defaults to
-		    `GraphKeys.SUMMARIES`.
-		
-		Returns:
-		  If no summaries were collected, returns None.  Otherwise returns a scalar
-		  `Tensor` of type `string` containing the serialized `Summary` protocol
-		  buffer resulting from the merging.
-	**/
-	static public function merge_all_summaries(?key:Dynamic):Dynamic;
-	/**
-		Merges summaries.
-		
-		This op creates a
-		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
-		protocol buffer that contains the union of all the values in the input
-		summaries.
-		
-		When the Op is run, it reports an `InvalidArgument` error if multiple values
-		in the summaries to merge use the same tag.
-		
-		Args:
-		  inputs: A list of `string` `Tensor` objects containing serialized `Summary`
-		    protocol buffers.
-		  collections: Optional list of graph collections keys. The new summary op is
-		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
-		  buffer resulting from the merging.
-	**/
-	static public function merge_summary(inputs:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Broadcasts parameters for evaluation on an N-D grid.
 		
 		Given N one-dimensional coordinate arrays `*args`, returns a list `outputs`
@@ -4817,27 +5509,30 @@ package tensorflow;
 		Examples:
 		
 		Calling `X, Y = meshgrid(x, y)` with the tensors
+		
 		```prettyprint
 		  x = [1, 2, 3]
 		  y = [4, 5, 6]
 		```
+		
 		results in
+		
 		```prettyprint
-		  X = [[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]]
-		  Y = [[4, 5, 6],
-		       [4, 5, 6],
-		       [4, 5, 6]]
+		  X = [[1, 2, 3],
+		       [1, 2, 3],
+		       [1, 2, 3]]
+		  Y = [[4, 4, 4],
+		       [5, 5, 5],
+		       [6, 6, 6]]
 		```
 		
 		Args:
-		  *args: `Tensor`s with rank 1
-		  indexing: Either 'xy' or 'ij' (optional, default: 'xy')
+		  *args: `Tensor`s with rank 1.
+		  indexing: Either 'xy' or 'ij' (optional, default: 'xy').
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  outputs: A list of N `Tensor`s with rank N
+		  outputs: A list of N `Tensor`s with rank N.
 	**/
 	static public function meshgrid(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4877,9 +5572,12 @@ package tensorflow;
 	**/
 	static public function minimum(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns element-wise remainder of division.
+		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
-		*NOTE*: `Mod` supports broadcasting. More about broadcasting
+		true, this follows Python semantics in that the result here is consistent
+		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
+		
+		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -4891,6 +5589,13 @@ package tensorflow;
 		  A `Tensor`. Has the same type as `x`.
 	**/
 	static public function mod(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns all variables in the MODEL_VARIABLES collection.
+		
+		Returns:
+		  A list of local Variable objects.
+	**/
+	static public function model_variables():Dynamic;
 	/**
 		Returns all variables that maintain their moving averages.
 		
@@ -4904,21 +5609,6 @@ package tensorflow;
 	**/
 	static public function moving_average_variables():Dynamic;
 	/**
-		Returns x * y element-wise.
-		
-		*NOTE*: `Mul` supports broadcasting. More about broadcasting
-		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
-		
-		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
-		  y: A `Tensor`. Must have the same type as `x`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `x`.
-	**/
-	static public function mul(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Draws samples from a multinomial distribution.
 		
 		Example:
@@ -4931,11 +5621,11 @@ package tensorflow;
 		
 		Args:
 		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
-		    `[i, :]` represents the unnormalized log probabilities for all classes.
+		    `[i, :]` represents the log-odds for all classes.
 		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: Optional name for the operation.
 		
@@ -4944,20 +5634,54 @@ package tensorflow;
 	**/
 	static public function multinomial(logits:Dynamic, num_samples:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Wrapper for `Graph.name_scope()` using the default graph.
+		Returns x * y element-wise.
 		
-		See
-		[`Graph.name_scope()`](../../api_docs/python/framework.md#Graph.name_scope)
-		for more details.
+		*NOTE*: ``tf.multiply`` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  name: A name for the scope.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
 		
 		Returns:
-		  A context manager that installs `name` as a new name scope in the
-		  default graph.
+		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function name_scope(name:Dynamic):Dynamic;
+	static public function multiply(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns a context manager for use when defining a Python op.
+		
+		This context manager validates that the given `values` are from the
+		same graph, makes that graph the default graph, and pushes a
+		name scope in that graph (see
+		@{tf.Graph.name_scope}
+		for more details on that).
+		
+		For example, to define a new Python op called `my_op`:
+		
+		```python
+		def my_op(a, b, c, name=None):
+		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
+		    a = tf.convert_to_tensor(a, name="a")
+		    b = tf.convert_to_tensor(b, name="b")
+		    c = tf.convert_to_tensor(c, name="c")
+		    # Define some computation that uses `a`, `b`, and `c`.
+		    return foo_op(..., name=scope)
+		```
+		
+		Args:
+		  name: The name argument that is passed to the op function.
+		  default_name: The default name to use if the `name` argument is `None`.
+		  values: The list of `Tensor` arguments that are passed to the op function.
+		
+		Returns:
+		  A context manager for use in defining Python ops. Yields the name scope.
+		
+		Raises:
+		  ValueError: if neither `name` nor `default_name` is provided
+		    but `values` are.
+	**/
+	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
 	/**
 		Computes numerical negative value element-wise.
 		
@@ -4971,7 +5695,7 @@ package tensorflow;
 		Returns:
 		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
 	**/
-	static public function neg(x:Dynamic, ?name:Dynamic):Dynamic;
+	static public function negative(x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
 		Does nothing. Only useful as a placeholder for control edges.
@@ -4987,6 +5711,65 @@ package tensorflow;
 		Use this function to prevent regularization of variables.
 	**/
 	static public function no_regularizer(_:Dynamic):Dynamic;
+	/**
+		Computes the norm of vectors, matrices, and tensors.
+		
+		This function can compute several different vector norms (the 1-norm, the
+		Euclidean or 2-norm, the inf-norm, and in general the p-norm for p > 0) and
+		matrix norms (Frobenius, 1-norm, and inf-norm).
+		
+		Args:
+		  tensor: `Tensor` of types `float32`, `float64`, `complex64`, `complex128`
+		  ord: Order of the norm. Supported values are 'fro', 'euclidean', `0`,
+		    `1`, `2`, `np.inf` and any positive real number yielding the corresponding
+		    p-norm. Default is 'euclidean' which is equivalent to Frobenius norm if
+		    `tensor` is a matrix and equivalent to 2-norm for vectors.
+		    Some restrictions apply:
+		      a) The Frobenius norm `fro` is not defined for vectors,
+		      b) If axis is a 2-tuple (matrix norm), only 'euclidean', 'fro', `1`,
+		         `np.inf` are supported.
+		    See the description of `axis` on how to compute norms for a batch of
+		    vectors or matrices stored in a tensor.
+		  axis: If `axis` is `None` (the default), the input is considered a vector
+		    and a single vector norm is computed over the entire set of values in the
+		    tensor, i.e. `norm(tensor, ord=ord)` is equivalent to
+		    `norm(reshape(tensor, [-1]), ord=ord)`.
+		    If `axis` is a Python integer, the input is considered a batch of vectors,
+		    and `axis` determines the axis in `tensor` over which to compute vector
+		    norms.
+		    If `axis` is a 2-tuple of Python integers it is considered a batch of
+		    matrices and `axis` determines the axes in `tensor` over which to compute
+		    a matrix norm.
+		    Negative indices are supported. Example: If you are passing a tensor that
+		    can be either a matrix or a batch of matrices at runtime, pass
+		    `axis=[-2,-1]` instead of `axis=None` to make sure that matrix norms are
+		    computed.
+		  keep_dims: If True, the axis indicated in `axis` are kept with size 1.
+		    Otherwise, the dimensions in `axis` are removed from the output shape.
+		  name: The name of the op.
+		
+		Returns:
+		  output: A `Tensor` of the same type as tensor, containing the vector or
+		    matrix norms. If `keep_dims` is True then the rank of output is equal to
+		    the rank of `tensor`. Otherwise, if `axis` is none the output is a scalar,
+		    if `axis` is an integer, the rank of `output` is one less than the rank
+		    of `tensor`, if `axis` is a 2-tuple the rank of `output` is two less
+		    than the rank of `tensor`.
+		
+		Raises:
+		  ValueError: If `ord` or `axis` is invalid.
+		
+		@compatibility(numpy)
+		Mostly equivalent to numpy.linalg.norm.
+		Not supported: ord <= 0, 2-norm for matrices, nuclear norm.
+		Other differences:
+		  a) If axis is `None`, treats the flattened `tensor` as a vector
+		   regardless of rank.
+		  b) Explicitly supports 'euclidean' norm as the default, including for
+		   higher order tensors.
+		@end_compatibility
+	**/
+	static public function norm(tensor:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x != y) element-wise.
 		
@@ -5024,6 +5807,7 @@ package tensorflow;
 		If `indices` is a scalar the output shape will be a vector of length `depth`
 		
 		If `indices` is a vector of length `features`, the output shape will be:
+		
 		```
 		  features x depth if axis == -1
 		  depth x features if axis == 0
@@ -5031,6 +5815,7 @@ package tensorflow;
 		
 		If `indices` is a matrix (batch) with shape `[batch, features]`, the output
 		shape will be:
+		
 		```
 		  batch x features x depth if axis == -1
 		  batch x depth x features if axis == 1
@@ -5040,17 +5825,17 @@ package tensorflow;
 		If `dtype` is not provided, it will attempt to assume the data type of
 		`on_value` or `off_value`, if one or both are passed in. If none of
 		`on_value`, `off_value`, or `dtype` are provided, `dtype` will default to the
-		value `tf.float32`
+		value `tf.float32`.
 		
-		Note: If a non-numeric data type output is desired (tf.string, tf.bool, etc.),
-		both `on_value` and `off_value` _must_ be provided to `one_hot`
+		Note: If a non-numeric data type output is desired (`tf.string`, `tf.bool`,
+		etc.), both `on_value` and `off_value` _must_ be provided to `one_hot`.
 		
 		Examples
 		=========
 		
 		Suppose that
 		
-		```
+		```python
 		  indices = [0, 2, -1, 1]
 		  depth = 3
 		  on_value = 5.0
@@ -5060,7 +5845,7 @@ package tensorflow;
 		
 		Then output is `[4 x 3]`:
 		
-		```
+		```python
 		  output =
 		  [5.0 0.0 0.0]  // one_hot(0)
 		  [0.0 0.0 5.0]  // one_hot(2)
@@ -5070,7 +5855,7 @@ package tensorflow;
 		
 		Suppose that
 		
-		```
+		```python
 		  indices = [[0, 2], [1, -1]]
 		  depth = 3
 		  on_value = 1.0
@@ -5080,7 +5865,7 @@ package tensorflow;
 		
 		Then output is `[2 x 2 x 3]`:
 		
-		```
+		```python
 		  output =
 		  [
 		    [1.0, 0.0, 0.0]  // one_hot(0)
@@ -5093,14 +5878,14 @@ package tensorflow;
 		
 		Using default values for `on_value` and `off_value`:
 		
-		```
+		```python
 		  indices = [0, 1, 2]
 		  depth = 3
 		```
 		
 		The output will be
 		
-		```
+		```python
 		  output =
 		  [[1., 0., 0.],
 		   [0., 1., 0.],
@@ -5134,7 +5919,7 @@ package tensorflow;
 		For example:
 		
 		```python
-		tf.ones([2, 3], int32) ==> [[1, 1, 1], [1, 1, 1]]
+		tf.ones([2, 3], tf.int32) ==> [[1, 1, 1], [1, 1, 1]]
 		```
 		
 		Args:
@@ -5146,10 +5931,6 @@ package tensorflow;
 		  A `Tensor` with all elements set to 1.
 	**/
 	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		An adaptor for ones() to match the Initializer spec.
-	**/
-	static public function ones_initializer(shape:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Creates a tensor with all elements set to 1.
 		
@@ -5167,82 +5948,20 @@ package tensorflow;
 		Args:
 		  tensor: A `Tensor`.
 		  dtype: A type for the returned `Tensor`. Must be `float32`, `float64`,
-		  `int8`, `int16`, `int32`, `int64`, `uint8`, `complex64`, or `complex128`.
+		    `int8`, `int16`, `int32`, `int64`, `uint8`, `complex64`, `complex128` or
+		    `bool`.
 		  name: A name for the operation (optional).
+		  optimize: if true, attempt to statically determine the shape of 'tensor'
+		  and encode it as a constant.
 		
 		Returns:
 		  A `Tensor` with all elements set to 1.
 	**/
-	static public function ones_like(tensor:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ones_like(tensor:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?optimize:Dynamic):Dynamic;
 	/**
-		Returns a context manager for use when defining a Python op.
-		
-		This context manager validates that the given `values` are from the
-		same graph, ensures that graph is the default graph, and pushes a
-		name scope.
-		
-		For example, to define a new Python op called `my_op`:
-		
-		```python
-		def my_op(a, b, c, name=None):
-		  with tf.op_scope([a, b, c], name, "MyOp") as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.convert_to_tensor(c, name="c")
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
-		
-		Args:
-		  values: The list of `Tensor` arguments that are passed to the op function.
-		  name: The name argument that is passed to the op function.
-		  default_name: The default name to use if the `name` argument is `None`.
-		
-		Returns:
-		  A context manager for use in defining Python ops. Yields the name scope.
-		
-		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided.
+		DEPRECATED. Same as name_scope above, just different argument order.
 	**/
 	static public function op_scope(values:Dynamic, name:Dynamic, ?default_name:Dynamic):Dynamic;
-	/**
-		Packs a list of rank-`R` tensors into one rank-`(R+1)` tensor.
-		
-		Packs the list of tensors in `values` into a tensor with rank one higher than
-		each tensor in `values`, by packing them along the `axis` dimension.
-		Given a list of length `N` of tensors of shape `(A, B, C)`;
-		
-		if `axis == 0` then the `output` tensor will have the shape `(N, A, B, C)`.
-		if `axis == 1` then the `output` tensor will have the shape `(A, N, B, C)`.
-		Etc.
-		
-		For example:
-		
-		```prettyprint
-		# 'x' is [1, 4]
-		# 'y' is [2, 5]
-		# 'z' is [3, 6]
-		pack([x, y, z]) => [[1, 4], [2, 5], [3, 6]]  # Pack along first dim.
-		pack([x, y, z], axis=1) => [[1, 2, 3], [4, 5, 6]]
-		```
-		
-		This is the opposite of unpack.  The numpy equivalent is
-		
-		    tf.pack([x, y, z]) = np.asarray([x, y, z])
-		
-		Args:
-		  values: A list of `Tensor` objects with the same shape and type.
-		  axis: An `int`. The axis to pack along. Defaults to the first dimension.
-		    Supports negative indexes.
-		  name: A name for this operation (optional).
-		
-		Returns:
-		  output: A packed `Tensor` with the same type as `values`.
-		
-		Raises:
-		  ValueError: If `axis` is out of the range [-(R+1), R+1).
-	**/
-	static public function pack(values:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Pads a tensor.
 		
@@ -5285,7 +6004,7 @@ package tensorflow;
 		Args:
 		  tensor: A `Tensor`.
 		  paddings: A `Tensor` of type `int32`.
-		  mode: One of "CONSTANT", "REFLECT", or "SYMMETRIC".
+		  mode: One of "CONSTANT", "REFLECT", or "SYMMETRIC" (case-insensitive)
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -5296,25 +6015,76 @@ package tensorflow;
 	**/
 	static public function pad(tensor:Dynamic, paddings:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Stacks a list of rank-`R` tensors into one rank-`(R+1)` tensor in parallel.
+		
+		Requires that the shape of inputs be known at graph construction time.
+		
+		Packs the list of tensors in `values` into a tensor with rank one higher than
+		each tensor in `values`, by packing them along the first dimension.
+		Given a list of length `N` of tensors of shape `(A, B, C)`; the `output`
+		tensor will have the shape `(N, A, B, C)`.
+		
+		For example:
+		
+		```prettyprint
+		# 'x' is [1, 4]
+		# 'y' is [2, 5]
+		# 'z' is [3, 6]
+		parallel_stack([x, y, z]) => [[1, 4], [2, 5], [3, 6]]
+		```
+		
+		The difference between stack and parallel_stack is that stack requires all
+		of the inputs be computed before the operation will begin but doesn't require
+		that the input shapes be known during graph construction.  Parallel stack
+		will copy pieces of the input into the output as they become available, in
+		some situations this can provide a performance benefit.
+		
+		This is the opposite of unstack.  The numpy equivalent is
+		
+		    tf.parallel_stack([x, y, z]) = np.asarray([x, y, z])
+		
+		Args:
+		  values: A list of `Tensor` objects with the same shape and type.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  output: A stacked `Tensor` with the same type as `values`.
+	**/
+	static public function parallel_stack(values:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Parses `Example` protos into a `dict` of tensors.
 		
-		Parses a number of serialized [`Example`]
-		(https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
-		protos given in `serialized`.
+		Parses a number of serialized [`Example`](https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
+		protos given in `serialized`. We refer to `serialized` as a batch with
+		`batch_size` many entries of individual `Example` protos.
 		
 		`example_names` may contain descriptive names for the corresponding serialized
 		protos. These may be useful for debugging purposes, but they have no effect on
-		the output. If not `None`, `example_names` must be the same length as `serialized`.
+		the output. If not `None`, `example_names` must be the same length as
+		`serialized`.
 		
 		This op parses serialized examples into a dictionary mapping keys to `Tensor`
-		and `SparseTensor` objects. `features` is a dict from keys to `VarLenFeature`
-		and `FixedLenFeature` objects. Each `VarLenFeature` is mapped to a
-		`SparseTensor`, and each `FixedLenFeature` is mapped to a `Tensor`.
+		and `SparseTensor` objects. `features` is a dict from keys to `VarLenFeature`,
+		`SparseFeature`, and `FixedLenFeature` objects. Each `VarLenFeature`
+		and `SparseFeature` is mapped to a `SparseTensor`, and each
+		`FixedLenFeature` is mapped to a `Tensor`.
 		
 		Each `VarLenFeature` maps to a `SparseTensor` of the specified type
 		representing a ragged matrix. Its indices are `[batch, index]` where `batch`
-		is the batch entry the value is from in `serialized`, and `index` is the
-		value's index in the list of values associated with that feature and example.
+		identifies the example in `serialized`, and `index` is the value's index in
+		the list of values associated with that feature and example.
+		
+		Each `SparseFeature` maps to a `SparseTensor` of the specified type
+		representing a Tensor of `dense_shape` `[batch_size] + SparseFeature.size`.
+		Its `values` come from the feature in the examples with key `value_key`.
+		A `values[i]` comes from a position `k` in the feature of an example at batch
+		entry `batch`. This positional information is recorded in `indices[i]` as
+		`[batch, index_0, index_1, ...]` where `index_j` is the `k-th` value of
+		the feature in the example at with key `SparseFeature.index_key[j].
+		In other words, we split the indices (except the first index indicating the
+		batch entry) of a `SparseTensor` by dimension into different features of the
+		`Example`. Due to its complexity a `VarLenFeature` should be preferred over a
+		`SparseFeature` whenever possible.
 		
 		Each `FixedLenFeature` `df` maps to a `Tensor` of the specified type (or
 		`tf.float32` if not specified) and shape `(serialized.size(),) + df.shape`.
@@ -5323,9 +6093,15 @@ package tensorflow;
 		value, we will fail if that `Feature` is missing from any example in
 		`serialized`.
 		
+		Each `FixedLenSequenceFeature` `df` maps to a `Tensor` of the specified type
+		(or `tf.float32` if not specified) and shape
+		`(serialized.size(), None) + df.shape`.
+		All examples in `serialized` will be padded with `default_value` along the
+		second dimension.
+		
 		Examples:
 		
-		For example, if one expects a `tf.float32` sparse feature `ft` and three
+		For example, if one expects a `tf.float32` `VarLenFeature` `ft` and three
 		serialized `Example`s are provided:
 		
 		```
@@ -5344,7 +6120,14 @@ package tensorflow;
 		```
 		{"ft": SparseTensor(indices=[[0, 0], [0, 1], [2, 0]],
 		                    values=[1.0, 2.0, 3.0],
-		                    shape=(3, 2)) }
+		                    dense_shape=(3, 2)) }
+		```
+		
+		If instead a `FixedLenSequenceFeature` with `default_value = -1.0` and
+		`shape=[]` is used then the output will look like:
+		
+		```
+		{"ft": [[1.0, 2.0], [3.0, -1.0]]}
 		```
 		
 		Given two `Example` input protos in `serialized`:
@@ -5381,15 +6164,15 @@ package tensorflow;
 		  "kw": SparseTensor(
 		      indices=[[0, 0], [0, 1], [1, 0]],
 		      values=["knit", "big", "emmy"]
-		      shape=[2, 2]),
+		      dense_shape=[2, 2]),
 		  "dank": SparseTensor(
 		      indices=[[1, 0]],
 		      values=[42],
-		      shape=[2, 1]),
+		      dense_shape=[2, 1]),
 		  "gps": SparseTensor(
 		      indices=[],
 		      values=[],
-		      shape=[2, 0]),
+		      dense_shape=[2, 0]),
 		}
 		```
 		
@@ -5427,11 +6210,49 @@ package tensorflow;
 		}
 		```
 		
+		An alternative to `VarLenFeature` to obtain a `SparseTensor` is
+		`SparseFeature`. For example, given two `Example` input protos in
+		`serialized`:
+		
+		```
+		[
+		  features {
+		    feature { key: "val" value { float_list { value: [ 0.5, -1.0 ] } } }
+		    feature { key: "ix" value { int64_list { value: [ 3, 20 ] } } }
+		  },
+		  features {
+		    feature { key: "val" value { float_list { value: [ 0.0 ] } } }
+		    feature { key: "ix" value { int64_list { value: [ 42 ] } } }
+		  }
+		]
+		```
+		
+		And arguments
+		
+		```
+		example_names: ["input0", "input1"],
+		features: {
+		    "sparse": SparseFeature(
+		        index_key="ix", value_key="val", dtype=tf.float32, size=100),
+		}
+		```
+		
+		Then the output is a dictionary:
+		
+		```python
+		{
+		  "sparse": SparseTensor(
+		      indices=[[0, 3], [0, 20], [1, 42]],
+		      values=[0.5, -1.0, 0.0]
+		      dense_shape=[2, 100]),
+		}
+		```
+		
 		Args:
 		  serialized: A vector (1-D Tensor) of strings, a batch of binary
 		    serialized `Example` protos.
-		  features: A `dict` mapping feature keys to `FixedLenFeature` or
-		    `VarLenFeature` values.
+		  features: A `dict` mapping feature keys to `FixedLenFeature`,
+		    `VarLenFeature`, and `SparseFeature` values.
 		  name: A name for this operation (optional).
 		  example_names: A vector (1-D Tensor) of strings (optional), the names of
 		    the serialized protos in the batch.
@@ -5457,6 +6278,9 @@ package tensorflow;
 		the first (`batch_size`) entry of the shape vector is removed (it is now a
 		single element vector).
 		
+		One might see performance advantages by batching `Example` protos with
+		`parse_example` instead of using this function directly.
+		
 		Args:
 		  serialized: A scalar string Tensor, a single serialized Example.
 		    See `_parse_single_example_raw` documentation for more details.
@@ -5476,11 +6300,10 @@ package tensorflow;
 	/**
 		Parses a single `SequenceExample` proto.
 		
-		Parses a single serialized [`SequenceExample`]
-		(https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
+		Parses a single serialized [`SequenceExample`](https://www.tensorflow.org/code/tensorflow/core/example/example.proto)
 		proto given in `serialized`.
 		
-		This op parses a serialize sequence example into a tuple of dictionaries
+		This op parses a serialized sequence example into a tuple of dictionaries
 		mapping keys to `Tensor` and `SparseTensor` objects respectively.
 		The first dictionary contains mappings for keys appearing in
 		`context_features`, and the second dictionary contains mappings for keys
@@ -5504,7 +6327,7 @@ package tensorflow;
 		`sequence_features` contains `VarLenFeature` and `FixedLenSequenceFeature`
 		objects. Each `VarLenFeature` is mapped to a `SparseTensor`, and each
 		`FixedLenSequenceFeature` is mapped to a `Tensor`, each of the specified type.
-		The shape will be `(T,) + df.shape` for `FixedLenSequenceFeature` `df`, where
+		The shape will be `(T,) + df.dense_shape` for `FixedLenSequenceFeature` `df`, where
 		`T` is the length of the associated `FeatureList` in the `SequenceExample`.
 		For instance, `FixedLenSequenceFeature([])` yields a scalar 1-D `Tensor` of
 		static shape `[None]` and dynamic shape `[T]`, while
@@ -5548,6 +6371,21 @@ package tensorflow;
 	**/
 	static public function parse_single_sequence_example(serialized:Dynamic, ?context_features:Dynamic, ?sequence_features:Dynamic, ?example_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Transforms a serialized tensorflow.TensorProto proto into a Tensor.
+		
+		Args:
+		  serialized: A `Tensor` of type `string`.
+		    A scalar string containing a serialized TensorProto proto.
+		  out_type: A `tf.DType`.
+		    The type of the serialized tensor.  The provided type must match the
+		    type of the serialized tensor and no implicit conversion will take place.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `out_type`. A Tensor of type `out_type`.
+	**/
+	static public function parse_tensor(serialized:Dynamic, out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Inserts a placeholder for a tensor that will be always fed.
 		
 		**Important**: This tensor will produce an error if evaluated. Its value must
@@ -5579,7 +6417,7 @@ package tensorflow;
 	**/
 	static public function placeholder(dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		A placeholder op that passes though `input` when its output is not fed.
+		A placeholder op that passes through `input` when its output is not fed.
 		
 		Args:
 		  input: A `Tensor`. The default value to produce when `output` is not fed.
@@ -5597,9 +6435,9 @@ package tensorflow;
 		
 		The polygamma function is defined as:
 		
-		```
-		\psi^{(n)}(x) = \frac{d^n}{dx^n} \psi(x)
-		```
+		
+		\\(\psi^{(n)}(x) = \frac{d^n}{dx^n} \psi(x)\\)
+		
 		where \\(\psi(x)\\) is the digamma function.
 		
 		Args:
@@ -5614,7 +6452,7 @@ package tensorflow;
 	/**
 		Computes the power of one value to another.
 		
-		Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
+		Given a tensor `x` and a tensor `y`, this operation computes \\\\(x^y\\\\) for
 		corresponding elements in `x` and `y`. For example:
 		
 		```
@@ -5634,50 +6472,189 @@ package tensorflow;
 		  A `Tensor`.
 	**/
 	static public function pow(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Wraps a python function and uses it as a tensorflow op.
+		Wraps a python function and uses it as a TensorFlow op.
 		
 		Given a python function `func`, which takes numpy arrays as its
-		inputs and returns numpy arrays as its outputs. E.g.,
+		inputs and returns numpy arrays as its outputs, wrap this function as an
+		operation in a TensorFlow graph. The following snippet constructs a simple
+		TensorFlow graph that invokes the `np.sinh()` NumPy function as a operation
+		in the graph:
 		
 		```python
 		def my_func(x):
 		  # x will be a numpy array with the contents of the placeholder below
 		  return np.sinh(x)
-		inp = tf.placeholder(tf.float32, [...])
-		y = py_func(my_func, [inp], [tf.float32])
+		inp = tf.placeholder(tf.float32)
+		y = tf.py_func(my_func, [inp], tf.float32)
 		```
 		
-		The above snippet constructs a tf graph which invokes a numpy
-		sinh(x) as an op in the graph.
+		**N.B.** The `tf.py_func()` operation has the following known limitations:
+		
+		* The body of the function (i.e. `func`) will not be serialized in a
+		  `GraphDef`. Therefore, you should not use this function if you need to
+		  serialize your model and restore it in a different environment.
+		
+		* The operation must run in the same address space as the Python program
+		  that calls `tf.py_func()`. If you are using distributed TensorFlow, you
+		  must run a `tf.train.Server` in the same process as the program that calls
+		  `tf.py_func()` and you must pin the created operation to a device in that
+		  server (e.g. using `with tf.device():`).
 		
 		Args:
-		  func: A python function.
-		  inp: A list of `Tensor`.
-		  Tout: A list of tensorflow data types indicating what `func`
-		        returns.
-		  stateful: A boolean indicating whether the function should be considered
-		            stateful or stateless. I.e. whether it, given the same input, will
-		            return the same output and at the same time does not change state
-		            in an observable way. Optimizations such as common subexpression
-		            elimination are only possible when operations are stateless.
+		  func: A Python function, which accepts a list of NumPy `ndarray` objects
+		    having element types that match the corresponding `tf.Tensor` objects
+		    in `inp`, and returns a list of `ndarray` objects (or a single `ndarray`)
+		    having element types that match the corresponding values in `Tout`.
+		  inp: A list of `Tensor` objects.
+		  Tout: A list or tuple of tensorflow data types or a single tensorflow data
+		    type if there is only one, indicating what `func` returns.
+		  stateful: (Boolean.) If True, the function should be considered stateful.
+		    If a function is stateless, when given the same input it will return the
+		    same output and have no observable side effects. Optimizations such as
+		    common subexpression elimination are only performed on stateless
+		    operations.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A list of `Tensor` which `func` computes.
+		  A list of `Tensor` or a single `Tensor` which `func` computes.
 	**/
 	static public function py_func(func:Dynamic, inp:Dynamic, Tout:Dynamic, ?stateful:Dynamic, ?name:Dynamic):Dynamic;
 	static public var qint16 : Dynamic;
-	static public var qint16_ref : Dynamic;
 	static public var qint32 : Dynamic;
-	static public var qint32_ref : Dynamic;
 	static public var qint8 : Dynamic;
-	static public var qint8_ref : Dynamic;
+	/**
+		Computes the QR decompositions of one or more matrices.
+		
+		Computes the QR decomposition of each inner matrix in `tensor` such that
+		`tensor[..., :, :] = q[..., :, :] * r[..., :,:])`
+		
+		```prettyprint
+		# a is a tensor.
+		# q is a tensor of orthonormal matrices.
+		# r is a tensor of upper triangular matrices.
+		q, r = qr(a)
+		q_full, r_full = qr(a, full_matrices=True)
+		```
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    A tensor of shape `[..., M, N]` whose inner-most 2 dimensions
+		    form matrices of size `[M, N]`. Let `P` be the minimum of `M` and `N`.
+		  full_matrices: An optional `bool`. Defaults to `False`.
+		    If true, compute full-sized `q` and `r`. If false
+		    (the default), compute only the leading `P` columns of `q`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (q, r).
+		
+		  q: A `Tensor`. Has the same type as `input`. Orthonormal basis for range of `a`. If `full_matrices` is `False` then
+		    shape is `[..., M, P]`; if `full_matrices` is `True` then shape is
+		    `[..., M, M]`.
+		  r: A `Tensor`. Has the same type as `input`. Triangular factor. If `full_matrices` is `False` then shape is
+		    `[..., P, N]`. If `full_matrices` is `True` then shape is `[..., M, N]`.
+	**/
+	static public function qr(input:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Quantize the 'input' tensor of type float to 'output' tensor of type 'T'.
+		
+		[min_range, max_range] are scalar floats that specify the range for
+		the 'input' data. The 'mode' attribute controls exactly which calculations are
+		used to convert the float values to their quantized equivalents.
+		
+		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
+		
+		```
+		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
+		if T == qint8, out[i] -= (range(T) + 1) / 2.0
+		```
+		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
+		
+		*MIN_COMBINED Mode Example*
+		
+		Assume the input is type float and has a possible range of [0.0, 6.0] and the
+		output type is quint8 ([0, 255]). The min_range and max_range values should be
+		specified as 0.0 and 6.0. Quantizing from float to quint8 will multiply each
+		value of the input by 255/6 and cast to quint8.
+		
+		If the output type was qint8 ([-128, 127]), the operation will additionally
+		subtract each value by 128 prior to casting, so that the range of values aligns
+		with the range of qint8.
+		
+		If the mode is 'MIN_FIRST', then this approach is used:
+		
+		```
+		number_of_steps = 1 << (# of bits in T)
+		range_adjust = number_of_steps / (number_of_steps - 1)
+		range = (range_max - range_min) * range_adjust
+		range_scale = number_of_steps / range
+		quantized = round(input * range_scale) - round(range_min * range_scale) +
+		  numeric_limits<T>::min()
+		quantized = max(quantized, numeric_limits<T>::min())
+		quantized = min(quantized, numeric_limits<T>::max())
+		```
+		
+		The biggest difference between this and MIN_COMBINED is that the minimum range
+		is rounded first, before it's subtracted from the rounded value. With
+		MIN_COMBINED, a small bias is introduced where repeated iterations of quantizing
+		and dequantizing will introduce a larger and larger error.
+		
+		One thing to watch out for is that the operator may choose to adjust the
+		requested minimum and maximum values slightly during the quantization process,
+		so you should always use the output ports as the range for further calculations.
+		For example, if the requested minimum and maximum values are close to equal,
+		they will be separated by a small epsilon value to prevent ill-formed quantized
+		buffers from being created. Otherwise, you can end up with buffers where all the
+		quantized values map to the same float value, which causes problems for
+		operations that have to perform further calculations on them.
+		
+		Args:
+		  input: A `Tensor` of type `float32`.
+		  min_range: A `Tensor` of type `float32`.
+		    The minimum scalar value possibly produced for the input.
+		  max_range: A `Tensor` of type `float32`.
+		    The maximum scalar value possibly produced for the input.
+		  T: A `tf.DType` from: `tf.qint8, tf.quint8, tf.qint16, tf.quint16, tf.qint32`.
+		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST"`. Defaults to `"MIN_COMBINED"`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output, output_min, output_max).
+		
+		  output: A `Tensor` of type `T`. The quantized data produced from the float input.
+		  output_min: A `Tensor` of type `float32`. The actual minimum scalar value used for the output.
+		  output_max: A `Tensor` of type `float32`. The actual maximum scalar value used for the output.
+	**/
+	static public function quantize_v2(input:Dynamic, min_range:Dynamic, max_range:Dynamic, T:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Concatenates quantized tensors along one dimension.
+		
+		Args:
+		  concat_dim: A `Tensor` of type `int32`.
+		    0-D.  The dimension along which to concatenate.  Must be in the
+		    range [0, rank(values)).
+		  values: A list of at least 2 `Tensor` objects with the same type.
+		    The `N` Tensors to concatenate. Their ranks and types must match,
+		    and their sizes must match in all dimensions except `concat_dim`.
+		  input_mins: A list with the same length as `values` of `Tensor` objects with type `float32`.
+		    The minimum scalar values for each of the input tensors.
+		  input_maxes: A list with the same length as `values` of `Tensor` objects with type `float32`.
+		    The maximum scalar values for each of the input tensors.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output, output_min, output_max).
+		
+		  output: A `Tensor`. Has the same type as `values`. A `Tensor` with the concatenation of values stacked along the
+		    `concat_dim` dimension.  This tensor's shape matches that of `values` except
+		    in `concat_dim` where it has the sum of the sizes.
+		  output_min: A `Tensor` of type `float32`. The float value that the minimum quantized output value represents.
+		  output_max: A `Tensor` of type `float32`. The float value that the maximum quantized output value represents.
+	**/
+	static public function quantized_concat(concat_dim:Dynamic, values:Dynamic, input_mins:Dynamic, input_maxes:Dynamic, ?name:Dynamic):Dynamic;
 	static public var quint16 : Dynamic;
-	static public var quint16_ref : Dynamic;
 	static public var quint8 : Dynamic;
-	static public var quint8_ref : Dynamic;
 	/**
 		Randomly crops a tensor to a given size.
 		
@@ -5692,7 +6669,7 @@ package tensorflow;
 		  value: Input tensor to crop.
 		  size: 1-D tensor with size the rank of `value`.
 		  seed: Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for this operation (optional).
 		
@@ -5719,6 +6696,13 @@ package tensorflow;
 		  samples = tf.random_gamma([30], [[1.],[3.],[5.]], beta=[[3., 4.]])
 		  # samples has shape [30, 3, 2], with 30 samples each of 3x2 distributions.
 		
+		  Note: Because internal calculations are done using `float64` and casting has
+		  `floor` semantics, we must manually map zero outcomes to the smallest
+		  possible positive floating-point value, i.e., `np.finfo(dtype).tiny`.  This
+		  means that `np.finfo(dtype).tiny` occurs more frequently than it otherwise
+		  should.  This bias can only happen for small values of `alpha`, i.e.,
+		  `alpha << 1` or large values of `beta`, i.e., `beta >> 1`.
+		
 		Args:
 		  shape: A 1-D integer Tensor or Python array. The shape of the output samples
 		    to be drawn per alpha/beta-parameterized distribution.
@@ -5732,13 +6716,13 @@ package tensorflow;
 		    `float64`.
 		  seed: A Python integer. Used to create a random seed for the distributions.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: Optional name for the operation.
 		
 		Returns:
-		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(alpha + beta))` with
-		    values of type `dtype`.
+		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(alpha + beta))`
+		    with values of type `dtype`.
 	**/
 	static public function random_gamma(shape:Dynamic, alpha:Dynamic, ?beta:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5753,7 +6737,7 @@ package tensorflow;
 		  dtype: The type of the output.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -5762,25 +6746,39 @@ package tensorflow;
 	**/
 	static public function random_normal(shape:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns an initializer that generates tensors with a normal distribution.
+		Draws `shape` samples from each of the given Poisson distribution(s).
+		
+		`lam` is the rate parameter describing the distribution(s).
+		
+		Example:
+		
+		  samples = tf.random_poisson([0.5, 1.5], [10])
+		  # samples has shape [10, 2], where each slice [:, 0] and [:, 1] represents
+		  # the samples drawn from each distribution
+		
+		  samples = tf.random_poisson([12.2, 3.3], [7, 5])
+		  # samples has shape [7, 5, 2], where each slice [:, :, 0] and [:, :, 1]
+		  # represents the 7x5 samples drawn from each of the two distributions
 		
 		Args:
-		  mean: a python scalar or a scalar tensor. Mean of the random values
-		    to generate.
-		  stddev: a python scalar or a scalar tensor. Standard deviation of the
-		    random values to generate.
-		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		  lam: A Tensor or Python value or N-D array of type `dtype`.
+		    `lam` provides the rate parameter(s) describing the poisson
+		    distribution(s) to sample.
+		  shape: A 1-D integer Tensor or Python array. The shape of the output samples
+		    to be drawn per "rate"-parameterized distribution.
+		  dtype: The type of `lam` and the output: `float16`, `float32`, or
+		    `float64`.
+		  seed: A Python integer. Used to create a random seed for the distributions.
+		    See
+		    @{tf.set_random_seed}
 		    for behavior.
-		  dtype: The data type. Only floating point types are supported.
+		  name: Optional name for the operation.
 		
 		Returns:
-		  An initializer that generates tensors with a normal distribution.
-		
-		Raises:
-		  ValueError: if `dtype` is not a floating point type.
+		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(lam))` with
+		    values of type `dtype`.
 	**/
-	static public function random_normal_initializer(?mean:Dynamic, ?stddev:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function random_poisson(lam:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Randomly shuffles a tensor along its first dimension.
 		
@@ -5798,7 +6796,7 @@ package tensorflow;
 		  value: A Tensor to be shuffled.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -5831,8 +6829,7 @@ package tensorflow;
 		    floating point.
 		  dtype: The type of the output: `float32`, `float64`, `int32`, or `int64`.
 		  seed: A Python integer. Used to create a random seed for the distribution.
-		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    See @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -5844,59 +6841,54 @@ package tensorflow;
 	**/
 	static public function random_uniform(shape:Dynamic, ?minval:Dynamic, ?maxval:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns an initializer that generates tensors with a uniform distribution.
+		Creates a sequence of numbers.
 		
-		Args:
-		  minval: a python scalar or a scalar tensor. lower bound of the range
-		    of random values to generate.
-		  maxval: a python scalar or a scalar tensor. upper bound of the range
-		    of random values to generate.
-		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
-		  dtype: The data type. Only floating point types are supported.
-		
-		Returns:
-		  An initializer that generates tensors with a uniform distribution.
-		
-		Raises:
-		  ValueError: if `dtype` is not a floating point type.
-	**/
-	static public function random_uniform_initializer(?minval:Dynamic, ?maxval:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		Creates a sequence of integers.
-		
-		Creates a sequence of integers that begins at `start` and extends by
+		Creates a sequence of numbers that begins at `start` and extends by
 		increments of `delta` up to but not including `limit`.
+		
+		The dtype of the resulting tensor is inferred from the inputs unless
+		it is provided explicitly.
 		
 		Like the Python builtin `range`, `start` defaults to 0, so that
 		`range(n) = range(0, n)`.
 		
 		For example:
 		
-		```
+		```python
 		# 'start' is 3
 		# 'limit' is 18
 		# 'delta' is 3
 		tf.range(start, limit, delta) ==> [3, 6, 9, 12, 15]
+		
+		# 'start' is 3
+		# 'limit' is 1
+		# 'delta' is -0.5
+		tf.range(start, limit, delta) ==> [3, 2.5, 2, 1.5]
 		
 		# 'limit' is 5
 		tf.range(limit) ==> [0, 1, 2, 3, 4]
 		```
 		
 		Args:
-		  start: A 0-D (scalar) of type `int32`. First entry in sequence.
-		    Defaults to 0.
-		  limit: A 0-D (scalar) of type `int32`. Upper limit of sequence,
-		    exclusive.
-		  delta: A 0-D `Tensor` (scalar) of type `int32`. Optional. Default is 1.
-		    Number that increments `start`.
-		  name: A name for the operation (optional).
+		  start: A 0-D `Tensor` (scalar). Acts as first entry in the range if
+		    `limit` is not None; otherwise, acts as range limit and first entry
+		    defaults to 0.
+		  limit: A 0-D `Tensor` (scalar). Upper limit of sequence,
+		    exclusive. If None, defaults to the value of `start` while the first
+		    entry of the range defaults to 0.
+		  delta: A 0-D `Tensor` (scalar). Number that increments
+		    `start`. Defaults to 1.
+		  dtype: The type of the elements of the resulting tensor.
+		  name: A name for the operation. Defaults to "range".
 		
 		Returns:
-		  An 1-D `int32` `Tensor`.
+		  An 1-D `Tensor` of type `dtype`.
+		
+		@compatibility(numpy)
+		Equivalent to np.arange
+		@end_compatibility
 	**/
-	static public function range(start:Dynamic, ?limit:Dynamic, ?delta:Dynamic, ?name:Dynamic):Dynamic;
+	static public function range(start:Dynamic, ?limit:Dynamic, ?delta:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the rank of a tensor.
 		
@@ -5920,6 +6912,10 @@ package tensorflow;
 		
 		Returns:
 		  A `Tensor` of type `int32`.
+		
+		@compatibility(numpy)
+		Equivalent to np.ndim
+		@end_compatibility
 	**/
 	static public function rank(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5938,7 +6934,7 @@ package tensorflow;
 		
 		Given a tensor `input` of complex numbers, this operation returns a tensor of
 		type `float32` or `float64` that is the real part of each element in `input`.
-		All elements in `input` must be complex numbers of the form \(a + bj\),
+		All elements in `input` must be complex numbers of the form \\(a + bj\\),
 		where *a* is the real part returned by this operation and *b* is the
 		imaginary part.
 		
@@ -5949,9 +6945,10 @@ package tensorflow;
 		tf.real(input) ==> [-2.25, 3.25]
 		```
 		
+		If `input` is already real, it is returned unchanged.
+		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`,
-		       `complex128`.
+		  input: A `Tensor`. Must have numeric type.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -5959,14 +6956,44 @@ package tensorflow;
 	**/
 	static public function real(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Returns x / y element-wise for real types.
+		
+		If `x` and `y` are reals, this will return the floating-point division.
+		
+		*NOTE*: `Div` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function realdiv(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the reciprocal of x element-wise.
+		
+		I.e., \\(y = 1 / x\\).
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function reciprocal(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the "logical and" of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		For example:
@@ -5981,24 +7008,29 @@ package tensorflow;
 		
 		Args:
 		  input_tensor: The boolean tensor to reduce.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.all
+		@end_compatibility
 	**/
-	static public function reduce_all(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_all(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Computes the "logical or" of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		For example:
@@ -6013,28 +7045,31 @@ package tensorflow;
 		
 		Args:
 		  input_tensor: The boolean tensor to reduce.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.any
+		@end_compatibility
 	**/
-	static public function reduce_any(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_any(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Joins a string Tensor across the given dimensions.
 		
 		Computes the string join across dimensions in the given string Tensor of shape
 		`[d_0, d_1, ..., d_n-1]`.  Returns a new Tensor created by joining the input
 		strings with the given separator (default: empty string).  Negative indices are
-		counted backwards from the end, with `-1` being equivalent to `n - 1`.  Passing
-		an empty `reduction_indices` joins all strings in linear index order and outputs
-		a scalar string.
-		
+		counted backwards from the end, with `-1` being equivalent to `n - 1`.
 		
 		For example:
-		```
+		
+		```python
 		# tensor `a` is [["a", "b"], ["c", "d"]]
 		tf.reduce_join(a, 0) ==> ["ac", "bd"]
 		tf.reduce_join(a, 1) ==> ["ab", "cd"]
@@ -6051,10 +7086,9 @@ package tensorflow;
 		Args:
 		  inputs: A `Tensor` of type `string`.
 		    The input to be joined.  All reduced indices must have non-zero size.
-		  reduction_indices: A `Tensor` of type `int32`.
+		  axis: A `Tensor` of type `int32`.
 		    The dimensions to reduce over.  Dimensions are reduced in the
-		    order specified.  If `reduction_indices` has higher rank than `1`, it is
-		    flattened.  Omitting `reduction_indices` is equivalent to passing
+		    order specified.  Omitting `axis` is equivalent to passing
 		    `[n-1, n-2, ..., 0]`.  Negative indices from `-n` to `-1` are supported.
 		  keep_dims: An optional `bool`. Defaults to `False`.
 		    If `True`, retain reduced dimensions with length `1`.
@@ -6067,38 +7101,82 @@ package tensorflow;
 		  Has shape equal to that of the input with reduced dimensions removed or
 		  set to `1` depending on `keep_dims`.
 	**/
-	static public function reduce_join(inputs:Dynamic, reduction_indices:Dynamic, ?keep_dims:Dynamic, ?separator:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_join(inputs:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?separator:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
-		Computes the maximum of elements across dimensions of a tensor.
+		Computes log(sum(exp(elements across dimensions of a tensor))).
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
+		
+		This function is more numerically stable than log(sum(exp(input))). It avoids
+		overflows caused by taking the exp of large inputs and underflows caused by
+		taking the log of small inputs.
+		
+		For example:
+		
+		```python
+		# 'x' is [[0, 0, 0]]
+		#         [0, 0, 0]]
+		tf.reduce_logsumexp(x) ==> log(6)
+		tf.reduce_logsumexp(x, 0) ==> [log(2), log(2), log(2)]
+		tf.reduce_logsumexp(x, 1) ==> [log(3), log(3)]
+		tf.reduce_logsumexp(x, 1, keep_dims=True) ==> [[log(3)], [log(3)]]
+		tf.reduce_logsumexp(x, [0, 1]) ==> log(6)
+		```
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
 	**/
-	static public function reduce_max(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_logsumexp(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
+	/**
+		Computes the maximum of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default),
+		    reduces all dimensions.
+		  keep_dims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.max
+		@end_compatibility
+	**/
+	static public function reduce_max(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Computes the mean of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		For example:
@@ -6113,68 +7191,83 @@ package tensorflow;
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.mean
+		@end_compatibility
 	**/
-	static public function reduce_mean(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_mean(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Computes the minimum of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.min
+		@end_compatibility
 	**/
-	static public function reduce_min(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_min(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Computes the product of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.prod
+		@end_compatibility
 	**/
-	static public function reduce_prod(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_prod(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Computes the sum of elements across dimensions of a tensor.
 		
-		Reduces `input_tensor` along the dimensions given in `reduction_indices`.
+		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
-		entry in `reduction_indices`. If `keep_dims` is true, the reduced dimensions
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
 		are retained with length 1.
 		
-		If `reduction_indices` has no entries, all dimensions are reduced, and a
+		If `axis` has no entries, all dimensions are reduced, and a
 		tensor with a single element is returned.
 		
 		For example:
@@ -6191,22 +7284,29 @@ package tensorflow;
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  reduction_indices: The dimensions to reduce. If `None` (the default),
+		  axis: The dimensions to reduce. If `None` (the default),
 		    reduces all dimensions.
 		  keep_dims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		  reduction_indices: The old (deprecated) name for axis.
 		
 		Returns:
 		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.sum
+		@end_compatibility
 	**/
-	static public function reduce_sum(input_tensor:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reduce_sum(input_tensor:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	/**
 		Registers a function for converting objects of `base_type` to `Tensor`.
 		
 		The conversion function must have the following signature:
 		
+		```python
 		    def conversion_func(value, dtype=None, name=None, as_ref=False):
 		      # ...
+		```
 		
 		It must return a `Tensor` with the given `dtype` if specified. If the
 		conversion function creates a new `Tensor`, it should use the given
@@ -6246,14 +7346,47 @@ package tensorflow;
 		
 		Args:
 		  var_list: List of `Variable` objects to check. Defaults to the
-		    value of `all_variables() + local_variables()`
+		    value of `global_variables() + local_variables()`
 		  name: Optional name of the `Operation`.
 		
 		Returns:
-		  A 1-D tensor containing names of the unintialized variables, or an empty 1-D
-		  tensor if there are no variables or no uninitialized variables.
+		  A 1-D tensor containing names of the uninitialized variables, or an empty
+		  1-D tensor if there are no variables or no uninitialized variables.
+		
+		
+		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function report_uninitialized_variables(?var_list:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calculate padding required to make block_shape divide input_shape.
+		
+		This function can be used to calculate a suitable paddings argument for use
+		with space_to_batch_nd and batch_to_space_nd.
+		
+		Args:
+		  input_shape: int32 Tensor of shape [N].
+		  block_shape: int32 Tensor of shape [N].
+		  base_paddings: Optional int32 Tensor of shape [N, 2].  Specifies the minimum
+		    amount of padding to use.  All elements must be >= 0.  If not specified,
+		    defaults to 0.
+		  name: string.  Optional name prefix.
+		
+		Returns:
+		  (paddings, crops), where:
+		
+		  `paddings` and `crops` are int32 Tensors of rank 2 and shape [N, 2]
+		  satisfying:
+		
+		      paddings[i, 0] = base_paddings[i, 0].
+		      0 <= paddings[i, 1] - base_paddings[i, 1] < block_shape[i]
+		      (input_shape[i] + paddings[i, 0] + paddings[i, 1]) % block_shape[i] == 0
+		
+		      crops[i, 0] = 0
+		      crops[i, 1] = paddings[i, 1] - base_paddings[i, 1]
+		
+		Raises: ValueError if called with incompatible shapes.
+	**/
+	static public function required_space_to_batch_paddings(input_shape:Dynamic, block_shape:Dynamic, ?base_paddings:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Clears the default graph stack and resets the global default graph.
 		
@@ -6280,7 +7413,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# tensor 't' is [1, 2, 3, 4, 5, 6, 7, 8, 9]
 		# tensor 't' has shape [9]
 		reshape(t, [3, 3]) ==> [[1, 2, 3],
@@ -6326,28 +7459,32 @@ package tensorflow;
 		
 		Args:
 		  tensor: A `Tensor`.
-		  shape: A `Tensor` of type `int32`. Defines the shape of the output tensor.
+		  shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Defines the shape of the output tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `tensor`.
 	**/
 	static public function reshape(tensor:Dynamic, shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public var resource : Dynamic;
 	/**
 		Reverses specific dimensions of a tensor.
 		
-		Given a `tensor`, and a `bool` tensor `dims` representing the dimensions
-		of `tensor`, this operation reverses each dimension i of `tensor` where
-		`dims[i]` is `True`.
+		NOTE `tf.reverse` has now changed behavior in preparation for 1.0.
+		`tf.reverse_v2` is currently an alias that will be deprecated before TF 1.0.
 		
-		`tensor` can have up to 8 dimensions. The number of dimensions
-		of `tensor` must equal the number of elements in `dims`. In other words:
+		Given a `tensor`, and a `int32` tensor `axis` representing the set of
+		dimensions of `tensor` to reverse. This operation reverses each dimension
+		`i` for which there exists `j` s.t. `axis[j] == i`.
 		
-		`rank(tensor) = size(dims)`
+		`tensor` can have up to 8 dimensions. The number of dimensions specified
+		in `axis` may be 0 or more entries. If an index is specified more than
+		once, a InvalidArgument error is raised.
 		
 		For example:
 		
-		```prettyprint
+		```
 		# tensor 't' is [[[[ 0,  1,  2,  3],
 		#                  [ 4,  5,  6,  7],
 		#                  [ 8,  9, 10, 11]],
@@ -6356,7 +7493,7 @@ package tensorflow;
 		#                  [20, 21, 22, 23]]]]
 		# tensor 't' shape is [1, 2, 3, 4]
 		
-		# 'dims' is [False, False, False, True]
+		# 'dims' is [3] or 'dims' is -1
 		reverse(t, dims) ==> [[[[ 3,  2,  1,  0],
 		                        [ 7,  6,  5,  4],
 		                        [ 11, 10, 9, 8]],
@@ -6364,7 +7501,7 @@ package tensorflow;
 		                        [19, 18, 17, 16],
 		                        [23, 22, 21, 20]]]]
 		
-		# 'dims' is [False, True, False, False]
+		# 'dims' is '[1]' (or 'dims' is '[-3]')
 		reverse(t, dims) ==> [[[[12, 13, 14, 15],
 		                        [16, 17, 18, 19],
 		                        [20, 21, 22, 23]
@@ -6372,7 +7509,7 @@ package tensorflow;
 		                        [ 4,  5,  6,  7],
 		                        [ 8,  9, 10, 11]]]]
 		
-		# 'dims' is [False, False, True, False]
+		# 'dims' is '[2]' (or 'dims' is '[-2]')
 		reverse(t, dims) ==> [[[[8, 9, 10, 11],
 		                        [4, 5, 6, 7],
 		                        [0, 1, 2, 3]]
@@ -6382,32 +7519,33 @@ package tensorflow;
 		```
 		
 		Args:
-		  tensor: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int32`, `bool`, `half`, `float32`, `float64`, `complex64`, `complex128`.
+		  tensor: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int32`, `int64`, `bool`, `half`, `float32`, `float64`, `complex64`, `complex128`, `string`.
 		    Up to 8-D.
-		  dims: A `Tensor` of type `bool`. 1-D. The dimensions to reverse.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D. The indices of the dimensions to reverse.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `tensor`. The same shape as `tensor`.
 	**/
-	static public function reverse(tensor:Dynamic, dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reverse(tensor:Dynamic, axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Reverses variable length slices.
 		
-		This op first slices `input` along the dimension `batch_dim`, and for each
+		This op first slices `input` along the dimension `batch_axis`, and for each
 		slice `i`, reverses the first `seq_lengths[i]` elements along
-		the dimension `seq_dim`.
+		the dimension `seq_axis`.
 		
-		The elements of `seq_lengths` must obey `seq_lengths[i] < input.dims[seq_dim]`,
+		The elements of `seq_lengths` must obey `seq_lengths[i] <= input.dims[seq_dim]`,
 		and `seq_lengths` must be a vector of length `input.dims[batch_dim]`.
 		
-		The output slice `i` along dimension `batch_dim` is then given by input
+		The output slice `i` along dimension `batch_axis` is then given by input
 		slice `i`, with the first `seq_lengths[i]` slices along dimension
-		`seq_dim` reversed.
+		`seq_axis` reversed.
 		
 		For example:
 		
-		```prettyprint
+		```
 		# Given this:
 		batch_dim = 0
 		seq_dim = 1
@@ -6429,7 +7567,7 @@ package tensorflow;
 		
 		In contrast, if:
 		
-		```prettyprint
+		```
 		# Given this:
 		batch_dim = 2
 		seq_dim = 0
@@ -6451,11 +7589,11 @@ package tensorflow;
 		
 		Args:
 		  input: A `Tensor`. The input to reverse.
-		  seq_lengths: A `Tensor` of type `int64`.
+		  seq_lengths: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    1-D with length `input.dims(batch_dim)` and
-		    `max(seq_lengths) < input.dims(seq_dim)`
-		  seq_dim: An `int`. The dimension which is partially reversed.
-		  batch_dim: An optional `int`. Defaults to `0`.
+		    `max(seq_lengths) <= input.dims(seq_dim)`
+		  seq_axis: An `int`. The dimension which is partially reversed.
+		  batch_axis: An optional `int`. Defaults to `0`.
 		    The dimension along which reversal is performed.
 		  name: A name for the operation (optional).
 		
@@ -6463,15 +7601,99 @@ package tensorflow;
 		  A `Tensor`. Has the same type as `input`.
 		  The partially reversed input. It has the same shape as `input`.
 	**/
-	static public function reverse_sequence(input:Dynamic, seq_lengths:Dynamic, seq_dim:Dynamic, ?batch_dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reverse_sequence(input:Dynamic, seq_lengths:Dynamic, ?seq_axis:Dynamic, ?batch_axis:Dynamic, ?name:Dynamic, ?seq_dim:Dynamic, ?batch_dim:Dynamic):Dynamic;
 	/**
-		Rounds the values of a tensor to the nearest integer, element-wise.
+		Reverses specific dimensions of a tensor.
+		
+		NOTE `tf.reverse` has now changed behavior in preparation for 1.0.
+		`tf.reverse_v2` is currently an alias that will be deprecated before TF 1.0.
+		
+		Given a `tensor`, and a `int32` tensor `axis` representing the set of
+		dimensions of `tensor` to reverse. This operation reverses each dimension
+		`i` for which there exists `j` s.t. `axis[j] == i`.
+		
+		`tensor` can have up to 8 dimensions. The number of dimensions specified
+		in `axis` may be 0 or more entries. If an index is specified more than
+		once, a InvalidArgument error is raised.
 		
 		For example:
 		
+		```
+		# tensor 't' is [[[[ 0,  1,  2,  3],
+		#                  [ 4,  5,  6,  7],
+		#                  [ 8,  9, 10, 11]],
+		#                 [[12, 13, 14, 15],
+		#                  [16, 17, 18, 19],
+		#                  [20, 21, 22, 23]]]]
+		# tensor 't' shape is [1, 2, 3, 4]
+		
+		# 'dims' is [3] or 'dims' is -1
+		reverse(t, dims) ==> [[[[ 3,  2,  1,  0],
+		                        [ 7,  6,  5,  4],
+		                        [ 11, 10, 9, 8]],
+		                       [[15, 14, 13, 12],
+		                        [19, 18, 17, 16],
+		                        [23, 22, 21, 20]]]]
+		
+		# 'dims' is '[1]' (or 'dims' is '[-3]')
+		reverse(t, dims) ==> [[[[12, 13, 14, 15],
+		                        [16, 17, 18, 19],
+		                        [20, 21, 22, 23]
+		                       [[ 0,  1,  2,  3],
+		                        [ 4,  5,  6,  7],
+		                        [ 8,  9, 10, 11]]]]
+		
+		# 'dims' is '[2]' (or 'dims' is '[-2]')
+		reverse(t, dims) ==> [[[[8, 9, 10, 11],
+		                        [4, 5, 6, 7],
+		                        [0, 1, 2, 3]]
+		                       [[20, 21, 22, 23],
+		                        [16, 17, 18, 19],
+		                        [12, 13, 14, 15]]]]
+		```
+		
+		Args:
+		  tensor: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int32`, `int64`, `bool`, `half`, `float32`, `float64`, `complex64`, `complex128`, `string`.
+		    Up to 8-D.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D. The indices of the dimensions to reverse.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`. The same shape as `tensor`.
+	**/
+	static public function reverse_v2(tensor:Dynamic, axis:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns element-wise integer closest to x.
+		
+		If the result is midway between two representable values,
+		the even representable is chosen.
+		For example:
+		
+		```
+		rint(-1.5) ==> -2.0
+		rint(0.5000001) ==> 1.0
+		rint([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0]) ==> [-2., -2., -0., 0., 2., 2., 2.]
+		```
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function rint(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Rounds the values of a tensor to the nearest integer, element-wise.
+		
+		Rounds half to even.  Also known as bankers rounding. If you want to round
+		according to the current system rounding mode use tf::cint.
+		For example:
+		
 		```python
-		# 'a' is [0.9, 2.5, 2.3, -4.4]
-		tf.round(a) ==> [ 1.0, 3.0, 2.0, -4.0 ]
+		# 'a' is [0.9, 2.5, 2.3, 1.5, -4.5]
+		tf.round(a) ==> [ 1.0, 2.0, 2.0, 2.0, -4.0 ]
 		```
 		
 		Args:
@@ -6530,24 +7752,6 @@ package tensorflow;
 	**/
 	static public function scalar_mul(scalar:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with scalar values.
-		
-		The input `tags` and `values` must have the same shape.  The generated
-		summary has a summary value for each tag-value pair in `tags` and `values`.
-		
-		Args:
-		  tags: A `string` `Tensor`.  Tags for the summaries.
-		  values: A real numeric Tensor.  Values for the summaries.
-		  collections: Optional list of graph collections keys. The new summary op is
-		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
-		  buffer.
-	**/
-	static public function scalar_summary(tags:Dynamic, values:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		scan on the list of tensors unpacked from `elems` on dimension 0.
 		
 		The simplest version of `scan` repeatedly applies the callable `fn` to a
@@ -6582,9 +7786,9 @@ package tensorflow;
 		
 		Args:
 		  fn: The callable to be performed.  It accepts two arguments.  The first
-		    will have the same (possibly nested) structure as `elems`.  The second
 		    will have the same structure as `initializer` if one is provided,
-		    otherwise it will have the same structure as `elems`.  Its output
+		    otherwise it will have the same structure as `elems`.  The second
+		    will have the same (possibly nested) structure as `elems`.  Its output
 		    must have the same structure as `initializer` if one is provided,
 		    otherwise it must have the same structure as `elems`.
 		  elems: A tensor or (possibly nested) sequence of tensors, each of which
@@ -6656,7 +7860,7 @@ package tensorflow;
 		Requires `updates.shape = indices.shape + ref.shape[1:]`.
 		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/ScatterAdd.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterAdd.png" alt>
 		</div>
 		
 		Args:
@@ -6677,8 +7881,355 @@ package tensorflow;
 	**/
 	static public function scatter_add(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Divides a variable reference by sparse updates.
+		
+		This operation computes
+		
+		```python
+		    # Scalar indices
+		    ref[indices, ...] /= updates[...]
+		
+		    # Vector indices (for each i)
+		    ref[indices[i], ...] /= updates[i, ...]
+		
+		    # High rank indices (for each i, ..., j)
+		    ref[indices[i, ..., j], ...] /= updates[i, ..., j, ...]
+		```
+		
+		This operation outputs `ref` after the update is done.
+		This makes it easier to chain operations that need to use the reset value.
+		
+		Duplicate entries are handled correctly: if multiple `indices` reference
+		the same location, their contributions divide.
+		
+		Requires `updates.shape = indices.shape + ref.shape[1:]`.
+		
+		Args:
+		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		    Should be from a `Variable` node.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A tensor of indices into the first dimension of `ref`.
+		  updates: A `Tensor`. Must have the same type as `ref`.
+		    A tensor of values that `ref` is divided by.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    If True, the operation will be protected by a lock;
+		    otherwise the behavior is undefined, but may exhibit less contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  Same as `ref`.  Returned as a convenience for operations that want
+		  to use the updated values after the update is done.
+	**/
+	static public function scatter_div(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Multiplies sparse updates into a variable reference.
+		
+		This operation computes
+		
+		```python
+		    # Scalar indices
+		    ref[indices, ...] *= updates[...]
+		
+		    # Vector indices (for each i)
+		    ref[indices[i], ...] *= updates[i, ...]
+		
+		    # High rank indices (for each i, ..., j)
+		    ref[indices[i, ..., j], ...] *= updates[i, ..., j, ...]
+		```
+		
+		This operation outputs `ref` after the update is done.
+		This makes it easier to chain operations that need to use the reset value.
+		
+		Duplicate entries are handled correctly: if multiple `indices` reference
+		the same location, their contributions multiply.
+		
+		Requires `updates.shape = indices.shape + ref.shape[1:]`.
+		
+		Args:
+		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		    Should be from a `Variable` node.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A tensor of indices into the first dimension of `ref`.
+		  updates: A `Tensor`. Must have the same type as `ref`.
+		    A tensor of updated values to multiply to `ref`.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    If True, the operation will be protected by a lock;
+		    otherwise the behavior is undefined, but may exhibit less contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  Same as `ref`.  Returned as a convenience for operations that want
+		  to use the updated values after the update is done.
+	**/
+	static public function scatter_mul(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Scatter `updates` into a new (initially zero) tensor according to `indices`.
+		
+		Creates a new tensor by applying sparse `updates` to individual
+		values or slices within a zero tensor of the given `shape` according to
+		indices.  This operator is the inverse of the [tf.gather_nd](#gather_nd)
+		operator which extracts values or slices from a given tensor.
+		
+		**WARNING**: The order in which updates are applied is nondeterministic, so the
+		output will be nondeterministic if `indices` contains duplicates.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of scatter is to insert individual elements in a tensor by
+		index. For example, say we want to insert 4 scattered elements in a rank-1
+		tensor with 8 elements.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterNd1.png" alt>
+		</div>
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    shape = tf.constant([8])
+		    scatter = tf.scatter_nd(indices, updates, shape)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [0, 11, 0, 10, 9, 0, 0, 12]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterNd2.png" alt>
+		</div>
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    shape = tf.constant([4, 4, 4])
+		    scatter = tf.scatter_nd(indices, updates, shape)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+		     [[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
+		
+		Args:
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Updates to scatter into output.
+		  shape: A `Tensor`. Must have the same type as `indices`.
+		    1-D. The shape of the resulting tensor.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `updates`.
+		  A new tensor with the given shape and updates applied according
+		  to the indices.
+	**/
+	static public function scatter_nd(indices:Dynamic, updates:Dynamic, shape:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse addition between `updates` and individual values or slices
+		
+		within a given variable according to `indices`.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to add 4 scattered elements to a rank-1 tensor to 8
+		elements. In Python, that addition would look like this:
+		
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    add = tf.scatter_nd_add(ref, indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(add)
+		
+		The resulting update to ref would look like this:
+		
+		    [1, 13, 3, 14, 14, 6, 7, 20]
+		
+		See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+		slices.
+		
+		Args:
+		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		    A mutable Tensor. Should be from a Variable node.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A Tensor. Must be one of the following types: int32, int64.
+		    A tensor of indices into ref.
+		  updates: A `Tensor`. Must have the same type as `ref`.
+		    A Tensor. Must have the same type as ref. A tensor of updated values
+		    to add to ref.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    An optional bool. Defaults to True. If True, the assignment will
+		    be protected by a lock; otherwise the behavior is undefined,
+		    but may exhibit less contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A mutable `Tensor`. Has the same type as `ref`.
+		  Same as ref. Returned as a convenience for operations that want
+		  to use the updated values after the update is done.
+	**/
+	static public function scatter_nd_add(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse subtraction between `updates` and individual values or slices
+		
+		within a given variable according to `indices`.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to subtract 4 scattered elements from a rank-1 tensor
+		with 8 elements. In Python, that subtraction would look like this:
+		
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    sub = tf.scatter_nd_sub(ref, indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(sub)
+		
+		The resulting update to ref would look like this:
+		
+		    [1, -9, 3, -6, -4, 6, 7, -4]
+		
+		See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+		slices.
+		
+		Args:
+		  ref: A mutable `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		    A mutable Tensor. Should be from a Variable node.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A Tensor. Must be one of the following types: int32, int64.
+		    A tensor of indices into ref.
+		  updates: A `Tensor`. Must have the same type as `ref`.
+		    A Tensor. Must have the same type as ref. A tensor of updated values
+		    to subtract from ref.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    An optional bool. Defaults to True. If True, the assignment will
+		    be protected by a lock; otherwise the behavior is undefined,
+		    but may exhibit less contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A mutable `Tensor`. Has the same type as `ref`.
+		  Same as ref. Returned as a convenience for operations that want
+		  to use the updated values after the update is done.
+	**/
+	static public function scatter_nd_sub(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse `updates` to individual values or slices within a given
+		
+		variable according to `indices`.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to update 4 scattered elements to a rank-1 tensor to
+		8 elements. In Python, that update would look like this:
+		
+		```python
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1] ,[7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    update = tf.scatter_nd_update(ref, indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(update)
+		```
+		
+		The resulting update to ref would look like this:
+		
+		    [1, 11, 3, 10, 9, 6, 7, 12]
+		
+		See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+		slices.
+		
+		Args:
+		  ref: A mutable `Tensor`. A mutable Tensor. Should be from a Variable node.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A Tensor. Must be one of the following types: int32, int64.
+		    A tensor of indices into ref.
+		  updates: A `Tensor`. Must have the same type as `ref`.
+		    A Tensor. Must have the same type as ref. A tensor of updated
+		    values to add to ref.
+		  use_locking: An optional `bool`. Defaults to `True`.
+		    An optional bool. Defaults to True. If True, the assignment will
+		    be protected by a lock; otherwise the behavior is undefined,
+		    but may exhibit less contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A mutable `Tensor`. Has the same type as `ref`.
+		  Same as ref. Returned as a convenience for operations that want to
+		  use the updated values after the update is done.
+	**/
+	static public function scatter_nd_update(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Subtracts sparse updates to a variable reference.
 		
+		```python
 		    # Scalar indices
 		    ref[indices, ...] -= updates[...]
 		
@@ -6687,6 +8238,7 @@ package tensorflow;
 		
 		    # High rank indices (for each i, ..., j)
 		    ref[indices[i, ..., j], ...] -= updates[i, ..., j, ...]
+		```
 		
 		This operation outputs `ref` after the update is done.
 		This makes it easier to chain operations that need to use the reset value.
@@ -6697,7 +8249,7 @@ package tensorflow;
 		Requires `updates.shape = indices.shape + ref.shape[1:]`.
 		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/ScatterSub.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterSub.png" alt>
 		</div>
 		
 		Args:
@@ -6722,6 +8274,7 @@ package tensorflow;
 		
 		This operation computes
 		
+		```python
 		    # Scalar indices
 		    ref[indices, ...] = updates[...]
 		
@@ -6730,18 +8283,19 @@ package tensorflow;
 		
 		    # High rank indices (for each i, ..., j)
 		    ref[indices[i, ..., j], ...] = updates[i, ..., j, ...]
+		```
 		
 		This operation outputs `ref` after the update is done.
 		This makes it easier to chain operations that need to use the reset value.
 		
 		If values in `ref` is to be updated more than once, because there are
-		duplicate entires in `indices`, the order at which the updates happen
+		duplicate entries in `indices`, the order at which the updates happen
 		for each value is undefined.
 		
 		Requires `updates.shape = indices.shape + ref.shape[1:]`.
 		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/ScatterUpdate.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterUpdate.png" alt>
 		</div>
 		
 		Args:
@@ -6763,15 +8317,17 @@ package tensorflow;
 	/**
 		Computes the maximum along segments of a tensor.
 		
-		Read [the section on Segmentation](../../api_docs/python/math_ops.md#segmentation)
-		for an explanation of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Computes a tensor such that
 		\\(output_i = \max_j(data_j)\\) where `max` is over `j` such
 		that `segment_ids[j] == i`.
 		
+		If the max is empty for a given segment ID `i`, `output[i] = 0`.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/SegmentMax.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/SegmentMax.png" alt>
 		</div>
 		
 		Args:
@@ -6790,17 +8346,18 @@ package tensorflow;
 	/**
 		Computes the mean along segments of a tensor.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Computes a tensor such that
 		\\(output_i = \frac{\sum_j data_j}{N}\\) where `mean` is
 		over `j` such that `segment_ids[j] == i` and `N` is the total number of
 		values summed.
 		
+		If the mean is empty for a given segment ID `i`, `output[i] = 0`.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/SegmentMean.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/SegmentMean.png" alt>
 		</div>
 		
 		Args:
@@ -6819,16 +8376,17 @@ package tensorflow;
 	/**
 		Computes the minimum along segments of a tensor.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Computes a tensor such that
 		\\(output_i = \min_j(data_j)\\) where `min` is over `j` such
 		that `segment_ids[j] == i`.
 		
+		If the min is empty for a given segment ID `i`, `output[i] = 0`.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/SegmentMin.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/SegmentMin.png" alt>
 		</div>
 		
 		Args:
@@ -6847,16 +8405,17 @@ package tensorflow;
 	/**
 		Computes the product along segments of a tensor.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Computes a tensor such that
 		\\(output_i = \prod_j data_j\\) where the product is over `j` such
 		that `segment_ids[j] == i`.
 		
+		If the product is empty for a given segment ID `i`, `output[i] = 1`.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/SegmentProd.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/SegmentProd.png" alt>
 		</div>
 		
 		Args:
@@ -6875,15 +8434,17 @@ package tensorflow;
 	/**
 		Computes the sum along segments of a tensor.
 		
-		Read [the section on Segmentation](../../api_docs/python/math_ops.md#segmentation)
-		for an explanation of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Computes a tensor such that
 		\\(output_i = \sum_j data_j\\) where sum is over `j` such
 		that `segment_ids[j] == i`.
 		
+		If the sum is empty for a given segment ID `i`, `output[i] = 0`.
+		
 		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/SegmentSum.png" alt>
+		<img style="width:100%" src="https://www.tensorflow.org/images/SegmentSum.png" alt>
 		</div>
 		
 		Args:
@@ -6900,85 +8461,60 @@ package tensorflow;
 	**/
 	static public function segment_sum(data:Dynamic, segment_ids:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Selects elements from `t` or `e`, depending on `condition`.
+		Computes the eigen decomposition of a batch of self-adjoint matrices.
 		
-		The `t`, and `e` tensors must all have the same shape,
-		and the output will also have that shape.  The `condition` tensor
-		must be a scalar if `t` and `e` are scalars.  If `t` and `e` are vectors
-		or higher rank, then `condition` must be either a vector with size
-		matching the first dimension of `t`, or must have the same shape as `t`.
+		Computes the eigenvalues and eigenvectors of the innermost N-by-N matrices
+		in `tensor` such that
+		`tensor[...,:,:] * v[..., :,i] = e[..., i] * v[...,:,i]`, for i=0...N-1.
 		
-		The `condition` tensor acts as a mask that chooses, based on the value at each
-		element, whether the corresponding element / row in the output should be
-		taken from `t` (if true) or `e` (if false).
+		Args:
+		  tensor: `Tensor` of shape `[..., N, N]`. Only the lower triangular part of
+		    each inner inner matrix is referenced.
+		  name: string, optional name of the operation.
 		
-		If `condition` is a vector and `t` and `e` are higher rank matrices, then
-		it chooses which row (outer dimension) to copy from `t` and `e`.
-		If `condition` has the same shape as `t` and `e`, then it chooses which
-		element to copy from `t` and `e`.
+		Returns:
+		  e: Eigenvalues. Shape is `[..., N]`.
+		  v: Eigenvectors. Shape is `[..., N, N]`. The columns of the inner most
+		    matrices contain eigenvectors of the corresponding matrices in `tensor`
+	**/
+	static public function self_adjoint_eig(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the eigenvalues of one or more self-adjoint matrices.
 		
-		For example:
+		Args:
+		  tensor: `Tensor` of shape `[..., N, N]`.
+		  name: string, optional name of the operation.
 		
-		```prettyprint
-		# 'condition' tensor is [[True,  False]
-		#                        [False, True]]
-		# 't' is [[1, 2],
-		#         [3, 4]]
-		# 'e' is [[5, 6],
-		#         [7, 8]]
-		select(condition, t, e) ==> [[1, 6],
-		                             [7, 4]]
+		Returns:
+		  e: Eigenvalues. Shape is `[..., N]`. The vector `e[..., :]` contains the `N`
+		    eigenvalues of `tensor[..., :, :]`.
+	**/
+	static public function self_adjoint_eigvals(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Return a mask tensor representing the first N positions of each row.
 		
+		Example:
 		
-		# 'condition' tensor is [True, False]
-		# 't' is [[1, 2],
-		#         [3, 4]]
-		# 'e' is [[5, 6],
-		#         [7, 8]]
-		select(condition, t, e) ==> [[1, 2],
-		                             [7, 8]]
-		
+		```python
+		tf.sequence_mask([1, 3, 2], 5) =
+		  [[True, False, False, False, False],
+		   [True, True, True, False, False],
+		   [True, True, False, False, False]]
 		```
 		
 		Args:
-		  condition: A `Tensor` of type `bool`.
-		  t:  A `Tensor` which may have the same shape as `condition`.
-		    If `condition` is rank 1, `t` may have higher rank,
-		    but its first dimension must match the size of `condition`.
-		  e:  A `Tensor` with the same type and shape as `t`.
-		  name: A name for the operation (optional).
-		
+		  lengths: 1D integer tensor, all its values < maxlen.
+		  maxlen: scalar integer tensor, maximum length of each row. Default: use
+		          maximum over lengths.
+		  dtype: output type of the resulting tensor.
+		  name: name of the op.
 		Returns:
-		  A `Tensor` with the same type and shape as `t` and `e`.
+		  A 2D mask tensor, as shown in the example above, cast to specified dtype.
+		
+		Raises:
+		  ValueError: if the arguments have invalid rank.
 	**/
-	static public function select(condition:Dynamic, t:Dynamic, e:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the eigen decomposition of a self-adjoint matrix.
-		
-		Computes the eigenvalues and eigenvectors of an N-by-N matrix `matrix` such
-		that `matrix * v[:,i] = e(i) * v[:,i]`, for i=0...N-1.
-		
-		Args:
-		  matrix: `Tensor` of shape `[N, N]`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  e: Eigenvalues. Shape is `[N]`.
-		  v: Eigenvectors. Shape is `[N, N]`. The columns contain the eigenvectors of
-		    `matrix`.
-	**/
-	static public function self_adjoint_eig(matrix:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the eigenvalues a self-adjoint  matrix.
-		
-		Args:
-		  matrix: `Tensor` of shape `[N, N]`.
-		  name: string, optional name of the operation.
-		
-		Returns:
-		  e: Eigenvalues of `matrix`. Shape is `[N]`.
-	**/
-	static public function self_adjoint_eigvals(matrix:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sequence_mask(lengths:Dynamic, ?maxlen:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Serialize an `N`-minibatch `SparseTensor` into an `[N, 3]` string `Tensor`.
 		
@@ -7093,7 +8629,7 @@ package tensorflow;
 		a = tf.random_uniform([1])
 		b = tf.random_normal([1])
 		
-		# Repeatedly running this block with the same graph will generate different
+		# Repeatedly running this block with the same graph will generate the same
 		# sequences of 'a' and 'b'.
 		print("Session 1")
 		with tf.Session() as sess1:
@@ -7115,6 +8651,44 @@ package tensorflow;
 	**/
 	static public function set_random_seed(seed:Dynamic):Dynamic;
 	/**
+		Computes the difference between two lists of numbers or strings.
+		
+		Given a list `x` and a list `y`, this operation returns a list `out` that
+		represents all values that are in `x` but not in `y`. The returned list `out`
+		is sorted in the same order that the numbers appear in `x` (duplicates are
+		preserved). This operation also returns a list `idx` that represents the
+		position of each `out` element in `x`. In other words:
+		
+		`out[i] = x[idx[i]] for i in [0, 1, ..., len(out) - 1]`
+		
+		For example, given this input:
+		
+		```
+		x = [1, 2, 3, 4, 5, 6]
+		y = [1, 3, 5]
+		```
+		
+		This operation would return:
+		
+		```
+		out ==> [2, 4, 6]
+		idx ==> [1, 3, 5]
+		```
+		
+		Args:
+		  x: A `Tensor`. 1-D. Values to keep.
+		  y: A `Tensor`. Must have the same type as `x`. 1-D. Values to remove.
+		  out_idx: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (out, idx).
+		
+		  out: A `Tensor`. Has the same type as `x`. 1-D. Values present in `x` but not in `y`.
+		  idx: A `Tensor` of type `out_idx`. 1-D. Positions of `x` values preserved in `out`.
+	**/
+	static public function setdiff1d(x:Dynamic, y:Dynamic, ?index_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns the shape of a tensor.
 		
 		This operation returns a 1-D integer tensor representing the shape of `input`.
@@ -7129,24 +8703,27 @@ package tensorflow;
 		Args:
 		  input: A `Tensor` or `SparseTensor`.
 		  name: A name for the operation (optional).
+		  out_type: (Optional) The specified output type of the operation
+		    (`int32` or `int64`). Defaults to `tf.int32`.
 		
 		Returns:
-		  A `Tensor` of type `int32`.
+		  A `Tensor` of type `out_type`.
 	**/
-	static public function shape(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function shape(input:Dynamic, ?name:Dynamic, ?out_type:Dynamic):Dynamic;
 	/**
 		Returns shape of tensors.
 		
 		This operation returns N 1-D integer tensors representing shape of `input[i]s`.
 		
 		Args:
-		  input: A list of at least 1 `Tensor` objects of the same type.
+		  input: A list of at least 1 `Tensor` objects with the same type.
+		  out_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A list with the same number of `Tensor` objects as `input` of `Tensor` objects of type `int32`.
+		  A list with the same length as `input` of `Tensor` objects with type `out_type`.
 	**/
-	static public function shape_n(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function shape_n(input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes sigmoid of `x` element-wise.
 		
@@ -7160,12 +8737,18 @@ package tensorflow;
 		Returns:
 		  A Tensor with the same type as `x` if `x.dtype != qint32`
 		    otherwise the return type is `quint8`.
+		
+		@compatibility(numpy)
+		Equivalent to np.scipy.special.expit
+		@end_compatibility
 	**/
 	static public function sigmoid(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns an element-wise indication of the sign of a number.
 		
-		`y = sign(x) = -1` if `x < 0`; 0 if `x == 0`; 1 if `x > 0`.
+		`y = sign(x) = -1` if `x < 0`; 0 if `x == 0` or `tf.is_nan(x)`; 1 if `x > 0`.
+		
+		Zero is returned for NaN inputs.
 		
 		For complex numbers, `y = sign(x) = x / |x|` if `x != 0`, otherwise `y = 0`.
 		
@@ -7176,6 +8759,10 @@ package tensorflow;
 		
 		Returns:
 		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		
+		@compatibility(numpy)
+		Equivalent to numpy.sign except for the behaviour for input values of NaN.
+		@end_compatibility
 	**/
 	static public function sign(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -7205,11 +8792,13 @@ package tensorflow;
 		Args:
 		  input: A `Tensor` or `SparseTensor`.
 		  name: A name for the operation (optional).
+		  out_type: (Optional) The specified output type of the operation
+		    (`int32` or `int64`). Defaults to tf.int32.
 		
 		Returns:
-		  A `Tensor` of type `int32`.
+		  A `Tensor` of type `out_type`. Defaults to tf.int32.
 	**/
-	static public function size(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function size(input:Dynamic, ?name:Dynamic, ?out_type:Dynamic):Dynamic;
 	/**
 		Extracts a slice from a tensor.
 		
@@ -7233,7 +8822,7 @@ package tensorflow;
 		
 		For example:
 		
-		```
+		```python
 		# 'input' is [[[1, 1, 1], [2, 2, 2]],
 		#             [[3, 3, 3], [4, 4, 4]],
 		#             [[5, 5, 5], [6, 6, 6]]]
@@ -7257,6 +8846,8 @@ package tensorflow;
 	/**
 		SpaceToBatch for 4-D tensors of type T.
 		
+		This is a legacy version of the more general SpaceToBatchND.
+		
 		Zero-pads and then rearranges (permutes) blocks of spatial data into batch.
 		More specifically, this op outputs a copy of the input tensor where values from
 		the `height` and `width` dimensions are moved to the `batch` dimension. After
@@ -7265,7 +8856,7 @@ package tensorflow;
 		
 		Args:
 		  input: A `Tensor`. 4-D with shape `[batch, height, width, depth]`.
-		  paddings: A `Tensor` of type `int32`.
+		  paddings: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2-D tensor of non-negative integers with shape `[2, 2]`. It specifies
 		      the padding of the input with zeros across the spatial dimensions as follows:
 		
@@ -7292,32 +8883,32 @@ package tensorflow;
 		
 		    (1) For the following input of shape `[1, 2, 2, 1]` and block_size of 2:
 		
-		    ```prettyprint
+		    ```
 		    x = [[[[1], [2]], [[3], [4]]]]
 		    ```
 		
 		    The output tensor has shape `[4, 1, 1, 1]` and value:
 		
-		    ```prettyprint
+		    ```
 		    [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
 		    ```
 		
 		    (2) For the following input of shape `[1, 2, 2, 3]` and block_size of 2:
 		
-		    ```prettyprint
+		    ```
 		    x = [[[[1, 2, 3], [4, 5, 6]],
 		          [[7, 8, 9], [10, 11, 12]]]]
 		    ```
 		
 		    The output tensor has shape `[4, 1, 1, 3]` and value:
 		
-		    ```prettyprint
+		    ```
 		    [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
 		    ```
 		
 		    (3) For the following input of shape `[1, 4, 4, 1]` and block_size of 2:
 		
-		    ```prettyprint
+		    ```
 		    x = [[[[1],   [2],  [3],  [4]],
 		          [[5],   [6],  [7],  [8]],
 		          [[9],  [10], [11],  [12]],
@@ -7326,8 +8917,8 @@ package tensorflow;
 		
 		    The output tensor has shape `[4, 2, 2, 1]` and value:
 		
-		    ```prettyprint
-		    x = [[[[1], [3]], [[5], [7]]],
+		    ```
+		    x = [[[[1], [3]], [[9], [11]]],
 		         [[[2], [4]], [[10], [12]]],
 		         [[[5], [7]], [[13], [15]]],
 		         [[[6], [8]], [[14], [16]]]]
@@ -7335,7 +8926,7 @@ package tensorflow;
 		
 		    (4) For the following input of shape `[2, 2, 4, 1]` and block_size of 2:
 		
-		    ```prettyprint
+		    ```
 		    x = [[[[1],   [2],  [3],  [4]],
 		          [[5],   [6],  [7],  [8]]],
 		         [[[9],  [10], [11],  [12]],
@@ -7344,7 +8935,7 @@ package tensorflow;
 		
 		    The output tensor has shape `[8, 1, 2, 1]` and value:
 		
-		    ```prettyprint
+		    ```
 		    x = [[[[1], [3]]], [[[9], [11]]], [[[2], [4]]], [[[10], [12]]],
 		         [[[5], [7]]], [[[13], [15]]], [[[6], [8]]], [[[14], [16]]]]
 		    ```
@@ -7358,6 +8949,139 @@ package tensorflow;
 		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function space_to_batch(input:Dynamic, paddings:Dynamic, block_size:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		SpaceToBatch for N-D tensors of type T.
+		
+		This operation divides "spatial" dimensions `[1, ..., M]` of the input into a
+		grid of blocks of shape `block_shape`, and interleaves these blocks with the
+		"batch" dimension (0) such that in the output, the spatial dimensions
+		`[1, ..., M]` correspond to the position within the grid, and the batch
+		dimension combines both the position within a spatial block and the original
+		batch position.  Prior to division into blocks, the spatial dimensions of the
+		input are optionally zero padded according to `paddings`.  See below for a
+		precise description.
+		
+		Args:
+		  input: A `Tensor`.
+		    N-D with shape `input_shape = [batch] + spatial_shape + remaining_shape`,
+		    where spatial_shape has `M` dimensions.
+		  block_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D with shape `[M]`, all values must be >= 1.
+		  paddings: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    2-D with shape `[M, 2]`, all values must be >= 0.
+		      `paddings[i] = [pad_start, pad_end]` specifies the padding for input dimension
+		      `i + 1`, which corresponds to spatial dimension `i`.  It is required that
+		      `block_shape[i]` divides `input_shape[i + 1] + pad_start + pad_end`.
+		
+		    This operation is equivalent to the following steps:
+		
+		    1. Zero-pad the start and end of dimensions `[1, ..., M]` of the
+		       input according to `paddings` to produce `padded` of shape `padded_shape`.
+		
+		    2. Reshape `padded` to `reshaped_padded` of shape:
+		
+		         [batch] +
+		         [padded_shape[1] / block_shape[0],
+		           block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1],
+		          block_shape[M-1]] +
+		         remaining_shape
+		
+		    3. Permute dimensions of `reshaped_padded` to produce
+		       `permuted_reshaped_padded` of shape:
+		
+		         block_shape +
+		         [batch] +
+		         [padded_shape[1] / block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1]] +
+		         remaining_shape
+		
+		    4. Reshape `permuted_reshaped_padded` to flatten `block_shape` into the batch
+		       dimension, producing an output tensor of shape:
+		
+		         [batch * prod(block_shape)] +
+		         [padded_shape[1] / block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1]] +
+		         remaining_shape
+		
+		    Some examples:
+		
+		    (1) For the following input of shape `[1, 2, 2, 1]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1], [2]], [[3], [4]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 1, 1, 1]` and value:
+		
+		    ```
+		    [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
+		    ```
+		
+		    (2) For the following input of shape `[1, 2, 2, 3]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1, 2, 3], [4, 5, 6]],
+		          [[7, 8, 9], [10, 11, 12]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 1, 1, 3]` and value:
+		
+		    ```
+		    [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
+		    ```
+		
+		    (3) For the following input of shape `[1, 4, 4, 1]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]],
+		          [[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 2, 2, 1]` and value:
+		
+		    ```
+		    x = [[[[1], [3]], [[9], [11]]],
+		         [[[2], [4]], [[10], [12]]],
+		         [[[5], [7]], [[13], [15]]],
+		         [[[6], [8]], [[14], [16]]]]
+		    ```
+		
+		    (4) For the following input of shape `[2, 2, 4, 1]`, block_shape = `[2, 2]`, and
+		        paddings = `[[0, 0], [2, 0]]`:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]]],
+		         [[[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		
+		    The output tensor has shape `[8, 1, 3, 1]` and value:
+		
+		    ```
+		    x = [[[[0], [1], [3]]], [[[0], [9], [11]]],
+		         [[[0], [2], [4]]], [[[0], [10], [12]]],
+		         [[[0], [5], [7]]], [[[0], [13], [15]]],
+		         [[[0], [6], [8]]], [[[0], [14], [16]]]]
+		    ```
+		
+		    Among others, this operation is useful for reducing atrous convolution into
+		    regular convolution.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function space_to_batch_nd(input:Dynamic, block_shape:Dynamic, paddings:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		SpaceToDepth for tensors of type T.
 		
@@ -7385,14 +9109,14 @@ package tensorflow;
 		
 		For example, given this input of shape `[1, 2, 2, 1]`, and block_size of 2:
 		
-		```prettyprint
+		```
 		x = [[[[1], [2]],
 		      [[3], [4]]]]
 		```
 		
 		This operation will output a tensor of shape `[1, 1, 1, 4]`:
 		
-		```prettyprint
+		```
 		[[[[1, 2, 3, 4]]]]
 		```
 		
@@ -7403,7 +9127,7 @@ package tensorflow;
 		
 		For an input tensor with larger depth, here of shape `[1, 2, 2, 3]`, e.g.
 		
-		```prettyprint
+		```
 		x = [[[[1, 2, 3], [4, 5, 6]],
 		      [[7, 8, 9], [10, 11, 12]]]]
 		```
@@ -7411,13 +9135,13 @@ package tensorflow;
 		This operation, for block_size of 2, will return the following tensor of shape
 		`[1, 1, 1, 12]`
 		
-		```prettyprint
+		```
 		[[[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]]
 		```
 		
 		Similarly, for the following input of shape `[1 4 4 1]`, and a block size of 2:
 		
-		```prettyprint
+		```
 		x = [[[[1],   [2],  [5],  [6]],
 		      [[3],   [4],  [7],  [8]],
 		      [[9],  [10], [13],  [14]],
@@ -7426,7 +9150,7 @@ package tensorflow;
 		
 		the operator will return the following tensor of shape `[1 2 2 4]`:
 		
-		```prettyprint
+		```
 		x = [[[[1, 2, 3, 4],
 		       [5, 6, 7, 8]],
 		      [[9, 10, 11, 12],
@@ -7450,6 +9174,8 @@ package tensorflow;
 		of arguments does not matter.  Use vanilla `tf.add()` for adding two dense
 		`Tensor`s.
 		
+		The shapes of the two operands must match: broadcasting is not supported.
+		
 		The indices of any input `SparseTensor` are assumed ordered in standard
 		lexicographic order.  If this is not the case, before this step run
 		`SparseReorder` to restore index ordering.
@@ -7471,10 +9197,10 @@ package tensorflow;
 		
 		Then,
 		
-		    - thresh == 0 (the default): all 5 index/value pairs will be returned.
-		    - thresh == 0.11: only .1 and 0  will vanish, and the remaining three
+		    * `thresh == 0` (the default): all 5 index/value pairs will be returned.
+		    * `thresh == 0.11`: only .1 and 0  will vanish, and the remaining three
 		        index/value pairs will be returned.
-		    - thresh == 0.21: .1, 0, and -.2 will vanish.
+		    * `thresh == 0.21`: .1, 0, and -.2 will vanish.
 		
 		Args:
 		  a: The first operand; `SparseTensor` or `Tensor`.
@@ -7501,7 +9227,7 @@ package tensorflow;
 		
 		If expand_nonconcat_dim is False, all inputs' shapes must match, except for
 		the concat dimension. If expand_nonconcat_dim is True, then inputs' shapes are
-		allowd to vary among all inputs.
+		allowed to vary among all inputs.
 		
 		The `indices`, `values`, and `shapes` lists must have the same length.
 		
@@ -7520,7 +9246,7 @@ package tensorflow;
 		values across all inputs. This is due to the need for an internal sort in
 		order to concatenate efficiently across an arbitrary dimension.
 		
-		For example, if `concat_dim = 1` and the inputs are
+		For example, if `axis = 1` and the inputs are
 		
 		    sp_inputs[0]: shape = [2, 3]
 		    [0, 2]: "a"
@@ -7545,7 +9271,7 @@ package tensorflow;
 		    [    a] concat [  d e  ] = [    a   d e  ]
 		    [b c  ]        [       ]   [b c          ]
 		
-		Another example, if 'concat_dim = 1' and the inputs are
+		Another example, if 'axis = 1' and the inputs are
 		
 		    sp_inputs[0]: shape = [3, 3]
 		    [0, 2]: "a"
@@ -7574,11 +9300,13 @@ package tensorflow;
 		
 		
 		Args:
-		  concat_dim: Dimension to concatenate along.
+		  axis: Dimension to concatenate along. Must be in range [-rank, rank),
+		    where rank is the number of dimensions in each input `SparseTensor`.
 		  sp_inputs: List of `SparseTensor` to concatenate.
 		  name: A name prefix for the returned tensors (optional).
 		  expand_nonconcat_dim: Whether to allow the expansion in the non-concat
 		    dimensions. Defaulted to False.
+		  concat_dim: The old (deprecated) name for axis.
 		
 		Returns:
 		  A `SparseTensor` with the concatenated output.
@@ -7586,7 +9314,7 @@ package tensorflow;
 		Raises:
 		  TypeError: If `sp_inputs` is not a list of `SparseTensor`.
 	**/
-	static public function sparse_concat(concat_dim:Dynamic, sp_inputs:Dynamic, ?name:Dynamic, ?expand_nonconcat_dim:Dynamic):Dynamic;
+	static public function sparse_concat(axis:Dynamic, sp_inputs:Dynamic, ?name:Dynamic, ?expand_nonconcat_dim:Dynamic, ?concat_dim:Dynamic):Dynamic;
 	/**
 		Fills empty rows in the input 2-D `SparseTensor` with a default value.
 		
@@ -7664,9 +9392,9 @@ package tensorflow;
 		```
 		
 		Args:
-		  * `a`: An `IndexedSlices` instance.
-		  * `mask_indices`: Indices of elements to mask.
-		  * `name`: A name for the operation (optional).
+		  a: An `IndexedSlices` instance.
+		  mask_indices: Indices of elements to mask.
+		  name: A name for the operation (optional).
 		
 		Returns:
 		  The masked `IndexedSlices` instance.
@@ -7700,8 +9428,8 @@ package tensorflow;
 		Example:
 		
 		```python
-		sp_zero = ops.SparseTensor([[0]], [0], [7])
-		sp_one = ops.SparseTensor([[1]], [1], [7])
+		sp_zero = sparse_tensor.SparseTensor([[0]], [0], [7])
+		sp_one = sparse_tensor.SparseTensor([[1]], [1], [7])
 		res = tf.sparse_maximum(sp_zero, sp_one).eval()
 		# "res" should be equal to SparseTensor([[0], [1]], [0, 1], [7]).
 		```
@@ -7730,7 +9458,7 @@ package tensorflow;
 		  - `indices` is equivalent to `sp_ids.indices` with the last
 		    dimension discarded and replaced with `sp_ids.values`.
 		  - `values` is simply `sp_values.values`.
-		  - If `sp_ids.shape = [D0, D1, ..., Dn, K]`, then
+		  - If `sp_ids.dense_shape = [D0, D1, ..., Dn, K]`, then
 		    `output.shape = [D0, D1, ..., Dn, vocab_size]`.
 		
 		For example, consider the following feature vectors:
@@ -7771,15 +9499,27 @@ package tensorflow;
 		```python
 		  SparseTensor(indices=[[0, 0], [1, 1], [1, 3], [1, 4], [2, 0], [2, 3]],
 		               values=[-3, 1, 4, 1, 5, 9],
-		               shape=[3, 6])
+		               dense_shape=[3, 6])
 		```
 		
+		This method generalizes to higher-dimensions by simply providing a list for
+		both the sp_ids as well as the vocab_size.
+		In this case the resulting `SparseTensor` has the following properties:
+		  - `indices` is equivalent to `sp_ids[0].indices` with the last
+		    dimension discarded and concatenated with
+		    `sp_ids[0].values, sp_ids[1].values, ...`.
+		  - `values` is simply `sp_values.values`.
+		  - If `sp_ids.dense_shape = [D0, D1, ..., Dn, K]`, then
+		    `output.shape = [D0, D1, ..., Dn] + vocab_size`.
+		
 		Args:
-		  sp_ids: A `SparseTensor` with `values` property of type `int32`
-		    or `int64`.
+		  sp_ids: A single `SparseTensor` with `values` property of type `int32`
+		    or `int64` or a Python list of such `SparseTensor`s or a list thereof.
 		  sp_values: A`SparseTensor` of any type.
 		  vocab_size: A scalar `int64` Tensor (or Python int) containing the new size
 		    of the last dimension, `all(0 <= sp_ids.values < vocab_size)`.
+		    Or a list thereof with `all(0 <= sp_ids[i].values < vocab_size[i])` for
+		    all `i`.
 		  name: A name prefix for the returned tensors (optional)
 		  already_sorted: A boolean to specify whether the per-batch values in
 		   `sp_values` are already sorted. If so skip sorting, False by default
@@ -7790,7 +9530,11 @@ package tensorflow;
 		  useful for passing to functions that expect such a `SparseTensor`.
 		
 		Raises:
-		  TypeError: If `sp_ids` or `sp_values` are not a `SparseTensor`.
+		  TypeError: If `sp_values` is not a `SparseTensor`. Or if `sp_ids` is neither
+		    a `SparseTensor` nor a list thereof. Or if `vocab_size` is not a
+		    `Tensor` or a Python int and `sp_ids` is a `SparseTensor`. Or if
+		    `vocab_size` is not a or list thereof and `sp_ids` is a list.
+		  ValueError: If `sp_ids` and `vocab_size` are lists of different lengths.
 	**/
 	static public function sparse_merge(sp_ids:Dynamic, sp_values:Dynamic, vocab_size:Dynamic, ?name:Dynamic, ?already_sorted:Dynamic):Dynamic;
 	/**
@@ -7800,8 +9544,8 @@ package tensorflow;
 		Example:
 		
 		```python
-		sp_zero = ops.SparseTensor([[0]], [0], [7])
-		sp_one = ops.SparseTensor([[1]], [1], [7])
+		sp_zero = sparse_tensor.SparseTensor([[0]], [0], [7])
+		sp_one = sparse_tensor.SparseTensor([[1]], [1], [7])
 		res = tf.sparse_minimum(sp_zero, sp_one).eval()
 		# "res" should be equal to SparseTensor([[0], [1]], [0, 0], [7]).
 		```
@@ -7840,8 +9584,8 @@ package tensorflow;
 		  print(sess.run(y, feed_dict={
 		    x: (indices, values, shape)}))  # Will succeed.
 		
-		  sp = tf.SparseTensor(indices=indices, values=values, shape=shape)
-		  sp_value = sp.eval(session)
+		  sp = tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
+		  sp_value = sp.eval(session=sess)
 		  print(sess.run(y, feed_dict={x: sp_value}))  # Will succeed.
 		```
 		
@@ -7877,7 +9621,7 @@ package tensorflow;
 		```python
 		# 'x' represents [[1, ?, 1]
 		#                 [?, 1, ?]]
-		# where ? is implictly-zero.
+		# where ? is implicitly-zero.
 		tf.sparse_reduce_sum(x) ==> 3
 		tf.sparse_reduce_sum(x, 0) ==> [1, 1, 1]
 		tf.sparse_reduce_sum(x, 1) ==> [2, 1]  # Can also use -1 as the axis.
@@ -7887,14 +9631,42 @@ package tensorflow;
 		
 		Args:
 		  sp_input: The SparseTensor to reduce. Should have numeric type.
-		  reduction_axes: The dimensions to reduce; list or scalar. If `None` (the
+		  axis: The dimensions to reduce; list or scalar. If `None` (the
 		    default), reduces all dimensions.
 		  keep_dims: If true, retain reduced dimensions with length 1.
+		  reduction_axes: Deprecated name of axis.
 		
 		Returns:
 		  The reduced Tensor.
 	**/
-	static public function sparse_reduce_sum(sp_input:Dynamic, ?reduction_axes:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function sparse_reduce_sum(sp_input:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?reduction_axes:Dynamic):Dynamic;
+	/**
+		Computes the sum of elements across dimensions of a SparseTensor.
+		
+		This Op takes a SparseTensor and is the sparse counterpart to
+		`tf.reduce_sum()`.  In contrast to SparseReduceSum, this Op returns a
+		SparseTensor.
+		
+		Reduces `sp_input` along the dimensions given in `reduction_axes`.  Unless
+		`keep_dims` is true, the rank of the tensor is reduced by 1 for each entry in
+		`reduction_axes`. If `keep_dims` is true, the reduced dimensions are retained
+		with length 1.
+		
+		If `reduction_axes` has no entries, all dimensions are reduced, and a tensor
+		with a single element is returned.  Additionally, the axes can be negative,
+		which are interpreted according to the indexing rules in Python.
+		
+		Args:
+		  sp_input: The SparseTensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce; list or scalar. If `None` (the
+		    default), reduces all dimensions.
+		  keep_dims: If true, retain reduced dimensions with length 1.
+		  reduction_axes: Deprecated name of axis
+		
+		Returns:
+		  The reduced SparseTensor.
+	**/
+	static public function sparse_reduce_sum_sparse(sp_input:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?reduction_axes:Dynamic):Dynamic;
 	/**
 		Reorders a `SparseTensor` into the canonical, row-major ordering.
 		
@@ -7957,7 +9729,7 @@ package tensorflow;
 		    run time.
 		
 		  - Setting `new_shape` as [2, 3, 6] will be fine as this shape is larger or
-		    eqaul in every dimension compared to the original shape [2, 3, 5].
+		    equal in every dimension compared to the original shape [2, 3, 5].
 		
 		  - On the other hand, setting new_shape as [2, 3, 4] is also an error: The
 		    third dimension is smaller than the original shape [2, 3, 5] (and an
@@ -7969,7 +9741,7 @@ package tensorflow;
 		Args:
 		  sp_input: The input `SparseTensor`.
 		  new_shape: None or a vector representing the new shape for the returned
-		    `SpraseTensor`.
+		    `SparseTensor`.
 		
 		Returns:
 		  A `SparseTensor` indices and values unchanged from `input_sp`. Its shape is
@@ -7980,6 +9752,8 @@ package tensorflow;
 		  TypeError: If `sp_input` is not a `SparseTensor`.
 		  ValueError: If `new_shape` represents a tensor with a different rank from
 		    that of `sp_input` (if shapes are known when graph is constructed).
+		  ValueError:  If `new_shape` is determined during graph build to have
+		    dimension sizes that are too small.
 		  OpError:
 		    - If `new_shape` has dimension sizes that are too small.
 		    - If shapes are not known during graph construction time, and during run
@@ -8030,6 +9804,8 @@ package tensorflow;
 		
 		Raises:
 		  TypeError: If `sp_input` is not a `SparseTensor`.
+		  ValueError:  If argument `shape` requests a `SparseTensor` with a different
+		    number of elements than `sp_input`.
 	**/
 	static public function sparse_reshape(sp_input:Dynamic, shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -8063,16 +9839,15 @@ package tensorflow;
 	/**
 		Computes the mean along sparse segments of a tensor.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Like `SegmentMean`, but `segment_ids` can have rank less than `data`'s first
 		dimension, selecting a subset of dimension 0, specified by `indices`.
 		
 		Args:
 		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		  indices: A `Tensor` of type `int32`.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    A 1-D tensor. Has same rank as `segment_ids`.
 		  segment_ids: A `Tensor` of type `int32`.
 		    A 1-D tensor. Values should be sorted and can be repeated.
@@ -8085,38 +9860,16 @@ package tensorflow;
 	**/
 	static public function sparse_segment_mean(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes gradients for SparseSegmentMean.
-		
-		Returns tensor "output" with same shape as grad, except for dimension 0 whose
-		value is output_dim0.
-		
-		Args:
-		  grad: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		    gradient propagated to the SparseSegmentMean op.
-		  indices: A `Tensor` of type `int32`.
-		    indices passed to the corresponding SparseSegmentMean op.
-		  segment_ids: A `Tensor` of type `int32`.
-		    segment_ids passed to the corresponding SparseSegmentMean op.
-		  output_dim0: A `Tensor` of type `int32`.
-		    dimension 0 of "data" passed to SparseSegmentMean op.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `grad`.
-	**/
-	static public function sparse_segment_mean_grad(grad:Dynamic, indices:Dynamic, segment_ids:Dynamic, output_dim0:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Computes the sum along sparse segments of a tensor divided by the sqrt of N.
 		
 		N is the size of the segment being reduced.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Args:
 		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		  indices: A `Tensor` of type `int32`.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    A 1-D tensor. Has same rank as `segment_ids`.
 		  segment_ids: A `Tensor` of type `int32`.
 		    A 1-D tensor. Values should be sorted and can be repeated.
@@ -8129,32 +9882,10 @@ package tensorflow;
 	**/
 	static public function sparse_segment_sqrt_n(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes gradients for SparseSegmentSqrtN.
-		
-		Returns tensor "output" with same shape as grad, except for dimension 0 whose
-		value is output_dim0.
-		
-		Args:
-		  grad: A `Tensor`. Must be one of the following types: `float32`, `float64`.
-		    gradient propagated to the SparseSegmentSqrtN op.
-		  indices: A `Tensor` of type `int32`.
-		    indices passed to the corresponding SparseSegmentSqrtN op.
-		  segment_ids: A `Tensor` of type `int32`.
-		    segment_ids passed to the corresponding SparseSegmentSqrtN op.
-		  output_dim0: A `Tensor` of type `int32`.
-		    dimension 0 of "data" passed to SparseSegmentSqrtN op.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `grad`.
-	**/
-	static public function sparse_segment_sqrt_n_grad(grad:Dynamic, indices:Dynamic, segment_ids:Dynamic, output_dim0:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Computes the sum along sparse segments of a tensor.
 		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
 		
 		Like `SegmentSum`, but `segment_ids` can have rank less than `data`'s first
 		dimension, selecting a subset of dimension 0, specified by `indices`.
@@ -8184,7 +9915,7 @@ package tensorflow;
 		
 		Args:
 		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
-		  indices: A `Tensor` of type `int32`.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    A 1-D tensor. Has same rank as `segment_ids`.
 		  segment_ids: A `Tensor` of type `int32`.
 		    A 1-D tensor. Values should be sorted and can be repeated.
@@ -8244,11 +9975,11 @@ package tensorflow;
 	**/
 	static public function sparse_softmax(sp_input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Split a `SparseTensor` into `num_split` tensors along `split_dim`.
+		Split a `SparseTensor` into `num_split` tensors along `axis`.
 		
-		If the `sp_input.shape[split_dim]` is not an integer multiple of `num_split`
-		each slice starting from 0:`shape[split_dim] % num_split` gets extra one
-		dimension. For example, if `split_dim = 1` and `num_split = 2` and the
+		If the `sp_input.dense_shape[axis]` is not an integer multiple of `num_split`
+		each slice starting from 0:`shape[axis] % num_split` gets extra one
+		dimension. For example, if `axis = 1` and `num_split = 2` and the
 		input is:
 		
 		    input_tensor = shape = [2, 7]
@@ -8266,18 +9997,21 @@ package tensorflow;
 		    [      ]
 		
 		Args:
-		  split_dim: A 0-D `int32` `Tensor`. The dimension along which to split.
-		  num_split: A Python integer. The number of ways to split.
+		  keyword_required: Python 2 standin for * (temporary for argument reorder)
 		  sp_input: The `SparseTensor` to split.
+		  num_split: A Python integer. The number of ways to split.
+		  axis: A 0-D `int32` `Tensor`. The dimension along which to split.
 		  name: A name for the operation (optional).
+		  split_dim: Deprecated old name for axis.
 		
 		Returns:
 		  `num_split` `SparseTensor` objects resulting from splitting `value`.
 		
 		Raises:
 		  TypeError: If `sp_input` is not a `SparseTensor`.
+		  ValueError: If the deprecated `split_dim` and `axis` are both non None.
 	**/
-	static public function sparse_split(split_dim:Dynamic, num_split:Dynamic, sp_input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_split(?keyword_required:Dynamic, ?sp_input:Dynamic, ?num_split:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?split_dim:Dynamic):Dynamic;
 	/**
 		Multiply SparseTensor (of rank 2) "A" by dense matrix "B".
 		
@@ -8291,7 +10025,45 @@ package tensorflow;
 		  A should be sorted in order of increasing dimension 1 (i.e., "column major"
 		  order instead of "row major" order).
 		
-		Deciding when to use sparse_tensor_dense_matmul vs. matmul(sp_a=True):
+		Using `tf.nn.embedding_lookup_sparse` for sparse multiplication:
+		
+		It's not obvious but you can consider `embedding_lookup_sparse` as another
+		sparse and dense multiplication. In some situations, you may prefer to use
+		`embedding_lookup_sparse` even though you're not dealing with embeddings.
+		
+		There are two questions to ask in the decision process: Do you need gradients
+		computed as sparse too? Is your sparse data represented as two
+		`SparseTensor`s: ids and values? There is more explanation about data format
+		below. If you answer any of these questions as yes, consider using
+		`tf.nn.embedding_lookup_sparse`.
+		
+		Following explains differences between the expected SparseTensors:
+		For example if dense form of your sparse data has shape `[3, 5]` and values:
+		
+		    [[  a      ]
+		     [b       c]
+		     [    d    ]]
+		
+		
+		`SparseTensor` format expected by `sparse_tensor_dense_matmul`:
+		 `sp_a` (indices, values):
+		
+		    [0, 1]: a
+		    [1, 0]: b
+		    [1, 4]: c
+		    [2, 2]: d
+		
+		`SparseTensor` format expected by `embedding_lookup_sparse`:
+		 `sp_ids`                 `sp_weights`
+		
+		    [0, 0]: 1                [0, 0]: a
+		    [1, 0]: 0                [1, 0]: b
+		    [1, 1]: 4                [1, 1]: c
+		    [2, 0]: 2                [2, 0]: d
+		
+		
+		Deciding when to use `sparse_tensor_dense_matmul` vs.
+		`matmul`(a_is_sparse=True):
 		
 		There are a number of questions to ask in the decision process, including:
 		
@@ -8300,16 +10072,17 @@ package tensorflow;
 		* Is the density of A larger than approximately 15%?
 		
 		If the answer to several of these questions is yes, consider
-		converting the SparseTensor to a dense one and using tf.matmul with sp_a=True.
+		converting the `SparseTensor` to a dense one and using `tf.matmul` with
+		`a_is_sparse=True`.
 		
 		This operation tends to perform well when A is more sparse, if the column size
-		of the product is small (e.g. matrix-vector multiplication), if sp_a.shape
-		takes on large values.
+		of the product is small (e.g. matrix-vector multiplication), if
+		`sp_a.dense_shape` takes on large values.
 		
-		Below is a rough speed comparison between sparse_tensor_dense_matmul,
-		labelled 'sparse', and matmul(sp_a=True), labelled 'dense'.  For purposes of
-		the comparison, the time spent converting from a SparseTensor to a dense
-		Tensor is not included, so it is overly conservative with respect to
+		Below is a rough speed comparison between `sparse_tensor_dense_matmul`,
+		labelled 'sparse', and `matmul`(a_is_sparse=True), labelled 'dense'.  For
+		purposes of the comparison, the time spent converting from a `SparseTensor` to
+		a dense `Tensor` is not included, so it is overly conservative with respect to
 		the time ratio.
 		
 		Benchmark system:
@@ -8317,109 +10090,110 @@ package tensorflow;
 		GPU: NVidia Tesla k40c
 		
 		Compiled with:
-		-c opt --config=cuda --copt=-mavx
+		`-c opt --config=cuda --copt=-mavx`
 		
-		```tensorflow/python/sparse_tensor_dense_matmul_op_test --benchmarks
+		```
+		tensorflow/python/sparse_tensor_dense_matmul_op_test --benchmarks
 		A sparse [m, k] with % nonzero values between 1% and 80%
 		B dense [k, n]
 		
-		% nnz    n       gpu     m       k       dt(dense)       dt(sparse)      dt(sparse)/dt(dense)
-		0.01     1       True    100     100     0.000221166     0.00010154      0.459112
-		0.01     1       True    100     1000    0.00033858      0.000109275     0.322745
-		0.01     1       True    1000    100     0.000310557     9.85661e-05     0.317385
-		0.01     1       True    1000    1000    0.0008721       0.000100875     0.115669
-		0.01     1       False   100     100     0.000208085     0.000107603     0.51711
-		0.01     1       False   100     1000    0.000327112     9.51118e-05     0.290762
-		0.01     1       False   1000    100     0.000308222     0.00010345      0.335635
-		0.01     1       False   1000    1000    0.000865721     0.000101397     0.117124
-		0.01     10      True    100     100     0.000218522     0.000105537     0.482958
-		0.01     10      True    100     1000    0.000340882     0.000111641     0.327506
-		0.01     10      True    1000    100     0.000315472     0.000117376     0.372064
-		0.01     10      True    1000    1000    0.000905493     0.000123263     0.136128
-		0.01     10      False   100     100     0.000221529     9.82571e-05     0.44354
-		0.01     10      False   100     1000    0.000330552     0.000112615     0.340687
-		0.01     10      False   1000    100     0.000341277     0.000114097     0.334324
-		0.01     10      False   1000    1000    0.000819944     0.000120982     0.147549
-		0.01     25      True    100     100     0.000207806     0.000105977     0.509981
-		0.01     25      True    100     1000    0.000322879     0.00012921      0.400181
-		0.01     25      True    1000    100     0.00038262      0.000141583     0.370035
-		0.01     25      True    1000    1000    0.000865438     0.000202083     0.233504
-		0.01     25      False   100     100     0.000209401     0.000104696     0.499979
-		0.01     25      False   100     1000    0.000321161     0.000130737     0.407076
-		0.01     25      False   1000    100     0.000377012     0.000136801     0.362856
-		0.01     25      False   1000    1000    0.000861125     0.00020272      0.235413
-		0.2      1       True    100     100     0.000206952     9.69219e-05     0.46833
-		0.2      1       True    100     1000    0.000348674     0.000147475     0.422959
-		0.2      1       True    1000    100     0.000336908     0.00010122      0.300439
-		0.2      1       True    1000    1000    0.001022        0.000203274     0.198898
-		0.2      1       False   100     100     0.000207532     9.5412e-05      0.459746
-		0.2      1       False   100     1000    0.000356127     0.000146824     0.41228
-		0.2      1       False   1000    100     0.000322664     0.000100918     0.312764
-		0.2      1       False   1000    1000    0.000998987     0.000203442     0.203648
-		0.2      10      True    100     100     0.000211692     0.000109903     0.519165
-		0.2      10      True    100     1000    0.000372819     0.000164321     0.440753
-		0.2      10      True    1000    100     0.000338651     0.000144806     0.427596
-		0.2      10      True    1000    1000    0.00108312      0.000758876     0.70064
-		0.2      10      False   100     100     0.000215727     0.000110502     0.512231
-		0.2      10      False   100     1000    0.000375419     0.0001613       0.429653
-		0.2      10      False   1000    100     0.000336999     0.000145628     0.432132
-		0.2      10      False   1000    1000    0.00110502      0.000762043     0.689618
-		0.2      25      True    100     100     0.000218705     0.000129913     0.594009
-		0.2      25      True    100     1000    0.000394794     0.00029428      0.745402
-		0.2      25      True    1000    100     0.000404483     0.0002693       0.665788
-		0.2      25      True    1000    1000    0.0012002       0.00194494      1.62052
-		0.2      25      False   100     100     0.000221494     0.0001306       0.589632
-		0.2      25      False   100     1000    0.000396436     0.000297204     0.74969
-		0.2      25      False   1000    100     0.000409346     0.000270068     0.659754
-		0.2      25      False   1000    1000    0.00121051      0.00193737      1.60046
-		0.5      1       True    100     100     0.000214981     9.82111e-05     0.456836
-		0.5      1       True    100     1000    0.000415328     0.000223073     0.537101
-		0.5      1       True    1000    100     0.000358324     0.00011269      0.314492
-		0.5      1       True    1000    1000    0.00137612      0.000437401     0.317851
-		0.5      1       False   100     100     0.000224196     0.000101423     0.452386
-		0.5      1       False   100     1000    0.000400987     0.000223286     0.556841
-		0.5      1       False   1000    100     0.000368825     0.00011224      0.304318
-		0.5      1       False   1000    1000    0.00136036      0.000429369     0.31563
-		0.5      10      True    100     100     0.000222125     0.000112308     0.505608
-		0.5      10      True    100     1000    0.000461088     0.00032357      0.701753
-		0.5      10      True    1000    100     0.000394624     0.000225497     0.571422
-		0.5      10      True    1000    1000    0.00158027      0.00190898      1.20801
-		0.5      10      False   100     100     0.000232083     0.000114978     0.495418
-		0.5      10      False   100     1000    0.000454574     0.000324632     0.714146
-		0.5      10      False   1000    100     0.000379097     0.000227768     0.600817
-		0.5      10      False   1000    1000    0.00160292      0.00190168      1.18638
-		0.5      25      True    100     100     0.00023429      0.000151703     0.647501
-		0.5      25      True    100     1000    0.000497462     0.000598873     1.20386
-		0.5      25      True    1000    100     0.000460778     0.000557038     1.20891
-		0.5      25      True    1000    1000    0.00170036      0.00467336      2.74845
-		0.5      25      False   100     100     0.000228981     0.000155334     0.678371
-		0.5      25      False   100     1000    0.000496139     0.000620789     1.25124
-		0.5      25      False   1000    100     0.00045473      0.000551528     1.21287
-		0.5      25      False   1000    1000    0.00171793      0.00467152      2.71927
-		0.8      1       True    100     100     0.000222037     0.000105301     0.47425
-		0.8      1       True    100     1000    0.000410804     0.000329327     0.801664
-		0.8      1       True    1000    100     0.000349735     0.000131225     0.375212
-		0.8      1       True    1000    1000    0.00139219      0.000677065     0.48633
-		0.8      1       False   100     100     0.000214079     0.000107486     0.502085
-		0.8      1       False   100     1000    0.000413746     0.000323244     0.781261
-		0.8      1       False   1000    100     0.000348983     0.000131983     0.378193
-		0.8      1       False   1000    1000    0.00136296      0.000685325     0.50282
-		0.8      10      True    100     100     0.000229159     0.00011825      0.516017
-		0.8      10      True    100     1000    0.000498845     0.000532618     1.0677
-		0.8      10      True    1000    100     0.000383126     0.00029935      0.781336
-		0.8      10      True    1000    1000    0.00162866      0.00307312      1.88689
-		0.8      10      False   100     100     0.000230783     0.000124958     0.541452
-		0.8      10      False   100     1000    0.000493393     0.000550654     1.11606
-		0.8      10      False   1000    100     0.000377167     0.000298581     0.791642
-		0.8      10      False   1000    1000    0.00165795      0.00305103      1.84024
-		0.8      25      True    100     100     0.000233496     0.000175241     0.75051
-		0.8      25      True    100     1000    0.00055654      0.00102658      1.84458
-		0.8      25      True    1000    100     0.000463814     0.000783267     1.68875
-		0.8      25      True    1000    1000    0.00186905      0.00755344      4.04132
-		0.8      25      False   100     100     0.000240243     0.000175047     0.728625
-		0.8      25      False   100     1000    0.000578102     0.00104499      1.80763
-		0.8      25      False   1000    100     0.000485113     0.000776849     1.60138
-		0.8      25      False   1000    1000    0.00211448      0.00752736      3.55992
+		% nnz  n   gpu   m     k     dt(dense)     dt(sparse)   dt(sparse)/dt(dense)
+		0.01   1   True  100   100   0.000221166   0.00010154   0.459112
+		0.01   1   True  100   1000  0.00033858    0.000109275  0.322745
+		0.01   1   True  1000  100   0.000310557   9.85661e-05  0.317385
+		0.01   1   True  1000  1000  0.0008721     0.000100875  0.115669
+		0.01   1   False 100   100   0.000208085   0.000107603  0.51711
+		0.01   1   False 100   1000  0.000327112   9.51118e-05  0.290762
+		0.01   1   False 1000  100   0.000308222   0.00010345   0.335635
+		0.01   1   False 1000  1000  0.000865721   0.000101397  0.117124
+		0.01   10  True  100   100   0.000218522   0.000105537  0.482958
+		0.01   10  True  100   1000  0.000340882   0.000111641  0.327506
+		0.01   10  True  1000  100   0.000315472   0.000117376  0.372064
+		0.01   10  True  1000  1000  0.000905493   0.000123263  0.136128
+		0.01   10  False 100   100   0.000221529   9.82571e-05  0.44354
+		0.01   10  False 100   1000  0.000330552   0.000112615  0.340687
+		0.01   10  False 1000  100   0.000341277   0.000114097  0.334324
+		0.01   10  False 1000  1000  0.000819944   0.000120982  0.147549
+		0.01   25  True  100   100   0.000207806   0.000105977  0.509981
+		0.01   25  True  100   1000  0.000322879   0.00012921   0.400181
+		0.01   25  True  1000  100   0.00038262    0.00014158   0.370035
+		0.01   25  True  1000  1000  0.000865438   0.000202083  0.233504
+		0.01   25  False 100   100   0.000209401   0.000104696  0.499979
+		0.01   25  False 100   1000  0.000321161   0.000130737  0.407076
+		0.01   25  False 1000  100   0.000377012   0.000136801  0.362856
+		0.01   25  False 1000  1000  0.000861125   0.00020272   0.235413
+		0.2    1   True  100   100   0.000206952   9.69219e-05  0.46833
+		0.2    1   True  100   1000  0.000348674   0.000147475  0.422959
+		0.2    1   True  1000  100   0.000336908   0.00010122   0.300439
+		0.2    1   True  1000  1000  0.001022      0.000203274  0.198898
+		0.2    1   False 100   100   0.000207532   9.5412e-05   0.459746
+		0.2    1   False 100   1000  0.000356127   0.000146824  0.41228
+		0.2    1   False 1000  100   0.000322664   0.000100918  0.312764
+		0.2    1   False 1000  1000  0.000998987   0.000203442  0.203648
+		0.2    10  True  100   100   0.000211692   0.000109903  0.519165
+		0.2    10  True  100   1000  0.000372819   0.000164321  0.440753
+		0.2    10  True  1000  100   0.000338651   0.000144806  0.427596
+		0.2    10  True  1000  1000  0.00108312    0.000758876  0.70064
+		0.2    10  False 100   100   0.000215727   0.000110502  0.512231
+		0.2    10  False 100   1000  0.000375419   0.0001613    0.429653
+		0.2    10  False 1000  100   0.000336999   0.000145628  0.432132
+		0.2    10  False 1000  1000  0.00110502    0.000762043  0.689618
+		0.2    25  True  100   100   0.000218705   0.000129913  0.594009
+		0.2    25  True  100   1000  0.000394794   0.00029428   0.745402
+		0.2    25  True  1000  100   0.000404483   0.0002693    0.665788
+		0.2    25  True  1000  1000  0.0012002     0.00194494   1.62052
+		0.2    25  False 100   100   0.000221494   0.0001306    0.589632
+		0.2    25  False 100   1000  0.000396436   0.000297204  0.74969
+		0.2    25  False 1000  100   0.000409346   0.000270068  0.659754
+		0.2    25  False 1000  1000  0.00121051    0.00193737   1.60046
+		0.5    1   True  100   100   0.000214981   9.82111e-05  0.456836
+		0.5    1   True  100   1000  0.000415328   0.000223073  0.537101
+		0.5    1   True  1000  100   0.000358324   0.00011269   0.314492
+		0.5    1   True  1000  1000  0.00137612    0.000437401  0.317851
+		0.5    1   False 100   100   0.000224196   0.000101423  0.452386
+		0.5    1   False 100   1000  0.000400987   0.000223286  0.556841
+		0.5    1   False 1000  100   0.000368825   0.00011224   0.304318
+		0.5    1   False 1000  1000  0.00136036    0.000429369  0.31563
+		0.5    10  True  100   100   0.000222125   0.000112308  0.505608
+		0.5    10  True  100   1000  0.000461088   0.00032357   0.701753
+		0.5    10  True  1000  100   0.000394624   0.000225497  0.571422
+		0.5    10  True  1000  1000  0.00158027    0.00190898   1.20801
+		0.5    10  False 100   100   0.000232083   0.000114978  0.495418
+		0.5    10  False 100   1000  0.000454574   0.000324632  0.714146
+		0.5    10  False 1000  100   0.000379097   0.000227768  0.600817
+		0.5    10  False 1000  1000  0.00160292    0.00190168   1.18638
+		0.5    25  True  100   100   0.00023429    0.000151703  0.647501
+		0.5    25  True  100   1000  0.000497462   0.000598873  1.20386
+		0.5    25  True  1000  100   0.000460778   0.000557038  1.20891
+		0.5    25  True  1000  1000  0.00170036    0.00467336   2.74845
+		0.5    25  False 100   100   0.000228981   0.000155334  0.678371
+		0.5    25  False 100   1000  0.000496139   0.000620789  1.25124
+		0.5    25  False 1000  100   0.00045473    0.000551528  1.21287
+		0.5    25  False 1000  1000  0.00171793    0.00467152   2.71927
+		0.8    1   True  100   100   0.000222037   0.000105301  0.47425
+		0.8    1   True  100   1000  0.000410804   0.000329327  0.801664
+		0.8    1   True  1000  100   0.000349735   0.000131225  0.375212
+		0.8    1   True  1000  1000  0.00139219    0.000677065  0.48633
+		0.8    1   False 100   100   0.000214079   0.000107486  0.502085
+		0.8    1   False 100   1000  0.000413746   0.000323244  0.781261
+		0.8    1   False 1000  100   0.000348983   0.000131983  0.378193
+		0.8    1   False 1000  1000  0.00136296    0.000685325  0.50282
+		0.8    10  True  100   100   0.000229159   0.00011825   0.516017
+		0.8    10  True  100   1000  0.000498845   0.000532618  1.0677
+		0.8    10  True  1000  100   0.000383126   0.00029935   0.781336
+		0.8    10  True  1000  1000  0.00162866    0.00307312   1.88689
+		0.8    10  False 100   100   0.000230783   0.000124958  0.541452
+		0.8    10  False 100   1000  0.000493393   0.000550654  1.11606
+		0.8    10  False 1000  100   0.000377167   0.000298581  0.791642
+		0.8    10  False 1000  1000  0.00165795    0.00305103   1.84024
+		0.8    25  True  100   100   0.000233496   0.000175241  0.75051
+		0.8    25  True  100   1000  0.00055654    0.00102658   1.84458
+		0.8    25  True  1000  100   0.000463814   0.000783267  1.68875
+		0.8    25  True  1000  1000  0.00186905    0.00755344   4.04132
+		0.8    25  False 100   100   0.000240243   0.000175047  0.728625
+		0.8    25  False 100   1000  0.000578102   0.00104499   1.80763
+		0.8    25  False 1000  100   0.000485113   0.000776849  1.60138
+		0.8    25  False 1000  1000  0.00211448    0.00752736   3.55992
 		```
 		
 		Args:
@@ -8468,7 +10242,7 @@ package tensorflow;
 		  name: A name prefix for the returned tensors (optional).
 		
 		Returns:
-		  A dense tensor with shape `sp_input.shape` and values specified by
+		  A dense tensor with shape `sp_input.dense_shape` and values specified by
 		  the non-empty values in `sp_input`. Indices not in `sp_input` are assigned
 		  `default_value`.
 		
@@ -8522,14 +10296,14 @@ package tensorflow;
 		Converts a `SparseTensor` of ids into a dense bool indicator tensor.
 		
 		The last dimension of `sp_input.indices` is discarded and replaced with
-		the values of `sp_input`.  If `sp_input.shape = [D0, D1, ..., Dn, K]`, then
-		`output.shape = [D0, D1, ..., Dn, vocab_size]`, where
+		the values of `sp_input`.  If `sp_input.dense_shape = [D0, D1, ..., Dn, K]`,
+		then `output.shape = [D0, D1, ..., Dn, vocab_size]`, where
 		
 		    output[d_0, d_1, ..., d_n, sp_input[d_0, d_1, ..., d_n, k]] = True
 		
 		and False elsewhere in `output`.
 		
-		For example, if `sp_input.shape = [2, 3, 4]` with non-empty values:
+		For example, if `sp_input.dense_shape = [2, 3, 4]` with non-empty values:
 		
 		    [0, 0, 0]: 0
 		    [0, 1, 0]: 10
@@ -8566,49 +10340,92 @@ package tensorflow;
 	**/
 	static public function sparse_to_indicator(sp_input:Dynamic, vocab_size:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Splits a tensor into `num_split` tensors along one dimension.
+		Transposes a `SparseTensor`
 		
-		Splits `value` along dimension `split_dim` into `num_split` smaller tensors.
-		Requires that `num_split` evenly divide `value.shape[split_dim]`.
+		The returned tensor's dimension i will correspond to the input dimension
+		`perm[i]`. If `perm` is not given, it is set to (n-1...0), where n is
+		the rank of the input tensor. Hence by default, this operation performs a
+		regular matrix transpose on 2-D input Tensors.
+		
+		For example, if `sp_input` has shape `[4, 5]` and `indices` / `values`:
+		
+		    [0, 3]: b
+		    [0, 1]: a
+		    [3, 1]: d
+		    [2, 0]: c
+		
+		then the output will be a `SparseTensor` of shape `[5, 4]` and
+		`indices` / `values`:
+		
+		    [0, 2]: c
+		    [1, 0]: a
+		    [1, 3]: d
+		    [3, 0]: b
+		
+		Args:
+		  sp_input: The input `SparseTensor`.
+		  perm: A permutation of the dimensions of `sp_input`.
+		  name: A name prefix for the returned tensors (optional)
+		Returns:
+		  A transposed `SparseTensor`.
+		
+		Raises:
+		  TypeError: If `sp_input` is not a `SparseTensor`.
+	**/
+	static public function sparse_transpose(sp_input:Dynamic, ?perm:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Splits a tensor into sub tensors.
+		
+		If `num_or_size_splits` is an integer type, `num_split`, then splits `value`
+		along dimension `axis` into `num_split` smaller tensors.
+		Requires that `num_split` evenly divides `value.shape[axis]`.
+		
+		If `num_or_size_splits` is not an integer type, it is presumed to be a Tensor
+		`size_splits`, then splits `value` into `len(size_splits)` pieces. The shape
+		of the `i`-th piece has the same size as the `value` except along dimension
+		`axis` where the size is `size_splits[i]`.
 		
 		For example:
 		
 		```python
 		# 'value' is a tensor with shape [5, 30]
+		# Split 'value' into 3 tensors with sizes [4, 15, 11] along dimension 1
+		split0, split1, split2 = tf.split(value, [4, 15, 11], 1)
+		tf.shape(split0) ==> [5, 4]
+		tf.shape(split1) ==> [5, 15]
+		tf.shape(split2) ==> [5, 11]
 		# Split 'value' into 3 tensors along dimension 1
-		split0, split1, split2 = tf.split(1, 3, value)
+		split0, split1, split2 = tf.split(value, num_or_size_splits=3, axis=1)
 		tf.shape(split0) ==> [5, 10]
 		```
 		
-		Note: If you are splitting along an axis by the length of that axis, consider
-		using unpack, e.g.
-		
-		```python
-		num_items = t.get_shape()[axis].value
-		[tf.squeeze(s, [axis]) for s in tf.split(axis, num_items, t)]
-		```
-		
-		can be rewritten as
-		
-		```python
-		tf.unpack(t, axis=axis)
-		```
-		
 		Args:
-		  split_dim: A 0-D `int32` `Tensor`. The dimension along which to split.
-		    Must be in the range `[0, rank(value))`.
-		  num_split: A Python integer. The number of ways to split.
 		  value: The `Tensor` to split.
+		  num_or_size_splits: Either a 0-D integer `Tensor` indicating the number of
+		    splits along split_dim or a 1-D integer `Tensor` integer tensor containing
+		    the sizes of each output tensor along split_dim. If a scalar then it must
+		    evenly divide `value.shape[axis]`; otherwise the sum of sizes along the
+		    split dimension must match that of the `value`.
+		  axis: A 0-D `int32` `Tensor`. The dimension along which to split.
+		    Must be in the range `[0, rank(value))`. Defaults to 0.
+		  num: Optional, used to specify the number of outputs when it cannot be
+		    inferred from the shape of `size_splits`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  `num_split` `Tensor` objects resulting from splitting `value`.
+		  if `num_or_size_splits` is a scalar returns `num_or_size_splits` `Tensor`
+		  objects; if `num_or_size_splits` is a 1-D Tensor returns
+		  `num_or_size_splits.get_shape[0]` `Tensor` objects resulting from splitting
+		  `value`.
+		
+		Raises:
+		  ValueError: If `num` is unspecified and cannot be inferred.
 	**/
-	static public function split(split_dim:Dynamic, num_split:Dynamic, value:Dynamic, ?name:Dynamic):Dynamic;
+	static public function split(value:Dynamic, num_or_size_splits:Dynamic, ?axis:Dynamic, ?num:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes square root of x element-wise.
 		
-		I.e., \(y = \sqrt{x} = x^{1/2}\).
+		I.e., \\(y = \sqrt{x} = x^{1/2}\\).
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
@@ -8622,7 +10439,7 @@ package tensorflow;
 	/**
 		Computes square of x element-wise.
 		
-		I.e., \(y = x * x = x^2\).
+		I.e., \\(y = x * x = x^2\\).
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
@@ -8654,7 +10471,7 @@ package tensorflow;
 		Given a tensor `input`, this operation returns a tensor of the same type with
 		all dimensions of size 1 removed. If you don't want to remove all size 1
 		dimensions, you can remove specific size 1 dimensions by specifying
-		`squeeze_dims`.
+		`axis`.
 		
 		For example:
 		
@@ -8672,17 +10489,61 @@ package tensorflow;
 		
 		Args:
 		  input: A `Tensor`. The `input` to squeeze.
-		  squeeze_dims: An optional list of `ints`. Defaults to `[]`.
+		  axis: An optional list of `ints`. Defaults to `[]`.
 		    If specified, only squeezes the dimensions listed. The dimension
 		    index starts at 0. It is an error to squeeze a dimension that is not 1.
 		  name: A name for the operation (optional).
+		  squeeze_dims: Deprecated keyword argument that is now axis.
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 		  Contains the same data as `input`, but has one or more dimensions of
 		  size 1 removed.
+		
+		Raises:
+		  ValueError: When both `squeeze_dims` and `axis` are specified.
 	**/
-	static public function squeeze(input:Dynamic, ?squeeze_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function squeeze(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?squeeze_dims:Dynamic):Dynamic;
+	/**
+		Stacks a list of rank-`R` tensors into one rank-`(R+1)` tensor.
+		
+		Packs the list of tensors in `values` into a tensor with rank one higher than
+		each tensor in `values`, by packing them along the `axis` dimension.
+		Given a list of length `N` of tensors of shape `(A, B, C)`;
+		
+		if `axis == 0` then the `output` tensor will have the shape `(N, A, B, C)`.
+		if `axis == 1` then the `output` tensor will have the shape `(A, N, B, C)`.
+		Etc.
+		
+		For example:
+		
+		```prettyprint
+		# 'x' is [1, 4]
+		# 'y' is [2, 5]
+		# 'z' is [3, 6]
+		stack([x, y, z]) => [[1, 4], [2, 5], [3, 6]]  # Pack along first dim.
+		stack([x, y, z], axis=1) => [[1, 2, 3], [4, 5, 6]]
+		```
+		
+		This is the opposite of unstack.  The numpy equivalent is
+		
+		```python
+		tf.stack([x, y, z]) = np.asarray([x, y, z])
+		```
+		
+		Args:
+		  values: A list of `Tensor` objects with the same shape and type.
+		  axis: An `int`. The axis to stack along. Defaults to the first dimension.
+		    Supports negative indexes.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  output: A stacked `Tensor` with the same type as `values`.
+		
+		Raises:
+		  ValueError: If `axis` is out of the range [-(R+1), R+1).
+	**/
+	static public function stack(values:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Stops gradient computation.
 		
@@ -8715,7 +10576,13 @@ package tensorflow;
 	**/
 	static public function stop_gradient(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Extracts a strided slice from a tensor.
+		Extracts a strided slice of a tensor (generalized python array indexing).
+		
+		**Most users will want to use @{tf.Tensor.__getitem__} and
+		@{tf.Variable.__getitem__}.** That allows  NumPy style slicing syntax (i.e.
+		`tensor[..., 3:4:-1, tf.newaxis, 3]`).
+		This op is the low-level interface that are used to implement operators.
+		Those interfaces are much more friendly, and highly recommended.
 		
 		To a first order, this operation extracts a slice of size `end - begin`
 		from a tensor `input`
@@ -8733,7 +10600,7 @@ package tensorflow;
 		
 		For the ith spec,
 		`begin_mask`, `end_mask`, `ellipsis_mask`, `new_axis_mask`,
-		and `shrink_axis_mask` will have the ith bit corrsponding to
+		and `shrink_axis_mask` will have the ith bit corresponding to
 		the ith spec.
 		
 		If the ith bit of `begin_mask` is non-zero, `begin[i]` is ignored and
@@ -8744,7 +10611,7 @@ package tensorflow;
 		`foo[::-1]` reverses a tensor with shape 8.
 		
 		
-		If the ith bit of `ellipsis_mask`, as many unspecified dimensions
+		If the ith bit of `ellipsis_mask` is non-zero, as many unspecified dimensions
 		as needed will be inserted between other dimensions. Only one
 		non-zero bit is allowed in `ellipsis_mask`.
 		
@@ -8752,7 +10619,7 @@ package tensorflow;
 		equivalent to `foo[3:5,:,:,4:5]` and
 		`foo[3:5,...]` is equivalent to `foo[3:5,:,:,:]`.
 		
-		If the ith bit of `new_axis_mask` is one, then a `begin`,
+		If the ith bit of `new_axis_mask` is one, then `begin`,
 		`end`, and `stride` are ignored and a new length 1 dimension is
 		added at this point in the output tensor.
 		
@@ -8769,15 +10636,15 @@ package tensorflow;
 		`strides` entries must be non-zero.
 		
 		
-		```
+		```python
 		# 'input' is [[[1, 1, 1], [2, 2, 2]],
 		#             [[3, 3, 3], [4, 4, 4]],
 		#             [[5, 5, 5], [6, 6, 6]]]
-		tf.slice(input, [1, 0, 0], [2, 1, 3], [1, 1, 1]) ==> [[[3, 3, 3]]]
-		tf.slice(input, [1, 0, 0], [2, 2, 3], [1, 1, 1]) ==> [[[3, 3, 3],
-		                                                       [4, 4, 4]]]
-		tf.slice(input, [1, 1, 0], [2, -1, 3], [1, -1, 1]) ==>[[[4, 4, 4],
-		                                                        [3, 3, 3]]]
+		tf.strided_slice(input, [1, 0, 0], [2, 1, 3], [1, 1, 1]) ==> [[[3, 3, 3]]]
+		tf.strided_slice(input, [1, 0, 0], [2, 2, 3], [1, 1, 1]) ==> [[[3, 3, 3],
+		                                                               [4, 4, 4]]]
+		tf.strided_slice(input, [1, -1, 0], [2, -3, 3], [1, -1, 1]) ==>[[[4, 4, 4],
+		                                                                 [3, 3, 3]]]
 		```
 		
 		Args:
@@ -8790,12 +10657,13 @@ package tensorflow;
 		  ellipsis_mask: An `int32` mask.
 		  new_axis_mask: An `int32` mask.
 		  shrink_axis_mask: An `int32` mask.
+		  var: The variable corresponding to `input_` or None
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` the same type as `input`.
 	**/
-	static public function strided_slice(input_:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic):Dynamic;
+	static public function strided_slice(input_:Dynamic, begin:Dynamic, end:Dynamic, ?strides:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?_var:Dynamic, ?name:Dynamic):Dynamic;
 	static public var string : Dynamic;
 	/**
 		Joins the strings in the given list of string tensors into one tensor;
@@ -8803,7 +10671,7 @@ package tensorflow;
 		with the given separator (default is an empty separator).
 		
 		Args:
-		  inputs: A list of at least 1 `Tensor` objects of type `string`.
+		  inputs: A list of at least 1 `Tensor` objects with type `string`.
 		    A list of string tensors.  The tensors must all have the same shape,
 		    or be scalars.  Scalars may be mixed in; these will be broadcast to the shape
 		    of non-scalar inputs.
@@ -8815,7 +10683,44 @@ package tensorflow;
 		  A `Tensor` of type `string`.
 	**/
 	static public function string_join(inputs:Dynamic, ?separator:Dynamic, ?name:Dynamic):Dynamic;
-	static public var string_ref : Dynamic;
+	/**
+		Split elements of `source` based on `delimiter` into a `SparseTensor`.
+		
+		Let N be the size of source (typically N will be the batch size). Split each
+		element of `source` based on `delimiter` and return a `SparseTensor`
+		containing the split tokens. Empty tokens are ignored.
+		
+		If `delimiter` is an empty string, each element of the `source` is split
+		into individual strings, each containing one byte. (This includes splitting
+		multibyte sequences of UTF-8.) If delimiter contains multiple bytes, it is
+		treated as a set of delimiters with each considered a potential split point.
+		
+		For example:
+		N = 2, source[0] is 'hello world' and source[1] is 'a b c', then the output
+		will be
+		
+		st.indices = [0, 0;
+		              0, 1;
+		              1, 0;
+		              1, 1;
+		              1, 2]
+		st.shape = [2, 3]
+		st.values = ['hello', 'world', 'a', 'b', 'c']
+		
+		Args:
+		  source: `1-D` string `Tensor`, the strings to split.
+		  delimiter: `0-D` string `Tensor`, the delimiter character, the string should
+		    be length 0 or 1.
+		
+		Raises:
+		  ValueError: If delimiter is not a string.
+		
+		Returns:
+		  A `SparseTensor` of rank `2`, the strings split according to the delimiter.
+		  The first column of the indices corresponds to the row in `source` and the
+		  second column corresponds to the index of the split component in this row.
+	**/
+	static public function string_split(source:Dynamic, ?delimiter:Dynamic):Dynamic;
 	/**
 		Converts each string in the input Tensor to its hash mod by a number of buckets.
 		
@@ -8866,9 +10771,9 @@ package tensorflow;
 		A strong hash is important when inputs may be malicious, e.g. URLs with
 		additional components. Adversaries could try to make their inputs hash to the
 		same bucket for a denial-of-service attack or to skew the results. A strong
-		hash prevents this by making it dificult, if not infeasible, to compute inputs
+		hash prevents this by making it difficult, if not infeasible, to compute inputs
 		that hash to the same bucket. This comes at a cost of roughly 4x higher compute
-		time than tf.string_to_hash_bucket_fast.
+		time than `tf.string_to_hash_bucket_fast`.
 		
 		Args:
 		  input: A `Tensor` of type `string`. The strings to assign a hash bucket.
@@ -8891,8 +10796,8 @@ package tensorflow;
 		
 		Args:
 		  string_tensor: A `Tensor` of type `string`.
-		  out_type: An optional `tf.DType` from: `tf.float32, tf.int32`. Defaults to `tf.float32`.
-		    The numeric type to interpret each string in string_tensor as.
+		  out_type: An optional `tf.DType` from: `tf.float32, tf.float64, tf.int32, tf.int64`. Defaults to `tf.float32`.
+		    The numeric type to interpret each string in `string_tensor` as.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -8901,9 +10806,98 @@ package tensorflow;
 	**/
 	static public function string_to_number(string_tensor:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Return substrings from `Tensor` of strings.
+		
+		For each string in the input `Tensor`, creates a substring starting at index
+		`pos` with a total length of `len`.
+		
+		If `len` defines a substring that would extend beyond the length of the input
+		string, then as many characters as possible are used.
+		
+		If `pos` is negative or specifies a character index larger than any of the input
+		strings, then an `InvalidArgumentError` is thrown.
+		
+		`pos` and `len` must have the same shape, otherwise a `ValueError` is thrown on
+		Op creation.
+		
+		*NOTE*: `Substr` supports broadcasting up to two dimensions. More about
+		broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		
+		---
+		
+		Examples
+		
+		Using scalar `pos` and `len`:
+		
+		```python
+		input = [b'Hello', b'World']
+		position = 1
+		length = 3
+		
+		output = [b'ell', b'orl']
+		```
+		
+		Using `pos` and `len` with same shape as `input`:
+		
+		```python
+		input = [[b'ten', b'eleven', b'twelve'],
+		         [b'thirteen', b'fourteen', b'fifteen'],
+		         [b'sixteen', b'seventeen', b'eighteen']]
+		position = [[1, 2, 3],
+		            [1, 2, 3],
+		            [1, 2, 3]]
+		length =   [[2, 3, 4],
+		            [4, 3, 2],
+		            [5, 5, 5]]
+		
+		output = [[b'en', b'eve', b'lve'],
+		          [b'hirt', b'urt', b'te'],
+		          [b'ixtee', b'vente', b'hteen']]
+		```
+		
+		Broadcasting `pos` and `len` onto `input`:
+		
+		```
+		input = [[b'ten', b'eleven', b'twelve'],
+		         [b'thirteen', b'fourteen', b'fifteen'],
+		         [b'sixteen', b'seventeen', b'eighteen'],
+		         [b'nineteen', b'twenty', b'twentyone']]
+		position = [1, 2, 3]
+		length =   [1, 2, 3]
+		
+		output = [[b'e', b'ev', b'lve'],
+		          [b'h', b'ur', b'tee'],
+		          [b'i', b've', b'hte'],
+		          [b'i', b'en', b'nty']]
+		```
+		
+		Broadcasting `input` onto `pos` and `len`:
+		
+		```
+		input = b'thirteen'
+		position = [1, 5, 7]
+		length =   [3, 2, 1]
+		
+		output = [b'hir', b'ee', b'n"]
+		```
+		
+		Args:
+		  input: A `Tensor` of type `string`. Tensor of strings
+		  pos: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Scalar defining the position of first character in each substring
+		  len: A `Tensor`. Must have the same type as `pos`.
+		    Scalar defining the number of characters to include in each substring
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`. Tensor of substrings
+	**/
+	static public function substr(input:Dynamic, pos:Dynamic, len:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns x - y element-wise.
 		
-		*NOTE*: `Sub` supports broadcasting. More about broadcasting
+		*NOTE*: `tf.subtract` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -8914,42 +10908,63 @@ package tensorflow;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function sub(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	static public function subtract(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the singular value decomposition of a matrix.
+		Computes the singular value decompositions of one or more matrices.
 		
-		Computes the SVD of `matrix` such that `matrix = u * diag(s) *
-		transpose(v)`
+		Computes the SVD of each inner matrix in `tensor` such that
+		`tensor[..., :, :] = u[..., :, :] * diag(s[..., :, :]) * transpose(v[..., :,
+		:])`
 		
 		```prettyprint
-		# a is a matrix.
-		# s is a vector of singular values.
-		# u is the matrix of left singular vectors.
-		# v is a matrix of right singular vectors.
+		# a is a tensor.
+		# s is a tensor of singular values.
+		# u is a tensor of left singular vectors.
+		# v is a tensor of right singular vectors.
 		s, u, v = svd(a)
 		s = svd(a, compute_uv=False)
 		```
 		
 		Args:
-		  matrix: `Tensor` of shape `[M, N]`. Let `P` be the minimum of `M` and `N`.
-		  compute_uv: If `True` then left and right singular vectors will be
-		    computed and returned in `u` and `v`, respectively. Otherwise, only the
-		    singular values will be computed, which can be significantly faster.
+		  tensor: `Tensor` of shape `[..., M, N]`. Let `P` be the minimum of `M` and
+		    `N`.
 		  full_matrices: If true, compute full-sized `u` and `v`. If false
 		    (the default), compute only the leading `P` singular vectors.
 		    Ignored if `compute_uv` is `False`.
+		  compute_uv: If `True` then left and right singular vectors will be
+		    computed and returned in `u` and `v`, respectively. Otherwise, only the
+		    singular values will be computed, which can be significantly faster.
 		  name: string, optional name of the operation.
 		
 		Returns:
-		  s: Singular values. Shape is `[P]`.
-		  u: Right singular vectors. If `full_matrices` is `False` (default) then
-		    shape is `[M, P]`; if `full_matrices` is `True` then shape is
-		    `[M, M]`. Not returned if `compute_uv` is `False`.
-		  v: Left singular vectors. If `full_matrices` is `False` (default) then
-		    shape is `[N, P]`. If `full_matrices` is `True` then shape is
-		    `[N, N]`. Not returned if `compute_uv` is `False`.
+		  s: Singular values. Shape is `[..., P]`. The values are sorted in reverse
+		    order of magnitude, so s[..., 0] is the largest value, s[..., 1] is the
+		    second largest, etc.
+		  u: Left singular vectors. If `full_matrices` is `False` (default) then
+		    shape is `[..., M, P]`; if `full_matrices` is `True` then shape is
+		    `[..., M, M]`. Not returned if `compute_uv` is `False`.
+		  v: Right singular vectors. If `full_matrices` is `False` (default) then
+		    shape is `[..., N, P]`. If `full_matrices` is `True` then shape is
+		    `[..., N, N]`. Not returned if `compute_uv` is `False`.
+		
+		@compatibility(numpy)
+		Mostly equivalent to numpy.linalg.svd, except that the order of output
+		arguments here is `s`, `u`, `v` when `compute_uv` is `True`, as opposed to
+		`u`, `s`, `v` for numpy.linalg.svd.
+		@end_compatibility
 	**/
-	static public function svd(matrix:Dynamic, ?compute_uv:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic):Dynamic;
+	static public function svd(tensor:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns an Op that initializes all tables of the default graph.
+		
+		Args:
+		  name: Optional name for the initialization op.
+		
+		Returns:
+		  An Op that initializes all tables.  Note that if there are
+		  not tables the returned Op is a NoOp.
+	**/
+	static public function tables_initializer(?name:Dynamic):Dynamic;
 	/**
 		Computes tan of x element-wise.
 		
@@ -8975,6 +10990,55 @@ package tensorflow;
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Tensor contraction of a and b along specified axes.
+		
+		Tensordot (also known as tensor contraction) sums the product of elements
+		from `a` and `b` over the indices specified by `a_axes` and `b_axes`.
+		The lists `a_axes` and `b_axes` specify those pairs of axes along which to
+		contract the tensors. The axis `a_axes[i]` of `a` must have the same dimension
+		as axis `b_axes[i]` of `b` for all `i` in `range(0, len(a_axes))`. The lists
+		`a_axes` and `b_axes` must have identical length and consist of unique
+		integers that specify valid axes for each of the tensors.
+		
+		This operation corresponds to `numpy.tensordot(a, b, axes)`.
+		
+		Example 1: When `a` and `b` are matrices (order 2), the case `axes = 1`
+		is equivalent to matrix multiplication.
+		
+		Example 2: When `a` and `b` are matrices (order 2), the case
+		`axes = [[1], [0]]` is equivalent to matrix multiplication.
+		
+		Example 3: Suppose that \\(a_ijk\\) and \\(b_lmn\\) represent two
+		tensors of order 3. Then, `contract(a, b, [0], [2])` is the order 4 tensor
+		\\(c_{jklm}\\) whose entry
+		corresponding to the indices \\((j,k,l,m)\\) is given by:
+		
+		\\( c_{jklm} = \sum_i a_{ijk} b_{lmi} \\).
+		
+		In general, `order(c) = order(a) + order(b) - 2*len(axes[0])`.
+		
+		Args:
+		  a: `Tensor` of type `float32` or `float64`.
+		  b: `Tensor` with the same type as `a`.
+		  axes: Either a scalar `N`, or a list or an `int32` `Tensor` of shape [2, k].
+		   If axes is a scalar, sum over the last N axes of a and the first N axes
+		   of b in order.
+		   If axes is a list or `Tensor` the first and second row contain the set of
+		   unique integers specifying axes along which the contraction is computed,
+		   for `a` and `b`, respectively. The number of axes for `a` and `b` must
+		   be equal.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` with the same type as `a`.
+		
+		Raises:
+		  ValueError: If the shapes of `a`, `b`, and `axes` are incompatible.
+		  IndexError: If the values in axes exceed the rank of the corresponding
+		    tensor.
+	**/
+	static public function tensordot(a:Dynamic, b:Dynamic, axes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Constructs a tensor by tiling a given tensor.
 		
 		This operation creates a new tensor by replicating `input` `multiples` times.
@@ -8985,7 +11049,7 @@ package tensorflow;
 		
 		Args:
 		  input: A `Tensor`. 1-D or higher.
-		  multiples: A `Tensor` of type `int32`.
+		  multiples: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    1-D. Length must be the same as the number of dimensions in `input`
 		  name: A name for the operation (optional).
 		
@@ -9066,23 +11130,35 @@ package tensorflow;
 	/**
 		Compute the trace of a tensor `x`.
 		
-		`trace(x)` returns the sum of along the diagonal.
+		`trace(x)` returns the sum along the main diagonal of each inner-most matrix
+		in x. If x is of rank `k` with shape `[I, J, K, ..., L, M, N]`, then output
+		is a tensor of rank `k-2` with dimensions `[I, J, K, ..., L]` where
+		
+		`output[i, j, k, ..., l] = trace(x[i, j, i, ..., l, :, :])`
 		
 		For example:
 		
 		```python
-		# 'x' is [[1, 1],
-		#         [1, 1]]
-		tf.trace(x) ==> 2
+		# 'x' is [[1, 2],
+		#         [3, 4]]
+		tf.trace(x) ==> 5
 		
 		# 'x' is [[1,2,3],
 		#         [4,5,6],
 		#         [7,8,9]]
 		tf.trace(x) ==> 15
+		
+		# 'x' is [[[1,2,3],
+		#          [4,5,6],
+		#          [7,8,9]],
+		#         [[-1,-2,-3],
+		#          [-4,-5,-6],
+		#          [-7,-8,-9]]]
+		tf.trace(x) ==> [15,-15]
 		```
 		
 		Args:
-		  x: 2-D tensor.
+		  x: tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -9148,13 +11224,16 @@ package tensorflow;
 	**/
 	static public function transpose(a:Dynamic, ?perm:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Divides x / y elementwise, always producing floating point results.
+		Divides x / y elementwise (using Python 3 division operator semantics).
 		
-		The same as `tf.div` for floating point arguments, but casts integer arguments
-		to floating point before dividing so that the result is always floating point.
-		This op is generated by normal `x / y` division in Python 3 and in Python 2.7
-		with `from __future__ import division`.  If you want integer division that
-		rounds down, use `x // y` or `tf.floordiv`.
+		NOTE: Prefer using the Tensor operator or tf.divide which obey Python
+		division operator semantics.
+		
+		This function forces Python 3 division operator semantics where all integer
+		arguments are cast to floating types first.   This op is generated by normal
+		`x / y` division in Python 3 and in Python 2.7 with
+		`from __future__ import division`.  If you want integer division that rounds
+		down, use `x // y` or `tf.floordiv`.
 		
 		`x` and `y` must have the same numeric type.  If the inputs are floating
 		point, the output will have the same type.  If the inputs are integral, the
@@ -9189,7 +11268,7 @@ package tensorflow;
 		  dtype: The type of the output.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -9198,31 +11277,43 @@ package tensorflow;
 	**/
 	static public function truncated_normal(shape:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns an initializer that generates a truncated normal distribution.
+		Returns x / y element-wise for integer types.
 		
-		These values are similar to values from a `random_normal_initializer`
-		except that values more than two standard deviations from the mean
-		are discarded and re-drawn. This is the recommended initializer for
-		neural network weights and filters.
+		Truncation designates that negative numbers will round fractional quantities
+		toward zero. I.e. -7 / 5 = 1. This matches C semantics but it is different
+		than Python semantics. See `FloorDiv` for a division function that matches
+		Python Semantics.
+		
+		*NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  mean: a python scalar or a scalar tensor. Mean of the random values
-		    to generate.
-		  stddev: a python scalar or a scalar tensor. Standard deviation of the
-		    random values to generate.
-		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
-		  dtype: The data type. Only floating point types are supported.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
 		
 		Returns:
-		  An initializer that generates tensors with a truncated normal
-		  distribution.
-		
-		Raises:
-		  ValueError: if `dtype` is not a floating point type.
+		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function truncated_normal_initializer(?mean:Dynamic, ?stddev:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function truncatediv(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns element-wise remainder of division. This emulates C semantics in that
+		
+		the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
+		y + truncate_mod(x, y) = x`.
+		
+		*NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
+		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  y: A `Tensor`. Must have the same type as `x`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function truncatemod(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Group tensors together.
 		
@@ -9238,7 +11329,8 @@ package tensorflow;
 		returned by `tuple` are only available after all the parallel computations
 		are done.
 		
-		See also `group` and `with_dependencies`.
+		See also @{tf.group$group} and
+		@{tf.control_dependencies$control_dependencies}.
 		
 		Args:
 		  tensors: A list of `Tensor`s or `IndexedSlices`, some entries can be `None`.
@@ -9255,51 +11347,7 @@ package tensorflow;
 	**/
 	static public function tuple(tensors:Dynamic, ?name:Dynamic, ?control_inputs:Dynamic):Dynamic;
 	static public var uint16 : Dynamic;
-	static public var uint16_ref : Dynamic;
 	static public var uint8 : Dynamic;
-	static public var uint8_ref : Dynamic;
-	/**
-		Returns an initializer that generates tensors without scaling variance.
-		
-		When initializing a deep network, it is in principle advantageous to keep
-		the scale of the input variance constant, so it does not explode or diminish
-		by reaching the final layer. If the input is `x` and the operation `x * W`,
-		and we want to initialize `W` uniformly at random, we need to pick `W` from
-		
-		    [-sqrt(3) / sqrt(dim), sqrt(3) / sqrt(dim)]
-		
-		to keep the scale intact, where `dim = W.shape[0]` (the size of the input).
-		A similar calculation for convolutional networks gives an analogous result
-		with `dim` equal to the product of the first 3 dimensions.  When
-		nonlinearities are present, we need to multiply this by a constant `factor`.
-		See [Sussillo et al., 2014](https://arxiv.org/abs/1412.6558)
-		([pdf](http://arxiv.org/pdf/1412.6558.pdf)) for deeper motivation, experiments
-		and the calculation of constants. In section 2.3 there, the constants were
-		numerically computed: for a linear layer it's 1.0, relu: ~1.43, tanh: ~1.15.
-		
-		If the shape tuple `full_shape` is provided, the scale will be calculated from
-		this predefined shape.  This is useful when a `Variable` is being partitioned
-		across several shards, and each shard has a smaller shape than the whole.
-		Since the shards are usually concatenated when used, the scale should be
-		based on the shape of the whole.
-		
-		Args:
-		  factor: Float.  A multiplicative factor by which the values will be scaled.
-		  seed: A Python integer. Used to create random seeds. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
-		    for behavior.
-		  dtype: The data type. Only floating point types are supported.
-		  full_shape: Tuple or list of integers.  The shape used for calculating
-		    scale normalization (instead of the shape passed at creation time).
-		    Useful when creating sharded variables via partitioning.
-		
-		Returns:
-		  An initializer that generates tensors with unit variance.
-		
-		Raises:
-		  ValueError: if `dtype` is not a floating point type.
-	**/
-	static public function uniform_unit_scaling_initializer(?factor:Dynamic, ?seed:Dynamic, ?dtype:Dynamic, ?full_shape:Dynamic):Dynamic;
 	/**
 		Finds unique elements in a 1-D tensor.
 		
@@ -9312,7 +11360,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# tensor 'x' is [1, 1, 2, 4, 4, 4, 7, 8, 8]
 		y, idx = unique(x)
 		y ==> [1, 2, 4, 7, 8]
@@ -9321,14 +11369,16 @@ package tensorflow;
 		
 		Args:
 		  x: A `Tensor`. 1-D.
+		  out_idx: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (y, idx).
+		
 		  y: A `Tensor`. Has the same type as `x`. 1-D.
-		  idx: A `Tensor` of type `int32`. 1-D.
+		  idx: A `Tensor` of type `out_idx`. 1-D.
 	**/
-	static public function unique(x:Dynamic, ?name:Dynamic):Dynamic;
+	static public function unique(x:Dynamic, ?out_idx:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Finds unique elements in a 1-D tensor.
 		
@@ -9342,7 +11392,7 @@ package tensorflow;
 		
 		For example:
 		
-		```prettyprint
+		```
 		# tensor 'x' is [1, 1, 2, 4, 4, 4, 7, 8, 8]
 		y, idx, count = unique_with_counts(x)
 		y ==> [1, 2, 4, 7, 8]
@@ -9352,15 +11402,85 @@ package tensorflow;
 		
 		Args:
 		  x: A `Tensor`. 1-D.
+		  out_idx: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (y, idx, count).
+		
 		  y: A `Tensor`. Has the same type as `x`. 1-D.
-		  idx: A `Tensor` of type `int32`. 1-D.
-		  count: A `Tensor` of type `int32`. 1-D.
+		  idx: A `Tensor` of type `out_idx`. 1-D.
+		  count: A `Tensor` of type `out_idx`. 1-D.
 	**/
-	static public function unique_with_counts(x:Dynamic, ?name:Dynamic):Dynamic;
+	static public function unique_with_counts(x:Dynamic, ?out_idx:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the Max along segments of a tensor.
+		
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
+		
+		This operator is similar to the [unsorted segment sum operator](../../../api_docs/python/math_ops.md#UnsortedSegmentSum).
+		Instead of computing the sum over segments, it computes the maximum
+		such that:
+		
+		\\(output_i = \max_j data_j\\) where max is over `j` such
+		that `segment_ids[j] == i`.
+		
+		If the maximum is empty for a given segment ID `i`, it outputs the smallest possible value for specific numeric type,
+		 `output[i] = numeric_limits<T>::min()`.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/UnsortedSegmentSum.png" alt>
+		</div>
+		
+		Args:
+		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  segment_ids: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A 1-D tensor whose rank is equal to the rank of `data`'s
+		    first dimension.
+		  num_segments: A `Tensor` of type `int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `data`.
+		  Has same shape as data, except for dimension 0 which
+		  has size `num_segments`.
+	**/
+	static public function unsorted_segment_max(data:Dynamic, segment_ids:Dynamic, num_segments:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the sum along segments of a tensor.
+		
+		Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
+		segments.
+		
+		Computes a tensor such that
+		`(output[i] = sum_{j...} data[j...]` where the sum is over tuples `j...` such
+		that `segment_ids[j...] == i`.  Unlike `SegmentSum`, `segment_ids`
+		need not be sorted and need not cover all values in the full
+		range of valid values.
+		
+		If the sum is empty for a given segment ID `i`, `output[i] = 0`.
+		
+		`num_segments` should equal the number of distinct segment IDs.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/UnsortedSegmentSum.png" alt>
+		</div>
+		
+		Args:
+		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		  segment_ids: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A tensor whose shape is a prefix of `data.shape`.
+		  num_segments: A `Tensor` of type `int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `data`.
+		  Has same shape as data, except for the first `segment_ids.rank`
+		  dimensions, which are replaced with a single dimension which has size
+		  `num_segments`.
+	**/
+	static public function unsorted_segment_sum(data:Dynamic, segment_ids:Dynamic, num_segments:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Unpacks the given dimension of a rank-`R` tensor into rank-`(R-1)` tensors.
 		
@@ -9380,59 +11500,24 @@ package tensorflow;
 		
 		This is the opposite of pack.  The numpy equivalent is
 		
-		    tf.unpack(x, n) = list(x)
+		    tf.unstack(x, n) = list(x)
 		
 		Args:
-		  value: A rank `R > 0` `Tensor` to be unpacked.
+		  value: A rank `R > 0` `Tensor` to be unstacked.
 		  num: An `int`. The length of the dimension `axis`. Automatically inferred
 		    if `None` (the default).
-		  axis: An `int`. The axis to unpack along. Defaults to the first
+		  axis: An `int`. The axis to unstack along. Defaults to the first
 		    dimension. Supports negative indexes.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  The list of `Tensor` objects unpacked from `value`.
+		  The list of `Tensor` objects unstacked from `value`.
 		
 		Raises:
 		  ValueError: If `num` is unspecified and cannot be inferred.
 		  ValueError: If `axis` is out of the range [-R, R).
 	**/
-	static public function unpack(value:Dynamic, ?num:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Computes the sum along segments of a tensor.
-		
-		Read [the section on
-		Segmentation](../../api_docs/python/math_ops.md#segmentation) for an explanation
-		of segments.
-		
-		Computes a tensor such that
-		`(output[i] = sum_{j...} data[j...]` where the sum is over tuples `j...` such
-		that `segment_ids[j...] == i`.  Unlike `SegmentSum`, `segment_ids`
-		need not be sorted and need not cover all values in the full
-		range of valid values.
-		
-		If the sum is empty for a given segment ID `i`, `output[i] = 0`.
-		
-		`num_segments` should equal the number of distinct segment IDs.
-		
-		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-		<img style="width:100%" src="../../images/UnsortedSegmentSum.png" alt>
-		</div>
-		
-		Args:
-		  data: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
-		  segment_ids: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		    A tensor whose shape is a prefix of `data.shape`.
-		  num_segments: A `Tensor` of type `int32`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `data`.
-		  Has same shape as data, except for the first `segment_ids.rank`
-		  dimensions, which are replaced with a single dimension which has size
-		  `num_segments`.
-	**/
-	static public function unsorted_segment_sum(data:Dynamic, segment_ids:Dynamic, num_segments:Dynamic, ?name:Dynamic):Dynamic;
+	static public function unstack(value:Dynamic, ?num:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Get a partitioner for VariableScope to keep shards below `max_shard_bytes`.
 		
@@ -9466,64 +11551,23 @@ package tensorflow;
 	**/
 	static public function variable_axis_size_partitioner(max_shard_bytes:Dynamic, ?axis:Dynamic, ?bytes_per_string_element:Dynamic, ?max_shards:Dynamic):Dynamic;
 	/**
-		Returns a context manager for defining an op that creates variables.
+		Deprecated: context manager for defining an op that creates variables.
+	**/
+	static public function variable_op_scope(values:Dynamic, name_or_scope:Dynamic, ?default_name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?reuse:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Dynamic;
+	/**
+		Returns a context manager for defining ops that creates variables (layers).
 		
-		This context manager validates that the given `values` are from the
-		same graph, ensures that graph is the default graph, and pushes a
+		This context manager validates that the (optional) `values` are from
+		the same graph, ensures that graph is the default graph, and pushes a
 		name scope and a variable scope.
 		
-		If `name_or_scope` is not None, it is used as is in the variable scope. If
-		`scope` is None, then `default_name` is used.  In that case, if the same name
-		has been previously used in the same scope, it will made unique be appending
-		`_N` to it.
-		
-		This is intended to be used when defining generic ops and so reuse is always
-		inherited.
-		
-		For example, to define a new Python op called `my_op_with_vars`:
-		
-		```python
-		def my_op_with_vars(a, b, scope=None):
-		  with tf.variable_op_scope([a, b], scope, "MyOp") as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.get_variable('c')
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
-		
-		Args:
-		  values: The list of `Tensor` arguments that are passed to the op function.
-		  name_or_scope: The name argument that is passed to the op function,
-		    this name_or_scope is not uniquified in the variable scope.
-		  default_name: The default name to use if the `name_or_scope` argument is
-		    `None`, this name will be uniquified. If name_or_scope is provided it
-		    won't be used and therefore it is not required and can be None.
-		  initializer: The default initializer to pass to variable scope.
-		  regularizer: The default regularizer for variables within this scope.
-		  caching_device: The default caching device for variables within this scope.
-		  partitioner: The default partitioner for variables within this scope.
-		  custom_getter: The default custom getter for variables within this scope.
-		  reuse: `True` or `None`; if `True`, we go into reuse mode for this scope as
-		    well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
-		  dtype: The default type of variables created in this scope, defaults to the
-		    type of the parent scope.
-		
-		Returns:
-		  A context manager for use in defining a Python op.
-		
-		Raises:
-		  ValueError: when trying to reuse within a create scope, or create within
-		    a reuse scope, or if reuse is not `None` or `True`.
-		  TypeError: when the types of some arguments are not appropriate.
-	**/
-	static public function variable_op_scope(values:Dynamic, name_or_scope:Dynamic, ?default_name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?reuse:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		Returns a context for variable scope.
+		If `name_or_scope` is not None, it is used as is. If `scope` is None, then
+		`default_name` is used.  In that case, if the same name has been previously
+		used in the same scope, it will made unique be appending `_N` to it.
 		
 		Variable scope allows to create new variables and to share already created
 		ones while providing checks to not create or share by accident. For details,
-		see the [Variable Scope How To](../../how_tos/variable_scope/index.md),
+		see the @{$variable_scope$Variable Scope How To},
 		here we present only a few basic examples.
 		
 		Simple example of how to create a new variable:
@@ -9577,27 +11621,63 @@ package tensorflow;
 		Note that the `reuse` flag is inherited: if we open a reusing scope,
 		then all its sub-scopes become reusing as well.
 		
+		A note about name scoping: Setting `reuse` does not impact the naming of other
+		ops such as mult. See related discussion on [github#6189](https://github.com/tensorflow/tensorflow/issues/6189)
+		
+		Note that up to and including version 1.0, it was allowed (though
+		explicitly discouraged) to pass False to the reuse argument, yielding
+		undocumented behaviour slightly different from None. Starting at 1.1.0
+		passing None and False as reuse has exactly the same effect.
+		
 		Args:
 		  name_or_scope: `string` or `VariableScope`: the scope to open.
-		  reuse: `True` or `None`; if `True`, we go into reuse mode for this scope as
-		    well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+		  default_name: The default name to use if the `name_or_scope` argument is
+		    `None`, this name will be uniquified. If name_or_scope is provided it
+		    won't be used and therefore it is not required and can be None.
+		  values: The list of `Tensor` arguments that are passed to the op function.
 		  initializer: default initializer for variables within this scope.
 		  regularizer: default regularizer for variables within this scope.
 		  caching_device: default caching device for variables within this scope.
 		  partitioner: default partitioner for variables within this scope.
 		  custom_getter: default custom getter for variables within this scope.
+		  reuse: `True` or `None`; if `True`, we go into reuse mode for this scope as
+		    well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
 		  dtype: type of variables created in this scope (defaults to the type
 		    in the passed scope, or inherited from parent scope).
+		  use_resource: If False, all variables will be regular Variables. If True,
+		    experimental ResourceVariables with well-defined semantics will be used
+		    instead. Defaults to False (will later change to True).
 		
 		Returns:
 		  A scope that can be to captured and reused.
 		
 		Raises:
 		  ValueError: when trying to reuse within a create scope, or create within
-		    a reuse scope, or if reuse is not `None` or `True`.
+		    a reuse scope.
 		  TypeError: when the types of some arguments are not appropriate.
 	**/
-	static public function variable_scope(name_or_scope:Dynamic, ?reuse:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function variable_scope(name_or_scope:Dynamic, ?default_name:Dynamic, ?values:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?reuse:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Dynamic;
+	/**
+		Returns an Op that initializes a list of variables.
+		
+		After you launch the graph in a session, you can run the returned Op to
+		initialize all the variables in `var_list`. This Op runs all the
+		initializers of the variables in `var_list` in parallel.
+		
+		Calling `initialize_variables()` is equivalent to passing the list of
+		initializers to `Group()`.
+		
+		If `var_list` is empty, however, the function still returns an Op that can
+		be run. That Op just has no effect.
+		
+		Args:
+		  var_list: List of `Variable` objects to initialize.
+		  name: Optional name for the returned operation.
+		
+		Returns:
+		  An Op that run the initializers of all the specified variables.
+	**/
+	static public function variables_initializer(var_list:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert that the tensor does not contain any NaN's or Inf's.
 		
@@ -9611,63 +11691,94 @@ package tensorflow;
 	**/
 	static public function verify_tensor_all_finite(t:Dynamic, msg:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns locations of true values in a boolean tensor.
+		Return the elements, either from `x` or `y`, depending on the `condition`.
 		
-		This operation returns the coordinates of true elements in `input`. The
-		coordinates are returned in a 2-D tensor where the first dimension (rows)
-		represents the number of true elements, and the second dimension (columns)
-		represents the coordinates of the true elements. Keep in mind, the shape of
-		the output tensor can vary depending on how many true values there are in
-		`input`. Indices are output in row-major order.
+		If both `x` and `y` are None, then this operation returns the coordinates of
+		true elements of `condition`.  The coordinates are returned in a 2-D tensor
+		where the first dimension (rows) represents the number of true elements, and
+		the second dimension (columns) represents the coordinates of the true
+		elements. Keep in mind, the shape of the output tensor can vary depending on
+		how many true values there are in input. Indices are output in row-major
+		order.
 		
-		For example:
+		If both non-None, `x` and `y` must have the same shape.
+		The `condition` tensor must be a scalar if `x` and `y` are scalar.
+		If `x` and `y` are vectors of higher rank, then `condition` must be either a
+		vector with size matching the first dimension of `x`, or must have the same
+		shape as `x`.
 		
-		```prettyprint
-		# 'input' tensor is [[True, False]
-		#                    [True, False]]
-		# 'input' has two true values, so output has two coordinates.
-		# 'input' has rank of 2, so coordinates have two indices.
-		where(input) ==> [[0, 0],
-		                  [1, 0]]
+		The `condition` tensor acts as a mask that chooses, based on the value at each
+		element, whether the corresponding element / row in the output should be taken
+		from `x` (if true) or `y` (if false).
 		
-		# `input` tensor is [[[True, False]
-		#                     [True, False]]
-		#                    [[False, True]
-		#                     [False, True]]
-		#                    [[False, False]
-		#                     [False, True]]]
-		# 'input' has 5 true values, so output has 5 coordinates.
-		# 'input' has rank of 3, so coordinates have three indices.
-		where(input) ==> [[0, 0, 0],
-		                  [0, 1, 0],
-		                  [1, 0, 1],
-		                  [1, 1, 1],
-		                  [2, 1, 1]]
-		```
+		If `condition` is a vector and `x` and `y` are higher rank matrices, then it
+		chooses which row (outer dimension) to copy from `x` and `y`. If `condition`
+		has the same shape as `x` and `y`, then it chooses which element to copy from
+		`x` and `y`.
 		
 		Args:
-		  input: A `Tensor` of type `bool`.
-		  name: A name for the operation (optional).
+		  condition: A `Tensor` of type `bool`
+		  x: A Tensor which may have the same shape as `condition`. If `condition` is
+		    rank 1, `x` may have higher rank, but its first dimension must match the
+		    size of `condition`.
+		  y: A `tensor` with the same shape and type as `x`.
+		  name: A name of the operation (optional)
 		
 		Returns:
-		  A `Tensor` of type `int64`.
+		  A `Tensor` with the same type and shape as `x`, `y` if they are non-None.
+		  A `Tensor` with shape `(num_true, dim_size(condition))`.
+		
+		Raises:
+		  ValueError: When exactly one of `x` or `y` is non-None.
 	**/
-	static public function where(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function where(condition:Dynamic, ?x:Dynamic, ?y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Repeat `body` while the condition `cond` is true.
 		
 		`cond` is a callable returning a boolean scalar tensor. `body` is a callable
-		returning a (possibly nested) tuple or list of tensors of the same
+		returning a (possibly nested) tuple, namedtuple or list of tensors of the same
 		arity (length and structure) and types as `loop_vars`. `loop_vars` is a
-		(possibly nested) tuple or list of tensors that is passed to both `cond`
-		and `body`. `cond` and `body` both take as many arguments as there are
+		(possibly nested) tuple, namedtuple or list of tensors that is passed to both
+		`cond` and `body`. `cond` and `body` both take as many arguments as there are
 		`loop_vars`.
 		
 		In addition to regular Tensors or IndexedSlices, the body may accept and
 		return TensorArray objects.  The flows of the TensorArray objects will
 		be appropriately forwarded between loops and during gradient calculations.
 		
-		While `cond` evaluates to true, `body` is executed.
+		Note that `while_loop` calls `cond` and `body` *exactly once* (inside the
+		call to `while_loop`, and not at all during `Session.run()`). `while_loop`
+		stitches together the graph fragments created during the `cond` and `body`
+		calls with some additional graph nodes to make something the repeats
+		`body` until `cond` returns false.
+		
+		For correctness, `tf.while_loop()` strictly enforces shape invariants for
+		the loop variables. A shape invariant is a (possibly partial) shape that
+		is unchanged across the iterations of the loop. An error will be raised
+		if the shape of a loop variable after an iteration is determined to be more
+		general than or incompatible with its shape invariant. For example, a shape
+		of [11, None] is more general than a shape of [11, 17], and [11, 21] is not
+		compatible with [11, 17]. By default (if the argument `shape_invariants` is
+		not specified), it is assumed that the initial shape of each tensor in
+		`loop_vars` is the same in every iteration. The `shape_invariants` argument
+		allows the caller to specify a less specific shape invariant for each loop
+		variable, which is needed if the shape varies between iterations. The
+		@{tf.Tensor.set_shape}
+		function may also be used in the `body` function to indicate that
+		the output loop variable has a particular shape. The shape invariant for
+		SparseTensor and IndexedSlices are treated specially as follows:
+		
+		a) If a loop variable is a SparseTensor, the shape invariant must be
+		TensorShape([r]) where r is the rank of the dense tensor represented
+		by the sparse tensor. It means the shapes of the three tensors of the
+		SparseTensor are ([None], [None, r], [r]). NOTE: The shape invariant here
+		is the shape of the SparseTensor.dense_shape property. It must be the shape of
+		a vector.
+		
+		b) If a loop variable is an IndexedSlices, the shape invariant must be
+		a shape invariant of the values tensor of the IndexedSlices. It means
+		the shapes of the three tensors of the IndexedSlices are (shape, [shape[0]],
+		[shape.ndims]).
 		
 		`while_loop` implements non-strict semantics, enabling multiple iterations
 		to run in parallel. The maximum number of parallel iterations can be
@@ -9685,16 +11796,18 @@ package tensorflow;
 		Args:
 		  cond: A callable that represents the termination condition of the loop.
 		  body: A callable that represents the loop body.
-		  loop_vars: A (possibly nested) tuple or list of numpy array, `Tensor`,
-		    and `TensorArray` objects.
+		  loop_vars: A (possibly nested) tuple, namedtuple or list of numpy array,
+		    `Tensor`, and `TensorArray` objects.
+		  shape_invariants: The shape invariants for the loop variables.
 		  parallel_iterations: The number of iterations allowed to run in parallel.
+		    It must be a positive integer.
 		  back_prop: Whether backprop is enabled for this while loop.
 		  swap_memory: Whether GPU-CPU memory swap is enabled for this loop.
 		  name: Optional name prefix for the returned tensors.
 		
 		Returns:
 		  The output tensors for the loop variables after the loop. When the length
-		  of `loop_vars` is 1 this is a Tensor, TensorArry or IndexedSlice and when
+		  of `loop_vars` is 1 this is a Tensor, TensorArray or IndexedSlice and when
 		  the length of `loop_vars` is greater than 1 it returns a list.
 		
 		Raises:
@@ -9703,23 +11816,51 @@ package tensorflow;
 		
 		Example:
 		
-		  ```python
-		  i = tf.constant(0)
-		  c = lambda i: tf.less(i, 10)
-		  b = lambda i: tf.add(i, 1)
-		  r = tf.while_loop(c, b, [i])
-		  ```
+		```python
+		i = tf.constant(0)
+		c = lambda i: tf.less(i, 10)
+		b = lambda i: tf.add(i, 1)
+		r = tf.while_loop(c, b, [i])
+		```
 		
-		Example with nesting:
+		Example with nesting and a namedtuple:
 		
-		  ```python
-		  ijk_0 = (tf.constant(0), (tf.constant(1), tf.constant(2)))
-		  c = lambda i, (j, k): i < 10
-		  b = lambda i, (j, k): (i + 1, ((j + k), (j - k)))
-		  ijk_final = tf.while_loop(c, b, ijk_0)
-		  ```
+		```python
+		import collections
+		Pair = collections.namedtuple('Pair', 'j, k')
+		ijk_0 = (tf.constant(0), Pair(tf.constant(1), tf.constant(2)))
+		c = lambda i, p: i < 10
+		b = lambda i, p: (i + 1, Pair((p.j + p.k), (p.j - p.k)))
+		ijk_final = tf.while_loop(c, b, ijk_0)
+		```
+		
+		Example using shape_invariants:
+		
+		```python
+		i0 = tf.constant(0)
+		m0 = tf.ones([2, 2])
+		c = lambda i, m: i < 10
+		b = lambda i, m: [i+1, tf.concat([m, m], axis=0)]
+		tf.while_loop(
+		    c, b, loop_vars=[i0, m0],
+		    shape_invariants=[i0.get_shape(), tf.TensorShape([None, 2])])
+		```
 	**/
-	static public function while_loop(cond:Dynamic, body:Dynamic, loop_vars:Dynamic, ?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic):Dynamic;
+	static public function while_loop(cond:Dynamic, body:Dynamic, loop_vars:Dynamic, ?shape_invariants:Dynamic, ?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Writes contents to the file at input filename. Creates file if not existing.
+		
+		Args:
+		  filename: A `Tensor` of type `string`.
+		    scalar. The name of the file to which we write the contents.
+		  contents: A `Tensor` of type `string`.
+		    scalar. The content to be written to the output file.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function write_file(filename:Dynamic, contents:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Creates a tensor with all elements set to zero.
 		
@@ -9729,7 +11870,7 @@ package tensorflow;
 		For example:
 		
 		```python
-		tf.zeros([3, 4], int32) ==> [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+		tf.zeros([3, 4], tf.int32) ==> [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 		```
 		
 		Args:
@@ -9741,10 +11882,6 @@ package tensorflow;
 		  A `Tensor` with all elements set to zero.
 	**/
 	static public function zeros(shape:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		An adaptor for zeros() to match the Initializer spec.
-	**/
-	static public function zeros_initializer(shape:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Creates a tensor with all elements set to zero.
 		
@@ -9764,19 +11901,20 @@ package tensorflow;
 		  dtype: A type for the returned `Tensor`. Must be `float32`, `float64`,
 		  `int8`, `int16`, `int32`, `int64`, `uint8`, `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
+		  optimize: if true, attempt to statically determine the shape of 'tensor'
+		  and encode it as a constant.
 		
 		Returns:
 		  A `Tensor` with all elements set to zero.
 	**/
-	static public function zeros_like(tensor:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function zeros_like(tensor:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?optimize:Dynamic):Dynamic;
 	/**
 		Compute the Hurwitz zeta function \\(\zeta(x, q)\\).
 		
 		The Hurwitz zeta function is defined as:
 		
-		```
-		\zeta(x, q) = \sum_{n=0}^{\infty} (q + n)^{-x}
-		```
+		
+		\\(\zeta(x, q) = \sum_{n=0}^{\infty} (q + n)^{-x}\\)
 		
 		Args:
 		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`.

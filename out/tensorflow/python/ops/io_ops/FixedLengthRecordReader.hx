@@ -44,10 +44,11 @@ package tensorflow.python.ops.io_ops;
 		  record_bytes: An int.
 		  header_bytes: An optional int. Defaults to 0.
 		  footer_bytes: An optional int. Defaults to 0.
+		  hop_bytes: An optional int. Defaults to 0.
 		  name: A name for the operation (optional).
 	**/
 	@:native("__init__")
-	public function ___init__(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?hop_bytes:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Create a FixedLengthRecordReader.
 		
@@ -55,9 +56,17 @@ package tensorflow.python.ops.io_ops;
 		  record_bytes: An int.
 		  header_bytes: An optional int. Defaults to 0.
 		  footer_bytes: An optional int. Defaults to 0.
+		  hop_bytes: An optional int. Defaults to 0.
 		  name: A name for the operation (optional).
 	**/
-	public function new(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?name:Dynamic):Void;
+	public function new(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?hop_bytes:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

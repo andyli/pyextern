@@ -130,11 +130,20 @@ package numpy.dual;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its
+		    multiplicity. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		vl : (M, M) double or complex ndarray
 		    The normalized left eigenvector corresponding to the eigenvalue
 		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
@@ -151,7 +160,7 @@ package numpy.dual;
 		--------
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
 	**/
-	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve an ordinary or generalized eigenvalue problem for a complex
 		Hermitian or real symmetric matrix.
@@ -255,13 +264,22 @@ package numpy.dual;
 		check_finite : bool, optional
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    (crashes, non-termination) if the inputs do contain infinities
+		    or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity,
-		    but not in any specific order.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its multiplicity
+		    but not in any specific order. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		
 		Raises
 		------
@@ -274,7 +292,7 @@ package numpy.dual;
 		eig : eigenvalues and right eigenvectors of general arrays.
 		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
 	**/
-	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Solve an ordinary or generalized eigenvalue problem for a complex
 		Hermitian or real symmetric matrix.
@@ -396,6 +414,11 @@ package numpy.dual;
 		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
 		always be real.
 		
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
 		
@@ -462,6 +485,13 @@ package numpy.dual;
 		--------
 		ifftn
 		
+		Notes
+		-----
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		Examples
 		--------
 		>>> from scipy.fftpack import fftn, ifftn
@@ -471,7 +501,7 @@ package numpy.dual;
 	**/
 	static public function fftn(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
-		i0(x[, out])
+		i0(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		i0(x)
 		
@@ -544,6 +574,11 @@ package numpy.dual;
 		
 		Notes
 		-----
+		Both single and double precision routines are implemented.  Half precision
+		inputs will be converted to single precision.  Non floating-point inputs
+		will be converted to double precision.  Long-double precision inputs are
+		not supported.
+		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
 		
@@ -847,19 +882,40 @@ package numpy.dual;
 	static public function restore_all():Dynamic;
 	static public function restore_func(name:Dynamic):Dynamic;
 	/**
-		Solve the equation ``a x = b`` for ``x``.
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix.
-		b : (M,) or (M, N) array_like
-		    Right-hand side matrix in ``a x = b``.
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
 		sym_pos : bool, optional
-		    Assume `a` is symmetric and positive definite.
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
 		lower : bool, optional
-		    Use only data contained in the lower triangle of `a`, if `sym_pos` is
-		    true.  Default is to use upper triangle.
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
 		overwrite_a : bool, optional
 		    Allow overwriting data in `a` (may enhance performance).
 		    Default is False.
@@ -870,19 +926,25 @@ package numpy.dual;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
+		    solved (only taken into account for ``'gen'``).
 		
 		Returns
 		-------
-		x : (M,) or (M, N) ndarray
-		    Solution to the system ``a x = b``.  Shape of the return matches the
-		    shape of `b`.
+		x : (N, NRHS) ndarray
+		    The solution array.
 		
 		Raises
 		------
-		LinAlgError
-		    If `a` is singular.
 		ValueError
-		    If `a` is not square
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		RuntimeWarning
+		    If an ill-conditioned input a is detected.
 		
 		Examples
 		--------
@@ -896,8 +958,19 @@ package numpy.dual;
 		array([ 2., -2.,  9.])
 		>>> np.dot(a, x) == b
 		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		LAPACK respectively.
 	**/
-	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		

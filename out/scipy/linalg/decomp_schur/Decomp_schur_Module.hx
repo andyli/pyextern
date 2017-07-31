@@ -42,8 +42,8 @@ package scipy.linalg.decomp_schur;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -172,13 +172,22 @@ package scipy.linalg.decomp_schur;
 		check_finite : bool, optional
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    (crashes, non-termination) if the inputs do contain infinities
+		    or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
 		
 		Returns
 		-------
-		w : (M,) double or complex ndarray
-		    The eigenvalues, each repeated according to its multiplicity,
-		    but not in any specific order.
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its multiplicity
+		    but not in any specific order. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
 		
 		Raises
 		------
@@ -191,7 +200,7 @@ package scipy.linalg.decomp_schur;
 		eig : eigenvalues and right eigenvectors of general arrays.
 		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
 	**/
-	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	static public var eps : Dynamic;
 	static public var feps : Dynamic;
 	/**

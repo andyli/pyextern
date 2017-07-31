@@ -47,7 +47,7 @@ package tensorflow.python.ops.template;
 		Args:
 		  name: A name for the scope created by this template. The
 		    name will be made unique by appending `_N` to the it (see how
-		    `tf.variable_op_scope` treats the `default_name` for details).
+		    `tf.variable_scope` treats the `default_name` for details).
 		  func: The function to apply each time.
 		  create_scope_now: Whether to create the scope at Template construction
 		    time, rather than first call. Defaults to false. Creating the scope at
@@ -61,19 +61,20 @@ package tensorflow.python.ops.template;
 		  unique_name: When used, it overrides name_ and is not made unique. If a
 		    template of the same scope/unique_name already exists and reuse is
 		    false, an error is raised. Defaults to None.
+		  custom_getter: optional custom getter to pass to variable_scope()
 		
 		Raises:
 		  ValueError: if the name is None.
 	**/
 	@:native("__init__")
-	public function ___init__(name:Dynamic, func:Dynamic, ?create_scope_now:Dynamic, ?unique_name:Dynamic):Dynamic;
+	public function ___init__(name:Dynamic, func:Dynamic, ?create_scope_now:Dynamic, ?unique_name:Dynamic, ?custom_getter:Dynamic):Dynamic;
 	/**
 		Creates a template for the given function.
 		
 		Args:
 		  name: A name for the scope created by this template. The
 		    name will be made unique by appending `_N` to the it (see how
-		    `tf.variable_op_scope` treats the `default_name` for details).
+		    `tf.variable_scope` treats the `default_name` for details).
 		  func: The function to apply each time.
 		  create_scope_now: Whether to create the scope at Template construction
 		    time, rather than first call. Defaults to false. Creating the scope at
@@ -87,11 +88,19 @@ package tensorflow.python.ops.template;
 		  unique_name: When used, it overrides name_ and is not made unique. If a
 		    template of the same scope/unique_name already exists and reuse is
 		    false, an error is raised. Defaults to None.
+		  custom_getter: optional custom getter to pass to variable_scope()
 		
 		Raises:
 		  ValueError: if the name is None.
 	**/
-	public function new(name:Dynamic, func:Dynamic, ?create_scope_now:Dynamic, ?unique_name:Dynamic):Void;
+	public function new(name:Dynamic, func:Dynamic, ?create_scope_now:Dynamic, ?unique_name:Dynamic, ?custom_getter:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -149,7 +158,15 @@ package tensorflow.python.ops.template;
 	public var __weakref__ : Dynamic;
 	public function _call_func(args:Dynamic, kwargs:Dynamic, check_for_new_variables:Dynamic):Dynamic;
 	/**
-		Returns the variable scope object created by this Template.
+		Returns the variable scope object created by this Template. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-21.
+		Instructions for updating:
+		The .var_scope property is deprecated. Please change your code to use the .variable_scope property
 	**/
 	public var var_scope : Dynamic;
+	/**
+		Returns the variable scope object created by this Template.
+	**/
+	public var variable_scope : Dynamic;
 }

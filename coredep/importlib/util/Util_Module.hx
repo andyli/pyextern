@@ -11,7 +11,7 @@ package importlib.util;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Find a module's loader.
+		Find a module's spec.
 	**/
 	static public function _find_spec(name:Dynamic, path:Dynamic, ?target:Dynamic):Dynamic;
 	/**

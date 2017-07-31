@@ -42,14 +42,21 @@ package tensorflow.python.platform.flags;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Global container and accessor for flags and their values.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
-		Global container and accessor for flags and their values.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new():Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,5 +112,5 @@ package tensorflow.python.platform.flags;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _parse_flags():Dynamic;
+	public function _parse_flags(?args:Dynamic):Dynamic;
 }

@@ -13,7 +13,7 @@ package scipy.special.basic;
 	static public function _bessel_diff_formula(v:Dynamic, z:Dynamic, n:Dynamic, L:Dynamic, phase:Dynamic):Dynamic;
 	static public function _comb_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_gammaln(x[, out])
+		_gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use ``gammaln`` instead.
 	**/
@@ -30,7 +30,7 @@ package scipy.special.basic;
 	**/
 	static public function _range_prod(lo:Dynamic, hi:Dynamic):Dynamic;
 	/**
-		_zeta(x1, x2[, out])
+		_zeta(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		_zeta(x, q)
 		
@@ -104,8 +104,8 @@ package scipy.special.basic;
 		-------
 		out : ndarray
 		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
 		
 		See Also
 		--------
@@ -164,44 +164,6 @@ package scipy.special.basic;
 		reversed argument order ``(x, n, k=0.0) --> (n, k, x)``.
 	**/
 	static public function assoc_laguerre(x:Dynamic, n:Dynamic, ?k:Dynamic):Dynamic;
-	/**
-		Convert inputs to arrays with at least one dimension.
-		
-		Scalar inputs are converted to 1-dimensional arrays, whilst
-		higher-dimensional inputs are preserved.
-		
-		Parameters
-		----------
-		arys1, arys2, ... : array_like
-		    One or more input arrays.
-		
-		Returns
-		-------
-		ret : ndarray
-		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
-		    Copies are made only if necessary.
-		
-		See Also
-		--------
-		atleast_2d, atleast_3d
-		
-		Examples
-		--------
-		>>> np.atleast_1d(1.0)
-		array([ 1.])
-		
-		>>> x = np.arange(9.0).reshape(3,3)
-		>>> np.atleast_1d(x)
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4.,  5.],
-		       [ 6.,  7.,  8.]])
-		>>> np.atleast_1d(x) is x
-		True
-		
-		>>> np.atleast_1d(1, [3, 4])
-		[array([1]), array([3, 4])]
-	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute nt zeros of the Kelvin function bei(x).
 		
@@ -289,15 +251,19 @@ package scipy.special.basic;
 	**/
 	static public function bi_zeros(nt:Dynamic):Dynamic;
 	/**
-		binom(x1, x2[, out])
+		binom(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		binom(n, k)
 		
 		Binomial coefficient
+		
+		See Also
+		--------
+		comb : The number of combinations of N things taken k at a time.
 	**/
 	static public function binom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z).
+		Associated Legendre function of the first kind for complex arguments.
 		
 		Computes the associated Legendre function of the first kind of order m and
 		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
@@ -374,6 +340,10 @@ package scipy.special.basic;
 		val : int, ndarray
 		    The total number of combinations.
 		
+		See Also
+		--------
+		binom : Binomial coefficient ufunc
+		
 		Notes
 		-----
 		- Array arguments accepted only for exact=False case.
@@ -393,7 +363,7 @@ package scipy.special.basic;
 	**/
 	static public function comb(N:Dynamic, k:Dynamic, ?exact:Dynamic, ?repetition:Dynamic):Dynamic;
 	/**
-		psi(x[, out])
+		psi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		psi(z, out=None)
 		
@@ -535,7 +505,7 @@ package scipy.special.basic;
 	**/
 	static public function ellipk(m:Dynamic):Dynamic;
 	/**
-		ellipkm1(x[, out])
+		ellipkm1(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ellipkm1(p)
 		
@@ -607,24 +577,6 @@ package scipy.special.basic;
 		    
 	**/
 	static public function erfinv(y:Dynamic):Dynamic;
-	/**
-		errprint(inflag=None)
-		
-		Sets or returns the error printing flag for special functions.
-		
-		Parameters
-		----------
-		inflag : bool, optional
-		    Whether warnings concerning evaluation of special functions in
-		    scipy.special are shown. If omitted, no change is made to the
-		    current setting.
-		
-		Returns
-		-------
-		old_flag
-		    Previous value of the error flag
-	**/
-	static public function errprint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Euler numbers E0..En (inclusive).
 		
@@ -805,7 +757,7 @@ package scipy.special.basic;
 	**/
 	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Int;
 	/**
-		floor(x[, out])
+		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
 		
@@ -816,6 +768,17 @@ package scipy.special.basic;
 		----------
 		x : array_like
 		    Input data.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -870,7 +833,7 @@ package scipy.special.basic;
 	**/
 	static public function fresnels_zeros(nt:Dynamic):Dynamic;
 	/**
-		gamma(x[, out])
+		gamma(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		gamma(z)
 		
@@ -964,7 +927,7 @@ package scipy.special.basic;
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		hankel1(x1, x2[, out])
+		hankel1(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel1(v, z)
 		
@@ -1007,7 +970,7 @@ package scipy.special.basic;
 	**/
 	static public function hankel1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hankel2(x1, x2[, out])
+		hankel2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hankel2(v, z)
 		
@@ -1050,7 +1013,7 @@ package scipy.special.basic;
 	**/
 	static public function hankel2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		hyp0f1(x1, x2[, out])
+		hyp0f1(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp0f1(v, x)
 		
@@ -1077,7 +1040,7 @@ package scipy.special.basic;
 	**/
 	static public function hyp0f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the imaginary part of the elements of the array.
+		Return the imaginary part of the complex argument.
 		
 		Parameters
 		----------
@@ -1086,9 +1049,10 @@ package scipy.special.basic;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The imaginary component of the complex argument. If `val` is real,
+		    the type of `val` is used for the output.  If `val` has complex
+		    elements, the returned type is float.
 		
 		See Also
 		--------
@@ -1102,6 +1066,8 @@ package scipy.special.basic;
 		>>> a.imag = np.array([8, 10, 12])
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
+		>>> np.imag(1 + 1j)
+		1.0
 	**/
 	static public function imag(val:Dynamic):Dynamic;
 	/**
@@ -1181,7 +1147,7 @@ package scipy.special.basic;
 	**/
 	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
-		iv(x1, x2[, out])
+		iv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		iv(v, z)
 		
@@ -1356,7 +1322,7 @@ package scipy.special.basic;
 	**/
 	static public function jnyn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		jv(x1, x2[, out])
+		jv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		jv(v, z)
 		
@@ -1394,9 +1360,12 @@ package scipy.special.basic;
 		term is exactly zero for integer `v`; to improve accuracy the second
 		term is explicitly omitted for `v` values such that `v = floor(v)`.
 		
+		Not to be confused with the spherical Bessel functions (see `spherical_jn`).
+		
 		See also
 		--------
 		jve : :math:`J_v` with leading exponential behavior stripped off.
+		spherical_jn : spherical Bessel functions.
 		
 		References
 		----------
@@ -1479,7 +1448,7 @@ package scipy.special.basic;
 	**/
 	static public function kerp_zeros(nt:Dynamic):Dynamic;
 	/**
-		kv(x1, x2[, out])
+		kv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		kv(v, z)
 		
@@ -1598,7 +1567,7 @@ package scipy.special.basic;
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		less(x1, x2[, out])
+		less(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the truth value of (x1 < x2) element-wise.
 		
@@ -1608,6 +1577,17 @@ package scipy.special.basic;
 		    Input arrays.  If ``x1.shape != x2.shape``, they must be
 		    broadcastable to a common shape (which may be the shape of one or
 		    the other).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -1658,7 +1638,7 @@ package scipy.special.basic;
 	**/
 	static public function lmbda(v:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z).
+		Sequence of associated Legendre functions of the first kind.
 		
 		Computes the associated Legendre function of the first kind of order m and
 		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
@@ -1706,7 +1686,7 @@ package scipy.special.basic;
 	**/
 	static public function lpmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Legendre functions of the first kind, Pn(z).
+		Legendre function of the first kind.
 		
 		Compute sequence of Legendre functions of the first kind (polynomials),
 		Pn(z) and derivatives for all degrees from 0 to n (inclusive).
@@ -1721,7 +1701,7 @@ package scipy.special.basic;
 	**/
 	static public function lpn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Associated Legendre function of the second kind, Qmn(z).
+		Sequence of associated Legendre functions of the second kind.
 		
 		Computes the associated Legendre function of the second kind of order m and
 		degree n, ``Qmn(z)`` = :math:`Q_n^m(z)`, and its derivative, ``Qmn'(z)``.
@@ -1754,7 +1734,7 @@ package scipy.special.basic;
 	**/
 	static public function lqmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Legendre functions of the second kind, Qn(z).
+		Legendre function of the second kind.
 		
 		Compute sequence of Legendre functions of the second kind, Qn(z) and
 		derivatives for all degrees from 0 to n (inclusive).
@@ -1767,7 +1747,7 @@ package scipy.special.basic;
 	**/
 	static public function lqn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		mathieu_a(x1, x2[, out])
+		mathieu_a(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_a(m, q)
 		
@@ -1778,7 +1758,7 @@ package scipy.special.basic;
 	**/
 	static public function mathieu_a(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mathieu_b(x1, x2[, out])
+		mathieu_b(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		mathieu_b(m, q)
 		
@@ -1899,7 +1879,7 @@ package scipy.special.basic;
 	static public var mgrid : Dynamic;
 	static public var nan : Dynamic;
 	/**
-		ndtri(x[, out])
+		ndtri(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		ndtri(y)
 		
@@ -2052,7 +2032,8 @@ package scipy.special.basic;
 		vals : 1-D sequence
 		    Values to put into `a`. Only the first N elements are used, where
 		    N is the number of True values in `mask`. If `vals` is smaller
-		    than N it will be repeated.
+		    than N, it will be repeated, and if elements of `a` are to be masked,
+		    this sequence must be non-empty.
 		
 		See Also
 		--------
@@ -2068,7 +2049,7 @@ package scipy.special.basic;
 	**/
 	static public function place(arr:Dynamic, mask:Dynamic, vals:Dynamic):Dynamic;
 	/**
-		poch(x1, x2[, out])
+		poch(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		poch(z, m)
 		
@@ -2126,7 +2107,7 @@ package scipy.special.basic;
 	**/
 	static public function pro_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
-		psi(x[, out])
+		psi(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		psi(z, out=None)
 		
@@ -2172,7 +2153,7 @@ package scipy.special.basic;
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the real part of the elements of the array.
+		Return the real part of the complex argument.
 		
 		Parameters
 		----------
@@ -2181,9 +2162,10 @@ package scipy.special.basic;
 		
 		Returns
 		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
+		out : ndarray or scalar
+		    The real component of the complex argument. If `val` is real, the type
+		    of `val` is used for the output.  If `val` has complex elements, the
+		    returned type is float.
 		
 		See Also
 		--------
@@ -2200,6 +2182,8 @@ package scipy.special.basic;
 		>>> a.real = np.array([9, 8, 7])
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
+		>>> np.real(1 + 1j)
+		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
@@ -2285,7 +2269,7 @@ package scipy.special.basic;
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
-		sin(x[, out])
+		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Trigonometric sine, element-wise.
 		
@@ -2293,6 +2277,17 @@ package scipy.special.basic;
 		----------
 		x : array_like
 		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2640,7 +2635,7 @@ package scipy.special.basic;
 	**/
 	static public function sph_yn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sqrt(x[, out])
+		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the positive square-root of an array, element-wise.
 		
@@ -2648,9 +2643,17 @@ package scipy.special.basic;
 		----------
 		x : array_like
 		    The values whose square-roots are required.
-		out : ndarray, optional
-		    Alternate array object in which to put the result; if provided, it
-		    must have the same shape as `x`
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -2698,8 +2701,8 @@ package scipy.special.basic;
 		condition : array_like, bool
 		    When True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
-		    Values from which to choose. `x` and `y` need to have the same
-		    shape as `condition`.
+		    Values from which to choose. `x`, `y` and `condition` need to be
+		    broadcastable to some shape.
 		
 		Returns
 		-------
@@ -2746,7 +2749,7 @@ package scipy.special.basic;
 		Find the indices of elements of `x` that are in `goodvalues`.
 		
 		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.in1d(x.ravel(), goodvalues).reshape(x.shape)
+		>>> ix = np.isin(x, goodvalues)
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
@@ -2877,7 +2880,7 @@ package scipy.special.basic;
 	**/
 	static public function ynp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		yv(x1, x2[, out])
+		yv(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		yv(v, z)
 		

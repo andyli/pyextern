@@ -10,13 +10,12 @@ package scipy.special._ellip_harm;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		_ellip_harm(x1, x2, x3, x4, x5, x6, x7[, out])
+		_ellip_harm(x1, x2, x3, x4, x5, x6, x7, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Internal function, use `ellip_harm` instead.
 	**/
 	static public function _ellip_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ellip_harm_2_vec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var _ellip_lock : Dynamic;
 	static public function _ellip_normal_vec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _ellipsoid(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ellipsoid_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -80,7 +79,7 @@ package scipy.special._ellip_harm;
 		   re-discovery: open-source implementations of
 		   ellipsoidal harmonics for problems in potential theory",
 		   Comput. Sci. Disc. 5, 014006 (2012)
-		   doi:10.1088/1749-4699/5/1/014006
+		   :doi:`10.1088/1749-4699/5/1/014006`.
 		.. [3] David J.and Dechambre P, "Computation of Ellipsoidal
 		   Gravity Field Harmonics for small solar system bodies"
 		   pp. 30-36, 2000

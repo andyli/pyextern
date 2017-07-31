@@ -41,11 +41,18 @@ package seaborn.categorical;
 		Initialize the plotter.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, dodge:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
 	/**
 		Initialize the plotter.
 	**/
-	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, dodge:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -15,7 +15,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,6 +70,13 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 		  name:  A name to prepend to all ops created by this class.
 	**/
 	public function new(diag:Dynamic, ?verify_pd:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -133,6 +140,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 	public function _batch_log_det():Dynamic;
 	public function _batch_matmul(x:Dynamic, ?transpose_x:Dynamic):Dynamic;
 	public function _batch_solve(rhs:Dynamic):Dynamic;
+	public function _batch_sqrt_log_abs_det():Dynamic;
 	public function _batch_sqrt_log_det():Dynamic;
 	public function _batch_sqrt_matmul(x:Dynamic, ?transpose_x:Dynamic):Dynamic;
 	public function _batch_sqrt_solve(rhs:Dynamic):Dynamic;
@@ -158,6 +166,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 	public function _matmul(x:Dynamic, ?transpose_x:Dynamic):Dynamic;
 	public function _shape():Dynamic;
 	public function _solve(rhs:Dynamic):Dynamic;
+	public function _sqrt_log_abs_det():Dynamic;
 	public function _sqrt_log_det():Dynamic;
 	public function _sqrt_matmul(x:Dynamic, ?transpose_x:Dynamic):Dynamic;
 	public function _sqrt_solve(rhs:Dynamic):Dynamic;
@@ -276,7 +285,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 		  name:  A name to give this `Op`.
 		
 		Returns:
-		  A result equivalent to `tf.batch_matmul(self.to_dense(), x)`.
+		  A result equivalent to `tf.matmul(self.to_dense(), x)`.
 	**/
 	public function matmul(x:Dynamic, ?transpose_x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -345,6 +354,21 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 	**/
 	public function solve(rhs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Log absolute value determinant of the sqrt `S` for every batch member.
+		
+		In most cases, this will be the same as `sqrt_log_det`, but for certain
+		operators defined by a square root, this might be implemented slightly
+		differently.
+		
+		Args:
+		  name:  A name scope to use for ops added by this method.
+		
+		Returns:
+		  Logarithm of absolute value determinant of the square root `S` for
+		  every batch member.
+	**/
+	public function sqrt_log_abs_det(?name:Dynamic):Dynamic;
+	/**
 		Log of the determinant of the sqrt `S` for every batch member.
 		
 		Args:
@@ -371,7 +395,7 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_diag;
 		  name:  A name scope to use for ops added by this method.
 		
 		Returns:
-		  A result equivalent to `tf.batch_matmul(self.sqrt_to_dense(), x)`.
+		  A result equivalent to `tf.matmul(self.sqrt_to_dense(), x)`.
 	**/
 	public function sqrt_matmul(x:Dynamic, ?transpose_x:Dynamic, ?name:Dynamic):Dynamic;
 	/**

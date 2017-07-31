@@ -33,66 +33,12 @@ package scipy.sparse.linalg;
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
-		Use BIConjugate Gradient iteration to solve A x = b
+		Use BIConjugate Gradient iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
+		    The real or complex N-by-N matrix of the linear system.
 		    It is required that the linear operator can produce
 		    ``Ax`` and ``A^T x``.
 		b : {array, matrix}
@@ -138,13 +84,12 @@ package scipy.sparse.linalg;
 	**/
 	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use BIConjugate Gradient STABilized iteration to solve A x = b
+		Use BIConjugate Gradient STABilized iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
-		    ``A`` must represent a hermitian, positive definite matrix
+		    The real or complex N-by-N matrix of the linear system.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -188,13 +133,13 @@ package scipy.sparse.linalg;
 	**/
 	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use Conjugate Gradient iteration to solve A x = b
+		Use Conjugate Gradient iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real or complex N-by-N matrix of the linear system
-		    ``A`` must represent a hermitian, positive definite matrix
+		    The real or complex N-by-N matrix of the linear system.
+		    ``A`` must represent a hermitian, positive definite matrix.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -238,12 +183,12 @@ package scipy.sparse.linalg;
 	**/
 	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Use Conjugate Gradient Squared iteration to solve A x = b
+		Use Conjugate Gradient Squared iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
-		    The real-valued N-by-N matrix of the linear system
+		    The real-valued N-by-N matrix of the linear system.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -304,7 +249,7 @@ package scipy.sparse.linalg;
 		    the operation ``A * x``, where A is a real or complex square matrix.
 		k : int, optional
 		    The number of eigenvalues and eigenvectors desired.
-		    `k` must be smaller than N. It is not possible to compute all
+		    `k` must be smaller than N-1. It is not possible to compute all
 		    eigenvectors of a matrix.
 		M : ndarray, sparse matrix or LinearOperator, optional
 		    An array, sparse matrix, or LinearOperator representing
@@ -702,7 +647,7 @@ package scipy.sparse.linalg;
 	**/
 	static public function expm_multiply(A:Dynamic, B:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic):Dynamic;
 	/**
-		Return a fuction for solving a sparse linear system, with A pre-factorized.
+		Return a function for solving a sparse linear system, with A pre-factorized.
 		
 		Parameters
 		----------
@@ -728,7 +673,7 @@ package scipy.sparse.linalg;
 	**/
 	static public function factorized(A:Dynamic):haxe.Constraints.Function;
 	/**
-		Use Generalized Minimal RESidual iteration to solve A x = b.
+		Use Generalized Minimal RESidual iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
@@ -1535,7 +1480,7 @@ package scipy.sparse.linalg;
 	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
-		Use Quasi-Minimal Residual iteration to solve A x = b
+		Use Quasi-Minimal Residual iteration to solve ``Ax = b``.
 		
 		Parameters
 		----------
@@ -1722,6 +1667,43 @@ package scipy.sparse.linalg;
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
 	/**
+		Solve the equation `A x = b` for `x`, assuming A is a triangular matrix.
+		
+		Parameters
+		----------
+		A : (M, M) sparse matrix
+		    A sparse square triangular matrix. Should be in CSR format.
+		b : (M,) or (M, N) array_like
+		    Right-hand side matrix in `A x = b`
+		lower : bool, optional
+		    Whether `A` is a lower or upper triangular matrix.
+		    Default is lower triangular matrix.
+		overwrite_A : bool, optional
+		    Allow changing `A`. The indices of `A` are going to be sorted and zero
+		    entries are going to be removed.
+		    Enabling gives a performance gain. Default is False.
+		overwrite_b : bool, optional
+		    Allow overwriting data in `b`.
+		    Enabling gives a performance gain. Default is False.
+		
+		Returns
+		-------
+		x : (M,) or (M, N) ndarray
+		    Solution to the system `A x = b`.  Shape of return matches shape of `b`.
+		
+		Raises
+		------
+		LinAlgError
+		    If `A` is singular or not triangular.
+		ValueError
+		    If shape of `A` or shape of `b` do not match the requirements.
+		
+		Notes
+		-----
+		.. versionadded:: 0.19.0
+	**/
+	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
+	/**
 		Compute the largest k singular values/vectors for a sparse matrix.
 		
 		Parameters
@@ -1811,12 +1793,14 @@ package scipy.sparse.linalg;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

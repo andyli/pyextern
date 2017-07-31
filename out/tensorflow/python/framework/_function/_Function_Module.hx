@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework._function;
 @:pythonImport("tensorflow.python.framework.function") extern class _Function_Module {
+	static public var _DTYPE_TO_STR : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,157 +11,142 @@ package tensorflow.python.framework._function;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Adds a _ListToArray node in the func for op.inputs[start:limit].
-	**/
-	static public function _add_input_array(op:Dynamic, start:Dynamic, limit:Dynamic, dtype:Dynamic, func:Dynamic):Dynamic;
-	/**
 		Converts an op to a function def node and add it to `func`.
 	**/
-	static public function _add_op_node(graph:Dynamic, op:Dynamic, func:Dynamic):Dynamic;
+	static public function _add_op_node(op:Dynamic, func:Dynamic, input_dict:Dynamic):Dynamic;
 	/**
-		Adds a _ArrayToList node in the func for op.outputs[start:limit].
-	**/
-	static public function _add_output_array(op:Dynamic, start:Dynamic, limit:Dynamic, dtype:Dynamic, func:Dynamic):Dynamic;
-	/**
-		Adds a _ArrayToList node in the func for op.outputs[start:limit].
-	**/
-	static public function _add_output_list(op:Dynamic, start:Dynamic, limit:Dynamic, dtype_lst:Dynamic, func:Dynamic):Dynamic;
-	static public function _get_func_name(func:Dynamic):Dynamic;
-	static public function _get_node_def_attr(op:Dynamic):Dynamic;
-	static public function _make_argname_from_tensor_name(name:Dynamic):Dynamic;
-	static public function _tensor_to_argdef(t:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	/**
-		Calls the function described by `func_def`.
+		Adds a node calling a function.
 		
-		This adds a `call` op to the default graph that calls the function described
-		by `func_def` with the tensors listed in `inputs` as arguments.  It returns
-		the outputs of the call, which are one or more tensors.
+		This adds a `call` op to the default graph that calls the function
+		of signature `sig`, passing the tensors in `inputs` as arguments.
+		It returns the outputs of the call, which are one or more tensors.
 		
-		`func_def` is a
-		[`FunctionDef`](
-		https://www.tensorflow.org/code/tensorflow/core/framework/function.proto)
-		protcol buffer describing a
-		TensorFlow function.  See [`define_function()`](#define_function) for an
-		easy way to create one from a Python function.
+		`sig` is OpDefArg.a `_DefinedFunction` object.
 		
 		You can pass an optional keyword parameter `name=string` to name the
 		added operation.
 		
-		You can pass an optional keyword parameter `noinline=True|False` to instruct
-		the runtime not to inline the function body into the call site.
-		
-		`func_def` is automatically added to the function library of the graph if
-		needed.
+		You can pass an optional keyword parameter `noinline=True|False` to
+		instruct the runtime not to inline the function body into the call
+		site.
 		
 		Args:
-		  func_def: A `FunctionDef` protocol buffer.
-		  *inputs: A list of tensors
-		  **kwargs: Optional keyword arguments.  Can only contain 'name'.
+		  sig: OpDefArg. The signature of the function.
+		  *inputs: arguments to the function.
+		  **kwargs: Optional keyword arguments.  Can only contain 'name' or
+		      'noinline'.
 		
 		Returns:
-		  A list of tensors representing the outputs of the call to `func_def`.
+		   A 2-element tuple. First element: a Tensor if the function returns a single
+		   value; a list of Tensors if the function returns multiple value; the
+		   Operation if the function returns no values. Second element: the Operation.
 		
 		Raises:
 		  ValueError: if the arguments are invalid.
 	**/
-	static public function call_function(func_def:Dynamic, ?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _call(sig:Dynamic, ?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Creates a `FunctionDef` for a python function.
-		
-		`func` is a Python function that receives zero or more tensors and returns at
-		least one tensor.  It should add ops to the default graph the usual way by
-		calling TensorFlow functions such as `tf.constant()`, `tf.matmul()`, etc.
-		
-		`input_types` is a dictionary of strings to `tf.Dtype` objects.  Keys are
-		names arguments to `func`.  The value indicate the type of tensor expected
-		by the function.
-		
-		The returned `FunctionDef` protocol buffer is also added to the
-		default graph library.  After it has been added you can add calls to
-		the function by passing it to `tf.call_function()`, together with a
-		list of tensors to use as inputs for the function.
-		
-		Notes:
-		
-		*  `func` is called once, with `placeholder` tensors of the types specified in
-		   `input_types` as arguments.
-		*  Values returned by `func` must be tensors and they are recorded as being
-		   the output of the function def.
-		*  While `func` is a called, an empty graph is temporarily pushed as the
-		   default graph.  All ops added by `func` to that graph are part of the body
-		   of the returned function def.
-		
-		Example, but also see the [How To on functions](link_needed).
-		
-		```python
-		# A function that receives two tensors x, y and returns their
-		# sum and difference.
-		def my_func(x, y):
-		  return x + y, x - y
-		
-		# Create a FunctionDef for 'my_func'. (This does not change the default
-		graph.)
-		my_func_def = tf.define_function(my_func, {'x': tf.float32, 'y': tf.float32})
-		# Alternatively:
-		# my_func_def = tf.define_function(my_func, [tf.float32, tf.float32])
-		
-		# Build the graph, calling the function.
-		a = tf.constant([1.0])
-		b = tf.constant([2.0])
-		c, d = tf.call_function(my_func_def, a, b, name='mycall')
-		```
+		Create a mapping from graph tensor names to function tensor names.
+	**/
+	static public function _create_input_dict(function_graph:Dynamic, func_arg_placeholders:Dynamic):Dynamic;
+	/**
+		Creates a _DefinedFunction initialized from a FunctionDef proto.
 		
 		Args:
-		  func: a Python function.
-		  input_types: if a dict, keys are the names of the arguments of
-		    `func`, values are their expected `tf.DType`. Otherwise,
-		    a list of `tf.DType`s.
-		  func_name: Pyton string.  If not None, specifies the name to use when
-		    creating the Function.  By default, introspection on `func` is used to
-		    generate a name.
-		  grad_func: If not None, specifies the gradient function. The
-		             gradient function must satisify the criterion defined in
-		             function.proto:GradientDef.
-		  python_grad_func: If not None, specifies the gradient function with the same
-		             interface as that expected by `tf.RegisterGradient`. This
-		             will be called by tf.gradients to add the gradient ops to the
-		             graph. No more than one of {grad_func, python_grad_func} may be
-		             specified.
+		  fdef: a FunctionDef
+		  grad_func: a _DefinedFunction or None
 		
 		Returns:
-		  A FunctionDef protocol buffer.
+		  A _DefinedFunction representing fdef
+	**/
+	static public function _from_definition(fdef:Dynamic, ?grad_func:Dynamic):Dynamic;
+	/**
+		Creates _DefinedFunctions initialized from a FunctionDefLibrary proto.
+		
+		This method handles assigning the correct gradient functions to each
+		function.
+		
+		Args:
+		  lib: a FunctionDefLibrary
+		
+		Returns:
+		  A list of _DefinedFunctions
 		
 		Raises:
-		  ValueError: if the arguments are invalid.
+		  ValueError: `lib` is invalid
 	**/
-	static public function define_function(func:Dynamic, input_types:Dynamic, ?func_name:Dynamic, ?grad_func:Dynamic, ?python_grad_func:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	static public function _from_library(lib:Dynamic):Dynamic;
+	static public function _get_func_name(func:Dynamic):Dynamic;
+	static public function _get_node_def(op:Dynamic):Dynamic;
+	static public function _get_op_def(op:Dynamic):Dynamic;
 	/**
 		Returns `graph` as a `FunctionDef` protocol buffer.
 		
 		This method creates a [`FunctionDef`](
 		https://www.tensorflow.org/code/tensorflow/core/framework/function.proto)
-		protocol buffer that contains all the ops present in the graph.  The
-		graph effectively becomes the body of the function.
+		protocol buffer that contains all the ops in `operations`.  The
+		operations become the body of the function.
 		
 		The arguments `inputs` and `outputs` will be listed as the inputs
 		and outputs tensors of the function.  They must be lists of
 		tensors present in the graph.  The lists can optionally be empty.
 		
-		The returned protocol buffer can be passed to the
-		[`Graph.add_function()`](#Graph.add_function) method of a
-		different graph to make it available there.
-		
 		Args:
-		  graph: GraphDef proto.
-		  name: string. The name to use for the function.
+		  graph: Graph.
+		  operations: the operations to put in the function. Must be a subset of
+		   the operations in the graph.
 		  inputs: List of tensors. Inputs to the function.
 		  outputs: List of tensors. Outputs of the function.
+		  out_names: Optional list of string names for the outputs.
 		
 		Returns:
 		  A FunctionDef protocol buffer.
+		
+		Raises:
+		  ValueError: if out_names is specified and the wrong length.
 	**/
-	static public function graph_to_function_def(graph:Dynamic, name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public function _graph_to_function_def(graph:Dynamic, operations:Dynamic, inputs:Dynamic, outputs:Dynamic, ?out_names:Dynamic):Dynamic;
+	static public function _is_in_placeholders(op:Dynamic, func_arg_placeholders:Dynamic):Dynamic;
+	static public function _make_argname_from_tensor_name(name:Dynamic):Dynamic;
+	/**
+		Parses **kwargs into a node's attributes.
+	**/
+	static public function _parse_kwargs_as_attrs(func_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Convert tensor t to an argdef, with a specified name or a unique name.
+	**/
+	static public function _tensor_to_argdef(t:Dynamic, ?name:Dynamic, ?used_names:Dynamic):Dynamic;
+	static public function _type_list_to_str(types:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	/**
+		Returns the corresponding function arguments for the captured inputs.
+		
+		Returns:
+		  If the default graph is being used to define a function, the
+		  returned list of place holders are those used inside the function
+		  body corresponding those returned by get_extra_inputs(). Otherwise,
+		  returns an empty list.
+	**/
+	static public function get_extra_args():Dynamic;
+	/**
+		Returns the captured input tensors by the function.
+		
+		Returns:
+		  If the default graph is being used to define a function, the
+		  returned list of tensors are those accessed inside the function body
+		  but defined outside the function body so far. Otherwise, returns an
+		  empty list.
+	**/
+	static public function get_extra_inputs():Dynamic;
+	/**
+		Returns the captured variables by the function.
+		
+		Returns:
+		  If the default graph is being used to define a function, the
+		  returned list of variables are those created inside the function
+		  body so far. Otherwise, returns an empty list.
+	**/
+	static public function get_extra_vars():Dynamic;
 	static public var print_function : Dynamic;
 }

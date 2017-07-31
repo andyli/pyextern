@@ -23,6 +23,7 @@ package matplotlib.sankey;
 	**/
 	static public function iterable(obj:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public var rcParams : Dynamic;
 	static public var unicode_literals : Dynamic;
 	static public var verbose : Dynamic;
 }

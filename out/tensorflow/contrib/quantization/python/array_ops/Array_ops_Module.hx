@@ -37,11 +37,11 @@ package tensorflow.contrib.quantization.python.array_ops;
 		
 		If the mode is 'MIN_FIRST', then this approach is used:
 		
-		```
+		```c++
 		number_of_steps = 1 << (# of bits in T)
 		range_adjust = number_of_steps / (number_of_steps - 1)
 		range = (range_max - range_min) * range_adjust
-		range_scale = number_of_steps / range
+		range_scale = range / number_of_steps
 		const double offset_input = static_cast<double>(input) - lowest_quantized;
 		result = range_min + ((input - numeric_limits<T>::min()) * range_scale)
 		```
@@ -126,6 +126,7 @@ package tensorflow.contrib.quantization.python.array_ops;
 		
 		Returns:
 		  A tuple of `Tensor` objects (output, output_min, output_max).
+		
 		  output: A `Tensor` of type `T`. The quantized data produced from the float input.
 		  output_min: A `Tensor` of type `float32`. The actual minimum scalar value used for the output.
 		  output_max: A `Tensor` of type `float32`. The actual maximum scalar value used for the output.
@@ -138,17 +139,18 @@ package tensorflow.contrib.quantization.python.array_ops;
 		  concat_dim: A `Tensor` of type `int32`.
 		    0-D.  The dimension along which to concatenate.  Must be in the
 		    range [0, rank(values)).
-		  values: A list of at least 2 `Tensor` objects of the same type.
+		  values: A list of at least 2 `Tensor` objects with the same type.
 		    The `N` Tensors to concatenate. Their ranks and types must match,
 		    and their sizes must match in all dimensions except `concat_dim`.
-		  input_mins: A list with the same number of `Tensor` objects as `values` of `Tensor` objects of type `float32`.
+		  input_mins: A list with the same length as `values` of `Tensor` objects with type `float32`.
 		    The minimum scalar values for each of the input tensors.
-		  input_maxes: A list with the same number of `Tensor` objects as `values` of `Tensor` objects of type `float32`.
+		  input_maxes: A list with the same length as `values` of `Tensor` objects with type `float32`.
 		    The maximum scalar values for each of the input tensors.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (output, output_min, output_max).
+		
 		  output: A `Tensor`. Has the same type as `values`. A `Tensor` with the concatenation of values stacked along the
 		    `concat_dim` dimension.  This tensor's shape matches that of `values` except
 		    in `concat_dim` where it has the sum of the sizes.

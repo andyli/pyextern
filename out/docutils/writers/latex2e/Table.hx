@@ -41,11 +41,18 @@ package docutils.writers.latex2e;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(translator:Dynamic, latex_type:Dynamic, table_style:Dynamic):Dynamic;
+	public function ___init__(translator:Dynamic, latex_type:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(translator:Dynamic, latex_type:Dynamic, table_style:Dynamic):Void;
+	public function new(translator:Dynamic, latex_type:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +126,7 @@ package docutils.writers.latex2e;
 		
 		usually gets to narrow, therefore we add 1 (fiddlefactor).
 	**/
-	public function get_colspecs():Dynamic;
+	public function get_colspecs(node:Dynamic):Dynamic;
 	/**
 		Return columnwidth for current cell (not multicell).
 	**/
@@ -139,7 +146,7 @@ package docutils.writers.latex2e;
 	public function open():Dynamic;
 	public function set(attr:Dynamic, value:Dynamic):Dynamic;
 	public function set_rowspan(cell:Dynamic, value:Dynamic):Dynamic;
-	public function set_table_style(table_style:Dynamic):Dynamic;
+	public function set_table_style(table_style:Dynamic, classes:Dynamic):Dynamic;
 	public function visit_colspec(node:Dynamic):Dynamic;
 	public function visit_entry():Dynamic;
 	public function visit_row():Dynamic;

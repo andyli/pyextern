@@ -22,7 +22,7 @@ package matplotlib.backends.backend_qt5;
 	**/
 	static public function _create_qApp():Dynamic;
 	/**
-		getSaveFileNameAndFilter(parent: QWidget = None, caption: object = '', directory: object = '', filter: object = '', initialFilter: object = '', options: QFileDialog.Options = 0) -> Tuple
+		getSaveFileName(parent: QWidget = None, caption: str = '', directory: str = '', filter: str = '', initialFilter: str = '', options: Union[QFileDialog.Options, QFileDialog.Option] = 0) -> Tuple[str, str]
 	**/
 	static public function _getSaveFileName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -41,6 +41,7 @@ package matplotlib.backends.backend_qt5;
 	**/
 	static public function exception_handler(type:Dynamic, value:Dynamic, tb:Dynamic):Dynamic;
 	static public function fn_name():Dynamic;
+	static public function is_pyqt5():Dynamic;
 	/**
 		Return True if *obj* looks like a string
 	**/

@@ -133,17 +133,17 @@ package scipy.stats.mstats_extras;
 		-------
 		``rvs(n, p, loc=0, size=1, random_state=None)``
 		    Random variates.
-		``pmf(x, n, p, loc=0)``
+		``pmf(k, n, p, loc=0)``
 		    Probability mass function.
-		``logpmf(x, n, p, loc=0)``
+		``logpmf(k, n, p, loc=0)``
 		    Log of the probability mass function.
-		``cdf(x, n, p, loc=0)``
+		``cdf(k, n, p, loc=0)``
 		    Cumulative distribution function.
-		``logcdf(x, n, p, loc=0)``
+		``logcdf(k, n, p, loc=0)``
 		    Log of the cumulative distribution function.
-		``sf(x, n, p, loc=0)``
+		``sf(k, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, p, loc=0)``
+		``logsf(k, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
 		    Percent point function (inverse of ``cdf`` --- percentiles).

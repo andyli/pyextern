@@ -72,8 +72,9 @@ package numpy.lib.npyio;
 		----------
 		ndtype : dtype
 		    The datatype to collapse
-		flatten_base : {False, True}, optional
-		    Whether to transform a field with a shape into several fields or not.
+		flatten_base : bool, optional
+		   If True, transform a field with a shape into several fields. Default is
+		   False.
 		
 		Examples
 		--------
@@ -149,9 +150,9 @@ package numpy.lib.npyio;
 		
 		Parameters
 		----------
-		fname : file, str, list of str, generator
+		fname : file, str, pathlib.Path, list of str, generator
 		    File, filename, list, or generator to read.  If the filename
-		    extension is `.gz` or `.bz2`, the file is first decompressed. Mote
+		    extension is `.gz` or `.bz2`, the file is first decompressed. Note
 		    that generators must return byte strings in Python 3k.  The strings
 		    in a list or produced by a generator are treated as lines.
 		dtype : dtype, optional
@@ -250,7 +251,7 @@ package numpy.lib.npyio;
 		
 		References
 		----------
-		.. [1] Numpy User Guide, section `I/O with Numpy
+		.. [1] NumPy User Guide, section `I/O with NumPy
 		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
@@ -316,11 +317,15 @@ package numpy.lib.npyio;
 	**/
 	static public function has_nested_fields(ndtype:Dynamic):Dynamic;
 	/**
+		Check whether obj is a pathlib.Path object.
+	**/
+	static public function is_pathlib_path(obj:Dynamic):Dynamic;
+	/**
 		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
 		
 		Parameters
 		----------
-		file : file-like object or string
+		file : file-like object, string, or pathlib.Path
 		    The file to read. File-like objects must support the
 		    ``seek()`` and ``read()`` methods. Pickled files require that the
 		    file-like object support the ``readline()`` method as well.
@@ -366,6 +371,7 @@ package numpy.lib.npyio;
 		--------
 		save, savez, savez_compressed, loadtxt
 		memmap : Create a memory-map to an array stored in a file on disk.
+		lib.format.open_memmap : Create or load a memory-mapped ``.npy`` file.
 		
 		Notes
 		-----
@@ -438,7 +444,7 @@ package numpy.lib.npyio;
 		
 		Parameters
 		----------
-		fname : file or str
+		fname : file, str, or pathlib.Path
 		    File, filename, or generator to read.  If the filename extension is
 		    ``.gz`` or ``.bz2``, the file is first decompressed. Note that
 		    generators should return byte strings for Python 3k.
@@ -463,10 +469,18 @@ package numpy.lib.npyio;
 		    ``converters = {3: lambda s: float(s.strip() or 0)}``.  Default: None.
 		skiprows : int, optional
 		    Skip the first `skiprows` lines; default: 0.
-		usecols : sequence, optional
-		    Which columns to read, with 0 being the first.  For example,
-		    ``usecols = (1,4,5)`` will extract the 2nd, 5th and 6th columns.
+		
+		usecols : int or sequence, optional
+		    Which columns to read, with 0 being the first. For example,
+		    usecols = (1,4,5) will extract the 2nd, 5th and 6th columns.
 		    The default, None, results in all columns being read.
+		
+		    .. versionadded:: 1.11.0
+		
+		    Also when a single column has to be read it is possible to use
+		    an integer instead of a tuple. E.g ``usecols = 3`` reads the
+		    fourth column the same way as `usecols = (3,)`` would.
+		
 		unpack : bool, optional
 		    If True, the returned array is transposed, so that arguments may be
 		    unpacked using ``x, y, z = loadtxt(...)``.  When used with a structured
@@ -547,6 +561,10 @@ package numpy.lib.npyio;
 	**/
 	static public function ndfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		index(a) -- Same as a.__index__()
+	**/
+	static public function opindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		packbits(myarray, axis=None)
 		
 		Packs the elements of a binary-valued array into bits in a uint8 array.
@@ -556,7 +574,8 @@ package numpy.lib.npyio;
 		Parameters
 		----------
 		myarray : array_like
-		    An integer type array whose elements should be packed to bits.
+		    An array of integers or booleans whose elements should be packed to
+		    bits.
 		axis : int, optional
 		    The dimension over which bit-packing is done.
 		    ``None`` implies packing the flattened array.
@@ -635,9 +654,9 @@ package numpy.lib.npyio;
 		
 		Parameters
 		----------
-		file : file or str
+		file : file, str, or pathlib.Path
 		    File or filename to which the data is saved.  If file is a file-object,
-		    then the filename is unchanged.  If file is a string, a ``.npy``
+		    then the filename is unchanged.  If file is a string or Path, a ``.npy``
 		    extension will be appended to the file name if it does not already
 		    have one.
 		allow_pickle : bool, optional
@@ -664,7 +683,7 @@ package numpy.lib.npyio;
 		Notes
 		-----
 		For a description of the ``.npy`` format, see the module docstring
-		of `numpy.lib.format` or the Numpy Enhancement Proposal
+		of `numpy.lib.format` or the NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		Examples
@@ -699,7 +718,7 @@ package numpy.lib.npyio;
 		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
 		            like `' (%s+%sj)' % (fmt, fmt)`
 		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4j %.4e %+.4j %.4e %+.4j'` for 3 columns
+		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
 		        c) a list of specifiers, one per column - in this case, the real
 		            and imaginary part must have separate specifiers,
 		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
@@ -803,8 +822,9 @@ package numpy.lib.npyio;
 		----------
 		file : str or file
 		    Either the file name (string) or an open file (file-like object)
-		    where the data will be saved. If file is a string, the ``.npz``
-		    extension will be appended to the file name if it is not already there.
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
 		args : Arguments, optional
 		    Arrays to save to the file. Since it is not possible for Python to
 		    know the names of the arrays outside `savez`, the arrays will be saved
@@ -830,7 +850,7 @@ package numpy.lib.npyio;
 		variables they contain.  The archive is not compressed and each file
 		in the archive contains one variable in ``.npy`` format. For a
 		description of the ``.npy`` format, see `numpy.lib.format` or the
-		Numpy Enhancement Proposal
+		NumPy Enhancement Proposal
 		http://docs.scipy.org/doc/numpy/neps/npy-format.html
 		
 		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
@@ -876,17 +896,55 @@ package numpy.lib.npyio;
 		
 		Parameters
 		----------
-		file : str
-		    File name of ``.npz`` file.
-		args : Arguments
-		    Function arguments.
-		kwds : Keyword arguments
-		    Keywords.
+		file : str or file
+		    Either the file name (string) or an open file (file-like object)
+		    where the data will be saved. If file is a string or a Path, the
+		    ``.npz`` extension will be appended to the file name if it is not
+		    already there.
+		args : Arguments, optional
+		    Arrays to save to the file. Since it is not possible for Python to
+		    know the names of the arrays outside `savez`, the arrays will be saved
+		    with names "arr_0", "arr_1", and so on. These arguments can be any
+		    expression.
+		kwds : Keyword arguments, optional
+		    Arrays to save to the file. Arrays will be saved in the file with the
+		    keyword names.
+		
+		Returns
+		-------
+		None
 		
 		See Also
 		--------
+		numpy.save : Save a single array to a binary file in NumPy format.
+		numpy.savetxt : Save an array to a file as plain text.
 		numpy.savez : Save several arrays into an uncompressed ``.npz`` file format
 		numpy.load : Load the files created by savez_compressed.
+		
+		Notes
+		-----
+		The ``.npz`` file format is a zipped archive of files named after the
+		variables they contain.  The archive is compressed with
+		``zipfile.ZIP_DEFLATED`` and each file in the archive contains one variable
+		in ``.npy`` format. For a description of the ``.npy`` format, see
+		`numpy.lib.format` or the NumPy Enhancement Proposal
+		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		
+		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
+		returned. This is a dictionary-like object which can be queried for
+		its list of arrays (with the ``.files`` attribute), and for the arrays
+		themselves.
+		
+		Examples
+		--------
+		>>> test_array = np.random.rand(3, 2)
+		>>> test_vector = np.random.rand(4)
+		>>> np.savez_compressed('/tmp/123', a=test_array, b=test_vector)
+		>>> loaded = np.load('/tmp/123.npz')
+		>>> print(np.array_equal(test_array, loaded['a']))
+		True
+		>>> print(np.array_equal(test_vector, loaded['b']))
+		True
 	**/
 	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -930,5 +988,12 @@ package numpy.lib.npyio;
 		       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)
 	**/
 	static public function unpackbits(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function zipfile_factory(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a ZipFile.
+		
+		Allows for Zip64, and the `file` argument can accept file, str, or
+		pathlib.Path objects. `args` and `kwargs` are passed to the zipfile.ZipFile
+		constructor.
+	**/
+	static public function zipfile_factory(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

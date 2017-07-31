@@ -2,7 +2,7 @@
 package numpy.polynomial.chebyshev;
 @:pythonImport("numpy.polynomial.chebyshev", "Chebyshev") extern class Chebyshev {
 	public function __add__(other:Dynamic):Dynamic;
-	static public var __array_priority__ : Dynamic;
+	static public var __array_ufunc__ : Dynamic;
 	/**
 		Call self as a function.
 	**/
@@ -53,6 +53,13 @@ package numpy.polynomial.chebyshev;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(coef:Dynamic, ?domain:Dynamic, ?window:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -76,7 +83,7 @@ package numpy.polynomial.chebyshev;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -285,7 +292,7 @@ package numpy.polynomial.chebyshev;
 	/**
 		Least squares fit of Chebyshev series to data.
 		
-		Return the coefficients of a Legendre series of degree `deg` that is the
+		Return the coefficients of a Chebyshev series of degree `deg` that is the
 		least squares fit to the data values `y` given at points `x`. If `y` is
 		1-D the returned coefficients will also be 1-D. If `y` is 2-D multiple
 		fits are done, one for each column of `y`, and the resulting
@@ -307,7 +314,7 @@ package numpy.polynomial.chebyshev;
 		deg : int or 1-D array_like
 		    Degree(s) of the fitting polynomials. If `deg` is a single integer
 		    all terms up to and including the `deg`'th term are included in the
-		    fit. For Numpy versions >= 1.11 a list of integers specifying the
+		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
 		rcond : float, optional
 		    Relative condition number of the fit. Singular values smaller than
@@ -464,13 +471,13 @@ package numpy.polynomial.chebyshev;
 		
 		Returns
 		-------
-		coef:
+		coef
 		    The coefficients of`other` if it is a compatible instance,
 		    of ABCPolyBase, otherwise `other`.
 		
 		Raises
 		------
-		TypeError:
+		TypeError
 		    When `other` is an incompatible instance of ABCPolyBase.
 	**/
 	public function _get_coefficients(other:Dynamic):Dynamic;
@@ -977,7 +984,7 @@ package numpy.polynomial.chebyshev;
 		deg : int or 1-D array_like
 		    Degree(s) of the fitting polynomials. If `deg` is a single integer
 		    all terms up to and including the `deg`'th term are included in the
-		    fit. For Numpy versions >= 1.11 a list of integers specifying the
+		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
 		domain : {None, [beg, end], []}, optional
 		    Domain to use for the returned series. If ``None``,

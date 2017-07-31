@@ -15,6 +15,37 @@ package tensorflow.python.ops.template;
 	**/
 	static public function _skip_common_stack_elements(stacktrace:Dynamic, base_case:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Given an arbitrary function, wrap it so that it does variable sharing.
@@ -30,7 +61,7 @@ package tensorflow.python.ops.template;
 		   that are intended to be locals can be created by specifying
 		   `tf.Variable(..., trainable=false)`.
 		* The function may use variable scopes and other templates internally to
-		    create and reuse variables, but it shouldn't use `tf.get_variables` to
+		    create and reuse variables, but it shouldn't use `tf.global_variables` to
 		    capture variables that are defined outside of the scope of the function.
 		* Internal scopes and variable names should not depend on any arguments that
 		    are not supplied to `make_template`. In general you will get a ValueError
@@ -104,6 +135,9 @@ package tensorflow.python.ops.template;
 		  unique_name_: When used, it overrides name_ and is not made unique. If a
 		    template of the same scope/unique_name already exists and reuse is false,
 		    an error is raised. Defaults to None.
+		  custom_getter_: Optional custom getter for variables used in `func_`. See
+		    the @{tf.get_variable} `custom_getter` documentation for
+		    more information.
 		  **kwargs: Keyword arguments to apply to `func_`.
 		
 		Returns:
@@ -118,6 +152,6 @@ package tensorflow.python.ops.template;
 		Raises:
 		  ValueError: if the name is None.
 	**/
-	static public function make_template(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function make_template(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?custom_getter_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -2,15 +2,14 @@
 package pandas.lib;
 @:pythonImport("pandas.lib") extern class Lib_Module {
 	static public var NaT : Dynamic;
-	static public var _TYPE_MAP : Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public var __pyx_capi__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __test__ : Dynamic;
 	static public function apply_frame_axis0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		perform an element by element comparion on 1-d object arrays
@@ -28,6 +27,11 @@ package pandas.lib;
 		Utility used in pandas.core.index._ensure_index
 	**/
 	static public function clean_index_list(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		replace comma separated json with line feeds, paying special attention
+		to quotes & brackets
+	**/
+	static public function convert_json_to_lines(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function convert_sql_column(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function convert_timestamps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function count_level_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -106,7 +110,106 @@ package pandas.lib;
 	static public function indexer_as_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function indices_fast(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		we are coercing to an ndarray here
+		infer if we have a datetime or timedelta array
+		- date: we have *only* date and maybe strings, nulls
+		- datetime: we have *only* datetimes and maybe strings, nulls
+		- timedelta: we have *only* timedeltas and maybe strings, nulls
+		- nat: we do not have *any* date, datetimes or timedeltas, but do have
+		  at least a NaT
+		- mixed: other objects (strings or actual objects)
+		
+		Parameters
+		----------
+		arr : object array
+		
+		Returns
+		-------
+		string: {datetime, timedelta, date, nat, mixed}
+	**/
+	static public function infer_datetimelike_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Effeciently infer the type of a passed val, or list-like
+		array of values. Return a string describing the type.
+		
+		Parameters
+		----------
+		value : scalar, list, ndarray, or pandas type
+		
+		Returns
+		-------
+		string describing the common type of the input data.
+		Results can include:
+		
+		- string
+		- unicode
+		- bytes
+		- floating
+		- integer
+		- mixed-integer
+		- mixed-integer-float
+		- complex
+		- categorical
+		- boolean
+		- datetime64
+		- datetime
+		- date
+		- timedelta64
+		- timedelta
+		- time
+		- period
+		- mixed
+		
+		Raises
+		------
+		TypeError if ndarray-like but cannot infer the dtype
+		
+		Notes
+		-----
+		- 'mixed' is the catchall for anything that is not otherwise
+		  specialized
+		- 'mixed-integer-float' are floats and integers
+		- 'mixed-integer' are integers mixed with non-integers
+		
+		Examples
+		--------
+		>>> infer_dtype(['foo', 'bar'])
+		'string'
+		
+		>>> infer_dtype([b'foo', b'bar'])
+		'bytes'
+		
+		>>> infer_dtype([1, 2, 3])
+		'integer'
+		
+		>>> infer_dtype([1, 2, 3.5])
+		'mixed-integer-float'
+		
+		>>> infer_dtype([1.0, 2.0, 3.5])
+		'floating'
+		
+		>>> infer_dtype(['a', 1])
+		'mixed-integer'
+		
+		>>> infer_dtype([True, False])
+		'boolean'
+		
+		>>> infer_dtype([True, False, np.nan])
+		'mixed'
+		
+		>>> infer_dtype([pd.Timestamp('20130101')])
+		'datetime'
+		
+		>>> infer_dtype([datetime.date(2013, 1, 1)])
+		'date'
+		
+		>>> infer_dtype([np.datetime64('2013-01-01')])
+		'datetime64'
+		
+		>>> infer_dtype([datetime.timedelta(0, 1, 1)])
+		'timedelta'
+		
+		>>> infer_dtype(pd.Series(list('aabc')).astype('category'))
+		'categorical'
 	**/
 	static public function infer_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -121,11 +224,14 @@ package pandas.lib;
 		Doesn't check values are datetime-like types.
 	**/
 	static public function is_datetime_with_singletz_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_decimal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer_float_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_interval(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_interval_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_lexsorted(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var is_numpy_prior_1_6_2 : Dynamic;
 	/**
@@ -133,7 +239,6 @@ package pandas.lib;
 	**/
 	static public function is_period(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_period_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_possible_datetimelike_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_string_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_time_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_timedelta64_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -144,34 +249,7 @@ package pandas.lib;
 	static public function is_timedelta_or_timedelta64_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_unicode_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Checks whether
-		
-		Parameters
-		----------
-		arr : ndarray
-		values : set
-		
-		Returns
-		-------
-		ismember : ndarray (boolean dtype)
-	**/
-	static public function ismember(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Checks whether
-		
-		Parameters
-		----------
-		arr : ndarray of int64
-		values : set
-		
-		Returns
-		-------
-		ismember : ndarray (boolean dtype)
-	**/
-	static public function ismember_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ismember_nans(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		isnan(x[, out])
+		isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Test element-wise for NaN and return result as a boolean array.
 		
@@ -179,6 +257,17 @@ package pandas.lib;
 		----------
 		x : array_like
 		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
@@ -193,11 +282,11 @@ package pandas.lib;
 		
 		See Also
 		--------
-		isinf, isneginf, isposinf, isfinite
+		isinf, isneginf, isposinf, isfinite, isnat
 		
 		Notes
 		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		Examples
@@ -227,6 +316,8 @@ package pandas.lib;
 		- instances of datetime.datetime
 		- instances of datetime.timedelta
 		- Period
+		- instances of decimal.Decimal
+		- Interval
 	**/
 	static public function isscalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -293,8 +384,32 @@ package pandas.lib;
 	static public function maybe_booleans_to_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function maybe_convert_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Type inference function-- convert strings to numeric (potentially) and
-		convert to proper dtype array
+		Convert object array to a numeric array if possible.
+		
+		Parameters
+		----------
+		values : ndarray
+		    Array of object elements to convert.
+		na_values : set
+		    Set of values that should be interpreted as NaN.
+		convert_empty : bool, default True
+		    If an empty array-like object is encountered, whether to interpret
+		    that element as NaN or not. If set to False, a ValueError will be
+		    raised if such an element is encountered and 'coerce_numeric' is False.
+		coerce_numeric : bool, default False
+		    If initial attempts to convert to numeric have failed, whether to
+		    force conversion to numeric via alternative methods or by setting the
+		    element to NaN. Otherwise, an Exception will be raised when such an
+		    element is encountered.
+		
+		    This boolean also has an impact on how conversion behaves when a
+		    numeric array has no suitable numerical dtype to return (i.e. uint64,
+		    int32, uint8). If set to False, the original object array will be
+		    returned. Otherwise, a ValueError will be raised.
+		
+		Returns
+		-------
+		numeric_array : array of converted object values to numerical ones
 	**/
 	static public function maybe_convert_numeric(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

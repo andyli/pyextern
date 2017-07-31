@@ -35,7 +35,6 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	static public function raise_msg_to_str(msg:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
-	static public function round(x:Dynamic):Dynamic;
 	static public function show(?block:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 	static public var verbose : Dynamic;

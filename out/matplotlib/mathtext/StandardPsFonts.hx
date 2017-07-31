@@ -59,6 +59,13 @@ package matplotlib.mathtext;
 	**/
 	public function new(default_font_prop:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -117,7 +124,7 @@ package matplotlib.mathtext;
 	/**
 		load the cmfont, metrics and glyph with caching
 	**/
-	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
+	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic, ?math:Dynamic):Dynamic;
 	static public var basepath : Dynamic;
 	/**
 		Fix any cyclical references before the object is about
@@ -154,6 +161,8 @@ package matplotlib.mathtext;
 		
 		*dpi*: current dots-per-inch
 		
+		*math*: whether sym is a math character
+		
 		Returns an object with the following attributes:
 		
 		  - *advance*: The advance distance (in points) of the glyph.
@@ -168,7 +177,7 @@ package matplotlib.mathtext;
 		    the glyph.  This corresponds to TeX's definition of
 		    "height".
 	**/
-	public function get_metrics(font:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
+	public function get_metrics(font:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic, ?math:Dynamic):Dynamic;
 	/**
 		Get the data needed by the backend to render the math
 		expression.  The return value is backend-specific.

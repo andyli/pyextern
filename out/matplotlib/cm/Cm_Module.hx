@@ -66,6 +66,14 @@ package matplotlib.cm;
 	static public function Set3_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function Spectral(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function Spectral_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega10(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega10_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20b(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20b_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20c(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function Vega20c_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function Wistia(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function Wistia_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function YlGn(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
@@ -85,7 +93,7 @@ package matplotlib.cm;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Generates the requested cmap from it's name *name*.  The lut size is
+		Generates the requested cmap from its *name*.  The lut size is
 		*lutsize*.
 	**/
 	static public function _generate_cmap(name:Dynamic, lutsize:Dynamic):Dynamic;
@@ -212,6 +220,14 @@ package matplotlib.cm;
 	static public function spring_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function summer(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function summer_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab10(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab10_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20b(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20b_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20c(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function tab20c_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function terrain(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function terrain_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;

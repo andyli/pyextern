@@ -157,6 +157,13 @@ package tensorflow.python.ops.data_flow_ops;
 	**/
 	public function new(types:Dynamic, ?shapes:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -291,16 +298,18 @@ package tensorflow.python.ops.data_flow_ops;
 		If barrier has no completed elements, this operation will block
 		until there are 'num_elements' elements to take.
 		
+		TODO(b/25743580): the semantics of `allow_small_batch` are experimental
+		and may be extended to other cases in the future.
+		
+		TODO(ebrevdo): If a take_many(allow_small_batch=True) is blocking
+		already when the barrier is closed, it will block for ever. Fix this
+		by using asynchronous operations.
+		
 		Args:
 		  num_elements: The number of elements to take.
 		  allow_small_batch: If the barrier is closed, don't block if there are less
 		    completed elements than requested, but instead return all available
 		    completed elements.
-		    TODO(b/25743580): the semantics of `allow_small_batch` are experimental
-		    and may be extended to other cases in the future.
-		    TODO(ebrevdo): If a take_many(allow_small_batch=True) is blocking
-		    already when the barrier is closed, it will block for ever. Fix this
-		    by using asynchronous operations.
 		  timeout: This specifies the number of milliseconds to block
 		    before returning with DEADLINE_EXCEEDED. (This option is not
 		    supported yet.)

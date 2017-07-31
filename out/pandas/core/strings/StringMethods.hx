@@ -47,6 +47,13 @@ package pandas.core.strings;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(data:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -666,9 +673,7 @@ package pandas.core.strings;
 	**/
 	public function lstrip(?to_strip:Dynamic):Dynamic;
 	/**
-		Deprecated: Find groups in each string in the Series/Index
-		using passed regular expression.
-		If as_indexer=True, determine if each string matches a regular expression.
+		Determine if each string matches a regular expression.
 		
 		Parameters
 		----------
@@ -679,26 +684,17 @@ package pandas.core.strings;
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
 		na : default NaN, fill value for missing values.
-		as_indexer : False, by default, gives deprecated behavior better achieved
-		    using str_extract. True return boolean indexer.
+		as_indexer : DEPRECATED
 		
 		Returns
 		-------
 		Series/array of boolean values
-		    if as_indexer=True
-		Series/Index of tuples
-		    if as_indexer=False, default but deprecated
 		
 		See Also
 		--------
 		contains : analogous, but less strict, relying on re.search instead of
 		    re.match
-		extract : now preferred to the deprecated usage of match (as_indexer=False)
-		
-		Notes
-		-----
-		To extract matched groups, which is the deprecated behavior of match, use
-		str.extract.
+		extract : extract matched groups
 	**/
 	public function match(pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?as_indexer:Dynamic):Dynamic;
 	/**
@@ -799,20 +795,89 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		pat : string
-		    Character sequence or regular expression
-		repl : string
-		    Replacement sequence
+		pat : string or compiled regex
+		    String can be a character sequence or regular expression.
+		
+		    .. versionadded:: 0.20.0
+		        `pat` also accepts a compiled regex.
+		
+		repl : string or callable
+		    Replacement string or a callable. The callable is passed the regex
+		    match object and must return a replacement string to be used.
+		    See :func:`re.sub`.
+		
+		    .. versionadded:: 0.20.0
+		        `repl` also accepts a callable.
+		
 		n : int, default -1 (all)
 		    Number of replacements to make from start
-		case : boolean, default True
-		    If True, case sensitive
+		case : boolean, default None
+		    - If True, case sensitive (the default if `pat` is a string)
+		    - Set to False for case insensitive
+		    - Cannot be set if `pat` is a compiled regex
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		    - re module flags, e.g. re.IGNORECASE
+		    - Cannot be set if `pat` is a compiled regex
 		
 		Returns
 		-------
 		replaced : Series/Index of objects
+		
+		Notes
+		-----
+		When `pat` is a compiled regex, all flags should be included in the
+		compiled regex. Use of `case` or `flags` with a compiled regex will
+		raise an error.
+		
+		Examples
+		--------
+		When `repl` is a string, every `pat` is replaced as with
+		:meth:`str.replace`. NaN value(s) in the Series are left as is.
+		
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f', 'b')
+		0    boo
+		1    buz
+		2    NaN
+		dtype: object
+		
+		When `repl` is a callable, it is called on every `pat` using
+		:func:`re.sub`. The callable should expect one positional argument
+		(a regex object) and return a string.
+		
+		To get the idea:
+		
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f', repr)
+		0    <_sre.SRE_Match object; span=(0, 1), match='f'>oo
+		1    <_sre.SRE_Match object; span=(0, 1), match='f'>uz
+		2                                                  NaN
+		dtype: object
+		
+		Reverse every lowercase alphabetic word:
+		
+		>>> repl = lambda m: m.group(0)[::-1]
+		>>> pd.Series(['foo 123', 'bar baz', np.nan]).str.replace(r'[a-z]+', repl)
+		0    oof 123
+		1    rab zab
+		2        NaN
+		dtype: object
+		
+		Using regex groups (extract second group and swap case):
+		
+		>>> pat = r"(?P<one>\w+) (?P<two>\w+) (?P<three>\w+)"
+		>>> repl = lambda m: m.group('two').swapcase()
+		>>> pd.Series(['One Two Three', 'Foo Bar Baz']).str.replace(pat, repl)
+		0    tWO
+		1    bAR
+		dtype: object
+		
+		Using a compiled regex with flags
+		
+		>>> regex_pat = re.compile(r'FUZ', flags=re.IGNORECASE)
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace(regex_pat, 'bar')
+		0    foo
+		1    bar
+		2    NaN
+		dtype: object
 	**/
 	public function replace(pat:Dynamic, repl:Dynamic, ?n:Dynamic, ?_case:Dynamic, ?flags:Dynamic):Dynamic;
 	/**

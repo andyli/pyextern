@@ -61,6 +61,13 @@ package tensorflow.contrib.learn.python.learn.dataframe.transform;
 	**/
 	public function new():Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -81,7 +88,7 @@ package tensorflow.contrib.learn.python.learn.dataframe.transform;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -130,29 +137,6 @@ package tensorflow.contrib.learn.python.learn.dataframe.transform;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Applies the transformation to the `transform_input`.
-		
-		Args:
-		  input_tensors: a list of Tensors representing the input to
-		    the Transform.
-		  **kwargs: Additional keyword arguments, unused here.
-		
-		Returns:
-		    A namedtuple of Tensors representing the transformed output.
-	**/
-	public function _apply_transform(input_tensors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Helper for `build(...)`; verifies the output of `_build_transform`.
-		
-		Args:
-		  output_tensors: value returned by a call to `_build_transform`.
-		
-		Raises:
-		  TypeError: `transform_output` is not a list.
-		  ValueError: `transform_output` does not match `output_names`.
-	**/
-	public function _check_output_tensors(output_tensors:Dynamic):Dynamic;
-	/**
 		The names of `Series` output by the `Transform`.
 		
 		This function should depend only on `@parameter`s of this `Transform`.
@@ -162,21 +146,17 @@ package tensorflow.contrib.learn.python.learn.dataframe.transform;
 	**/
 	public var _output_names : Dynamic;
 	/**
-		Apply this `Transform` to the provided `Series`, producing 'Tensor's.
+		Applies the transformation to the `transform_input`.
 		
 		Args:
-		  input_series: None, a `Series`, or a list of input `Series`, acting as
-		     positional arguments.
-		  cache: a dict from Series reprs to Tensors.
-		  **kwargs: Additional keyword arguments, unused here.
+		  input_series: a list of Series representing the input to
+		    the Transform.
 		
 		Returns:
-		  A namedtuple of the output Tensors.
-		
-		Raises:
-		  ValueError: `input_series` does not have expected length
+		    A list of Series representing the transformed output, in order
+		    corresponding to `_output_names`.
 	**/
-	public function build_transitive(input_series:Dynamic, ?cache:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _produce_output_series(input_series:Dynamic):Dynamic;
 	/**
 		The number of `Series` that the `Transform` should expect as input.
 		

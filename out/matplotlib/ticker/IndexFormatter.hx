@@ -2,8 +2,10 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "IndexFormatter") extern class IndexFormatter {
 	/**
-		Return the format for tick val x at position pos; pos=None
-		indicated unspecified
+		Return the format for tick value `x` at position pos.
+		
+		The position is ignored and the value is rounded to the nearest
+		integer, which is used to look up the label.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -51,6 +53,13 @@ package matplotlib.ticker;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(labels:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -122,9 +131,15 @@ package matplotlib.ticker;
 		explicit :meth:`format_data_short` method
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
+	/**
+		Returns the full string representation of the value with the
+		position unspecified.
+	**/
 	public function format_data(value:Dynamic):Dynamic;
 	/**
-		return a short string version
+		Return a short string version of the tick value.
+		
+		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	public function get_offset():Dynamic;

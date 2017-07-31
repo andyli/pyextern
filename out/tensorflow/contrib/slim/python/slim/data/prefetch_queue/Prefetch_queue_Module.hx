@@ -31,6 +31,7 @@ package tensorflow.contrib.slim.python.slim.data.prefetch_queue;
 		Args:
 		  tensors: A list or dictionary of `Tensors` to enqueue in the buffer.
 		  capacity: An integer. The maximum number of elements in the queue.
+		  num_threads: An integer.  Number of threads running the enqueue op.
 		  shared_name: (optional). If set, this queue will be shared under the given
 		    name across multiple sessions.
 		  name: (Optional) A name for the operations.
@@ -39,6 +40,6 @@ package tensorflow.contrib.slim.python.slim.data.prefetch_queue;
 		  A queue from which you can dequeue tensors with the same type and shape
 		  as `tensors`.
 	**/
-	static public function prefetch_queue(tensors:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function prefetch_queue(tensors:Dynamic, ?capacity:Dynamic, ?num_threads:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

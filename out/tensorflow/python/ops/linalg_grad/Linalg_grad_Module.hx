@@ -2,26 +2,6 @@
 package tensorflow.python.ops.linalg_grad;
 @:pythonImport("tensorflow.python.ops.linalg_grad") extern class Linalg_grad_Module {
 	/**
-		Gradient for BatchCholesky.
-	**/
-	static public function _BatchCholeskyGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
-		Gradient for BatchMatrixDeterminant.
-	**/
-	static public function _BatchMatrixDeterminantGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
-		Gradient for BatchMatrixInverse.
-	**/
-	static public function _BatchMatrixInverseGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
-		Gradient for BatchMatrixSolve.
-	**/
-	static public function _BatchMatrixSolveGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
-		Gradient for BatchMatrixTriangularSolve.
-	**/
-	static public function _BatchMatrixTriangularSolveGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
 		Gradient for Cholesky.
 	**/
 	static public function _CholeskyGrad(op:Dynamic, grad:Dynamic):Dynamic;
@@ -34,13 +14,21 @@ package tensorflow.python.ops.linalg_grad;
 	**/
 	static public function _MatrixInverseGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Gradients for MatrixSolve.
+		Gradient for MatrixSolve.
 	**/
 	static public function _MatrixSolveGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Gradients for MatrixTriangularSolve.
+		Gradients for MatrixSolveLs.
+	**/
+	static public function _MatrixSolveLsGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for MatrixTriangularSolve.
 	**/
 	static public function _MatrixTriangularSolveGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for SelfAdjointEigV2.
+	**/
+	static public function _SelfAdjointEigV2Grad(op:Dynamic, grad_e:Dynamic, grad_v:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

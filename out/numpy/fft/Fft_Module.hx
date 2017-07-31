@@ -88,6 +88,7 @@ package numpy.fft;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -138,6 +139,10 @@ package numpy.fft;
 		         1.14383329e-17 +1.22460635e-16j,
 		         -1.64863782e-15 +1.77635684e-15j])
 		
+		In this example, real input has an FFT which is Hermitian, i.e., symmetric
+		in the real part and anti-symmetric in the imaginary part, as described in
+		the `numpy.fft` documentation:
+		
 		>>> import matplotlib.pyplot as plt
 		>>> t = np.arange(256)
 		>>> sp = np.fft.fft(np.sin(t))
@@ -145,10 +150,6 @@ package numpy.fft;
 		>>> plt.plot(freq, sp.real, freq, sp.imag)
 		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
 		>>> plt.show()
-		
-		In this example, real input has an FFT which is Hermitian, i.e., symmetric
-		in the real part and anti-symmetric in the imaginary part, as described in
-		the `numpy.fft` documentation.
 	**/
 	static public function fft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
@@ -165,8 +166,8 @@ package numpy.fft;
 		    Input array, can be complex
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along each axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -178,6 +179,7 @@ package numpy.fft;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -283,8 +285,8 @@ package numpy.fft;
 		    Input array, can be complex.
 		s : sequence of ints, optional
 		    Shape (length of each transformed axis) of the output
-		    (`s[0]` refers to axis 0, `s[1]` to axis 1, etc.).
-		    This corresponds to `n` for `fft(x, n)`.
+		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
+		    This corresponds to ``n`` for ``fft(x, n)``.
 		    Along any axis, if the given shape is smaller than that of the input,
 		    the input is cropped.  If it is larger, the input is padded with zeros.
 		    if `s` is not given, the shape of the input along the axes specified
@@ -296,6 +298,7 @@ package numpy.fft;
 		    performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -405,24 +408,26 @@ package numpy.fft;
 	**/
 	static public function fftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
-		Compute the FFT of a signal which has Hermitian symmetry (real spectrum).
+		Compute the FFT of a signal that has Hermitian symmetry, i.e., a real
+		spectrum.
 		
 		Parameters
 		----------
 		a : array_like
 		    The input array.
 		n : int, optional
-		    Length of the transformed axis of the output.
-		    For `n` output points, ``n//2+1`` input points are necessary.  If the
-		    input is longer than this, it is cropped.  If it is shorter than this,
-		    it is padded with zeros.  If `n` is not given, it is determined from
-		    the length of the input along the axis specified by `axis`.
+		    Length of the transformed axis of the output. For `n` output
+		    points, ``n//2 + 1`` input points are necessary.  If the input is
+		    longer than this, it is cropped.  If it is shorter than this, it is
+		    padded with zeros.  If `n` is not given, it is determined from the
+		    length of the input along the axis specified by `axis`.
 		axis : int, optional
 		    Axis over which to compute the FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
@@ -430,8 +435,9 @@ package numpy.fft;
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
 		    The length of the transformed axis is `n`, or, if `n` is not given,
-		    ``2*(m-1)`` where ``m`` is the length of the transformed axis of the
-		    input. To get an odd number of output points, `n` must be specified.
+		    ``2*m - 2`` where ``m`` is the length of the transformed axis of
+		    the input. To get an odd number of output points, `n` must be
+		    specified, for instance as ``2*m - 1`` in the typical case,
 		
 		Raises
 		------
@@ -446,10 +452,12 @@ package numpy.fft;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd.
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -508,6 +516,7 @@ package numpy.fft;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -588,6 +597,7 @@ package numpy.fft;
 		    that a one-dimensional FFT is performed.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -670,6 +680,7 @@ package numpy.fft;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -760,32 +771,32 @@ package numpy.fft;
 	**/
 	static public function ifftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
-		Compute the inverse FFT of a signal which has Hermitian symmetry.
+		Compute the inverse FFT of a signal that has Hermitian symmetry.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array.
 		n : int, optional
-		    Length of the inverse FFT.
-		    Number of points along transformation axis in the input to use.
-		    If `n` is smaller than the length of the input, the input is cropped.
-		    If it is larger, the input is padded with zeros. If `n` is not given,
-		    the length of the input along the axis specified by `axis` is used.
+		    Length of the inverse FFT, the number of points along
+		    transformation axis in the input to use.  If `n` is smaller than
+		    the length of the input, the input is cropped.  If it is larger,
+		    the input is padded with zeros. If `n` is not given, the length of
+		    the input along the axis specified by `axis` is used.
 		axis : int, optional
 		    Axis over which to compute the inverse FFT. If not given, the last
 		    axis is used.
 		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
 		    Normalization mode (see `numpy.fft`). Default is None.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
 		out : complex ndarray
 		    The truncated or zero-padded input, transformed along the axis
 		    indicated by `axis`, or the last one if `axis` is not specified.
-		    If `n` is even, the length of the transformed axis is ``(n/2)+1``.
-		    If `n` is odd, the length is ``(n+1)/2``.
+		    The length of the transformed axis is ``n//2 + 1``.
 		
 		See also
 		--------
@@ -794,10 +805,12 @@ package numpy.fft;
 		Notes
 		-----
 		`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the
-		opposite case: here the signal has Hermitian symmetry in the time domain
-		and is real in the frequency domain. So here it's `hfft` for which
-		you must supply the length of the result if it is to be odd:
-		``ihfft(hfft(a), len(a)) == a``, within numerical accuracy.
+		opposite case: here the signal has Hermitian symmetry in the time
+		domain and is real in the frequency domain. So here it's `hfft` for
+		which you must supply the length of the result if it is to be odd:
+		
+		* even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,
+		* odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error.
 		
 		Examples
 		--------
@@ -837,6 +850,7 @@ package numpy.fft;
 		    axis is used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -900,6 +914,7 @@ package numpy.fft;
 		    Default is the last two axes.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -951,6 +966,7 @@ package numpy.fft;
 		    axis is performed multiple times.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1022,6 +1038,7 @@ package numpy.fft;
 		    used.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1090,6 +1107,7 @@ package numpy.fft;
 		    Axes over which to compute the FFT.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1177,6 +1195,7 @@ package numpy.fft;
 		    axes are used, or all axes if `s` is also not specified.
 		norm : {None, "ortho"}, optional
 		    .. versionadded:: 1.10.0
+		
 		    Normalization mode (see `numpy.fft`). Default is None.
 		
 		Returns
@@ -1256,12 +1275,14 @@ package numpy.fft;
 		    If True, report coverage of NumPy code. Default is False.
 		    (This requires the `coverage module:
 		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : str or sequence of warnings, optional
+		raise_warnings : None, str or sequence of warnings, optional
 		    This specifies which warnings to configure as 'raise' instead
-		    of 'warn' during the test execution.  Valid strings are:
+		    of being shown once during the test execution.  Valid strings are:
 		
-		      - "develop" : equals ``(DeprecationWarning, RuntimeWarning)``
+		      - "develop" : equals ``(Warning,)``
 		      - "release" : equals ``()``, don't raise on any warnings.
+		
+		    The default is to use the class initialization value.
 		
 		Returns
 		-------

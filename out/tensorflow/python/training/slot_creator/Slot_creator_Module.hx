@@ -12,7 +12,11 @@ package tensorflow.python.training.slot_creator;
 	/**
 		Helper function for creating a slot variable.
 	**/
-	static public function _create_slot_var(primary:Dynamic, val:Dynamic, scope:Dynamic):Dynamic;
+	static public function _create_slot_var(primary:Dynamic, val:Dynamic, scope:Dynamic, validate_shape:Dynamic, shape:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Returns true if v is something you get from a resource variable.
+	**/
+	static public function _is_resource(v:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Create a slot initialized to the given value.
@@ -30,6 +34,24 @@ package tensorflow.python.training.slot_creator;
 		  A `Variable` object.
 	**/
 	static public function create_slot(primary:Dynamic, val:Dynamic, name:Dynamic, ?colocate_with_primary:Dynamic):Dynamic;
+	/**
+		Creates a slot initialized using an `Initializer`.
+		
+		The type of the slot is determined by the given value.
+		
+		Args:
+		  primary: The primary `Variable` or `Tensor`.
+		  initializer: An `Initializer`.  The initial value of the slot.
+		  shape: Shape of the initial value of the slot.
+		  dtype: Type of the value of the slot.
+		  name: Name to use for the slot variable.
+		  colocate_with_primary: Boolean.  If True the slot is located
+		    on the same device as `primary`.
+		
+		Returns:
+		  A `Variable` object.
+	**/
+	static public function create_slot_with_initializer(primary:Dynamic, initializer:Dynamic, shape:Dynamic, dtype:Dynamic, name:Dynamic, ?colocate_with_primary:Dynamic):Dynamic;
 	/**
 		Create a slot initialized to 0 with same shape as the primary object.
 		

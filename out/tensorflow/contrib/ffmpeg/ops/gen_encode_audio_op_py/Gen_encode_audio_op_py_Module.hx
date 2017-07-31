@@ -10,7 +10,6 @@ package tensorflow.contrib.ffmpeg.ops.gen_encode_audio_op_py;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _encode_audio_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		Processes a `Tensor` containing sampled audio with the number of channels

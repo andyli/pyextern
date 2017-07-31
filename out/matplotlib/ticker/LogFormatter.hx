@@ -2,7 +2,7 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "LogFormatter") extern class LogFormatter {
 	/**
-		Return the format for tick val *x* at position *pos*
+		Return the format for tick val `x`.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -42,18 +42,21 @@ package matplotlib.ticker;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*base* is used to locate the decade tick,
-		which will be the only one to be labeled if *labelOnlyBase*
-		is ``False``
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?base:Dynamic, ?labelOnlyBase:Dynamic):Dynamic;
+	public function ___init__(?base:Dynamic, ?labelOnlyBase:Dynamic, ?minor_thresholds:Dynamic, ?linthresh:Dynamic):Dynamic;
 	/**
-		*base* is used to locate the decade tick,
-		which will be the only one to be labeled if *labelOnlyBase*
-		is ``False``
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?base:Dynamic, ?labelOnlyBase:Dynamic):Void;
+	public function new(?base:Dynamic, ?labelOnlyBase:Dynamic, ?minor_thresholds:Dynamic, ?linthresh:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,10 +112,13 @@ package matplotlib.ticker;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _num_to_string(x:Dynamic, vmin:Dynamic, vmax:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	/**
-		change the *base* for labeling - warning: should always match the
-		base used for :class:`LogLocator`
+		change the `base` for labeling.
+		
+		.. warning::
+		   Should always match the base used for :class:`LogLocator`
 	**/
 	public function base(base:Dynamic):Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -130,14 +136,23 @@ package matplotlib.ticker;
 		explicit :meth:`format_data_short` method
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
+	/**
+		Returns the full string representation of the value with the
+		position unspecified.
+	**/
 	public function format_data(value:Dynamic):Dynamic;
 	/**
-		return a short formatted string representation of a number
+		Return a short formatted string representation of a number.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	/**
-		switch on/off minor ticks labeling
+		Switch minor tick labeling on or off.
+		
+		Parameters
+		----------
+		labelOnlyBase : bool
+		    If True, label ticks only at integer powers of base.
 	**/
 	public function label_minor(labelOnlyBase:Dynamic):Dynamic;
 	static public var locs : Dynamic;
@@ -145,6 +160,11 @@ package matplotlib.ticker;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
-	public function set_locs(locs:Dynamic):Dynamic;
+	/**
+		Use axis view limits to control which ticks are labeled.
+		
+		The ``locs`` parameter is ignored in the present algorithm.
+	**/
+	public function set_locs(?locs:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 }

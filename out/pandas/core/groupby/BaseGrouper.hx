@@ -46,6 +46,13 @@ package pandas.core.groupby;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(axis:Dynamic, groupings:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?mutated:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -102,7 +109,7 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _aggregate(result:Dynamic, counts:Dynamic, values:Dynamic, comp_ids:Dynamic, agg_func:Dynamic, is_numeric:Dynamic):Dynamic;
+	public function _aggregate(result:Dynamic, counts:Dynamic, values:Dynamic, comp_ids:Dynamic, agg_func:Dynamic, is_numeric:Dynamic, is_datetimelike:Dynamic):Dynamic;
 	public function _aggregate_series_fast(obj:Dynamic, func:Dynamic):Dynamic;
 	public function _aggregate_series_pure_python(obj:Dynamic, func:Dynamic):Dynamic;
 	static public var _cython_arity : Dynamic;
@@ -112,9 +119,14 @@ package pandas.core.groupby;
 	public function _get_cython_function(kind:Dynamic, how:Dynamic, values:Dynamic, is_numeric:Dynamic):Dynamic;
 	public function _get_group_keys():Dynamic;
 	public function _get_splitter(data:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		if we define an builtin function for this argument, return it,
+		otherwise return the arg
+	**/
+	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	static public var _max_groupsize : Dynamic;
 	static public var _name_functions : Dynamic;
-	public function _transform(result:Dynamic, accum:Dynamic, values:Dynamic, comp_ids:Dynamic, transform_func:Dynamic, is_numeric:Dynamic):Dynamic;
+	public function _transform(result:Dynamic, values:Dynamic, comp_ids:Dynamic, transform_func:Dynamic, is_numeric:Dynamic, is_datetimelike:Dynamic):Dynamic;
 	public function agg_series(obj:Dynamic, func:Dynamic):Dynamic;
 	public function aggregate(values:Dynamic, how:Dynamic, ?axis:Dynamic):Dynamic;
 	public function apply(f:Dynamic, data:Dynamic, ?axis:Dynamic):Dynamic;

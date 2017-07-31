@@ -2,35 +2,14 @@
 package tensorflow.python.ops.logging_ops;
 @:pythonImport("tensorflow.python.ops.logging_ops") extern class Logging_ops_Module {
 	/**
-		Asserts that the given condition is true.
-		
-		If `condition` evaluates to false, print the list of tensors in `data`.
-		`summarize` determines how many entries of the tensors to print.
-		
-		NOTE: To ensure that Assert executes, one usually attaches a dependency:
-		
-		```python
-		 # Ensure maximum element of x is smaller or equal to 1
-		assert_op = tf.Assert(tf.less_equal(tf.reduce_max(x), 1.), [x])
-		x = tf.with_dependencies([assert_op], x)
-		```
-		
-		Args:
-		  condition: The condition to evaluate.
-		  data: The tensors to print out when condition is false.
-		  summarize: Print this many entries of each tensor.
-		  name: A name for this operation (optional).
-		
-		Returns:
-		  assert_op: An `Operation` that, when executed, raises a
-		  `tf.errors.InvalidArgumentError` if `condition` is not true.
-	**/
-	static public function Assert(condition:Dynamic, data:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Prints a list of tensors.
 		
 		This is an identity op with the side effect of printing `data` when
 		evaluating.
+		
+		Note: This op prints to the standard error. It is not currently compatible
+		  with jupyter notebook (printing to the notebook *server's* output, not into
+		  the notebook).
 		
 		Args:
 		  input_: A tensor passed through this op.
@@ -48,7 +27,6 @@ package tensorflow.python.ops.logging_ops;
 	static public function Print(input_:Dynamic, data:Dynamic, ?message:Dynamic, ?first_n:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	static public function _Collect(val:Dynamic, collections:Dynamic, default_collections:Dynamic):Dynamic;
 	static public function _PrintGrad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
-	static public function _ScalarShape(unused_op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -59,7 +37,15 @@ package tensorflow.python.ops.logging_ops;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with audio.
+		Outputs a `Summary` protocol buffer with audio. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.audio. Note that tf.summary.audio uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
+		
+		This op is deprecated. Please switch to tf.summary.audio.
+		For an explanation of why this op was deprecated, and information on how to
+		migrate, look ['here'](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/deprecated/__init__.py)
 		
 		The summary has up to `max_outputs` summary values containing audio. The
 		audio is built from `tensor` which must be 3-D with shape `[batch_size,
@@ -79,7 +65,8 @@ package tensorflow.python.ops.logging_ops;
 		    of the summary values.
 		  tensor: A 3-D `float32` `Tensor` of shape `[batch_size, frames, channels]`
 		    or a 2-D `float32` `Tensor` of shape `[batch_size, frames]`.
-		  sample_rate: The sample rate of the signal in hertz.
+		  sample_rate: A Scalar `float32` `Tensor` indicating the sample rate of the
+		    signal in hertz.
 		  max_outputs: Max number of batch elements to generate audio for.
 		  collections: Optional list of ops.GraphKeys.  The collections to add the
 		    summary to.  Defaults to [ops.GraphKeys.SUMMARIES]
@@ -90,6 +77,37 @@ package tensorflow.python.ops.logging_ops;
 		  buffer.
 	**/
 	static public function audio_summary(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns a single Summary op that would run all summaries.
@@ -104,7 +122,16 @@ package tensorflow.python.ops.logging_ops;
 	**/
 	static public function get_summary_op():Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with a histogram.
+		Outputs a `Summary` protocol buffer with a histogram. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.histogram. Note that tf.summary.histogram uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
+		
+		This ops is deprecated. Please switch to tf.summary.histogram.
+		
+		For an explanation of why this op was deprecated, and information on how to
+		migrate, look ['here'](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/deprecated/__init__.py)
 		
 		The generated
 		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
@@ -126,7 +153,14 @@ package tensorflow.python.ops.logging_ops;
 	**/
 	static public function histogram_summary(tag:Dynamic, values:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with images.
+		Outputs a `Summary` protocol buffer with images. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.image. Note that tf.summary.image uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, the max_images argument was renamed to max_outputs.
+		
+		For an explanation of why this op was deprecated, and information on how to
+		migrate, look ['here'](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/deprecated/__init__.py)
 		
 		The summary has up to `max_images` summary values containing images. The
 		images are built from `tensor` which must be 4-D with shape `[batch_size,
@@ -171,7 +205,14 @@ package tensorflow.python.ops.logging_ops;
 	**/
 	static public function image_summary(tag:Dynamic, tensor:Dynamic, ?max_images:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Merges all summaries collected in the default graph.
+		Merges all summaries collected in the default graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.merge_all.
+		
+		This op is deprecated. Please switch to tf.summary.merge_all, which has
+		identical behavior.
 		
 		Args:
 		  key: `GraphKey` used to collect the summaries.  Defaults to
@@ -184,7 +225,14 @@ package tensorflow.python.ops.logging_ops;
 	**/
 	static public function merge_all_summaries(?key:Dynamic):Dynamic;
 	/**
-		Merges summaries.
+		Merges summaries. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.merge.
+		
+		This op is deprecated. Please switch to tf.summary.merge, which has identical
+		behavior.
 		
 		This op creates a
 		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
@@ -208,7 +256,15 @@ package tensorflow.python.ops.logging_ops;
 	static public function merge_summary(inputs:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Outputs a `Summary` protocol buffer with scalar values.
+		Outputs a `Summary` protocol buffer with scalar values. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Instructions for updating:
+		Please switch to tf.summary.scalar. Note that tf.summary.scalar uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, passing a tensor or list of tags to a scalar summary op is no longer supported.
+		
+		This ops is deprecated. Please switch to tf.summary.scalar.
+		For an explanation of why this op was deprecated, and information on how to
+		migrate, look ['here'](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/deprecated/__init__.py)
 		
 		The input `tags` and `values` must have the same shape.  The generated
 		summary has a summary value for each tag-value pair in `tags` and `values`.

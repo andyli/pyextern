@@ -2,6 +2,7 @@
 package tensorflow.contrib.learn.python.learn.datasets;
 @:pythonImport("tensorflow.contrib.learn.python.learn.datasets") extern class Datasets_Module {
 	static public var DATASETS : Dynamic;
+	static public var SYNTHETIC : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -32,7 +33,7 @@ package tensorflow.contrib.learn.python.learn.datasets;
 		  test_with_fake_data: If true, load with fake dataset.
 		
 		Returns:
-		  Features and targets for given dataset. Can be numpy or iterator.
+		  Features and labels for given dataset. Can be numpy or iterator.
 		
 		Raises:
 		  ValueError: if `name` is not found.
@@ -48,5 +49,31 @@ package tensorflow.contrib.learn.python.learn.datasets;
 		  Dataset object containing data in-memory.
 	**/
 	static public function load_iris(?data_path:Dynamic):Dynamic;
+	/**
+		Creates binary synthetic datasets
+		
+		Args:
+		  name: str, name of the dataset to generate
+		  n_samples: int, number of datapoints to generate
+		  noise: float or None, standard deviation of the Gaussian noise added
+		  seed: int or None, seed for noise
+		
+		Returns:
+		  Shuffled features and labels for given synthetic dataset of type `base.Dataset`
+		
+		Raises:
+		  ValueError: Raised if `name` not found
+		
+		Note:
+		  - This is a generic synthetic data generator - individual generators might have more parameters!
+		    See documentation for individual parameters
+		  - Note that the `noise` parameter uses `numpy.random.normal` and depends on `numpy`'s seed
+		
+		TODO:
+		  - Support multiclass datasets
+		  - Need shuffling routine. Currently synthetic datasets are reshuffled to avoid train/test correlation,
+		    but that hurts reprodusability
+	**/
+	static public function make_dataset(name:Dynamic, ?n_samples:Dynamic, ?noise:Dynamic, ?seed:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

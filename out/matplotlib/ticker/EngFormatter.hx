@@ -3,8 +3,8 @@ package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "EngFormatter") extern class EngFormatter {
 	static public var ENG_PREFIXES : Dynamic;
 	/**
-		Return the format for tick val x at position pos; pos=None
-		indicated unspecified
+		Return the format for tick value `x` at position pos.
+		``pos=None`` indicates an unspecified location.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -52,6 +52,13 @@ package matplotlib.ticker;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(?unit:Dynamic, ?places:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,9 +130,15 @@ package matplotlib.ticker;
 		explicit :meth:`format_data_short` method
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
+	/**
+		Returns the full string representation of the value with the
+		position unspecified.
+	**/
 	public function format_data(value:Dynamic):Dynamic;
 	/**
-		return a short string version
+		Return a short string version of the tick value.
+		
+		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	/**

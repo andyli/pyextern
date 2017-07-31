@@ -17,14 +17,6 @@ package tensorflow.python.ops.image_grad;
 	**/
 	static public function _CropAndResizeGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Shape function for CropAndResizeGradBoxes.
-	**/
-	static public function _CropAndResizeGradBoxesShape(op:Dynamic):Dynamic;
-	/**
-		Shape function for CropAndResizeGradImage.
-	**/
-	static public function _CropAndResizeGradImageShape(op:Dynamic):Dynamic;
-	/**
 		The derivatives for bilinear resizing.
 		
 		Args:
@@ -36,10 +28,6 @@ package tensorflow.python.ops.image_grad;
 	**/
 	static public function _ResizeBilinearGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Shape function for ResizeBilinearGrad.
-	**/
-	static public function _ResizeBilinearGradShape(op:Dynamic):Dynamic;
-	/**
 		The derivatives for nearest neighbor resizing.
 		
 		Args:
@@ -50,10 +38,6 @@ package tensorflow.python.ops.image_grad;
 		  The gradients w.r.t. the input and the output.
 	**/
 	static public function _ResizeNearestNeighborGrad(op:Dynamic, grad:Dynamic):Dynamic;
-	/**
-		Shape function for the resize grad ops.
-	**/
-	static public function _ResizeShape(op:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

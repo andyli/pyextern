@@ -42,11 +42,18 @@ package matplotlib.axes._base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(fig:Dynamic, rect:Dynamic, ?facecolor:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?axisbg:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(fig:Dynamic, rect:Dynamic, ?facecolor:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?axisbg:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -165,6 +172,7 @@ package matplotlib.axes._base;
 		Look for unit *kwargs* and update the axis instances as necessary
 	**/
 	public function _process_unit_info(?xdata:Dynamic, ?ydata:Dynamic, ?kwargs:Dynamic):Dynamic;
+	static public var _prop_order : Dynamic;
 	/**
 		helper for :func:`~matplotlib.pyplot.sci`;
 		do not use elsewhere.
@@ -349,6 +357,14 @@ package matplotlib.axes._base;
 		selectively autoscale only a single axis, e.g., the xaxis by
 		setting *scaley* to *False*.  The autoscaling preserves any
 		axis direction reversal that has already been done.
+		
+		If *tight* is *False*, the axis major locator will be used
+		to expand the view limits if rcParams['axes.autolimit_mode']
+		is 'round_numbers'.  Note that any margins that are in effect
+		will be applied first, regardless of whether *tight* is
+		*True* or *False*.  Specifying *tight* as *True* or *False*
+		saves the setting as a private attribute of the Axes; specifying
+		it as *None* (the default) applies the previously saved value.
 		
 		The data limits are not updated automatically when artist data are
 		changed after the artist has been added to an Axes instance.  In that
@@ -560,6 +576,9 @@ package matplotlib.axes._base;
 	**/
 	public function get_axes_locator():Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The get_axis_bgcolor function was deprecated in version 2.0. Use get_facecolor instead.
+		
 		Return the axis background color
 	**/
 	public function get_axis_bgcolor():Dynamic;
@@ -610,6 +629,8 @@ package matplotlib.axes._base;
 	**/
 	public function get_data_ratio_log():Dynamic;
 	public function get_default_bbox_extra_artists():Dynamic;
+	public function get_facecolor():Dynamic;
+	public function get_fc():Dynamic;
 	/**
 		Return the :class:`~matplotlib.figure.Figure` instance the
 		artist belongs to.
@@ -799,9 +820,15 @@ package matplotlib.axes._base;
 	**/
 	public function get_xaxis_transform(?which:Dynamic):Dynamic;
 	/**
-		Returns the x-axis numerical bounds where::
+		Returns the x-axis numerical bounds
+		
+		This always returns::
 		
 		  lowerBound < upperBound
+		
+		Returns
+		-------
+		lowerBound, upperBound : float
 	**/
 	public function get_xbound():Dynamic;
 	/**
@@ -809,9 +836,20 @@ package matplotlib.axes._base;
 	**/
 	public function get_xgridlines():Dynamic;
 	/**
-		Get the x-axis range [*left*, *right*]
+		Get the x-axis range
+		
+		Returns
+		-------
+		xlimits : tuple
+		    Returns the current x-axis limits as the tuple
+		    (`left`, `right`).
+		
+		Notes
+		-----
+		The x-axis may be inverted, in which case the `left` value will
+		be greater than the `right` value.
 	**/
-	public function get_xlim():Dynamic;
+	public function get_xlim():python.Tuple<Dynamic>;
 	/**
 		Get the xtick labels as a list of :class:`~matplotlib.text.Text`
 		instances.
@@ -922,9 +960,20 @@ package matplotlib.axes._base;
 	**/
 	public function get_ygridlines():Dynamic;
 	/**
-		Get the y-axis range [*bottom*, *top*]
+		Get the y-axis range
+		
+		Returns
+		-------
+		ylimits : tuple
+		    Returns the current y-axis limits as the tuple
+		    (`bottom`, `top`).
+		
+		Notes
+		-----
+		The y-axis may be inverted, in which case the `bottom` value
+		will be greater than the `top` value.
 	**/
-	public function get_ylim():Dynamic;
+	public function get_ylim():python.Tuple<Dynamic>;
 	/**
 		Get the major y tick labels as a list of
 		:class:`~matplotlib.text.Text` instances.
@@ -974,10 +1023,6 @@ package matplotlib.axes._base;
 	public function get_zorder():Dynamic;
 	/**
 		Turn the axes grids on or off.
-		
-		Call signature::
-		
-		   grid(self, b=None, which='major', axis='both', **kwargs)
 		
 		Set the axes grids on or off; *b* is a boolean.  (For MATLAB
 		compatibility, *b* may also be a string, 'on' or 'off'.)
@@ -1058,12 +1103,19 @@ package matplotlib.axes._base;
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Call signature::
+		.. deprecated:: 2.0
+		    axes.hold is deprecated.
+		    See the API Changes document (http://matplotlib.org/api/api_changes.html)
+		    for more details.
 		
-		  hold(b=None)
+		Set the hold state
 		
-		Set the hold state.  If *hold* is *None* (default), toggle the
-		*hold* state.  Else set the *hold* state to boolean value *b*.
+		The ``hold`` mechanism is deprecated and will be removed in
+		v3.0.  The behavior will remain consistent with the
+		long-time default value of True.
+		
+		If *hold* is *None* (default), toggle the *hold* state.  Else
+		set the *hold* state to boolean value *b*.
 		
 		Examples::
 		
@@ -1105,7 +1157,13 @@ package matplotlib.axes._base;
 	**/
 	public function is_transform_set():Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The ishold function was deprecated in version 2.0.
+		
 		return the HOLD status of the axes
+		
+		        The `hold` mechanism is deprecated and will be removed in
+		        v3.0.
 	**/
 	public function ishold():Dynamic;
 	/**
@@ -1189,6 +1247,8 @@ package matplotlib.axes._base;
 	**/
 	public function pchanged():Dynamic;
 	/**
+		Trigger pick event
+		
 		Call signature::
 		
 		    pick(mouseevent)
@@ -1249,9 +1309,7 @@ package matplotlib.axes._base;
 	public function reset_position():Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
-		Will handle property name collisions (e.g., if both
-		'color' and 'facecolor' are specified, the property
-		with higher priority gets set last).
+		        
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1373,6 +1431,9 @@ package matplotlib.axes._base;
 	**/
 	public function set_axes_locator(locator:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The set_axis_bgcolor function was deprecated in version 2.0. Use set_facecolor instead.
+		
 		set the axes background color
 		
 		ACCEPTS: any matplotlib color - see
@@ -1391,7 +1452,7 @@ package matplotlib.axes._base;
 		Set whether the axis ticks and gridlines are above or below most
 		artists
 		
-		ACCEPTS: [ *True* | *False* ]
+		ACCEPTS: [ *True* | *False* | 'line' ]
 	**/
 	public function set_axisbelow(b:Dynamic):Dynamic;
 	/**
@@ -1453,7 +1514,9 @@ package matplotlib.axes._base;
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		Set the cursor property as::
+		Set the cursor property as
+		
+		Call signature ::
 		
 		  ax.set_cursor_props(linewidth, color)
 		
@@ -1464,6 +1527,8 @@ package matplotlib.axes._base;
 		ACCEPTS: a (*float*, *color*) tuple
 	**/
 	public function set_cursor_props(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function set_facecolor(color:Dynamic):Dynamic;
+	public function set_fc(color:Dynamic):Dynamic;
 	/**
 		Set the class:`~matplotlib.axes.Axes` figure
 		
@@ -1539,7 +1604,9 @@ package matplotlib.axes._base;
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
-		Set the axes position with::
+		Set the axes position
+		
+		The expected shape of ``pos`` is::
 		
 		  pos = [left, bottom, width, height]
 		
@@ -1673,49 +1740,59 @@ package matplotlib.axes._base;
 	**/
 	public function set_xbound(?lower:Dynamic, ?upper:Dynamic):Dynamic;
 	/**
-		Call signature::
+		Set the data limits for the x-axis
 		
-		  set_xlim(self, *args, **kwargs):
+		Parameters
+		----------
+		left : scalar, optional
+		    The left xlim (default: None, which leaves the left limit
+		    unchanged).
 		
-		Set the data limits for the xaxis
+		right : scalar, optional
+		    The right xlim (default: None, which leaves the right limit
+		    unchanged).
 		
-		Examples::
+		emit : bool, optional
+		    Whether to notify observers of limit change (default: True).
 		
-		  set_xlim((left, right))
-		  set_xlim(left, right)
-		  set_xlim(left=1) # right unchanged
-		  set_xlim(right=1) # left unchanged
+		auto : bool or None, optional
+		    Whether to turn on autoscaling of the x-axis. True turns on,
+		    False turns off (default action), None leaves unchanged.
 		
-		Keyword arguments:
+		xlimits : tuple, optional
+		    The left and right xlims may be passed as the tuple
+		    (`left`, `right`) as the first positional argument (or as
+		    the `left` keyword argument).
 		
-		  *left*: scalar
-		    The left xlim; *xmin*, the previous name, may still be used
+		Returns
+		-------
+		xlimits : tuple
+		    Returns the new x-axis limits as (`left`, `right`).
 		
-		  *right*: scalar
-		    The right xlim; *xmax*, the previous name, may still be used
+		Notes
+		-----
+		The `left` value may be greater than the `right` value, in which
+		case the x-axis values will decrease from left to right.
 		
-		  *emit*: [ *True* | *False* ]
-		    Notify observers of limit change
+		Examples
+		--------
+		>>> set_xlim(left, right)
+		>>> set_xlim((left, right))
+		>>> left, right = set_xlim(left, right)
 		
-		  *auto*: [ *True* | *False* | *None* ]
-		    Turn *x* autoscaling on (*True*), off (*False*; default),
-		    or leave unchanged (*None*)
+		One limit may be left unchanged.
 		
-		Note, the *left* (formerly *xmin*) value may be greater than
-		the *right* (formerly *xmax*).
-		For example, suppose *x* is years before present.
-		Then one might use::
+		>>> set_xlim(right=right_lim)
 		
-		  set_ylim(5000, 0)
-		
-		so 5000 years ago is on the left of the plot and the
+		Limits may be passed in reverse order to flip the direction of
+		the x-axis. For example, suppose `x` represents the number of
+		years before present. The x-axis limits might be set like the
+		following so 5000 years ago is on the left of the plot and the
 		present is on the right.
 		
-		Returns the current xlimits as a length 2 tuple
-		
-		ACCEPTS: length 2 sequence of floats
+		>>> set_xlim(5000, 0)
 	**/
-	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	/**
 		Set padding of X data limits prior to autoscaling.
 		
@@ -1726,9 +1803,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_xmargin(m:Dynamic):Dynamic;
 	/**
-		Call signature::
-		
-		  set_xscale(value)
+		Set the x-axis scale
 		
 		Set the scaling of the x-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
@@ -1793,12 +1868,9 @@ package matplotlib.axes._base;
 	**/
 	public function set_xscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Call signature::
+		Set the xtick labels with list of strings *labels*
 		
-		  set_xticklabels(labels, fontdict=None, minor=False, **kwargs)
-		
-		Set the xtick labels with list of strings *labels*. Return a
-		list of axis text instances.
+		Return a list of axis text instances.
 		
 		*kwargs* set the :class:`~matplotlib.text.Text` properties.
 		Valid properties are
@@ -1813,7 +1885,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -1861,49 +1933,59 @@ package matplotlib.axes._base;
 	**/
 	public function set_ybound(?lower:Dynamic, ?upper:Dynamic):Dynamic;
 	/**
-		Call signature::
+		Set the data limits for the y-axis
 		
-		  set_ylim(self, *args, **kwargs):
+		Parameters
+		----------
+		bottom : scalar, optional
+		    The bottom ylim (default: None, which leaves the bottom
+		    limit unchanged).
 		
-		Set the data limits for the yaxis
+		top : scalar, optional
+		    The top ylim (default: None, which leaves the top limit
+		    unchanged).
 		
-		Examples::
+		emit : bool, optional
+		    Whether to notify observers of limit change (default: True).
 		
-		  set_ylim((bottom, top))
-		  set_ylim(bottom, top)
-		  set_ylim(bottom=1) # top unchanged
-		  set_ylim(top=1) # bottom unchanged
+		auto : bool or None, optional
+		    Whether to turn on autoscaling of the y-axis. True turns on,
+		    False turns off (default action), None leaves unchanged.
 		
-		Keyword arguments:
+		ylimits : tuple, optional
+		    The bottom and top yxlims may be passed as the tuple
+		    (`bottom`, `top`) as the first positional argument (or as
+		    the `bottom` keyword argument).
 		
-		  *bottom*: scalar
-		    The bottom ylim; the previous name, *ymin*, may still be used
+		Returns
+		-------
+		ylimits : tuple
+		    Returns the new y-axis limits as (`bottom`, `top`).
 		
-		  *top*: scalar
-		    The top ylim; the previous name, *ymax*, may still be used
+		Notes
+		-----
+		The `bottom` value may be greater than the `top` value, in which
+		case the y-axis values will decrease from bottom to top.
 		
-		  *emit*: [ *True* | *False* ]
-		    Notify observers of limit change
+		Examples
+		--------
+		>>> set_ylim(bottom, top)
+		>>> set_ylim((bottom, top))
+		>>> bottom, top = set_ylim(bottom, top)
 		
-		  *auto*: [ *True* | *False* | *None* ]
-		    Turn *y* autoscaling on (*True*), off (*False*; default),
-		    or leave unchanged (*None*)
+		One limit may be left unchanged.
 		
-		Note, the *bottom* (formerly *ymin*) value may be greater than
-		the *top* (formerly *ymax*).
-		For example, suppose *y* is depth in the ocean.
-		Then one might use::
+		>>> set_ylim(top=top_lim)
 		
-		  set_ylim(5000, 0)
+		Limits may be passed in reverse order to flip the direction of
+		the y-axis. For example, suppose `y` represents depth of the
+		ocean in m. The y-axis limits might be set like the following
+		so 5000 m depth is at the bottom of the plot and the surface,
+		0 m, is at the top.
 		
-		so 5000 m depth is at the bottom of the plot and the
-		surface, 0 m, is at the top.
-		
-		Returns the current ylimits as a length 2 tuple
-		
-		ACCEPTS: length 2 sequence of floats
+		>>> set_ylim(5000, 0)
 	**/
-	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	/**
 		Set padding of Y data limits prior to autoscaling.
 		
@@ -1914,79 +1996,75 @@ package matplotlib.axes._base;
 	**/
 	public function set_ymargin(m:Dynamic):Dynamic;
 	/**
-		Call signature::
+		Set the y-axis scale
 		
-		  set_yscale(value)
+		    Set the scaling of the y-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
-		Set the scaling of the y-axis: 'linear' | 'log' | 'logit' | 'symlog'
+		    ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
 		
-		ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
+		    Different kwargs are accepted, depending on the scale:
+		        'linear'
 		
-		Different kwargs are accepted, depending on the scale:
-		    'linear'
-		
-		        
+		    
 		
 		
-		    'log'
+		'log'
 		
-		        *basex* /*basey*:
-		           The base of the logarithm
-		        
-		        *nonposx* /*nonposy*: ['mask' | 'clip' ]
-		          non-positive values in *x* or *y* can be masked as
-		          invalid, or clipped to a very small positive number
-		        
-		        *subsx* /*subsy*:
-		           Where to place the subticks between each major tick.
-		           Should be a sequence of integers.  For example, in a log10
-		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
-		        
-		           will place 8 logarithmically spaced minor ticks between
-		           each major tick.
-		
-		
-		    'logit'
-		
-		        *nonpos*: ['mask' | 'clip' ]
-		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
-		          very close to 0 or 1
+		    *basex* /*basey*:
+		       The base of the logarithm
+		    
+		    *nonposx* /*nonposy*: ['mask' | 'clip' ]
+		      non-positive values in *x* or *y* can be masked as
+		      invalid, or clipped to a very small positive number
+		    
+		    *subsx* /*subsy*:
+		       Where to place the subticks between each major tick.
+		       Should be a sequence of integers.  For example, in a log10
+		       scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
+		    
+		       will place 8 logarithmically spaced minor ticks between
+		       each major tick.
 		
 		
-		    'symlog'
+		'logit'
 		
-		        *basex* /*basey*:
-		           The base of the logarithm
-		        
-		        *linthreshx* /*linthreshy*:
-		          The range (-*x*, *x*) within which the plot is linear (to
-		          avoid having the plot go to infinity around zero).
-		        
-		        *subsx* /*subsy*:
-		           Where to place the subticks between each major tick.
-		           Should be a sequence of integers.  For example, in a log10
-		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
-		        
-		           will place 8 logarithmically spaced minor ticks between
-		           each major tick.
-		        
-		        *linscalex* /*linscaley*:
-		           This allows the linear range (-*linthresh* to *linthresh*)
-		           to be stretched relative to the logarithmic range.  Its
-		           value is the number of decades to use for each half of the
-		           linear range.  For example, when *linscale* == 1.0 (the
-		           default), the space used for the positive and negative
-		           halves of the linear range will be equal to one decade in
-		           the logarithmic range.
+		    *nonpos*: ['mask' | 'clip' ]
+		      values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		      very close to 0 or 1
+		
+		
+		'symlog'
+		
+		    *basex* /*basey*:
+		       The base of the logarithm
+		    
+		    *linthreshx* /*linthreshy*:
+		      The range (-*x*, *x*) within which the plot is linear (to
+		      avoid having the plot go to infinity around zero).
+		    
+		    *subsx* /*subsy*:
+		       Where to place the subticks between each major tick.
+		       Should be a sequence of integers.  For example, in a log10
+		       scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
+		    
+		       will place 8 logarithmically spaced minor ticks between
+		       each major tick.
+		    
+		    *linscalex* /*linscaley*:
+		       This allows the linear range (-*linthresh* to *linthresh*)
+		       to be stretched relative to the logarithmic range.  Its
+		       value is the number of decades to use for each half of the
+		       linear range.  For example, when *linscale* == 1.0 (the
+		       default), the space used for the positive and negative
+		       halves of the linear range will be equal to one decade in
+		       the logarithmic range.
+		    
 	**/
 	public function set_yscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Call signature::
+		Set the y tick labels with list of strings *labels*
 		
-		  set_yticklabels(labels, fontdict=None, minor=False, **kwargs)
-		
-		Set the y tick labels with list of strings *labels*.  Return a list of
-		:class:`~matplotlib.text.Text` instances.
+		Return a list of :class:`~matplotlib.text.Text` instances.
 		
 		*kwargs* set :class:`~matplotlib.text.Text` properties for the labels.
 		Valid properties are
@@ -2001,7 +2079,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -2075,57 +2153,85 @@ package matplotlib.axes._base;
 	**/
 	public function start_pan(x:Dynamic, y:Dynamic, button:Dynamic):Dynamic;
 	/**
+		`x` and `y` sticky edge lists.
+		
+		When performing autoscaling, if a data limit coincides with a value in
+		the corresponding sticky_edges list, then no margin will be added--the
+		view limit "sticks" to the edge. A typical usecase is histograms,
+		where one usually expects no margin on the bottom edge (0) of the
+		histogram.
+		
+		This attribute cannot be assigned to; however, the `x` and `y` lists
+		can be modified in place as needed.
+		
+		Examples
+		--------
+		
+		>>> artist.sticky_edges.x[:] = (xmin, xmax)
+		>>> artist.sticky_edges.y[:] = (ymin, ymax)
+	**/
+	public var sticky_edges : Dynamic;
+	/**
 		Change the appearance of ticks and tick labels.
 		
-		Keyword arguments:
+		Parameters
+		----------
+		axis : {'x', 'y', 'both'}, optional
+		    Which axis to apply the parameters to.
 		
-		*axis* : ['x' | 'y' | 'both']
+		Other Parameters
+		----------------
+		
+		axis : {'x', 'y', 'both'}
 		    Axis on which to operate; default is 'both'.
 		
-		*reset* : [True | False]
+		reset : bool
 		    If *True*, set all parameters to defaults
 		    before processing other keyword arguments.  Default is
 		    *False*.
 		
-		*which* : ['major' | 'minor' | 'both']
+		which : {'major', 'minor', 'both'}
 		    Default is 'major'; apply arguments to *which* ticks.
 		
-		*direction* : ['in' | 'out' | 'inout']
+		direction : {'in', 'out', 'inout'}
 		    Puts ticks inside the axes, outside the axes, or both.
 		
-		*length*
+		length : float
 		    Tick length in points.
 		
-		*width*
+		width : float
 		    Tick width in points.
 		
-		*color*
+		color : color
 		    Tick color; accepts any mpl color spec.
 		
-		*pad*
+		pad : float
 		    Distance in points between tick and label.
 		
-		*labelsize*
+		labelsize : float or str
 		    Tick label font size in points or as a string (e.g., 'large').
 		
-		*labelcolor*
+		labelcolor : color
 		    Tick label color; mpl color spec.
 		
-		*colors*
+		colors : color
 		    Changes the tick color and the label color to the same value:
 		    mpl color spec.
 		
-		*zorder*
+		zorder : float
 		    Tick and label zorder.
 		
-		*bottom*, *top*, *left*, *right* : [bool | 'on' | 'off']
+		bottom, top, left, right : bool or  {'on', 'off'}
 		    controls whether to draw the respective ticks.
 		
-		*labelbottom*, *labeltop*, *labelleft*, *labelright*
-		    Boolean or ['on' | 'off'], controls whether to draw the
+		labelbottom, labeltop, labelleft, labelright : bool or  {'on', 'off'}
+		    controls whether to draw the
 		    respective tick labels.
 		
-		Example::
+		Examples
+		--------
+		
+		Usage ::
 		
 		    ax.tick_params(direction='out', length=6, width=2, colors='r')
 		
@@ -2173,14 +2279,13 @@ package matplotlib.axes._base;
 	**/
 	public function ticklabel_format(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Call signature::
-		
-		  ax = twinx()
+		Create a twin Axes sharing the xaxis
 		
 		create a twin of Axes for generating a plot with a sharex
 		x-axis but independent y axis.  The y-axis of self will have
 		ticks on left and the returned axes will have ticks on the
-		right.
+		right. To ensure tick marks of both axis align, see
+		:class:`~matplotlib.ticker.LinearLocator`
 		
 		.. note::
 		    For those who are 'picking' artists while using twinx, pick
@@ -2188,9 +2293,7 @@ package matplotlib.axes._base;
 	**/
 	public function twinx():Dynamic;
 	/**
-		Call signature::
-		
-		  ax = twiny()
+		Create a twin Axes sharing the yaxis
 		
 		create a twin of Axes for generating a plot with a shared
 		y-axis but independent x axis.  The x-axis of self will have
@@ -2217,6 +2320,9 @@ package matplotlib.axes._base;
 	**/
 	public function update_datalim_bounds(bounds:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.0
+		    The update_datalim_numerix function was deprecated in version 2.0. Use update_datalim instead.
+		
 		Update the data lim bbox with seq of xy tups
 	**/
 	public function update_datalim_numerix(x:Dynamic, y:Dynamic):Dynamic;
@@ -2224,6 +2330,20 @@ package matplotlib.axes._base;
 		Copy properties from *other* to *self*.
 	**/
 	public function update_from(other:Dynamic):Dynamic;
+	/**
+		When autoscaling, whether to obey all `Artist.sticky_edges`.
+		
+		Default is ``True``.
+		
+		Setting this to ``False`` ensures that the specified margins
+		will be applied, even if the plot includes an image, for
+		example, which would otherwise force a view limit to coincide
+		with its data limit.
+		
+		The changing this property does not change the plot until
+		`autoscale` or `autoscale_view` is called.
+	**/
+	public var use_sticky_edges : Dynamic;
 	/**
 		Sets up x-axis ticks and labels that treat the x data as dates.
 		

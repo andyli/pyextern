@@ -10,7 +10,87 @@ package scipy.signal.windows;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Generic weighted sum of cosine terms window
+		
+		Parameters
+		----------
+		M : int
+		    Number of points in the output window
+		a : array_like
+		    Sequence of weighting coefficients. This uses the convention of being
+		    centered on the origin, so these will typically all be positive
+		    numbers, not alternating sign.
+		sym : bool, optional
+		    When True (default), generates a symmetric window, for use in filter
+		    design.
+		    When False, generates a periodic window, for use in spectral analysis.
+		
+		References
+		----------
+		.. [1] A. Nuttall, "Some windows with very good sidelobe behavior," IEEE
+		       Transactions on Acoustics, Speech, and Signal Processing, vol. 29,
+		       no. 1, pp. 84-91, Feb 1981. :doi:`10.1109/TASSP.1981.1163506`.
+		.. [2] Heinzel G. et al., "Spectrum and spectral density estimation by the
+		       Discrete Fourier transform (DFT), including a comprehensive list of
+		       window functions and some new flat-top windows", February 15, 2002
+		       https://holometer.fnal.gov/GH_FFT.pdf
+		
+		Examples
+		--------
+		Heinzel describes a flat-top window named "HFT90D" with formula: [2]_
+		
+		.. math::  w_j = 1 - 1.942604 \cos(z) + 1.340318 \cos(2z)
+		           - 0.440811 \cos(3z) + 0.043097 \cos(4z)
+		
+		where
+		
+		.. math::  z = \frac{2 \pi j}{N}, j = 0...N - 1
+		
+		Since this uses the convention of starting at the origin, to reproduce the
+		window, we need to convert every other coefficient to a positive number:
+		
+		>>> HFT90D = [1, 1.942604, 1.340318, 0.440811, 0.043097]
+		
+		The paper states that the highest sidelobe is at -90.2 dB.  Reproduce
+		Figure 42 by plotting the window and its frequency response, and confirm
+		the sidelobe level in red:
+		
+		>>> from scipy import signal
+		>>> from scipy.fftpack import fft, fftshift
+		>>> import matplotlib.pyplot as plt
+		
+		>>> window = signal._cos_win(1000, HFT90D, sym=False)
+		>>> plt.plot(window)
+		>>> plt.title("HFT90D window")
+		>>> plt.ylabel("Amplitude")
+		>>> plt.xlabel("Sample")
+		
+		>>> plt.figure()
+		>>> A = fft(window, 10000) / (len(window)/2.0)
+		>>> freq = np.linspace(-0.5, 0.5, len(A))
+		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		>>> plt.plot(freq, response)
+		>>> plt.axis([-50/1000, 50/1000, -140, 0])
+		>>> plt.title("Frequency response of the HFT90D window")
+		>>> plt.ylabel("Normalized magnitude [dB]")
+		>>> plt.xlabel("Normalized frequency [cycles per sample]")
+		>>> plt.axhline(-90.2, color='red')
+	**/
+	static public function _cos_win(M:Dynamic, a:Dynamic, ?sym:Dynamic):Dynamic;
+	/**
+		Extend window by 1 sample if needed for DFT-even symmetry
+	**/
+	static public function _extend(M:Dynamic, sym:Dynamic):Dynamic;
+	/**
+		Handle small or incorrect window lengths
+	**/
+	static public function _len_guards(M:Dynamic):Dynamic;
 	static public var _needs_param : Dynamic;
+	/**
+		Truncate window by 1 sample if needed for DFT-even symmetry
+	**/
+	static public function _truncate(w:Dynamic, needed:Dynamic):Dynamic;
 	static public var _win_equiv : Dynamic;
 	static public var _win_equiv_raw : Dynamic;
 	static public var absolute_import : Dynamic;
@@ -83,6 +163,10 @@ package scipy.signal.windows;
 		    and the maximum value normalized to 1 (though the value 1 does not
 		    appear if `M` is even and `sym` is True).
 		
+		See Also
+		--------
+		triang : A triangular window that does not touch zero at the ends
+		
 		Notes
 		-----
 		The Bartlett window is defined as
@@ -99,7 +183,7 @@ package scipy.signal.windows;
 		discontinuities at the beginning and end of the sampled signal) or
 		tapering function. The Fourier transform of the Bartlett is the product
 		of two sinc functions.
-		Note the excellent discussion in Kanasewich.
+		Note the excellent discussion in Kanasewich. [2]_
 		
 		References
 		----------
@@ -169,6 +253,12 @@ package scipy.signal.windows;
 		
 		.. math::  w(n) = 0.42 - 0.5 \cos(2\pi n/M) + 0.08 \cos(4\pi n/M)
 		
+		The "exact Blackman" window was designed to null out the third and fourth
+		sidelobes, but has discontinuities at the boundaries, resulting in a
+		6 dB/oct fall-off.  This window is an approximation of the "exact" window,
+		which does not null the sidelobes as well, but is smooth at the edges,
+		improving the fall-off rate to 18 dB/oct. [3]_
+		
 		Most references to the Blackman window come from the signal processing
 		literature, where it is used as one of many windowing functions for
 		smoothing values.  It is also known as an apodization (which means
@@ -183,6 +273,9 @@ package scipy.signal.windows;
 		       spectra, Dover Publications, New York.
 		.. [2] Oppenheim, A.V., and R.W. Schafer. Discrete-Time Signal Processing.
 		       Upper Saddle River, NJ: Prentice-Hall, 1999, pp. 468-471.
+		.. [3] Harris, Fredric J. (Jan 1978). "On the use of Windows for Harmonic
+		       Analysis with the Discrete Fourier Transform". Proceedings of the
+		       IEEE 66 (1): 51-83. :doi:`10.1109/PROC.1978.10837`.
 		
 		Examples
 		--------
@@ -300,7 +393,8 @@ package scipy.signal.windows;
 	/**
 		Return a boxcar or rectangular window.
 		
-		Included for completeness, this is equivalent to no window at all.
+		Also known as a rectangular window or Dirichlet window, this is equivalent
+		to no window at all.
 		
 		Parameters
 		----------
@@ -569,6 +663,20 @@ package scipy.signal.windows;
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
 		
+		Notes
+		-----
+		Flat top windows are used for taking accurate measurements of signal
+		amplitude in the frequency domain, with minimal scalloping error from the
+		center of a frequency bin to its edges, compared to others.  This is a
+		5th-order cosine window, with the 5 terms optimized to make the main lobe
+		maximally flat. [1]_
+		
+		References
+		----------
+		.. [1] D'Antona, Gabriele, and A. Ferrero, "Digital Signal Processing for
+		       Measurement Systems", Springer Media, 2006, p. 70
+		       :doi:`10.1007/0-387-28666-7`.
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -700,7 +808,8 @@ package scipy.signal.windows;
 		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
-		>>> plt.title(r"Freq. resp. of the gen. Gaussian window (p=1.5, $\sigma$=7)")
+		>>> plt.title(r"Freq. resp. of the gen. Gaussian "
+		...           "window (p=1.5, $\sigma$=7)")
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
@@ -753,13 +862,13 @@ package scipy.signal.windows;
 		--------
 		>>> from scipy import signal
 		>>> signal.get_window('triang', 7)
-		array([ 0.25,  0.5 ,  0.75,  1.  ,  0.75,  0.5 ,  0.25])
+		array([ 0.125,  0.375,  0.625,  0.875,  0.875,  0.625,  0.375])
 		>>> signal.get_window(('kaiser', 4.0), 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 		>>> signal.get_window(4.0, 9)
-		array([ 0.08848053,  0.32578323,  0.63343178,  0.89640418,  1.        ,
-		        0.89640418,  0.63343178,  0.32578323,  0.08848053])
+		array([ 0.08848053,  0.29425961,  0.56437221,  0.82160913,  0.97885093,
+		        0.97885093,  0.82160913,  0.56437221,  0.29425961])
 	**/
 	static public function get_window(window:Dynamic, Nx:Dynamic, ?fftbins:Dynamic):Dynamic;
 	/**
@@ -1033,8 +1142,8 @@ package scipy.signal.windows;
 		maximizes the energy in the main lobe of the window relative to total
 		energy.
 		
-		The Kaiser can approximate many other windows by varying the beta
-		parameter.
+		The Kaiser can approximate other windows by varying the beta parameter.
+		(Some literature uses alpha = beta/pi.) [4]_
 		
 		====  =======================
 		beta  Window shape
@@ -1048,7 +1157,7 @@ package scipy.signal.windows;
 		A beta value of 14 is probably a good starting point. Note that as beta
 		gets large, the window narrows, and so the number of samples needs to be
 		large enough to sample the increasingly narrow spike, otherwise NaNs will
-		get returned.
+		be returned.
 		
 		Most references to the Kaiser window come from the signal processing
 		literature, where it is used as one of many windowing functions for
@@ -1065,6 +1174,9 @@ package scipy.signal.windows;
 		       University of Alberta Press, 1975, pp. 177-178.
 		.. [3] Wikipedia, "Window function",
 		       http://en.wikipedia.org/wiki/Window_function
+		.. [4] F. J. Harris, "On the use of windows for harmonic analysis with the
+		       discrete Fourier transform," Proceedings of the IEEE, vol. 66,
+		       no. 1, pp. 51-83, Jan. 1978. :doi:`10.1109/PROC.1978.10837`.
 		
 		Examples
 		--------
@@ -1095,6 +1207,8 @@ package scipy.signal.windows;
 	/**
 		Return a minimum 4-term Blackman-Harris window according to Nuttall.
 		
+		This variation is called "Nuttall4c" by Heinzel. [2]_
+		
 		Parameters
 		----------
 		M : int
@@ -1110,6 +1224,16 @@ package scipy.signal.windows;
 		w : ndarray
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
+		
+		References
+		----------
+		.. [1] A. Nuttall, "Some windows with very good sidelobe behavior," IEEE
+		       Transactions on Acoustics, Speech, and Signal Processing, vol. 29,
+		       no. 1, pp. 84-91, Feb 1981. :doi:`10.1109/TASSP.1981.1163506`.
+		.. [2] Heinzel G. et al., "Spectrum and spectral density estimation by the
+		       Discrete Fourier transform (DFT), including a comprehensive list of
+		       window functions and some new flat-top windows", February 15, 2002
+		       https://holometer.fnal.gov/GH_FFT.pdf
 		
 		Examples
 		--------
@@ -1154,6 +1278,11 @@ package scipy.signal.windows;
 		w : ndarray
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
+		
+		References
+		----------
+		.. [1] E. Parzen, "Mathematical Considerations in the Estimation of
+		       Spectra", Technometrics,  Vol. 3, No. 2 (May, 1961), pp. 167-190
 		
 		Examples
 		--------
@@ -1204,6 +1333,15 @@ package scipy.signal.windows;
 		w : ndarray
 		    The window, with the maximum value always normalized to 1
 		
+		References
+		----------
+		.. [1] D. Slepian & H. O. Pollak: "Prolate spheroidal wave functions,
+		       Fourier analysis and uncertainty-I," Bell Syst. Tech. J., vol.40,
+		       pp.43-63, 1961. https://archive.org/details/bstj40-1-43
+		.. [2] H. J. Landau & H. O. Pollak: "Prolate spheroidal wave functions,
+		       Fourier analysis and uncertainty-II," Bell Syst. Tech. J. , vol.40,
+		       pp.65-83, 1961. https://archive.org/details/bstj40-1-65
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -1249,6 +1387,10 @@ package scipy.signal.windows;
 		    The window, with the maximum value normalized to 1 (though the value 1
 		    does not appear if `M` is even and `sym` is True).
 		
+		See Also
+		--------
+		bartlett : A triangular window that touches zero
+		
 		Examples
 		--------
 		Plot the window and its frequency response:
@@ -1283,7 +1425,7 @@ package scipy.signal.windows;
 		    Number of points in the output window. If zero or less, an empty
 		    array is returned.
 		alpha : float, optional
-		    Shape parameter of the Tukey window, representing the faction of the
+		    Shape parameter of the Tukey window, representing the fraction of the
 		    window inside the cosine tapered region.
 		    If zero, the Tukey window is equivalent to a rectangular window.
 		    If one, the Tukey window is equivalent to a Hann window.
@@ -1302,7 +1444,7 @@ package scipy.signal.windows;
 		----------
 		.. [1] Harris, Fredric J. (Jan 1978). "On the use of Windows for Harmonic
 		       Analysis with the Discrete Fourier Transform". Proceedings of the
-		       IEEE 66 (1): 51-83. doi:10.1109/PROC.1978.10837
+		       IEEE 66 (1): 51-83. :doi:`10.1109/PROC.1978.10837`
 		.. [2] Wikipedia, "Window function",
 		       http://en.wikipedia.org/wiki/Window_function#Tukey_window
 		

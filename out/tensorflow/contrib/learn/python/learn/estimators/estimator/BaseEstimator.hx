@@ -2,9 +2,16 @@
 package tensorflow.contrib.learn.python.learn.estimators.estimator;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.estimator", "BaseEstimator") extern class BaseEstimator {
 	/**
-		This class specifies the specific configurations for the run.
+		This class specifies the configurations for an `Estimator` run.
+		
+		This class is the implementation of ${tf.estimator.RunConfig} interface.
+		
+		If you're a Google-internal user using command line flags with
+		`learn_runner.py` (for instance, to do distributed training or to use
+		parameter servers), you probably want to use `learn_runner.EstimatorConfig`
+		instead.
 	**/
-	static public function _Config(?master:Dynamic, ?task:Dynamic, ?num_ps_replicas:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic):Dynamic;
+	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -47,7 +54,8 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		Args:
 		  model_dir: Directory to save model parameters, graph and etc. This can
 		    also be used to load checkpoints from the directory into a estimator to
-		    continue training a previously saved model.
+		    continue training a previously saved model. If `None`, the model_dir in
+		    `config` will be used if set. If both are set, they must be same.
 		  config: A RunConfig instance.
 	**/
 	@:native("__init__")
@@ -58,10 +66,18 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		Args:
 		  model_dir: Directory to save model parameters, graph and etc. This can
 		    also be used to load checkpoints from the directory into a estimator to
-		    continue training a previously saved model.
+		    continue training a previously saved model. If `None`, the model_dir in
+		    `config` will be used if set. If both are set, they must be same.
 		  config: A RunConfig instance.
 	**/
 	public function new(?model_dir:Dynamic, ?config:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -83,7 +99,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -131,12 +147,13 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _check_inputs(features:Dynamic, targets:Dynamic):Dynamic;
-	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic):Dynamic;
+	public function _check_inputs(features:Dynamic, labels:Dynamic):Dynamic;
+	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic, ?log_progress:Dynamic):Dynamic;
 	/**
 		Separate update operations from metric value operations.
 	**/
 	public function _extract_metric_update_ops(eval_dict:Dynamic):Dynamic;
+	public function _filter_predictions(predictions:Dynamic, outputs:Dynamic):Dynamic;
 	/**
 		Method that builds model graph and returns evaluation ops.
 		
@@ -144,23 +161,26 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		
 		Args:
 		  features: `Tensor` or `dict` of `Tensor` objects.
-		  targets: `Tensor` or `dict` of `Tensor` objects.
-		  metrics: Dict of metric ops to run. If None, the default metric functions
-		    are used; if {}, no metrics are used. If model has one output (i.e.,
-		    returning single predction), keys are `str`, e.g. `'accuracy'` - just a
-		    name of the metric that will show up in the logs / summaries.
-		    Otherwise, keys are tuple of two `str`, e.g. `('accuracy', 'classes')`
-		    - name of the metric and name of `Tensor` in the predictions to run
-		    this metric on. Metric ops should support streaming, e.g., returning
+		  labels: `Tensor` or `dict` of `Tensor` objects.
+		  metrics: Dict of metrics to run. If None, the default metric functions
+		    are used; if {}, no metrics are used. Otherwise, `metrics` should map
+		    friendly names for the metric to a `MetricSpec` object defining which
+		    model outputs to evaluate against which labels with which metric
+		    function. Metric ops should support streaming, e.g., returning
 		    update_op and value tensors. See more details in
-		    ../../../../metrics/python/metrics/ops/streaming_metrics.py.
+		    `../../../../metrics/python/metrics/ops/streaming_metrics.py` and
+		    `../metric_spec.py`.
 		
 		Returns:
-		  metrics: `dict` of `Tensor` objects.
+		  A `ModelFnOps` object.
 	**/
-	public function _get_eval_ops(features:Dynamic, targets:Dynamic, metrics:Dynamic):Dynamic;
+	public function _get_eval_ops(features:Dynamic, labels:Dynamic, metrics:Dynamic):Dynamic;
 	/**
-		Returns feature parser for given example batch using features info.
+		Returns feature parser for given example batch using features info. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Instructions for updating:
+		The signature of the input_fn accepted by export is changing to be consistent with what's used by tf.Learn Estimator's train/evaluate, which makes this function useless. This will be removed after the deprecation date.
 		
 		This function requires `fit()` has been called.
 		
@@ -183,37 +203,96 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		  features: `Tensor` or `dict` of `Tensor` objects.
 		
 		Returns:
-		  predictions: `Tensor` or `dict` of `Tensor` objects.
+		  A `ModelFnOps` object.
 	**/
 	public var _get_predict_ops : Dynamic;
 	/**
 		Method that builds model graph and returns trainer ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		
 		Args:
 		  features: `Tensor` or `dict` of `Tensor` objects.
-		  targets: `Tensor` or `dict` of `Tensor` objects.
+		  labels: `Tensor` or `dict` of `Tensor` objects.
 		
 		Returns:
-		  Tuple of train `Operation` and loss `Tensor`.
+		  A `ModelFnOps` object.
 	**/
 	public var _get_train_ops : Dynamic;
-	public function _infer_model(input_fn:Dynamic, ?feed_fn:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
-	public function _infer_model_as_iterable(checkpoint_path:Dynamic, predictions:Dynamic, feed_fn:Dynamic, return_dict:Dynamic):Dynamic;
-	public function _infer_model_single(checkpoint_path:Dynamic, predictions:Dynamic, feed_fn:Dynamic, return_dict:Dynamic):Dynamic;
-	public function _train_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?init_op:Dynamic, ?init_feed_fn:Dynamic, ?init_fn:Dynamic, ?device_fn:Dynamic, ?monitors:Dynamic, ?log_every_steps:Dynamic, ?fail_on_nan_loss:Dynamic, ?max_steps:Dynamic):Dynamic;
+	public function _infer_model(input_fn:Dynamic, ?feed_fn:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic, ?iterate_batches:Dynamic):Dynamic;
+	public function _is_input_constant(feed_fn:Dynamic, graph:Dynamic):Dynamic;
+	public function _predict_generator(mon_sess:Dynamic, predictions:Dynamic, feed_fn:Dynamic, iterate_batches:Dynamic):Dynamic;
+	public function _train_model(input_fn:Dynamic, hooks:Dynamic):Dynamic;
+	public var config : Dynamic;
 	/**
-		See `Evaluable`.
+		See `Evaluable`. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		Raises:
 		  ValueError: If at least one of `x` or `y` is provided, and at least one of
 		      `input_fn` or `feed_fn` is provided.
 		      Or if `metrics` is not `None` or `dict`.
 	**/
-	public function evaluate(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?feed_fn:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic, ?name:Dynamic):Dynamic;
+	public function evaluate(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?feed_fn:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic, ?log_progress:Dynamic):Dynamic;
 	/**
-		See `Trainable`.
+		Exports inference graph into given dir. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Instructions for updating:
+		Please use Estimator.export_savedmodel() instead.
+		
+		Args:
+		  export_dir: A string containing a directory to write the exported graph
+		    and checkpoints.
+		  input_fn: If `use_deprecated_input_fn` is true, then a function that given
+		    `Tensor` of `Example` strings, parses it into features that are then
+		    passed to the model. Otherwise, a function that takes no argument and
+		    returns a tuple of (features, labels), where features is a dict of
+		    string key to `Tensor` and labels is a `Tensor` that's currently not
+		    used (and so can be `None`).
+		  input_feature_key: Only used if `use_deprecated_input_fn` is false. String
+		    key into the features dict returned by `input_fn` that corresponds to a
+		    the raw `Example` strings `Tensor` that the exported model will take as
+		    input. Can only be `None` if you're using a custom `signature_fn` that
+		    does not use the first arg (examples).
+		  use_deprecated_input_fn: Determines the signature format of `input_fn`.
+		  signature_fn: Function that returns a default signature and a named
+		    signature map, given `Tensor` of `Example` strings, `dict` of `Tensor`s
+		    for features and `Tensor` or `dict` of `Tensor`s for predictions.
+		  prediction_key: The key for a tensor in the `predictions` dict (output
+		    from the `model_fn`) to use as the `predictions` input to the
+		    `signature_fn`. Optional. If `None`, predictions will pass to
+		    `signature_fn` without filtering.
+		  default_batch_size: Default batch size of the `Example` placeholder.
+		  exports_to_keep: Number of exports to keep.
+		  checkpoint_path: the checkpoint path of the model to be exported. If it is
+		      `None` (which is default), will use the latest checkpoint in
+		      export_dir.
+		
+		Returns:
+		  The string path to the exported directory. NB: this functionality was
+		  added ca. 2016/09/25; clients that depend on the return value may need
+		  to handle the case where this function returns None because subclasses
+		  are not returning a value.
+	**/
+	public function export(export_dir:Dynamic, ?input_fn:Dynamic, ?input_feature_key:Dynamic, ?use_deprecated_input_fn:Dynamic, ?signature_fn:Dynamic, ?prediction_key:Dynamic, ?default_batch_size:Dynamic, ?exports_to_keep:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
+	/**
+		See `Trainable`. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		Raises:
 		  ValueError: If `x` or `y` are not `None` while `input_fn` is not `None`.
@@ -251,9 +330,20 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		  Numpy array - value of the tensor.
 	**/
 	public function get_variable_value(name:Dynamic):Dynamic;
+	/**
+		Returns a path in which the eval process will look for checkpoints.
+	**/
 	public var model_dir : Dynamic;
 	/**
-		Incremental fit on a batch of samples.
+		Incremental fit on a batch of samples. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		This method is expected to be called several times consecutively
 		on different or the same chunks of the dataset. This either can
@@ -268,7 +358,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		     returns arrays of features. The training input samples for fitting the
 		     model. If set, `input_fn` must be `None`.
 		  y: Vector or matrix [n_samples] or [n_samples, n_outputs]. Can be
-		     iterator that returns array of targets. The training target values
+		     iterator that returns array of labels. The training label values
 		     (class labels in classification, real numbers in regression). If set,
 		     `input_fn` must be `None`.
 		  input_fn: Input function. If set, `x`, `y`, and `batch_size` must be
@@ -288,7 +378,15 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	**/
 	public function partial_fit(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?steps:Dynamic, ?batch_size:Dynamic, ?monitors:Dynamic):Dynamic;
 	/**
-		Returns predictions for given features.
+		Returns predictions for given features. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Instructions for updating:
+		Estimator is decoupled from Scikit Learn interface by moving into
+		separate class SKCompat. Arguments x, y and batch_size are only
+		available in the SKCompat class, Estimator will only accept input_fn.
+		Example conversion:
+		  est = Estimator(...) -> est = SKCompat(Estimator(...))
 		
 		Args:
 		  x: Matrix of shape [n_samples, n_features...]. Can be iterator that

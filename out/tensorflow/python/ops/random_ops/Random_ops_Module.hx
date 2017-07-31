@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.random_ops;
 @:pythonImport("tensorflow.python.ops.random_ops") extern class Random_ops_Module {
-	static public function _MultinomialShape(op:Dynamic):Dynamic;
-	static public function _RandomGammaShape(op:Dynamic):Dynamic;
-	static public function _RandomShape(op:Dynamic):Dynamic;
 	/**
 		Convert to an int32 or int64 tensor, defaulting to int32 if empty.
 	**/
@@ -31,11 +28,11 @@ package tensorflow.python.ops.random_ops;
 		
 		Args:
 		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
-		    `[i, :]` represents the unnormalized log probabilities for all classes.
+		    `[i, :]` represents the log-odds for all classes.
 		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: Optional name for the operation.
 		
@@ -63,7 +60,7 @@ package tensorflow.python.ops.random_ops;
 		  dtype: The type of the output.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -86,7 +83,7 @@ package tensorflow.python.ops.random_ops;
 		  value: Input tensor to crop.
 		  size: 1-D tensor with size the rank of `value`.
 		  seed: Python integer. Used to create a random seed. See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for this operation (optional).
 		
@@ -113,6 +110,13 @@ package tensorflow.python.ops.random_ops;
 		  samples = tf.random_gamma([30], [[1.],[3.],[5.]], beta=[[3., 4.]])
 		  # samples has shape [30, 3, 2], with 30 samples each of 3x2 distributions.
 		
+		  Note: Because internal calculations are done using `float64` and casting has
+		  `floor` semantics, we must manually map zero outcomes to the smallest
+		  possible positive floating-point value, i.e., `np.finfo(dtype).tiny`.  This
+		  means that `np.finfo(dtype).tiny` occurs more frequently than it otherwise
+		  should.  This bias can only happen for small values of `alpha`, i.e.,
+		  `alpha << 1` or large values of `beta`, i.e., `beta >> 1`.
+		
 		Args:
 		  shape: A 1-D integer Tensor or Python array. The shape of the output samples
 		    to be drawn per alpha/beta-parameterized distribution.
@@ -126,13 +130,13 @@ package tensorflow.python.ops.random_ops;
 		    `float64`.
 		  seed: A Python integer. Used to create a random seed for the distributions.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: Optional name for the operation.
 		
 		Returns:
-		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(alpha + beta))` with
-		    values of type `dtype`.
+		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(alpha + beta))`
+		    with values of type `dtype`.
 	**/
 	static public function random_gamma(shape:Dynamic, alpha:Dynamic, ?beta:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -147,7 +151,7 @@ package tensorflow.python.ops.random_ops;
 		  dtype: The type of the output.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -155,6 +159,40 @@ package tensorflow.python.ops.random_ops;
 		  A tensor of the specified shape filled with random normal values.
 	**/
 	static public function random_normal(shape:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Draws `shape` samples from each of the given Poisson distribution(s).
+		
+		`lam` is the rate parameter describing the distribution(s).
+		
+		Example:
+		
+		  samples = tf.random_poisson([0.5, 1.5], [10])
+		  # samples has shape [10, 2], where each slice [:, 0] and [:, 1] represents
+		  # the samples drawn from each distribution
+		
+		  samples = tf.random_poisson([12.2, 3.3], [7, 5])
+		  # samples has shape [7, 5, 2], where each slice [:, :, 0] and [:, :, 1]
+		  # represents the 7x5 samples drawn from each of the two distributions
+		
+		Args:
+		  lam: A Tensor or Python value or N-D array of type `dtype`.
+		    `lam` provides the rate parameter(s) describing the poisson
+		    distribution(s) to sample.
+		  shape: A 1-D integer Tensor or Python array. The shape of the output samples
+		    to be drawn per "rate"-parameterized distribution.
+		  dtype: The type of `lam` and the output: `float16`, `float32`, or
+		    `float64`.
+		  seed: A Python integer. Used to create a random seed for the distributions.
+		    See
+		    @{tf.set_random_seed}
+		    for behavior.
+		  name: Optional name for the operation.
+		
+		Returns:
+		  samples: a `Tensor` of shape `tf.concat(shape, tf.shape(lam))` with
+		    values of type `dtype`.
+	**/
+	static public function random_poisson(lam:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Randomly shuffles a tensor along its first dimension.
 		
@@ -172,7 +210,7 @@ package tensorflow.python.ops.random_ops;
 		  value: A Tensor to be shuffled.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -205,8 +243,7 @@ package tensorflow.python.ops.random_ops;
 		    floating point.
 		  dtype: The type of the output: `float32`, `float64`, `int32`, or `int64`.
 		  seed: A Python integer. Used to create a random seed for the distribution.
-		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    See @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		
@@ -233,7 +270,7 @@ package tensorflow.python.ops.random_ops;
 		  dtype: The type of the output.
 		  seed: A Python integer. Used to create a random seed for the distribution.
 		    See
-		    [`set_random_seed`](../../api_docs/python/constant_op.md#set_random_seed)
+		    @{tf.set_random_seed}
 		    for behavior.
 		  name: A name for the operation (optional).
 		

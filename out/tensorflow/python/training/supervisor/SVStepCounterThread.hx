@@ -43,17 +43,28 @@ package tensorflow.python.training.supervisor;
 		Args:
 		  sv: A `Supervisor`.
 		  sess: A `Session`.
+		  step_counter: A `Tensor` holding the step counter. By defaults, it uses
+		    sv.global_step.
 	**/
 	@:native("__init__")
-	public function ___init__(sv:Dynamic, sess:Dynamic):Dynamic;
+	public function ___init__(sv:Dynamic, sess:Dynamic, ?step_counter:Dynamic):Dynamic;
 	/**
 		Create a `SVStepCounterThread`.
 		
 		Args:
 		  sv: A `Supervisor`.
 		  sess: A `Session`.
+		  step_counter: A `Tensor` holding the step counter. By defaults, it uses
+		    sv.global_step.
 	**/
-	public function new(sv:Dynamic, sess:Dynamic):Void;
+	public function new(sv:Dynamic, sess:Dynamic, ?step_counter:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

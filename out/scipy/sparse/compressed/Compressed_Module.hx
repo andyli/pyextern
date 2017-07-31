@@ -10,6 +10,12 @@ package scipy.sparse.compressed;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Return an array equivalent to the input array. If the input
+		array is a view of a much larger array, copy its contents to a
+		newly allocated array. Otherwise, return the input unchaged.
+	**/
+	static public function _prune_array(array:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**

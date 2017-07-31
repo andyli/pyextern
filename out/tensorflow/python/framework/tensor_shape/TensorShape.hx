@@ -79,6 +79,17 @@ package tensorflow.python.framework.tensor_shape;
 	**/
 	public function new(dims:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns `self.dims` if the rank is known, otherwise raises ValueError.
+	**/
+	public function __iter__():Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -142,10 +153,13 @@ package tensorflow.python.framework.tensor_shape;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Returns a list of integers or None for each dimension.
+		Returns a list of integers or `None` for each dimension.
 		
 		Returns:
-		  A list of integers or None for each dimension.
+		  A list of integers or `None` for each dimension.
+		
+		Raises:
+		  ValueError: If `self` is an unknown shape with an unknown rank.
 	**/
 	public function as_list():Dynamic;
 	/**

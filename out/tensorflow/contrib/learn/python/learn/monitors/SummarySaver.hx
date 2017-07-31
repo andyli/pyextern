@@ -42,8 +42,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		
 		Args:
 		  summary_op: `Tensor` of type `string`. A serialized `Summary` protocol
-		      buffer, as output by TF summary methods like `scalar_summary` or
-		      `merge_all_summaries`.
+		      buffer, as output by TF summary methods like `summary.scalar` or
+		      `summary.merge_all`.
 		  save_steps: `int`, save summaries every N steps. See `EveryN`.
 		  output_dir: `string`, the directory to save the summaries to. Only used
 		      if no `summary_writer` is supplied.
@@ -58,8 +58,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		
 		Args:
 		  summary_op: `Tensor` of type `string`. A serialized `Summary` protocol
-		      buffer, as output by TF summary methods like `scalar_summary` or
-		      `merge_all_summaries`.
+		      buffer, as output by TF summary methods like `summary.scalar` or
+		      `summary.merge_all`.
 		  save_steps: `int`, save summaries every N steps. See `EveryN`.
 		  output_dir: `string`, the directory to save the summaries to. Only used
 		      if no `summary_writer` is supplied.
@@ -68,6 +68,13 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  scaffold: `Scaffold` to get summary_op if it's not provided.
 	**/
 	public function new(summary_op:Dynamic, ?save_steps:Dynamic, ?output_dir:Dynamic, ?summary_writer:Dynamic, ?scaffold:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -217,6 +224,8 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	public var run_on_all_workers : Dynamic;
 	/**
 		A setter called automatically by the target estimator.
+		
+		If the estimator is locked, this method does nothing.
 		
 		Args:
 		  estimator: the estimator that this monitor monitors.

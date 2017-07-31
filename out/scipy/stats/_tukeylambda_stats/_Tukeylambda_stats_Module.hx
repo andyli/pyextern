@@ -9,17 +9,17 @@ package scipy.stats._tukeylambda_stats;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _tukeylambda_kurt_p(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _tukeylambda_kurt_p(val:Dynamic):Dynamic;
 	static public var _tukeylambda_kurt_pc : Dynamic;
-	static public function _tukeylambda_kurt_q(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _tukeylambda_kurt_q(val:Dynamic):Dynamic;
 	static public var _tukeylambda_kurt_qc : Dynamic;
-	static public function _tukeylambda_var_p(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _tukeylambda_var_p(val:Dynamic):Dynamic;
 	static public var _tukeylambda_var_pc : Dynamic;
-	static public function _tukeylambda_var_q(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _tukeylambda_var_q(val:Dynamic):Dynamic;
 	static public var _tukeylambda_var_qc : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		beta(x1, x2[, out])
+		beta(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		beta(a, b)
 		

@@ -1,19 +1,12 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.slim.python.slim.data.dataset;
 @:pythonImport("tensorflow.contrib.slim.python.slim.data.dataset", "Dataset") extern class Dataset {
-	/**
-		Return self+value.
-	**/
-	public function __add__(value:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return key in self.
-	**/
-	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
 		default dir() implementation
@@ -37,14 +30,6 @@ package tensorflow.contrib.slim.python.slim.data.dataset;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Return self[key].
-	**/
-	public function __getitem__(key:Dynamic):Dynamic;
-	/**
-		Return self as a plain tuple.  Used by copy and pickle.
-	**/
-	public function __getnewargs__():Dynamic;
-	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
@@ -53,43 +38,58 @@ package tensorflow.contrib.slim.python.slim.data.dataset;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initializes the dataset.
+		
+		Args:
+		  data_sources: A list of files that make up the dataset.
+		  reader: The reader class, a subclass of BaseReader such as TextLineReader
+		    or TFRecordReader.
+		  decoder: An instance of a data_decoder.
+		  num_samples: The number of samples in the dataset.
+		  items_to_descriptions: A map from the items that the dataset provides to
+		    the descriptions of those items.
+		  **kwargs: Any remaining dataset-specific fields.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(data_sources:Dynamic, reader:Dynamic, decoder:Dynamic, num_samples:Dynamic, items_to_descriptions:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initializes the dataset.
+		
+		Args:
+		  data_sources: A list of files that make up the dataset.
+		  reader: The reader class, a subclass of BaseReader such as TextLineReader
+		    or TFRecordReader.
+		  decoder: An instance of a data_decoder.
+		  num_samples: The number of samples in the dataset.
+		  items_to_descriptions: A map from the items that the dataset provides to
+		    the descriptions of those items.
+		  **kwargs: Any remaining dataset-specific fields.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(data_sources:Dynamic, reader:Dynamic, decoder:Dynamic, num_samples:Dynamic, items_to_descriptions:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
-		Implement iter(self).
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
 	**/
-	public function __iter__():Dynamic;
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
-	/**
-		Return len(self).
-	**/
-	public function __len__():Dynamic;
 	/**
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
-	**/
-	public function __mul__(value:Dynamic):Dynamic;
-	/**
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of Dataset(data_sources, reader, decoder, num_samples, items_to_descriptions)
+		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(_cls:Dynamic, data_sources:Dynamic, reader:Dynamic, decoder:Dynamic, num_samples:Dynamic, items_to_descriptions:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,13 +99,9 @@ package tensorflow.contrib.slim.python.slim.data.dataset;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a nicely formatted representation string
+		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
-	/**
-		Return self*value.
-	**/
-	public function __rmul__(value:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -115,7 +111,6 @@ package tensorflow.contrib.slim.python.slim.data.dataset;
 		size of object in memory, in bytes
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var __slots__ : Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -130,46 +125,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a new OrderedDict which maps field names to their values.
+		list of weak references to the object (if defined)
 	**/
-	public function _asdict():Dynamic;
-	static public var _fields : Dynamic;
-	/**
-		Make a new Dataset object from a sequence or iterable
-	**/
-	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
-	/**
-		Return a new Dataset object replacing specified fields with new values
-	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public var _source : Dynamic;
-	/**
-		T.count(value) -> integer -- return number of occurrences of value
-	**/
-	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Alias for field number 0
-	**/
-	public var data_sources : Dynamic;
-	/**
-		Alias for field number 2
-	**/
-	public var decoder : Dynamic;
-	/**
-		T.index(value, [start, [stop]]) -> integer -- return first index of value.
-		Raises ValueError if the value is not present.
-	**/
-	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Alias for field number 4
-	**/
-	public var items_to_descriptions : Dynamic;
-	/**
-		Alias for field number 3
-	**/
-	public var num_samples : Dynamic;
-	/**
-		Alias for field number 1
-	**/
-	public var reader : Dynamic;
+	public var __weakref__ : Dynamic;
 }

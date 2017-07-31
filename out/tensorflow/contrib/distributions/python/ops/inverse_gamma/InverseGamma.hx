@@ -15,7 +15,7 @@ package tensorflow.contrib.distributions.python.ops.inverse_gamma;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(classname:Dynamic, baseclasses:Dynamic, attrs:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,56 +52,65 @@ package tensorflow.contrib.distributions.python.ops.inverse_gamma;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct InverseGamma distributions with parameters `alpha` and `beta`.
+		Construct InverseGamma with `concentration` and `rate` parameters.
 		
-		The parameters `alpha` and `beta` must be shaped in a way that supports
-		broadcasting (e.g. `alpha + beta` is a valid operation).
+		The parameters `concentration` and `rate` must be shaped in a way that
+		supports broadcasting (e.g. `concentration + rate` is a valid operation).
 		
 		Args:
-		  alpha: Floating point tensor, the shape params of the
-		    distribution(s).
-		    alpha must contain only positive values.
-		  beta: Floating point tensor, the scale params of the distribution(s).
-		    beta must contain only positive values.
-		  validate_args: Whether to assert that `a > 0, b > 0`, and that `x > 0` in
-		    the methods `prob(x)` and `log_prob(x)`.  If `validate_args` is `False`
-		    and the inputs are invalid, correct behavior is not guaranteed.
-		  allow_nan_stats:  Boolean, default `False`.  If `False`, raise an
-		    exception if a statistic (e.g. mean/mode/etc...) is undefined for any
-		    batch member.  If `True`, batch members with valid parameters leading to
-		    undefined statistics will return NaN for this statistic.
-		  name: The name to prepend to all ops created by this distribution.
+		  concentration: Floating point tensor, the concentration params of the
+		    distribution(s). Must contain only positive values.
+		  rate: Floating point tensor, the inverse scale params of the
+		    distribution(s). Must contain only positive values.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
+		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
+		    result is undefined. When `False`, an exception is raised if one or
+		    more of the statistic's batch members are undefined.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
 		
 		Raises:
-		  TypeError: if `alpha` and `beta` are different dtypes.
+		  TypeError: if `concentration` and `rate` are different dtypes.
 	**/
 	@:native("__init__")
-	public function ___init__(alpha:Dynamic, beta:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(concentration:Dynamic, rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct InverseGamma distributions with parameters `alpha` and `beta`.
+		Construct InverseGamma with `concentration` and `rate` parameters.
 		
-		The parameters `alpha` and `beta` must be shaped in a way that supports
-		broadcasting (e.g. `alpha + beta` is a valid operation).
+		The parameters `concentration` and `rate` must be shaped in a way that
+		supports broadcasting (e.g. `concentration + rate` is a valid operation).
 		
 		Args:
-		  alpha: Floating point tensor, the shape params of the
-		    distribution(s).
-		    alpha must contain only positive values.
-		  beta: Floating point tensor, the scale params of the distribution(s).
-		    beta must contain only positive values.
-		  validate_args: Whether to assert that `a > 0, b > 0`, and that `x > 0` in
-		    the methods `prob(x)` and `log_prob(x)`.  If `validate_args` is `False`
-		    and the inputs are invalid, correct behavior is not guaranteed.
-		  allow_nan_stats:  Boolean, default `False`.  If `False`, raise an
-		    exception if a statistic (e.g. mean/mode/etc...) is undefined for any
-		    batch member.  If `True`, batch members with valid parameters leading to
-		    undefined statistics will return NaN for this statistic.
-		  name: The name to prepend to all ops created by this distribution.
+		  concentration: Floating point tensor, the concentration params of the
+		    distribution(s). Must contain only positive values.
+		  rate: Floating point tensor, the inverse scale params of the
+		    distribution(s). Must contain only positive values.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
+		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
+		    result is undefined. When `False`, an exception is raised if one or
+		    more of the statistic's batch members are undefined.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
 		
 		Raises:
-		  TypeError: if `alpha` and `beta` are different dtypes.
+		  TypeError: if `concentration` and `rate` are different dtypes.
 	**/
-	public function new(alpha:Dynamic, beta:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
+	public function new(concentration:Dynamic, rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -161,234 +170,487 @@ package tensorflow.contrib.distributions.python.ops.inverse_gamma;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;
 	static public var _abc_registry : Dynamic;
-	public function _ones():Dynamic;
+	public function _batch_shape():Dynamic;
+	public function _batch_shape_tensor():Dynamic;
+	public function _call_cdf(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_cdf(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_prob(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_log_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_prob(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_quantile(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_sample_n(sample_shape:Dynamic, seed:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _cdf(x:Dynamic):Dynamic;
+	public function _covariance():Dynamic;
+	public function _entropy():Dynamic;
+	public function _event_shape():Dynamic;
+	public function _event_shape_tensor():Dynamic;
 	/**
-		Boolean describing behavior when a stat is undefined for batch member.
+		Helper to `sample` which ensures input is 1D.
+	**/
+	public function _expand_sample_shape_to_vector(x:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Implementation for `is_scalar_batch` and `is_scalar_event`.
+	**/
+	public function _is_scalar_helper(static_shape:Dynamic, dynamic_shape_fn:Dynamic):Dynamic;
+	public function _log_cdf(x:Dynamic):Dynamic;
+	public function _log_normalization():Dynamic;
+	public function _log_prob(x:Dynamic):Dynamic;
+	public function _log_survival_function(value:Dynamic):Dynamic;
+	public function _log_unnormalized_prob(x:Dynamic):Dynamic;
+	public function _maybe_assert_valid_sample(x:Dynamic):Dynamic;
+	/**
+		The mean of an inverse gamma distribution is
+		`rate / (concentration - 1)`, when `concentration > 1`, and `NaN`
+		otherwise. If `self.allow_nan_stats` is `False`, an exception will be
+		raised rather than returning `NaN`
+	**/
+	public function _mean():Dynamic;
+	/**
+		The mode of an inverse gamma distribution is `rate / (concentration +
+		1)`.
+	**/
+	public function _mode():Dynamic;
+	/**
+		Helper function to standardize op scope.
+	**/
+	public function _name_scope(?name:Dynamic, ?values:Dynamic):Dynamic;
+	static public function _param_shapes(sample_shape:Dynamic):Dynamic;
+	public function _prob(x:Dynamic):Dynamic;
+	public function _quantile(value:Dynamic):Dynamic;
+	/**
+		Note: See `tf.random_gamma` docstring for sampling details and
+		caveats.
+	**/
+	public function _sample_n(n:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Helper to `sample`; sets static shape info.
+	**/
+	public function _set_sample_static_shape(x:Dynamic, sample_shape:Dynamic):Dynamic;
+	public function _stddev():Dynamic;
+	public function _survival_function(value:Dynamic):Dynamic;
+	/**
+		Variance for inverse gamma is defined only for `concentration > 2`. If
+		`self.allow_nan_stats` is `False`, an exception will be raised rather
+		than returning `NaN`.
+	**/
+	public function _variance():Dynamic;
+	/**
+		Python `bool` describing behavior when a stat is undefined.
+		
+		Stats return +/- infinity when it makes sense. E.g., the variance of a
+		Cauchy distribution is infinity. However, sometimes the statistic is
+		undefined, e.g., if a distribution's pdf does not achieve a maximum within
+		the support of the distribution, the mode is undefined. If the mean is
+		undefined, then by definition the variance is undefined. E.g. the mean for
+		Student's T for df = 1 is undefined (no clear way to say it is either + or -
+		infinity), so the variance = E[(X - mean)**2] is also undefined.
+		
+		Returns:
+		  allow_nan_stats: Python `bool`.
 	**/
 	public var allow_nan_stats : Dynamic;
 	/**
-		Shape parameter.
-	**/
-	public var alpha : Dynamic;
-	/**
-		Batch dimensions of this instance as a 1-D int32 `Tensor`.
+		Shape of a single sample from a single event index as a `TensorShape`.
 		
-		The product of the dimensions of the `batch_shape` is the number of
-		independent distributions of this kind the instance represents.
+		May be partially defined or unknown.
+		
+		The batch dimensions are indexes into independent, non-identical
+		parameterizations of this distribution.
+		
+		Returns:
+		  batch_shape: `TensorShape`, possibly unknown.
+	**/
+	public var batch_shape : Dynamic;
+	/**
+		Shape of a single sample from a single event index as a 1-D `Tensor`.
+		
+		The batch dimensions are indexes into independent, non-identical
+		parameterizations of this distribution.
 		
 		Args:
 		  name: name to give to the op
 		
 		Returns:
-		  `Tensor` `batch_shape`
+		  batch_shape: `Tensor`.
 	**/
-	public function batch_shape(?name:Dynamic):Dynamic;
+	public function batch_shape_tensor(?name:Dynamic):Dynamic;
 	/**
-		Scale parameter.
-	**/
-	public var beta : Dynamic;
-	/**
-		CDF of observations `x` under these InverseGamma distribution(s).
+		Cumulative distribution function.
+		
+		Given random variable `X`, the cumulative distribution function `cdf` is:
+		
+		```none
+		cdf(x) := P[X <= x]
+		```
 		
 		Args:
-		  x: tensor of dtype `dtype`, must be broadcastable with `alpha` and `beta`.
+		  value: `float` or `double` `Tensor`.
 		  name: The name to give this op.
 		
 		Returns:
-		  cdf: tensor of dtype `dtype`, the CDFs of `x`.
+		  cdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
 	**/
-	public function cdf(x:Dynamic, ?name:Dynamic):Dynamic;
+	public function cdf(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		dtype of samples from this distribution.
+		Concentration parameter.
+	**/
+	public var concentration : Dynamic;
+	/**
+		Creates a deep copy of the distribution.
+		
+		Note: the copy distribution may continue to depend on the original
+		initialization arguments.
+		
+		Args:
+		  **override_parameters_kwargs: String/value dictionary of initialization
+		    arguments to override with new values.
+		
+		Returns:
+		  distribution: A new instance of `type(self)` initialized from the union
+		    of self.parameters and override_parameters_kwargs, i.e.,
+		    `dict(self.parameters, **override_parameters_kwargs)`.
+	**/
+	public function copy(?override_parameters_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Covariance.
+		
+		Covariance is (possibly) defined only for non-scalar-event distributions.
+		
+		For example, for a length-`k`, vector-valued distribution, it is calculated
+		as,
+		
+		```none
+		Cov[i, j] = Covariance(X_i, X_j) = E[(X_i - E[X_i]) (X_j - E[X_j])]
+		```
+		
+		where `Cov` is a (batch of) `k x k` matrix, `0 <= (i, j) < k`, and `E`
+		denotes expectation.
+		
+		Alternatively, for non-vector, multivariate distributions (e.g.,
+		matrix-valued, Wishart), `Covariance` shall return a (batch of) matrices
+		under some vectorization of the events, i.e.,
+		
+		```none
+		Cov[i, j] = Covariance(Vec(X)_i, Vec(X)_j) = [as above]
+		```
+		
+		where `Cov` is a (batch of) `k' x k'` matrices,
+		`0 <= (i, j) < k' = reduce_prod(event_shape)`, and `Vec` is some function
+		mapping indices of this distribution's event dimensions to indices of a
+		length-`k'` vector.
+		
+		Args:
+		  name: The name to give this op.
+		
+		Returns:
+		  covariance: Floating-point `Tensor` with shape `[B1, ..., Bn, k', k']`
+		    where the first `n` dimensions are batch coordinates and
+		    `k' = reduce_prod(self.event_shape)`.
+	**/
+	public function covariance(?name:Dynamic):Dynamic;
+	/**
+		The `DType` of `Tensor`s handled by this `Distribution`.
 	**/
 	public var dtype : Dynamic;
 	/**
-		The entropy of these InverseGamma distribution(s).
-		
-		This is defined to be
-		
-		```
-		entropy = alpha - log(beta) + log(Gamma(alpha))
-		             + (1-alpha)digamma(alpha)
-		```
-		
-		where digamma(alpha) is the digamma function.
-		
-		Args:
-		  name: The name to give this op.
-		
-		Returns:
-		  entropy: tensor of dtype `dtype`, the entropy.
+		Shannon entropy in nats.
 	**/
 	public function entropy(?name:Dynamic):Dynamic;
 	/**
-		Shape of a sample from a single distribution as a 1-D int32 `Tensor`.
+		Shape of a single sample from a single batch as a `TensorShape`.
+		
+		May be partially defined or unknown.
+		
+		Returns:
+		  event_shape: `TensorShape`, possibly unknown.
+	**/
+	public var event_shape : Dynamic;
+	/**
+		Shape of a single sample from a single batch as a 1-D int32 `Tensor`.
 		
 		Args:
 		  name: name to give to the op
 		
 		Returns:
-		  `Tensor` `event_shape`
+		  event_shape: `Tensor`.
 	**/
-	public function event_shape(?name:Dynamic):Dynamic;
+	public function event_shape_tensor(?name:Dynamic):Dynamic;
 	/**
-		`TensorShape` available at graph construction time.
-		
-		Same meaning as `batch_shape`. May be only partially defined.
-		
-		Returns:
-		  `TensorShape` object.
-	**/
-	public function get_batch_shape():Dynamic;
-	/**
-		`TensorShape` available at graph construction time.
-		
-		Same meaning as `event_shape`. May be only partially defined.
-		
-		Returns:
-		  `TensorShape` object.
-	**/
-	public function get_event_shape():Dynamic;
-	public var is_continuous : Dynamic;
-	public var is_reparameterized : Dynamic;
-	/**
-		Log CDF of observations `x` under these InverseGamma distribution(s).
+		Indicates that `batch_shape == []`.
 		
 		Args:
-		  x: tensor of dtype `dtype`, must be broadcastable with `alpha` and `beta`.
 		  name: The name to give this op.
 		
 		Returns:
-		  log_cdf: tensor of dtype `dtype`, the log-CDFs of `x`.
+		  is_scalar_batch: `bool` scalar `Tensor`.
 	**/
-	public function log_cdf(x:Dynamic, ?name:Dynamic):Dynamic;
+	public function is_scalar_batch(?name:Dynamic):Dynamic;
 	/**
-		Log of the probability density function.
-	**/
-	public function log_pdf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Log of the probability mass function.
-	**/
-	public function log_pmf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Log prob of observations in `x` under these InverseGamma distribution(s).
+		Indicates that `event_shape == []`.
 		
 		Args:
-		  x: tensor of dtype `dtype`, must be broadcastable with `alpha` and `beta`.
 		  name: The name to give this op.
 		
 		Returns:
-		  log_prob: tensor of dtype `dtype`, the log-PDFs of `x`.
-		
-		Raises:
-		  TypeError: if `x` and `alpha` are different dtypes.
+		  is_scalar_event: `bool` scalar `Tensor`.
 	**/
-	public function log_prob(x:Dynamic, ?name:Dynamic):Dynamic;
+	public function is_scalar_event(?name:Dynamic):Dynamic;
 	/**
-		Mean of each batch member.
+		Log cumulative distribution function.
 		
-		The mean of an inverse gamma distribution is `beta / (alpha - 1)`,
-		when `alpha > 1`, and `NaN` otherwise.  If `self.allow_nan_stats` is
-		`False`, an exception will be raised rather than returning `NaN`
+		Given random variable `X`, the cumulative distribution function `cdf` is:
+		
+		```none
+		log_cdf(x) := Log[ P[X <= x] ]
+		```
+		
+		Often, a numerical approximation can be used for `log_cdf(x)` that yields
+		a more accurate answer than simply taking the logarithm of the `cdf` when
+		`x << -1`.
 		
 		Args:
-		  name: A name to give this op.
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
 		
 		Returns:
-		  The mean for every batch member, a `Tensor` with same `dtype` as self.
+		  logcdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
+	**/
+	public function log_cdf(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Log probability density/mass function.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  log_prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
+	**/
+	public function log_prob(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Log survival function.
+		
+		Given random variable `X`, the survival function is defined:
+		
+		```none
+		log_survival_function(x) = Log[ P[X > x] ]
+		                         = Log[ 1 - P[X <= x] ]
+		                         = Log[ 1 - cdf(x) ]
+		```
+		
+		Typically, different numerical approximations can be used for the log
+		survival function, which are more accurate than `1 - cdf(x)` when `x >> 1`.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
+		    `self.dtype`.
+	**/
+	public function log_survival_function(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Mean.
+		
+		Additional documentation from `InverseGamma`:
+		
+		The mean of an inverse gamma distribution is
+		`rate / (concentration - 1)`, when `concentration > 1`, and `NaN`
+		otherwise. If `self.allow_nan_stats` is `False`, an exception will be
+		raised rather than returning `NaN`
 	**/
 	public function mean(?name:Dynamic):Dynamic;
 	/**
-		Mode of each batch member.
+		Mode.
 		
-		The mode of an inverse gamma distribution is `beta / (alpha + 1)`.
+		Additional documentation from `InverseGamma`:
 		
-		Args:
-		  name: A name to give this op.
-		
-		Returns:
-		  The mode for every batch member, a `Tensor` with same `dtype` as self.
+		The mode of an inverse gamma distribution is `rate / (concentration +
+		1)`.
 	**/
 	public function mode(?name:Dynamic):Dynamic;
 	/**
-		Name to prepend to all ops.
+		Name prepended to all ops created by this `Distribution`.
 	**/
 	public var name : Dynamic;
 	/**
-		The probability density function.
-	**/
-	public function pdf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		The probability mass function.
-	**/
-	public function pmf(value:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Pdf of observations in `x` under these Gamma distribution(s).
+		Shapes of parameters given the desired shape of a call to `sample()`.
+		
+		This is a class method that describes what key/value arguments are required
+		to instantiate the given `Distribution` so that a particular shape is
+		returned for that instance's call to `sample()`.
+		
+		Subclasses should override class method `_param_shapes`.
 		
 		Args:
-		  x: tensor of dtype `dtype`, must be broadcastable with `alpha` and `beta`.
+		  sample_shape: `Tensor` or python list/tuple. Desired shape of a call to
+		    `sample()`.
+		  name: name to prepend ops with.
+		
+		Returns:
+		  `dict` of parameter name to `Tensor` shapes.
+	**/
+	static public function param_shapes(sample_shape:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		param_shapes with static (i.e. `TensorShape`) shapes.
+		
+		This is a class method that describes what key/value arguments are required
+		to instantiate the given `Distribution` so that a particular shape is
+		returned for that instance's call to `sample()`. Assumes that the sample's
+		shape is known statically.
+		
+		Subclasses should override class method `_param_shapes` to return
+		constant-valued tensors when constant values are fed.
+		
+		Args:
+		  sample_shape: `TensorShape` or python list/tuple. Desired shape of a call
+		    to `sample()`.
+		
+		Returns:
+		  `dict` of parameter name to `TensorShape`.
+		
+		Raises:
+		  ValueError: if `sample_shape` is a `TensorShape` and is not fully defined.
+	**/
+	static public function param_static_shapes(sample_shape:Dynamic):Dynamic;
+	/**
+		Dictionary of parameters used to instantiate this `Distribution`.
+	**/
+	public var parameters : Dynamic;
+	/**
+		Probability density/mass function.
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
 		  name: The name to give this op.
 		
 		Returns:
-		  prob: tensor of dtype `dtype`, the PDFs of `x`
-		
-		Raises:
-		  TypeError: if `x` and `alpha` are different dtypes.
+		  prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
 	**/
-	public function prob(x:Dynamic, ?name:Dynamic):Dynamic;
+	public function prob(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Generate samples of the specified shape for each batched distribution.
+		Quantile function. Aka "inverse cdf" or "percent point function".
 		
-		Note that a call to `sample()` without arguments will generate a single
-		sample per batched distribution.
+		Given random variable `X` and `p in [0, 1]`, the `quantile` is:
+		
+		```none
+		quantile(p) := x such that P[X <= x] == p
+		```
 		
 		Args:
-		  sample_shape: `int32` `Tensor` or tuple or list. Shape of the generated
-		    samples.
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  quantile: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
+		    values of type `self.dtype`.
+	**/
+	public function quantile(value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Rate parameter.
+	**/
+	public var rate : Dynamic;
+	/**
+		Describes how samples from the distribution are reparameterized.
+		
+		Currently this is one of the static instances
+		`distributions.FULLY_REPARAMETERIZED`
+		or `distributions.NOT_REPARAMETERIZED`.
+		
+		Returns:
+		  An instance of `ReparameterizationType`.
+	**/
+	public var reparameterization_type : Dynamic;
+	/**
+		Generate samples of the specified shape.
+		
+		Note that a call to `sample()` without arguments will generate a single
+		sample.
+		
+		Args:
+		  sample_shape: 0D or 1D `int32` `Tensor`. Shape of the generated samples.
 		  seed: Python integer seed for RNG
 		  name: name to give to the op.
 		
 		Returns:
-		  samples: a `Tensor` of dtype `self.dtype` and shape
-		      `sample_shape + self.batch_shape + self.event_shape`.
+		  samples: a `Tensor` with prepended dimensions `sample_shape`.
 	**/
 	public function sample(?sample_shape:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Draws `n` samples from these InverseGamma distribution(s).
+		Standard deviation.
 		
-		See the doc for tf.random_gamma for further details on sampling strategy.
+		Standard deviation is defined as,
+		
+		```none
+		stddev = E[(X - E[X])**2]**0.5
+		```
+		
+		where `X` is the random variable associated with this distribution, `E`
+		denotes expectation, and `stddev.shape = batch_shape + event_shape`.
 		
 		Args:
-		  n: Python integer, the number of observations to sample from each
-		    distribution.
-		  seed: Python integer, the random seed for this operation.
-		  name: Optional name for the operation.
+		  name: The name to give this op.
 		
 		Returns:
-		  samples: a `Tensor` of shape `(n,) + self.batch_shape + self.event_shape`
-		      with values of type `self.dtype`.
+		  stddev: Floating-point `Tensor` with shape identical to
+		    `batch_shape + event_shape`, i.e., the same shape as `self.mean()`.
 	**/
-	public function sample_n(n:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	public function stddev(?name:Dynamic):Dynamic;
 	/**
-		Standard deviation of the distribution.
+		Survival function.
+		
+		Given random variable `X`, the survival function is defined:
+		
+		```none
+		survival_function(x) = P[X > x]
+		                     = 1 - P[X <= x]
+		                     = 1 - cdf(x).
+		```
+		
+		Args:
+		  value: `float` or `double` `Tensor`.
+		  name: The name to give this op.
+		
+		Returns:
+		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
+		    `self.dtype`.
 	**/
-	public function std(?name:Dynamic):Dynamic;
+	public function survival_function(value:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Boolean describing behavior on invalid input.
+		Python `bool` indicating possibly expensive checks are enabled.
 	**/
 	public var validate_args : Dynamic;
 	/**
-		Variance of each batch member.
+		Variance.
 		
-		Variance for inverse gamma is defined only for `alpha > 2`. If
+		Variance is defined as,
+		
+		```none
+		Var = E[(X - E[X])**2]
+		```
+		
+		where `X` is the random variable associated with this distribution, `E`
+		denotes expectation, and `Var.shape = batch_shape + event_shape`.
+		
+		
+		Additional documentation from `InverseGamma`:
+		
+		Variance for inverse gamma is defined only for `concentration > 2`. If
 		`self.allow_nan_stats` is `False`, an exception will be raised rather
 		than returning `NaN`.
 		
 		Args:
-		  name: A name to give this op.
+		  name: The name to give this op.
 		
 		Returns:
-		  The variance for every batch member, a `Tensor` with same `dtype` as self.
+		  variance: Floating-point `Tensor` with shape identical to
+		    `batch_shape + event_shape`, i.e., the same shape as `self.mean()`.
 	**/
 	public function variance(?name:Dynamic):Dynamic;
 }

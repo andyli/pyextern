@@ -54,6 +54,13 @@ package pandas.io.sql;
 	**/
 	public function new(engine:Dynamic, ?schema:Dynamic, ?meta:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -158,7 +165,7 @@ package pandas.io.sql;
 		index_col : string, optional, default: None
 		    Column name to use as index for the returned DataFrame object.
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects (like
+		    Attempt to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
@@ -199,7 +206,7 @@ package pandas.io.sql;
 		index_col : string, optional, default: None
 		    Column name to use as index for the returned DataFrame object.
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects (like
+		    Attempt to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
@@ -240,7 +247,7 @@ package pandas.io.sql;
 		index_col : string, optional, default: None
 		    Column to set as index
 		coerce_float : boolean, default True
-		    Attempt to convert values to non-string, non-numeric objects
+		    Attempt to convert values of non-string, non-numeric objects
 		    (like decimal.Decimal) to floating point. This can result in
 		    loss of precision.
 		parse_dates : list or dict, default: None

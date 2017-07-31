@@ -11,6 +11,7 @@ package tensorflow.python.platform.benchmark;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _benchmark_tests_can_log_memory():Dynamic;
 	/**
 		Method for recording a benchmark directly.
 		
@@ -41,12 +42,13 @@ package tensorflow.python.platform.benchmark;
 	static public function _run_benchmarks(regex:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Run benchmarks as declared in args.
+		Run benchmarks as declared in argv.
 		
 		Args:
 		  true_main: True main function to run if benchmarks are not requested.
+		  argv: the command line arguments (if None, uses sys.argv).
 	**/
-	static public function benchmarks_main(true_main:Dynamic):Dynamic;
+	static public function benchmarks_main(true_main:Dynamic, ?argv:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

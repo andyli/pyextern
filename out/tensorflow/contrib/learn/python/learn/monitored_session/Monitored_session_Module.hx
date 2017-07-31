@@ -9,10 +9,6 @@ package tensorflow.contrib.learn.python.learn.monitored_session;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Retrieves Graph element.
-	**/
-	static public function _as_graph_element(obj:Dynamic, graph:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

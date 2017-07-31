@@ -53,11 +53,18 @@ package pandas.core.categorical;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic):Dynamic;
+	public function ___init__(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic):Void;
+	public function new(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?fastpath:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns an Iterator over the values of this Categorical.
 	**/
@@ -138,6 +145,29 @@ package pandas.core.categorical;
 	public var __weakref__ : Dynamic;
 	static public var _categories : Dynamic;
 	static public var _codes : Dynamic;
+	/**
+		If sort=False, return a copy of self, coded with categories as
+		returned by .unique(), followed by any categories not appearing in
+		the data. If sort=True, return self.
+		
+		This method is needed solely to ensure the categorical index of the
+		GroupBy result has categories in the order of appearance in the data
+		(GH-8868).
+		
+		Parameters
+		----------
+		sort : boolean
+		    The value of the sort paramter groupby was called with.
+		
+		Returns
+		-------
+		Categorical
+		    If sort=False, the new categories are set to the order of
+		    appearance in codes (unless ordered=True, in which case the
+		    original order is preserved), followed by any unrepresented
+		    categories in the original order.
+	**/
+	public function _codes_for_groupby(sort:Dynamic):Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
@@ -275,6 +305,17 @@ package pandas.core.categorical;
 	**/
 	static public function _validate_ordered(ordered:Dynamic):Dynamic;
 	/**
+		For correctly ranking ordered categorical data. See GH#15420
+		
+		Ordered categorical data should be ranked on the basis of
+		codes with -1 translated to NaN.
+		
+		Returns
+		-------
+		numpy array
+	**/
+	public function _values_for_rank():Dynamic;
+	/**
 		Add new categories.
 		
 		`new_categories` will be included at the last/highest place in the
@@ -326,7 +367,7 @@ package pandas.core.categorical;
 		--------
 		numpy.ndarray.argsort
 	**/
-	public function argsort(?ascending:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argsort(?ascending:Dynamic, ?kind:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be ordered
 		
@@ -505,7 +546,7 @@ package pandas.core.categorical;
 		    categorical. If not given, the resulting categorical will be
 		    unordered.
 	**/
-	static public function from_codes(codes:Dynamic, categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic):Dynamic;
+	static public function from_codes(codes:Dynamic, categories:Dynamic, ?ordered:Dynamic):Dynamic;
 	/**
 		Return the values.
 		
@@ -542,7 +583,7 @@ package pandas.core.categorical;
 		
 		See also
 		--------
-		pandas.isnull : pandas version
+		isnull : pandas version
 		Categorical.notnull : boolean inverse of Categorical.isnull
 	**/
 	public function isnull():Dynamic;
@@ -566,7 +607,7 @@ package pandas.core.categorical;
 		
 		Returns
 		-------
-		applied : Categorical or np.ndarray.
+		applied : Categorical or Index.
 	**/
 	public function map(mapper:Dynamic):Dynamic;
 	/**
@@ -625,8 +666,7 @@ package pandas.core.categorical;
 	/**
 		Returns the mode(s) of the Categorical.
 		
-		Empty if nothing occurs at least 2 times.  Always returns `Categorical`
-		even if only one value.
+		Always returns `Categorical` even if only one value.
 		
 		Returns
 		-------
@@ -647,7 +687,7 @@ package pandas.core.categorical;
 		
 		See also
 		--------
-		pandas.notnull : pandas version
+		notnull : pandas version
 		Categorical.isnull : boolean inverse of Categorical.notnull
 	**/
 	public function notnull():Dynamic;
@@ -829,12 +869,12 @@ package pandas.core.categorical;
 		Find indices where elements should be inserted to maintain order.
 		
 		Find the indices into a sorted Categorical `self` such that, if the
-		corresponding elements in `v` were inserted before the indices, the
-		order of `self` would be preserved.
+		corresponding elements in `value` were inserted before the indices,
+		the order of `self` would be preserved.
 		
 		Parameters
 		----------
-		v : array_like
+		value : array_like
 		    Values to insert into `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
@@ -847,7 +887,7 @@ package pandas.core.categorical;
 		Returns
 		-------
 		indices : array of ints
-		    Array of insertion points with the same shape as `v`.
+		    Array of insertion points with the same shape as `value`.
 		
 		See Also
 		--------
@@ -859,34 +899,43 @@ package pandas.core.categorical;
 		
 		Examples
 		--------
+		
 		>>> x = pd.Series([1, 2, 3])
 		>>> x
 		0    1
 		1    2
 		2    3
 		dtype: int64
+		
 		>>> x.searchsorted(4)
 		array([3])
+		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
+		
 		>>> x.searchsorted([1, 3], side='left')
 		array([0, 2])
+		
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
-		>>>
+		
 		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
+		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
+		
 		>>> x.searchsorted(['bread'])
 		array([1])
+		
 		>>> x.searchsorted(['bread', 'eggs'])
 		array([1, 4])
+		
 		>>> x.searchsorted(['bread', 'eggs'], side='right')
 		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
+	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		Sets the categories to the specified new_categories.
 		
@@ -1014,6 +1063,7 @@ package pandas.core.categorical;
 		See Also
 		--------
 		Categorical.sort
+		Series.sort_values
 		
 		Examples
 		--------
@@ -1092,6 +1142,33 @@ package pandas.core.categorical;
 		Returns
 		-------
 		unique values : ``Categorical``
+		
+		Examples
+		--------
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.Categorical(list('baabc'))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.Categorical(list('baabc'), categories=list('abc'))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.Categorical(list('baabc'),
+		...                categories=list('abc'),
+		...                ordered=True)
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		See Also
+		--------
+		unique
+		CategoricalIndex.unique
+		Series.unique
 	**/
 	public function unique():Dynamic;
 	/**
@@ -1107,6 +1184,10 @@ package pandas.core.categorical;
 		Returns
 		-------
 		counts : Series
+		
+		See Also
+		--------
+		Series.value_counts
 	**/
 	public function value_counts(?dropna:Dynamic):pandas.Series;
 	/**

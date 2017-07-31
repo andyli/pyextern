@@ -279,6 +279,10 @@ package scipy.sparse.construct;
 		        with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function identity(n:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
+	/**
+		Is x either a scalar, an array scalar, or a 0-dim array?
+	**/
+	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		kronecker product of sparse matrices A and B

@@ -51,6 +51,13 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function new(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Void;
 	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -152,7 +159,6 @@ package matplotlib.backends.backend_ps;
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
-	public function _gray(im:Dynamic, ?rc:Dynamic, ?gc:Dynamic, ?bc:Dynamic):Dynamic;
 	public function _hex_lines(s:Dynamic, ?chars_per_line:Dynamic):Dynamic;
 	/**
 		This is a helper method (along with
@@ -205,8 +211,7 @@ package matplotlib.backends.backend_ps;
 		is not the same for every path.
 	**/
 	public function _iter_collection_uses_per_path(paths:Dynamic, all_transforms:Dynamic, offsets:Dynamic, facecolors:Dynamic, edgecolors:Dynamic):Dynamic;
-	public function _rgb(im:Dynamic):Dynamic;
-	public function _rgba(im:Dynamic):Dynamic;
+	public function _rgb(rgba:Dynamic):Dynamic;
 	static public var afmfontd : Dynamic;
 	/**
 		Close a grouping element with label *s*
@@ -240,12 +245,8 @@ package matplotlib.backends.backend_ps;
 		Draw the Image instance into the current axes; x is the
 		distance in pixels from the left hand side of the canvas and y
 		is the distance from bottom
-		
-		dx, dy is the width and height of the image.  If a transform
-		(which must be an affine transform) is given, x, y, dx, dy are
-		interpreted as the coordinate of the transform.
 	**/
-	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?transform:Dynamic):Dynamic;
+	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Draw the markers defined by path at each of the positions in x
 		and y.  path coordinates are points, x and y coords will be
@@ -300,7 +301,6 @@ package matplotlib.backends.backend_ps;
 		return true if small y numbers are top for renderer
 	**/
 	public function flipy():Dynamic;
-	static public var fontd : Dynamic;
 	/**
 		return the canvas width and height in display coords
 	**/

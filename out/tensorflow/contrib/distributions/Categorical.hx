@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions;
-typedef Categorical = tensorflow.contrib.distributions.python.ops.categorical.Categorical;
+typedef Categorical = tensorflow.python.ops.distributions.categorical.Categorical;

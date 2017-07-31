@@ -19,6 +19,10 @@ package numpy.compat.py3k;
 	static public var division : Dynamic;
 	static public function getexception():Dynamic;
 	static public var integer_types : Dynamic;
+	/**
+		Check whether obj is a pathlib.Path object.
+	**/
+	static public function is_pathlib_path(obj:Dynamic):Dynamic;
 	static public function isfileobj(f:Dynamic):Dynamic;
 	/**
 		Load a module.

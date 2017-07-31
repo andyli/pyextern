@@ -10,7 +10,6 @@ package tensorflow.contrib.distributions.python.ops.operator_pd_full;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _check_symmetric(matrix:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

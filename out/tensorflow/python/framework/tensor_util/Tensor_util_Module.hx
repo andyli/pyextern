@@ -63,6 +63,7 @@ package tensorflow.python.framework.tensor_util;
 	static public function _FilterInt(v:Dynamic):Dynamic;
 	static public function _FilterNotTensor(v:Dynamic):Dynamic;
 	static public function _FilterStr(v:Dynamic):Dynamic;
+	static public function _FilterTuple(v:Dynamic):Dynamic;
 	static public function _FirstNotNone(l:Dynamic):Dynamic;
 	static public function _FlattenToStrings(nested_strings:Dynamic):Dynamic;
 	/**
@@ -127,12 +128,26 @@ package tensorflow.python.framework.tensor_util;
 	static public function constant_value_as_shape(tensor:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Check whether `x` is of tensor type.
+		
+		Check whether an object is a tensor. Equivalent to
+		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
+		
+		Args:
+		  x: An python object to check.
+		
+		Returns:
+		  `True` if `x` is a tensor, `False` if not.
+	**/
+	static public function is_tensor(x:Dynamic):Dynamic;
+	/**
 		Create a TensorProto.
 		
 		Args:
-		  values:    Values to put in the TensorProto.
-		  dtype:     Optional tensor_pb2 DataType value.
-		  shape:     List of integers representing the dimensions of tensor.
+		  values:         Values to put in the TensorProto.
+		  dtype:          Optional tensor_pb2 DataType value.
+		  shape:          List of integers representing the dimensions of tensor.
+		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
 		  A TensorProto. Depending on the type, it may contain data in the
@@ -142,7 +157,8 @@ package tensorflow.python.framework.tensor_util;
 		
 		Raises:
 		  TypeError:  if unsupported types are provided.
-		  ValueError: if arguments have inappropriate values.
+		  ValueError: if arguments have inappropriate values or if verify_shape is
+		   True and shape of values is not equals to a shape from the argument.
 		
 		make_tensor_proto accepts "values" of a python scalar, a python list, a
 		numpy ndarray, or a numpy scalar.
@@ -164,6 +180,6 @@ package tensorflow.python.framework.tensor_util;
 		Otherwise, "shape" specifies the tensor's shape and the numpy array
 		can not have more elements than what "shape" specifies.
 	**/
-	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic):Dynamic;
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

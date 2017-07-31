@@ -17,7 +17,7 @@ package pandas.compat.chainmap_impl;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		New ChainMap or subclass with a new copy of maps[0] and refs to
@@ -69,6 +69,13 @@ package pandas.compat.chainmap_impl;
 		If no mappings are provided, a single empty dictionary is used.
 	**/
 	public function new(?maps:python.VarArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -98,6 +105,7 @@ package pandas.compat.chainmap_impl;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __repr__():Dynamic;
+	static public var __reversed__ : Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/

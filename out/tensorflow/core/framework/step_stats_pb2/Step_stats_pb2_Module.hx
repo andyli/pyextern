@@ -4,6 +4,7 @@ package tensorflow.core.framework.step_stats_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _ALLOCATORMEMORYUSED : Dynamic;
 	static public var _DEVICESTEPSTATS : Dynamic;
+	static public var _MEMORYSTATS : Dynamic;
 	static public var _NODEEXECSTATS : Dynamic;
 	static public var _NODEOUTPUT : Dynamic;
 	static public var _STEPSTATS : Dynamic;

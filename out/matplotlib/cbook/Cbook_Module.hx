@@ -20,6 +20,7 @@ package matplotlib.cbook;
 	static public var _find_dedent_regex : Dynamic;
 	static public function _generate_deprecation_message(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
 	static public var _linestyles : Dynamic;
+	static public var _lockstr : Dynamic;
 	static public function _putmask(a:Dynamic, mask:Dynamic, values:Dynamic):Dynamic;
 	/**
 		Converts a non-empty list or an ndarray of two or fewer dimensions
@@ -81,9 +82,12 @@ package matplotlib.cbook;
 		    fewer dimensions.
 		
 		whis : float, string, or sequence (default = 1.5)
-		    As a float, determines the reach of the whiskers past the first
-		    and third quartiles (e.g., Q3 + whis*IQR, QR = interquartile
-		    range, Q3-Q1). Beyond the whiskers, data are considered outliers
+		    As a float, determines the reach of the whiskers to the beyond the
+		    first and third quartiles. In other words, where IQR is the
+		    interquartile range (`Q3-Q1`), the upper whisker will extend to last
+		    datum less than `Q3 + whis*IQR`). Similarly, the lower whisker will
+		    extend to the first datum greater than `Q1 - whis*IQR`.
+		    Beyond the whiskers, data are considered outliers
 		    and are plotted as individual points. This can be set this to an
 		    ascending sequence of percentile (e.g., [5, 95]) to set the
 		    whiskers at specific percentiles of the data. Finally, `whis`
@@ -188,7 +192,7 @@ package matplotlib.cbook;
 		Decorator to mark a function as deprecated.
 		
 		Parameters
-		------------
+		----------
 		since : str
 		    The release at which this API became deprecated.  This is
 		    required.
@@ -258,7 +262,7 @@ package matplotlib.cbook;
 		    ['John', 'Hunter', 1, 23, 42, 5, 23]
 		
 		By: Composite of Holger Krekel and Luther Blissett
-		From: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/121294
+		From: https://code.activestate.com/recipes/121294/
 		and Recipe 1.12 in cookbook
 	**/
 	static public function flatten(seq:Dynamic, ?scalarp:Dynamic):Dynamic;
@@ -366,7 +370,7 @@ package matplotlib.cbook;
 		kwargs dict in place.
 		
 		Parameters
-		------------
+		----------
 		    local_var: any object
 		        The local variable (highest priority)
 		
@@ -378,12 +382,12 @@ package matplotlib.cbook;
 		        priority
 		
 		Returns
-		---------
+		-------
 		    out: any object
 		        Either local_var or one of kwargs[key] for key in keys
 		
 		Raises
-		--------
+		------
 		    IgnoredKeywordWarning
 		        For each key in keys that is removed from kwargs but not used as
 		        the output value
@@ -681,7 +685,7 @@ package matplotlib.cbook;
 		Used to display deprecation warning in a standard way.
 		
 		Parameters
-		------------
+		----------
 		since : str
 		    The release at which this API became deprecated.
 		
