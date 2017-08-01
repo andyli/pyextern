@@ -1,7 +1,7 @@
 import haxe.macro.*;
 
 class Test {
-    static var packages(default, never) = "docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow".split(",");
+    static var packages(default, never) = "docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,torch".split(",");
     macro static function importPackages() {
         for (p in packages) {
             #if (haxe_ver >= 3.3)

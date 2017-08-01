@@ -21,9 +21,9 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		arctanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Inverse hyperbolic sine element-wise.
+		Inverse hyperbolic tangent element-wise.
 		
 		Parameters
 		----------
@@ -44,35 +44,39 @@ package scipy.sparse.data;
 		Returns
 		-------
 		out : ndarray
-		    Array of of the same shape as `x`.
+		    Array of the same shape as `x`.
+		
+		See Also
+		--------
+		emath.arctanh
 		
 		Notes
 		-----
-		`arcsinh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `sinh(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi/2, pi/2]`.
+		`arctanh` is a multivalued function: for each `x` there are infinitely
+		many numbers `z` such that `tanh(z) = x`. The convention is to return
+		the `z` whose imaginary part lies in `[-pi/2, pi/2]`.
 		
-		For real-valued input data types, `arcsinh` always returns real output.
-		For each value that cannot be expressed as a real number or infinity, it
-		returns ``nan`` and sets the `invalid` floating point error flag.
+		For real-valued input data types, `arctanh` always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
 		
-		For complex-valued input, `arccos` is a complex analytical function that
-		has branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from
-		the right on the former and from the left on the latter.
+		For complex-valued input, `arctanh` is a complex analytical function
+		that has branch cuts `[-1, -inf]` and `[1, inf]` and is continuous from
+		above on the former and from below on the latter.
 		
-		The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``.
+		The inverse hyperbolic tangent is also known as `atanh` or ``tanh^-1``.
 		
 		References
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		       http://en.wikipedia.org/wiki/Arctanh
 		
 		Examples
 		--------
-		>>> np.arcsinh(np.array([np.e, 10.0]))
-		array([ 1.72538256,  2.99822295])
+		>>> np.arctanh([0, -0.5])
+		array([ 0.        , -0.54930614])
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

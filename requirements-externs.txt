@@ -5,3 +5,4 @@ pandas==0.20.3
 matplotlib==2.0.2
 seaborn==0.8
 tensorflow==1.2.1
+pytorch-gpu==0.1.12
