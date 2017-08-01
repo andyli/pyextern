@@ -21,11 +21,9 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		arcsinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Compute hyperbolic tangent element-wise.
-		
-		Equivalent to ``np.sinh(x)/np.cosh(x)`` or ``-1j * np.tan(1j*x)``.
+		Inverse hyperbolic sine element-wise.
 		
 		Parameters
 		----------
@@ -45,39 +43,36 @@ package scipy.sparse.data;
 		
 		Returns
 		-------
-		y : ndarray
-		    The corresponding hyperbolic tangent values.
+		out : ndarray
+		    Array of of the same shape as `x`.
 		
 		Notes
 		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
+		`arcsinh` is a multivalued function: for each `x` there are infinitely
+		many numbers `z` such that `sinh(z) = x`. The convention is to return the
+		`z` whose imaginary part lies in `[-pi/2, pi/2]`.
+		
+		For real-valued input data types, `arcsinh` always returns real output.
+		For each value that cannot be expressed as a real number or infinity, it
+		returns ``nan`` and sets the `invalid` floating point error flag.
+		
+		For complex-valued input, `arccos` is a complex analytical function that
+		has branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from
+		the right on the former and from the left on the latter.
+		
+		The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``.
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		       New York, NY: Dover, 1972, pg. 83.
-		       http://www.math.sfu.ca/~cbm/aands/
-		
-		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
+		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
+		.. [2] Wikipedia, "Inverse hyperbolic function",
+		       http://en.wikipedia.org/wiki/Arcsinh
 		
 		Examples
 		--------
-		>>> np.tanh((0, np.pi*1j, np.pi*1j/2))
-		array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])
-		
-		>>> # Example of providing the optional output parameter illustrating
-		>>> # that what is returned is a reference to said parameter
-		>>> out2 = np.tanh([0.1], out1)
-		>>> out2 is out1
-		True
-		
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		>>> np.arcsinh(np.array([np.e, 10.0]))
+		array([ 1.72538256,  2.99822295])
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

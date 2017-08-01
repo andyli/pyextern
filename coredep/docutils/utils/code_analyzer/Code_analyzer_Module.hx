@@ -9,6 +9,13 @@ package docutils.utils.code_analyzer;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _get_ttype_class(ttype:Dynamic):Dynamic;
+	/**
+		Get a lexer by an alias.
+		
+		Raises ClassNotFound if not found.
+	**/
+	static public function get_lexer_by_name(_alias:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	static public var unstyled_tokens : Dynamic;
 	static public var with_pygments : Dynamic;
 }
