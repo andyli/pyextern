@@ -245,7 +245,9 @@ class Processor {
 								});
 							}
 							if (td.fields.exists(function(f) return f.name == field.name)) {
+								#if debug
 								trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+								#end
 							} else {
 								td.fields.push(field);
 								if (clsMemName == "__init__") {
@@ -289,7 +291,9 @@ class Processor {
 								});
 							}
 							if (td.fields.exists(function(f) return f.name == field.name)) {
+								#if debug
 								trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+								#end
 							} else {
 								td.fields.push(field);
 							}
@@ -359,7 +363,9 @@ class Processor {
 						});
 					}
 					if (td.fields.exists(function(f) return f.name == field.name)) {
+						#if debug
 						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+						#end
 					} else {
 						td.fields.push(field);
 					}
@@ -388,7 +394,9 @@ class Processor {
 						});
 					}
 					if (td.fields.exists(function(f) return f.name == field.name)) {
+						#if debug
 						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+						#end
 					} else {
 						td.fields.push(field);
 					}

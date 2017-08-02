@@ -52,7 +52,9 @@ class Main {
 
 		var printer = new haxe.macro.Printer();
 		for (td in tds) {
+			#if debug
 			trace('write: ${td.pack.join(".")}.${td.name}');
+			#end
 			var clsStr = "/* This file is generated, do not edit! */\n" + printer.printTypeDefinition(td);
 			var packDir = Path.join(td.pack);
 			if (packDir != "")
