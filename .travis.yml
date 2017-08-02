@@ -6,7 +6,7 @@ haxe:
 
 env:
   - REQUIREMENTS=requirements.txt         OUTDIR=coredep GENLIBS=docutils,pkgutil,inspect,importlib
-  - REQUIREMENTS=requirements-externs.txt OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,torch
+  - REQUIREMENTS=requirements-externs.txt OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,torch,theano,keras
 
 sudo: required
 dist: trusty

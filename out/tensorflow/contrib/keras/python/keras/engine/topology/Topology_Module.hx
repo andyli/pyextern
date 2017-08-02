@@ -122,7 +122,6 @@ package tensorflow.contrib.keras.python.keras.engine.topology;
 		    List of input tensors.
 	**/
 	static public function get_source_inputs(tensor:Dynamic, ?layer:Dynamic, ?node_index:Dynamic):Dynamic;
-	static public var h5py : Dynamic;
 	/**
 		Implements topological (order-based) weight loading.
 		
@@ -177,5 +176,4 @@ package tensorflow.contrib.keras.python.keras.engine.topology;
 	**/
 	static public function print_layer_summary(model:Dynamic, ?line_length:Dynamic, ?positions:Dynamic):Dynamic;
 	static public function save_weights_to_hdf5_group(f:Dynamic, layers:Dynamic):Dynamic;
-	static public var yaml : Dynamic;
 }

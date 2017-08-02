@@ -21,14 +21,16 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arctanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Inverse hyperbolic tangent element-wise.
+		Return the natural logarithm of one plus the input array, element-wise.
+		
+		Calculates ``log(1 + x)``.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
+		    Input values.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -43,40 +45,43 @@ package scipy.sparse.data;
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of the same shape as `x`.
+		y : ndarray
+		    Natural logarithm of `1 + x`, element-wise.
 		
 		See Also
 		--------
-		emath.arctanh
+		expm1 : ``exp(x) - 1``, the inverse of `log1p`.
 		
 		Notes
 		-----
-		`arctanh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `tanh(z) = x`. The convention is to return
-		the `z` whose imaginary part lies in `[-pi/2, pi/2]`.
+		For real-valued input, `log1p` is accurate also for `x` so small
+		that `1 + x == 1` in floating-point accuracy.
 		
-		For real-valued input data types, `arctanh` always returns real output.
+		Logarithm is a multivalued function: for each `x` there is an infinite
+		number of `z` such that `exp(z) = 1 + x`. The convention is to return
+		the `z` whose imaginary part lies in `[-pi, pi]`.
+		
+		For real-valued input data types, `log1p` always returns real output.
 		For each value that cannot be expressed as a real number or infinity,
 		it yields ``nan`` and sets the `invalid` floating point error flag.
 		
-		For complex-valued input, `arctanh` is a complex analytical function
-		that has branch cuts `[-1, -inf]` and `[1, inf]` and is continuous from
-		above on the former and from below on the latter.
-		
-		The inverse hyperbolic tangent is also known as `atanh` or ``tanh^-1``.
+		For complex-valued input, `log1p` is a complex analytical function that
+		has a branch cut `[-inf, -1]` and is continuous from above on it.
+		`log1p` handles the floating-point negative zero as an infinitesimal
+		negative number, conforming to the C99 standard.
 		
 		References
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arctanh
+		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
+		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
-		>>> np.arctanh([0, -0.5])
-		array([ 0.        , -0.54930614])
+		>>> np.log1p(1e-99)
+		1e-99
+		>>> np.log(1 + 1e-99)
+		0.0
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

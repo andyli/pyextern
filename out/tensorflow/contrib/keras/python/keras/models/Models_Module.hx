@@ -70,7 +70,6 @@ package tensorflow.contrib.keras.python.keras.models;
 	**/
 	static public function ask_to_proceed_with_overwrite(filepath:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public var h5py : Dynamic;
 	/**
 		Loads a model saved via `save_model`.
 		
@@ -158,5 +157,4 @@ package tensorflow.contrib.keras.python.keras.models;
 		    ImportError: if h5py is not available.
 	**/
 	static public function save_model(model:Dynamic, filepath:Dynamic, ?overwrite:Dynamic, ?include_optimizer:Dynamic):Dynamic;
-	static public var yaml : Dynamic;
 }

@@ -21,6 +21,5 @@ package tensorflow.contrib.keras.python.keras.utils.io_utils;
 	**/
 	static public function ask_to_proceed_with_overwrite(filepath:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public var h5py : Dynamic;
 	static public var print_function : Dynamic;
 }
