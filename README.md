@@ -10,7 +10,7 @@ This repository also includes a set of generated externs.
 
  1. Install the Python lib, probably using `pip3`.
  2. Install the Python dependencies of the generator by `pip3 install -r requirements.txt`.
- 3. Install the Haxe dependencies of the generator by `haxe install build.hxml`.
+ 3. Install the Haxe dependencies of the generator by `haxelib install build.hxml`.
  4. Build the generator by `haxe build.hxml`
  5. Generate externs by `python3 Main.py moduleName1,moduleName2,moduleName3 path/to/output_dir`
 
