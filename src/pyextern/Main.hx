@@ -236,7 +236,9 @@ class Main {
 			"catch","new","this","throw","extern","enum","in","interface",
 			"cast","override","dynamic","typedef","package",
 			"inline","using","null","true","false","abstract","macro",
-			"__init__" //haxe 3.2.1 has issue with this..
+			"__init__", //haxe 3.2.1 has issue with this..
+			"overload", "operator",
+			"final", "is"
 		].indexOf(name) >= 0;
 	}
 
