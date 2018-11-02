@@ -181,6 +181,7 @@ class Processor {
 								typeName != "staticmethod" &&
 								(
 									Inspect.isfunction(clsMemObj) ||
+									Inspect.isroutine(clsMemObj) ||
 									Inspect.ismethoddescriptor(clsMemObj)
 								)
 							;

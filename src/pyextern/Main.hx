@@ -257,6 +257,7 @@ class Main {
 								"numpy.distutils",
 								"numpy.f2py.__main__",
 								"tensorflow.tools.pip_package",
+								"PyQt5.uic.pyuic",
 							].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
 					});
 				}
