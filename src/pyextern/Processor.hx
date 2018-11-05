@@ -81,6 +81,10 @@ class Processor {
 	}
 
 	public function sigToFun(sig:Dynamic, doc:Null<String>):Function {
+		if (sig == null) {
+			return null;
+		}
+
 		var docFunc = if (doc != null) docToFun(doc) else null;
 
 		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
@@ -111,6 +115,38 @@ class Processor {
 			ret: if (docFunc != null && docFunc.ret != null) docFunc.ret else macro:Dynamic,
 			expr: null
 		}
+	}
+
+	public function isMethodStatic(typeName:String, clsMemName:String, clsMemObj:Dynamic, fun:Function):Bool {
+		var nonInstanceMethods = [
+			"__new__"
+		];
+
+		if (nonInstanceMethods.indexOf(clsMemName) >= 0) {
+			return true;
+		}
+		
+		if (typeName == "staticmethod") {
+			return true;
+		}
+
+		if (fun != null) {
+			if (fun.args.length < 1){
+				return true;
+			}
+			
+			return fun.args[0].name != "self";
+		}
+		
+		if (
+			Inspect.isfunction(clsMemObj) ||
+			Inspect.isroutine(clsMemObj) ||
+			Inspect.ismethoddescriptor(clsMemObj)
+		) {
+			return false;
+		}
+
+		return true;
 	}
 
 	var currentModule:String;
@@ -156,10 +192,6 @@ class Processor {
 								null;
 							}
 
-							var nonInstanceMethods = [
-								"__new__"
-							];
-
 							function baseFunction(cls:Dynamic, funcName:String):Dynamic {
 								var dict:python.Dict<String,Dynamic> = cls.__dict__;
 								return if (dict.hasKey(funcName))
@@ -175,18 +207,10 @@ class Processor {
 								}
 							}
 
-							var typeName = type(baseFunction(memObj,clsMemName)).__name__;
-							var isInstanceMethod = 
-								nonInstanceMethods.indexOf(clsMemName) == -1 &&
-								typeName != "staticmethod" &&
-								(
-									Inspect.isfunction(clsMemObj) ||
-									Inspect.isroutine(clsMemObj) ||
-									Inspect.ismethoddescriptor(clsMemObj)
-								)
-							;
-							var fun = if (sig != null) {
-								var fun = sigToFun(sig, Inspect.getdoc(clsMemObj));
+							var typeName = type(baseFunction(memObj, clsMemName)).__name__;
+							var fun = sigToFun(sig, Inspect.getdoc(clsMemObj));
+							var isInstanceMethod = !isMethodStatic(typeName, clsMemName, clsMemObj, fun);
+							fun = if (fun != null) {
 								if (isInstanceMethod) {
 									if (fun.args.length < 1) {
 										trace(moduleName + " " + memName + " " + clsMemName);
@@ -204,7 +228,6 @@ class Processor {
 									fun.args.shift(); //remove `self` argument
 								} else {
 									if (
-										nonInstanceMethods.indexOf(clsMemName) == -1 &&
 										typeName != "staticmethod" &&
 										fun.args.length > 0 && fun.args[0].name == "self"
 									) {
