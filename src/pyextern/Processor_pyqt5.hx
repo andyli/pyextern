@@ -46,7 +46,7 @@ class Process_pyqt5 extends Processor {
 						}
 					}
 					return ({
-						opt: false,
+						opt: a.indexOf("=") >= 0,
 						name: name,
 						type: switch (hxType(name)) {
 							case null: macro:Dynamic;
