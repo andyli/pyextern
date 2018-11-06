@@ -149,6 +149,10 @@ class Processor {
 		return true;
 	}
 
+	public function isMethod(clsMemObj:Dynamic):Bool {
+		return callable(clsMemObj);
+	}
+
 	var currentModule:String;
 	public function processModule(module:Dynamic, moduleName:String, main:Main):Void {
 		currentModule = moduleName;
@@ -185,7 +189,7 @@ class Processor {
 						var clsMemName = clsMem._1;
 						var clsMemObj = clsMem._2;
 
-						if (callable(clsMemObj)) {
+						if (isMethod(clsMemObj)) {
 							var sig = try {
 								Inspect.signature(clsMemObj);
 							} catch(e:Dynamic) {
@@ -289,7 +293,7 @@ class Processor {
 									td.fields.push(field_new);
 								}
 							}
-						} else { //not callable
+						} else { //not method
 							var isInstanceField = Inspect.isdatadescriptor(clsMemObj) || Inspect.isgetsetdescriptor(clsMemObj);
 							var doc = getdoc(clsMemObj);
 							var field:Field = {
@@ -346,7 +350,7 @@ class Processor {
 
 				if (!re_ident.match(memName)) throw memName;
 
-				if (callable(memObj)) {
+				if (isMethod(memObj)) {
 					var sig = try {
 						Inspect.signature(memObj);
 					} catch(e:Dynamic) {

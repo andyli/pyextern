@@ -4,6 +4,7 @@ import Type as StdType;
 import haxe.macro.*;
 import haxe.macro.Expr;
 import haxe.xml.*;
+import inspect.*;
 using Lambda;
 using StringTools;
 
@@ -22,6 +23,14 @@ class Process_pyqt5 extends Processor {
 				result += c;
 		}
 		return result;
+	}
+	override public function isMethod(memObj:Dynamic):Bool {
+		var doc:String = Inspect.getdoc(memObj);
+		if (doc != null && doc.endsWith(" [signal]")) {
+			return false;
+		}
+
+		return super.isMethod(memObj);
 	}
 	override public function sigToFun(sig:Dynamic, doc:Null<String>):Function {
 		if (sig == null && doc != null) {
