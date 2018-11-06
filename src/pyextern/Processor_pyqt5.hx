@@ -32,6 +32,13 @@ class Process_pyqt5 extends Processor {
 
 		return super.isMethod(memObj);
 	}
+	override public function isFieldStatic(memObj:Dynamic):Bool {
+		var doc:String = Inspect.getdoc(memObj);
+		if (doc != null && doc.endsWith(" [signal]")) {
+			return false;
+		}
+		return super.isFieldStatic(memObj);
+	}
 	override public function sigToFun(sig:Dynamic, doc:Null<String>):Function {
 		if (sig == null && doc != null) {
 			var funcR = ~/^(.+?)\((.*)\)(?:\s*->\s*(.+))?$/;

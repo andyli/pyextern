@@ -117,6 +117,10 @@ class Processor {
 		}
 	}
 
+	public function isFieldStatic(memObj:Dynamic):Bool {
+		return !Inspect.isdatadescriptor(memObj) && !Inspect.isgetsetdescriptor(memObj);
+	}
+
 	public function isMethodStatic(typeName:String, clsMemName:String, clsMemObj:Dynamic, fun:Function):Bool {
 		var nonInstanceMethods = [
 			"__new__"
@@ -294,7 +298,7 @@ class Processor {
 								}
 							}
 						} else { //not method
-							var isInstanceField = Inspect.isdatadescriptor(clsMemObj) || Inspect.isgetsetdescriptor(clsMemObj);
+							var isInstanceField = !isFieldStatic(clsMemObj);
 							var doc = getdoc(clsMemObj);
 							var field:Field = {
 								doc: doc,
